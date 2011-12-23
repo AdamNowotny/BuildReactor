@@ -31,6 +31,7 @@
 				mockBambooRequest.andCallFake(function () {
 					this.responseReceived.dispatch(jsonProjects);
 				});
+				spyOn(window, 'alert');
 			});
 
 			it('should display settings page', function () {
@@ -133,11 +134,11 @@
 				controller.initialize('settings-0');
 				logger.saveClicked.setFilter(function (newSettings) {
 					return newSettings.url == settings.url
-    	                && newSettings.username == settings.username
-        	                && newSettings.password == settings.password
-            	                && newSettings.updateInterval == settings.updateInterval
-                	                && newSettings.plans[0] == 'PROJECT1-PLAN1'
-                    	                && newSettings.plans[1] == 'PROJECT2-PLAN2';
+						&& newSettings.username == settings.username
+							&& newSettings.password == settings.password
+								&& newSettings.updateInterval == settings.updateInterval
+									&& newSettings.plans[0] == 'PROJECT1-PLAN1'
+										&& newSettings.plans[1] == 'PROJECT2-PLAN2';
 				});
 
 				$('.save-button').click();
