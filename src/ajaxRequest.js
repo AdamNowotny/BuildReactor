@@ -12,19 +12,19 @@
 		var ajaxOptions = {
 			type: 'GET',
 			url: this.settings.url,
-			username: this.settings.username, // optional
-			password: this.settings.password, // optional
-			beforeSend: function(request) {
+			beforeSend: function (request) {
 				request.setRequestHeader('Accept', 'application/json');
 			},
 			cache: false,
 			success: onAjaxSuccess,
 			error: onAjaxError,
-			data: {
-				os_authType: 'basic'
-			},
 			dataType: 'json'
 		};
+		if (this.settings.username != null && this.settings.username.trim() != '') {
+			ajaxOptions.username = this.settings.username;
+			ajaxOptions.password = this.settings.password;
+			ajaxOptions.data = { os_authType: 'basic' };
+		}
 		$.ajax(ajaxOptions);
 
 		function onAjaxSuccess(data, textStatus, jqXhr) {
