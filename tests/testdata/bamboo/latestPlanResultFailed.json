@@ -1,0 +1,87 @@
+{
+   "expand":"changes,metadata,artifacts,comments,labels,jiraIssues,stages",
+   "link":{
+      "href":"https://example.com/rest/api/latest/result/PROJECT1-PLAN1-3631",
+      "rel":"self"
+   },
+   "key":"PROJECT1-PLAN1-3631",
+   "state":"Failed",
+   "lifeCycleState":"Finished",
+   "number":3631,
+   "id":31267661,
+   "buildStartedTime":"2011-12-15T16:13:20.577-05:00",
+   "buildCompletedTime":"2011-12-15T16:24:36.297-05:00",
+   "buildDurationInSeconds":675,
+   "buildDuration":675718,
+   "buildDurationDescription":"11 minutes",
+   "buildRelativeTime":"14 minutes ago",
+   "vcsRevisionKey":"5546",
+   "buildTestSummary":"2994 passed",
+   "successfulTestCount":2994,
+   "failedTestCount":0,
+   "buildReason":"Code has changed",
+   "artifacts":{
+      "start-index":0,
+      "max-result":0,
+      "size":0
+   },
+   "comments":{
+      "start-index":0,
+      "max-result":0,
+      "size":0
+   },
+   "labels":{
+      "start-index":0,
+      "max-result":0,
+      "size":0
+   },
+   "jiraIssues":{
+      "start-index":0,
+      "max-result":1,
+      "size":1,
+      "issue":[
+         {
+            "key":"PROJ-1707",
+            "summary":"Create new random feature",
+            "iconUrl":"https://jira.example.com/download/resources/com.pyxis.greenhopper.jira:greenhopper-webactions/images/ico_story.png",
+            "issueType":"Story",
+            "url":{
+               "href":"https://jira.example.com/browse/PROJ-1707",
+               "rel":"self"
+            }
+         }
+      ]
+   },
+   "stages":{
+      "start-index":0,
+      "max-result":1,
+      "size":1
+   },
+   "changes":{
+      "start-index":0,
+      "max-result":1,
+      "size":1,
+      "expand":"change",
+      "change":[
+         {
+            "expand":"files",
+            "author":"adam.nowotny",
+            "userName":"adam.nowotny",
+            "fullName":"Adam Nowotny",
+            "comment":"PROJ-1707 - anowotny: some random feature added",
+            "changesetId":"5546",
+            "date":"2011-12-15T16:12:19.167-05:00",
+            "files":{
+               "start-index":0,
+               "max-result":1,
+               "size":1
+            }
+         }
+      ]
+   },
+   "metadata":{
+      "start-index":0,
+      "max-result":0,
+      "size":0
+   }
+}

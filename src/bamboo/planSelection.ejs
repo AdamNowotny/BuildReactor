@@ -1,0 +1,19 @@
+﻿<%
+for(var projectIndex = 0; projectIndex < projects.length; projectIndex++) {
+	var project = projects[projectIndex];
+%>
+<div class="project <%= project.key %>"><%= project.name %></div>
+<div class="plans"><%
+	for(var planIndex = 0; planIndex < project.plans.plan.length; planIndex++) {
+		var plan = project.plans.plan[planIndex];	
+	%><div class="plan<% if (!plan.enabled) { %> disabled<% } %>">
+		<input type="checkbox" name="<%= plan.key %>" id="<%= plan.key %>" <% if (selectedPlans.indexOf(plan.key) > -1) { %>checked="checked"<% } %>/>
+		<label for="<%= plan.key %>"><%= plan.shortName %></label>
+	</div>
+	<%
+	}
+	%>
+</div>
+<%
+}
+%>

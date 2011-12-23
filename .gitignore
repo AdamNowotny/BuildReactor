@@ -1,0 +1,5 @@
+.idea
+_ReSharper.*
+*.ReSharper
+*.user
+*.suo

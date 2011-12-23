@@ -1,0 +1,13 @@
+{
+	"name": "BuildReactor",
+	"version": "0.1.0",
+	"description": "Provides notifications on CI server events",
+	"browser_action": {
+		"default_title": "BuildReactor CI notifications",
+		"default_icon": "img/icon.png"
+	},
+	"icons": { "128": "img/icon-128.png" },
+	"background_page": "background.html",
+	"options_page": "options.html",
+	"permissions": ["http://*/*", "https://*/*", "notifications"]
+}

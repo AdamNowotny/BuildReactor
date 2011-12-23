@@ -1,0 +1,127 @@
+﻿body {
+	margin: 0;
+}
+
+.header {
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	font-size: 1.2em;
+	background-color: #bababa;
+}
+
+#services {
+	position: absolute;
+	top: 60px;
+	bottom: 20px;
+	left: 20px;
+	width: 250px;
+	border: 1px solid #AAA;
+	background-color: #EEE;
+	border-radius: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+	
+    #services a {
+	    background-color: #BBB;
+	    text-align: center;
+	    padding: 3px;
+	    display: block;
+	    border-top: 1px solid grey;
+	    border-bottom: 1px solid grey;
+        margin-bottom: 5px;
+    }
+
+    #services a:hover {
+	    background-color: sandybrown;
+	    cursor: pointer;
+    }
+
+    #services a.active {
+	    background-color: orange;
+    }
+
+#settings-container {
+	position: absolute;
+	top: 60px;
+	bottom: 20px;
+	left: 290px;
+	right: 20px;
+	padding: 10px;
+	border: 1px solid #AAA;
+	background-color: #EEE;
+}
+
+.settings 
+{
+}
+
+    .settings .bamboo-settings-form {
+	    width: 500px;	
+    }
+
+    .bamboo-settings-form .url-input {
+        width: 250px;
+    }
+    
+    .settings fieldset {
+	    margin-bottom: 1em;
+        padding-left: 0;
+    }
+
+    .settings fieldset label {
+	    width: 80px;
+    }
+
+    .settings input:not[type="checkbox"] {
+	    width: 200px;
+    }
+
+    .settings .bamboo-settings-form label 
+    {
+	    text-align: right;
+	    width: 200px;
+	    display: inline-block;
+	    padding-right: 20px;
+    }
+
+    .settings .error {
+	    color: red;
+	    padding-top: 1em;
+    }
+
+input:required {
+	border: 1px solid orange;
+	
+}
+
+.plan-selection-container {
+	position: absolute;
+	top: 0;
+	left: 550px;
+	right: 0;
+	bottom: 0;
+	overflow: auto;
+}
+
+.project {
+	background-color: lightgray;
+	margin: 1px;
+	padding-left: 1em;
+	cursor: pointer;
+}
+
+.plans
+{
+	display: none;
+	background-color: lightgrey;
+	padding-left: 50px;
+}
+
+    .plans .plan.disabled {
+        color: #EEE;
+    }
