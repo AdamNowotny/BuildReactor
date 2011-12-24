@@ -12,4 +12,4 @@ After installing the extension go to options page and enter the URL for Bamboo i
 
 Installation
 ============
-You can install the packaged extension by clicking [here](goo.gl/XhnNf) using Google Chrome.
+You can install the packaged extension by clicking [here](http://goo.gl/XhnNf) using Google Chrome.
