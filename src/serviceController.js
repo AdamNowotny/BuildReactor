@@ -19,7 +19,8 @@
 	        servicesToLoadCount = settings.length;
 	        for (var i = 0; i < settings.length; i++) {
 	            var serviceSettings = settings[i];
-	            var serviceName = serviceSettings.service;
+	            var serviceName = '../../{0}/{1}'.
+		            format(serviceSettings.baseUrl, serviceSettings.service);
 	            require([serviceName], function (Service) {
 	                var serviceInstance = new Service(serviceSettings);
 	                addService(serviceInstance);

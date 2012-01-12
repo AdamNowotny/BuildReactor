@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>BuildReactor Bamboo settings page</title>
+	<script type="text/javascript" src="../../lib/requirejs/require.js"></script>
+	<link type="text/css" rel="stylesheet" href="options.css" />
+</head>
+<body>
+	<form class="bamboo-settings-form" action="">
+		<p>
+			<label for="url">Server URL</label>
+			<input type="url" name="url" class="url-input" required="required" placeholder="http://my.bamboo.example.com/" />
+		</p>
+		<p>
+			<label for="update-interval">Update interval (seconds)</label>
+			<input type="number" name="update-interval" class="update-interval-input" min="1" value="15" />
+		</p>
+		<fieldset>
+			<legend>Authentication</legend>
+			<p>
+				<label for="username">Username</label>
+				<input type="text" name="username" class="username-input" placeholder="optional" />
+				<br />
+				<label for="password">Password</label>
+				<input type="password" name="password" class="password-input" placeholder="optional" />
+			</p>
+		</fieldset>
+
+		<button type="submit" class="plans-button" name="plans-button">Get plans</button>
+		<button type="button" class="save-button" name="save-button" disabled="disabled">Save</button>
+	</form>
+	<div class="plan-selection-container"></div>
+	<div class="error" hidden="hidden">Error getting available plans. <span class="error-message" /></div>
+	<script type="text/javascript">
+		require.config({
+				paths: {
+					signals: '../../lib/js-signals/signals',
+					jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min',
+					text: '../../lib/requirejs/text'
+				},
+				priority: [
+					'../../lib/jsContract/jsContract',
+					'../stringExtensions',
+					'../../lib/ejs-1.0/ejs'
+				]
+			});
+	</script>
+</body>
+</html>

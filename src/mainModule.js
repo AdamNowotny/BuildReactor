@@ -1,20 +1,4 @@
-﻿require.config({
-	baseUrl: 'src',
-	paths: {
-		signals: '../lib/js-signals/signals',
-		contract: '../lib/jsContract/jsContract',
-		jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min',
-		ejs: '../lib/ejs-1.0/ejs',
-		text: '../lib/requirejs/text'
-	},
-	priority: [
-		'jquery',
-		'contract',
-		'stringExtensions',
-		'ejs'
-	]
-});
-define([
+﻿define([
 		'serviceController',
 		'notificationController',
 		'settingsStore'

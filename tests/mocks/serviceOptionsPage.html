@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>BuildReactor Sample settings page</title>
+	<script type="text/javascript" src="../../lib/requirejs/require.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		require.config({
+			paths: {
+				signals: '../../lib/js-signals/signals',
+				jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min',
+				text: '../../lib/requirejs/text'
+			},
+			priority: [
+					'../../lib/jsContract/jsContract',
+					'../../src/stringExtensions',
+					'../../lib/ejs-1.0/ejs'
+				]
+		});
+	</script>
+</body>
+</html>

@@ -1,184 +1,203 @@
 ﻿define([
 		'jquery',
 		'src/serviceController',
-		'mocks/mockBuildServiceBuilder',
+		'mocks/mockBuildService',
 		'mocks/mockBuildEventBuilder',
 		'mocks/mockSettingsBuilder',
 		'SignalLogger'],
-	function ($, controller, MockBuildServiceBuilder, MockBuildEventBuilder, MockSettingsBuilder, SignalLogger) {
+	function ($, controller, MockBuildService, MockBuildEventBuilder, MockSettingsBuilder, SignalLogger) {
 
-	    describe('ServiceController', function () {
+		describe('ServiceController', function () {
 
-	        var logger;
+			var logger;
 
-	        beforeEach(function () {
-	            controller.load([]);
-	            logger = new SignalLogger({
-	                servicesStarted: controller.servicesStarted,
-	                buildFailed: controller.buildFailed,
-	                buildFixed: controller.buildFixed
-	            });
-	            logger.reset();
-	        });
+			beforeEach(function () {
+				controller.load([]);
+				logger = new SignalLogger({
+					servicesStarted: controller.servicesStarted,
+					buildFailed: controller.buildFailed,
+					buildFixed: controller.buildFixed
+				});
+				logger.reset();
+			});
 
-	        it('should require service interface', function () {
-	            var mockNoName = new MockBuildServiceBuilder().withNoName().create();
-	            var mockNoBuildFailed = new MockBuildServiceBuilder().withNoBuildFixedSignal().create();
-	            var mockNoBuildFixed = new MockBuildServiceBuilder().withNoBuildFixedSignal().create();
-	            var mockNoUpdateStarted = new MockBuildServiceBuilder().withNoUpdateFinishedSignal().create();
-	            var mockNoUpdateFinished = new MockBuildServiceBuilder().withNoUpdateStartedSignal().create();
-	            var mockNoErrorThrown = new MockBuildServiceBuilder().withNoErrorThrownSignal().create();
+			describe('service interface', function() {
 
-	            expect(function () { controller.addService(mockNoName); }).toThrow();
-	            expect(function () { controller.addService(mockNoBuildFailed); }).toThrow();
-	            expect(function () { controller.addService(mockNoBuildFixed); }).toThrow();
-	            expect(function () { controller.addService(mockNoUpdateStarted); }).toThrow();
-	            expect(function () { controller.addService(mockNoUpdateFinished); }).toThrow();
-	            expect(function () { controller.addService(mockNoErrorThrown); }).toThrow();
-	        });
+				it('should require name', function () {
+					var service = new MockBuildService();
+					service.name = undefined;
+					expect(function () { controller.addService(service); }).toThrow();
+				});
 
-	        it('should throw exception if removing service that has not been added', function () {
-	            var mockService = new MockBuildServiceBuilder().create();
+				it('should require buildFailed signal', function () {
+					var service = new MockBuildService();
+					service.buildFailed = undefined;
+					expect(function () { controller.addService(service); }).toThrow();
+				});
 
-	            expect(function () { controller.removeService(mockService); }).toThrow();
-	        });
+				it('should require buildFixed signal', function () {
+					var service = new MockBuildService();
+					service.buildFixed = undefined;
+					expect(function () { controller.addService(service); }).toThrow();
+				});
 
-	        it('should stop on service removed', function () {
-	            var mockService = new MockBuildServiceBuilder().create();
-	            spyOn(mockService, 'stop');
+				it('should require updateStarted signal', function () {
+					var service = new MockBuildService();
+					service.updateStarted = undefined;
+					expect(function () { controller.addService(service); }).toThrow();
+				});
 
-	            controller.addService(mockService);
-	            controller.removeService(mockService);
+				it('should require updateFinished signal', function () {
+					var service = new MockBuildService();
+					service.updateFinished = undefined;
+					expect(function () { controller.addService(service); }).toThrow();
+				});
 
-	            expect(mockService.stop).toHaveBeenCalled();
-	        });
+				it('should require errorThrown signal', function () {
+					var service = new MockBuildService();
+					service.errorThrown = undefined;
+					expect(function () { controller.addService(service); }).toThrow();
+				});
 
-	        it('should unsubscribe from signals on service removed', function () {
-	            var mockService = new MockBuildServiceBuilder().create();
+			});
 
-	            controller.addService(mockService);
-	            controller.removeService(mockService);
+			it('should throw exception if removing service that has not been added', function () {
+				var mockService = new MockBuildService();
 
-	            expect(mockService.buildFailed.getNumListeners()).toBe(0);
-	            expect(mockService.buildFixed.getNumListeners()).toBe(0);
-	            expect(mockService.updateFinished.getNumListeners()).toBe(0);
-	            expect(mockService.updateStarted.getNumListeners()).toBe(0);
-	            expect(mockService.errorThrown.getNumListeners()).toBe(0);
-	        });
+				expect(function () { controller.removeService(mockService); }).toThrow();
+			});
 
-	        it('should remove all services when empty settings passed', function () {
-	            var mockService1 = new MockBuildServiceBuilder().create();
-	            var mockService2 = new MockBuildServiceBuilder().create();
-	            controller.addService(mockService1);
-	            controller.addService(mockService2);
+			it('should stop on service removed', function () {
+				var mockService = new MockBuildService();
+				spyOn(mockService, 'stop');
 
-	            controller.load([]);
+				controller.addService(mockService);
+				controller.removeService(mockService);
 
-	            expect(controller.services.length).toBe(0);
-	        });
+				expect(mockService.stop).toHaveBeenCalled();
+			});
 
-	        it('should start all services', function () {
-	            var mockService1 = new MockBuildServiceBuilder().create();
-	            var mockService2 = new MockBuildServiceBuilder().create();
-	            spyOn(mockService1, 'start');
-	            spyOn(mockService2, 'start');
-	            controller.addService(mockService1);
-	            controller.addService(mockService2);
+			it('should unsubscribe from signals on service removed', function () {
+				var mockService = new MockBuildService();
 
-	            controller.run();
+				controller.addService(mockService);
+				controller.removeService(mockService);
 
-	            expect(mockService1.start).toHaveBeenCalled();
-	            expect(mockService2.start).toHaveBeenCalled();
-	        });
+				expect(mockService.buildFailed.getNumListeners()).toBe(0);
+				expect(mockService.buildFixed.getNumListeners()).toBe(0);
+				expect(mockService.updateFinished.getNumListeners()).toBe(0);
+				expect(mockService.updateStarted.getNumListeners()).toBe(0);
+				expect(mockService.errorThrown.getNumListeners()).toBe(0);
+			});
 
-	        it('should signal buildFailed on build failure', function () {
-	            var mockService = new MockBuildServiceBuilder().create();
-	            controller.addService(mockService);
+			it('should remove all services when empty settings passed', function () {
+				var mockService1 = new MockBuildService();
+				var mockService2 = new MockBuildService();
+				controller.addService(mockService1);
+				controller.addService(mockService2);
 
-	            var buildEvent = new MockBuildEventBuilder().withFailedBuilds(1).create();
-	            mockService.buildFailed.dispatch(buildEvent);
+				controller.load([]);
 
-	            expect(logger.buildFailed.count).toBe(1);
-	        });
+				expect(controller.services.length).toBe(0);
+			});
 
-	        it('should signal buildFixed on build fixed event', function () {
-	            var mockService = new MockBuildServiceBuilder().create();
-	            controller.addService(mockService);
+			it('should start all services', function () {
+				var mockService1 = new MockBuildService();
+				var mockService2 = new MockBuildService();
+				spyOn(mockService1, 'start');
+				spyOn(mockService2, 'start');
+				controller.addService(mockService1);
+				controller.addService(mockService2);
 
-	            var buildEvent = new MockBuildEventBuilder().withFailedBuilds(0).create();
-	            mockService.buildFixed.dispatch(buildEvent);
+				controller.run();
 
-	            expect(logger.buildFixed.count).toBe(1);
-	        });
+				expect(mockService1.start).toHaveBeenCalled();
+				expect(mockService2.start).toHaveBeenCalled();
+			});
 
-	        it('should update state on build failure', function () {
-	            var mockService = new MockBuildServiceBuilder().create();
-	            controller.addService(mockService);
+			it('should signal buildFailed on build failure', function () {
+				var mockService = new MockBuildService();
+				controller.addService(mockService);
 
-	            var buildEvent = new MockBuildEventBuilder().withFailedBuilds(1).create();
-	            mockService.buildFailed.dispatch(buildEvent);
+				var buildEvent = new MockBuildEventBuilder().withFailedBuilds(1).create();
+				mockService.buildFailed.dispatch(buildEvent);
 
-	            expect(logger.buildFailed.lastCallParams.state.failedBuildsCount).toBe(1);
-	        });
+				expect(logger.buildFailed.count).toBe(1);
+			});
 
-	        it('should update state on build fixed event', function () {
-	            var mockService = new MockBuildServiceBuilder().create();
-	            controller.addService(mockService);
+			it('should signal buildFixed on build fixed event', function () {
+				var mockService = new MockBuildService();
+				controller.addService(mockService);
 
-	            var buildEvent = new MockBuildEventBuilder().create();
-	            mockService.buildFailed.dispatch(buildEvent);
-	            mockService.buildFailed.dispatch(buildEvent);
-	            mockService.buildFixed.dispatch(buildEvent);
+				var buildEvent = new MockBuildEventBuilder().withFailedBuilds(0).create();
+				mockService.buildFixed.dispatch(buildEvent);
 
-	            expect(logger.buildFixed.lastCallParams.state.failedBuildsCount).toBe(1);
-	        });
+				expect(logger.buildFixed.count).toBe(1);
+			});
 
-	        it('should run services only after all are loaded', function () {
-	            var settings1 = new MockSettingsBuilder().withName('service 1').withService('service1').create();
-	            var settings2 = new MockSettingsBuilder().withName('service 2').withService('service2').create();
-	            var Service1 = new MockBuildServiceBuilder().fromSettings(settings1).createConstructor();
-	            var Service2 = new MockBuildServiceBuilder().fromSettings(settings2).createConstructor();
-	            var loaded1callback;
-	            var loaded2callback;
-	            spyOn(window, 'require').andCallFake(function (serviceNames, callback) {
-	                switch (serviceNames[0]) {
-	                    case 'service1':
-	                        loaded1callback = callback;
-	                        break;
-	                    case 'service2':
-	                        loaded2callback = callback;
-	                        break;
-	                    default:
-	                        throw 'Service unknown: ' + serviceNames[0];
-	                }
-	            });
+			it('should update state on build failure', function () {
+				var mockService = new MockBuildService();
+				controller.addService(mockService);
 
-	            controller.load([settings1, settings2]);
-	            controller.run();
+				var buildEvent = new MockBuildEventBuilder().withFailedBuilds(1).create();
+				mockService.buildFailed.dispatch(buildEvent);
 
-	            expect(logger.servicesStarted.count).toBe(0);
-	            loaded1callback(Service1);
-	            expect(logger.servicesStarted.count).toBe(0);
-	            loaded2callback(Service2);
-	            expect(logger.servicesStarted.count).toBe(1);
-	        });
+				expect(logger.buildFailed.lastCallParams.state.failedBuildsCount).toBe(1);
+			});
 
-	        it('should reset state on load', function () {
-	            var settings = new MockSettingsBuilder().create();
-	            var mockService = new MockBuildServiceBuilder().create();
-	            controller.addService(mockService);
-	            var buildEvent = new MockBuildEventBuilder().withFailedBuilds(1).create();
-	            mockService.buildFailed.dispatch(buildEvent);
+			it('should update state on build fixed event', function () {
+				var mockService = new MockBuildService();
+				controller.addService(mockService);
 
-	            expect(logger.buildFailed.lastCallParams.state.failedBuildsCount).toBe(1);
-	            controller.load([settings]);
-	            controller.addService(mockService);
-	            mockService.buildFailed.dispatch(buildEvent);
+				var buildEvent = new MockBuildEventBuilder().create();
+				mockService.buildFailed.dispatch(buildEvent);
+				mockService.buildFailed.dispatch(buildEvent);
+				mockService.buildFixed.dispatch(buildEvent);
 
-	            expect(logger.buildFailed.lastCallParams.state.failedBuildsCount).toBe(1);
-	        });
+				expect(logger.buildFixed.lastCallParams.state.failedBuildsCount).toBe(1);
+			});
+
+			it('should run services only after all are loaded', function () {
+				var settings1 = new MockSettingsBuilder().withName('service 1').withService('service1').create();
+				var settings2 = new MockSettingsBuilder().withName('service 2').withService('service2').create();
+				var loaded1callback;
+				var loaded2callback;
+				spyOn(window, 'require').andCallFake(function (serviceNames, callback) {
+					if (serviceNames[0].endsWith('service1')) {
+						loaded1callback = callback;
+					} else if (serviceNames[0].endsWith('service2')) {
+						loaded2callback = callback;
+					} else {
+						throw 'Service unknown: ' + serviceNames[0];
+					}
+				});
+
+				controller.load([settings1, settings2]);
+				controller.run();
+
+				expect(logger.servicesStarted.count).toBe(0);
+				loaded1callback(MockBuildService);
+				expect(logger.servicesStarted.count).toBe(0);
+				loaded2callback(MockBuildService);
+				expect(logger.servicesStarted.count).toBe(1);
+			});
+
+			it('should reset state on load', function () {
+				var settings = new MockSettingsBuilder().create();
+				var mockService = new MockBuildService();
+				controller.addService(mockService);
+				var buildEvent = new MockBuildEventBuilder().withFailedBuilds(1).create();
+				mockService.buildFailed.dispatch(buildEvent);
+
+				expect(logger.buildFailed.lastCallParams.state.failedBuildsCount).toBe(1);
+				controller.load([settings]);
+				controller.addService(mockService);
+				mockService.buildFailed.dispatch(buildEvent);
+
+				expect(logger.buildFailed.lastCallParams.state.failedBuildsCount).toBe(1);
+			});
 
 
 
-	    });
+		});
 	});

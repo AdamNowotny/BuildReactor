@@ -10,15 +10,15 @@
 	line-height: 40px;
 	text-align: center;
 	font-size: 1.2em;
-	background-color: #bababa;
+	background-color: #c4c4c4;
 }
 
-#services {
+#service-list {
 	position: absolute;
 	top: 60px;
 	bottom: 20px;
 	left: 20px;
-	width: 250px;
+	width: 200px;
 	border: 1px solid #AAA;
 	background-color: #EEE;
 	border-radius: 10px;
@@ -26,102 +26,55 @@
 	padding-bottom: 10px;
 }
 	
-    #services a {
-	    background-color: #BBB;
-	    text-align: center;
-	    padding: 3px;
-	    display: block;
-	    border-top: 1px solid grey;
-	    border-bottom: 1px solid grey;
-        margin-bottom: 5px;
-    }
+	#service-list a {
+		background-color: #BBB;
+		text-align: center;
+		padding: 3px;
+		display: block;
+		border-top: 1px solid grey;
+		border-bottom: 1px solid grey;
+		margin-bottom: 5px;
+	}
 
-    #services a:hover {
-	    background-color: sandybrown;
-	    cursor: pointer;
-    }
+	#service-list a:hover {
+		background-color: sandybrown;
+		cursor: pointer;
+	}
 
-    #services a.active {
-	    background-color: orange;
-    }
+	#service-list a.active {
+		background-color: orange;
+	}
 
 #settings-container {
 	position: absolute;
 	top: 60px;
 	bottom: 20px;
-	left: 290px;
+	left: 240px;
 	right: 20px;
-	padding: 10px;
+	padding: 0;
 	border: 1px solid #AAA;
 	background-color: #EEE;
 }
 
-.settings 
-{
+.service-header {
+	font-size: large;
+	text-align: center;
+	padding: 5px;
+	background-color: #bbb;
+	height: 25px;
 }
 
-    .settings .bamboo-settings-form {
-	    width: 500px;	
-    }
-
-    .bamboo-settings-form .url-input {
-        width: 250px;
-    }
-    
-    .settings fieldset {
-	    margin-bottom: 1em;
-        padding-left: 0;
-    }
-
-    .settings fieldset label {
-	    width: 80px;
-    }
-
-    .settings input:not[type="checkbox"] {
-	    width: 200px;
-    }
-
-    .settings .bamboo-settings-form label 
-    {
-	    text-align: right;
-	    width: 200px;
-	    display: inline-block;
-	    padding-right: 20px;
-    }
-
-    .settings .error {
-	    color: red;
-	    padding-top: 1em;
-    }
-
-input:required {
-	border: 1px solid orange;
-	
-}
-
-.plan-selection-container {
+#settings-frame {
 	position: absolute;
-	top: 0;
-	left: 550px;
-	right: 0;
+	top: 35px;
 	bottom: 0;
+	width: 100%;
 	overflow: auto;
 }
 
-.project {
-	background-color: lightgray;
-	margin: 1px;
-	padding-left: 1em;
-	cursor: pointer;
+iframe {
+	border: 0;
+	position: absolute;
+	height: 100%;
+	width: 100%;
 }
-
-.plans
-{
-	display: none;
-	background-color: lightgrey;
-	padding-left: 50px;
-}
-
-    .plans .plan.disabled {
-        color: #EEE;
-    }

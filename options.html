@@ -7,10 +7,29 @@
   </head>
   <body>
 	<div class="header">BuildReactor Settings</div>
-	<div id="services"></div>
-	<div id="settings-container"></div>
+	<div id="service-list"></div>
+	<div id="settings-container">
+		<div class="service-header"><span id="service-name"></span> settings</div>		
+		<iframe id="settings-frame"></iframe>
+	</div>
 	<script type="text/javascript">
-	    require(["src/settingsModule"], function (settingsModule) {
+		require.config({
+				baseUrl: 'src',
+				paths: {
+					signals: '../lib/js-signals/signals',
+					contract: '../lib/jsContract/jsContract',
+					jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min',
+					ejs: '../lib/ejs-1.0/ejs',
+					text: '../lib/requirejs/text'
+				},
+				priority: [
+					'jquery',
+					'contract',
+					'stringExtensions',
+					'ejs'
+				]
+			});
+		require(["settingsModule"], function (settingsModule) {
 	        settingsModule.show();
 		});
 	</script>

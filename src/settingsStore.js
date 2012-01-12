@@ -18,9 +18,12 @@
     }
 
     function getDefaultSettings() {
-        var bambooSettings = {
-            service: 'bamboo/bambooBuildService',
-            settingsController: 'bamboo/bambooSettingsController',
+    	// TODO: remove when adding services is supported in the UI
+    	var bambooSettings = {
+    		baseUrl: 'src/bamboo',
+            service: 'bambooBuildService',
+            settingsController: 'bambooSettingsController',
+            settingsPage: 'bambooOptions.html',
             name: 'Atlassian Bamboo CI',
             url: '',
             updateInterval: 60,

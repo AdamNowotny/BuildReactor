@@ -1,50 +1,58 @@
 ﻿define([
 		'jquery',
 		'text!./services.ejs',
-		'text!./settings.ejs',
-        'signals'
-], function ($, servicesTemplateText, settingsTemplateText, signals) {
+		'signals'
+], function ($, servicesTemplateText, signals) {
 
-    var navigationTemplate = new EJS({ text: servicesTemplateText });
-    var settingsTemplate = new EJS({ text: settingsTemplateText });
-    var settingsChanged = new signals.Signal();
+	var menuTemplate = new EJS({ text: servicesTemplateText });
+	var settingsChanged = new signals.Signal();
+	var settingsShown = new signals.Signal();
 
-    function show(settingsList) {
+	function show(settings) {
+		showMenu(settings);
+		$('#service-list a:first').click();
 
-        navigationTemplate.update('services', { services: settingsList });
-        $('#services a').click(showServiceSettings);
-        settingsTemplate.update('settings-container', { services: settingsList });
-        $('#services a:first').click();
+		function showMenu() {
+			menuTemplate.update('service-list', { services: settings });
+			$('#service-list a').click(serviceClick);
+		}
 
-        function showServiceSettings(event) {
-            event.preventDefault();
-            var serviceLink = $(this);
-            if (serviceLink.hasClass('active')) return;
-            $('#services a').removeClass('active');
-            serviceLink.addClass('active');
+		function serviceClick(event) {
+			event.preventDefault();
+			var serviceLink = $(this);
+			if (serviceLink.hasClass('active')) return;
+			$('#service-list a').removeClass('active');
+			serviceLink.addClass('active');
+			var index = serviceLink.data('service-index');
+			var serviceSettings = settings[index];
+			showServicePage(serviceSettings);
 
-            var index = serviceLink.data('service-index');
-            var contentDivId = 'settings-' + index;
-            var settings = settingsList[index];
-            var controllerName = settings.settingsController;
-            require([controllerName], function (Controller) {
-                var controllerInstance = new Controller(settings);
-                controllerInstance.saveClicked.add(saveClicked);
-                controllerInstance.show(contentDivId);
-                $('.settings').hide();
-                $('#' + contentDivId).show();
-            });
+			function showServicePage(serviceSettings) {
+				$('#service-name').text(serviceSettings.name);
+				var iframe = $('#settings-frame')[0];
+				iframe.onload = function () {
+					var controllerName = serviceSettings.settingsController;
+					iframe.contentWindow.require([controllerName], function (serviceSettingsController) {
+						// executed in iframe context
+						serviceSettingsController.saveClicked.add(saveClicked);
+						serviceSettingsController.show(serviceSettings);
+					});
+				};
+				iframe.src = '{0}/{1}'.format(serviceSettings.baseUrl, serviceSettings.settingsPage);
+				settingsShown.dispatch();
 
-            function saveClicked(updatedSettings) {
-                settingsList[index] = updatedSettings;
-                settingsChanged.dispatch(settingsList);
-            }
+				function saveClicked(updatedSettings) {
+					serviceSettings = updatedSettings;
+					settingsChanged.dispatch(settings);
+				}
+			}
+		}
 
-        }
-    }
+	}
 
-    return {
-        show: show,
-        settingsChanged: settingsChanged
-    };
+	return {
+		show: show,
+		settingsShown: settingsShown,
+		settingsChanged: settingsChanged
+	};
 });

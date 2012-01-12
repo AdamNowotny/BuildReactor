@@ -1,10 +1,9 @@
 ﻿define([
 		'./bambooRequest',
-		'./bambooSettingsController',
 		'./bambooPlan',
 		'../timer',
 		'signals'
-	], function (BambooRequest, BambooSettingsController, BambooPlan, Timer, signals) {
+	], function (BambooRequest, BambooPlan, Timer, signals) {
 
 	    var BambooBuildService = function (settings) {
 	        Contract.expectString(settings.name, 'settings.name not defined');

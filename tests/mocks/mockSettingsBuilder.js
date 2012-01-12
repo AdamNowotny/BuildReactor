@@ -1,9 +1,11 @@
 ﻿define(function () {
 
     var MockSettingsBuilder = function () {
-        this.settings = {
-            service: 'mocks/FakeBuildService',
-            settingsController: 'mocks/MockSettingsController',
+    	this.settings = {
+    		baseUrl: 'tests/mocks',
+            service: 'mockBuildService',
+            settingsController: 'mockSettingsController',
+            settingsPage: '',
             url: 'http://www.example.com/',
             name: 'service name'
         };
@@ -12,6 +14,10 @@
         };
         this.withName = function (name) {
             this.settings.name = name;
+            return this;
+        };
+        this.withSettingsPage = function (page) {
+        	this.settings.settingsPage = page;
             return this;
         };
         this.withService = function (serviceModuleName) {
