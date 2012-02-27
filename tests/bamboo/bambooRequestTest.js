@@ -1,7 +1,8 @@
 ﻿define([
-	'src/bamboo/bambooRequest',
-	'src/ajaxRequest',
-	'SignalLogger'
+	'bamboo/bambooRequest',
+	'ajaxRequest',
+	'SignalLogger',
+	'stringExtensions'
 	],
 	function (BambooRequest, AjaxRequest, SignalLogger) {
 

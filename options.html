@@ -1,37 +1,85 @@
 <!DOCTYPE HTML>
 <html>
-  <head>
-	<title>BuildReactor settings page</title>
-	<script type="text/javascript" src="lib/requirejs/require.js"></script>
-	<link type="text/css" rel="stylesheet" href="options.css" />
-  </head>
-  <body>
-	<div class="header">BuildReactor Settings</div>
-	<div id="service-list"></div>
-	<div id="settings-container">
-		<div class="service-header"><span id="service-name"></span> settings</div>		
-		<iframe id="settings-frame"></iframe>
-	</div>
-	<script type="text/javascript">
-		require.config({
+	<head>
+		<title>BuildReactor settings page</title>
+		<script type="text/javascript" src="lib/requirejs-1.0.7/require.js"></script>
+		<link rel="stylesheet" type="text/css" href="lib/twitter-bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="options.css" />
+	</head>
+	<body>
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="nav-header">
+					BuildReactor Settings
+				</div>
+			</div>
+		</div>
+		<div class="service-list-container">
+			<div id="service-list"></div>
+			<a id="service-add-button" class="btn" rel="#service-add-modal"><i class="icon-plus"></i>Add</a>
+		</div>
+		<div id="service-add-wizard" class="modal hide">
+			<div class="modal-header">
+				<a class="close" data-dismiss="modal">×</a>
+				<ul class="unstyled steps">
+					<li class="active">
+						<h3>Select service to add</h3>
+					</li>
+					<li>
+						<h3>Enter service name</h3>
+					</li>
+				</ul>
+			</div>
+			<div class="modal-body">
+				<form class="wizard-form">
+					<div class="scrollable">
+						<div class="items">
+							<div class="page">
+								<ul id="service-add-list" class="thumbnails">
+									<li>
+										<a class="thumbnail" href="#">
+											<img src="src/bamboo/icon.png" alt="Atlassian Bamboo" />
+										</a>
+										<div style="text-align:center">Atlassian Bamboo</div>
+									</li>
+								</ul>
+							</div>
+							<div class="page">
+								<label for="service-add-name">Name:</label>
+								<input type="text" name="service-add-name" id="service-add-name"/>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-primary">Add</button>
+			</div>
+		</div>
+		<div id="settings-container">
+			<div class="service-header"><span id="service-name"></span> settings</div>		
+			<div id="settings-frame-container">
+				<iframe id="settings-frame"></iframe>
+			</div>
+		</div>
+		<script type="text/javascript">
+			require.config({
 				baseUrl: 'src',
 				paths: {
 					signals: '../lib/js-signals/signals',
 					contract: '../lib/jsContract/jsContract',
-					jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min',
+					jquery: '../lib/jquery-1.7.0/jquery',
+					jqueryTools: 'jqueryToolsModule',
+					bootstrap: 'twitterBootstrapModule',
 					ejs: '../lib/ejs-1.0/ejs',
-					text: '../lib/requirejs/text'
-				},
-				priority: [
-					'jquery',
-					'contract',
-					'stringExtensions',
-					'ejs'
-				]
+					text: '../lib/requirejs-1.0.7/text',
+					order: '../lib/requirejs-1.0.7/order'
+				}
 			});
-		require(["settingsModule"], function (settingsModule) {
-	        settingsModule.show();
-		});
-	</script>
-  </body>
+			require(["settingsModule"], function (settingsModule) {
+				settingsModule.show();
+			});
+		</script>
+	</body>
 </html>

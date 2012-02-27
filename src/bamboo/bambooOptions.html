@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>BuildReactor Bamboo settings page</title>
-	<script type="text/javascript" src="../../lib/requirejs/require.js"></script>
+	<script type="text/javascript" src="../../lib/requirejs-1.0.7/require.js"></script>
 	<link type="text/css" rel="stylesheet" href="options.css" />
 </head>
 <body>
@@ -35,8 +35,8 @@
 		require.config({
 				paths: {
 					signals: '../../lib/js-signals/signals',
-					jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min',
-					text: '../../lib/requirejs/text'
+					jquery: '../../lib/jquery-1.7.0/jquery',
+					text: '../../lib/requirejs-1.0.7/text'
 				},
 				priority: [
 					'../../lib/jsContract/jsContract',

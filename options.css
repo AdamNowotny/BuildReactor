@@ -1,19 +1,47 @@
-﻿body {
-	margin: 0;
-}
-
-.header {
-	position: absolute;
-	left: 0;
-	right: 0;
-	height: 40px;
-	line-height: 40px;
+﻿.nav-header {
 	text-align: center;
-	font-size: 1.2em;
-	background-color: #c4c4c4;
+	color: white;
+	font-size: large;
+	padding: 10px;    
 }
 
-#service-list {
+.scrollable {
+
+	/* required settings */
+	position:relative;
+	overflow:hidden;
+	width: auto;
+	height:200px;
+}
+
+.steps {
+	position: relative;
+	height: 2em;
+}
+
+.steps li 
+{
+	position: absolute;
+	opacity:0;
+	-webkit-transition:opacity 0.5s linear;
+}
+
+.steps .active {
+	opacity:1;
+}
+
+.scrollable .items {
+	/* this cannot be too large */
+	width:20000em;
+	position:absolute;
+}
+
+.items .page {
+	float:left;
+	width: 560px;
+}
+
+.service-list-container {
 	position: absolute;
 	top: 60px;
 	bottom: 20px;
@@ -24,11 +52,11 @@
 	border-radius: 10px;
 	padding-top: 10px;
 	padding-bottom: 10px;
+	text-align: center;
 }
 	
 	#service-list a {
 		background-color: #BBB;
-		text-align: center;
 		padding: 3px;
 		display: block;
 		border-top: 1px solid grey;
@@ -64,17 +92,17 @@
 	height: 25px;
 }
 
-#settings-frame {
+#settings-frame-container 
+{
 	position: absolute;
 	top: 35px;
 	bottom: 0;
 	width: 100%;
-	overflow: auto;
 }
 
-iframe {
+#settings-frame {
 	border: 0;
-	position: absolute;
-	height: 100%;
 	width: 100%;
+	height: 100%;
+	overflow: auto;
 }

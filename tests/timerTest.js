@@ -1,5 +1,5 @@
 ﻿define([
-        'src/timer',
+        'timer',
         'SignalLogger'
     ], function (Timer, SignalLogger) {
 

@@ -1,5 +1,5 @@
 ﻿define([
-		'src/ajaxRequest',
+		'ajaxRequest',
 		'jquery',
 		'SignalLogger'
 	], function (AjaxRequest, $, SignalLogger) {

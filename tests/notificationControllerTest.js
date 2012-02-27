@@ -1,7 +1,7 @@
 ﻿define([
-        'src/notificationController',
-        'src/serviceController',
-        'src/timer',
+        'notificationController',
+        'serviceController',
+        'timer',
         'mocks/mockBuildEventBuilder'
     ], function (notificationController, serviceController, Timer, MockBuildEventBuilder) {
 

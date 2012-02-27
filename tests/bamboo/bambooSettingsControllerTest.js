@@ -1,6 +1,6 @@
 ﻿define([
-	'src/bamboo/bambooSettingsController',
-	'src/bamboo/bambooRequest',
+	'bamboo/bambooSettingsController',
+	'bamboo/bambooRequest',
 	'SignalLogger',
 	'jquery',
 	'json!testdata/bamboo/projects.json'

@@ -1,6 +1,6 @@
 ﻿define([
 		'jquery',
-		'src/serviceController',
+		'serviceController',
 		'mocks/mockBuildService',
 		'mocks/mockBuildEventBuilder',
 		'mocks/mockSettingsBuilder',
@@ -183,6 +183,7 @@
 			});
 
 			it('should reset state on load', function () {
+				// TODO: fix referencing ../../tests/mocks/mockBuildService
 				var settings = new MockSettingsBuilder().create();
 				var mockService = new MockBuildService();
 				controller.addService(mockService);
@@ -196,8 +197,6 @@
 
 				expect(logger.buildFailed.lastCallParams.state.failedBuildsCount).toBe(1);
 			});
-
-
 
 		});
 	});

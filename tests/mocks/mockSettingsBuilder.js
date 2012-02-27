@@ -5,7 +5,7 @@
     		baseUrl: 'tests/mocks',
             service: 'mockBuildService',
             settingsController: 'mockSettingsController',
-            settingsPage: '',
+            settingsPage: 'serviceOptionsPage.html',
             url: 'http://www.example.com/',
             name: 'service name'
         };

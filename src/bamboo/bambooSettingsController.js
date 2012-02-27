@@ -25,7 +25,7 @@
 					return this.name;
 				}).get();
 				var newSettings = {
-					name: 'Atlassian Bamboo CI',
+					name: settings.name,
 					baseUrl: 'src/bamboo',
 					service: 'bambooBuildService',
 					settingsController: 'bambooSettingsController',
