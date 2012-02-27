@@ -2,9 +2,9 @@ define([
 	'bamboo/bambooPlan',
 	'bamboo/bambooRequest',
 	'SignalLogger',
-	'json!testdata/bamboo/projects.json',
-	'json!testdata/bamboo/latestPlanResult.json',
-	'json!testdata/bamboo/latestPlanResultFailed.json'
+	'json!fixtures/bamboo/projects.json',
+	'json!fixtures/bamboo/latestPlanResult.json',
+	'json!fixtures/bamboo/latestPlanResultFailed.json'
 	], function (BambooPlan, BambooRequest, SignalLogger, projects, latestPlanResultJson, latestPlanResultFailedJson) {
 
 		describe('BambooPlan', function () {

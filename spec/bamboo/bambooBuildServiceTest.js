@@ -6,7 +6,7 @@
 	'jquery',
 	'signals',
 	'SignalLogger',
-	'json!testdata/bamboo/projects.json'
+	'json!fixtures/bamboo/projects.json'
 	],
 	function (BambooBuildService, BambooPlan, BambooRequest, Timer, $, signals, SignalLogger, projectsJson) {
 

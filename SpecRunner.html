@@ -24,9 +24,9 @@
 			require.config({
 				baseUrl: 'src',
 				paths: {
-					tests: '../tests',
-					mocks: '../tests/mocks',
-					testdata: '../tests/testdata',
+					spec: '../spec',
+					mocks: '../spec/mocks',
+					fixtures: '../spec/fixtures',
 					signals: '../lib/js-signals-20120227/signals',
 					contract: '../lib/jsContract/jsContract',
 					jquery: '../lib/jquery-1.7.0/jquery',
@@ -44,7 +44,7 @@
 				],
 				waitSeconds: 2
 			});
-			require(["tests/testModule"], function(testModule) {
+			require(["spec/testModule"], function(testModule) {
 				testModule.runSpecs();
 			});
 		</script>

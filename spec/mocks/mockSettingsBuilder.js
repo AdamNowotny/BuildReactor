@@ -2,7 +2,7 @@
 
     var MockSettingsBuilder = function () {
     	this.settings = {
-    		baseUrl: 'tests/mocks',
+    		baseUrl: 'spec/mocks',
             service: 'mockBuildService',
             settingsController: 'mockSettingsController',
             settingsPage: 'serviceOptionsPage.html',

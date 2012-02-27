@@ -3,7 +3,7 @@
 	'bamboo/bambooRequest',
 	'SignalLogger',
 	'jquery',
-	'json!testdata/bamboo/projects.json'
+	'json!fixtures/bamboo/projects.json'
 	],
 	function (controller, BambooRequest, SignalLogger, $, jsonProjects) {
 

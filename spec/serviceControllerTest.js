@@ -183,7 +183,7 @@
 			});
 
 			it('should reset state on load', function () {
-				// TODO: fix referencing ../../tests/mocks/mockBuildService
+				// TODO: fix referencing ../../spec/mocks/mockBuildService
 				var settings = new MockSettingsBuilder().create();
 				var mockService = new MockBuildService();
 				controller.addService(mockService);
