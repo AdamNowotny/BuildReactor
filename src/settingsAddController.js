@@ -9,8 +9,12 @@
 	var scrollableApi;
 
 	function initialize() {
-		$('.thumbnails a').click(serviceAddSelect);
 		scrollableApi = undefined;
+		$('.thumbnails a').click(serviceAddSelect);
+		$('.wizard-form').submit(function () {
+			serviceAdd();
+			return false;
+		});
 	}
 
 	function show() {
@@ -21,10 +25,6 @@
 		$('#service-add-wizard .btn-primary').addClass('disabled');
 		$('#service-add-name').val('');
 		$('#service-add-wizard').modal();
-		$('.wizard-form').submit(function () {
-			serviceAdd();
-			return false;
-		});
 	}
 
 	function hide() {
