@@ -1,25 +1,22 @@
 ﻿define([
 		'jquery',
 		'settingsAddController',
-		'SignalLogger',
 		'bootstrap',
 		'jqueryTools'
-	], function ($, controller, SignalLogger) {
+	], function ($, controller) {
 		describe('SettingsAddController', function () {
 
-			var logger = new SignalLogger({
-				serviceAdded: controller.serviceAdded
-			});
+			var serviceAddedSpy;
 
 			beforeEach(function () {
 				jasmine.getFixtures().load('serviceAddModal.html');
 				controller.initialize();
-				logger.reset();
+				serviceAddedSpy = spyOnSignal(controller.serviceAdded);
 				modalWindow.show();
 			});
 
 			afterEach(function () {
-				logger.reset();
+				serviceAddedSpy.reset();
 				modalWindow.hide();
 			});
 
@@ -110,7 +107,7 @@
 
 			it('should add service', function () {
 				var name = 'My CI service name';
-				logger.serviceAdded.setFilter(function (info) {
+				var serviceAddedSpy = spyOnSignal(controller.serviceAdded).matching(function (info) {
 					return info.name == name &&
 						info.baseUrl == 'src/bamboo' &&
 							info.service == 'bambooBuildService' &&
@@ -122,7 +119,7 @@
 				modalWindow.add();
 
 				expect(modalWindow.isShown()).toBeFalsy();
-				expect(logger.serviceAdded.count).toBe(1);
+				expect(serviceAddedSpy).toHaveBeenDispatched(1);
 			});
 
 			it('should add on enter when name is in focus', function () {
@@ -132,7 +129,7 @@
 				modalWindow.pressEnter();
 
 				expect(modalWindow.isShown()).toBeFalsy();
-				expect(logger.serviceAdded.count).toBe(1);
+				expect(serviceAddedSpy).toHaveBeenDispatched(1);
 			});
 		});
 	});

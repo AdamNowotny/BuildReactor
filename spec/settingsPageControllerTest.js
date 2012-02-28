@@ -2,25 +2,23 @@
 		'jquery',
 		'settingsPageController',
 		'settingsAddController',
-		'SignalLogger',
 		'mocks/mockSettingsBuilder'
-	], function ($, controller, settingsAddController, SignalLogger, MockSettingsBuilder) {
+	], function ($, controller, settingsAddController, MockSettingsBuilder) {
 		describe('SettingsPageController', function () {
 
-			var logger = new SignalLogger({
-				settingsShown: controller.settingsShown
-			});
 			var defaultTimeout = 3000;
-
+			var settingsShownSpy;
+			
 			beforeEach(function () {
 				jasmine.getFixtures().load('optionsEmpty.html');
 				spyOn(settingsAddController, 'show');
 				spyOn(settingsAddController, 'initialize');
 				controller.initialize();
+				settingsShownSpy = spyOnSignal(controller.settingsShown);
 			});
 
 			afterEach(function () {
-				logger.reset();
+				settingsShownSpy.reset();
 			});
 
 			function getSettingsFrame() {
@@ -74,7 +72,7 @@
 				});
 
 				waitsFor(function () {
-					return logger.settingsShown.count > 0;
+					return settingsShownSpy.count > 0;
 				}, defaultTimeout);
 				runs(function () {
 					expect(getSettingsFrame().src).toContain('page1.html');
@@ -102,7 +100,7 @@
 					controller.load([mockSettings]);
 				});
 				waitsFor(function () {
-					return logger.settingsShown.count > 0;
+					return settingsShownSpy.count > 0;
 				}, defaultTimeout);
 
 				runs(function () {
@@ -110,7 +108,7 @@
 				});
 
 				runs(function () {
-					expect(logger.settingsShown.count).toBe(1);
+					expect(settingsShownSpy).toHaveBeenDispatched(1);
 				});
 			});
 

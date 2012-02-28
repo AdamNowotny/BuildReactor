@@ -1,7 +1,4 @@
-﻿define([
-		'signals',
-		'stringExtensions'
-	], function (signals) {
+﻿define(['stringExtensions'], function () {
 		var servicesStarted = new signals.Signal();
 		var buildFailed = new signals.Signal();
 		var buildFixed = new signals.Signal();

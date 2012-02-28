@@ -2,6 +2,7 @@
 <html>
   <head>
 	<title>BuildReactor</title>
+	<script type="text/javascript" src="lib/js-signals-20120227/signals.js"></script>
 	<script type="text/javascript" src="lib/requirejs-1.0.7/require.js"></script>
   </head>
   <body>
@@ -21,7 +22,7 @@
 				]
 			});
 		require(["mainModule"], function (mainModule) {
-		    mainModule.run();
+			mainModule.run();
 		});
 	</script>
   </body>

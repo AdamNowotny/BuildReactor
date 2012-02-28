@@ -1,7 +1,4 @@
-define([
-        './bambooRequest',
-        'signals'
-    ], function (BambooRequest, signals) {
+define(['./bambooRequest'], function (BambooRequest) {
 
         var BambooPlan = function (settings) {
             this.settings = settings;

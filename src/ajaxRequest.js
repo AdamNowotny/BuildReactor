@@ -1,4 +1,4 @@
-﻿define(['jquery', 'signals'], function ($, signals) {
+﻿define(['jquery'], function ($) {
 
 	var AjaxRequest = function (settings) {
 		Contract.expectString(settings.url, 'options.url not set');

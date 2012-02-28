@@ -2,10 +2,9 @@
 		'jquery',
 		'settingsAddController',
 		'text!services.ejs',
-		'signals',
 		'stringExtensions',
 		'ejs'
-], function ($, settingsAddController, servicesTemplateText, signals) {
+], function ($, settingsAddController, servicesTemplateText) {
 
 	var menuTemplate = new EJS({ text: servicesTemplateText });
 	var settingsChanged = new signals.Signal();

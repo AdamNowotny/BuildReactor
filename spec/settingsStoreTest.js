@@ -14,7 +14,7 @@
 
 			settingsStore.store({ field: 'value2' });
 
-			expect(mockLocalStorage).toHaveBeenCalled()
+			expect(mockLocalStorage).toHaveBeenCalled();
 		});
 
 	});

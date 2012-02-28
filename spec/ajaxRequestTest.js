@@ -1,22 +1,16 @@
 ﻿define([
 		'ajaxRequest',
-		'jquery',
-		'SignalLogger'
-	], function (AjaxRequest, $, SignalLogger) {
+		'jquery'
+	], function (AjaxRequest, $) {
 		describe('AjaxRequest', function () {
 			var request;
 			var options;
-			var logger;
 			var mockAjax;
 
 			beforeEach(function () {
 				mockAjax = spyOn($, 'ajax');
 				options = { url: 'http://example.com' };
 				request = new AjaxRequest(options);
-				logger = new SignalLogger({
-					responseReceived: request.responseReceived,
-					errorReceived: request.errorReceived
-				});
 			});
 
 			it('should use jQuery to send Ajax request', function () {
@@ -30,10 +24,11 @@
 				mockAjax.andCallFake(function (onSuccessOptions) {
 					onSuccessOptions.success(result, null, null);
 				});
+				var responseReceivedSpy = spyOnSignal(request.responseReceived);
 
 				request.send();
 
-				expect(logger.responseReceived.count).toBe(1);
+				expect(responseReceivedSpy).toHaveBeenDispatched(1);
 			});
 
 			it('should set authType to basic if username specified', function () {
@@ -71,9 +66,9 @@
 
 			it('should not set authType if username is empty', function () {
 				var requestOptions = {
-					 url: 'http://example.com',
-					 username: '    ',
-					 password: ''
+					url: 'http://example.com',
+					username: '    ',
+					password: ''
 				};
 				mockAjax.andCallFake(function (ajaxOptions) {
 					expect(ajaxOptions.username).not.toBeDefined();
@@ -93,10 +88,11 @@
 					mockAjax.andCallFake(function (onErrorOptions) {
 						onErrorOptions.error(null, null, null);
 					});
+					var errorReceivedSpy = spyOnSignal(request.errorReceived);
 
 					request.send();
 
-					expect(logger.errorReceived.count).toBe(1);
+					expect(errorReceivedSpy).toHaveBeenDispatched(1);
 				});
 
 				it('should fail if url not present', function () {

@@ -1,4 +1,4 @@
-﻿define(['signals'], function (signals) {
+﻿define(function () {
 
 	var MockBuildService = function () {
 		this.name = 'Sample service';

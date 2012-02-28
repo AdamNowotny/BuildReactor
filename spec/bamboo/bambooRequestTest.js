@@ -1,15 +1,13 @@
 ﻿define([
 	'bamboo/bambooRequest',
 	'ajaxRequest',
-	'SignalLogger',
 	'stringExtensions'
 	],
-	function (BambooRequest, AjaxRequest, SignalLogger) {
+	function (BambooRequest, AjaxRequest) {
 
 	    describe('BambooRequest', function () {
 
 	        var request;
-	        var logger;
 	        var settings;
 
 	        beforeEach(function () {
@@ -19,10 +17,6 @@
 	                password: 'password1'
 	            };
 	            request = new BambooRequest(settings);
-	            logger = new SignalLogger({
-	                responseReceived: request.responseReceived,
-	                errorReceived: request.errorReceived
-	            });
 	        });
 
 	        it('should pass credentials to remote service', function () {

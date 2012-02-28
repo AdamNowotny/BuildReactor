@@ -1,9 +1,8 @@
 ﻿define([
 		'jquery',
-		'signals',
 		'bootstrap',
 		'jqueryTools'
-], function ($, signals) {
+], function ($) {
 
 	var serviceAdded = new signals.Signal();
 	var scrollableApi;

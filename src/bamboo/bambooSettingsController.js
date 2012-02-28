@@ -1,9 +1,8 @@
 ﻿define([
 		'./bambooRequest',
-		'signals',
 		'jquery',
 		'text!./planSelection.ejs'
-	], function (BambooRequest, signals, $, planSelectionText) {
+	], function (BambooRequest, $, planSelectionText) {
 
 		var planSelectionTemplate = new EJS({ text: planSelectionText });
 		var saveClicked = new signals.Signal();

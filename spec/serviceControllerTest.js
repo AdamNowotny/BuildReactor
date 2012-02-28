@@ -3,25 +3,29 @@
 		'serviceController',
 		'mocks/mockBuildService',
 		'mocks/mockBuildEventBuilder',
-		'mocks/mockSettingsBuilder',
-		'SignalLogger'],
-	function ($, controller, MockBuildService, MockBuildEventBuilder, MockSettingsBuilder, SignalLogger) {
+		'mocks/mockSettingsBuilder'],
+	function ($, controller, MockBuildService, MockBuildEventBuilder, MockSettingsBuilder) {
 
 		describe('ServiceController', function () {
 
-			var logger;
+			var servicesStartedSpy;
+			var buildFailedSpy;
+			var buildFixedSpy;
 
 			beforeEach(function () {
 				controller.load([]);
-				logger = new SignalLogger({
-					servicesStarted: controller.servicesStarted,
-					buildFailed: controller.buildFailed,
-					buildFixed: controller.buildFixed
-				});
-				logger.reset();
+				servicesStartedSpy = spyOnSignal(controller.servicesStarted);
+				buildFailedSpy = spyOnSignal(controller.buildFailed);
+				buildFixedSpy = spyOnSignal(controller.buildFixed);
 			});
 
-			describe('service interface', function() {
+			afterEach(function () {
+				servicesStartedSpy.reset();
+				buildFailedSpy.reset();
+				buildFixedSpy.reset();
+			});
+
+			describe('service interface', function () {
 
 				it('should require name', function () {
 					var service = new MockBuildService();
@@ -122,7 +126,7 @@
 				var buildEvent = new MockBuildEventBuilder().withFailedBuilds(1).create();
 				mockService.buildFailed.dispatch(buildEvent);
 
-				expect(logger.buildFailed.count).toBe(1);
+				expect(buildFailedSpy).toHaveBeenDispatched(1);
 			});
 
 			it('should signal buildFixed on build fixed event', function () {
@@ -132,20 +136,26 @@
 				var buildEvent = new MockBuildEventBuilder().withFailedBuilds(0).create();
 				mockService.buildFixed.dispatch(buildEvent);
 
-				expect(logger.buildFixed.count).toBe(1);
+				expect(buildFixedSpy).toHaveBeenDispatched(1);
 			});
 
 			it('should update state on build failure', function () {
+				var buildFailedSpy = spyOnSignal(controller.buildFailed).matching(function (buildInfo) {
+					return buildInfo.state.failedBuildsCount == 1;
+				});
 				var mockService = new MockBuildService();
 				controller.addService(mockService);
 
 				var buildEvent = new MockBuildEventBuilder().withFailedBuilds(1).create();
 				mockService.buildFailed.dispatch(buildEvent);
 
-				expect(logger.buildFailed.lastCallParams.state.failedBuildsCount).toBe(1);
+				expect(buildFailedSpy).toHaveBeenDispatched(1);
 			});
 
 			it('should update state on build fixed event', function () {
+				var buildFailedSpy = spyOnSignal(controller.buildFailed).matching(function (buildInfo) {
+					return buildInfo.state.failedBuildsCount == 1;
+				});
 				var mockService = new MockBuildService();
 				controller.addService(mockService);
 
@@ -154,7 +164,7 @@
 				mockService.buildFailed.dispatch(buildEvent);
 				mockService.buildFixed.dispatch(buildEvent);
 
-				expect(logger.buildFixed.lastCallParams.state.failedBuildsCount).toBe(1);
+				expect(buildFailedSpy).toHaveBeenDispatched(1);
 			});
 
 			it('should run services only after all are loaded', function () {
@@ -175,27 +185,31 @@
 				controller.load([settings1, settings2]);
 				controller.run();
 
-				expect(logger.servicesStarted.count).toBe(0);
+				expect(servicesStartedSpy).not.toHaveBeenDispatched();
 				loaded1callback(MockBuildService);
-				expect(logger.servicesStarted.count).toBe(0);
+				expect(servicesStartedSpy).not.toHaveBeenDispatched();
 				loaded2callback(MockBuildService);
-				expect(logger.servicesStarted.count).toBe(1);
+				expect(servicesStartedSpy).toHaveBeenDispatched(1);
 			});
 
 			it('should reset state on load', function () {
 				// TODO: fix referencing ../../spec/mocks/mockBuildService
+				var buildFailedSpy = spyOnSignal(controller.buildFailed).matching(function (buildInfo) {
+					return buildInfo.state.failedBuildsCount == 1;
+				});
 				var settings = new MockSettingsBuilder().create();
 				var mockService = new MockBuildService();
 				controller.addService(mockService);
 				var buildEvent = new MockBuildEventBuilder().withFailedBuilds(1).create();
 				mockService.buildFailed.dispatch(buildEvent);
 
-				expect(logger.buildFailed.lastCallParams.state.failedBuildsCount).toBe(1);
+				expect(buildFailedSpy).toHaveBeenDispatched(1);
+				buildFailedSpy.reset();
 				controller.load([settings]);
 				controller.addService(mockService);
 				mockService.buildFailed.dispatch(buildEvent);
 
-				expect(logger.buildFailed.lastCallParams.state.failedBuildsCount).toBe(1);
+				expect(buildFailedSpy).toHaveBeenDispatched(1);
 			});
 
 		});

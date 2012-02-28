@@ -1,18 +1,13 @@
-﻿define([
-        'timer',
-        'SignalLogger'
-    ], function (Timer, SignalLogger) {
+﻿define(['timer'], function (Timer) {
 
         describe('timer', function () {
 
             var timer;
-            var logger;
+            var elapsedSpy;
 
             beforeEach(function () {
                 timer = new Timer();
-                logger = new SignalLogger({
-                    elapsed: timer.elapsed
-                });
+            	elapsedSpy = spyOnSignal(timer.elapsed);
             });
 
             it('should signal elapsed after timeout on start', function () {
@@ -23,7 +18,7 @@
 
                 timer.start(5);
 
-                expect(logger.elapsed.count).toBe(1);
+                expect(elapsedSpy).toHaveBeenDispatched(1);
             });
 
         });

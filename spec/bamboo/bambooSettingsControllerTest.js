@@ -1,16 +1,14 @@
 ﻿define([
 	'bamboo/bambooSettingsController',
 	'bamboo/bambooRequest',
-	'SignalLogger',
 	'jquery',
 	'json!fixtures/bamboo/projects.json'
 	],
-	function (controller, BambooRequest, SignalLogger, $, jsonProjects) {
+	function (controller, BambooRequest, $, jsonProjects) {
 
 		describe('BambooSettingsController', function () {
 
 			var settings;
-			var logger;
 			var mockBambooRequest;
 
 			beforeEach(function () {
@@ -22,9 +20,6 @@
 					updateInterval: 10,
 					plans: ['PROJECT1-PLAN1', 'PROJECT1-PLAN2']
 				};
-				logger = new SignalLogger({
-					saveClicked: controller.saveClicked
-				});
 				mockBambooRequest = spyOn(BambooRequest.prototype, 'projects');
 				mockBambooRequest.andCallFake(function () {
 					this.responseReceived.dispatch(jsonProjects);
@@ -117,7 +112,7 @@
 			it('should signal save with settings', function () {
 				jasmine.getFixtures().load('bamboo/validSettings.html');
 				controller.show(settings);
-				logger.saveClicked.setFilter(function (newSettings) {
+				var saveClickedSpy = spyOnSignal(controller.saveClicked).matching(function (newSettings) {
 					return newSettings.url == settings.url
 						&& newSettings.username == settings.username
 							&& newSettings.password == settings.password
@@ -128,7 +123,7 @@
 
 				$('.save-button').click();
 
-				expect(logger.saveClicked.count).toBe(1);
+				expect(saveClickedSpy).toHaveBeenDispatched(1);
 			});
 
 			it('should indicate disabled plans', function () {

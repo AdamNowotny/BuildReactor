@@ -1,7 +1,4 @@
-define([
-        '../ajaxRequest',
-        'signals'
-    ], function (AjaxRequest, signals) {
+define(['../ajaxRequest'], function (AjaxRequest) {
 
         var BambooRequest = function (settings) {
             Contract.expectString(settings.url, 'settings.url not set');
