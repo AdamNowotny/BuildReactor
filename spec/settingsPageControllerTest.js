@@ -7,18 +7,12 @@
 		describe('SettingsPageController', function () {
 
 			var defaultTimeout = 3000;
-			var settingsShownSpy;
 			
 			beforeEach(function () {
 				jasmine.getFixtures().load('optionsEmpty.html');
 				spyOn(settingsAddController, 'show');
 				spyOn(settingsAddController, 'initialize');
 				controller.initialize();
-				settingsShownSpy = spyOnSignal(controller.settingsShown);
-			});
-
-			afterEach(function () {
-				settingsShownSpy.reset();
 			});
 
 			function getSettingsFrame() {
@@ -63,6 +57,7 @@
 			});
 
 			it('should show first service settings page on load', function () {
+				var settingsShownSpy = spyOnSignal(controller.settingsShown);
 				var mockSettings = new MockSettingsBuilder()
 					.withSettingsPage('page1.html')
 					.create();
@@ -95,6 +90,7 @@
 			});
 
 			it('should not regenerate settings page if already active', function () {
+				var settingsShownSpy = spyOnSignal(controller.settingsShown);
 				runs(function () {
 					var mockSettings = new MockSettingsBuilder().create();
 					controller.load([mockSettings]);

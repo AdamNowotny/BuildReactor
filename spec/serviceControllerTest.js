@@ -8,21 +8,8 @@
 
 		describe('ServiceController', function () {
 
-			var servicesStartedSpy;
-			var buildFailedSpy;
-			var buildFixedSpy;
-
 			beforeEach(function () {
 				controller.load([]);
-				servicesStartedSpy = spyOnSignal(controller.servicesStarted);
-				buildFailedSpy = spyOnSignal(controller.buildFailed);
-				buildFixedSpy = spyOnSignal(controller.buildFixed);
-			});
-
-			afterEach(function () {
-				servicesStartedSpy.reset();
-				buildFailedSpy.reset();
-				buildFixedSpy.reset();
 			});
 
 			describe('service interface', function () {
@@ -120,6 +107,7 @@
 			});
 
 			it('should signal buildFailed on build failure', function () {
+				var buildFailedSpy = spyOnSignal(controller.buildFailed);
 				var mockService = new MockBuildService();
 				controller.addService(mockService);
 
@@ -130,6 +118,7 @@
 			});
 
 			it('should signal buildFixed on build fixed event', function () {
+				var buildFixedSpy = spyOnSignal(controller.buildFixed);
 				var mockService = new MockBuildService();
 				controller.addService(mockService);
 
@@ -168,6 +157,7 @@
 			});
 
 			it('should run services only after all are loaded', function () {
+				var servicesStartedSpy = spyOnSignal(controller.servicesStarted);
 				var settings1 = new MockSettingsBuilder().withName('service 1').withService('service1').create();
 				var settings2 = new MockSettingsBuilder().withName('service 2').withService('service2').create();
 				var loaded1callback;
