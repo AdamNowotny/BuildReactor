@@ -2,9 +2,9 @@
 		'jquery',
 		'settingsAddController',
 		'text!services.ejs',
-		'stringExtensions',
+		'amdUtils/string/format',
 		'ejs'
-], function ($, settingsAddController, servicesTemplateText) {
+], function ($, settingsAddController, servicesTemplateText, format) {
 
 	var menuTemplate = new EJS({ text: servicesTemplateText });
 	var settingsChanged = new signals.Signal();
@@ -55,7 +55,7 @@
 				serviceSettingsController.show(serviceSettings);
 			});
 		};
-		iframe.src = '{0}/{1}'.format(serviceSettings.baseUrl, serviceSettings.settingsPage);
+		iframe.src = format('{0}/{1}', serviceSettings.baseUrl, serviceSettings.settingsPage);
 
 		function saveClicked(updatedSettings) {
 			activeSettings[index] = updatedSettings;

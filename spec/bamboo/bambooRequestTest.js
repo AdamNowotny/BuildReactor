@@ -1,7 +1,6 @@
 ﻿define([
 	'bamboo/bambooRequest',
-	'ajaxRequest',
-	'stringExtensions'
+	'ajaxRequest'
 	],
 	function (BambooRequest, AjaxRequest) {
 

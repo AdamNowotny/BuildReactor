@@ -1,8 +1,9 @@
 ﻿define([
 		'./bambooRequest',
 		'./bambooPlan',
-		'../timer'
-	], function (BambooRequest, BambooPlan, Timer) {
+		'../timer',
+		'amdUtils/string/format'
+	], function (BambooRequest, BambooPlan, Timer, format) {
 
 		var BambooBuildService = function (settings) {
 			Contract.expectString(settings.name, 'settings.name not defined');
@@ -65,7 +66,7 @@
 
 		BambooBuildService.prototype.onBuildFailed = function (plan) {
 			var buildEvent = {
-				message: 'Build failed - {0}'.format(plan.projectName),
+				message: format('Build failed - {0}', plan.projectName),
 				details: plan.name,
 				url: plan.url
 			};
@@ -74,7 +75,7 @@
 
 		BambooBuildService.prototype.onBuildFixed = function (plan) {
 			var buildEvent = {
-				message: 'Build fixed - {0}'.format(plan.projectName),
+				message: format('Build fixed - {0}', plan.projectName),
 				details: plan.name,
 				url: plan.url
 			};
@@ -90,7 +91,7 @@
 			this.timer = new Timer();
 			this.timer.elapsed.add(this.update, this);
 			this.scheduleUpdate = function () {
-				console.log('BambooBuildService: Next check scheduled in {0} seconds'.format(this.settings.updateInterval));
+				console.log(format('BambooBuildService: Next check scheduled in {0} seconds', this.settings.updateInterval));
 				this.timer.start(this.settings.updateInterval);
 			};
 			this.updateFinished.add(this.scheduleUpdate, this);

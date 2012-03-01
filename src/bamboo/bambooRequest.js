@@ -1,4 +1,4 @@
-define(['../ajaxRequest'], function (AjaxRequest) {
+define(['../ajaxRequest', 'amdUtils/string/endsWith', 'amdUtils/string/format'], function (AjaxRequest, endsWith, format) {
 
         var BambooRequest = function (settings) {
             Contract.expectString(settings.url, 'settings.url not set');
@@ -9,7 +9,7 @@ define(['../ajaxRequest'], function (AjaxRequest) {
 
         function createAjaxRequestSettings(settings, urlPath) {
             var url = settings.url;
-            if (!url.endsWith('/')) url += '/';
+            if (!endsWith(url, '/')) url += '/';
             url += 'rest/api/latest/' + urlPath;
             return {
                 url: url,
@@ -35,7 +35,7 @@ define(['../ajaxRequest'], function (AjaxRequest) {
         };
 
         BambooRequest.prototype.latestPlanResult = function (planKey) {
-            var urlPath = 'result/{0}/latest?expand=jiraIssues,changes.change'.format(planKey);
+            var urlPath = format('result/{0}/latest?expand=jiraIssues,changes.change', planKey);
             this.send(urlPath);
         };
 

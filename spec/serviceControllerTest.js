@@ -3,8 +3,10 @@
 		'serviceController',
 		'mocks/mockBuildService',
 		'mocks/mockBuildEventBuilder',
-		'mocks/mockSettingsBuilder'],
-	function ($, controller, MockBuildService, MockBuildEventBuilder, MockSettingsBuilder) {
+		'mocks/mockSettingsBuilder',
+		'amdUtils/string/endsWith'
+	],
+	function ($, controller, MockBuildService, MockBuildEventBuilder, MockSettingsBuilder, endsWith) {
 
 		describe('ServiceController', function () {
 
@@ -163,9 +165,9 @@
 				var loaded1callback;
 				var loaded2callback;
 				spyOn(window, 'require').andCallFake(function (serviceNames, callback) {
-					if (serviceNames[0].endsWith('service1')) {
+					if (endsWith(serviceNames[0], 'service1')) {
 						loaded1callback = callback;
-					} else if (serviceNames[0].endsWith('service2')) {
+					} else if (endsWith(serviceNames[0], 'service2')) {
 						loaded2callback = callback;
 					} else {
 						throw 'Service unknown: ' + serviceNames[0];
