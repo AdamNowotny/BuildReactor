@@ -1,10 +1,11 @@
 define([
-	'bamboo/bambooPlan',
-	'bamboo/bambooRequest',
-	'json!fixtures/bamboo/projects.json',
-	'json!fixtures/bamboo/latestPlanResult.json',
-	'json!fixtures/bamboo/latestPlanResultFailed.json'
-	], function (BambooPlan, BambooRequest, projects, latestPlanResultJson, latestPlanResultFailedJson) {
+		'src/bamboo/bambooPlan',
+		'src/bamboo/bambooRequest',
+		'jasmineSignals',
+		'json!spec/fixtures/bamboo/projects.json',
+		'json!spec/fixtures/bamboo/latestPlanResult.json',
+		'json!spec/fixtures/bamboo/latestPlanResultFailed.json'
+	], function (BambooPlan, BambooRequest, jasmineSignals, projects, latestPlanResultJson, latestPlanResultFailedJson) {
 
 		describe('BambooPlan', function () {
 
@@ -12,7 +13,8 @@ define([
 			var settings;
 			var planJson = projects.projects.project[0].plans.plan[0];
 			var mockBambooRequest;
-
+			var spyOnSignal = jasmineSignals.spyOnSignal;
+			
 			beforeEach(function () {
 				settings = {
 					url: 'http://example.com/',
@@ -64,7 +66,7 @@ define([
 			it('should not signal buildFailed if not changed', function () {
 				var buildFailedSpy = spyOnSignal(plan.buildFailed).matchingValues(plan);
 				setupResponse(latestPlanResultFailedJson);
-				
+
 				plan.update();
 				expect(buildFailedSpy).toHaveBeenDispatched(1);
 

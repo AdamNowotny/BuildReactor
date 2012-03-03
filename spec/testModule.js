@@ -11,7 +11,7 @@
 		'spec/bamboo/bambooPlanTest',
 		'spec/bamboo/bambooRequestTest',
 		'spec/bamboo/bambooSettingsControllerTest'
-	], function() {
+	], function () {
 
 		return {
 			runSpecs: function () {

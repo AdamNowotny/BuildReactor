@@ -1,8 +1,9 @@
 ﻿define([
+		'signals',
 		'./bambooRequest',
 		'jquery',
 		'text!./planSelection.ejs'
-	], function (BambooRequest, $, planSelectionText) {
+	], function (signals, BambooRequest, $, planSelectionText) {
 
 		var planSelectionTemplate = new EJS({ text: planSelectionText });
 		var saveClicked = new signals.Signal();
@@ -41,7 +42,7 @@
 
 			function updatePlans() {
 				$('.plans-button').attr('disabled', 'disabled');
-				$('.error').hide();
+				$('.alert-error').hide();
 				var plansRequest = new BambooRequest(getRequestSettings());
 				plansRequest.responseReceived.addOnce(function (response) {
 					response.projects.project.sort(function (a, b) {
@@ -72,17 +73,16 @@
 						selectedPlans: settings.plans
 					});
 					$('.plan-selection-container').html(projectsHtml);
-					$('.plan-selection-container .project').click(function () {
-						$(this).next('.plans').toggle('fast');
+					$('.plan-selection-container .plan input:checked').each(function () {
+						$(this).closest('.collapse').addClass('in');
 					});
-					$('.plan-selection-container .plan input:checked').closest('.plans').show();
 				}
 
 				function renderError(ajaxError) {
 					console.error('BambooSettingsController: Ajax request failed: ' + ajaxError.message, ajaxError);
 					$('.plans-button').removeAttr('disabled');
 					$('.error-message').text(ajaxError.message);
-					$('.error').show();
+					$('.alert-error').show();
 				}
 			}
 		};

@@ -1,7 +1,7 @@
 ﻿define([
-		'serviceController',
-		'notificationController',
-		'settingsStore'
+		'src/serviceController',
+		'src/notificationController',
+		'src/settingsStore'
 	], function (serviceController, notificationController, settingsStore) {
 
 		initializeLogging();

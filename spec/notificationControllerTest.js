@@ -1,8 +1,8 @@
 ﻿define([
-        'notificationController',
-        'serviceController',
-        'timer',
-        'mocks/mockBuildEventBuilder'
+        'src/notificationController',
+        'src/serviceController',
+        'src/timer',
+        'spec/mocks/mockBuildEventBuilder'
     ], function (notificationController, serviceController, Timer, MockBuildEventBuilder) {
 
         describe('NotificationController', function () {

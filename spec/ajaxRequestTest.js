@@ -1,12 +1,14 @@
 ﻿define([
-		'ajaxRequest',
-		'jquery'
-	], function (AjaxRequest, $) {
+		'src/ajaxRequest',
+		'jquery',
+		'jasmineSignals'
+	], function (AjaxRequest, $, jasmineSignals) {
 		describe('AjaxRequest', function () {
 			var request;
 			var options;
 			var mockAjax;
-
+			var spyOnSignal = jasmineSignals.spyOnSignal;
+			
 			beforeEach(function () {
 				mockAjax = spyOn($, 'ajax');
 				options = { url: 'http://example.com' };

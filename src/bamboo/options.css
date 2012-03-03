@@ -1,63 +1,7 @@
-﻿.bamboo-settings-form {
-	width: 400px;	
-}
-
-.bamboo-settings-form .url-input {
-	width: 230px;
-}
-	
-fieldset {
-	margin-bottom: 1em;
-	padding-left: 0;
-}
-
-fieldset label {
-	width: 80px;
-}
-
-input:not[type="checkbox"] {
-	width: 200px;
-}
-
-.bamboo-settings-form label 
-{
-	text-align: right;
-	width: 160px;
-	display: inline-block;
-}
-
-.error {
-	color: red;
-	padding-top: 1em;
-}
-
-input:required {
-	border: 1px solid orange;	
+﻿.alert-error {
+	margin: 5px;
 }
 
 .plan-selection-container {
-	position: absolute;
-	top: 0;
-	left: 420px;
-	right: 0;
-	bottom: 0;
-	overflow: auto;
+	margin: 0 5px 0 5px;
 }
-
-.project {
-	background-color: lightgray;
-	margin: 1px;
-	padding-left: 1em;
-	cursor: pointer;
-}
-
-.plans
-{
-	display: none;
-	background-color: lightgrey;
-	padding-left: 50px;
-}
-
-	.plans .plan.disabled {
-		color: #EEE;
-	}

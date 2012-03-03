@@ -1,11 +1,23 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-	<title>BuildReactor Sample settings page</title>
-	<script type="text/javascript" src="../../lib/js-signals/signals.js"></script>
-	<script type="text/javascript" src="../../lib/requirejs-1.0.7/require.js"></script>
-</head>
+	<head>
+		<title>BuildReactor Sample settings page</title>
+		<script type="text/javascript" src="../../lib/requirejs-1.0.7/require.js"></script>
+	</head>
 	<body>
 		Url: <input type="text" name="url" id="url" value="http://www.example.com" />
+		<script type="text/javascript">
+			require.config({
+				baseUrl: '../..',
+				paths: {
+					jquery: 'lib/jquery-1.7.0/jquery',
+					text: 'lib/requirejs-1.0.7/text',
+					order: 'lib/requirejs-1.0.7/order',
+					amdUtils: 'lib/amd-utils',
+					signals: 'lib/js-signals/signals'
+				}
+			});
+			console.error(require.baseUrl);
+		</script>
 	</body>
 </html>

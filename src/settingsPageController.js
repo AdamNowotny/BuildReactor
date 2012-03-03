@@ -1,10 +1,11 @@
 ﻿define([
+		'signals',
 		'jquery',
-		'settingsAddController',
-		'text!services.ejs',
+		'./settingsAddController',
+		'text!./services.ejs',
 		'amdUtils/string/format',
 		'ejs'
-], function ($, settingsAddController, servicesTemplateText, format) {
+], function (signals, $, settingsAddController, servicesTemplateText, format) {
 
 	var menuTemplate = new EJS({ text: servicesTemplateText });
 	var settingsChanged = new signals.Signal();
@@ -23,19 +24,19 @@
 	function load(settings) {
 		activeSettings = settings;
 		updateMenu();
-		$('#service-list a:first').click();
+		$('#service-list li:first').click();
 	}
 
 	function updateMenu() {
 		menuTemplate.update('service-list', { services: activeSettings });
-		$('#service-list a').click(serviceClick);
+		$('#service-list li').click(serviceClick);
 	}
 
 	function serviceClick(event) {
 		event.preventDefault();
 		var serviceLink = $(this);
 		if (serviceLink.hasClass('active')) return;
-		$('#service-list a').removeClass('active');
+		$('#service-list li').removeClass('active');
 		serviceLink.addClass('active');
 
 		var index = serviceLink.data('service-index');
@@ -48,7 +49,8 @@
 		var iframe = $('#settings-frame')[0];
 		iframe.onload = function () {
 			settingsShown.dispatch();
-			var controllerName = serviceSettings.settingsController;
+			//var controllerName = serviceSettings.baseUrl + '/' + serviceSettings.settingsController;
+			var controllerName = serviceSettings.baseUrl + '/' + serviceSettings.settingsController;
 			iframe.contentWindow.require([controllerName], function (serviceSettingsController) {
 				// executed in iframe context
 				serviceSettingsController.saveClicked.add(saveClicked);
@@ -66,7 +68,7 @@
 	function serviceAdded(serviceInfo) {
 		activeSettings.push(serviceInfo);
 		updateMenu();
-		$('#service-list a:last').click();
+		$('#service-list li:last').click();
 	}
 
 	return {

@@ -1,13 +1,15 @@
 ﻿define([
 		'jquery',
-		'settingsPageController',
-		'settingsAddController',
-		'mocks/mockSettingsBuilder'
-	], function ($, controller, settingsAddController, MockSettingsBuilder) {
+		'src/settingsPageController',
+		'src/settingsAddController',
+		'spec/mocks/mockSettingsBuilder',
+		'jasmineSignals'
+	], function ($, controller, settingsAddController, MockSettingsBuilder, jasmineSignals) {
 		describe('SettingsPageController', function () {
 
 			var defaultTimeout = 3000;
-			
+			var spyOnSignal = jasmineSignals.spyOnSignal;
+
 			beforeEach(function () {
 				jasmine.getFixtures().load('optionsEmpty.html');
 				spyOn(settingsAddController, 'show');
@@ -34,8 +36,10 @@
 				}, defaultTimeout);
 				// get service settings controller from iframe
 				runs(function () {
+					var controllerName = settings.baseUrl + '/' + settings.settingsController;
+					//var controllerName = '../spec/mocks/' + settings.settingsController;
 					getSettingsFrame().window.require(
-							[settings.settingsController], function (serviceSettingsController) {
+							[controllerName], function (serviceSettingsController) {
 								childController = serviceSettingsController;
 							});
 				});
@@ -241,8 +245,8 @@
 					};
 					settingsAddController.serviceAdded.dispatch(serviceInfo2);
 
-					expect($('#service-list a').eq(0)).not.toHaveClass('active');
-					expect($('#service-list a').eq(1)).toHaveClass('active');
+					expect($('#service-list li').eq(0)).not.toHaveClass('active');
+					expect($('#service-list li').eq(1)).toHaveClass('active');
 				});
 			});
 		});

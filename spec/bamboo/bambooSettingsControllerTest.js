@@ -1,16 +1,18 @@
 ﻿define([
-	'bamboo/bambooSettingsController',
-	'bamboo/bambooRequest',
-	'jquery',
-	'json!fixtures/bamboo/projects.json'
+		'src/bamboo/bambooSettingsController',
+		'src/bamboo/bambooRequest',
+		'jquery',
+		'jasmineSignals',
+		'json!spec/fixtures/bamboo/projects.json'
 	],
-	function (controller, BambooRequest, $, jsonProjects) {
+	function (controller, BambooRequest, $, jasmineSignals, jsonProjects) {
 
 		describe('BambooSettingsController', function () {
 
 			var settings;
 			var mockBambooRequest;
-
+			var spyOnSignal = jasmineSignals.spyOnSignal;
+			
 			beforeEach(function () {
 				settings = {
 					name: 'My Bamboo CI',
@@ -62,14 +64,8 @@
 				showPlans();
 
 				expect($('.plan-selection-container .project').length).toBe(2);
-				expect($('.plan-selection-container .project:first')).toHaveText('Project 1');
-				expect($('.plan-selection-container .plans .plan:first label')).toHaveText('Plan 1');
-			});
-
-			it('should render plans for projects after button clicked', function () {
-				showPlans();
-
-				expect($('.plan-selection-container .project + .plans')).toContain('.plan');
+				expect($('.plan-selection-container .project:first a')).toHaveText('Project 1');
+				expect($('.plan-selection-container .plan:first span')).toHaveText('Plan 1');
 			});
 
 			it('should disable button while waiting for response', function () {
@@ -95,7 +91,7 @@
 
 				$('.plans-button').click();
 
-				expect($('.error')).toBeVisible();
+				expect($('.alert-error')).toBeVisible();
 				expect($('.error-message')).toHaveText('error message');
 			});
 
@@ -131,7 +127,7 @@
 
 				expect($('.plan-selection-container #PROJECT1-PLAN2')).toBeVisible();
 				expect($('.plan-selection-container #PROJECT1-PLAN2')).toBeChecked();
-				expect($('.plan-selection-container #PROJECT1-PLAN2').closest('.plan')).toHaveClass('disabled');
+				expect($('.plan-selection-container #PROJECT1-PLAN2')).toBeDisabled();
 			});
 
 			it('should check selected projects', function () {
@@ -143,7 +139,8 @@
 			it('should expand projects that have monitored plans', function () {
 				showPlans();
 
-				expect($('.plan-selection-container .PROJECT1 + .plans')).toBeVisible();
+				expect($('.plan-selection-container #plans-0.collapse')).toHaveClass('in');
+				expect($('.plan-selection-container #plans-1.collapse')).not.toHaveClass('in');
 			});
 
 			it('should enable save button after plans loaded', function () {

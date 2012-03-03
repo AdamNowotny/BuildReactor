@@ -1,13 +1,14 @@
 ﻿define([
 		'jquery',
-		'settingsAddController',
-		'bootstrap',
+		'src/settingsAddController',
+		'jasmineSignals',
 		'jqueryTools'
-	], function ($, controller) {
+	], function ($, controller, jasmineSignals) {
 		describe('SettingsAddController', function () {
 
 			var serviceAddedSpy;
-
+			var spyOnSignal = jasmineSignals.spyOnSignal;
+			
 			beforeEach(function () {
 				jasmine.getFixtures().load('serviceAddModal.html');
 				controller.initialize();

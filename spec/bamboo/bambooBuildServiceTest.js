@@ -1,12 +1,13 @@
 ﻿define([
-	'bamboo/bambooBuildService',
-	'bamboo/bambooPlan',
-	'bamboo/bambooRequest',
-	'timer',
-	'jquery',
-	'json!fixtures/bamboo/projects.json'
+		'src/bamboo/bambooBuildService',
+		'src/bamboo/bambooPlan',
+		'src/bamboo/bambooRequest',
+		'src/timer',
+		'jquery',
+		'jasmineSignals',
+		'json!spec/fixtures/bamboo/projects.json'
 	],
-	function (BambooBuildService, BambooPlan, BambooRequest, Timer, $, projectsJson) {
+	function (BambooBuildService, BambooPlan, BambooRequest, Timer, $, jasmineSignals, projectsJson) {
 
 		describe('BambooBuildService', function () {
 
@@ -17,7 +18,8 @@
 			var mockTimer;
 			var updateSuccessSignal;
 			var updateErrorSignal;
-
+			var spyOnSignal = jasmineSignals.spyOnSignal;
+			
 			beforeEach(function () {
 				settings = {
 					name: 'My Bamboo CI',

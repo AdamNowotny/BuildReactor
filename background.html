@@ -2,26 +2,24 @@
 <html>
   <head>
 	<title>BuildReactor</title>
-	<script type="text/javascript" src="lib/js-signals/signals.js"></script>
 	<script type="text/javascript" src="lib/requirejs-1.0.7/require.js"></script>
   </head>
   <body>
 	<script type="text/javascript">
 		require.config({
-				baseUrl: 'src',
+				baseUrl: '.',
 				paths: {
-					contract: '../lib/jsContract/jsContract',
-					jquery: '../lib/jquery-1.7.0/jquery',
-					ejs: '../lib/ejs-1.0/ejs',
-					amdUtils: '../lib/amd-utils',
-					text: '../lib/requirejs-1.0.7/text'
+					jquery: 'lib/jquery-1.7.0/jquery',
+					amdUtils: 'lib/amd-utils',
+					text: 'lib/requirejs-1.0.7/text',
+					signals: 'lib/js-signals/signals'
 				},
-				priority: [
-					'contract',
-					'ejs'
+				deps: [
+					'lib/jsContract/jsContract',
+					'lib/ejs-1.0/ejs'
 				]
 			});
-		require(["mainModule"], function (mainModule) {
+		require(["src/mainModule"], function (mainModule) {
 			mainModule.run();
 		});
 	</script>

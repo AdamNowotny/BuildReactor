@@ -1,4 +1,4 @@
-﻿define(function () {
+﻿define(['signals'], function (signals) {
 
     var Timer = function () {
         this.timeout = 0;

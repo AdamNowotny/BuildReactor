@@ -1,4 +1,4 @@
-﻿define(['settingsStore'], function (settingsStore) {
+﻿define(['src/settingsStore'], function (settingsStore) {
 	describe('SettingsStore', function () {
 
 		it('should get all settings from local storage', function () {

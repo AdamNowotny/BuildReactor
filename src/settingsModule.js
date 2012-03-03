@@ -1,8 +1,8 @@
-﻿define(['settingsPageController'], function (settingsPageController) {
+﻿define(['src/settingsPageController'], function (settingsPageController) {
 
 	initializeLogging();
 	// mainModule already loaded
-	var mainModule = chrome.extension.getBackgroundPage().require("mainModule");
+	var mainModule = chrome.extension.getBackgroundPage().require("src/mainModule");
 	settingsPageController.initialize();
 	settingsPageController.settingsChanged.add(settingsChanged);
 

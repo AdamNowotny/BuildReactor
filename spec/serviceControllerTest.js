@@ -1,15 +1,18 @@
 ﻿define([
 		'jquery',
-		'serviceController',
-		'mocks/mockBuildService',
-		'mocks/mockBuildEventBuilder',
-		'mocks/mockSettingsBuilder',
-		'amdUtils/string/endsWith'
+		'src/serviceController',
+		'spec/mocks/mockBuildService',
+		'spec/mocks/mockBuildEventBuilder',
+		'spec/mocks/mockSettingsBuilder',
+		'amdUtils/string/endsWith',
+		'jasmineSignals'
 	],
-	function ($, controller, MockBuildService, MockBuildEventBuilder, MockSettingsBuilder, endsWith) {
+	function ($, controller, MockBuildService, MockBuildEventBuilder, MockSettingsBuilder, endsWith, jasmineSignals) {
 
 		describe('ServiceController', function () {
 
+			var spyOnSignal = jasmineSignals.spyOnSignal;
+			
 			beforeEach(function () {
 				controller.load([]);
 			});
