@@ -6,7 +6,9 @@ define([
 	], function (signals, AjaxRequest, endsWith, format) {
 
 		var BambooRequest = function (settings) {
-			Contract.expectString(settings.url, 'settings.url not set');
+			if (!(settings && settings.url && settings.url != '')) {
+				throw new Error('settings.url-input not set');
+			}
 			this.settings = settings;
 			this.responseReceived = new signals.Signal();
 			this.errorReceived = new signals.Signal();

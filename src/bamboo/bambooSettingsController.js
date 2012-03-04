@@ -82,6 +82,7 @@
 					console.error('BambooSettingsController: Ajax request failed: ' + ajaxError.message, ajaxError);
 					$('.plans-button').removeAttr('disabled');
 					$('.error-message').text(ajaxError.message);
+					$('.error-url').text(ajaxError.url);
 					$('.alert-error').show();
 				}
 			}

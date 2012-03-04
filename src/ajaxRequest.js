@@ -35,7 +35,8 @@
 			var error = {
 				httpStatus: (jqXhr) ? jqXhr.status : null,
 				ajaxStatus: ajaxStatus,
-				message: (ajaxError != '') ? ajaxError : 'Cannot connect to ' + self.settings.url,
+				message: (ajaxError != '') ? ajaxError : 'Ajax connection error',
+				url: self.settings.url,
 				settings: ajaxOptions
 			};
 			self.errorReceived.dispatch(error);
