@@ -4,13 +4,13 @@
 		'src/settingsAddController',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals'
-	], function ($, controller, settingsAddController, MockSettingsBuilder, jasmineSignals) {
-		describe('SettingsPageController', function () {
+	], function($, controller, settingsAddController, MockSettingsBuilder, jasmineSignals) {
+		describe('SettingsPageController', function() {
 
 			var defaultTimeout = 3000;
 			var spyOnSignal = jasmineSignals.spyOnSignal;
 
-			beforeEach(function () {
+			beforeEach(function() {
 				jasmine.getFixtures().load('optionsEmpty.html');
 				spyOn(settingsAddController, 'show');
 				spyOn(settingsAddController, 'initialize');
@@ -24,32 +24,37 @@
 					document: iframe.contentWindow.document,
 					src: $(iframe).attr('src')
 				};
-			};
+			}
+
+			;
 
 			// returns function used to get active settings controller
+
 			function runsToGetController(settings) {
 				var childController = null;
 
 				// wait for RequireJS to be loaded
-				waitsFor(function () {
+				waitsFor(function() {
 					return getSettingsFrame().window.require != undefined;
 				}, defaultTimeout);
 				// get service settings controller from iframe
-				runs(function () {
+				runs(function() {
 					var controllerName = settings.baseUrl + '/' + settings.settingsController;
 					//var controllerName = '../spec/mocks/' + settings.settingsController;
 					getSettingsFrame().window.require(
-							[controllerName], function (serviceSettingsController) {
-								childController = serviceSettingsController;
-							});
+						[controllerName], function(serviceSettingsController) {
+							childController = serviceSettingsController;
+						});
 				});
-				waitsFor(function () {
+				waitsFor(function() {
 					return childController != null;
 				}, defaultTimeout);
-				return function () { return childController; };
-			};
+				return function() { return childController; };
+			}
 
-			it('should display list of services', function () {
+			;
+
+			it('should display list of services', function() {
 				var mockSettings1 = new MockSettingsBuilder().withName('service 1').create();
 				var mockSettings2 = new MockSettingsBuilder().withName('service 2').create();
 
@@ -60,59 +65,59 @@
 				expect($('#service-list a').eq(1)).toHaveText('service 2');
 			});
 
-			it('should show first service settings page on load', function () {
+			it('should show first service settings page on load', function() {
 				var settingsShownSpy = spyOnSignal(controller.settingsShown);
 				var mockSettings = new MockSettingsBuilder()
 					.withSettingsPage('page1.html')
 					.create();
 
-				runs(function () {
+				runs(function() {
 					controller.load([mockSettings]);
 				});
 
-				waitsFor(function () {
+				waitsFor(function() {
 					return settingsShownSpy.count > 0;
 				}, defaultTimeout);
-				runs(function () {
+				runs(function() {
 					expect(getSettingsFrame().src).toContain('page1.html');
 				});
 			});
 
-			it('should call show on first service settings on load', function () {
+			it('should call show on first service settings on load', function() {
 				var mockSettings = new MockSettingsBuilder().create();
 				var childControllerGetter = null;
 
-				runs(function () {
+				runs(function() {
 					controller.load([mockSettings]);
 					childControllerGetter = runsToGetController(mockSettings);
 				});
 
 				// expect show to be already called on the settings controller
-				waitsFor(function () {
+				waitsFor(function() {
 					return childControllerGetter().getShowCalledCount() > 0;
 				}, 0);
 			});
 
-			it('should not regenerate settings page if already active', function () {
+			it('should not regenerate settings page if already active', function() {
 				var settingsShownSpy = spyOnSignal(controller.settingsShown);
-				runs(function () {
+				runs(function() {
 					var mockSettings = new MockSettingsBuilder().create();
 					controller.load([mockSettings]);
 				});
-				waitsFor(function () {
+				waitsFor(function() {
 					return settingsShownSpy.count > 0;
 				}, defaultTimeout);
 
-				runs(function () {
+				runs(function() {
 					$('#service-list a').eq(0).click();
 				});
 
-				runs(function () {
+				runs(function() {
 					expect(settingsShownSpy).toHaveBeenDispatched(1);
 				});
 			});
 
-			it('should update service name when selected', function () {
+			it('should update service name when selected', function() {
 				var mockSettings1 = new MockSettingsBuilder()
 					.withName('First service')
 					.create();
@@ -128,7 +133,7 @@
 				expect($('#service-name')).toHaveText('Second service');
 			});
 
-			it('should display settings of selected service', function () {
+			it('should display settings of selected service', function() {
 				var mockSettings1 = new MockSettingsBuilder()
 					.withName('service 1')
 					.withSettingsPage('page1.html')
@@ -145,76 +150,76 @@
 				expect(getSettingsFrame().src).toContain('page2.html');
 			});
 
-			it('should signal settingsChanged when settings saved', function () {
+			it('should signal settingsChanged when settings saved', function() {
 				var mockSettings = new MockSettingsBuilder().create();
 				var childControllerGetter = null;
 				var settingsChangedCount = 0;
-				runs(function () {
+				runs(function() {
 					controller.load([mockSettings]);
 					childControllerGetter = runsToGetController(mockSettings);
 				});
 
-				runs(function () {
-					controller.settingsChanged.add(function (settings) {
+				runs(function() {
+					controller.settingsChanged.add(function(settings) {
 						settingsChangedCount++;
 					});
 					childControllerGetter().saveClicked.dispatch(mockSettings);
 				});
 
-				waitsFor(function () {
+				waitsFor(function() {
 					return settingsChangedCount == 1;
 				}, 0);
 			});
 
-			it('should signal settingsChanged with new settings', function () {
+			it('should signal settingsChanged with new settings', function() {
 				var mockSettings = new MockSettingsBuilder().create();
 				var childControllerGetter = null;
 				var settingsChangedCount = 0;
-				runs(function () {
+				runs(function() {
 					controller.load([mockSettings]);
 					childControllerGetter = runsToGetController(mockSettings);
 				});
 
 				var settings = mockSettings;
-				runs(function () {
+				runs(function() {
 					getSettingsFrame().document.getElementById('url').value = 'http://new.url.com/';
 				});
-				runs(function () {
-					controller.settingsChanged.add(function (newSettings) {
+				runs(function() {
+					controller.settingsChanged.add(function(newSettings) {
 						settings = newSettings[0];
 						settingsChangedCount++;
 					});
 					settings.url = 'http://new.url.com/';
 					childControllerGetter().saveClicked.dispatch(settings);
 				});
-				waitsFor(function () {
+				waitsFor(function() {
 					return settingsChangedCount == 1;
 				}, 0);
 
-				runs(function () {
+				runs(function() {
 					expect(settings.url).toBe('http://new.url.com/');
 				});
 			});
 
-			it('should fail if subcontroller does not implement required API', function () {
+			it('should fail if subcontroller does not implement required API', function() {
 				// TODO implement test
 			});
 
-			describe('Adding service', function () {
+			describe('Adding service', function() {
 
-				it('should show dialog when adding service', function () {
+				it('should show dialog when adding service', function() {
 					$('#service-add-button').click();
 
 					expect(settingsAddController.show).toHaveBeenCalled();
 				});
 
-				it('should initialize add service controller on initialize', function () {
+				it('should initialize add service controller on initialize', function() {
 					controller.initialize();
 
 					expect(settingsAddController.initialize).toHaveBeenCalled();
 				});
 
-				it('should update list of services on add', function () {
+				it('should update list of services on add', function() {
 					var serviceInfo = {
 						name: 'My Bamboo CI',
 						baseUrl: 'src/bamboo',
@@ -227,7 +232,7 @@
 					expect($('#service-list a').length).toBe(1);
 				});
 
-				it('should show new service settings', function () {
+				it('should show new service settings', function() {
 					var serviceInfo1 = {
 						name: 'Server 1',
 						baseUrl: 'src/bamboo',
@@ -248,6 +253,10 @@
 					expect($('#service-list li').eq(0)).not.toHaveClass('active');
 					expect($('#service-list li').eq(1)).toHaveClass('active');
 				});
+			});
+
+			describe('Removing service', function() {
+
 			});
 		});
 	});

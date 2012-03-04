@@ -4,10 +4,11 @@
 		'src/bamboo/bambooRequest',
 		'src/timer',
 		'jquery',
+		'signals',
 		'jasmineSignals',
 		'json!spec/fixtures/bamboo/projects.json'
 	],
-	function (BambooBuildService, BambooPlan, BambooRequest, Timer, $, jasmineSignals, projectsJson) {
+	function (BambooBuildService, BambooPlan, BambooRequest, Timer, $, signals, jasmineSignals, projectsJson) {
 
 		describe('BambooBuildService', function () {
 
