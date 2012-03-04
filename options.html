@@ -9,14 +9,31 @@
 	<body>
 		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
-				<div class="nav-header">
-					BuildReactor Settings
+				<div class="container-fluid">
+					<div class="row-fluid">
+						<ul class="nav">
+							<li>
+								<div class="brand">
+									BuildReactor
+								</div>
+							</li>
+							<li class="divider-vertical"></li>
+							<li>
+								<a id="service-name"></a>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="service-list-container">
 			<ul id="service-list" class="nav nav-pills nav-stacked"></ul>
 			<a id="service-add-button" class="btn" rel="#service-add-modal"><i class="icon-plus-sign"></i> Add</a>
+		</div>
+		<div id="settings-container">
+			<div id="settings-frame-container">
+				<iframe id="settings-frame"></iframe>
+			</div>
 		</div>
 		<div id="service-add-wizard" class="modal hide">
 			<div class="modal-header">
@@ -55,14 +72,6 @@
 			<div class="modal-footer">
 				<button class="btn" data-dismiss="modal">Close</button>
 				<button type="submit" class="btn btn-primary">Add</button>
-			</div>
-		</div>
-		<div id="settings-container">
-			<div class="service-header">
-				<h2 id="service-name"></h2>
-			</div>
-			<div id="settings-frame-container">
-				<iframe id="settings-frame"></iframe>
 			</div>
 		</div>
 		<script type="text/javascript">

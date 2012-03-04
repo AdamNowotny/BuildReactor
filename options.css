@@ -1,8 +1,13 @@
-﻿.nav-header {
+﻿.brand 
+{
+	width: 170px;
 	text-align: center;
+}
+
+#service-name {
 	color: white;
 	font-size: large;
-	padding: 10px;    
+	color: white;
 }
 
 .service-list-container {
@@ -18,28 +23,11 @@
 	
 #settings-container {
 	position: absolute;
-	top: 40px;
-	bottom: 20px;
+	top: 0px;
+	bottom: 3px;
 	left: 221px;
 	right: 0;
 }
-
-	.service-header {
-		font-size: large;
-		text-align: center;
-		height: 30px;
-		line-height: 100%;
-		border-bottom: 1px solid #BBB;
-		padding: 10px 5px 5px 10px;
-	}
-
-	#service-name {
-		float: left;
-	}
-	
-	.service-header .btn {
-		float: right;
-	}
 
 	#settings-frame-container 
 	{
