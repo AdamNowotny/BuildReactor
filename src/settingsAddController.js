@@ -9,8 +9,8 @@
 
 	function initialize() {
 		scrollableApi = undefined;
-		$('.thumbnails a').click(serviceAddSelect);
-		$('.wizard-form').submit(function () {
+		$('#service-add-wizard .thumbnails a').click(serviceAddSelect);
+		$('#service-add-form').submit(function () {
 			serviceAdd();
 			return false;
 		});
@@ -49,8 +49,8 @@
 			var scrollable = $('.scrollable').scrollable().data('scrollable');
 			scrollable.onBeforeSeek(function (event, index) {
 				if (scrollable.getIndex() != index) {
-					$('.steps li.active').removeClass('active');
-					$('.steps li').eq(index).addClass('active');
+					$('#service-add-wizard .steps li.active').removeClass('active');
+					$('#service-add-wizard .steps li').eq(index).addClass('active');
 				}
 			});
 			scrollable.onSeek(function (event, index) {

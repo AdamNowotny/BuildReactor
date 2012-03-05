@@ -53,7 +53,7 @@
 					$('#service-add-wizard .btn-primary').click();
 				},
 				pressEnter: function () {
-					$("#service-add-wizard .wizard-form").submit();
+					$("#service-add-form").submit();
 				}
 			};
 

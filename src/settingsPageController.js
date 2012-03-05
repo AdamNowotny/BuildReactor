@@ -4,32 +4,70 @@
 		'./settingsAddController',
 		'text!./services.ejs',
 		'amdUtils/string/format',
+		'amdUtils/array/remove',
 		'ejs'
-], function (signals, $, settingsAddController, servicesTemplateText, format) {
+], function (signals, $, settingsAddController, servicesTemplateText, format, remove) {
 
 	var menuTemplate = new EJS({ text: servicesTemplateText });
 	var settingsChanged = new signals.Signal();
 	var settingsShown = new signals.Signal();
-	var activeSettings;
+	var settings;
+	var currentServiceSettings;
 
 	function initialize() {
-		activeSettings = [];
+		settings = [];
 		settingsAddController.initialize();
 		settingsAddController.serviceAdded.add(serviceAdded);
-		$('#service-add-button').click(function () {
-			settingsAddController.show();
+		$('#service-add-button').click(settingsAddController.show);
+		$('#service-remove-button').click(serviceRemoveModal.show);
+		$('#service-remove-form').submit(function () {
+			serviceRemoveModal.remove();
+			return false;
 		});
 	};
 
-	function load(settings) {
-		activeSettings = settings;
-		updateMenu();
-		$('#service-list li:first').click();
-	}
+	var serviceRemoveModal = {
+		show: function () {
+			$('#service-remove-name').text(currentServiceSettings.name);
+			$('#service-remove-modal').modal();
+		},
+		remove: function () {
+			$('#service-remove-modal').modal('hide');
+			var selectedIndex = serviceList.getSelectedIndex();
+			remove(settings, currentServiceSettings);
+			serviceList.update();
+			serviceList.selectAt(selectedIndex);
+			settingsChanged.dispatch(settings);
+		}
+	};
 
-	function updateMenu() {
-		menuTemplate.update('service-list', { services: activeSettings });
-		$('#service-list li').click(serviceClick);
+	var serviceList = {
+		update: function () {
+			menuTemplate.update('service-list', { services: settings });
+			$('#service-list li').click(serviceClick);
+		},
+		selectLast: function () {
+			$('#service-list li:last').click();
+		},
+		selectFirst: function () {
+			$('#service-list li:first').click();
+		},
+		getSelectedIndex: function () {
+			return settings.indexOf(currentServiceSettings);
+		},
+		selectAt: function (index) {
+			var lastIndex = $('#service-list li:last').index();
+			if (index > lastIndex) {
+				index = lastIndex;
+			}
+			$('#service-list li').eq(index).click();
+		}
+	};
+
+	function load(newSettings) {
+		settings = newSettings;
+		serviceList.update();
+		serviceList.selectFirst();
 	}
 
 	function serviceClick(event) {
@@ -44,12 +82,12 @@
 	}
 
 	function showServicePage(index) {
-		var serviceSettings = activeSettings[index];
+		var serviceSettings = settings[index];
+		currentServiceSettings = serviceSettings;
 		$('#service-name').text(serviceSettings.name);
 		var iframe = $('#settings-frame')[0];
 		iframe.onload = function () {
 			settingsShown.dispatch();
-			//var controllerName = serviceSettings.baseUrl + '/' + serviceSettings.settingsController;
 			var controllerName = serviceSettings.baseUrl + '/' + serviceSettings.settingsController;
 			iframe.contentWindow.require([controllerName], function (serviceSettingsController) {
 				// executed in iframe context
@@ -60,15 +98,15 @@
 		iframe.src = format('{0}/{1}', serviceSettings.baseUrl, serviceSettings.settingsPage);
 
 		function saveClicked(updatedSettings) {
-			activeSettings[index] = updatedSettings;
-			settingsChanged.dispatch(activeSettings);
+			settings[index] = updatedSettings;
+			settingsChanged.dispatch(settings);
 		}
 	}
 
 	function serviceAdded(serviceInfo) {
-		activeSettings.push(serviceInfo);
-		updateMenu();
-		$('#service-list li:last').click();
+		settings.push(serviceInfo);
+		serviceList.update();
+		serviceList.selectLast();
 	}
 
 	return {
