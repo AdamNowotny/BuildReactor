@@ -44,6 +44,7 @@
 			function updatePlans() {
 				$('.plans-button').attr('disabled', 'disabled');
 				$('.alert-error').hide();
+				$('.plan-selection-container').html('');
 				var plansRequest = new BambooRequest(getRequestSettings());
 				plansRequest.responseReceived.addOnce(function (response) {
 					response.projects.project.sort(function (a, b) {

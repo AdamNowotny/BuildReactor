@@ -29,6 +29,13 @@
 				spyOn(window, 'alert');
 			});
 
+			function showPlans() {
+				jasmine.getFixtures().load('bamboo/settingsFixture.html');
+				controller.show(settings);
+
+				$('.plans-button').click();
+			}
+
 			it('should initialize from settings', function () {
 				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 
@@ -47,13 +54,6 @@
 
 				expect($('.url-input:focus').length).toBe(1);
 			});
-
-			function showPlans() {
-				jasmine.getFixtures().load('bamboo/settingsFixture.html');
-				controller.show(settings);
-
-				$('.plans-button').click();
-			}
 
 			it('should use url and credentials when getting plans', function () {
 				jasmine.getFixtures().load('bamboo/settingsFixture.html');
@@ -101,6 +101,18 @@
 
 				expect($('.alert-error')).toBeVisible();
 				expect($('.error-message')).toHaveText('error message');
+			});
+
+			it('should hide plans when getting new ones', function () {
+				showPlans();
+				mockBambooRequest.andCallFake(function () {
+					this.errorReceived.dispatch({ message: 'error message' });
+				});
+
+				$('.plans-button').click();
+
+				expect($('.alert-error')).toBeVisible();
+				expect($('.plan-selection-container')).toBeEmpty();
 			});
 
 			it('should clear error when getting plans', function () {
