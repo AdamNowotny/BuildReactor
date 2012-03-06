@@ -1,6 +1,6 @@
 ﻿define(['signals'], function (signals) {
 
-	var saveClicked = new signals.Signal();
+	var settingsChanged = new signals.Signal();
 	var showCalledCount = 0;
 
 	function show(settings) {
@@ -13,6 +13,6 @@
 	return {
 		show: show,
 		getShowCalledCount: getShowCalledCount,
-		saveClicked: saveClicked
+		settingsChanged: settingsChanged
 	};
 });

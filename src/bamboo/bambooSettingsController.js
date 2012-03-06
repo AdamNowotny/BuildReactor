@@ -6,7 +6,7 @@
 	], function (signals, BambooRequest, $, planSelectionText) {
 
 		var planSelectionTemplate = new EJS({ text: planSelectionText });
-		var saveClicked = new signals.Signal();
+		var settingsChanged = new signals.Signal();
 
 		function show(settings) {
 			Contract.expectObject(settings, 'settings not defined');
@@ -37,8 +37,8 @@
 					updateInterval: parseInt($('.update-interval-input').val()),
 					plans: plans
 				};
-				alert('Settings saved');
-				saveClicked.dispatch(newSettings);
+				//alert('Settings saved');
+				settingsChanged.dispatch(newSettings);
 			};
 
 			function updatePlans() {
@@ -92,6 +92,6 @@
 
 		return {
 			show: show,
-			saveClicked: saveClicked
+			settingsChanged: settingsChanged
 		};
 	});

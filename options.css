@@ -10,6 +10,21 @@
 	color: white;
 }
 
+#alert-saved 
+{
+	position: fixed;
+	top: 3px;
+	width: 100%;
+	text-align: center;
+	z-index: 2000;
+}
+
+#alert-saved .alert 
+{
+	display: inline-block;
+	width: 200px;
+}
+
 .service-list-container {
 	position: absolute;
 	top: 40px;

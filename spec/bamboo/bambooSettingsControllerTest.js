@@ -128,7 +128,7 @@
 			it('should signal save with settings', function () {
 				jasmine.getFixtures().load('bamboo/validSettingsFixture.html');
 				controller.show(settings);
-				var saveClickedSpy = spyOnSignal(controller.saveClicked).matching(function (newSettings) {
+				var settingsSavedSpy = spyOnSignal(controller.settingsChanged).matching(function (newSettings) {
 					return newSettings.url == settings.url
 						&& newSettings.username == settings.username
 							&& newSettings.password == settings.password
@@ -139,7 +139,7 @@
 
 				$('.save-button').click();
 
-				expect(saveClickedSpy).toHaveBeenDispatched(1);
+				expect(settingsSavedSpy).toHaveBeenDispatched(1);
 			});
 
 			it('should indicate disabled plans', function () {

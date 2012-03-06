@@ -3,8 +3,9 @@
 		'src/settingsPageController',
 		'src/settingsAddController',
 		'spec/mocks/mockSettingsBuilder',
-		'jasmineSignals'
-	], function ($, controller, settingsAddController, MockSettingsBuilder, jasmineSignals) {
+		'jasmineSignals',
+		'src/Timer'
+	], function ($, controller, settingsAddController, MockSettingsBuilder, jasmineSignals, Timer) {
 		describe('SettingsPageController', function () {
 
 			var defaultTimeout = 3000;
@@ -178,7 +179,7 @@
 					controller.settingsChanged.add(function (settings) {
 						settingsChangedCount++;
 					});
-					childControllerGetter().saveClicked.dispatch(mockSettings);
+					childControllerGetter().settingsChanged.dispatch(mockSettings);
 				});
 
 				waitsFor(function () {
@@ -205,7 +206,7 @@
 						settingsChangedCount++;
 					});
 					settings.url = 'http://new.url.com/';
-					childControllerGetter().saveClicked.dispatch(settings);
+					childControllerGetter().settingsChanged.dispatch(settings);
 				});
 				waitsFor(function () {
 					return settingsChangedCount == 1;
@@ -214,6 +215,19 @@
 				runs(function () {
 					expect(settings.url).toBe('http://new.url.com/');
 				});
+			});
+
+			it('should show alert when settings saved', function () {
+				var mockTimer = spyOn(Timer.prototype, 'start').andCallFake(function () {
+					expect('#alert-saved').toBeVisible();
+					this.elapsed.dispatch();
+				});
+				var mockSettings = new MockSettingsBuilder().create();
+
+				expect('#alert-saved').not.toBeVisible();
+				controller.settingsChanged.dispatch(mockSettings);
+
+				expect('#alert-saved').not.toBeVisible();
 			});
 
 			it('should fail if subcontroller does not implement required API', function () {

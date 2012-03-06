@@ -5,14 +5,19 @@
 		'text!./services.ejs',
 		'amdUtils/string/format',
 		'amdUtils/array/remove',
+		'./timer',
 		'ejs'
-], function (signals, $, settingsAddController, servicesTemplateText, format, remove) {
+], function (signals, $, settingsAddController, servicesTemplateText, format, remove, Timer) {
 
 	var menuTemplate = new EJS({ text: servicesTemplateText });
 	var settingsChanged = new signals.Signal();
 	var settingsShown = new signals.Signal();
 	var settings;
 	var currentServiceSettings;
+	var alertTimer = new Timer();
+	alertTimer.elapsed.add(function () {
+		$('#alert-saved .alert').removeClass('in');
+	});
 
 	function initialize() {
 		settings = [];
@@ -104,14 +109,17 @@
 			var controllerName = serviceSettings.baseUrl + '/' + serviceSettings.settingsController;
 			iframe.contentWindow.require([controllerName], function (serviceSettingsController) {
 				// executed in iframe context
-				serviceSettingsController.saveClicked.add(saveClicked);
+				serviceSettingsController.settingsChanged.add(serviceSettingsChanged);
 				serviceSettingsController.show(serviceSettings);
 			});
 		};
 		iframe.src = format('{0}/{1}', serviceSettings.baseUrl, serviceSettings.settingsPage);
-		function saveClicked(updatedSettings) {
+
+		function serviceSettingsChanged(updatedSettings) {
 			settings[index] = updatedSettings;
 			settingsChanged.dispatch(settings);
+			$('#alert-saved .alert').addClass('in');
+			alertTimer.start(3);
 		}
 	}
 
