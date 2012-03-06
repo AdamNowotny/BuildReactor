@@ -12,7 +12,7 @@
 			var settings;
 			var mockBambooRequest;
 			var spyOnSignal = jasmineSignals.spyOnSignal;
-			
+
 			beforeEach(function () {
 				settings = {
 					name: 'My Bamboo CI',
@@ -38,6 +38,14 @@
 				expect($('.username-input')).toHaveValue(settings.username);
 				expect($('.password-input')).toHaveValue(settings.password);
 				expect($('.update-interval-input')).toHaveValue(settings.updateInterval);
+			});
+
+			it('should focus on url on load', function () {
+				jasmine.getFixtures().load('bamboo/settingsFixture.html');
+
+				controller.show(settings);
+
+				expect($('.url-input:focus').length).toBe(1);
 			});
 
 			function showPlans() {

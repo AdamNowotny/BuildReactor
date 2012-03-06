@@ -109,7 +109,6 @@
 			});
 		};
 		iframe.src = format('{0}/{1}', serviceSettings.baseUrl, serviceSettings.settingsPage);
-
 		function saveClicked(updatedSettings) {
 			settings[index] = updatedSettings;
 			settingsChanged.dispatch(settings);

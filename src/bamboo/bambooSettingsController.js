@@ -19,6 +19,7 @@
 			$('.bamboo-settings-form').submit(function () {
 				return false;
 			});
+			$('.url-input').focus();
 
 			function save() {
 				var plans = $('.plan-selection-container .plan input:checked').map(function () {
