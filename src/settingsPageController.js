@@ -19,14 +19,14 @@
 		settingsAddController.initialize();
 		settingsAddController.serviceAdded.add(serviceAdded);
 		$('#service-add-button').click(settingsAddController.show);
-		$('#service-remove-button').click(serviceRemoveModal.show);
+		$('#service-remove-button').click(serviceRemoveWindow.show);
 		$('#service-remove-form').submit(function () {
-			serviceRemoveModal.remove();
+			serviceRemoveWindow.remove();
 			return false;
 		});
 	};
 
-	var serviceRemoveModal = {
+	var serviceRemoveWindow = {
 		show: function () {
 			$('#service-remove-name').text(currentServiceSettings.name);
 			$('#service-remove-modal').modal();
@@ -44,7 +44,10 @@
 	var serviceList = {
 		update: function () {
 			menuTemplate.update('service-list', { services: settings });
-			$('#service-list li').click(serviceClick);
+			$('#service-list li').click(function (event) {
+				event.preventDefault();
+				serviceList.selectElement(this);
+			});
 		},
 		selectLast: function () {
 			$('#service-list li:last').click();
@@ -69,28 +72,26 @@
 		unselect: function () {
 			$('#service-name').text('');
 			getIFrame().src = 'about:blank';
+		},
+		selectElement: function (linkElement) {
+			var serviceLink = $(linkElement);
+			if (serviceLink.hasClass('active')) return;
+			$('#service-list li').removeClass('active');
+			serviceLink.addClass('active');
+
+			var index = serviceLink.data('service-index');
+			showServicePage(index);
 		}
 	};
+
+	function getIFrame() {
+		return $('#settings-frame')[0];
+	}
 
 	function load(newSettings) {
 		settings = newSettings;
 		serviceList.update();
 		serviceList.selectFirst();
-	}
-
-	function serviceClick(event) {
-		event.preventDefault();
-		var serviceLink = $(this);
-		if (serviceLink.hasClass('active')) return;
-		$('#service-list li').removeClass('active');
-		serviceLink.addClass('active');
-
-		var index = serviceLink.data('service-index');
-		showServicePage(index);
-	}
-
-	function getIFrame() {
-		return $('#settings-frame')[0];
 	}
 
 	function showServicePage(index) {
