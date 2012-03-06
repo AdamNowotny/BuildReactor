@@ -30,7 +30,7 @@
 			});
 
 			it('should initialize from settings', function () {
-				jasmine.getFixtures().load('bamboo/settings.html');
+				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 
 				controller.show(settings);
 
@@ -41,14 +41,14 @@
 			});
 
 			function showPlans() {
-				jasmine.getFixtures().load('bamboo/settings.html');
+				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 				controller.show(settings);
 
 				$('.plans-button').click();
 			}
 
 			it('should use url and credentials when getting plans', function () {
-				jasmine.getFixtures().load('bamboo/settings.html');
+				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 				mockBambooRequest.andCallFake(function () {
 					expect(this.settings.username).toBe(settings.username);
 					expect(this.settings.password).toBe(settings.password);
@@ -69,7 +69,7 @@
 			});
 
 			it('should disable button while waiting for response', function () {
-				jasmine.getFixtures().load('bamboo/settings.html');
+				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 				mockBambooRequest.andCallFake(function () {
 					expect($('.plans-button')).toBeDisabled();
 					this.responseReceived.dispatch(jsonProjects);
@@ -83,7 +83,7 @@
 			});
 
 			it('should display error if call failed when getting plans', function () {
-				jasmine.getFixtures().load('bamboo/settings.html');
+				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 				mockBambooRequest.andCallFake(function () {
 					this.errorReceived.dispatch({ message: 'error message' });
 				});
@@ -96,7 +96,7 @@
 			});
 
 			it('should clear error when getting plans', function () {
-				jasmine.getFixtures().load('bamboo/settings.html');
+				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 				controller.show(settings);
 				$('.error').show();
 
@@ -106,7 +106,7 @@
 			});
 
 			it('should signal save with settings', function () {
-				jasmine.getFixtures().load('bamboo/validSettings.html');
+				jasmine.getFixtures().load('bamboo/validSettingsFixture.html');
 				controller.show(settings);
 				var saveClickedSpy = spyOnSignal(controller.saveClicked).matching(function (newSettings) {
 					return newSettings.url == settings.url

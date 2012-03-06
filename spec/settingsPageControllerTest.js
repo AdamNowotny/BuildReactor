@@ -9,7 +9,13 @@
 
 			var defaultTimeout = 3000;
 			var spyOnSignal = jasmineSignals.spyOnSignal;
-			var menu = {
+			var page = {
+				getServiceName: function () {
+					return $('#service-name').text();
+				}
+			};
+
+			page.serviceList = {
 				count: function () {
 					return $('#service-list li').length;
 				},
@@ -26,7 +32,7 @@
 			};
 
 			beforeEach(function () {
-				jasmine.getFixtures().load('optionsEmpty.html');
+				jasmine.getFixtures().load('optionsEmptyFixture.html');
 				spyOn(settingsAddController, 'show');
 				spyOn(settingsAddController, 'initialize');
 				controller.initialize();
@@ -69,9 +75,9 @@
 
 				controller.load([mockSettings1, mockSettings2]);
 
-				expect(menu.count()).toBe(2);
-				expect(menu.serviceAt(0)).toHaveText('service 1');
-				expect(menu.serviceAt(1)).toHaveText('service 2');
+				expect(page.serviceList.count()).toBe(2);
+				expect(page.serviceList.serviceAt(0)).toHaveText('service 1');
+				expect(page.serviceList.serviceAt(1)).toHaveText('service 2');
 			});
 
 			it('should show first service settings page on load', function () {
@@ -118,7 +124,7 @@
 				}, defaultTimeout);
 
 				runs(function () {
-					menu.selectServiceAt(0);
+					page.serviceList.selectServiceAt(0);
 				});
 
 				runs(function () {
@@ -154,7 +160,7 @@
 
 				controller.load([mockSettings1, mockSettings2]);
 				expect(getSettingsFrame().src).toContain('page1.html');
-				menu.serviceAt(1).click();
+				page.serviceList.serviceAt(1).click();
 
 				expect(getSettingsFrame().src).toContain('page2.html');
 			});
@@ -238,7 +244,7 @@
 					};
 					settingsAddController.serviceAdded.dispatch(serviceInfo);
 
-					expect(menu.count()).toBe(1);
+					expect(page.serviceList.count()).toBe(1);
 				});
 
 				it('should show new service settings', function () {
@@ -259,14 +265,14 @@
 					};
 					settingsAddController.serviceAdded.dispatch(serviceInfo2);
 
-					expect(menu.serviceAt(0)).not.toHaveClass('active');
-					expect(menu.serviceAt(1)).toHaveClass('active');
+					expect(page.serviceList.serviceAt(0)).not.toHaveClass('active');
+					expect(page.serviceList.serviceAt(1)).toHaveClass('active');
 				});
 			});
 
 			describe('Removing service', function () {
 
-				var modalWindow = {
+				page.removeWindow = {
 					show: function () {
 						$('#service-remove-button').click();
 					},
@@ -285,53 +291,53 @@
 				};
 
 				afterEach(function () {
-					modalWindow.hide();
+					page.removeWindow.hide();
 				});
 
 				it('should show confirmation dialog', function () {
-					expect(modalWindow.isShown()).toBeFalsy();
+					expect(page.removeWindow.isShown()).toBeFalsy();
 
-					modalWindow.show();
+					page.removeWindow.show();
 
-					expect(modalWindow.isShown()).toBeTruthy();
+					expect(page.removeWindow.isShown()).toBeTruthy();
 				});
 
 				it('should show service name in modal window', function () {
 					var mockSettings = new MockSettingsBuilder().create();
 					controller.load([mockSettings]);
 
-					modalWindow.show();
+					page.removeWindow.show();
 
-					expect(modalWindow.serviceName()).toBe(mockSettings.name);
+					expect(page.removeWindow.serviceName()).toBe(mockSettings.name);
 				});
 
 				it('should close modal window', function () {
 					var mockSettings = new MockSettingsBuilder().create();
 					controller.load([mockSettings]);
-					modalWindow.show();
+					page.removeWindow.show();
 
-					modalWindow.remove();
+					page.removeWindow.remove();
 
-					expect(modalWindow.isShown()).toBeFalsy();
+					expect(page.removeWindow.isShown()).toBeFalsy();
 				});
 
 				it('should remove service', function () {
 					var mockSettings = new MockSettingsBuilder().create();
 					controller.load([mockSettings]);
-					modalWindow.show();
+					page.removeWindow.show();
 
-					modalWindow.remove();
+					page.removeWindow.remove();
 
-					expect(menu.count()).toBe(0);
+					expect(page.serviceList.count()).toBe(0);
 				});
 
 				it('should dispatch settingsChanged', function () {
 					var mockSettings = new MockSettingsBuilder().create();
 					controller.load([mockSettings]);
-					modalWindow.show();
+					page.removeWindow.show();
 					var settingsChangedSpy = spyOnSignal(controller.settingsChanged);
 
-					modalWindow.remove();
+					page.removeWindow.remove();
 
 					expect(settingsChangedSpy).toHaveBeenDispatched();
 				});
@@ -341,12 +347,12 @@
 					var mockSettings2 = new MockSettingsBuilder().withName('service 2').create();
 					var mockSettings3 = new MockSettingsBuilder().withName('service 3').create();
 					controller.load([mockSettings1, mockSettings2, mockSettings3]);
-					menu.selectServiceAt(1);
-					modalWindow.show();
+					page.serviceList.selectServiceAt(1);
+					page.removeWindow.show();
 
-					modalWindow.remove();
+					page.removeWindow.remove();
 
-					expect(menu.getSelectedIndex()).toBe(1);
+					expect(page.serviceList.getSelectedIndex()).toBe(1);
 				});
 
 				it('should select previous in list if last removed', function () {
@@ -354,12 +360,23 @@
 					var mockSettings2 = new MockSettingsBuilder().withName('service 2').create();
 					var mockSettings3 = new MockSettingsBuilder().withName('service 3').create();
 					controller.load([mockSettings1, mockSettings2, mockSettings3]);
-					menu.selectServiceAt(2);
-					modalWindow.show();
+					page.serviceList.selectServiceAt(2);
+					page.removeWindow.show();
 
-					modalWindow.remove();
+					page.removeWindow.remove();
 
-					expect(menu.getSelectedIndex()).toBe(1);
+					expect(page.serviceList.getSelectedIndex()).toBe(1);
+				});
+
+				it('should not display settings after removing last one', function () {
+					var mockSettings = new MockSettingsBuilder().create();
+					controller.load([mockSettings]);
+					page.removeWindow.show();
+
+					page.removeWindow.remove();
+
+					expect(page.getServiceName()).toBe('');
+					expect(getSettingsFrame().src).toBe('about:blank');
 				});
 			});
 		});

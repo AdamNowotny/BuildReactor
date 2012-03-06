@@ -10,7 +10,7 @@
 			var spyOnSignal = jasmineSignals.spyOnSignal;
 			
 			beforeEach(function () {
-				jasmine.getFixtures().load('serviceAddModal.html');
+				jasmine.getFixtures().load('serviceAddModalFixture.html');
 				controller.initialize();
 				serviceAddedSpy = spyOnSignal(controller.serviceAdded);
 				modalWindow.show();

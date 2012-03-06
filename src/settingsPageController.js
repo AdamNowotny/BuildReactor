@@ -57,10 +57,18 @@
 		},
 		selectAt: function (index) {
 			var lastIndex = $('#service-list li:last').index();
+			if (lastIndex < 0) {
+				this.unselect();
+				return;
+			}
 			if (index > lastIndex) {
 				index = lastIndex;
 			}
 			$('#service-list li').eq(index).click();
+		},
+		unselect: function () {
+			$('#service-name').text('');
+			getIFrame().src = 'about:blank';
 		}
 	};
 
@@ -81,11 +89,15 @@
 		showServicePage(index);
 	}
 
+	function getIFrame() {
+		return $('#settings-frame')[0];
+	}
+
 	function showServicePage(index) {
 		var serviceSettings = settings[index];
 		currentServiceSettings = serviceSettings;
 		$('#service-name').text(serviceSettings.name);
-		var iframe = $('#settings-frame')[0];
+		var iframe = getIFrame();
 		iframe.onload = function () {
 			settingsShown.dispatch();
 			var controllerName = serviceSettings.baseUrl + '/' + serviceSettings.settingsController;
