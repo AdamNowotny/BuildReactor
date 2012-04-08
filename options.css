@@ -12,18 +12,20 @@
 
 #alert-saved 
 {
-	position: fixed;
+	position: absolute;
+	display: inline;
 	top: 3px;
 	width: 100%;
 	text-align: center;
 	z-index: 2000;
 }
 
-#alert-saved .alert 
-{
-	display: inline-block;
-	width: 200px;
-}
+	#alert-saved .alert 
+	{
+		position: absolute;
+		display: inline-block;
+		width: 200px;
+	}
 
 .service-list-container {
 	position: absolute;
@@ -71,6 +73,7 @@
 	.steps {
 		position: relative;
 		height: 2em;
+		margin-right: 2em; /* don't hide the close button' */
 	}
 
 	.steps li 
@@ -86,7 +89,7 @@
 
 	.scrollable .items {
 		/* this cannot be too large */
-		width:20000em;
+		width:2000em;
 		position:absolute;
 	}
 
@@ -94,4 +97,3 @@
 		float:left;
 		width: 560px;
 	}
-

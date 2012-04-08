@@ -16,10 +16,14 @@
 			beforeEach(function () {
 				settings = {
 					name: 'My Bamboo CI',
-					username: 'username1',
-					password: 'password1',
+					baseUrl: 'src/bamboo',
+					service: 'bambooBuildService',
+					settingsController: 'bambooSettingsController',
+					settingsPage: 'bambooOptions.html',
 					url: 'http://example.com/',
 					updateInterval: 10,
+					username: 'username1',
+					password: 'password1',
 					plans: ['PROJECT1-PLAN1', 'PROJECT1-PLAN2']
 				};
 				mockBambooRequest = spyOn(BambooRequest.prototype, 'projects');
@@ -168,5 +172,6 @@
 
 				expect($('.save-button')).not.toBeDisabled();
 			});
+
 		});
 	});

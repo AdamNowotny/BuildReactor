@@ -2,10 +2,11 @@
 		'jquery',
 		'src/settingsPageController',
 		'src/settingsAddController',
+		'src/settings/savePrompt',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals',
 		'src/Timer'
-	], function ($, controller, settingsAddController, MockSettingsBuilder, jasmineSignals, Timer) {
+	], function ($, controller, settingsAddController, savePrompt, MockSettingsBuilder, jasmineSignals, Timer) {
 		describe('SettingsPageController', function () {
 
 			var defaultTimeout = 3000;
@@ -13,6 +14,9 @@
 			var page = {
 				getServiceName: function () {
 					return $('#service-name').text();
+				},
+				isAddButtonEnabled: function () {
+					return !$('#service-add-button').hasClass('disabled');
 				}
 			};
 
@@ -36,6 +40,9 @@
 				jasmine.getFixtures().load('optionsEmptyFixture.html');
 				spyOn(settingsAddController, 'show');
 				spyOn(settingsAddController, 'initialize');
+				spyOn(savePrompt, 'initialize');
+				spyOn(savePrompt, 'show');
+				spyOn(savePrompt, 'hide');
 				controller.initialize();
 			});
 
@@ -69,6 +76,16 @@
 				}, defaultTimeout);
 				return function () { return childController; };
 			}
+
+			function loadServices() {
+				var serviceList = [];
+				for (var i = 0; i < arguments.length; i++) {
+					var name = arguments[i];
+					var serviceInfo = new MockSettingsBuilder().withName(name).create();
+					serviceList.push(serviceInfo);
+				}
+				controller.load(serviceList);
+			};
 
 			it('should display list of services', function () {
 				var mockSettings1 = new MockSettingsBuilder().withName('service 1').create();
@@ -134,17 +151,11 @@
 			});
 
 			it('should update service name when selected', function () {
-				var mockSettings1 = new MockSettingsBuilder()
-					.withName('First service')
-					.create();
-				controller.load([mockSettings1]);
+				loadServices('First service', 'Second service');
 
 				expect($('#service-name')).toHaveText('First service');
 
-				var mockSettings2 = new MockSettingsBuilder()
-					.withName('Second service')
-					.create();
-				controller.load([mockSettings2]);
+				page.serviceList.serviceAt(1).click();
 
 				expect($('#service-name')).toHaveText('Second service');
 			});
@@ -218,7 +229,7 @@
 			});
 
 			it('should show alert when settings saved', function () {
-				var mockTimer = spyOn(Timer.prototype, 'start').andCallFake(function () {
+				spyOn(Timer.prototype, 'start').andCallFake(function () {
 					expect('#alert-saved').toBeVisible();
 					this.elapsed.dispatch();
 				});
@@ -236,10 +247,23 @@
 
 			describe('Adding service', function () {
 
+				function addService(name) {
+					var serviceInfo = new MockSettingsBuilder().withName(name).create();
+					settingsAddController.serviceAdded.dispatch(serviceInfo);
+				}
+
 				it('should show dialog when adding service', function () {
 					$('#service-add-button').click();
 
 					expect(settingsAddController.show).toHaveBeenCalled();
+				});
+
+				it('should not show dialog if button disabled', function () {
+					$('#service-add-button').addClass('disabled');
+
+					$('#service-add-button').click();
+
+					expect(settingsAddController.show).not.toHaveBeenCalled();
 				});
 
 				it('should initialize add service controller on initialize', function () {
@@ -249,39 +273,90 @@
 				});
 
 				it('should update list of services on add', function () {
-					var serviceInfo = {
-						name: 'My Bamboo CI',
-						baseUrl: 'src/bamboo',
-						service: 'bambooBuildService',
-						settingsController: 'bambooSettingsController',
-						settingsPage: 'bambooOptions.html'
-					};
-					settingsAddController.serviceAdded.dispatch(serviceInfo);
+					addService('Service');
 
 					expect(page.serviceList.count()).toBe(1);
 				});
 
 				it('should show new service settings', function () {
-					var serviceInfo1 = {
-						name: 'Server 1',
-						baseUrl: 'src/bamboo',
-						service: 'bambooBuildService',
-						settingsController: 'bambooSettingsController',
-						settingsPage: 'bambooOptions.html'
-					};
-					settingsAddController.serviceAdded.dispatch(serviceInfo1);
-					var serviceInfo2 = {
-						name: 'Server',
-						baseUrl: 'src/bamboo',
-						service: 'bambooBuildService',
-						settingsController: 'bambooSettingsController',
-						settingsPage: 'bambooOptions.html'
-					};
-					settingsAddController.serviceAdded.dispatch(serviceInfo2);
+					loadServices('Server 1');
+
+					addService('Server 2');
 
 					expect(page.serviceList.serviceAt(0)).not.toHaveClass('active');
 					expect(page.serviceList.serviceAt(1)).toHaveClass('active');
 				});
+
+				it('should prompt to save before switching to another service', function () {
+					loadServices('Server 1');
+					addService('Server 2');
+
+					page.serviceList.selectServiceAt(0);
+
+					expect(savePrompt.show).toHaveBeenCalledWith('Server 2');
+				});
+
+				it('should not switch if prompt to save shown', function () {
+					loadServices('Server 1');
+					addService('Server 2');
+					var newServiceIndex = page.serviceList.getSelectedIndex();
+
+					page.serviceList.selectServiceAt(0);
+
+					expect(page.serviceList.getSelectedIndex()).toBe(newServiceIndex);
+				});
+
+				it('should remove new service if changes discarded', function () {
+					loadServices('Server 1');
+
+					savePrompt.removeSelected.dispatch();
+
+					expect(page.serviceList.count()).toBe(0);
+				});
+
+				it('should hide prompt if new service changes discarded', function () {
+					loadServices('Server 1');
+
+					savePrompt.removeSelected.dispatch();
+
+					expect(savePrompt.hide).toHaveBeenCalled();
+					expect(savePrompt.show).not.toHaveBeenCalled();
+				});
+
+				it('should not show save prompt after removing service', function () {
+					loadServices('Server 1');
+					addService('Server 2');
+
+					page.serviceList.selectServiceAt(0);
+					page.removeWindow.remove();
+
+					expect(savePrompt.show.callCount).toBe(1);
+				});
+
+				it('should not switch if prompt to save shown', function () {
+					loadServices('Server 1');
+					addService('Server 2');
+					var newServiceIndex = page.serviceList.getSelectedIndex();
+
+					page.serviceList.selectServiceAt(0);
+
+					expect(page.serviceList.getSelectedIndex()).toBe(newServiceIndex);
+				});
+
+				it('should disable add button if new service not saved yet', function () {
+					addService('Service');
+
+					expect(page.isAddButtonEnabled()).toBeFalsy();
+				});
+
+				it('should enable add button if new service removed', function () {
+					addService('Service');
+
+					savePrompt.removeSelected.dispatch();
+
+					expect(page.isAddButtonEnabled()).toBeTruthy();
+				});
+
 			});
 
 			describe('Removing service', function () {
@@ -317,17 +392,15 @@
 				});
 
 				it('should show service name in modal window', function () {
-					var mockSettings = new MockSettingsBuilder().create();
-					controller.load([mockSettings]);
+					loadServices('some name');
 
 					page.removeWindow.show();
 
-					expect(page.removeWindow.serviceName()).toBe(mockSettings.name);
+					expect(page.removeWindow.serviceName()).toBe('some name');
 				});
 
 				it('should close modal window', function () {
-					var mockSettings = new MockSettingsBuilder().create();
-					controller.load([mockSettings]);
+					loadServices('service');
 					page.removeWindow.show();
 
 					page.removeWindow.remove();
@@ -336,8 +409,7 @@
 				});
 
 				it('should remove service', function () {
-					var mockSettings = new MockSettingsBuilder().create();
-					controller.load([mockSettings]);
+					loadServices('service');
 					page.removeWindow.show();
 
 					page.removeWindow.remove();
@@ -346,8 +418,7 @@
 				});
 
 				it('should dispatch settingsChanged', function () {
-					var mockSettings = new MockSettingsBuilder().create();
-					controller.load([mockSettings]);
+					loadServices('service');
 					page.removeWindow.show();
 					var settingsChangedSpy = spyOnSignal(controller.settingsChanged);
 
@@ -357,10 +428,7 @@
 				});
 
 				it('should select next in list after remove', function () {
-					var mockSettings1 = new MockSettingsBuilder().withName('service 1').create();
-					var mockSettings2 = new MockSettingsBuilder().withName('service 2').create();
-					var mockSettings3 = new MockSettingsBuilder().withName('service 3').create();
-					controller.load([mockSettings1, mockSettings2, mockSettings3]);
+					loadServices('service 1', 'service 2', 'service 3');
 					page.serviceList.selectServiceAt(1);
 					page.removeWindow.show();
 
@@ -370,10 +438,7 @@
 				});
 
 				it('should select previous in list if last removed', function () {
-					var mockSettings1 = new MockSettingsBuilder().withName('service 1').create();
-					var mockSettings2 = new MockSettingsBuilder().withName('service 2').create();
-					var mockSettings3 = new MockSettingsBuilder().withName('service 3').create();
-					controller.load([mockSettings1, mockSettings2, mockSettings3]);
+					loadServices('service 1', 'service 2', 'service 3');
 					page.serviceList.selectServiceAt(2);
 					page.removeWindow.show();
 
@@ -383,8 +448,7 @@
 				});
 
 				it('should not display settings after removing last one', function () {
-					var mockSettings = new MockSettingsBuilder().create();
-					controller.load([mockSettings]);
+					loadServices('single service');
 					page.removeWindow.show();
 
 					page.removeWindow.remove();
@@ -392,6 +456,7 @@
 					expect(page.getServiceName()).toBe('');
 					expect(getSettingsFrame().src).toBe('about:blank');
 				});
+
 			});
 		});
 	});

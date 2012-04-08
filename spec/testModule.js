@@ -7,6 +7,7 @@
 		'spec/settingsAddControllerTest',
 		'spec/settingsStoreTest',
 		'spec/timerTest',
+		'spec/settings/savePromptTest',
 		'spec/bamboo/bambooBuildServiceTest',
 		'spec/bamboo/bambooPlanTest',
 		'spec/bamboo/bambooRequestTest',

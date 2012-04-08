@@ -2,12 +2,13 @@
 		'signals',
 		'jquery',
 		'./settingsAddController',
+		'./settings/savePrompt',
 		'text!./services.ejs',
 		'amdUtils/string/format',
 		'amdUtils/array/remove',
 		'./timer',
 		'ejs'
-], function (signals, $, settingsAddController, servicesTemplateText, format, remove, Timer) {
+], function (signals, $, settingsAddController, savePrompt, servicesTemplateText, format, remove, Timer) {
 
 	var menuTemplate = new EJS({ text: servicesTemplateText });
 	var settingsChanged = new signals.Signal();
@@ -15,19 +16,41 @@
 	var settings;
 	var currentServiceSettings;
 	var alertTimer = new Timer();
+	var isSaveNeeded = false;
+	var serviceNameElement;
 	alertTimer.elapsed.add(function () {
 		$('#alert-saved .alert').removeClass('in');
 	});
 
+	function setSaveNeeded(isNeeded) {
+		isSaveNeeded = isNeeded;
+		$('#service-add-button').toggleClass('disabled', isSaveNeeded);
+	}
+
 	function initialize() {
+		setSaveNeeded(false);
 		settings = [];
+		serviceNameElement = $('#service-name');
+		savePrompt.initialize();
+		savePrompt.removeSelected.add(function () {
+			removeCurrentService();
+			savePrompt.hide();
+		});
 		settingsAddController.initialize();
 		settingsAddController.serviceAdded.add(serviceAdded);
-		$('#service-add-button').click(settingsAddController.show);
+		$('#service-add-button').click(function () {
+			if (!$('#service-add-button').hasClass('disabled')) {
+				settingsAddController.show();
+			}
+		});
 		$('#service-remove-button').click(serviceRemoveWindow.show);
 		$('#service-remove-form').submit(function () {
 			serviceRemoveWindow.remove();
 			return false;
+		});
+		serviceList.itemSelected.add(function (index) {
+			var serviceName = settings[index].name;
+			serviceNameElement.text(serviceName);
 		});
 	};
 
@@ -38,15 +61,21 @@
 		},
 		remove: function () {
 			$('#service-remove-modal').modal('hide');
-			var selectedIndex = serviceList.getSelectedIndex();
-			remove(settings, currentServiceSettings);
-			serviceList.update();
-			serviceList.selectAt(selectedIndex);
-			settingsChanged.dispatch(settings);
+			removeCurrentService();
 		}
 	};
 
+	function removeCurrentService() {
+		setSaveNeeded(false);
+		remove(settings, currentServiceSettings);
+		serviceList.update();
+		var selectedIndex = serviceList.getSelectedIndex();
+		serviceList.selectAt(selectedIndex);
+		settingsChanged.dispatch(settings);
+	}
+
 	var serviceList = {
+		itemSelected: new signals.Signal(),
 		update: function () {
 			menuTemplate.update('service-list', { services: settings });
 			$('#service-list li').click(function (event) {
@@ -65,27 +94,37 @@
 		},
 		selectAt: function (index) {
 			var lastIndex = $('#service-list li:last').index();
-			if (lastIndex < 0) {
+			if (this.isEmpty()) {
 				this.unselect();
 				return;
 			}
 			if (index > lastIndex) {
 				index = lastIndex;
 			}
-			$('#service-list li').eq(index).click();
+			var menuItem = $('#service-list li').eq(index);
+			this.selectElement(menuItem);
 		},
 		unselect: function () {
-			$('#service-name').text('');
+			serviceNameElement.text('');
 			getIFrame().src = 'about:blank';
 		},
 		selectElement: function (linkElement) {
-			var serviceLink = $(linkElement);
-			if (serviceLink.hasClass('active')) return;
-			$('#service-list li').removeClass('active');
-			serviceLink.addClass('active');
+			if (isSaveNeeded) {
+				savePrompt.show(serviceNameElement.text());
+			} else {
+				var serviceLink = $(linkElement);
+				if (serviceLink.hasClass('active')) return;
+				$('#service-list li').removeClass('active');
+				serviceLink.addClass('active');
 
-			var index = serviceLink.data('service-index');
-			showServicePage(index);
+				var index = serviceLink.data('service-index');
+				showServicePage(index);
+				this.itemSelected.dispatch(index);
+			}
+		},
+		isEmpty: function () {
+			var lastIndex = $('#service-list li:last').index();
+			return lastIndex < 0;
 		}
 	};
 
@@ -102,7 +141,7 @@
 	function showServicePage(index) {
 		var serviceSettings = settings[index];
 		currentServiceSettings = serviceSettings;
-		$('#service-name').text(serviceSettings.name);
+		serviceNameElement.text(serviceSettings.name);
 		var iframe = getIFrame();
 		iframe.onload = function () {
 			settingsShown.dispatch();
@@ -127,6 +166,7 @@
 		settings.push(serviceInfo);
 		serviceList.update();
 		serviceList.selectLast();
+		setSaveNeeded(true);
 	}
 
 	return {

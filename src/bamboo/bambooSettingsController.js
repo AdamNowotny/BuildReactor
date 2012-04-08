@@ -7,39 +7,42 @@
 
 		var planSelectionTemplate = new EJS({ text: planSelectionText });
 		var settingsChanged = new signals.Signal();
+		var activeSettings;
+
+		function getVisibleSettings() {
+			var plans = $('.plan-selection-container .plan input:checked').map(function () {
+				return this.name;
+			}).get();
+			var newSettings = {
+				name: activeSettings.name,
+				baseUrl: 'src/bamboo',
+				service: 'bambooBuildService',
+				settingsController: 'bambooSettingsController',
+				settingsPage: 'bambooOptions.html',
+				url: $('.url-input').val(),
+				updateInterval: parseInt($('.update-interval-input').val()),
+				username: $('.username-input').val(),
+				password: $('.password-input').val(),
+				plans: plans
+			};
+			return newSettings;
+		}
 
 		function show(settings) {
 			Contract.expectObject(settings, 'settings not defined');
+			activeSettings = settings;
 			$('.url-input').val(settings.url);
 			$('.username-input').val(settings.username);
 			$('.password-input').val(settings.password);
 			$('.update-interval-input').val(settings.updateInterval);
 			$('.plans-button').click(updatePlans);
-			$('.save-button').click(save);
+			$('.save-button').click(function () {
+				settingsChanged.dispatch(getVisibleSettings());
+			});
 			$('.bamboo-settings-form').submit(function () {
 				return false;
 			});
 			$('.url-input').focus();
-
-			function save() {
-				var plans = $('.plan-selection-container .plan input:checked').map(function () {
-					return this.name;
-				}).get();
-				var newSettings = {
-					name: settings.name,
-					baseUrl: 'src/bamboo',
-					service: 'bambooBuildService',
-					settingsController: 'bambooSettingsController',
-					settingsPage: 'bambooOptions.html',
-					url: $('.url-input').val(),
-					username: $('.username-input').val(),
-					password: $('.password-input').val(),
-					updateInterval: parseInt($('.update-interval-input').val()),
-					plans: plans
-				};
-				//alert('Settings saved');
-				settingsChanged.dispatch(newSettings);
-			};
 
 			function updatePlans() {
 				$('.plans-button').attr('disabled', 'disabled');
@@ -88,7 +91,7 @@
 					$('.alert-error').show();
 				}
 			}
-		};
+		}
 
 		return {
 			show: show,
