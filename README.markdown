@@ -12,4 +12,12 @@ After installing the extension go to options page and enter the URL for Bamboo i
 
 Installation
 ============
-You can install the packaged extension by clicking [here](http://goo.gl/XhnNf) using Google Chrome.
+You can install the latest version by clicking [here](http://goo.gl/ecuQ5) using Google Chrome.
+
+What's new
+============
+0.2.0 (8/04/2012)
+Lots of UI improvements, using Twitter bootstrap
+
+0.1.0 (23/12/2011)
+First version with Bamboo support

@@ -1,6 +1,6 @@
 {
 	"name": "BuildReactor",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Provides notifications on CI server events",
 	"browser_action": {
 		"default_title": "BuildReactor CI notifications",
