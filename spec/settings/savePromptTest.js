@@ -20,6 +20,11 @@
 				settingsSavePrompt.show('sample name');
 
 				expect($('#save-prompt')).toBeVisible();
+			});
+
+			it('should show service name', function () {
+				settingsSavePrompt.show('sample name');
+
 				expect($('#save-prompt .service-name')).toHaveHtml('sample name');
 			});
 

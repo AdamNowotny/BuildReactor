@@ -3,20 +3,28 @@
 		'src/settingsPageController',
 		'src/settingsAddController',
 		'src/settings/savePrompt',
+		'src/settings/removePrompt',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals',
 		'src/Timer'
-	], function ($, controller, settingsAddController, savePrompt, MockSettingsBuilder, jasmineSignals, Timer) {
+	], function ($, controller, settingsAddController, savePrompt, removePrompt, MockSettingsBuilder, jasmineSignals, Timer) {
 		describe('SettingsPageController', function () {
 
 			var defaultTimeout = 3000;
 			var spyOnSignal = jasmineSignals.spyOnSignal;
+
 			var page = {
 				getServiceName: function () {
 					return $('#service-name').text();
 				},
 				isAddButtonEnabled: function () {
 					return !$('#service-add-button').hasClass('disabled');
+				},
+				removeService: function () {
+					$('#service-remove-button').click();
+				},
+				addService: function () {
+					$('#service-add-button').click();
 				}
 			};
 
@@ -43,6 +51,9 @@
 				spyOn(savePrompt, 'initialize');
 				spyOn(savePrompt, 'show');
 				spyOn(savePrompt, 'hide');
+				spyOn(removePrompt, 'initialize');
+				spyOn(removePrompt, 'show');
+				spyOn(removePrompt, 'hide');
 				controller.initialize();
 			});
 
@@ -253,7 +264,7 @@
 				}
 
 				it('should show dialog when adding service', function () {
-					$('#service-add-button').click();
+					page.addService();
 
 					expect(settingsAddController.show).toHaveBeenCalled();
 				});
@@ -261,7 +272,7 @@
 				it('should not show dialog if button disabled', function () {
 					$('#service-add-button').addClass('disabled');
 
-					$('#service-add-button').click();
+					page.addService();
 
 					expect(settingsAddController.show).not.toHaveBeenCalled();
 				});
@@ -328,7 +339,7 @@
 					addService('Server 2');
 
 					page.serviceList.selectServiceAt(0);
-					page.removeWindow.remove();
+					page.removeService();
 
 					expect(savePrompt.show.callCount).toBe(1);
 				});
@@ -357,72 +368,54 @@
 					expect(page.isAddButtonEnabled()).toBeTruthy();
 				});
 
+				it('should initialize save prompt on initialize', function () {
+					controller.initialize();
+
+					expect(savePrompt.initialize).toHaveBeenCalled();
+				});
+
 			});
 
 			describe('Removing service', function () {
 
-				page.removeWindow = {
-					show: function () {
-						$('#service-remove-button').click();
-					},
-					hide: function () {
-						$('#service-remove-modal').modal('hide');
-					},
-					isShown: function () {
-						return $('#service-remove-modal').is(':visible');
-					},
-					serviceName: function () {
-						return $('#service-remove-name').text();
-					},
-					remove: function () {
-						$('#service-remove-form').submit();
-					}
-				};
+				it('should initialize remove prompt on initialize', function () {
+					controller.initialize();
 
-				afterEach(function () {
-					page.removeWindow.hide();
+					expect(removePrompt.initialize).toHaveBeenCalled();
 				});
 
 				it('should show confirmation dialog', function () {
-					expect(page.removeWindow.isShown()).toBeFalsy();
-
-					page.removeWindow.show();
-
-					expect(page.removeWindow.isShown()).toBeTruthy();
-				});
-
-				it('should show service name in modal window', function () {
 					loadServices('some name');
 
-					page.removeWindow.show();
+					page.removeService();
 
-					expect(page.removeWindow.serviceName()).toBe('some name');
+					expect(removePrompt.show).toHaveBeenCalledWith('some name');
 				});
 
-				it('should close modal window', function () {
+				it('should close dialog on remove signal', function () {
 					loadServices('service');
-					page.removeWindow.show();
+					page.removeService();
 
-					page.removeWindow.remove();
+					removePrompt.removeSelected.dispatch();
 
-					expect(page.removeWindow.isShown()).toBeFalsy();
+					expect(removePrompt.hide).toHaveBeenCalled();
 				});
 
 				it('should remove service', function () {
 					loadServices('service');
-					page.removeWindow.show();
+					page.removeService();
 
-					page.removeWindow.remove();
+					removePrompt.removeSelected.dispatch();
 
 					expect(page.serviceList.count()).toBe(0);
 				});
 
 				it('should dispatch settingsChanged', function () {
 					loadServices('service');
-					page.removeWindow.show();
+					page.removeService();
 					var settingsChangedSpy = spyOnSignal(controller.settingsChanged);
 
-					page.removeWindow.remove();
+					removePrompt.removeSelected.dispatch();
 
 					expect(settingsChangedSpy).toHaveBeenDispatched();
 				});
@@ -430,9 +423,8 @@
 				it('should select next in list after remove', function () {
 					loadServices('service 1', 'service 2', 'service 3');
 					page.serviceList.selectServiceAt(1);
-					page.removeWindow.show();
 
-					page.removeWindow.remove();
+					removePrompt.removeSelected.dispatch();
 
 					expect(page.serviceList.getSelectedIndex()).toBe(1);
 				});
@@ -440,18 +432,18 @@
 				it('should select previous in list if last removed', function () {
 					loadServices('service 1', 'service 2', 'service 3');
 					page.serviceList.selectServiceAt(2);
-					page.removeWindow.show();
+					page.removeService();
 
-					page.removeWindow.remove();
+					removePrompt.removeSelected.dispatch();
 
 					expect(page.serviceList.getSelectedIndex()).toBe(1);
 				});
 
 				it('should not display settings after removing last one', function () {
 					loadServices('single service');
-					page.removeWindow.show();
+					page.removeService();
 
-					page.removeWindow.remove();
+					removePrompt.removeSelected.dispatch();
 
 					expect(page.getServiceName()).toBe('');
 					expect(getSettingsFrame().src).toBe('about:blank');

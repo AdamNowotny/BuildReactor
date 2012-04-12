@@ -47,17 +47,23 @@
 				<h4 class="alert-heading">Settings saved</h4>
 			</div>
 		</div>
-		<form id="service-remove-form">
-			<div id="service-remove-modal" class="modal hide">
-				<div class="modal-body">
-					Remove &quot;<span id="service-remove-name"></span>&quot; ?
-				</div>			
-				<div class="modal-footer">
-					<button class="btn" data-dismiss="modal">Cancel</button>
-					<button type="submit" class="btn btn-danger"><i class="icon-remove"></i> Remove</button>
-				</div>
+		<div id="service-remove-modal" class="modal hide">
+			<div class="modal-header">
+				<a class="close" data-dismiss="modal">×</a>
+				<ul class="unstyled steps">
+					<li class="active">
+						<h3>Remove service ?</h3>
+					</li>
+				</ul>
 			</div>
-		</form>
+			<div class="modal-body">
+				<div class="service-name"></div>
+			</div>			
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-danger">Remove</button>
+			</div>
+		</div>
 		<div id="save-prompt" class="modal hide">
 			<div class="modal-header">
 				<h3>Discard changes ?</h3>

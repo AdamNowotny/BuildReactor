@@ -8,6 +8,7 @@
 		'spec/settingsStoreTest',
 		'spec/timerTest',
 		'spec/settings/savePromptTest',
+		'spec/settings/removePromptTest',
 		'spec/bamboo/bambooBuildServiceTest',
 		'spec/bamboo/bambooPlanTest',
 		'spec/bamboo/bambooRequestTest',

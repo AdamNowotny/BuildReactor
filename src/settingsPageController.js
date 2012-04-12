@@ -3,13 +3,15 @@
 		'jquery',
 		'./settingsAddController',
 		'./settings/savePrompt',
+		'./settings/removePrompt',
 		'text!./services.ejs',
 		'amdUtils/string/format',
 		'amdUtils/array/remove',
 		'./timer',
 		'ejs'
-], function (signals, $, settingsAddController, savePrompt, servicesTemplateText, format, remove, Timer) {
+], function (signals, $, settingsAddController, savePrompt, removePrompt, servicesTemplateText, format, remove, Timer) {
 
+	var isInitialized = false;
 	var menuTemplate = new EJS({ text: servicesTemplateText });
 	var settingsChanged = new signals.Signal();
 	var settingsShown = new signals.Signal();
@@ -28,42 +30,41 @@
 	}
 
 	function initialize() {
+		if (!isInitialized) {
+			savePrompt.removeSelected.add(function () {
+				removeCurrentService();
+				savePrompt.hide();
+			});
+			settingsAddController.serviceAdded.add(serviceAdded);
+			removePrompt.removeSelected.add(function () {
+				removePrompt.hide();
+				removeCurrentService();
+			});
+			serviceList.itemSelected.add(function (index) {
+				var serviceName = settings[index].name;
+				serviceNameElement.text(serviceName);
+			});
+			isInitialized = true;
+		}
+		reset();
+	};
+
+	function reset() {
+		savePrompt.initialize();
+		settingsAddController.initialize();
+		removePrompt.initialize();
 		setSaveNeeded(false);
 		settings = [];
 		serviceNameElement = $('#service-name');
-		savePrompt.initialize();
-		savePrompt.removeSelected.add(function () {
-			removeCurrentService();
-			savePrompt.hide();
-		});
-		settingsAddController.initialize();
-		settingsAddController.serviceAdded.add(serviceAdded);
 		$('#service-add-button').click(function () {
 			if (!$('#service-add-button').hasClass('disabled')) {
 				settingsAddController.show();
 			}
 		});
-		$('#service-remove-button').click(serviceRemoveWindow.show);
-		$('#service-remove-form').submit(function () {
-			serviceRemoveWindow.remove();
-			return false;
+		$('#service-remove-button').click(function () {
+			removePrompt.show(currentServiceSettings.name);
 		});
-		serviceList.itemSelected.add(function (index) {
-			var serviceName = settings[index].name;
-			serviceNameElement.text(serviceName);
-		});
-	};
-
-	var serviceRemoveWindow = {
-		show: function () {
-			$('#service-remove-name').text(currentServiceSettings.name);
-			$('#service-remove-modal').modal();
-		},
-		remove: function () {
-			$('#service-remove-modal').modal('hide');
-			removeCurrentService();
-		}
-	};
+	}
 
 	function removeCurrentService() {
 		setSaveNeeded(false);

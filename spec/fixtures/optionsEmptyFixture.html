@@ -1,104 +1,72 @@
-		<div class="navbar navbar-fixed-top">
-			<div class="navbar-inner">
-				<div class="container-fluid">
-					<div class="row-fluid">
-						<ul class="nav">
-							<li>
-								<div class="brand">
-									BuildReactor
-								</div>
-							</li>
-							<li class="divider-vertical"></li>
-							<li>
-								<a id="service-name"></a>
-							</li>
-						</ul>
-						<ul class="pull-right">
-							<li>
-								<a id="service-remove-button" class="btn btn-danger" rel="#service-remove-modal"><i class="icon-remove-sign"></i> Remove</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="service-list-container">
-			<ul id="service-list" class="nav nav-pills nav-stacked"></ul>
-			<a id="service-add-button" class="btn" rel="#service-add-modal"><i class="icon-plus-sign"></i> Add</a>
-		</div>
-		<div id="settings-container">
-			<div id="settings-frame-container">
-				<iframe id="settings-frame"></iframe>
-			</div>
-		</div>
-		<form id="service-remove-form">
-			<div id="service-remove-modal" class="modal hide">
-				<div class="modal-header">
-					<a class="close" data-dismiss="modal">×</a>
-					<ul class="unstyled steps">
-						<li class="active">
-							<h3>Remove service ?</h3>
-						</li>
-					</ul>
-				</div>
-				<div class="modal-body">
-					<div id="service-remove-name"></div>
-				</div>			
-				<div class="modal-footer">
-					<button class="btn" data-dismiss="modal">Cancel</button>
-					<button type="submit" class="btn btn-danger">Remove</button>
-				</div>
-			</div>
-		</form>
-		<div id="save-prompt" class="modal hide">
-			<div class="modal-header">
-				<h3>Settings changed</h3>
-			</div>
-			<div class="modal-body">
-				Save &quot;<span class="service-name"></span>&quot; settings ?
-			</div>			
-			<div class="modal-footer">
-				<button class="btn" data-dismiss="modal">Cancel</button>
-				<button class="btn btn-danger"><i class="icon-remove"></i> Discard</button>
-				<button class="btn btn-success"><i class="icon-ok"></i> Save</button>
-			</div>
-		</div>
-		<div id="service-add-wizard" class="modal hide">
-			<div class="modal-header">
-				<a class="close" data-dismiss="modal">×</a>
-				<ul class="unstyled steps">
-					<li class="active">
-						<h3>Select service to add</h3>
-					</li>
+<div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<ul class="nav">
 					<li>
-						<h3>Enter service name</h3>
+						<div class="brand">
+							BuildReactor
+						</div>
+					</li>
+					<li class="divider-vertical"></li>
+					<li>
+						<a id="service-name"></a>
+					</li>
+				</ul>
+				<ul class="pull-right">
+					<li>
+						<a id="service-remove-button" class="btn btn-danger" rel="#service-remove-modal"><i class="icon-remove-sign"></i> Remove</a>
 					</li>
 				</ul>
 			</div>
-			<div class="modal-body">
-				<form id="service-add-form">
-					<div class="scrollable">
-						<div class="items">
-							<div class="page">
-								<ul id="service-add-list" class="thumbnails">
-									<li>
-										<a class="thumbnail" href="#">
-											<img src="src/bamboo/icon.png" alt="Atlassian Bamboo" />
-										</a>
-										<div style="text-align:center">Atlassian Bamboo</div>
-									</li>
-								</ul>
-							</div>
-							<div class="page">
-								<label for="service-add-name">Name:</label>
-								<input type="text" name="service-add-name" id="service-add-name"/>
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button class="btn" data-dismiss="modal">Close</button>
-				<button type="submit" class="btn btn-primary">Add</button>
-			</div>
 		</div>
+	</div>
+</div>
+<div class="service-list-container">
+	<ul id="service-list" class="nav nav-pills nav-stacked"></ul>
+	<a id="service-add-button" class="btn" rel="#service-add-modal"><i class="icon-plus-sign"></i> Add</a>
+</div>
+<div id="settings-container">
+	<div id="settings-frame-container">
+		<iframe id="settings-frame"></iframe>
+	</div>
+</div>
+<div id="service-add-wizard" class="modal hide">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+		<ul class="unstyled steps">
+			<li class="active">
+				<h3>Select service to add</h3>
+			</li>
+			<li>
+				<h3>Enter service name</h3>
+			</li>
+		</ul>
+	</div>
+	<div class="modal-body">
+		<form id="service-add-form">
+			<div class="scrollable">
+				<div class="items">
+					<div class="page">
+						<ul id="service-add-list" class="thumbnails">
+							<li>
+								<a class="thumbnail" href="#">
+									<img src="src/bamboo/icon.png" alt="Atlassian Bamboo" />
+								</a>
+								<div style="text-align:center">Atlassian Bamboo</div>
+							</li>
+						</ul>
+					</div>
+					<div class="page">
+						<label for="service-add-name">Name:</label>
+						<input type="text" name="service-add-name" id="service-add-name"/>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal">Close</button>
+		<button type="submit" class="btn btn-primary">Add</button>
+	</div>
+</div>
