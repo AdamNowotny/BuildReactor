@@ -7,6 +7,8 @@
 		'spec/settingsAddControllerTest',
 		'spec/settingsStoreTest',
 		'spec/timerTest',
+		'spec/settings/serviceSettingsTest',
+		'spec/settings/serviceListTest',
 		'spec/settings/savePromptTest',
 		'spec/settings/removePromptTest',
 		'spec/bamboo/bambooBuildServiceTest',

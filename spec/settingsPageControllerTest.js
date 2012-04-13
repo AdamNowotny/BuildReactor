@@ -2,12 +2,13 @@
 		'jquery',
 		'src/settingsPageController',
 		'src/settingsAddController',
+		'src/settings/serviceList',
 		'src/settings/savePrompt',
 		'src/settings/removePrompt',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals',
 		'src/Timer'
-	], function ($, controller, settingsAddController, savePrompt, removePrompt, MockSettingsBuilder, jasmineSignals, Timer) {
+	], function ($, controller, settingsAddController, serviceList, savePrompt, removePrompt, MockSettingsBuilder, jasmineSignals, Timer) {
 		describe('SettingsPageController', function () {
 
 			var defaultTimeout = 3000;
@@ -228,7 +229,7 @@
 						settingsChangedCount++;
 					});
 					settings.url = 'http://new.url.com/';
-					childControllerGetter().settingsChanged.dispatch(settings);
+					childControllerGetter().settingsChanged.dispatch([settings]);
 				});
 				waitsFor(function () {
 					return settingsChangedCount == 1;
@@ -301,11 +302,18 @@
 				it('should prompt to save before switching to another service', function () {
 					loadServices('Server 1');
 					addService('Server 2');
+					spyOn(serviceList, 'getSelectedName').andReturn('Server 2');
 
-					page.serviceList.selectServiceAt(0);
+					serviceList.itemClicked.dispatch(null);
 
 					expect(savePrompt.show).toHaveBeenCalledWith('Server 2');
 				});
+
+				var createItem = function (name) {
+					var link = document.createElement("a");
+					link.innerHTML = name;
+					return link;
+				};
 
 				it('should not switch if prompt to save shown', function () {
 					loadServices('Server 1');

@@ -2,43 +2,43 @@
 		'jquery',
 		'src/settings/removePrompt',
 		'jasmineSignals'
-	], function ($, settingsServiceRemove, jasmineSignals) {
+	], function ($, serviceRemove, jasmineSignals) {
 		describe('removePrompt', function () {
 
 			var spyOnSignal = jasmineSignals.spyOnSignal;
 
 			beforeEach(function () {
-				jasmine.getFixtures().load('settingsRemovePromptFixture.html');
-				settingsServiceRemove.initialize();
+				jasmine.getFixtures().load('settings/removePromptFixture.html');
+				serviceRemove.initialize();
 			});
 
 			afterEach(function () {
-				settingsServiceRemove.hide();
+				serviceRemove.hide();
 			});
 
 			it('should show prompt', function () {
-				settingsServiceRemove.show('sample name');
+				serviceRemove.show('sample name');
 
 				expect($('#service-remove-modal')).toBeVisible();
 			});
 
 			it('should show service name', function () {
-				settingsServiceRemove.show('sample name');
+				serviceRemove.show('sample name');
 
 				expect($('#service-remove-modal .service-name')).toHaveHtml('sample name');
 			});
 
 			it('should hide prompt', function () {
-				settingsServiceRemove.show();
+				serviceRemove.show();
 
-				settingsServiceRemove.hide();
+				serviceRemove.hide();
 
 				expect($('#service-remove-modal')).toBeHidden();
 			});
 
 			it('should dispatch signal if remove selected', function () {
-				settingsServiceRemove.show();
-				var removeSelectedSpy = spyOnSignal(settingsServiceRemove.removeSelected);
+				serviceRemove.show();
+				var removeSelectedSpy = spyOnSignal(serviceRemove.removeSelected);
 
 				$('#service-remove-modal .btn-danger').click();
 

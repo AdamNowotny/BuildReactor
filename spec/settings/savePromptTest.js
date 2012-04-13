@@ -2,42 +2,42 @@
 		'jquery',
 		'src/settings/savePrompt',
 		'jasmineSignals'
-	], function ($, settingsSavePrompt, jasmineSignals) {
-		describe('SavePrompt', function () {
+	], function ($, savePrompt, jasmineSignals) {
+		describe('savePrompt', function () {
 
 			var spyOnSignal = jasmineSignals.spyOnSignal;
 
 			beforeEach(function () {
-				jasmine.getFixtures().load('settingsSavePromptFixture.html');
-				settingsSavePrompt.initialize();
+				jasmine.getFixtures().load('settings/savePromptFixture.html');
+				savePrompt.initialize();
 			});
 
 			afterEach(function () {
-				settingsSavePrompt.hide();
+				savePrompt.hide();
 			});
 
 			it('should show prompt', function () {
-				settingsSavePrompt.show('sample name');
+				savePrompt.show('sample name');
 
 				expect($('#save-prompt')).toBeVisible();
 			});
 
 			it('should show service name', function () {
-				settingsSavePrompt.show('sample name');
+				savePrompt.show('sample name');
 
 				expect($('#save-prompt .service-name')).toHaveHtml('sample name');
 			});
 
 			it('should hide prompt', function () {
-				settingsSavePrompt.show();
+				savePrompt.show();
 
-				settingsSavePrompt.hide();
+				savePrompt.hide();
 
 				expect($('#save-prompt')).toBeHidden();
 			});
 
 			it('should dispatch signal if remove selected', function () {
-				var removeSelectedSpy = spyOnSignal(settingsSavePrompt.removeSelected);
+				var removeSelectedSpy = spyOnSignal(savePrompt.removeSelected);
 
 				$('#save-prompt .btn-danger').click();
 
