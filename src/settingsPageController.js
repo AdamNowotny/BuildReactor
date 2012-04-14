@@ -2,16 +2,16 @@
 		'signals',
 		'jquery',
 		'./settings/serviceSettings',
+		'./settings/frame',
 		'./settingsAddController',
 		'./settings/serviceList',
 		'./settings/savePrompt',
 		'./settings/removePrompt',
 		'./timer'
-], function (signals, $, serviceSettings, settingsAddController, serviceList, savePrompt, removePrompt, Timer) {
+], function (signals, $, serviceSettings, frame, settingsAddController, serviceList, savePrompt, removePrompt, Timer) {
 
 	var isInitialized = false;
 	var settingsChanged = new signals.Signal();
-	var settingsShown = new signals.Signal();
 	var isSaveNeeded = false;
 	var serviceNameElement;
 	var current;
@@ -38,12 +38,11 @@
 				setSaveNeeded(true);
 			});
 			removePrompt.removeSelected.add(function () {
-				removePrompt.hide();
 				removeCurrentService();
 			});
 			serviceSettings.cleared.add(function () {
 				serviceNameElement.text('');
-				getIFrame().src = 'about:blank';
+				frame.showEmpty();
 			});
 			serviceList.itemClicked.add(function (item) {
 				if (isSaveNeeded) {
@@ -53,11 +52,16 @@
 				}
 			});
 			serviceList.itemSelected.add(function (item) {
-				serviceNameElement.text($(item).text());
-				var index = item.data('service-index');
+				var link = $(item);
+				serviceNameElement.text(link.text());
+				var index = link.data('service-index');
 				var serviceInfo = serviceSettings.getByIndex(index);
 				showServicePage(serviceInfo);
 			});
+			frame.loaded.add(function () {
+
+			});
+			frame.saved.add(serviceSettingsChanged);
 			isInitialized = true;
 		}
 		reset();
@@ -67,6 +71,7 @@
 		savePrompt.initialize();
 		settingsAddController.initialize();
 		removePrompt.initialize();
+		frame.initialize();
 		setSaveNeeded(false);
 		serviceSettings.clear();
 		serviceNameElement = $('#service-name');
@@ -87,41 +92,29 @@
 		settingsChanged.dispatch(serviceSettings.getAll());
 	}
 
-	function getIFrame() {
-		return $('#settings-frame')[0];
-	}
-
 	function load(newSettings) {
 		serviceSettings.load(newSettings);
-		serviceList.load(serviceSettings.getAll());
+		serviceList.load(newSettings);
 	}
 
 	function showServicePage(serviceInfo) {
-		current = serviceInfo;
-		var iframe = getIFrame();
-		iframe.onload = function () {
-			settingsShown.dispatch();
-			var controllerName = serviceInfo.baseUrl + '/' + serviceInfo.settingsController;
-			iframe.contentWindow.require([controllerName], function (serviceSettingsController) {
-				// executed in iframe context
-				serviceSettingsController.settingsChanged.add(serviceSettingsChanged);
-				serviceSettingsController.show(serviceInfo);
-			});
-		};
-		iframe.src = serviceInfo.baseUrl + '/' + serviceInfo.settingsPage;
-
-		function serviceSettingsChanged(updatedSettings) {
-			serviceSettings.load(updatedSettings);
-			settingsChanged.dispatch(serviceSettings.getAll());
-			$('#alert-saved .alert').addClass('in');
-			alertTimer.start(3);
+		if (serviceInfo === undefined) {
+			throw { name: 'showServicePage', message: 'serviceInfo is undefined' };
 		}
+		current = serviceInfo;
+		frame.show(serviceInfo);
+	}
+
+	function serviceSettingsChanged(updatedSettings) {
+		serviceSettings.load(updatedSettings);
+		settingsChanged.dispatch(serviceSettings.getAll());
+		$('#alert-saved .alert').addClass('in');
+		alertTimer.start(3);
 	}
 
 	return {
 		initialize: initialize,
 		load: load,
-		settingsShown: settingsShown,
 		settingsChanged: settingsChanged
 	};
 });

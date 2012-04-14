@@ -94,7 +94,7 @@
 				expect(page.getSelectedIndex()).toBe(2);
 			});
 
-			it('should update and select at previous index', function () {
+			it('should update and select at same index', function () {
 				initializeServiceList();
 				var item = $('#service-list li').eq(2);
 				serviceList.selectItem(item);
@@ -102,6 +102,16 @@
 				serviceList.update(settings);
 
 				expect(page.getSelectedIndex()).toBe(2);
+			});
+
+			it('should update and select at new last index if last was selected', function () {
+				initializeServiceList();
+				var item = $('#service-list li').eq(2);
+				serviceList.selectItem(item);
+
+				serviceList.update([createSettings('single')]);
+
+				expect(page.getSelectedIndex()).toBe(0);
 			});
 
 			it('should not select if empty list on update', function () {

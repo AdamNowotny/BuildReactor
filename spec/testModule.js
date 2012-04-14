@@ -11,6 +11,7 @@
 		'spec/settings/serviceListTest',
 		'spec/settings/savePromptTest',
 		'spec/settings/removePromptTest',
+		'spec/settings/frameTest',
 		'spec/bamboo/bambooBuildServiceTest',
 		'spec/bamboo/bambooPlanTest',
 		'spec/bamboo/bambooRequestTest',

@@ -4,6 +4,7 @@
 	var showCalledCount = 0;
 
 	function show(settings) {
+		console.log(settings);
 		showCalledCount++;
 	}
 

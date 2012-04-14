@@ -2,47 +2,55 @@
 		'jquery',
 		'src/settings/removePrompt',
 		'jasmineSignals'
-	], function ($, serviceRemove, jasmineSignals) {
+	], function ($, removePrompt, jasmineSignals) {
 		describe('removePrompt', function () {
 
 			var spyOnSignal = jasmineSignals.spyOnSignal;
 
 			beforeEach(function () {
 				jasmine.getFixtures().load('settings/removePromptFixture.html');
-				serviceRemove.initialize();
+				removePrompt.initialize();
 			});
 
 			afterEach(function () {
-				serviceRemove.hide();
+				removePrompt.hide();
 			});
 
 			it('should show prompt', function () {
-				serviceRemove.show('sample name');
+				removePrompt.show('sample name');
 
 				expect($('#service-remove-modal')).toBeVisible();
 			});
 
 			it('should show service name', function () {
-				serviceRemove.show('sample name');
+				removePrompt.show('sample name');
 
 				expect($('#service-remove-modal .service-name')).toHaveHtml('sample name');
 			});
 
 			it('should hide prompt', function () {
-				serviceRemove.show();
+				removePrompt.show();
 
-				serviceRemove.hide();
+				removePrompt.hide();
 
 				expect($('#service-remove-modal')).toBeHidden();
 			});
 
 			it('should dispatch signal if remove selected', function () {
-				serviceRemove.show();
-				var removeSelectedSpy = spyOnSignal(serviceRemove.removeSelected);
+				removePrompt.show();
+				var removeSelectedSpy = spyOnSignal(removePrompt.removeSelected);
 
 				$('#service-remove-modal .btn-danger').click();
 
 				expect(removeSelectedSpy).toHaveBeenDispatched();
+			});
+
+			it('should close dialog on removeSelected', function () {
+				removePrompt.show();
+
+				$('#service-remove-modal .btn-danger').click();
+
+				expect($('#service-remove-modal')).toBeHidden();
 			});
 
 		});

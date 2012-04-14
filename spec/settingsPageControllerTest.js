@@ -2,21 +2,25 @@
 		'jquery',
 		'src/settingsPageController',
 		'src/settingsAddController',
+		'src/settings/serviceSettings',
+		'src/settings/frame',
 		'src/settings/serviceList',
 		'src/settings/savePrompt',
 		'src/settings/removePrompt',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals',
 		'src/Timer'
-	], function ($, controller, settingsAddController, serviceList, savePrompt, removePrompt, MockSettingsBuilder, jasmineSignals, Timer) {
+	], function ($, controller, settingsAddController, serviceSettings, frame, serviceList, savePrompt, removePrompt, MockSettingsBuilder, jasmineSignals, Timer) {
 		describe('SettingsPageController', function () {
 
-			var defaultTimeout = 3000;
 			var spyOnSignal = jasmineSignals.spyOnSignal;
 
 			var page = {
 				getServiceName: function () {
 					return $('#service-name').text();
+				},
+				setServiceName: function (name) {
+					return $('#service-name').text(name);
 				},
 				isAddButtonEnabled: function () {
 					return !$('#service-add-button').hasClass('disabled');
@@ -29,215 +33,104 @@
 				}
 			};
 
-			page.serviceList = {
-				count: function () {
-					return $('#service-list li').length;
-				},
-				serviceAt: function (index) {
-					return $('#service-list li').eq(index);
-				},
-				selectServiceAt: function (index) {
-					this.serviceAt(index).click();
-				},
-				getSelectedIndex: function () {
-					var selectedIndex = $('#service-list li.active').index();
-					return selectedIndex;
-				}
-			};
+			var spyServiceListGetSelectedName;
+			var spyServiceSettingsGetAll;
+			var spyServiceSettingsGetByIndex;
 
 			beforeEach(function () {
-				jasmine.getFixtures().load('optionsEmptyFixture.html');
+				jasmine.getFixtures().load('settingsPageControllerFixture.html');
 				spyOn(settingsAddController, 'show');
 				spyOn(settingsAddController, 'initialize');
+
 				spyOn(savePrompt, 'initialize');
 				spyOn(savePrompt, 'show');
 				spyOn(savePrompt, 'hide');
+
 				spyOn(removePrompt, 'initialize');
 				spyOn(removePrompt, 'show');
 				spyOn(removePrompt, 'hide');
+
+				spyOn(frame, 'initialize');
+				spyOn(frame, 'show');
+				spyOn(frame, 'showEmpty');
+
+				spyOn(serviceList, 'load');
+				spyOn(serviceList, 'update');
+				spyOn(serviceList, 'add');
+				spyOn(serviceList, 'selectItem');
+				spyServiceListGetSelectedName = spyOn(serviceList, 'getSelectedName');
+
+				spyOn(serviceSettings, 'load');
+				spyOn(serviceSettings, 'clear');
+				spyOn(serviceSettings, 'add');
+				spyServiceSettingsGetByIndex = spyOn(serviceSettings, 'getByIndex');
+				spyServiceSettingsGetAll = spyOn(serviceSettings, 'getAll');
+				spyOn(serviceSettings, 'remove');
+
 				controller.initialize();
 			});
 
-			function getSettingsFrame() {
-				var iframe = $('#settings-frame')[0];
-				return {
-					window: iframe.contentWindow,
-					document: iframe.contentWindow.document,
-					src: $(iframe).attr('src')
-				};
-			}
-
-			// returns function used to get active settings controller
-			function runsToGetController(settings) {
-				var childController = null;
-
-				// wait for RequireJS to be loaded
-				waitsFor(function () {
-					return getSettingsFrame().window.require != undefined;
-				}, defaultTimeout);
-				// get service settings controller from iframe
-				runs(function () {
-					var controllerName = settings.baseUrl + '/' + settings.settingsController;
-					getSettingsFrame().window.require(
-						[controllerName], function (serviceSettingsController) {
-							childController = serviceSettingsController;
-						});
-				});
-				waitsFor(function () {
-					return childController != null;
-				}, defaultTimeout);
-				return function () { return childController; };
-			}
-
-			function loadServices() {
-				var serviceList = [];
-				for (var i = 0; i < arguments.length; i++) {
-					var name = arguments[i];
-					var serviceInfo = new MockSettingsBuilder().withName(name).create();
-					serviceList.push(serviceInfo);
-				}
-				controller.load(serviceList);
+			var createItem = function (index, name) {
+				var html = '<li><a href="#">' + name + '</a></li>';
+				var item = $(html);
+				item.data('service-index', index);
+				return item[0];
 			};
+
+			var createSettings = function (name) {
+				return new MockSettingsBuilder().withName(name).create();
+			};
+
+			it('should initialize components on initialize', function () {
+				controller.initialize();
+
+				expect(frame.initialize).toHaveBeenCalled();
+				expect(removePrompt.initialize).toHaveBeenCalled();
+				expect(savePrompt.initialize).toHaveBeenCalled();
+				expect(settingsAddController.initialize).toHaveBeenCalled();
+			});
 
 			it('should display list of services', function () {
 				var mockSettings1 = new MockSettingsBuilder().withName('service 1').create();
 				var mockSettings2 = new MockSettingsBuilder().withName('service 2').create();
+				var settings = [mockSettings1, mockSettings2];
 
-				controller.load([mockSettings1, mockSettings2]);
+				controller.load(settings);
 
-				expect(page.serviceList.count()).toBe(2);
-				expect(page.serviceList.serviceAt(0)).toHaveText('service 1');
-				expect(page.serviceList.serviceAt(1)).toHaveText('service 2');
+				expect(serviceList.load).toHaveBeenCalledWith(settings);
+				expect(serviceSettings.load).toHaveBeenCalledWith(settings);
 			});
 
-			it('should show first service settings page on load', function () {
-				var settingsShownSpy = spyOnSignal(controller.settingsShown);
-				var mockSettings = new MockSettingsBuilder()
+			it('should show service settings page on itemSelected', function () {
+				var serviceInfo = new MockSettingsBuilder()
+					.withName('service name')
 					.withSettingsPage('page1.html')
 					.create();
+				var item = createItem(0, 'service name');
+				spyServiceSettingsGetByIndex.andReturn(serviceInfo);
 
-				runs(function () {
-					controller.load([mockSettings]);
-				});
+				serviceList.itemSelected.dispatch(item);
 
-				waitsFor(function () {
-					return settingsShownSpy.count > 0;
-				}, defaultTimeout);
-				runs(function () {
-					expect(getSettingsFrame().src).toContain('page1.html');
-				});
-			});
-
-			it('should call show on first service settings on load', function () {
-				var mockSettings = new MockSettingsBuilder().create();
-				var childControllerGetter = null;
-
-				runs(function () {
-					controller.load([mockSettings]);
-					childControllerGetter = runsToGetController(mockSettings);
-				});
-
-				// expect show to be already called on the settings controller
-				waitsFor(function () {
-					return childControllerGetter().getShowCalledCount() > 0;
-				}, 0);
-			});
-
-			it('should not regenerate settings page if already active', function () {
-				var settingsShownSpy = spyOnSignal(controller.settingsShown);
-				runs(function () {
-					var mockSettings = new MockSettingsBuilder().create();
-					controller.load([mockSettings]);
-				});
-				waitsFor(function () {
-					return settingsShownSpy.count > 0;
-				}, defaultTimeout);
-
-				runs(function () {
-					page.serviceList.selectServiceAt(0);
-				});
-
-				runs(function () {
-					expect(settingsShownSpy).toHaveBeenDispatched(1);
-				});
+				expect(frame.show).toHaveBeenCalledWith(serviceInfo);
 			});
 
 			it('should update service name when selected', function () {
-				loadServices('First service', 'Second service');
+				spyServiceSettingsGetByIndex.andReturn(createSettings('Service name'));
 
-				expect($('#service-name')).toHaveText('First service');
+				serviceList.itemSelected.dispatch(createItem(2, 'Service name'));
 
-				page.serviceList.serviceAt(1).click();
-
-				expect($('#service-name')).toHaveText('Second service');
-			});
-
-			it('should display settings of selected service', function () {
-				var mockSettings1 = new MockSettingsBuilder()
-					.withName('service 1')
-					.withSettingsPage('page1.html')
-					.create();
-				var mockSettings2 = new MockSettingsBuilder()
-					.withName('service 2')
-					.withSettingsPage('page2.html')
-					.create();
-
-				controller.load([mockSettings1, mockSettings2]);
-				expect(getSettingsFrame().src).toContain('page1.html');
-				page.serviceList.serviceAt(1).click();
-
-				expect(getSettingsFrame().src).toContain('page2.html');
+				expect($('#service-name')).toHaveText('Service name');
 			});
 
 			it('should signal settingsChanged when settings saved', function () {
-				var mockSettings = new MockSettingsBuilder().create();
-				var childControllerGetter = null;
-				var settingsChangedCount = 0;
-				runs(function () {
-					controller.load([mockSettings]);
-					childControllerGetter = runsToGetController(mockSettings);
-				});
+				var newServiceSettings = new MockSettingsBuilder().create();
+				var settings = [createSettings('service 1'), newServiceSettings];
+				var spySettingsChanged = spyOnSignal(controller.settingsChanged).matchingValues(settings);
+				spyServiceSettingsGetAll.andReturn(settings);
 
-				runs(function () {
-					controller.settingsChanged.add(function (settings) {
-						settingsChangedCount++;
-					});
-					childControllerGetter().settingsChanged.dispatch(mockSettings);
-				});
+				frame.saved.dispatch(newServiceSettings);
 
-				waitsFor(function () {
-					return settingsChangedCount == 1;
-				}, 0);
-			});
-
-			it('should signal settingsChanged with new settings', function () {
-				var mockSettings = new MockSettingsBuilder().create();
-				var childControllerGetter = null;
-				var settingsChangedCount = 0;
-				runs(function () {
-					controller.load([mockSettings]);
-					childControllerGetter = runsToGetController(mockSettings);
-				});
-
-				var settings = mockSettings;
-				runs(function () {
-					getSettingsFrame().document.getElementById('url').value = 'http://new.url.com/';
-				});
-				runs(function () {
-					controller.settingsChanged.add(function (newSettings) {
-						settings = newSettings[0];
-						settingsChangedCount++;
-					});
-					settings.url = 'http://new.url.com/';
-					childControllerGetter().settingsChanged.dispatch([settings]);
-				});
-				waitsFor(function () {
-					return settingsChangedCount == 1;
-				}, 0);
-
-				runs(function () {
-					expect(settings.url).toBe('http://new.url.com/');
-				});
+				expect(spySettingsChanged).toHaveBeenDispatched();
 			});
 
 			it('should show alert when settings saved', function () {
@@ -247,7 +140,6 @@
 				});
 				var mockSettings = new MockSettingsBuilder().create();
 
-				expect('#alert-saved').not.toBeVisible();
 				controller.settingsChanged.dispatch(mockSettings);
 
 				expect('#alert-saved').not.toBeVisible();
@@ -257,11 +149,26 @@
 				// TODO implement test
 			});
 
+			it('should not display name after services cleared', function () {
+				page.setServiceName('service name');
+
+				serviceSettings.cleared.dispatch();
+
+				expect(page.getServiceName()).toBe('');
+			});
+
+			it('should display empty page after services cleared', function () {
+				serviceSettings.cleared.dispatch();
+
+				expect(frame.showEmpty).toHaveBeenCalled();
+			});
+
 			describe('Adding service', function () {
 
 				function addService(name) {
 					var serviceInfo = new MockSettingsBuilder().withName(name).create();
 					settingsAddController.serviceAdded.dispatch(serviceInfo);
+					return serviceInfo;
 				}
 
 				it('should show dialog when adding service', function () {
@@ -278,64 +185,36 @@
 					expect(settingsAddController.show).not.toHaveBeenCalled();
 				});
 
-				it('should initialize add service controller on initialize', function () {
-					controller.initialize();
+				it('should add new service to list', function () {
+					var serviceInfo = addService('Service');
 
-					expect(settingsAddController.initialize).toHaveBeenCalled();
-				});
-
-				it('should update list of services on add', function () {
-					addService('Service');
-
-					expect(page.serviceList.count()).toBe(1);
-				});
-
-				it('should show new service settings', function () {
-					loadServices('Server 1');
-
-					addService('Server 2');
-
-					expect(page.serviceList.serviceAt(0)).not.toHaveClass('active');
-					expect(page.serviceList.serviceAt(1)).toHaveClass('active');
+					expect(serviceList.add).toHaveBeenCalledWith(serviceInfo);
 				});
 
 				it('should prompt to save before switching to another service', function () {
-					loadServices('Server 1');
 					addService('Server 2');
-					spyOn(serviceList, 'getSelectedName').andReturn('Server 2');
+					spyServiceListGetSelectedName.andReturn('Server 2');
 
-					serviceList.itemClicked.dispatch(null);
+					serviceList.itemClicked.dispatch(createItem(0, 'Server 1'));
 
 					expect(savePrompt.show).toHaveBeenCalledWith('Server 2');
 				});
 
-				var createItem = function (name) {
-					var link = document.createElement("a");
-					link.innerHTML = name;
-					return link;
-				};
-
 				it('should not switch if prompt to save shown', function () {
-					loadServices('Server 1');
 					addService('Server 2');
-					var newServiceIndex = page.serviceList.getSelectedIndex();
 
-					page.serviceList.selectServiceAt(0);
+					serviceList.itemClicked.dispatch(createItem(0, 'Server 1'));
 
-					expect(page.serviceList.getSelectedIndex()).toBe(newServiceIndex);
+					expect(serviceList.selectItem).not.toHaveBeenCalled();
 				});
 
 				it('should remove new service if changes discarded', function () {
-					loadServices('Server 1');
-
 					savePrompt.removeSelected.dispatch();
 
-					expect(page.serviceList.count()).toBe(0);
+					expect(serviceList.update).toHaveBeenCalled();
 				});
 
 				it('should hide prompt if new service changes discarded', function () {
-					loadServices('Server 1');
-
 					savePrompt.removeSelected.dispatch();
 
 					expect(savePrompt.hide).toHaveBeenCalled();
@@ -343,23 +222,13 @@
 				});
 
 				it('should not show save prompt after removing service', function () {
-					loadServices('Server 1');
+					spyServiceSettingsGetByIndex.andReturn(createSettings('Server 2'));
 					addService('Server 2');
 
-					page.serviceList.selectServiceAt(0);
-					page.removeService();
+					removePrompt.removeSelected.dispatch();
+					serviceList.itemSelected.dispatch(createItem(0, 'Server 1'));
 
-					expect(savePrompt.show.callCount).toBe(1);
-				});
-
-				it('should not switch if prompt to save shown', function () {
-					loadServices('Server 1');
-					addService('Server 2');
-					var newServiceIndex = page.serviceList.getSelectedIndex();
-
-					page.serviceList.selectServiceAt(0);
-
-					expect(page.serviceList.getSelectedIndex()).toBe(newServiceIndex);
+					expect(savePrompt.show.callCount).toBe(0);
 				});
 
 				it('should disable add button if new service not saved yet', function () {
@@ -376,85 +245,31 @@
 					expect(page.isAddButtonEnabled()).toBeTruthy();
 				});
 
-				it('should initialize save prompt on initialize', function () {
-					controller.initialize();
-
-					expect(savePrompt.initialize).toHaveBeenCalled();
-				});
-
 			});
 
 			describe('Removing service', function () {
 
-				it('should initialize remove prompt on initialize', function () {
-					controller.initialize();
-
-					expect(removePrompt.initialize).toHaveBeenCalled();
-				});
-
-				it('should show confirmation dialog', function () {
-					loadServices('some name');
+				it('should show confirmation dialog before removing', function () {
+					spyServiceListGetSelectedName.andReturn('some name');
 
 					page.removeService();
 
 					expect(removePrompt.show).toHaveBeenCalledWith('some name');
 				});
 
-				it('should close dialog on remove signal', function () {
-					loadServices('service');
-					page.removeService();
-
+				it('should remove service on removeSelected', function () {
 					removePrompt.removeSelected.dispatch();
 
-					expect(removePrompt.hide).toHaveBeenCalled();
+					expect(serviceList.update).toHaveBeenCalled();
+					expect(serviceSettings.remove).toHaveBeenCalled();
 				});
 
-				it('should remove service', function () {
-					loadServices('service');
-					page.removeService();
-
-					removePrompt.removeSelected.dispatch();
-
-					expect(page.serviceList.count()).toBe(0);
-				});
-
-				it('should dispatch settingsChanged', function () {
-					loadServices('service');
-					page.removeService();
+				it('should dispatch settingsChanged after removing service', function () {
 					var settingsChangedSpy = spyOnSignal(controller.settingsChanged);
 
 					removePrompt.removeSelected.dispatch();
 
 					expect(settingsChangedSpy).toHaveBeenDispatched();
-				});
-
-				it('should select next in list after remove', function () {
-					loadServices('service 1', 'service 2', 'service 3');
-					page.serviceList.selectServiceAt(1);
-
-					removePrompt.removeSelected.dispatch();
-
-					expect(page.serviceList.getSelectedIndex()).toBe(1);
-				});
-
-				it('should select previous in list if last removed', function () {
-					loadServices('service 1', 'service 2', 'service 3');
-					page.serviceList.selectServiceAt(2);
-					page.removeService();
-
-					removePrompt.removeSelected.dispatch();
-
-					expect(page.serviceList.getSelectedIndex()).toBe(1);
-				});
-
-				it('should not display settings after removing last one', function () {
-					loadServices('single service');
-					page.removeService();
-
-					removePrompt.removeSelected.dispatch();
-
-					expect(page.getServiceName()).toBe('');
-					expect(getSettingsFrame().src).toBe('about:blank');
 				});
 
 			});

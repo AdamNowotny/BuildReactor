@@ -7,6 +7,7 @@
 
 	function initialize() {
 		$('#service-remove-modal .btn-danger').click(function () {
+			hide();
 			removeSelected.dispatch();
 		});
 	};

@@ -55,7 +55,7 @@
 		if (serviceLink.hasClass('active')) return;
 		$('#service-list li').removeClass('active');
 		serviceLink.addClass('active');
-		itemSelected.dispatch(serviceLink);
+		itemSelected.dispatch(linkElement);
 	};
 
 	var selectAt = function (index) {
