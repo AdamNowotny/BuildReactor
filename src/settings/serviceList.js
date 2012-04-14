@@ -1,7 +1,6 @@
 ﻿define([
 		'signals',
-		'jquery',
-		'ejs'
+		'jquery'
 ], function (signals, $) {
 
 	var itemClicked = new signals.Signal();
