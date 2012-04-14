@@ -3,8 +3,8 @@
 		'./bambooRequest',
 		'./bambooPlan',
 		'../timer',
-		'amdUtils/string/format'
-	], function (signals, BambooRequest, BambooPlan, Timer, format) {
+		'amdUtils/string/interpolate'
+	], function (signals, BambooRequest, BambooPlan, Timer, interpolate) {
 
 		var BambooBuildService = function (settings) {
 			Contract.expectString(settings.name, 'settings.name not defined');
@@ -67,7 +67,7 @@
 
 		BambooBuildService.prototype.onBuildFailed = function (plan) {
 			var buildEvent = {
-				message: format('Build failed - {0}', plan.projectName),
+				message: interpolate('Build failed - {{0}}', [plan.projectName]),
 				details: plan.name,
 				url: plan.url
 			};
@@ -76,7 +76,7 @@
 
 		BambooBuildService.prototype.onBuildFixed = function (plan) {
 			var buildEvent = {
-				message: format('Build fixed - {0}', plan.projectName),
+				message: interpolate('Build fixed - {{0}}', [plan.projectName]),
 				details: plan.name,
 				url: plan.url
 			};
@@ -92,7 +92,7 @@
 			this.timer = new Timer();
 			this.timer.elapsed.add(this.update, this);
 			this.scheduleUpdate = function () {
-				console.log(format('BambooBuildService: Next check scheduled in {0} seconds', this.settings.updateInterval));
+				console.log(interpolate('BambooBuildService: Next check scheduled in {{0}} seconds', [this.settings.updateInterval]));
 				this.timer.start(this.settings.updateInterval);
 			};
 			this.updateFinished.add(this.scheduleUpdate, this);

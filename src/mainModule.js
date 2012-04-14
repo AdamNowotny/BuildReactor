@@ -1,8 +1,9 @@
 ﻿define([
 		'src/serviceController',
 		'src/notificationController',
-		'src/settingsStore'
-	], function (serviceController, notificationController, settingsStore) {
+		'src/settingsStore',
+		'amdUtils/string/interpolate'
+	], function (serviceController, notificationController, settingsStore, interpolate) {
 
 		initializeLogging();
 		var settings = settingsStore.getAll();
@@ -11,7 +12,7 @@
 
 		function initializeLogging() {
 			window.onerror = function (message, url, line) {
-				console.error('Unhandled error. message=[{0}], url=[{1}], line=[{2}]'.format(message, url, line));
+				console.error(interpolate('Unhandled error. message=[{{0}}], url=[{{1}}], line=[{{2}}]', [message, url, line]));
 				return false; // don't suppress default handling
 			};
 		}

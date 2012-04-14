@@ -2,8 +2,8 @@ define([
 		'signals',
 		'../ajaxRequest',
 		'amdUtils/string/endsWith',
-		'amdUtils/string/format'
-	], function (signals, AjaxRequest, endsWith, format) {
+		'amdUtils/string/interpolate'
+	], function (signals, AjaxRequest, endsWith, interpolate) {
 
 		var BambooRequest = function (settings) {
 			if (!(settings && settings.url && settings.url != '')) {
@@ -42,7 +42,7 @@ define([
 		};
 
 		BambooRequest.prototype.latestPlanResult = function (planKey) {
-			var urlPath = format('result/{0}/latest?expand=jiraIssues,changes.change', planKey);
+			var urlPath = interpolate('result/{{0}}/latest?expand=jiraIssues,changes.change', [planKey]);
 			this.send(urlPath);
 		};
 
