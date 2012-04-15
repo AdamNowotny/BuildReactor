@@ -1,7 +1,7 @@
 ﻿define([
 		'jquery',
 		'src/settingsPageController',
-		'src/settingsAddController',
+		'src/settings/addModal',
 		'src/settings/serviceSettings',
 		'src/settings/frame',
 		'src/settings/serviceList',
@@ -10,8 +10,8 @@
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals',
 		'src/Timer'
-	], function ($, controller, settingsAddController, serviceSettings, frame, serviceList, savePrompt, removePrompt, MockSettingsBuilder, jasmineSignals, Timer) {
-		describe('SettingsPageController', function () {
+	], function ($, controller, addModal, serviceSettings, frame, serviceList, savePrompt, removePrompt, MockSettingsBuilder, jasmineSignals, Timer) {
+		describe('settingsPageController', function () {
 
 			var spyOnSignal = jasmineSignals.spyOnSignal;
 
@@ -39,8 +39,8 @@
 
 			beforeEach(function () {
 				jasmine.getFixtures().load('settingsPageControllerFixture.html');
-				spyOn(settingsAddController, 'show');
-				spyOn(settingsAddController, 'initialize');
+				spyOn(addModal, 'show');
+				spyOn(addModal, 'initialize');
 
 				spyOn(savePrompt, 'initialize');
 				spyOn(savePrompt, 'show');
@@ -87,7 +87,7 @@
 				expect(frame.initialize).toHaveBeenCalled();
 				expect(removePrompt.initialize).toHaveBeenCalled();
 				expect(savePrompt.initialize).toHaveBeenCalled();
-				expect(settingsAddController.initialize).toHaveBeenCalled();
+				expect(addModal.initialize).toHaveBeenCalled();
 			});
 
 			it('should display list of services', function () {
@@ -167,14 +167,14 @@
 
 				function addService(name) {
 					var serviceInfo = new MockSettingsBuilder().withName(name).create();
-					settingsAddController.serviceAdded.dispatch(serviceInfo);
+					addModal.serviceAdded.dispatch(serviceInfo);
 					return serviceInfo;
 				}
 
 				it('should show dialog when adding service', function () {
 					page.addService();
 
-					expect(settingsAddController.show).toHaveBeenCalled();
+					expect(addModal.show).toHaveBeenCalled();
 				});
 
 				it('should not show dialog if button disabled', function () {
@@ -182,7 +182,7 @@
 
 					page.addService();
 
-					expect(settingsAddController.show).not.toHaveBeenCalled();
+					expect(addModal.show).not.toHaveBeenCalled();
 				});
 
 				it('should add new service to list', function () {

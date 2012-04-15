@@ -3,12 +3,12 @@
 		'jquery',
 		'./settings/serviceSettings',
 		'./settings/frame',
-		'./settingsAddController',
+		'./settings/addModal',
 		'./settings/serviceList',
 		'./settings/savePrompt',
 		'./settings/removePrompt',
 		'./timer'
-], function (signals, $, serviceSettings, frame, settingsAddController, serviceList, savePrompt, removePrompt, Timer) {
+], function (signals, $, serviceSettings, frame, addModal, serviceList, savePrompt, removePrompt, Timer) {
 
 	var isInitialized = false;
 	var settingsChanged = new signals.Signal();
@@ -32,7 +32,7 @@
 				removeCurrentService();
 				savePrompt.hide();
 			});
-			settingsAddController.serviceAdded.add(function (serviceInfo) {
+			addModal.serviceAdded.add(function (serviceInfo) {
 				serviceSettings.add(serviceInfo);
 				serviceList.add(serviceInfo);
 				setSaveNeeded(true);
@@ -69,7 +69,7 @@
 
 	function reset() {
 		savePrompt.initialize();
-		settingsAddController.initialize();
+		addModal.initialize();
 		removePrompt.initialize();
 		frame.initialize();
 		setSaveNeeded(false);
@@ -77,7 +77,7 @@
 		serviceNameElement = $('#service-name');
 		$('#service-add-button').click(function () {
 			if (!$('#service-add-button').hasClass('disabled')) {
-				settingsAddController.show();
+				addModal.show();
 			}
 		});
 		$('#service-remove-button').click(function () {

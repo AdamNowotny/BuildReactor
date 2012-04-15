@@ -1,10 +1,10 @@
 ﻿define([
 		'jquery',
-		'src/settingsAddController',
+		'src/settings/addModal',
 		'jasmineSignals',
 		'jqueryTools'
 	], function ($, controller, jasmineSignals) {
-		describe('SettingsAddController', function () {
+		describe('addModal', function () {
 
 			var serviceAddedSpy;
 			var spyOnSignal = jasmineSignals.spyOnSignal;
