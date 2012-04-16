@@ -97,3 +97,14 @@
 		float:left;
 		width: 560px;
 	}
+
+#service-add-list .thumbnail {
+	width: 110px;
+	height: 110px;
+	vertical-align: middle;
+	line-height: 120px;
+}
+
+	#service-add-list .thumbnail img {
+		display: inline;
+	}

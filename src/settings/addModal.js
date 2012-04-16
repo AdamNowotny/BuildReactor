@@ -1,13 +1,23 @@
 ﻿define([
 		'signals',
 		'jquery',
+		'text!./addModalService.hbs',
+		'handlebars',
 		'jqueryTools'
-], function (signals, $) {
+], function (signals, $, serviceTemplateText, handlebars) {
+	var serviceTemplate = handlebars.compile(serviceTemplateText);
 
 	var serviceAdded = new signals.Signal();
 	var scrollableApi;
 
-	function initialize() {
+	function initialize(serviceTypes) {
+		if (!serviceTypes) {
+			throw {
+				name: 'ArgumentUndefined',
+				message: 'Supported service types must be specified'
+			};
+		}
+		renderServiceTypes(serviceTypes);
 		scrollableApi = undefined;
 		$('#service-add-wizard .thumbnails a').click(serviceAddSelect);
 		$('#service-add-form').submit(function () {
@@ -15,6 +25,10 @@
 			return false;
 		});
 	}
+
+	var renderServiceTypes = function (serviceTypes) {
+		$('#service-add-list').html(serviceTemplate( { services: serviceTypes }));
+	};
 
 	function show() {
 		if (scrollableApi == undefined) {
@@ -73,6 +87,8 @@
 		hide();
 		serviceAdded.dispatch({
 			name: getName(),
+			typeName: 'Atlasian Bamboo',
+			icon: 'icon.png',
 			baseUrl: 'src/bamboo',
 			service: 'bambooBuildService',
 			settingsController: 'bambooSettingsController',

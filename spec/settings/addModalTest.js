@@ -3,16 +3,16 @@
 		'src/settings/addModal',
 		'jasmineSignals',
 		'jqueryTools'
-	], function ($, controller, jasmineSignals) {
+	], function ($, addModal, jasmineSignals) {
 		describe('addModal', function () {
 
 			var serviceAddedSpy;
 			var spyOnSignal = jasmineSignals.spyOnSignal;
-			
+
 			beforeEach(function () {
-				jasmine.getFixtures().load('serviceAddModalFixture.html');
-				controller.initialize();
-				serviceAddedSpy = spyOnSignal(controller.serviceAdded);
+				jasmine.getFixtures().load('settings/addModalFixture.html');
+				addModal.initialize(getSupportedServiceTypes());
+				serviceAddedSpy = spyOnSignal(addModal.serviceAdded);
 				modalWindow.show();
 			});
 
@@ -21,12 +21,34 @@
 				modalWindow.hide();
 			});
 
+			var getSupportedServiceTypes = function () {
+				var serviceTypes = [
+					{
+						name: 'Atlassian Bamboo',
+						icon: 'icon.png',
+						baseUrl: 'src/bamboo',
+						service: 'bambooBuildService',
+						settingsController: 'bambooSettingsController',
+						settingsPage: 'bambooOptions.html'
+					},
+					{
+						name: 'CruiseControl',
+						icon: 'icon.png',
+						baseUrl: 'src/cruisecontrol',
+						service: 'ccBuildService',
+						settingsController: 'ccSettingsController',
+						settingsPage: 'ccOptions.html'
+					}
+				];
+				return serviceTypes;
+			};
+
 			var modalWindow = {
 				hide: function () {
 					$('#service-add-wizard').modal('hide');
 				},
 				show: function () {
-					controller.show();
+					addModal.show();
 				},
 				isShown: function () {
 					return $('#service-add-wizard').is(':visible');
@@ -54,12 +76,25 @@
 				},
 				pressEnter: function () {
 					$("#service-add-form").submit();
+				},
+				getServiceCount: function () {
+					return $('.thumbnail').length;
 				}
 			};
 
-			it('should show available services', function () {
+			it('should fail if service types not specified', function () {
+				expect(function () {
+					addModal.initialize();
+				}).toThrow();
+			});
+
+			it('should show services page', function () {
 				expect($('#service-add-wizard')).toBeVisible();
 				expect(modalWindow.getActiveHeader()).toBe('Select service to add');
+			});
+
+			it('should show supported services', function () {
+				expect(modalWindow.getServiceCount()).toBe(2);
 			});
 
 			it('should expect name after selecting service type', function () {
@@ -108,7 +143,7 @@
 
 			it('should add service', function () {
 				var name = 'My CI service name';
-				var serviceAddedSpy = spyOnSignal(controller.serviceAdded).matching(function (info) {
+				var serviceAddedSpy = spyOnSignal(addModal.serviceAdded).matching(function (info) {
 					return info.name == name &&
 						info.baseUrl == 'src/bamboo' &&
 							info.service == 'bambooBuildService' &&

@@ -28,6 +28,18 @@
 				settingsStore.store(newSettings);
 				serviceController.load(newSettings);
 				serviceController.run();
+			},
+			getSupportedServiceTypes: function () {
+				return [
+					{
+						name: 'Atlassian Bamboo',
+						icon: 'icon.png',
+						baseUrl: 'src/bamboo',
+						service: 'bambooBuildService',
+						settingsController: 'bambooSettingsController',
+						settingsPage: 'bambooOptions.html'
+					}
+				];
 			}
 		};
 	});

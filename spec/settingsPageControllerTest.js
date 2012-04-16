@@ -15,6 +15,8 @@
 
 			var spyOnSignal = jasmineSignals.spyOnSignal;
 
+			var serviceTypes = [{ name: 'service name'}];
+
 			var page = {
 				getServiceName: function () {
 					return $('#service-name').text();
@@ -66,8 +68,9 @@
 				spyServiceSettingsGetByIndex = spyOn(serviceSettings, 'getByIndex');
 				spyServiceSettingsGetAll = spyOn(serviceSettings, 'getAll');
 				spyOn(serviceSettings, 'remove');
+				spyOn(serviceSettings, 'update');
 
-				controller.initialize();
+				controller.initialize(serviceTypes);
 			});
 
 			var createItem = function (index, name) {
@@ -82,12 +85,12 @@
 			};
 
 			it('should initialize components on initialize', function () {
-				controller.initialize();
+				controller.initialize(serviceTypes);
 
 				expect(frame.initialize).toHaveBeenCalled();
 				expect(removePrompt.initialize).toHaveBeenCalled();
 				expect(savePrompt.initialize).toHaveBeenCalled();
-				expect(addModal.initialize).toHaveBeenCalled();
+				expect(addModal.initialize).toHaveBeenCalledWith(serviceTypes);
 			});
 
 			it('should display list of services', function () {
@@ -120,6 +123,17 @@
 				serviceList.itemSelected.dispatch(createItem(2, 'Service name'));
 
 				expect($('#service-name')).toHaveText('Service name');
+			});
+
+			it('should update settings when settings saved', function () {
+				var currentSettings = new MockSettingsBuilder().create();
+				var newServiceSettings = new MockSettingsBuilder().create();
+				spyServiceSettingsGetByIndex.andReturn(currentSettings);
+				serviceList.itemSelected.dispatch(createItem(0, currentSettings.name));
+
+				frame.saved.dispatch(newServiceSettings);
+
+				expect(serviceSettings.update).toHaveBeenCalledWith(currentSettings, newServiceSettings);
 			});
 
 			it('should signal settingsChanged when settings saved', function () {

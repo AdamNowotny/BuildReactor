@@ -15,11 +15,11 @@
 				load();
 			});
 
-			var createSettings = function(name) {
+			var createSettings = function (name) {
 				var mockSettings = new MockSettingsBuilder().withName(name).create();
 				return mockSettings;
 			};
-			
+
 			var load = function () {
 				var mockSettings1 = createSettings('service 1');
 				var mockSettings2 = createSettings('service 2');
@@ -27,6 +27,12 @@
 				settings = [mockSettings1, mockSettings2, mockSettings3];
 				serviceSettings.load(settings);
 			};
+
+			it('should require array on load', function () {
+				expect(function () {
+					serviceSettings.load({ name: ' service name' });
+				}).toThrow();
+			});
 
 			it('should get all', function () {
 				expect(serviceSettings.getAll()).toBe(settings);
@@ -63,6 +69,16 @@
 				var serviceInfo = serviceSettings.getByIndex(1);
 
 				expect(serviceInfo.name).toBe('service 2');
+			});
+
+			it('should update', function () {
+				var currentSettings = createSettings('CI');
+				var newSettings = createSettings('Updated CI');
+				serviceSettings.load([currentSettings]);
+
+				serviceSettings.update(currentSettings, newSettings);
+
+				expect(serviceSettings.getByIndex(0)).toBe(newSettings);
 			});
 
 		});

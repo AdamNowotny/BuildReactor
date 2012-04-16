@@ -6,7 +6,7 @@
 	initializeLogging();
 	// mainModule already loaded
 	var mainModule = chrome.extension.getBackgroundPage().require("src/mainModule");
-	settingsPageController.initialize();
+	settingsPageController.initialize(mainModule.getSupportedServiceTypes());
 	settingsPageController.settingsChanged.add(settingsChanged);
 
 	function initializeLogging() {

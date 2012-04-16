@@ -94,12 +94,6 @@
 						<div class="items">
 							<div class="page">
 								<ul id="service-add-list" class="thumbnails">
-									<li>
-										<a class="thumbnail" href="#">
-											<img src="src/bamboo/icon.png" alt="Atlassian Bamboo" />
-										</a>
-										<div style="text-align:center">Atlassian Bamboo</div>
-									</li>
 								</ul>
 							</div>
 							<div class="page">
@@ -123,6 +117,7 @@
 					jquery: 'lib/jquery-1.7.0/jquery',
 					jqueryTools: 'src/jqueryToolsModule',
 					amdUtils: 'lib/amd-utils',
+					handlebars: 'lib/requirejs-handlebars-plugin/Handlebars',
 					text: 'lib/requirejs-1.0.7/text',
 					order: 'lib/requirejs-1.0.7/order',
 					signals: 'lib/js-signals/signals'
@@ -132,7 +127,7 @@
 					'order!lib/twitter-bootstrap/js/bootstrap'
 				]
 			});
-			require(["src/settingsModule"], function (settingsModule) {
+			require(['src/settingsModule'], function (settingsModule) {
 				settingsModule.show();
 			});
 		</script>

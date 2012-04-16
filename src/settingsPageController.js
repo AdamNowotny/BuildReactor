@@ -26,7 +26,7 @@
 		$('#service-add-button').toggleClass('disabled', isSaveNeeded);
 	}
 
-	function initialize() {
+	function initialize(supportedServiceTypes) {
 		if (!isInitialized) {
 			savePrompt.removeSelected.add(function () {
 				removeCurrentService();
@@ -64,12 +64,12 @@
 			frame.saved.add(serviceSettingsChanged);
 			isInitialized = true;
 		}
-		reset();
+		reset(supportedServiceTypes);
 	};
 
-	function reset() {
+	function reset(supportedServiceTypes) {
 		savePrompt.initialize();
-		addModal.initialize();
+		addModal.initialize(supportedServiceTypes);
 		removePrompt.initialize();
 		frame.initialize();
 		setSaveNeeded(false);
@@ -106,7 +106,7 @@
 	}
 
 	function serviceSettingsChanged(updatedSettings) {
-		serviceSettings.load(updatedSettings);
+		serviceSettings.update(current, updatedSettings);
 		settingsChanged.dispatch(serviceSettings.getAll());
 		$('#alert-saved .alert').addClass('in');
 		alertTimer.start(3);
