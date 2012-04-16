@@ -5,6 +5,7 @@
 		'spec/serviceControllerTest',
 		'spec/settingsPageControllerTest',
 		'spec/settingsStoreTest',
+		'spec/serviceTypesRepositoryTest',
 		'spec/timerTest',
 		'spec/settings/addModalTest',
 		'spec/settings/serviceSettingsTest',

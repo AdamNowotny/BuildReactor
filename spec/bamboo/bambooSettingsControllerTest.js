@@ -51,6 +51,17 @@
 				expect($('.update-interval-input')).toHaveValue(settings.updateInterval);
 			});
 
+			it('should initialize empty settings with default values', function () {
+				jasmine.getFixtures().load('bamboo/settingsFixture.html');
+				settings.updateInterval = undefined;
+				settings.plans = undefined;
+
+				controller.show(settings);
+
+				expect($('.update-interval-input')).toHaveValue(60);
+				expect(settings.plans.length).toBe(0);
+			});
+
 			it('should focus on url on load', function () {
 				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 

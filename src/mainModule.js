@@ -2,8 +2,9 @@
 		'src/serviceController',
 		'src/notificationController',
 		'src/settingsStore',
+		'src/serviceTypesRepository',
 		'amdUtils/string/interpolate'
-	], function (serviceController, notificationController, settingsStore, interpolate) {
+	], function (serviceController, notificationController, settingsStore, serviceTypesRepository, interpolate) {
 
 		initializeLogging();
 		var settings = settingsStore.getAll();
@@ -30,16 +31,7 @@
 				serviceController.run();
 			},
 			getSupportedServiceTypes: function () {
-				return [
-					{
-						name: 'Atlassian Bamboo',
-						icon: 'icon.png',
-						baseUrl: 'src/bamboo',
-						service: 'bambooBuildService',
-						settingsController: 'bambooSettingsController',
-						settingsPage: 'bambooOptions.html'
-					}
-				];
+				return serviceTypesRepository;
 			}
 		};
 	});

@@ -1,47 +1,33 @@
 ﻿define([
 		'jquery',
 		'src/settings/addModal',
+		'src/serviceTypesRepository',
 		'jasmineSignals',
 		'jqueryTools'
-	], function ($, addModal, jasmineSignals) {
+	], function ($, addModal, serviceTypesRepository, jasmineSignals) {
+
 		describe('addModal', function () {
 
 			var serviceAddedSpy;
 			var spyOnSignal = jasmineSignals.spyOnSignal;
 
-			beforeEach(function () {
-				jasmine.getFixtures().load('settings/addModalFixture.html');
-				addModal.initialize(getSupportedServiceTypes());
-				serviceAddedSpy = spyOnSignal(addModal.serviceAdded);
-				modalWindow.show();
-			});
-
-			afterEach(function () {
-				serviceAddedSpy.reset();
-				modalWindow.hide();
-			});
-
-			var getSupportedServiceTypes = function () {
-				var serviceTypes = [
-					{
-						name: 'Atlassian Bamboo',
-						icon: 'icon.png',
-						baseUrl: 'src/bamboo',
-						service: 'bambooBuildService',
-						settingsController: 'bambooSettingsController',
-						settingsPage: 'bambooOptions.html'
-					},
-					{
-						name: 'CruiseControl',
-						icon: 'icon.png',
-						baseUrl: 'src/cruisecontrol',
-						service: 'ccBuildService',
-						settingsController: 'ccSettingsController',
-						settingsPage: 'ccOptions.html'
-					}
-				];
-				return serviceTypes;
+			var serviceType1 = {
+				typeName: 'Atlassian Bamboo',
+				icon: 'icon.png',
+				baseUrl: 'src/bamboo',
+				service: 'bambooBuildService',
+				settingsController: 'bambooSettingsController',
+				settingsPage: 'bambooOptions.html'
 			};
+			var serviceType2 = {
+				typeName: 'CruiseControl',
+				icon: 'icon.png',
+				baseUrl: 'src/cruisecontrol',
+				service: 'ccBuildService',
+				settingsController: 'ccSettingsController',
+				settingsPage: 'ccOptions.html'
+			};
+			var newSettings = serviceType1;
 
 			var modalWindow = {
 				hide: function () {
@@ -56,8 +42,11 @@
 				close: function () {
 					$('#service-add-wizard .close').click();
 				},
-				selectService: function () {
-					$('#service-add-wizard .thumbnail:first').click();
+				selectService: function (index) {
+					if (index === undefined) {
+						index = 1;
+					}
+					$('#service-add-wizard .thumbnail').eq(index - 1).find('img').click();
 				},
 				enterServiceName: function (serviceName) {
 					$('#service-add-wizard #service-add-name').val(serviceName).trigger('input');
@@ -79,8 +68,25 @@
 				},
 				getServiceCount: function () {
 					return $('.thumbnail').length;
+				},
+				getServiceNameAt: function (index) {
+					return $('#service-add-wizard .thumbnail').eq(index - 1).next().text();
 				}
 			};
+
+			beforeEach(function () {
+				spyOn(serviceTypesRepository, 'getAll').andReturn([serviceType1, serviceType2]);
+				spyOn(serviceTypesRepository, 'createSettingsFor').andReturn(newSettings);
+				jasmine.getFixtures().load('settings/addModalFixture.html');
+				addModal.initialize(serviceTypesRepository);
+				serviceAddedSpy = spyOnSignal(addModal.serviceAdded);
+				modalWindow.show();
+			});
+
+			afterEach(function () {
+				serviceAddedSpy.reset();
+				modalWindow.hide();
+			});
 
 			it('should fail if service types not specified', function () {
 				expect(function () {
@@ -95,6 +101,8 @@
 
 			it('should show supported services', function () {
 				expect(modalWindow.getServiceCount()).toBe(2);
+				expect(modalWindow.getServiceNameAt(1)).toBe(serviceType1.typeName);
+				expect(modalWindow.getServiceNameAt(2)).toBe(serviceType2.typeName);
 			});
 
 			it('should expect name after selecting service type', function () {
@@ -167,5 +175,28 @@
 				expect(modalWindow.isShown()).toBeFalsy();
 				expect(serviceAddedSpy).toHaveBeenDispatched(1);
 			});
+
+			it('should dispatch added with selected service', function () {
+				var spyServiceAdded = spyOnSignal(addModal.serviceAdded).matchingValues(newSettings);
+
+				modalWindow.selectService(2);
+				modalWindow.enterServiceName('CI 2');
+				modalWindow.add();
+
+				expect(spyServiceAdded).toHaveBeenDispatched(1);
+			});
+
+			it('should add name to new settings', function () {
+				var spyServiceAdded = spyOnSignal(addModal.serviceAdded).matching(function (settings) {
+					return settings.name === 'CI 2';
+				});
+
+				modalWindow.selectService(2);
+				modalWindow.enterServiceName('CI 2');
+				modalWindow.add();
+
+				expect(spyServiceAdded).toHaveBeenDispatched(1);
+			});
+
 		});
 	});

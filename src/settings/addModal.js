@@ -9,28 +9,32 @@
 
 	var serviceAdded = new signals.Signal();
 	var scrollableApi;
+	var serviceTypeName;
+	var typesRepository;
 
-	function initialize(serviceTypes) {
-		if (!serviceTypes) {
+	var initialize = function (serviceTypesRepository) {
+		if (!serviceTypesRepository) {
 			throw {
 				name: 'ArgumentUndefined',
 				message: 'Supported service types must be specified'
 			};
 		}
-		renderServiceTypes(serviceTypes);
+		typesRepository = serviceTypesRepository;
+		serviceTypeName = undefined;
+		renderServiceTypes(typesRepository.getAll());
 		scrollableApi = undefined;
 		$('#service-add-wizard .thumbnails a').click(serviceAddSelect);
 		$('#service-add-form').submit(function () {
 			serviceAdd();
 			return false;
 		});
-	}
-
-	var renderServiceTypes = function (serviceTypes) {
-		$('#service-add-list').html(serviceTemplate( { services: serviceTypes }));
 	};
 
-	function show() {
+	var renderServiceTypes = function (serviceTypes) {
+		$('#service-add-list').html(serviceTemplate({ services: serviceTypes }));
+	};
+
+	var show = function () {
 		if (scrollableApi == undefined) {
 			initializeModal();
 		}
@@ -38,17 +42,17 @@
 		$('#service-add-wizard .btn-primary').addClass('disabled');
 		$('#service-add-name').val('');
 		$('#service-add-wizard').modal();
-	}
+	};
 
-	function hide() {
+	var hide = function () {
 		$('#service-add-wizard').modal('hide');
-	}
+	};
 
-	function getName() {
+	var getName = function () {
 		return $('#service-add-name').val();
-	}
+	};
 
-	function initializeModal() {
+	var initializeModal = function () {
 		initializeScrollable();
 		$('#service-add-wizard .btn-primary').click(serviceAdd);
 		$('#service-add-name').on('input', function () {
@@ -58,45 +62,38 @@
 				$('#service-add-wizard .btn-primary').removeClass('disabled');
 			}
 		});
+	};
 
-		function initializeScrollable() {
-			var scrollable = $('.scrollable').scrollable().data('scrollable');
-			scrollable.onBeforeSeek(function (event, index) {
-				if (scrollable.getIndex() != index) {
-					$('#service-add-wizard .steps li.active').removeClass('active');
-					$('#service-add-wizard .steps li').eq(index).addClass('active');
-				}
-			});
-			scrollable.onSeek(function (event, index) {
-				if (index == 1) {
-					$('#service-add-name').focus();
-				}
-			});
-			scrollableApi = scrollable;
-		}
-	}
+	var initializeScrollable = function () {
+		var scrollable = $('.scrollable').scrollable().data('scrollable');
+		scrollable.onBeforeSeek(function (event, index) {
+			if (scrollable.getIndex() != index) {
+				$('#service-add-wizard .steps li.active').removeClass('active');
+				$('#service-add-wizard .steps li').eq(index).addClass('active');
+			}
+		});
+		scrollable.onSeek(function (event, index) {
+			if (index == 1) {
+				$('#service-add-name').focus();
+			}
+		});
+		scrollableApi = scrollable;
+	};
 
-	function serviceAddSelect(sender) {
+	var serviceAddSelect = function (sender) {
+		serviceTypeName = sender.target.alt;
 		scrollableApi.next();
-	}
+	};
 
-	function serviceAdd() {
+	var serviceAdd = function () {
 		if ($('#service-add-wizard .btn-primary').hasClass('disabled')) {
 			return;
 		}
 		hide();
-		serviceAdded.dispatch({
-			name: getName(),
-			typeName: 'Atlasian Bamboo',
-			icon: 'icon.png',
-			baseUrl: 'src/bamboo',
-			service: 'bambooBuildService',
-			settingsController: 'bambooSettingsController',
-			settingsPage: 'bambooOptions.html',
-			updateInterval: 60,
-			plans: []
-		});
-	}
+		var newSettings = typesRepository.createSettingsFor(serviceTypeName);
+		newSettings.name = getName();
+		serviceAdded.dispatch(newSettings);
+	};
 
 	return {
 		initialize: initialize,

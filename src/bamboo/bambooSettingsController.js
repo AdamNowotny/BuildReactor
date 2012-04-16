@@ -33,6 +33,7 @@
 			if (!settings) {
 				throw { name: 'ArgumentUndefined', message: 'settings not defined' };
 			}
+			updateWithDefaults(settings);
 			activeSettings = settings;
 			$('.url-input').val(settings.url);
 			$('.username-input').val(settings.username);
@@ -48,13 +49,22 @@
 			$('.url-input').focus();
 		}
 
-		var updatePlans = function() {
+		var updateWithDefaults = function (settings) {
+			if (settings.updateInterval === undefined) {
+				settings.updateInterval = 60;
+			}
+			if (settings.plans === undefined) {
+				settings.plans = [];
+			}
+		};
+
+		var updatePlans = function () {
 			$('.plans-button').attr('disabled', 'disabled');
 			$('.alert-error').hide();
 			$('.plan-selection-container').html('');
 			var plansRequest = new BambooRequest(getRequestSettings());
-			plansRequest.responseReceived.addOnce(function(response) {
-				response.projects.project.sort(function(a, b) {
+			plansRequest.responseReceived.addOnce(function (response) {
+				response.projects.project.sort(function (a, b) {
 					return ((a.name < b.name) ? -1 : ((a.name > b.name) ? 1 : 0));
 				});
 				renderPlans(response, activeSettings.plans);
