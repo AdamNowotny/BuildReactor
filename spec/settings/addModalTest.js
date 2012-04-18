@@ -14,18 +14,12 @@
 			var serviceType1 = {
 				typeName: 'Atlassian Bamboo',
 				icon: 'icon.png',
-				baseUrl: 'src/bamboo',
-				service: 'bambooBuildService',
-				settingsController: 'bambooSettingsController',
-				settingsPage: 'bambooOptions.html'
+				baseUrl: 'src/bamboo'
 			};
 			var serviceType2 = {
 				typeName: 'CruiseControl',
 				icon: 'icon.png',
-				baseUrl: 'src/cruisecontrol',
-				service: 'ccBuildService',
-				settingsController: 'ccSettingsController',
-				settingsPage: 'ccOptions.html'
+				baseUrl: 'src/cruisecontrol'
 			};
 			var newSettings = serviceType1;
 
@@ -154,9 +148,8 @@
 				var serviceAddedSpy = spyOnSignal(addModal.serviceAdded).matching(function (info) {
 					return info.name == name &&
 						info.baseUrl == 'src/bamboo' &&
-							info.service == 'bambooBuildService' &&
-								info.settingsController == 'bambooSettingsController' &&
-									info.settingsPage == 'bambooOptions.html';
+							info.icon == 'icon.png' &&
+								info.typeName == 'Atlassian Bamboo';
 				});
 				modalWindow.selectService();
 				modalWindow.enterServiceName(name);

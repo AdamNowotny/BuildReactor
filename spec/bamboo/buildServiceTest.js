@@ -1,5 +1,5 @@
 ﻿define([
-		'src/bamboo/bambooBuildService',
+		'src/bamboo/buildService',
 		'src/bamboo/bambooPlan',
 		'src/bamboo/bambooRequest',
 		'src/timer',
@@ -8,9 +8,9 @@
 		'jasmineSignals',
 		'json!spec/fixtures/bamboo/projects.json'
 	],
-	function (BambooBuildService, BambooPlan, BambooRequest, Timer, $, signals, jasmineSignals, projectsJson) {
+	function (BuildService, BambooPlan, BambooRequest, Timer, $, signals, jasmineSignals, projectsJson) {
 
-		describe('BambooBuildService', function () {
+		describe('bamboo/BuildService', function () {
 
 			var service;
 			var settings;
@@ -30,7 +30,7 @@
 					updateInterval: 10000,
 					plans: ['PROJECT1-PLAN1', 'PROJECT2-PLAN2']
 				};
-				service = new BambooBuildService(settings);
+				service = new BuildService(settings);
 				mockBambooRequestProjects = spyOn(BambooRequest.prototype, 'projects').andCallFake(function () {
 					this.responseReceived.dispatch(projectsJson);
 				});
@@ -51,7 +51,7 @@
 
 			it('should require service name', function () {
 				expect(function () {
-					var service = new BambooBuildService({
+					var service = new BuildService({
 						username: null,
 						password: null,
 						url: 'http://example.com/',
@@ -163,7 +163,7 @@
 			};
 
 			it('should not start if update interval not set', function () {
-				var service1 = new BambooBuildService({
+				var service1 = new BuildService({
 					name: 'My Bamboo CI',
 					username: null,
 					password: null,
@@ -249,9 +249,9 @@
 
 			it('multiple services should update independently', function () {
 				initializeService();
-				var service1 = new BambooBuildService({ name: 'Bamboo', url: 'http://example1.com/', plans: [] });
+				var service1 = new BuildService({ name: 'Bamboo', url: 'http://example1.com/', plans: [] });
 				var updateStartedSpy1 = spyOnSignal(service1.updateStarted);
-				var service2 = new BambooBuildService({ name: 'Bamboo', url: 'http://example2.com/', plans: [] });
+				var service2 = new BuildService({ name: 'Bamboo', url: 'http://example2.com/', plans: [] });
 				var updateStartedSpy2 = spyOnSignal(service2.updateStarted);
 
 				service1.update();
@@ -287,7 +287,7 @@
 					url: 'http://example.com/',
 					plans: ['PROJECT1-PLAN1', 'PROJECT1-PLAN2']
 				};
-				service = new BambooBuildService(settings);
+				service = new BuildService(settings);
 
 				service.update();
 

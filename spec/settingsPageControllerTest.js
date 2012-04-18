@@ -24,8 +24,13 @@
 				setServiceName: function (name) {
 					return $('#service-name').text(name);
 				},
-				isAddButtonEnabled: function () {
-					return !$('#service-add-button').hasClass('disabled');
+				isAddButtonEnabled: function (enable) {
+					if (enable === undefined) {
+						return !$('#service-add-button').hasClass('disabled');
+					} else {
+						$('#service-add-button').toggleClass('disabled', !enable);
+						return undefined;
+					}
 				},
 				removeService: function () {
 					$('#service-remove-button').click();
@@ -107,7 +112,6 @@
 			it('should show service settings page on itemSelected', function () {
 				var serviceInfo = new MockSettingsBuilder()
 					.withName('service name')
-					.withSettingsPage('page1.html')
 					.create();
 				var item = createItem(0, 'service name');
 				spyServiceSettingsGetByIndex.andReturn(serviceInfo);
@@ -249,6 +253,14 @@
 					addService('Service');
 
 					expect(page.isAddButtonEnabled()).toBeFalsy();
+				});
+
+				it('should enable add button if service saved', function () {
+					page.isAddButtonEnabled(false);
+
+					frame.saved.dispatch(createSettings('service'));
+					
+					expect(page.isAddButtonEnabled()).toBeTruthy();
 				});
 
 				it('should enable add button if new service removed', function () {

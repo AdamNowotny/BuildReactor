@@ -22,36 +22,42 @@
 				it('should require name', function () {
 					var service = new MockBuildService();
 					service.name = undefined;
+					
 					expect(function () { controller.addService(service); }).toThrow();
 				});
 
 				it('should require buildFailed signal', function () {
 					var service = new MockBuildService();
 					service.buildFailed = undefined;
+					
 					expect(function () { controller.addService(service); }).toThrow();
 				});
 
 				it('should require buildFixed signal', function () {
 					var service = new MockBuildService();
 					service.buildFixed = undefined;
+					
 					expect(function () { controller.addService(service); }).toThrow();
 				});
 
 				it('should require updateStarted signal', function () {
 					var service = new MockBuildService();
 					service.updateStarted = undefined;
+					
 					expect(function () { controller.addService(service); }).toThrow();
 				});
 
 				it('should require updateFinished signal', function () {
 					var service = new MockBuildService();
 					service.updateFinished = undefined;
+					
 					expect(function () { controller.addService(service); }).toThrow();
 				});
 
 				it('should require errorThrown signal', function () {
 					var service = new MockBuildService();
 					service.errorThrown = undefined;
+					
 					expect(function () { controller.addService(service); }).toThrow();
 				});
 
@@ -163,14 +169,14 @@
 
 			it('should run services only after all are loaded', function () {
 				var servicesStartedSpy = spyOnSignal(controller.servicesStarted);
-				var settings1 = new MockSettingsBuilder().withName('service 1').withService('service1').create();
-				var settings2 = new MockSettingsBuilder().withName('service 2').withService('service2').create();
+				var settings1 = new MockSettingsBuilder().withName('service 1').withBaseUrl('service1').create();
+				var settings2 = new MockSettingsBuilder().withName('service 2').withBaseUrl('service2').create();
 				var loaded1callback;
 				var loaded2callback;
 				spyOn(window, 'require').andCallFake(function (serviceNames, callback) {
-					if (endsWith(serviceNames[0], 'service1')) {
+					if (endsWith(serviceNames[0], 'service1/buildService')) {
 						loaded1callback = callback;
-					} else if (endsWith(serviceNames[0], 'service2')) {
+					} else if (endsWith(serviceNames[0], 'service2/buildService')) {
 						loaded2callback = callback;
 					} else {
 						throw 'Service unknown: ' + serviceNames[0];

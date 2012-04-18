@@ -10,16 +10,13 @@
 		var settingsChanged = new signals.Signal();
 		var activeSettings;
 
-		function getVisibleSettings() {
+		var getVisibleSettings = function () {
 			var plans = $('.plan-selection-container .plan input:checked').map(function () {
 				return this.name;
 			}).get();
 			var newSettings = {
 				name: activeSettings.name,
 				baseUrl: 'src/bamboo',
-				service: 'bambooBuildService',
-				settingsController: 'bambooSettingsController',
-				settingsPage: 'bambooOptions.html',
 				url: $('.url-input').val(),
 				updateInterval: parseInt($('.update-interval-input').val()),
 				username: $('.username-input').val(),
@@ -27,9 +24,9 @@
 				plans: plans
 			};
 			return newSettings;
-		}
+		};
 
-		function show(settings) {
+		var show = function(settings) {
 			if (!settings) {
 				throw { name: 'ArgumentUndefined', message: 'settings not defined' };
 			}
@@ -40,14 +37,14 @@
 			$('.password-input').val(settings.password);
 			$('.update-interval-input').val(settings.updateInterval);
 			$('.plans-button').click(updatePlans);
-			$('.save-button').click(function () {
+			$('.save-button').click(function() {
 				settingsChanged.dispatch(getVisibleSettings());
 			});
-			$('.bamboo-settings-form').submit(function () {
+			$('.bamboo-settings-form').submit(function() {
 				return false;
 			});
 			$('.url-input').focus();
-		}
+		};
 
 		var updateWithDefaults = function (settings) {
 			if (settings.updateInterval === undefined) {
@@ -85,7 +82,7 @@
 		};
 
 		var renderPlans = function (response, selectedPlans) {
-			console.log('BambooSettingsController: Plans received', response);
+			console.log('bamboo/settingsController: Plans received', response);
 			$('.plans-button').removeAttr('disabled');
 			$('.save-button').removeAttr('disabled');
 			var templateData = createTemplateData(response, selectedPlans);
@@ -97,7 +94,7 @@
 		};
 
 		var renderError = function (ajaxError) {
-			console.error('BambooSettingsController: Ajax request failed: ' + ajaxError.message, ajaxError);
+			console.error('bamboo/settingsController: Ajax request failed: ' + ajaxError.message, ajaxError);
 			$('.plans-button').removeAttr('disabled');
 			$('.error-message').text(ajaxError.message);
 			$('.error-url').text(ajaxError.url);

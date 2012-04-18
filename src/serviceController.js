@@ -1,7 +1,6 @@
 ﻿define([
-		'signals',
-		'amdUtils/string/interpolate'
-	], function (signals, interpolate) {
+		'signals'
+	], function (signals) {
 		var servicesStarted = new signals.Signal();
 		var buildFailed = new signals.Signal();
 		var buildFixed = new signals.Signal();
@@ -22,7 +21,7 @@
 			}
 
 			function loadService(serviceSettings) {
-				var serviceName = interpolate('{{0}}/{{1}}', [serviceSettings.baseUrl, serviceSettings.service]);
+				var serviceName = serviceSettings.baseUrl + '/buildService';
 				require([serviceName], function (Service) {
 					var serviceInstance = new Service(serviceSettings);
 					addService(serviceInstance);

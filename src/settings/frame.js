@@ -21,14 +21,14 @@
 		currentSettings = serviceInfo;
 		iframe.onload = function () {
 			loaded.dispatch();
-			var controllerName = serviceInfo.baseUrl + '/' + serviceInfo.settingsController;
+			var controllerName = serviceInfo.baseUrl + '/settingsController';
 			iframe.contentWindow.require([controllerName], function (serviceSettingsController) {
 				// executed in iframe context
 				serviceSettingsController.settingsChanged.add(settingsChanged);
 				serviceSettingsController.show(serviceInfo);
 			});
 		};
-		$('#settings-frame').attr('src', serviceInfo.baseUrl + '/' + serviceInfo.settingsPage);
+		$('#settings-frame').attr('src', serviceInfo.baseUrl + '/options.html');
 	};
 
 	var settingsChanged = function (newSettings) {

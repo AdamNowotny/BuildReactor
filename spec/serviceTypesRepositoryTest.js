@@ -14,9 +14,6 @@
 			expect(settings.typeName).toBe('CruiseControl');
 			expect(settings.icon).toBe('icon.png');
 			expect(settings.baseUrl).toBe('src/cruisecontrol');
-			expect(settings.service).toBe('ccBuildService');
-			expect(settings.settingsController).toBe('ccSettingsController');
-			expect(settings.settingsPage).toBe('ccOptions.html');
 		});
 
 	});

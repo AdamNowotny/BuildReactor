@@ -110,6 +110,7 @@
 		settingsChanged.dispatch(serviceSettings.getAll());
 		$('#alert-saved .alert').addClass('in');
 		alertTimer.start(3);
+		setSaveNeeded(false);
 	}
 
 	return {

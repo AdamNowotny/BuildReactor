@@ -1,5 +1,5 @@
 ﻿define([
-		'src/bamboo/bambooSettingsController',
+		'src/bamboo/settingsController',
 		'src/bamboo/bambooRequest',
 		'jquery',
 		'jasmineSignals',
@@ -7,7 +7,7 @@
 	],
 	function (controller, BambooRequest, $, jasmineSignals, jsonProjects) {
 
-		describe('BambooSettingsController', function () {
+		describe('bamboo/settingsController', function () {
 
 			var settings;
 			var mockBambooRequest;
@@ -17,9 +17,6 @@
 				settings = {
 					name: 'My Bamboo CI',
 					baseUrl: 'src/bamboo',
-					service: 'bambooBuildService',
-					settingsController: 'bambooSettingsController',
-					settingsPage: 'bambooOptions.html',
 					url: 'http://example.com/',
 					updateInterval: 10,
 					username: 'username1',
@@ -30,7 +27,6 @@
 				mockBambooRequest.andCallFake(function () {
 					this.responseReceived.dispatch(jsonProjects);
 				});
-				spyOn(window, 'alert');
 			});
 
 			function showPlans() {

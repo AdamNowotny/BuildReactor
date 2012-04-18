@@ -24,7 +24,7 @@
 			};
 
 			it('should show empty page', function () {
-				setSrc('page1.html');
+				setSrc('other/options.html');
 
 				frame.showEmpty();
 
@@ -46,9 +46,8 @@
 			it('should show correct service settings page', function () {
 				var serviceInfo = new MockSettingsBuilder()
 					.withName('service name')
-					.withSettingsPage('page1.html')
 					.create();
-				var settingsPageUrl = serviceInfo.baseUrl + "/" + serviceInfo.settingsPage;
+				var settingsPageUrl = serviceInfo.baseUrl + "/options.html";
 
 				frame.show(serviceInfo);
 
@@ -58,7 +57,6 @@
 			it('should dispatch loaded after settings page loaded', function () {
 				var serviceInfo = new MockSettingsBuilder()
 					.withName('service name')
-					.withSettingsPage('page1.html')
 					.create();
 				var spyLoaded = spyOnSignal(frame.loaded);
 
@@ -120,7 +118,7 @@
 
 			function runsToGetController(settings) {
 				var childController;
-				var controllerName = settings.baseUrl + '/' + settings.settingsController;
+				var controllerName = settings.baseUrl + '/settingsController';
 
 				// wait for RequireJS to be loaded
 				waitsFor(function () {

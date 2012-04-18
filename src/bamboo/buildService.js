@@ -6,7 +6,7 @@
 		'amdUtils/string/interpolate'
 	], function (signals, BambooRequest, BambooPlan, Timer, interpolate) {
 
-		var BambooBuildService = function (settings) {
+		var BuildService = function (settings) {
 			Contract.expectString(settings.name, 'settings.name not defined');
 			this.isInitialized = false;
 			this.settings = settings;
@@ -20,7 +20,7 @@
 			this.buildFixed = new signals.Signal();
 		};
 
-		BambooBuildService.prototype.initialize = function () {
+		BuildService.prototype.initialize = function () {
 			var initializeFinished = new signals.Signal();
 			initializeFinished.memorize = true;
 			var self = this;
@@ -65,7 +65,7 @@
 			}
 		};
 
-		BambooBuildService.prototype.onBuildFailed = function (plan) {
+		BuildService.prototype.onBuildFailed = function (plan) {
 			var buildEvent = {
 				message: interpolate('Build failed - {{0}}', [plan.projectName]),
 				details: plan.name,
@@ -74,7 +74,7 @@
 			this.buildFailed.dispatch(buildEvent);
 		};
 
-		BambooBuildService.prototype.onBuildFixed = function (plan) {
+		BuildService.prototype.onBuildFixed = function (plan) {
 			var buildEvent = {
 				message: interpolate('Build fixed - {{0}}', [plan.projectName]),
 				details: plan.name,
@@ -83,11 +83,11 @@
 			this.buildFixed.dispatch(buildEvent);
 		};
 
-		BambooBuildService.prototype.onPlanError = function (ajaxError) {
+		BuildService.prototype.onPlanError = function (ajaxError) {
 			this.errorThrown.dispatch(ajaxError);
 		};
 
-		BambooBuildService.prototype.start = function () {
+		BuildService.prototype.start = function () {
 			Contract.expectNumber(this.settings.updateInterval, 'Update interval not set');
 			this.timer = new Timer();
 			this.timer.elapsed.add(this.update, this);
@@ -99,7 +99,7 @@
 			this.update();
 		};
 
-		BambooBuildService.prototype.update = function () {
+		BuildService.prototype.update = function () {
 			this.updateStarted.dispatch();
 			if (this.isInitialized) {
 				this.planUpdate();
@@ -117,13 +117,13 @@
 			}
 		};
 
-		BambooBuildService.prototype.stop = function () {
+		BuildService.prototype.stop = function () {
 			this.updateFinished.remove(this.scheduleUpdate, this);
 			this.timer.elapsed.remove(this.update, this);
 			this.isInitialized = false;
 		};
 
-		BambooBuildService.prototype.planUpdate = function () {
+		BuildService.prototype.planUpdate = function () {
 			var plansUpdated = 0;
 			for (var planKey in this.plans) {
 				this.plans[planKey].update().addOnce(function () {
@@ -135,5 +135,5 @@
 			}
 		};
 
-		return BambooBuildService;
+		return BuildService;
 	});

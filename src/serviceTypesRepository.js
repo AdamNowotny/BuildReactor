@@ -4,18 +4,12 @@
 		{
 			typeName: 'Atlassian Bamboo',
 			icon: 'icon.png',
-			baseUrl: 'src/bamboo',
-			service: 'bambooBuildService',
-			settingsController: 'bambooSettingsController',
-			settingsPage: 'bambooOptions.html'
+			baseUrl: 'src/bamboo'
 		},
 		{
 			typeName: 'CruiseControl',
 			icon: 'icon.png',
-			baseUrl: 'src/cruisecontrol',
-			service: 'ccBuildService',
-			settingsController: 'ccSettingsController',
-			settingsPage: 'ccOptions.html'
+			baseUrl: 'src/cruisecontrol'
 		}
 	];
 
@@ -28,10 +22,7 @@
 		var newSettings = {
 			typeName: name,
 			icon: typeInfo.icon,
-			baseUrl: typeInfo.baseUrl,
-			service: typeInfo.service,
-			settingsController: typeInfo.settingsController,
-			settingsPage: typeInfo.settingsPage
+			baseUrl: typeInfo.baseUrl
 		};
 		return newSettings;
 	};

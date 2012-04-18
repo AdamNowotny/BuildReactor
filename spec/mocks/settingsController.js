@@ -4,7 +4,7 @@
 	var showCalledCount = 0;
 
 	function show(settings) {
-		console.log(settings);
+		console.log('settingsController.show called with', settings);
 		showCalledCount++;
 	}
 
