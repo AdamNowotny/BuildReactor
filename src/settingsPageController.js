@@ -58,9 +58,6 @@
 				var serviceInfo = serviceSettings.getByIndex(index);
 				showServicePage(serviceInfo);
 			});
-			frame.loaded.add(function () {
-
-			});
 			frame.saved.add(serviceSettingsChanged);
 			isInitialized = true;
 		}

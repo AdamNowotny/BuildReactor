@@ -40,7 +40,7 @@
 			$('.save-button').click(function() {
 				settingsChanged.dispatch(getVisibleSettings());
 			});
-			$('.bamboo-settings-form').submit(function() {
+			$('.settings-form').submit(function () {
 				return false;
 			});
 			$('.url-input').focus();

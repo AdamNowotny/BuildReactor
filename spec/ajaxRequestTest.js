@@ -33,55 +33,87 @@
 				expect(responseReceivedSpy).toHaveBeenDispatched(1);
 			});
 
-			it('should set authType to basic if username specified', function () {
-				var requestOptions = {
-					url: 'http://example.com',
-					username: 'username1',
-					password: 'password123'
-				};
-				mockAjax.andCallFake(function (ajaxOptions) {
-					expect(ajaxOptions.username).toBe(requestOptions.username);
-					expect(ajaxOptions.password).toBe(requestOptions.password);
-					expect(ajaxOptions.data).toBeDefined();
-					expect(ajaxOptions.data.os_authType).toBe('basic');
-				});
+		    describe('authType', function() {
 
-				request = new AjaxRequest(requestOptions);
-				request.send();
+		        it('should set authType to basic if username specified', function() {
+		            var requestOptions = {
+		                url: 'http://example.com',
+		                username: 'username1',
+		                password: 'password123'
+		            };
+		            mockAjax.andCallFake(function(ajaxOptions) {
+		                expect(ajaxOptions.username).toBe(requestOptions.username);
+		                expect(ajaxOptions.password).toBe(requestOptions.password);
+		                expect(ajaxOptions.data).toBeDefined();
+		                expect(ajaxOptions.data.os_authType).toBe('basic');
+		            });
 
-				expect(mockAjax).toHaveBeenCalled();
+		            request = new AjaxRequest(requestOptions);
+		            request.send();
+
+		            expect(mockAjax).toHaveBeenCalled();
+		        });
+
+		        it('should not set authType if username not specified', function() {
+		            var requestOptions = { url: 'http://example.com' };
+		            mockAjax.andCallFake(function(ajaxOptions) {
+		                expect(ajaxOptions.username).not.toBeDefined();
+		                expect(ajaxOptions.password).not.toBeDefined();
+		                expect(ajaxOptions.data).not.toBeDefined();
+		            });
+
+		            request = new AjaxRequest(requestOptions);
+		            request.send();
+
+		            expect(mockAjax).toHaveBeenCalled();
+		        });
+
+		        it('should not set authType if username is empty', function() {
+		            var requestOptions = {
+		                url: 'http://example.com',
+		                username: '    ',
+		                password: ''
+		            };
+		            mockAjax.andCallFake(function(ajaxOptions) {
+		                expect(ajaxOptions.username).not.toBeDefined();
+		                expect(ajaxOptions.password).not.toBeDefined();
+		                expect(ajaxOptions.data).not.toBeDefined();
+		            });
+
+		            request = new AjaxRequest(requestOptions);
+		            request.send();
+
+		            expect(mockAjax).toHaveBeenCalled();
+		        });
+		    });
+
+			it('should set dataType if specified', function () {
+			    var requestOptions = {
+			        url: 'http://example.com',
+			        dataType: 'xml'
+			    };
+			    mockAjax.andCallFake(function (ajaxOptions) {
+			        expect(ajaxOptions.dataType).toBe(requestOptions.dataType);
+			    });
+
+			    request = new AjaxRequest(requestOptions);
+			    request.send();
+
+			    expect(mockAjax).toHaveBeenCalled();
 			});
 
-			it('should not set authType if username not specified', function () {
-				var requestOptions = { url: 'http://example.com' };
-				mockAjax.andCallFake(function (ajaxOptions) {
-					expect(ajaxOptions.username).not.toBeDefined();
-					expect(ajaxOptions.password).not.toBeDefined();
-					expect(ajaxOptions.data).not.toBeDefined();
-				});
+			it('should set json dataType as default', function () {
+			    var requestOptions = {
+			        url: 'http://example.com'
+			    };
+			    mockAjax.andCallFake(function (ajaxOptions) {
+			        expect(ajaxOptions.dataType).toBe('json');
+			    });
 
-				request = new AjaxRequest(requestOptions);
-				request.send();
+			    request = new AjaxRequest(requestOptions);
+			    request.send();
 
-				expect(mockAjax).toHaveBeenCalled();
-			});
-
-			it('should not set authType if username is empty', function () {
-				var requestOptions = {
-					url: 'http://example.com',
-					username: '    ',
-					password: ''
-				};
-				mockAjax.andCallFake(function (ajaxOptions) {
-					expect(ajaxOptions.username).not.toBeDefined();
-					expect(ajaxOptions.password).not.toBeDefined();
-					expect(ajaxOptions.data).not.toBeDefined();
-				});
-
-				request = new AjaxRequest(requestOptions);
-				request.send();
-
-				expect(mockAjax).toHaveBeenCalled();
+			    expect(mockAjax).toHaveBeenCalled();
 			});
 
 			describe('error handling', function () {

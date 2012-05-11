@@ -16,7 +16,10 @@
 		'spec/bamboo/buildServiceTest',
 		'spec/bamboo/bambooPlanTest',
 		'spec/bamboo/bambooRequestTest',
-		'spec/bamboo/settingsControllerTest'
+		'spec/bamboo/settingsControllerTest',
+		'spec/cruisecontrol/settingsControllerTest',
+		'spec/cruisecontrol/ccRequestTest',
+		'spec/cruisecontrol/projectViewTest'
 	], function () {
 
 		return {

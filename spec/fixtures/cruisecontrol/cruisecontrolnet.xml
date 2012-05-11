@@ -1,0 +1,49 @@
+<Projects CCType="CCNet">
+  <Project name="CruiseControl.NET" category="CruiseControl.NET" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="1.7.706.8065" lastBuildTime="2012-02-29T09:35:22.796875+01:00" nextBuildTime="2012-04-19T12:32:55.91+02:00" webUrl="http://build.nauck-it.de/server/build.nauck-it.de/project/CruiseControl.NET/ViewProjectReport.aspx" CurrentMessage="Build (IfModificationExists) triggered from IntervalTrigger" BuildStage="" serverName="build.nauck-it.de" description="">
+	<messages>
+	  <message text="Build (IfModificationExists) triggered from IntervalTrigger" kind="BuildStatus" />
+	</messages>
+  </Project>
+  <Project name="AspSQLProvider" category="AspSQLProvider" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="1.3.14.0" lastBuildTime="2011-09-01T10:18:41.101454+02:00" nextBuildTime="2012-04-19T12:30:35.25375+02:00" webUrl="http://build.nauck-it.de/server/build.nauck-it.de/project/AspSQLProvider/ViewProjectReport.aspx" CurrentMessage="Build (IfModificationExists) triggered from IntervalTrigger" BuildStage="" serverName="build.nauck-it.de" description="">
+	<messages>
+	  <message text="Build (IfModificationExists) triggered from IntervalTrigger" kind="BuildStatus" />
+	</messages>
+  </Project>
+  <Project name="Footloose" category="Footloose" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="0.1.73.0" lastBuildTime="2012-03-01T19:39:46.71875+01:00" nextBuildTime="2012-04-19T12:35:20.535+02:00" webUrl="http://build.nauck-it.de/server/build.nauck-it.de/project/Footloose/ViewProjectReport.aspx" CurrentMessage="Build (IfModificationExists) triggered from IntervalTrigger" BuildStage="" serverName="build.nauck-it.de" description="">
+	<messages>
+	  <message text="Build (IfModificationExists) triggered from IntervalTrigger" kind="BuildStatus" />
+	</messages>
+  </Project>
+  <Project name="Build-Server-Config" category="Build Server Configuration" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="2011.09.07.001" lastBuildTime="2011-09-07T21:02:43.5830725+02:00" nextBuildTime="2012-04-19T12:31:43.581875+02:00" webUrl="http://build.nauck-it.de/server/build.nauck-it.de/project/Build-Server-Config/ViewProjectReport.aspx" CurrentMessage="Build (IfModificationExists) triggered from IntervalTrigger" BuildStage="" serverName="build.nauck-it.de" description="">
+	<messages>
+	  <message text="Build (IfModificationExists) triggered from IntervalTrigger" kind="BuildStatus" />
+	</messages>
+  </Project>
+  <Project name="NetReflector" category="CruiseControl.NET" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="1.0.21.58" lastBuildTime="2010-05-09T07:03:42.27875+02:00" nextBuildTime="2012-04-19T12:34:06.87875+02:00" webUrl="http://build.nauck-it.de/server/build.nauck-it.de/project/NetReflector/ViewProjectReport.aspx" CurrentMessage="Build (IfModificationExists) triggered from IntervalTrigger" BuildStage="" serverName="build.nauck-it.de" description="">
+	<messages>
+	  <message text="Build (IfModificationExists) triggered from IntervalTrigger" kind="BuildStatus" />
+	</messages>
+  </Project>
+  <Project name="FAKE" category="FAKE" activity="Sleeping" lastBuildStatus="Failure" lastBuildLabel="2010.08.04.005" lastBuildTime="2012-03-07T08:09:34.46875+01:00" nextBuildTime="2012-04-19T12:32:06.16+02:00" webUrl="http://build.nauck-it.de/server/build.nauck-it.de/project/FAKE/ViewProjectReport.aspx" CurrentMessage="Build (IfModificationExists) triggered from IntervalTrigger" BuildStage="" serverName="build.nauck-it.de" description="">
+	<messages>
+	  <message text="Build (IfModificationExists) triggered from IntervalTrigger" kind="BuildStatus" />
+	</messages>
+  </Project>
+  <Project name="NauckIT.NAnt" category="Nauck IT Utilities" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="1.0.24.239" lastBuildTime="2012-04-13T04:33:57.515625+02:00" nextBuildTime="2012-04-13T04:38:59.890625+02:00" webUrl="http://build.nauck-it.de/server/build.nauck-it.de/project/NauckIT.NAnt/ViewProjectReport.aspx" CurrentMessage="Svn: CheckForModifications" BuildStage="" serverName="build.nauck-it.de" description="">
+	<messages>
+	  <message text="" kind="Breakers" />
+	  <message text="Svn: CheckForModifications" kind="FailingTasks" />
+	</messages>
+  </Project>
+  <Project name="FastForward.NET" category="CruiseControl.NET" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="1.0.59.104" lastBuildTime="2012-04-13T04:33:39.609375+02:00" nextBuildTime="2012-04-13T04:38:42.5+02:00" webUrl="http://build.nauck-it.de/server/build.nauck-it.de/project/FastForward.NET/ViewProjectReport.aspx" CurrentMessage="Svn: CheckForModifications" BuildStage="" serverName="build.nauck-it.de" description="">
+	<messages>
+	  <message text="" kind="Breakers" />
+	  <message text="Svn: CheckForModifications" kind="FailingTasks" />
+	</messages>
+  </Project>
+  <Project name="Npgsql2" category="Npgsql" activity="Sleeping" lastBuildStatus="Exception" lastBuildLabel="2.0.8.52" lastBuildTime="2012-03-23T13:46:20.316875+01:00" nextBuildTime="2012-04-19T12:30:41.050625+02:00" webUrl="http://build.nauck-it.de/server/build.nauck-it.de/project/Npgsql2/ViewProjectReport.aspx" CurrentMessage="Build (IfModificationExists) triggered from IntervalTrigger" BuildStage="" serverName="build.nauck-it.de" description="">
+	<messages>
+	  <message text="Build (IfModificationExists) triggered from IntervalTrigger" kind="BuildStatus" />
+	</messages>
+  </Project>
+</Projects>

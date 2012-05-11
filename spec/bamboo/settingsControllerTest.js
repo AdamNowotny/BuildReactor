@@ -27,18 +27,16 @@
 				mockBambooRequest.andCallFake(function () {
 					this.responseReceived.dispatch(jsonProjects);
 				});
+				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 			});
 
 			function showPlans() {
-				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 				controller.show(settings);
 
 				$('.plans-button').click();
 			}
 
 			it('should initialize from settings', function () {
-				jasmine.getFixtures().load('bamboo/settingsFixture.html');
-
 				controller.show(settings);
 
 				expect($('.url-input')).toHaveValue(settings.url);
@@ -48,7 +46,6 @@
 			});
 
 			it('should initialize empty settings with default values', function () {
-				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 				settings.updateInterval = undefined;
 				settings.plans = undefined;
 
@@ -59,15 +56,12 @@
 			});
 
 			it('should focus on url on load', function () {
-				jasmine.getFixtures().load('bamboo/settingsFixture.html');
-
 				controller.show(settings);
 
 				expect($('.url-input:focus').length).toBe(1);
 			});
 
 			it('should use url and credentials when getting plans', function () {
-				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 				mockBambooRequest.andCallFake(function () {
 					expect(this.settings.username).toBe(settings.username);
 					expect(this.settings.password).toBe(settings.password);
@@ -77,6 +71,8 @@
 				controller.show(settings);
 
 				$('.plans-button').click();
+
+				expect(mockBambooRequest).toHaveBeenCalled();
 			});
 
 			it('should display sorted projects after button clicked', function () {
@@ -88,7 +84,6 @@
 			});
 
 			it('should disable button while waiting for response', function () {
-				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 				mockBambooRequest.andCallFake(function () {
 					expect($('.plans-button')).toBeDisabled();
 					this.responseReceived.dispatch(jsonProjects);
@@ -102,7 +97,6 @@
 			});
 
 			it('should display error if call failed when getting plans', function () {
-				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 				mockBambooRequest.andCallFake(function () {
 					this.errorReceived.dispatch({ message: 'error message' });
 				});
@@ -127,7 +121,6 @@
 			});
 
 			it('should clear error when getting plans', function () {
-				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 				controller.show(settings);
 				$('.error').show();
 

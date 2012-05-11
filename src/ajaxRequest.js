@@ -1,7 +1,11 @@
 ﻿define(['signals', 'jquery'], function (signals, $) {
 
 	var AjaxRequest = function (settings) {
-		Contract.expectString(settings.url, 'options.url not set');
+		if (!settings.url) {
+		    throw {
+		        message: 'options.url not set'
+		    };
+		};
 		this.settings = settings;
 		this.responseReceived = new signals.Signal();
 		this.errorReceived = new signals.Signal();
@@ -18,7 +22,7 @@
 			cache: false,
 			success: onAjaxSuccess,
 			error: onAjaxError,
-			dataType: 'json'
+			dataType: this.settings.dataType || 'json'
 		};
 		if (this.settings.username != null && this.settings.username.trim() != '') {
 			ajaxOptions.username = this.settings.username;
@@ -42,7 +46,6 @@
 			self.errorReceived.dispatch(error);
 		}
 	};
-
 
 	return AjaxRequest;
 });

@@ -1,0 +1,19 @@
+﻿<div class="accordion" id="projects-accordion">
+	{{#each groups}}
+	<div class="accordion-group">
+		<div class="accordion-heading project-group">
+			<a class="accordion-toggle" data-toggle="collapse" href="#project-group-{{id}}">{{name}}</a>
+		</div>
+		<div class="accordion-body collapse" id="project-group-{{id}}">
+			<div class="accordion-inner">
+				{{#each items}}
+					<label class="checkbox project-item" for="project-item-{{../id}}-{{id}}">
+					  <input type="checkbox" {{#unless enabled}}disabled="disabled"{{/unless}} id="project-item-{{../id}}-{{id}}"  {{#if selected}}checked="checked"{{/if}}/>
+					  <span class="project-item-name">{{name}}</span>
+					</label>
+				{{/each}}
+			</div>
+		</div>
+	</div>
+	{{/each}}
+</div>

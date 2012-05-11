@@ -1,19 +1,19 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>BuildReactor Bamboo settings page</title>
+	<title>BuildReactor CruiseControl settings page</title>
 	<script type="text/javascript" src="../../lib/js-signals/signals.js"></script>
 	<script type="text/javascript" src="../../lib/requirejs-1.0.7/require.js"></script>
-	<link rel="stylesheet" type="text/css" href="../../lib/twitter-bootstrap/css/bootstrap.css" />
-	<link type="text/css" rel="stylesheet" href="options.css" />
+    <link rel="stylesheet" type="text/css" href="../../lib/twitter-bootstrap/css/bootstrap.css" />
+    <link type="text/css" rel="stylesheet" href="options.css" />
 </head>
 <body>
 	<form class="settings-form form-horizontal" action="">
 		<fieldset>
 			<div class="control-group warning">
-				<label class="control-label" for="url">Server URL</label>
+				<label class="control-label" for="url">URL</label>
 				<div class="controls">
-					<input type="url" name="url" class="input-xlarge url-input" required="required" placeholder="http://my.bamboo.example.com/" />
+					<input type="url" name="url" class="input-xlarge url-input" required="required" placeholder="http://cruisecontrol.instance.com/tray.xml" />
 				</div>
 			</div>
 			<div class="control-group">
@@ -23,7 +23,7 @@
 						<input type="number" name="update-interval" class="input-mini update-interval-input" min="1" value="15" />
 						<span class="add-on">sec</span>
 					</div>
-						<p class="help-block">Default is 60</p>
+					<p class="help-block">Default is 60</p>
 				</div>
 			</div>
 			<div class="control-group">
@@ -39,14 +39,14 @@
 				</div>
 			</div>
 			<div class="form-actions">
-				<button type="submit" class="btn btn-primary plans-button" name="plans-button"><i class="icon-refresh"></i> Get plans</button>
+				<button type="submit" class="btn btn-primary projects-button" name="plans-button"><i class="icon-refresh"></i> Get builds</button>
 				<button type="button" class="btn btn-success save-button" name="save-button" disabled="disabled"><i class="icon-ok"></i> Save</button>
 			</div>
 		</fieldset>
 	</form>
-	<div class="plan-selection-container"></div>
+	<div class="project-selection-container"></div>
 	<div class="alert alert-error" hidden="hidden">
-		<h4 class="alert-heading">Error getting available plans</h4>
+		<h4 class="alert-heading">Error getting available projects</h4>
 		<div class="error-message"></div>
 		<div>URL: <span class="error-url"></span></div>
 	</div>
@@ -59,12 +59,12 @@
 				order: 'lib/requirejs-1.0.7/order',
 				amdUtils: 'lib/amd-utils',
 				signals: 'lib/js-signals/signals',
-				handlebars: 'lib/requirejs-handlebars-plugin/Handlebars'
+				handlebars: 'lib/requirejs-handlebars-plugin/Handlebars',
+				xml2json: 'lib/jquery-1.7.0/jquery.xml2json'
 			},
 			deps: [
 					'order!jquery',
-					'order!lib/twitter-bootstrap/js/bootstrap',
-					'lib/jsContract/jsContract'
+					'order!lib/twitter-bootstrap/js/bootstrap'
 				]
 		});
 	</script>
