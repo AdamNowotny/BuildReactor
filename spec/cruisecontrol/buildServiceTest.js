@@ -42,6 +42,7 @@
 	            initResponse();
 	            mockTimer = spyOn(Timer.prototype, 'start');
 	            spyOn(projectFactory, 'create').andReturn({
+	                name: 'CruiseControl.NET',
 	                buildFailed: new signals.Signal(),
 	                buildFixed: new signals.Signal(),
 	                update: function() {
@@ -203,7 +204,9 @@
 	        });
 
 	        it('should signal buildFailed if project signaled', function () {
-	            var buildFailedSpy = spyOnSignal(service.buildFailed);
+	            var buildFailedSpy = spyOnSignal(service.buildFailed).matching(function (info) {
+	                return info.message === 'Build failed - CruiseControl.NET';
+	            });
 	            initResponse();
 	            service.update();
 	            var failedProject = service.projects['CruiseControl.NET'];
@@ -214,7 +217,9 @@
 	        });
 
 	        it('should signal buildFixed if project signaled', function () {
-	            var buildFixedSpy = spyOnSignal(service.buildFixed);
+	            var buildFixedSpy = spyOnSignal(service.buildFixed).matching(function (info) {
+	                return info.message === 'Build fixed - CruiseControl.NET';
+	            });;
 	            initResponse();
 	            service.update();
 	            var fixedProject = service.projects['CruiseControl.NET'];

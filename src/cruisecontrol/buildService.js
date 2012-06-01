@@ -65,20 +65,20 @@
 			}
 		};
 
-		CCBuildService.prototype.onBuildFailed = function (plan) {
+		CCBuildService.prototype.onBuildFailed = function (project) {
 			var buildEvent = {
-				message: interpolate('Build failed - {{0}}', [plan.projectName]),
-				details: plan.name,
-				url: plan.url
+				message: interpolate('Build failed - {{0}}', [project.name]),
+				details: project.name,
+				url: project.url
 			};
 			this.buildFailed.dispatch(buildEvent);
 		};
 
-		CCBuildService.prototype.onBuildFixed = function (plan) {
+		CCBuildService.prototype.onBuildFixed = function (project) {
 			var buildEvent = {
-				message: interpolate('Build fixed - {{0}}', [plan.projectName]),
-				details: plan.name,
-				url: plan.url
+				message: interpolate('Build fixed - {{0}}', [project.name]),
+				details: project.name,
+				url: project.url
 			};
 			this.buildFixed.dispatch(buildEvent);
 		};
