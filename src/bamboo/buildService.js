@@ -20,6 +20,24 @@
 			this.buildFixed = new signals.Signal();
 		};
 
+		BuildService.prototype.start = function () {
+		    Contract.expectNumber(this.settings.updateInterval, 'Update interval not set');
+		    this.timer = new Timer();
+		    this.timer.elapsed.add(this.update, this);
+		    this.scheduleUpdate = function () {
+		        console.log(interpolate('{{0}}: Next check scheduled in {{1}} seconds', [ this.name, this.settings.updateInterval ]));
+		        this.timer.start(this.settings.updateInterval);
+		    };
+		    this.updateFinished.add(this.scheduleUpdate, this);
+		    this.update();
+		};
+
+		BuildService.prototype.stop = function () {
+		    this.updateFinished.remove(this.scheduleUpdate, this);
+		    this.timer.elapsed.remove(this.update, this);
+		    this.isInitialized = false;
+		};
+
 		BuildService.prototype.initialize = function () {
 			var initializeFinished = new signals.Signal();
 			initializeFinished.memorize = true;
@@ -65,40 +83,6 @@
 			}
 		};
 
-		BuildService.prototype.onBuildFailed = function (plan) {
-			var buildEvent = {
-				message: interpolate('Build failed - {{0}}', [plan.projectName]),
-				details: plan.name,
-				url: plan.url
-			};
-			this.buildFailed.dispatch(buildEvent);
-		};
-
-		BuildService.prototype.onBuildFixed = function (plan) {
-			var buildEvent = {
-				message: interpolate('Build fixed - {{0}}', [plan.projectName]),
-				details: plan.name,
-				url: plan.url
-			};
-			this.buildFixed.dispatch(buildEvent);
-		};
-
-		BuildService.prototype.onPlanError = function (ajaxError) {
-			this.errorThrown.dispatch(ajaxError);
-		};
-
-		BuildService.prototype.start = function () {
-			Contract.expectNumber(this.settings.updateInterval, 'Update interval not set');
-			this.timer = new Timer();
-			this.timer.elapsed.add(this.update, this);
-			this.scheduleUpdate = function () {
-				console.log(interpolate('BambooBuildService: Next check scheduled in {{0}} seconds', [this.settings.updateInterval]));
-				this.timer.start(this.settings.updateInterval);
-			};
-			this.updateFinished.add(this.scheduleUpdate, this);
-			this.update();
-		};
-
 		BuildService.prototype.update = function () {
 			this.updateStarted.dispatch();
 			if (this.isInitialized) {
@@ -117,12 +101,6 @@
 			}
 		};
 
-		BuildService.prototype.stop = function () {
-			this.updateFinished.remove(this.scheduleUpdate, this);
-			this.timer.elapsed.remove(this.update, this);
-			this.isInitialized = false;
-		};
-
 		BuildService.prototype.planUpdate = function () {
 			var plansUpdated = 0;
 			for (var planKey in this.plans) {
@@ -133,6 +111,28 @@
 					}
 				}, this);
 			}
+		};
+
+		BuildService.prototype.onBuildFailed = function (plan) {
+		    var buildEvent = {
+		        message: interpolate('Build failed - {{0}}', [plan.projectName]),
+		        details: plan.name,
+		        url: plan.url
+		    };
+		    this.buildFailed.dispatch(buildEvent);
+		};
+
+		BuildService.prototype.onBuildFixed = function (plan) {
+		    var buildEvent = {
+		        message: interpolate('Build fixed - {{0}}', [plan.projectName]),
+		        details: plan.name,
+		        url: plan.url
+		    };
+		    this.buildFixed.dispatch(buildEvent);
+		};
+
+		BuildService.prototype.onPlanError = function (ajaxError) {
+		    this.errorThrown.dispatch(ajaxError);
 		};
 
 		return BuildService;

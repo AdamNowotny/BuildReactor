@@ -17,6 +17,8 @@
 		'spec/bamboo/bambooPlanTest',
 		'spec/bamboo/bambooRequestTest',
 		'spec/bamboo/settingsControllerTest',
+		'spec/cruisecontrol/buildServiceTest',
+		'spec/cruisecontrol/projectFactoryTest',
 		'spec/cruisecontrol/settingsControllerTest',
 		'spec/cruisecontrol/ccRequestTest',
 		'spec/cruisecontrol/projectViewTest'

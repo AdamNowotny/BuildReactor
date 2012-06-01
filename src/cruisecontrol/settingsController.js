@@ -2,8 +2,7 @@
 		'signals',
 		'jquery',
 		'./ccRequest',
-		'./projectView',
-		'xml2json'
+		'./projectView'
 	], function (signals, $, ccRequest, projectView) {
 
 		var settingsChanged = new signals.Signal();
@@ -71,10 +70,9 @@
 			};
 		};
 
-		var renderPlans = function (response, selectedProjects) {
+		var renderPlans = function (responseJson, selectedProjects) {
 			$('.projects-button').removeAttr('disabled');
 			$('.save-button').removeAttr('disabled');
-			var responseJson = $.xml2json(response);
 			console.log('cruisecontrol/settingsController: Plans received', responseJson);
 			var templateData = createTemplateData(responseJson, selectedProjects);
 			projectView.show(templateData);

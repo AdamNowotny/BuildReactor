@@ -1,12 +1,14 @@
 define([
 		'signals',
 		'../ajaxRequest',
-		'amdUtils/string/endsWith'
-	], function (signals, AjaxRequest, endsWith) {
+        'xml2json'
+	], function (signals, AjaxRequest) {
 
 	    var send = function (settings) {
 	        var responseReceived = new signals.Signal();
 	        var errorReceived = new signals.Signal();
+	        responseReceived.memorize = true;
+	        errorReceived.memorize = true;
 	        var ajaxSettings = {
 		        url: settings.url,
 		        username: settings.username,
@@ -14,11 +16,13 @@ define([
 		        dataType: 'xml'
 		    };
 			var request = new AjaxRequest(ajaxSettings);
-			request.responseReceived.addOnce(function(response) {
-				responseReceived.dispatch(response);
+			request.responseReceived.addOnce(function (response) {
+			    var responseJson = $.xml2json(response);
+				responseReceived.dispatch(responseJson);
 			}, this);
 			request.errorReceived.addOnce(function(ajaxError) {
-				errorReceived.dispatch(ajaxError);
+			    var errorJson = $.xml2json(ajaxError);
+			    errorReceived.dispatch(errorJson);
 			}, this);
 			request.send();
 			return {

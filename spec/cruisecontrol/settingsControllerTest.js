@@ -5,7 +5,8 @@
 		'jquery',
 		'signals',
 		'jasmineSignals',
-		'text!spec/fixtures/cruisecontrol/cruisecontrolnet.xml'
+		'text!spec/fixtures/cruisecontrol/cruisecontrolnet.xml',
+        'xml2json'
 	],
 	function (controller, ccRequest, projectView, $, signals, jasmineSignals, projectsXml) {
 
@@ -16,11 +17,15 @@
 			var mockProjectViewShow;
 			var mockProjectViewGet;
 			var spyOnSignal = jasmineSignals.spyOnSignal;
-			var responseReceived = new signals.Signal();
-			var errorReceived = new signals.Signal();
-
+		    var responseReceived;
+		    var errorReceived;
+			var projectsJson;
+		    
 			beforeEach(function () {
-				responseReceived.memorize = true;
+			    projectsJson = $.xml2json(projectsXml);
+			    responseReceived = new signals.Signal();
+			    errorReceived = new signals.Signal();
+			    responseReceived.memorize = true;
 				errorReceived.memorize = true;
 				settings = {
 					name: 'My Bamboo CI',
@@ -33,7 +38,7 @@
 				};
 				mockCcRequest = spyOn(ccRequest, 'projects');
 				mockCcRequest.andCallFake(function () {
-					responseReceived.dispatch(projectsXml);
+				    responseReceived.dispatch(projectsJson);
 					return {
 						responseReceived: responseReceived,
 						errorReceived: errorReceived
@@ -87,7 +92,7 @@
 		                expect(requestSettings.username).toBe(settings.username);
 		                expect(requestSettings.password).toBe(settings.password);
 		                expect(requestSettings.url).toBe(settings.url);
-		                responseReceived.dispatch(projectsXml);
+		                responseReceived.dispatch(projectsJson);
 		                return {
 		                    responseReceived: responseReceived,
 		                    errorReceived: errorReceived
@@ -116,7 +121,7 @@
 		        it('should disable button while waiting for response', function() {
 		            mockCcRequest.andCallFake(function() {
 		                expect($('.projects-button')).toBeDisabled();
-		                responseReceived.dispatch(projectsXml);
+		                responseReceived.dispatch(projectsJson);
 		                return {
 		                    responseReceived: responseReceived,
 		                    errorReceived: errorReceived
@@ -132,7 +137,7 @@
 		        it('should hide project view when getting projects', function() {
 		            mockCcRequest.andCallFake(function() {
 		                expect(projectView.hide).toHaveBeenCalled();
-		                responseReceived.dispatch(projectsXml);
+		                responseReceived.dispatch(projectsJson);
 		                return {
 		                    responseReceived: responseReceived,
 		                    errorReceived: errorReceived

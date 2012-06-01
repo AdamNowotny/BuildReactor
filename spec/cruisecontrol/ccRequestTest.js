@@ -1,20 +1,27 @@
-﻿define(['src/cruisecontrol/ccRequest', 'src/ajaxRequest'], function (request, AjaxRequest) {
-    
-    var settings = {
-        url: 'http://example.com/',
-        username: 'username1',
-        password: 'password1'
-    };
+﻿define([
+        'src/cruisecontrol/ccRequest',
+        'src/ajaxRequest',
+        'signals',
+        'text!spec/fixtures/cruisecontrol/cruisecontrolnet.xml'
+    ], function (request, AjaxRequest, signals, projectsXml) {
 
     describe('ccRequest', function() {
 
-        it('should fail if url empty', function () {
-            var settings = {
-                url: ''
+        var settings;
+
+        beforeEach(function () {
+            settings = {
+                url: 'http://example.com/',
+                username: 'username1',
+                password: 'password1'
             };
+        });
+        
+        it('should fail if url empty', function () {
+            settings.url = '';
 
             expect(function () {
-                new BambooRequest(settings);
+                request.projects(settings);
             }).toThrow();
         });
 
@@ -39,7 +46,7 @@
             expect(AjaxRequest.prototype.send).toHaveBeenCalled();
         });
  
-        it('should get projects', function () {
+        it('should get projects from correct URL', function () {
             spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
                 expect(this.settings.url).toBe(settings.url);
             });
@@ -49,5 +56,21 @@
             expect(AjaxRequest.prototype.send).toHaveBeenCalled();
         });
 
+        it('should convert to Json if XML returned from Ajax call', function() {
+            spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
+                this.responseReceived.dispatch(projectsXml);
+            });
+
+            var isProcessed = false;
+            var result = request.projects(settings);
+            
+            result.responseReceived.addOnce(function (json) {
+                isProcessed = true;
+                expect(json.Project.length).toBe(9);
+            });
+
+            expect(AjaxRequest.prototype.send).toHaveBeenCalled();
+            expect(isProcessed).toBeTruthy();
+        });
     });
 })

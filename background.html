@@ -12,10 +12,12 @@
 					jquery: 'lib/jquery-1.7.0/jquery',
 					amdUtils: 'lib/amd-utils',
 					text: 'lib/requirejs-1.0.7/text',
-					signals: 'lib/js-signals/signals'
+					signals: 'lib/js-signals/signals',
+					xml2json: 'lib/jquery-1.7.0/jquery.xml2json'
 				},
 				deps: [
-					'lib/jsContract/jsContract'
+					'lib/jsContract/jsContract',
+				    'jquery'
 				]
 			});
 		require(["src/mainModule"], function (mainModule) {
