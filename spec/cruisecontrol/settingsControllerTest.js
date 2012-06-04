@@ -1,7 +1,7 @@
 ﻿define([
 		'src/cruisecontrol/settingsController',
 		'src/cruisecontrol/ccRequest',
-		'src/cruisecontrol/projectView',
+		'src/common/projectView',
 		'jquery',
 		'signals',
 		'jasmineSignals',

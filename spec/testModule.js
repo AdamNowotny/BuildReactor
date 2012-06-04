@@ -21,7 +21,7 @@
 		'spec/cruisecontrol/projectFactoryTest',
 		'spec/cruisecontrol/settingsControllerTest',
 		'spec/cruisecontrol/ccRequestTest',
-		'spec/cruisecontrol/projectViewTest'
+		'spec/common/projectViewTest'
 	], function () {
 
 		return {

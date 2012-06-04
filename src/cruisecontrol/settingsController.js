@@ -2,7 +2,7 @@
 		'signals',
 		'jquery',
 		'./ccRequest',
-		'./projectView'
+		'../common/projectView'
 	], function (signals, $, ccRequest, projectView) {
 
 		var settingsChanged = new signals.Signal();

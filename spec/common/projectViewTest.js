@@ -1,10 +1,10 @@
 ﻿define([
-		'src/cruisecontrol/projectView',
+		'src/common/projectView',
 		'jquery'
 	],
 	function (projectView, $) {
 
-		describe('cruisecontrol/projectView', function () {
+		describe('common/projectView', function () {
 
 			var json = {
 				items: [
