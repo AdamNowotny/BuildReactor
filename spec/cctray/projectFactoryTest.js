@@ -1,12 +1,12 @@
 ﻿define([
-		'src/cruisecontrol/projectFactory',
+		'src/cctray/projectFactory',
         'jasmineSignals',
-        'text!spec/fixtures/cruisecontrol/cruisecontrolnet.xml',
+        'text!spec/fixtures/cctray/cruisecontrolnet.xml',
         'xml2json'
 	],
 	function (projectFactory, jasmineSignals, projectsXml) {
 
-		describe('cruisecontrol/project', function () {
+	    describe('cctray/project', function () {
 
 		    var projectJson;
 		    var spyOnSignal = jasmineSignals.spyOnSignal;

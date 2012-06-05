@@ -1,16 +1,16 @@
 ﻿define([
-		'src/cruisecontrol/settingsController',
-		'src/cruisecontrol/ccRequest',
+		'src/cctray/settingsController',
+		'src/cctray/ccRequest',
 		'src/common/projectView',
 		'jquery',
 		'signals',
 		'jasmineSignals',
-		'text!spec/fixtures/cruisecontrol/cruisecontrolnet.xml',
+		'text!spec/fixtures/cctray/cruisecontrolnet.xml',
         'xml2json'
 	],
 	function (controller, ccRequest, projectView, $, signals, jasmineSignals, projectsXml) {
 
-		describe('cruisecontrol/settingsController', function () {
+	    describe('cctray/settingsController', function () {
 
 			var settings;
 			var mockCcRequest;
@@ -52,7 +52,7 @@
 						projects: settings.projects
 					};
 				});
-				jasmine.getFixtures().load('cruisecontrol/settingsFixture.html');
+				jasmine.getFixtures().load('cctray/settingsFixture.html');
 			});
 
 			function showPlans() {

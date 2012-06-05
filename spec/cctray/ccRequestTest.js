@@ -1,11 +1,11 @@
 ﻿define([
-        'src/cruisecontrol/ccRequest',
+        'src/cctray/ccRequest',
         'src/ajaxRequest',
         'signals',
-        'text!spec/fixtures/cruisecontrol/cruisecontrolnet.xml'
+        'text!spec/fixtures/cctray/cruisecontrolnet.xml'
     ], function (request, AjaxRequest, signals, projectsXml) {
 
-    describe('ccRequest', function() {
+    describe('cctray/ccRequest', function() {
 
         var settings;
 

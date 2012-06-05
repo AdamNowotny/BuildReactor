@@ -99,12 +99,19 @@
 	}
 
 #service-add-list .thumbnail {
-	width: 110px;
-	height: 110px;
-	vertical-align: middle;
-	line-height: 120px;
+	height: 140px;
+	text-align: center;
 }
 
-	#service-add-list .thumbnail img {
-		display: inline;
+	#service-add-list .thumbnail .caption {
+		text-align: center;
+	}
+	
+	#service-add-list .thumbnail-image {
+		height: 110px;
+		line-height: 150px;
+	}
+
+	#service-add-list .thumbnail:hover {
+		text-decoration: none;
 	}

@@ -1,8 +1,12 @@
 {{#each services}}
-<li>
+<li class="span2">
   <a class="thumbnail" href="#">
-	<img src="{{baseUrl}}/{{icon}}" alt="{{typeName}}" />
+	<div class="thumbnail-image">
+		<img src="{{baseUrl}}/icon.png" alt="{{typeName}}" />
+	</div>
+	<div class="caption">
+		<h5>{{typeName}}</h5>
+	</div>
   </a>
-  <div style="text-align:center">{{typeName}}</div>
 </li>
 {{/each}}

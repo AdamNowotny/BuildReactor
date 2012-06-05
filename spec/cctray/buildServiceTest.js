@@ -1,17 +1,17 @@
 ﻿define([
-		'src/cruisecontrol/buildService',
-		'src/cruisecontrol/projectFactory',
-		'src/cruisecontrol/ccRequest',
+		'src/cctray/buildService',
+		'src/cctray/projectFactory',
+		'src/cctray/ccRequest',
 		'src/timer',
 		'jquery',
 		'signals',
 		'jasmineSignals',
-		'text!spec/fixtures/cruisecontrol/cruisecontrolnet.xml',
+		'text!spec/fixtures/cctray/cruisecontrolnet.xml',
         'xml2json'
 ],
 	function (BuildService, projectFactory, ccRequest, Timer, $, signals, jasmineSignals, projectsXml) {
 
-	    describe('cruisecontrol/buildService', function () {
+	    describe('cctray/buildService', function () {
 
 	        var service;
 	        var settings;

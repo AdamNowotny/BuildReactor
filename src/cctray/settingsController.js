@@ -11,7 +11,7 @@
 		var getVisibleSettings = function () {
 			var newSettings = {
 				name: activeSettings.name,
-				baseUrl: 'src/cruisecontrol',
+				baseUrl: 'src/cctray',
 				url: $('.url-input').val(),
 				updateInterval: parseInt($('.update-interval-input').val()),
 				username: $('.username-input').val(),

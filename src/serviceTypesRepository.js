@@ -3,13 +3,11 @@
 	var types = [
 		{
 			typeName: 'Atlassian Bamboo',
-			icon: 'icon.png',
 			baseUrl: 'src/bamboo'
 		},
 		{
-			typeName: 'CruiseControl',
-			icon: 'icon.png',
-			baseUrl: 'src/cruisecontrol'
+			typeName: 'CCTray Generic',
+			baseUrl: 'src/cctray'
 		}
 	];
 
