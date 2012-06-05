@@ -2,18 +2,13 @@
 		'signals',
 		'./bambooRequest',
 		'jquery',
-		'text!./planSelection.hbs',
-		'handlebars'
-	], function (signals, BambooRequest, $, planSelectionText, handlebars) {
+        '../common/projectView'
+	], function (signals, BambooRequest, $, projectView) {
 
-		var planSelectionTemplate = handlebars.compile(planSelectionText);
 		var settingsChanged = new signals.Signal();
 		var activeSettings;
 
 		var getVisibleSettings = function () {
-			var plans = $('.plan-selection-container .plan input:checked').map(function () {
-				return this.name;
-			}).get();
 			var newSettings = {
 				name: activeSettings.name,
 				baseUrl: 'src/bamboo',
@@ -21,12 +16,13 @@
 				updateInterval: parseInt($('.update-interval-input').val()),
 				username: $('.username-input').val(),
 				password: $('.password-input').val(),
-				plans: plans
+				plans: projectView.get().projects
 			};
 			return newSettings;
 		};
 
-		var show = function(settings) {
+		var show = function (settings) {
+		    projectView.initialize('plan-selection-container');
 			if (!settings) {
 				throw { name: 'ArgumentUndefined', message: 'settings not defined' };
 			}
@@ -58,12 +54,9 @@
 		var updatePlans = function () {
 			$('.plans-button').attr('disabled', 'disabled');
 			$('.alert-error').hide();
-			$('.plan-selection-container').html('');
+		    projectView.hide();
 			var plansRequest = new BambooRequest(getRequestSettings());
 			plansRequest.responseReceived.addOnce(function (response) {
-				response.projects.project.sort(function (a, b) {
-					return ((a.name < b.name) ? -1 : ((a.name > b.name) ? 1 : 0));
-				});
 				renderPlans(response, activeSettings.plans);
 			});
 			plansRequest.errorReceived.addOnce(renderError);
@@ -86,11 +79,7 @@
 			$('.plans-button').removeAttr('disabled');
 			$('.save-button').removeAttr('disabled');
 			var templateData = createTemplateData(response, selectedPlans);
-			var projectsHtml = planSelectionTemplate(templateData);
-			$('.plan-selection-container').html(projectsHtml);
-			$('.plan-selection-container .plan input:checked').each(function () {
-				$(this).closest('.collapse').addClass('in');
-			});
+			projectView.show(templateData);
 		};
 
 		var renderError = function (ajaxError) {
@@ -102,30 +91,25 @@
 		};
 
 		var createTemplateData = function (response, selectedPlans) {
-			var projects = response.projects.project;
-			var data = {
-				projects: []
-			};
+		    var projects = response.projects.project;
+		    var items = [];
 			for (var projectIndex = 0; projectIndex < projects.length; projectIndex++) {
 				var project = projects[projectIndex];
-				var dataProject = {
-					name: project.name,
-					index: projectIndex,
-					plans: []
-				};
 				for (var planIndex = 0; planIndex < project.plans.plan.length; planIndex++) {
 					var plan = project.plans.plan[planIndex];
-					var dataPlan = {
+					var item = {
+					    id: plan.key,
 						name: plan.shortName,
-						key: plan.key,
+						group: project.name,
 						enabled: plan.enabled,
 						selected: selectedPlans.indexOf(plan.key) > -1
 					};
-					dataProject.plans.push(dataPlan);
+					items.push(item);
 				}
-				data.projects.push(dataProject);
 			}
-			return data;
+			return {
+			    items: items
+			};;
 		};
 
 		return {

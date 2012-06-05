@@ -46,6 +46,7 @@
 				});
 				mockProjectViewShow = spyOn(projectView, 'show');
 				spyOn(projectView, 'hide');
+				spyOn(projectView, 'initialize');
 				mockProjectViewGet = spyOn(projectView, 'get').andCallFake(function () {
 					return {
 						projects: settings.projects
@@ -79,6 +80,12 @@
 				expect(settings.projects.length).toBe(0);
 			});
 
+			it('should initialize projectView', function () {
+			    controller.show(settings);
+
+			    expect(projectView.initialize).toHaveBeenCalledWith('project-selection-container');
+			});
+		    
 			it('should focus on url on load', function () {
 				controller.show(settings);
 

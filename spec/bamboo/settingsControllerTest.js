@@ -1,18 +1,21 @@
 ﻿define([
 		'src/bamboo/settingsController',
 		'src/bamboo/bambooRequest',
+        'src/common/projectView',
 		'jquery',
 		'jasmineSignals',
 		'json!spec/fixtures/bamboo/projects.json'
 	],
-	function (controller, BambooRequest, $, jasmineSignals, jsonProjects) {
+	function (controller, BambooRequest, projectView, $, jasmineSignals, jsonProjects) {
 
 		describe('bamboo/settingsController', function () {
 
 			var settings;
 			var mockBambooRequest;
 			var spyOnSignal = jasmineSignals.spyOnSignal;
-
+			var mockProjectViewShow;
+			var mockProjectViewGet;
+		    
 			beforeEach(function () {
 				settings = {
 					name: 'My Bamboo CI',
@@ -26,6 +29,14 @@
 				mockBambooRequest = spyOn(BambooRequest.prototype, 'projects');
 				mockBambooRequest.andCallFake(function () {
 					this.responseReceived.dispatch(jsonProjects);
+				});
+				mockProjectViewShow = spyOn(projectView, 'show');
+				spyOn(projectView, 'hide');
+				spyOn(projectView, 'initialize');
+				mockProjectViewGet = spyOn(projectView, 'get').andCallFake(function () {
+				    return {
+				        projects: settings.plans
+				    };
 				});
 				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 			});
@@ -55,6 +66,12 @@
 				expect(settings.plans.length).toBe(0);
 			});
 
+		    it('should initialize projectView', function() {
+		        controller.show(settings);
+
+		        expect(projectView.initialize).toHaveBeenCalledWith('plan-selection-container');
+		    });
+		    
 			it('should focus on url on load', function () {
 				controller.show(settings);
 
@@ -75,14 +92,30 @@
 				expect(mockBambooRequest).toHaveBeenCalled();
 			});
 
-			it('should display sorted projects after button clicked', function () {
+			it('should display projects after button clicked', function () {
+			    mockProjectViewShow.andCallFake(function(model, selectedProjects) {
+			        expect(model.items[0].id).toBe('PROJECT1-PLAN1');
+			        expect(model.items[0].name).toBe('Plan 1');
+			        expect(model.items[0].group).toBe('Project 1');
+			        expect(model.items[0].enabled).toBeTruthy();
+			        expect(model.items[0].selected).toBeTruthy();
+			    });
+			    
 				showPlans();
 
-				expect($('.plan-selection-container .project').length).toBe(2);
-				expect($('.plan-selection-container .project:first a')).toHaveText('Project 1');
-				expect($('.plan-selection-container .plan:first span')).toHaveText('Plan 1');
+				expect(mockProjectViewShow).toHaveBeenCalled();
 			});
 
+		    it('should pass all projects and plans to projectView', function() {
+		        mockProjectViewShow.andCallFake(function (model, selectedProjects) {
+		            expect(model.items.length).toBe(5);
+		        });
+
+		        showPlans();
+
+		        expect(mockProjectViewShow).toHaveBeenCalled();
+		    });
+		    
 			it('should disable button while waiting for response', function () {
 				mockBambooRequest.andCallFake(function () {
 					expect($('.plans-button')).toBeDisabled();
@@ -117,7 +150,7 @@
 				$('.plans-button').click();
 
 				expect($('.alert-error')).toBeVisible();
-				expect($('.plan-selection-container')).toBeEmpty();
+			    expect(projectView.hide).toHaveBeenCalled();
 			});
 
 			it('should clear error when getting plans', function () {
@@ -133,38 +166,18 @@
 				jasmine.getFixtures().load('bamboo/validSettingsFixture.html');
 				controller.show(settings);
 				var settingsSavedSpy = spyOnSignal(controller.settingsChanged).matching(function (newSettings) {
-					return newSettings.url == settings.url
-						&& newSettings.username == settings.username
-							&& newSettings.password == settings.password
-								&& newSettings.updateInterval == settings.updateInterval
-									&& newSettings.plans[0] == 'PROJECT1-PLAN1'
-										&& newSettings.plans[1] == 'PROJECT2-PLAN2';
+				    expect(newSettings.url).toBe(settings.url);
+				    expect(newSettings.username).toBe(settings.username);
+				    expect(newSettings.password).toBe(settings.password);
+				    expect(newSettings.updateInterval).toBe(settings.updateInterval);
+				    expect(newSettings.plans[0]).toBe('PROJECT1-PLAN1');
+				    expect(newSettings.plans[1]).toBe('PROJECT1-PLAN2');
+				    return true;
 				});
 
 				$('.save-button').click();
 
 				expect(settingsSavedSpy).toHaveBeenDispatched(1);
-			});
-
-			it('should indicate disabled plans', function () {
-				showPlans();
-
-				expect($('.plan-selection-container #PROJECT1-PLAN2')).toBeVisible();
-				expect($('.plan-selection-container #PROJECT1-PLAN2')).toBeChecked();
-				expect($('.plan-selection-container #PROJECT1-PLAN2')).toBeDisabled();
-			});
-
-			it('should check selected projects', function () {
-				showPlans();
-
-				expect($('.plan-selection-container #PROJECT1-PLAN1')).toBeChecked();
-			});
-
-			it('should expand projects that have monitored plans', function () {
-				showPlans();
-
-				expect($('.plan-selection-container #plans-0.collapse')).toHaveClass('in');
-				expect($('.plan-selection-container #plans-1.collapse')).not.toHaveClass('in');
 			});
 
 			it('should enable save button after plans loaded', function () {

@@ -7,7 +7,6 @@
 
 		var settingsChanged = new signals.Signal();
 		var activeSettings;
-		projectView.initialize('project-selection-container');
 	    
 		var getVisibleSettings = function () {
 			var newSettings = {
@@ -23,6 +22,7 @@
 		};
 
 		var show = function (settings) {
+		    projectView.initialize('project-selection-container');
 			if (!settings) {
 				throw { name: 'ArgumentUndefined', message: 'settings not defined' };
 			}
