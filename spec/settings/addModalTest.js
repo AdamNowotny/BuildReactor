@@ -13,12 +13,10 @@
 
 			var serviceType1 = {
 				typeName: 'Atlassian Bamboo',
-				icon: 'icon.png',
 				baseUrl: 'src/bamboo'
 			};
 			var serviceType2 = {
 				typeName: 'CruiseControl',
-				icon: 'icon.png',
 				baseUrl: 'src/cruisecontrol'
 			};
 			var newSettings = serviceType1;
@@ -64,7 +62,7 @@
 					return $('.thumbnail').length;
 				},
 				getServiceNameAt: function (index) {
-					return $('#service-add-wizard .thumbnail').eq(index - 1).next().text();
+					return $('#service-add-wizard .thumbnail .caption h5').eq(index - 1).text();
 				}
 			};
 
@@ -146,10 +144,9 @@
 			it('should add service', function () {
 				var name = 'My CI service name';
 				var serviceAddedSpy = spyOnSignal(addModal.serviceAdded).matching(function (info) {
-					return info.name == name &&
-						info.baseUrl == 'src/bamboo' &&
-							info.icon == 'icon.png' &&
-								info.typeName == 'Atlassian Bamboo';
+				    return info.name == name &&
+				        info.baseUrl == 'src/bamboo' &&
+				        info.typeName == 'Atlassian Bamboo';
 				});
 				modalWindow.selectService();
 				modalWindow.enterServiceName(name);

@@ -19,7 +19,6 @@
 		var typeInfo = getByName(name);
 		var newSettings = {
 			typeName: name,
-			icon: typeInfo.icon,
 			baseUrl: typeInfo.baseUrl
 		};
 		return newSettings;
