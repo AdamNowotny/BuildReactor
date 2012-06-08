@@ -12,17 +12,18 @@
 	};
 
 	AjaxRequest.prototype.send = function () {
-		var self = this;
+	    var self = this;
+	    var dataType = this.settings.dataType || 'json';
 		var ajaxOptions = {
 			type: 'GET',
 			url: this.settings.url,
 			beforeSend: function (request) {
-				request.setRequestHeader('Accept', 'application/json');
+				request.setRequestHeader('Accept', 'application/' + dataType);
 			},
 			cache: false,
 			success: onAjaxSuccess,
 			error: onAjaxError,
-			dataType: this.settings.dataType || 'json'
+			dataType: dataType
 		};
 		if (this.settings.username != null && this.settings.username.trim() != '') {
 			ajaxOptions.username = this.settings.username;

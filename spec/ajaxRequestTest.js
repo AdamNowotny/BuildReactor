@@ -102,12 +102,55 @@
 			    expect(mockAjax).toHaveBeenCalled();
 			});
 
+			it('should set RequestHeader if specified', function () {
+			    var requestOptions = {
+			        url: 'http://example.com',
+			        dataType: 'xml'
+			    };
+			    mockAjax.andCallFake(function (ajaxOptions) {
+			        var map = { };
+			        var beforeSendRequest = {
+			            setRequestHeader: function (key, value) {
+			                map[key] = value;
+			            }
+			        };
+			        ajaxOptions.beforeSend(beforeSendRequest);
+			        expect(map.Accept).toBe('application/xml');
+			    });
+
+			    request = new AjaxRequest(requestOptions);
+			    request.send();
+
+			    expect(mockAjax).toHaveBeenCalled();
+			});
+
 			it('should set json dataType as default', function () {
 			    var requestOptions = {
 			        url: 'http://example.com'
 			    };
 			    mockAjax.andCallFake(function (ajaxOptions) {
 			        expect(ajaxOptions.dataType).toBe('json');
+			    });
+
+			    request = new AjaxRequest(requestOptions);
+			    request.send();
+
+			    expect(mockAjax).toHaveBeenCalled();
+			});
+
+			it('should set RequestHeader to json by default', function () {
+			    var requestOptions = {
+			        url: 'http://example.com'
+			    };
+			    mockAjax.andCallFake(function (ajaxOptions) {
+			        var map = {};
+			        var beforeSendRequest = {
+			            setRequestHeader: function (key, value) {
+			                map[key] = value;
+			            }
+			        };
+			        ajaxOptions.beforeSend(beforeSendRequest);
+			        expect(map.Accept).toBe('application/json');
 			    });
 
 			    request = new AjaxRequest(requestOptions);
