@@ -27,7 +27,7 @@
 		return {
 			runSpecs: function () {
 				$.fx.off = true;
-				jasmine.getFixtures().fixturesPath = 'spec/fixtures';
+				jasmine.getFixtures().fixturesPath = 'fixtures';
 				jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
 				jasmine.getEnv().execute();
 			}

@@ -2,19 +2,19 @@
 <html>
 	<head>
 		<title>BuildReactor Sample settings page</title>
-		<script type="text/javascript" src="../../lib/requirejs-1.0.7/require.js"></script>
+		<script type="text/javascript" src="../../lib/requirejs/require.js"></script>
 	</head>
 	<body>
 		Url: <input type="text" name="url" id="url" value="http://www.example.com" />
 		<script type="text/javascript">
 			require.config({
-				baseUrl: '../..',
+				baseUrl: '..',
 				paths: {
-					jquery: 'lib/jquery-1.7.0/jquery',
-					text: 'lib/requirejs-1.0.7/text',
-					order: 'lib/requirejs-1.0.7/order',
-					amdUtils: 'lib/amd-utils',
-					signals: 'lib/js-signals/signals'
+					jquery: '../lib/jquery/jquery',
+					text: '../lib/requirejs/text',
+					order: '../lib/requirejs/order',
+					amdUtils: '../lib/amd-utils',
+					signals: '../lib/js-signals/signals'
 				}
 			});
 		</script>

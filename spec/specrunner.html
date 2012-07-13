@@ -2,16 +2,16 @@
 <html>
 	<head>
 		<title>Jasmine Test Runner</title>
-		<link rel="stylesheet" type="text/css" href="lib/jasmine-1.1.0/jasmine.css" />
-		<link rel="stylesheet" type="text/css" href="lib/twitter-bootstrap/css/bootstrap.css" />
-		<link rel="stylesheet" type="text/css" href="css/options.css" />
+		<link rel="stylesheet" type="text/css" href="../lib/jasmine-1.1.0/jasmine.css" />
+		<link rel="stylesheet" type="text/css" href="../lib/twitter-bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="../css/options.css" />
 
-		<script type="text/javascript" src="lib/jasmine-1.1.0/jasmine.js"></script>
-		<script type="text/javascript" src="lib/jasmine-1.1.0/jasmine-html.js"></script>
-		<script type="text/javascript" src="lib/jasmine-1.1.0/jasmine-jquery.js"></script>
+		<script type="text/javascript" src="../lib/jasmine-1.1.0/jasmine.js"></script>
+		<script type="text/javascript" src="../lib/jasmine-1.1.0/jasmine-html.js"></script>
+		<script type="text/javascript" src="../lib/jasmine-1.1.0/jasmine-jquery.js"></script>
 
 		<!-- Load RequireJS -->
-		<script type="text/javascript" src="lib/requirejs/require.js"></script>
+		<script type="text/javascript" src="../lib/requirejs/require.js"></script>
 	</head>
 	<body>
 		<script type="text/javascript">
@@ -22,7 +22,7 @@
 				}
 			};
 			require.config({
-				baseUrl: './',
+				baseUrl: '../',
 				paths: {
 					spec: 'spec',
 					mocks: 'spec/mocks',

@@ -2,7 +2,7 @@
 
 	var MockSettingsBuilder = function () {
 		this.settings = {
-			baseUrl: 'spec/mocks',
+			baseUrl: 'mocks',
 			url: 'http://www.example.com/',
 			name: 'service name'
 		};
