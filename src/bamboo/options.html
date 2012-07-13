@@ -2,10 +2,9 @@
 <html>
 <head>
 	<title>BuildReactor Bamboo settings page</title>
-	<script type="text/javascript" src="../../lib/js-signals/signals.js"></script>
-	<script type="text/javascript" src="../../lib/requirejs/require.js"></script>
 	<link rel="stylesheet" type="text/css" href="../../lib/twitter-bootstrap/css/bootstrap.css" />
 	<link type="text/css" rel="stylesheet" href="options.css" />
+	<script type="text/javascript" data-main="../common/config" src="../../lib/requirejs/require.min.js"></script>
 </head>
 <body>
 	<form class="settings-form form-horizontal" action="">
@@ -50,23 +49,5 @@
 		<div class="error-message"></div>
 		<div>URL: <span class="error-url"></span></div>
 	</div>
-	<script type="text/javascript">
-		require.config({
-			baseUrl: '../..',
-			paths: {
-				jquery: 'lib/jquery/jquery',
-				text: 'lib/requirejs/text',
-				order: 'lib/requirejs/order',
-				amdUtils: 'lib/amd-utils',
-				signals: 'lib/js-signals/signals',
-				handlebars: 'lib/requirejs-handlebars-plugin/Handlebars'
-			},
-			deps: [
-					'order!jquery',
-					'order!lib/twitter-bootstrap/js/bootstrap',
-					'lib/jsContract/jsContract'
-				]
-		});
-	</script>
 </body>
 </html>

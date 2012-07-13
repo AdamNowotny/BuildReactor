@@ -2,27 +2,8 @@
 <html>
   <head>
 	<title>BuildReactor</title>
-	<script type="text/javascript" src="lib/requirejs/require.js"></script>
+	<script type="text/javascript" data-main="src/main" src="lib/requirejs/require.js"></script>
   </head>
   <body>
-	<script type="text/javascript">
-		require.config({
-				baseUrl: '.',
-				paths: {
-					jquery: 'lib/jquery/jquery',
-					amdUtils: 'lib/amd-utils',
-					text: 'lib/requirejs/text',
-					signals: 'lib/js-signals/signals',
-					xml2json: 'lib/jquery/jquery.xml2json'
-				},
-				deps: [
-					'lib/jsContract/jsContract',
-				    'jquery'
-				]
-			});
-		require(["src/mainModule"], function (mainModule) {
-			mainModule.run();
-		});
-	</script>
   </body>
 </html>

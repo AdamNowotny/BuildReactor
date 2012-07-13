@@ -3,8 +3,12 @@
 		'jquery',
 		'text!./addModalService.hbs',
 		'handlebars',
-		'jqueryTools'
+		'jqueryTools',
+		'bootstrap'
 ], function (signals, $, serviceTemplateText, handlebars) {
+
+	'use strict';
+
 	var serviceTemplate = handlebars.compile(serviceTemplateText);
 
 	var serviceAdded = new signals.Signal();
@@ -35,7 +39,7 @@
 	};
 
 	var show = function () {
-		if (scrollableApi == undefined) {
+		if (!scrollableApi) {
 			initializeModal();
 		}
 		scrollableApi.begin(0);
@@ -56,7 +60,7 @@
 		initializeScrollable();
 		$('#service-add-wizard .btn-primary').click(serviceAdd);
 		$('#service-add-name').on('input', function () {
-			if ($(this).val() == '') {
+			if ($(this).val() === '') {
 				$('#service-add-wizard .btn-primary').addClass('disabled');
 			} else {
 				$('#service-add-wizard .btn-primary').removeClass('disabled');

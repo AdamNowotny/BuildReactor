@@ -2,9 +2,9 @@
 <html>
 	<head>
 		<title>BuildReactor settings page</title>
-		<script type="text/javascript" src="lib/requirejs/require.js"></script>
 		<link rel="stylesheet" type="text/css" href="lib/twitter-bootstrap/css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="css/options.css" />
+		<script type="text/javascript" data-main="src/options" src="lib/requirejs/require.min.js"></script>
 	</head>
 	<body>
 		<div class="navbar navbar-fixed-top">
@@ -109,27 +109,5 @@
 				<button type="submit" class="btn btn-primary">Add</button>
 			</div>
 		</div>
-		<script type="text/javascript">
-			require.config({
-				baseUrl: '.',
-				paths: {
-					contract: 'lib/jsContract/jsContract',
-					jquery: 'lib/jquery/jquery',
-					jqueryTools: 'src/jqueryToolsModule',
-					amdUtils: 'lib/amd-utils',
-					handlebars: 'lib/requirejs-handlebars-plugin/Handlebars',
-					text: 'lib/requirejs/text',
-					order: 'lib/requirejs/order',
-					signals: 'lib/js-signals/signals'
-				},
-				deps: [
-					'order!jquery',
-					'order!lib/twitter-bootstrap/js/bootstrap'
-				]
-			});
-			require(['src/settingsModule'], function (settingsModule) {
-				settingsModule.show();
-			});
-		</script>
 	</body>
 </html>

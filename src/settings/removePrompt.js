@@ -1,7 +1,10 @@
 ﻿define([
 		'signals',
-		'jquery'
+		'jquery',
+		'bootstrap'
 ], function (signals, $) {
+
+	'use strict';
 
 	var removeSelected = new signals.Signal();
 
@@ -10,7 +13,7 @@
 			hide();
 			removeSelected.dispatch();
 		});
-	};
+	}
 
 	function show(serviceName) {
 		$('#service-remove-modal .service-name').html(serviceName);

@@ -1,7 +1,10 @@
 ﻿define([
 		'signals',
-		'jquery'
+		'jquery',
+		'bootstrap'
 ], function (signals, $) {
+
+	'use strict';
 
 	var removeSelected = new signals.Signal();
 
@@ -9,7 +12,7 @@
 		$('#save-prompt .btn-danger').click(function () {
 			removeSelected.dispatch();
 		});
-	};
+	}
 
 	function show(serviceName) {
 		$('#save-prompt .service-name').html(serviceName);
