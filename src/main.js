@@ -7,9 +7,6 @@ require.config({
 		signals: 'lib/js-signals/signals',
 		xml2json: 'lib/jquery/jquery.xml2json'
 	},
-	deps: [
-		'lib/jsContract/jsContract'
-	],
 	shim: {
 		xml2json: [ 'jquery' ]
 	}

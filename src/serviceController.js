@@ -1,6 +1,9 @@
 ﻿define([
 		'signals'
 	], function (signals) {
+
+		'use strict';
+
 		var servicesStarted = new signals.Signal();
 		var buildFailed = new signals.Signal();
 		var buildFixed = new signals.Signal();
@@ -56,13 +59,7 @@
 		}
 
 		function addService(service) {
-			Contract.expectString(service.name, 'service.name not defined');
-			Contract.expectObject(service.buildFailed, 'service.buildFailed signal not defined');
-			Contract.expectObject(service.buildFixed, 'service.buildFixed signal not defined');
-			Contract.expectObject(service.updateStarted, 'service.buildFixed signal not defined');
-			Contract.expectObject(service.updateFinished, 'service.buildFixed signal not defined');
-			Contract.expectObject(service.errorThrown, 'service.buildFixed signal not defined');
-
+			if (!service.name) throw { name: 'ArgumentInvalid', message: 'service.name not defined' };
 			initializeServiceLogging(service);
 			subscribeTo(service);
 			services.push(service);
@@ -72,7 +69,7 @@
 
 		function removeService(service) {
 			var index = services.indexOf(service);
-			Contract.expect(index >= 0, 'Service not found');
+			if (index < 0) throw { name: 'NotFound', message: 'Service not found' };
 			services.splice(index, 1);
 			service.stop();
 			unsubscribeFrom(service);
@@ -118,7 +115,7 @@
 				url: buildEvent.url,
 				state: getCurrentState()
 			});
-		};
+		}
 
 		function onBuildFixed(buildEvent) {
 			failedCount--;

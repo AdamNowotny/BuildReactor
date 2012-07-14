@@ -12,8 +12,5 @@ require.config({
 	},
 	shim: {
 		bootstrap: [ 'jquery' ]
-	},
-	deps: [
-		'lib/jsContract/jsContract'
-	]
+	}
 });

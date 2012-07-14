@@ -1,19 +1,21 @@
 ﻿define([
-		'signals',
-		'jquery',
-		'./ccRequest',
-		'../common/projectView'
+	'signals',
+	'jquery',
+	'./ccRequest',
+	'../common/projectView'
 	], function (signals, $, ccRequest, projectView) {
 
+		'use strict';
+		
 		var settingsChanged = new signals.Signal();
 		var activeSettings;
-	    
+
 		var getVisibleSettings = function () {
 			var newSettings = {
 				name: activeSettings.name,
 				baseUrl: 'src/cctray',
 				url: $('.url-input').val(),
-				updateInterval: parseInt($('.update-interval-input').val()),
+				updateInterval: parseInt($('.update-interval-input').val(), 10),
 				username: $('.username-input').val(),
 				password: $('.password-input').val(),
 				projects: projectView.get().projects
@@ -22,7 +24,7 @@
 		};
 
 		var show = function (settings) {
-		    projectView.initialize('project-selection-container');
+			projectView.initialize('project-selection-container');
 			if (!settings) {
 				throw { name: 'ArgumentUndefined', message: 'settings not defined' };
 			}
@@ -64,9 +66,9 @@
 
 		var getRequestSettings = function () {
 			return {
-			    url: $('.url-input').val(),
-			    username: $('.username-input').val(),
-			    password: $('.password-input').val()
+				url: $('.url-input').val(),
+				username: $('.username-input').val(),
+				password: $('.password-input').val()
 			};
 		};
 
@@ -91,16 +93,16 @@
 			for (var index = 0; index < response.Project.length; index++) {
 				var project = response.Project[index];
 				var item = {
-				    id: index,
+					id: index,
 					name: project.name,
 					group: project.category,
 					enabled: true,
 					selected: selectedProjects.indexOf(project.name) > -1
 				};
 				items.push(item);
-			};
+			}
 			return {
-			    items: items
+				items: items
 			};
 		};
 

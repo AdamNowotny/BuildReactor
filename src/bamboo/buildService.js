@@ -7,7 +7,7 @@
 	], function (signals, BambooRequest, BambooPlan, Timer, interpolate) {
 
 		var BuildService = function (settings) {
-			Contract.expectString(settings.name, 'settings.name not defined');
+			if (!settings.name) throw { name: 'ArgumentInvalid', message: 'settings.name not set' };
 			this.isInitialized = false;
 			this.settings = settings;
 			this.name = settings.name;
@@ -21,21 +21,21 @@
 		};
 
 		BuildService.prototype.start = function () {
-		    Contract.expectNumber(this.settings.updateInterval, 'Update interval not set');
-		    this.timer = new Timer();
-		    this.timer.elapsed.add(this.update, this);
-		    this.scheduleUpdate = function () {
-		        console.log(interpolate('{{0}}: Next check scheduled in {{1}} seconds', [ this.name, this.settings.updateInterval ]));
-		        this.timer.start(this.settings.updateInterval);
-		    };
-		    this.updateFinished.add(this.scheduleUpdate, this);
-		    this.update();
+			if (!this.settings.updateInterval) throw { name: 'ArgumentInvalid', message: 'settings.updateInterval not set' };
+			this.timer = new Timer();
+			this.timer.elapsed.add(this.update, this);
+			this.scheduleUpdate = function () {
+				console.log(interpolate('{{0}}: Next check scheduled in {{1}} seconds', [ this.name, this.settings.updateInterval ]));
+				this.timer.start(this.settings.updateInterval);
+			};
+			this.updateFinished.add(this.scheduleUpdate, this);
+			this.update();
 		};
 
 		BuildService.prototype.stop = function () {
-		    this.updateFinished.remove(this.scheduleUpdate, this);
-		    this.timer.elapsed.remove(this.update, this);
-		    this.isInitialized = false;
+			this.updateFinished.remove(this.scheduleUpdate, this);
+			this.timer.elapsed.remove(this.update, this);
+			this.isInitialized = false;
 		};
 
 		BuildService.prototype.initialize = function () {
@@ -114,25 +114,25 @@
 		};
 
 		BuildService.prototype.onBuildFailed = function (plan) {
-		    var buildEvent = {
-		        message: interpolate('Build failed - {{0}}', [plan.projectName]),
-		        details: plan.name,
-		        url: plan.url
-		    };
-		    this.buildFailed.dispatch(buildEvent);
+			var buildEvent = {
+				message: interpolate('Build failed - {{0}}', [plan.projectName]),
+				details: plan.name,
+				url: plan.url
+			};
+			this.buildFailed.dispatch(buildEvent);
 		};
 
 		BuildService.prototype.onBuildFixed = function (plan) {
-		    var buildEvent = {
-		        message: interpolate('Build fixed - {{0}}', [plan.projectName]),
-		        details: plan.name,
-		        url: plan.url
-		    };
-		    this.buildFixed.dispatch(buildEvent);
+			var buildEvent = {
+				message: interpolate('Build fixed - {{0}}', [plan.projectName]),
+				details: plan.name,
+				url: plan.url
+			};
+			this.buildFixed.dispatch(buildEvent);
 		};
 
 		BuildService.prototype.onPlanError = function (ajaxError) {
-		    this.errorThrown.dispatch(ajaxError);
+			this.errorThrown.dispatch(ajaxError);
 		};
 
 		return BuildService;

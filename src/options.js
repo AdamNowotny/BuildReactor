@@ -1,7 +1,6 @@
 require.config({
 	baseUrl: '..',
 	paths: {
-		contract: 'lib/jsContract/jsContract',
 		jquery: 'lib/jquery/jquery',
 		jqueryTools: 'lib/jquery-tools/jquery.tools.min',
 		amdUtils: 'lib/amd-utils',
@@ -11,9 +10,6 @@ require.config({
 		signals: 'lib/js-signals/signals',
 		bootstrap: 'lib/twitter-bootstrap/js/bootstrap'
 	},
-	deps: [
-		'lib/jsContract/jsContract'
-	],
 	shim: {
 		bootstrap: [ 'jquery' ],
 		jqueryTools: [ 'jquery' ]

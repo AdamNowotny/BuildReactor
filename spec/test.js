@@ -10,7 +10,6 @@ require.config({
 		spec: 'spec',
 		mocks: 'spec/mocks',
 		fixtures: 'spec/fixtures',
-		contract: 'lib/jsContract/jsContract',
 		amdUtils: 'lib/amd-utils',
 		jquery: 'lib/jquery/jquery',
 		xml2json: 'lib/jquery/jquery.xml2json',
@@ -27,9 +26,6 @@ require.config({
 		bootstrap: [ 'jquery' ],
 		jqueryTools: [ 'jquery' ]
 	},
-	deps: [
-		'lib/jsContract/jsContract'
-	],
 	waitSeconds: 2
 });
 require([
