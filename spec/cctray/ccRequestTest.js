@@ -1,11 +1,13 @@
 ﻿define([
-        'src/cctray/ccRequest',
-        'src/ajaxRequest',
-        'signals',
-        'text!spec/fixtures/cctray/cruisecontrolnet.xml'
-    ], function (request, AjaxRequest, signals, projectsXml) {
+    'src/cctray/ccRequest',
+    'src/ajaxRequest',
+    'signals',
+    'text!spec/fixtures/cctray/cruisecontrolnet.xml'
+], function (request, AjaxRequest, signals, projectsXml) {
 
-    describe('cctray/ccRequest', function() {
+    'use strict';
+
+    describe('cctray/ccRequest', function () {
 
         var settings;
 
@@ -56,21 +58,18 @@
             expect(AjaxRequest.prototype.send).toHaveBeenCalled();
         });
 
-        it('should convert to Json if XML returned from Ajax call', function() {
+        it('should pass XML response returned from Ajax call', function () {
             spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
                 this.responseReceived.dispatch(projectsXml);
             });
 
-            var isProcessed = false;
             var result = request.projects(settings);
             
-            result.responseReceived.addOnce(function (json) {
-                isProcessed = true;
-                expect(json.Project.length).toBe(9);
+            result.responseReceived.addOnce(function (xml) {
+                expect(xml).toBe(projectsXml);
             });
 
             expect(AjaxRequest.prototype.send).toHaveBeenCalled();
-            expect(isProcessed).toBeTruthy();
         });
     });
 })

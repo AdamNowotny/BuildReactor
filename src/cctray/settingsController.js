@@ -3,14 +3,14 @@
 	'jquery',
 	'./ccRequest',
 	'../common/projectView'
-	], function (signals, $, ccRequest, projectView) {
+], function (signals, $, ccRequest, projectView) {
 
 		'use strict';
-		
-		var settingsChanged = new signals.Signal();
-		var activeSettings;
 
-		var getVisibleSettings = function () {
+		var settingsChanged = new signals.Signal(),
+			activeSettings;
+
+		function getVisibleSettings() {
 			var newSettings = {
 				name: activeSettings.name,
 				baseUrl: 'src/cctray',
@@ -21,9 +21,9 @@
 				projects: projectView.get().projects
 			};
 			return newSettings;
-		};
+		}
 
-		var show = function (settings) {
+		function show(settings) {
 			projectView.initialize('project-selection-container');
 			if (!settings) {
 				throw { name: 'ArgumentUndefined', message: 'settings not defined' };
@@ -42,18 +42,18 @@
 				return false;
 			});
 			$('.url-input').focus();
-		};
+		}
 
-		var updateWithDefaults = function (settings) {
+		function updateWithDefaults(settings) {
 			if (settings.updateInterval === undefined) {
 				settings.updateInterval = 60;
 			}
 			if (settings.projects === undefined) {
 				settings.projects = [];
 			}
-		};
+		}
 
-		var updatePlans = function () {
+		function updatePlans() {
 			$('.projects-button').attr('disabled', 'disabled');
 			$('.alert-error').hide();
 			projectView.hide();
@@ -62,49 +62,54 @@
 				renderPlans(response, activeSettings.projects);
 			});
 			plansRequest.errorReceived.addOnce(renderError);
-		};
+		}
 
-		var getRequestSettings = function () {
+		function getRequestSettings() {
 			return {
 				url: $('.url-input').val(),
 				username: $('.username-input').val(),
 				password: $('.password-input').val()
 			};
-		};
+		}
 
-		var renderPlans = function (responseJson, selectedProjects) {
+		function renderPlans(projectsXml, selectedProjects) {
 			$('.projects-button').removeAttr('disabled');
 			$('.save-button').removeAttr('disabled');
-			console.log('cruisecontrol/settingsController: Plans received', responseJson);
-			var templateData = createTemplateData(responseJson, selectedProjects);
+			console.log('cruisecontrol/settingsController: Plans received', projectsXml);
+			var templateData = createTemplateData(projectsXml, selectedProjects);
 			projectView.show(templateData);
-		};
+		}
 
-		var renderError = function (ajaxError) {
+		function renderError(ajaxError) {
 			console.error('BambooSettingsController: Ajax request failed: ' + ajaxError.message, ajaxError);
 			$('.plans-button').removeAttr('disabled');
 			$('.error-message').text(ajaxError.message);
 			$('.error-url').text(ajaxError.url);
 			$('.alert-error').show();
-		};
+		}
 
-		var createTemplateData = function (response, selectedProjects) {
-			var items = [];
-			for (var index = 0; index < response.Project.length; index++) {
-				var project = response.Project[index];
-				var item = {
-					id: index,
-					name: project.name,
-					group: project.category,
+		function createTemplateData(projectsXml, selectedProjects) {
+			
+			function createItem(i, d) {
+				var item = $(d),
+					projectName = item.attr('name');
+				return {
+					id: i,
+					name: projectName,
+					group: item.attr('category'),
 					enabled: true,
-					selected: selectedProjects.indexOf(project.name) > -1
+					selected: selectedProjects.indexOf(projectName) > -1
 				};
-				items.push(item);
 			}
+
+			var items = $(projectsXml)
+				.find('Project')
+				.map(createItem)
+				.toArray();
 			return {
 				items: items
 			};
-		};
+		}
 
 		return {
 			show: show,

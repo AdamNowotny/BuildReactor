@@ -3,13 +3,14 @@
 		'./ccRequest',
 		'./projectFactory',
 		'../timer',
-		'amdUtils/string/interpolate'
-	], function (signals, ccRequest, projectFactory, Timer, interpolate) {
+		'amdUtils/string/interpolate',
+		'amdUtils/array/contains'
+	], function (signals, ccRequest, projectFactory, Timer, interpolate, contains) {
 
 		'use strict';
 
 		var CCBuildService = function (settings) {
-			if (!settings.name) throw { name: 'ArgumentInvalid', message: 'settings.name not set' };
+			if (!settings.name) { throw { name: 'ArgumentInvalid', message: 'settings.name not set' } }
 			this.settings = settings;
 			this.name = settings.name;
 			this.projects = {};
@@ -21,7 +22,9 @@
 		};
 
 		CCBuildService.prototype.start = function () {
-			if (!this.settings.updateInterval) throw { name: 'ArgumentInvalid', message: 'settings.updateInterval not set' };
+			if (!this.settings.updateInterval) {
+				throw { name: 'ArgumentInvalid', message: 'settings.updateInterval not set' }
+			}
 			this.timer = new Timer();
 			this.timer.elapsed.add(this.update, this);
 			this.scheduleUpdate = function () {
@@ -39,8 +42,8 @@
 
 		CCBuildService.prototype.update = function () {
 			this.updateStarted.dispatch();
-			var self = this;
-			var request = ccRequest.projects(this.settings);
+			var self = this,
+				request = ccRequest.projects(this.settings);
 			request.responseReceived.addOnce(function (projectsResponse) {
 				processResponse(projectsResponse);
 				self.updateFinished.dispatch();
@@ -50,20 +53,30 @@
 				self.updateFinished.dispatch();
 			}, this);
 
-			function processResponse(responseJson) {
-				for (var i = 0; i < responseJson.Project.length; i++) {
-					var projectInfo = responseJson.Project[i];
-					if (self.settings.projects.indexOf(projectInfo.name) < 0) continue;
-					if (self.projects[projectInfo.name]) {
-						self.projects[projectInfo.name].update(projectInfo);
-					} else {
-						var newProject = projectFactory.create(projectInfo);
-						newProject.buildFailed.add(self.onBuildFailed, self);
-						newProject.buildFixed.add(self.onBuildFixed, self);
-						self.projects[projectInfo.name] = newProject;
-					}
-				}
-
+			function processResponse(projects) {
+				$(projects)
+					.find('Project')
+					.filter(function selectedProjects(i, d) {
+						return contains(self.settings.projects, $(d).attr('name'));
+					})
+					.map(function projectInfo(i, d) {
+						var name = $(d).attr('name');
+						return {
+							isNew : self.projects[name] ? false : true,
+							name: name,
+							status: $(d).attr('lastBuildStatus')
+						}
+					})
+					.each(function createOrUpdate(i, d) {
+						if (d.isNew) {
+							var newProject = projectFactory.create(d);
+							newProject.buildFailed.add(self.onBuildFailed, self);
+							newProject.buildFixed.add(self.onBuildFixed, self);
+							self.projects[d.name] = newProject;
+						} else {
+							self.projects[d.name].update(d);
+						}
+					});
 			}
 		};
 

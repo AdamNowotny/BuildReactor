@@ -1,47 +1,45 @@
 ﻿define([
-		'src/cctray/projectFactory',
-        'jasmineSignals',
-        'text!spec/fixtures/cctray/cruisecontrolnet.xml',
-        'xml2json'
-	],
-	function (projectFactory, jasmineSignals, projectsXml) {
+	'src/cctray/projectFactory',
+	'jquery',
+	'jasmineSignals',
+	'text!spec/fixtures/cctray/cruisecontrolnet.xml'
+], function (projectFactory, $, jasmineSignals, projectsXml) {
 
-	    describe('cctray/project', function () {
+	'use strict';
+	
+	describe('cctray/projectFactory', function () {
 
-		    var projectJson;
-		    var spyOnSignal = jasmineSignals.spyOnSignal;
-		    
-			beforeEach(function () {
-			    var json = $.xml2json(projectsXml);
-			    projectJson = json.Project[0];
-			});
+		var projectSuccessInfo,
+			projectFailureInfo,
+			spyOnSignal = jasmineSignals.spyOnSignal;
 
-			it('should initialize from JSON', function () {
-			    var project = projectFactory.create(projectJson);
+		beforeEach(function () {
+			projectSuccessInfo = { name: 'project name', status: 'Success' };
+			projectFailureInfo = { name: 'project name', status: 'Failure' };
+		});
 
-			    expect(project.name).toBe('CruiseControl.NET');
-			});
+		it('should initialize from JSON', function () {
+			var project = projectFactory.create(projectSuccessInfo);
 
-			it('should dispatch buildFailed if build failed', function () {
-			    projectJson.lastBuildStatus = 'Success';
-			    var project = projectFactory.create(projectJson);
-			    projectJson.lastBuildStatus = 'Failure';
-			    var buildFailedSpy = spyOnSignal(project.buildFailed);
+			expect(project.name).toBe('project name');
+		});
 
-			    project.update(projectJson);
+		it('should dispatch buildFailed if build failed', function () {
+			var project = projectFactory.create(projectSuccessInfo),
+				buildFailedSpy = spyOnSignal(project.buildFailed);
 
-			    expect(buildFailedSpy).toHaveBeenDispatched();
-		    });
+			project.update(projectFailureInfo);
 
-		    it('should dispatch buildFixed if build was fixed', function () {
-		        projectJson.lastBuildStatus = 'Failure';
-		        var project = projectFactory.create(projectJson);
-		        projectJson.lastBuildStatus = 'Success';
-		        var buildFixedSpy = spyOnSignal(project.buildFixed);
+			expect(buildFailedSpy).toHaveBeenDispatched();
+		});
 
-		        project.update(projectJson);
+		it('should dispatch buildFixed if build was fixed', function () {
+			var project = projectFactory.create(projectFailureInfo),
+				buildFixedSpy = spyOnSignal(project.buildFixed);
 
-		        expect(buildFixedSpy).toHaveBeenDispatched();
-		    });
+			project.update(projectSuccessInfo);
+
+			expect(buildFixedSpy).toHaveBeenDispatched();
 		});
 	});
+});

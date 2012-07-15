@@ -4,8 +4,7 @@ require.config({
 		jquery: 'lib/jquery/jquery',
 		amdUtils: 'lib/amd-utils',
 		text: 'lib/requirejs/text',
-		signals: 'lib/js-signals/signals',
-		xml2json: 'lib/jquery/jquery.xml2json'
+		signals: 'lib/js-signals/signals'
 	},
 	shim: {
 		xml2json: [ 'jquery' ]

@@ -5,24 +5,24 @@
 	'jquery',
 	'signals',
 	'jasmineSignals',
-	'text!spec/fixtures/cctray/cruisecontrolnet.xml',
-	'xml2json'
-	],
-	function (controller, ccRequest, projectView, $, signals, jasmineSignals, projectsXml) {
+	'text!spec/fixtures/cctray/cruisecontrolnet.xml'
+], function (controller, ccRequest, projectView, $, signals, jasmineSignals, projectsXmlText) {
 
+	'use strict';
+	
 	describe('cctray/settingsController', function () {
 
-		var settings;
-		var mockCcRequest;
-		var mockProjectViewShow;
-		var mockProjectViewGet;
-		var spyOnSignal = jasmineSignals.spyOnSignal;
-		var responseReceived;
-		var errorReceived;
-		var projectsJson;
+		var settings,
+			mockCcRequest,
+			mockProjectViewShow,
+			mockProjectViewGet,
+			spyOnSignal = jasmineSignals.spyOnSignal,
+			responseReceived,
+			errorReceived,
+			projectsXml
 		
 		beforeEach(function () {
-			projectsJson = $.xml2json(projectsXml);
+			projectsXml = $.parseXML(projectsXmlText);
 			responseReceived = new signals.Signal();
 			errorReceived = new signals.Signal();
 			responseReceived.memorize = true;
@@ -38,7 +38,7 @@
 			};
 			mockCcRequest = spyOn(ccRequest, 'projects');
 			mockCcRequest.andCallFake(function () {
-				responseReceived.dispatch(projectsJson);
+				responseReceived.dispatch(projectsXml);
 				return {
 					responseReceived: responseReceived,
 					errorReceived: errorReceived
@@ -92,14 +92,14 @@
 			expect($('.url-input:focus').length).toBe(1);
 		});
 
-		describe('Projects', function() {
+		describe('Projects', function () {
 
-			it('should use url and credentials when getting plans', function() {
-				mockCcRequest.andCallFake(function(requestSettings) {
+			it('should use url and credentials when getting plans', function () {
+				mockCcRequest.andCallFake(function (requestSettings) {
 					expect(requestSettings.username).toBe(settings.username);
 					expect(requestSettings.password).toBe(settings.password);
 					expect(requestSettings.url).toBe(settings.url);
-					responseReceived.dispatch(projectsJson);
+					responseReceived.dispatch(projectsXml);
 					return {
 						responseReceived: responseReceived,
 						errorReceived: errorReceived
@@ -111,8 +111,8 @@
 				expect(mockCcRequest).toHaveBeenCalled();
 			});
 
-			it('should display projects after button clicked', function() {
-				mockProjectViewShow.andCallFake(function(responseJson) {
+			it('should display projects after button clicked', function () {
+				mockProjectViewShow.andCallFake(function (responseJson) {
 					expect(responseJson.items.length).toBe(9);
 					expect(responseJson.items[0].name).toBe('CruiseControl.NET');
 					expect(responseJson.items[0].group).toBe('CruiseControl.NET');
@@ -125,10 +125,10 @@
 				expect(mockProjectViewShow).toHaveBeenCalled();
 			});
 
-			it('should disable button while waiting for response', function() {
-				mockCcRequest.andCallFake(function() {
+			it('should disable button while waiting for response', function () {
+				mockCcRequest.andCallFake(function () {
 					expect($('.projects-button')).toBeDisabled();
-					responseReceived.dispatch(projectsJson);
+					responseReceived.dispatch(projectsXml);
 					return {
 						responseReceived: responseReceived,
 						errorReceived: errorReceived
@@ -141,10 +141,10 @@
 				expect(mockCcRequest).toHaveBeenCalled();
 			});
 
-			it('should hide project view when getting projects', function() {
-				mockCcRequest.andCallFake(function() {
+			it('should hide project view when getting projects', function () {
+				mockCcRequest.andCallFake(function () {
 					expect(projectView.hide).toHaveBeenCalled();
-					responseReceived.dispatch(projectsJson);
+					responseReceived.dispatch(projectsXml);
 					return {
 						responseReceived: responseReceived,
 						errorReceived: errorReceived
@@ -156,8 +156,8 @@
 				expect(mockCcRequest).toHaveBeenCalled();
 			});
 
-			it('should display error if call failed when getting plans', function() {
-				mockCcRequest.andCallFake(function() {
+			it('should display error if call failed when getting plans', function () {
+				mockCcRequest.andCallFake(function () {
 					errorReceived.dispatch({ message: 'error message' });
 					return {
 						responseReceived: responseReceived,
@@ -171,7 +171,7 @@
 				expect($('.error-message')).toHaveText('error message');
 			});
 
-			it('should clear error when getting plans', function() {
+			it('should clear error when getting plans', function () {
 				$('.error').show();
 
 				showPlans();
@@ -179,7 +179,7 @@
 				expect($('.error')).not.toBeVisible();
 			});
 
-			it('should enable save button after plans loaded', function() {
+			it('should enable save button after plans loaded', function () {
 				showPlans();
 
 				expect($('.save-button')).not.toBeDisabled();

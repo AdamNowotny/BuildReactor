@@ -1,44 +1,43 @@
 define([
 		'signals',
-		'../ajaxRequest',
-        'xml2json'
+		'../ajaxRequest'
 	], function (signals, AjaxRequest) {
 
-	    var send = function (settings) {
-	        var responseReceived = new signals.Signal();
-	        var errorReceived = new signals.Signal();
-	        responseReceived.memorize = true;
-	        errorReceived.memorize = true;
-	        var ajaxSettings = {
-		        url: settings.url,
-		        username: settings.username,
-		        password: settings.password,
-		        dataType: 'xml'
-		    };
-			var request = new AjaxRequest(ajaxSettings);
+		'use strict';
+
+		var send = function (settings) {
+			var responseReceived = new signals.Signal(),
+				errorReceived = new signals.Signal(),
+				ajaxSettings = {
+					url: settings.url,
+					username: settings.username,
+					password: settings.password,
+					dataType: 'xml'
+				},
+				request = new AjaxRequest(ajaxSettings);
+			responseReceived.memorize = true;
+			errorReceived.memorize = true;
 			request.responseReceived.addOnce(function (response) {
-			    var responseJson = $.xml2json(response);
-				responseReceived.dispatch(responseJson);
+				responseReceived.dispatch(response);
 			}, this);
-			request.errorReceived.addOnce(function(ajaxError) {
-			    var errorJson = $.xml2json(ajaxError);
-			    errorReceived.dispatch(errorJson);
+			request.errorReceived.addOnce(function (ajaxError) {
+				errorReceived.dispatch(ajaxError);
 			}, this);
 			request.send();
 			return {
-			    responseReceived: responseReceived,
-			    errorReceived: errorReceived
+				responseReceived: responseReceived,
+				errorReceived: errorReceived
 			};
-	    };
+		};
 
-		var projects = function(settings) {
-			if (!(settings && settings.url && settings.url != '')) {
-			    throw {
-			        message: 'settings.url-input not set'
-			    };
+		function projects(settings) {
+			if (!(settings && settings.url && settings.url !== '')) {
+				throw {
+					message: 'settings.url not set'
+				};
 			}
 			return send(settings);
-		};
+		}
 
 		return {
 			projects: projects

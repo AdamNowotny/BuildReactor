@@ -1,21 +1,20 @@
-﻿define(['signals'], function(signals) {
+﻿define(['signals'], function (signals) {
 
-    var create = function (initJson) {
-        var name = initJson.name;
-        var lastBuildStatus = initJson.lastBuildStatus;
-        var buildFailed = new signals.Signal();
-        var buildFixed = new signals.Signal();
-        
-        var update = function(updateJson) {
-            if (lastBuildStatus === 'Success' && updateJson.lastBuildStatus !== 'Success') {
-                lastBuildStatus = updateJson.lastBuildStatus;
-                buildFailed.dispatch(this);
+    var create = function (projectInfo) {
+        var name = projectInfo.name,
+            status = projectInfo.status,
+            buildFailed = new signals.Signal(),
+            buildFixed = new signals.Signal(),
+            update = function (newProjectInfo) {
+                if (status === 'Success' && newProjectInfo.status !== 'Success') {
+                    status = newProjectInfo.status;
+                    buildFailed.dispatch(this);
+                }
+                if (status !== 'Success' && newProjectInfo.status === 'Success') {
+                    status = newProjectInfo.status;
+                    buildFixed.dispatch(this);
+                }
             };
-            if (lastBuildStatus !== 'Success' && updateJson.lastBuildStatus === 'Success') {
-                lastBuildStatus = updateJson.lastBuildStatus;
-                buildFixed.dispatch(this);
-            };
-        };
         
         return {
             name: name,

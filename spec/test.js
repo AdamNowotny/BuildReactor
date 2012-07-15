@@ -1,7 +1,7 @@
 ﻿var chrome = {
 	browserAction: {
-		setBadgeText: function() { },
-		setBadgeBackgroundColor: function() { }
+		setBadgeText: function () { },
+		setBadgeBackgroundColor: function () { }
 	}
 };
 require.config({
@@ -12,7 +12,6 @@ require.config({
 		fixtures: 'spec/fixtures',
 		amdUtils: 'lib/amd-utils',
 		jquery: 'lib/jquery/jquery',
-		xml2json: 'lib/jquery/jquery.xml2json',
 		jqueryTools: 'lib/jquery-tools/jquery.tools.min',
 		text: 'lib/requirejs/text',
 		json: 'lib/requirejs/json',
@@ -52,7 +51,7 @@ require([
 	'spec/cctray/settingsControllerTest',
 	'spec/cctray/ccRequestTest',
 	'spec/common/projectViewTest'
-], function(testModule) {
+], function (testModule) {
 	$.fx.off = true;
 	jasmine.getFixtures().fixturesPath = 'fixtures';
 	jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
