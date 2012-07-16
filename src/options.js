@@ -8,7 +8,7 @@ require.config({
 		text: 'lib/requirejs/text',
 		order: 'lib/requirejs/order',
 		signals: 'lib/js-signals/signals',
-		bootstrap: 'lib/twitter-bootstrap/js/bootstrap'
+		bootstrap: 'lib/twitter-bootstrap/js/bootstrap.min'
 	},
 	shim: {
 		bootstrap: [ 'jquery' ],
@@ -16,8 +16,8 @@ require.config({
 	}
 });
 require([
-		'src/settingsPageController',
-		'amdUtils/string/interpolate'
+	'src/settingsPageController',
+	'amdUtils/string/interpolate'
 ], function (settingsPageController, interpolate) {
 
 	initializeLogging();
