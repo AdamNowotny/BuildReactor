@@ -3,11 +3,11 @@
 	var types = [
 		{
 			typeName: 'Atlassian Bamboo',
-			baseUrl: 'src/bamboo'
+			baseUrl: 'bamboo'
 		},
 		{
 			typeName: 'CCTray Generic',
-			baseUrl: 'src/cctray'
+			baseUrl: 'cctray'
 		}
 	];
 

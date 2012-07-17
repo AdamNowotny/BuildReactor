@@ -1,6 +1,6 @@
 define([
-		'src/bamboo/bambooPlan',
-		'src/bamboo/bambooRequest',
+		'bamboo/bambooPlan',
+		'bamboo/bambooRequest',
 		'jasmineSignals',
 		'json!spec/fixtures/bamboo/projects.json',
 		'json!spec/fixtures/bamboo/latestPlanResult.json',

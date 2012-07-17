@@ -1,6 +1,6 @@
 ﻿define([
 		'jquery',
-		'src/serviceController',
+		'serviceController',
 		'spec/mocks/mockBuildService',
 		'spec/mocks/mockBuildEventBuilder',
 		'spec/mocks/mockSettingsBuilder',

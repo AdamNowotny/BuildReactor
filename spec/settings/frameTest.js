@@ -1,6 +1,6 @@
 ﻿define([
 		'jquery',
-		'src/settings/frame',
+		'settings/frame',
 		'jasmineSignals',
 		'spec/mocks/mockSettingsBuilder'
 	], function ($, frame, jasmineSignals, MockSettingsBuilder) {
@@ -10,6 +10,7 @@
 			var iframeElement;
 
 			beforeEach(function () {
+				frame.srcPrefix('');
 				jasmine.getFixtures().load('settings/frameFixture.html');
 				frame.initialize();
 				iframeElement = $('#settings-frame')[0];

@@ -1,5 +1,5 @@
 ﻿define([
-		'src/common/projectView',
+		'common/projectView',
 		'jquery'
 	],
 	function (projectView, $) {

@@ -1,6 +1,6 @@
 ﻿define([
 		'jquery',
-		'src/settings/removePrompt',
+		'settings/removePrompt',
 		'jasmineSignals'
 	], function ($, removePrompt, jasmineSignals) {
 		describe('removePrompt', function () {

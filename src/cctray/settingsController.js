@@ -1,8 +1,8 @@
 ﻿define([
 	'signals',
 	'jquery',
-	'./ccRequest',
-	'../common/projectView'
+	'cctray/ccRequest',
+	'common/projectView'
 ], function (signals, $, ccRequest, projectView) {
 
 		'use strict';
@@ -13,7 +13,7 @@
 		function getVisibleSettings() {
 			var newSettings = {
 				name: activeSettings.name,
-				baseUrl: 'src/cctray',
+				baseUrl: 'cctray',
 				url: $('.url-input').val(),
 				updateInterval: parseInt($('.update-interval-input').val(), 10),
 				username: $('.username-input').val(),

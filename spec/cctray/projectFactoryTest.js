@@ -1,5 +1,5 @@
 ﻿define([
-	'src/cctray/projectFactory',
+	'cctray/projectFactory',
 	'jquery',
 	'jasmineSignals',
 	'text!spec/fixtures/cctray/cruisecontrolnet.xml'

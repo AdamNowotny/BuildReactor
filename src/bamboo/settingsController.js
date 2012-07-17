@@ -1,8 +1,8 @@
 ﻿define([
 		'signals',
-		'./bambooRequest',
+		'bamboo/bambooRequest',
 		'jquery',
-        '../common/projectView'
+        'common/projectView'
 	], function (signals, BambooRequest, $, projectView) {
 
 		var settingsChanged = new signals.Signal();
@@ -11,7 +11,7 @@
 		var getVisibleSettings = function () {
 			var newSettings = {
 				name: activeSettings.name,
-				baseUrl: 'src/bamboo',
+				baseUrl: 'bamboo',
 				url: $('.url-input').val(),
 				updateInterval: parseInt($('.update-interval-input').val()),
 				username: $('.username-input').val(),

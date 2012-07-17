@@ -5,21 +5,20 @@
 	}
 };
 require.config({
-	baseUrl: '../',
+	baseUrl: '../src',
 	paths: {
-		spec: 'spec',
-		mocks: 'spec/mocks',
-		fixtures: 'spec/fixtures',
-		amdUtils: 'lib/amd-utils',
-		jquery: 'lib/jquery/jquery',
-		jqueryTools: 'lib/jquery-tools/jquery.tools.min',
-		text: 'lib/requirejs/text',
-		json: 'lib/requirejs/json',
-		order: 'lib/requirejs/order',
-		handlebars: 'lib/requirejs-handlebars-plugin/Handlebars',
-		signals: 'lib/js-signals/signals',
-		jasmineSignals: 'lib/jasmine-signals/jasmine-signals',
-		bootstrap: 'lib/twitter-bootstrap/js/bootstrap'
+		amdUtils: '../lib/amd-utils',
+		bootstrap: '../lib/twitter-bootstrap/js/bootstrap',
+		fixtures: '../spec/fixtures',
+		handlebars: '../lib/requirejs-handlebars-plugin/Handlebars',
+		jasmineSignals: '../lib/jasmine-signals/jasmine-signals',
+		jqueryTools: '../lib/jquery-tools/jquery.tools.min',
+		jquery: '../lib/jquery/jquery',
+		json: '../lib/requirejs/json',
+		mocks: '../spec/mocks',
+		spec: '../spec',
+		signals: '../lib/js-signals/signals',
+		text: '../lib/requirejs/text'
 	},
 	shim: {
 		bootstrap: [ 'jquery' ],

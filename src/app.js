@@ -1,8 +1,8 @@
 ﻿define([
-		'src/serviceController',
-		'src/notificationController',
-		'src/settingsStore',
-		'src/serviceTypesRepository',
+		'serviceController',
+		'notificationController',
+		'settingsStore',
+		'serviceTypesRepository',
 		'amdUtils/string/interpolate'
 	], function (serviceController, notificationController, settingsStore, serviceTypesRepository, interpolate) {
 

@@ -1,14 +1,13 @@
 require.config({
-	baseUrl: '..',
+	baseUrl: 'src',
 	paths: {
-		jquery: 'lib/jquery/jquery',
-		jqueryTools: 'lib/jquery-tools/jquery.tools.min',
-		amdUtils: 'lib/amd-utils',
-		handlebars: 'lib/requirejs-handlebars-plugin/Handlebars',
-		text: 'lib/requirejs/text',
-		order: 'lib/requirejs/order',
-		signals: 'lib/js-signals/signals',
-		bootstrap: 'lib/twitter-bootstrap/js/bootstrap.min'
+		amdUtils: '../lib/amd-utils',
+		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
+		handlebars: '../lib/requirejs-handlebars-plugin/Handlebars',
+		jquery: '../lib/jquery/jquery',
+		jqueryTools: '../lib/jquery-tools/jquery.tools.min',
+		signals: '../lib/js-signals/signals',
+		text: '../lib/requirejs/text'
 	},
 	shim: {
 		bootstrap: [ 'jquery' ],
@@ -16,15 +15,9 @@ require.config({
 	}
 });
 require([
-	'src/settingsPageController',
+	'settingsPageController',
 	'amdUtils/string/interpolate'
 ], function (settingsPageController, interpolate) {
-
-	initializeLogging();
-	// app already loaded
-	var app = chrome.extension.getBackgroundPage().require("src/app");
-	settingsPageController.initialize(app.getSupportedServiceTypes());
-	settingsPageController.settingsChanged.add(settingsChanged);
 
 	function initializeLogging() {
 		window.onerror = function (message, url, line) {
@@ -37,7 +30,11 @@ require([
 		app.updateSettings(updatedSettings);
 	}
 
-	var settings = app.getSettings();
-	settingsPageController.load(settings);
+	initializeLogging();
+	// app already loaded
+	var app = chrome.extension.getBackgroundPage().require("app");
+	settingsPageController.initialize(app.getSupportedServiceTypes());
+	settingsPageController.settingsChanged.add(settingsChanged);
+	settingsPageController.load(app.getSettings());
 	
 });

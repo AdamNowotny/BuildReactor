@@ -1,15 +1,15 @@
 ﻿define([
 		'jquery',
-		'src/settingsPageController',
-		'src/settings/addModal',
-		'src/settings/serviceSettings',
-		'src/settings/frame',
-		'src/settings/serviceList',
-		'src/settings/savePrompt',
-		'src/settings/removePrompt',
+		'settingsPageController',
+		'settings/addModal',
+		'settings/serviceSettings',
+		'settings/frame',
+		'settings/serviceList',
+		'settings/savePrompt',
+		'settings/removePrompt',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals',
-		'src/Timer'
+		'Timer'
 	], function ($, controller, addModal, serviceSettings, frame, serviceList, savePrompt, removePrompt, MockSettingsBuilder, jasmineSignals, Timer) {
 		describe('settingsPageController', function () {
 

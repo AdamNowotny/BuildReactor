@@ -1,6 +1,6 @@
 define([
 		'signals',
-		'../ajaxRequest'
+		'ajaxRequest'
 	], function (signals, AjaxRequest) {
 
 		'use strict';

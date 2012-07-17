@@ -1,13 +1,13 @@
 ﻿define([
-		'signals',
-		'jquery',
-		'./settings/serviceSettings',
-		'./settings/frame',
-		'./settings/addModal',
-		'./settings/serviceList',
-		'./settings/savePrompt',
-		'./settings/removePrompt',
-		'./timer'
+	'signals',
+	'jquery',
+	'settings/serviceSettings',
+	'settings/frame',
+	'settings/addModal',
+	'settings/serviceList',
+	'settings/savePrompt',
+	'settings/removePrompt',
+	'timer'
 ], function (signals, $, serviceSettings, frame, addModal, serviceList, savePrompt, removePrompt, Timer) {
 
 	var isInitialized = false;

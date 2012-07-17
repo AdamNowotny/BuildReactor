@@ -1,8 +1,8 @@
 ﻿define([
-	'src/cctray/buildService',
-	'src/cctray/projectFactory',
-	'src/cctray/ccRequest',
-	'src/timer',
+	'cctray/buildService',
+	'cctray/projectFactory',
+	'cctray/ccRequest',
+	'timer',
 	'jquery',
 	'signals',
 	'jasmineSignals',

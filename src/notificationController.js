@@ -1,6 +1,6 @@
 define([
-        'src/serviceController',
-        'src/timer'
+        'serviceController',
+        'timer'
     ], function (serviceController, Timer) {
 
         var notificationTimeoutInSec = 5;

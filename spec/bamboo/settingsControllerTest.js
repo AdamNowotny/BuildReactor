@@ -1,7 +1,7 @@
 ﻿define([
-		'src/bamboo/settingsController',
-		'src/bamboo/bambooRequest',
-        'src/common/projectView',
+		'bamboo/settingsController',
+		'bamboo/bambooRequest',
+        'common/projectView',
 		'jquery',
 		'jasmineSignals',
 		'json!spec/fixtures/bamboo/projects.json'
@@ -19,7 +19,7 @@
 			beforeEach(function () {
 				settings = {
 					name: 'My Bamboo CI',
-					baseUrl: 'src/bamboo',
+					baseUrl: 'bamboo',
 					url: 'http://example.com/',
 					updateInterval: 10,
 					username: 'username1',
@@ -66,12 +66,12 @@
 				expect(settings.plans.length).toBe(0);
 			});
 
-		    it('should initialize projectView', function() {
-		        controller.show(settings);
+			it('should initialize projectView', function() {
+				controller.show(settings);
 
-		        expect(projectView.initialize).toHaveBeenCalledWith('plan-selection-container');
-		    });
-		    
+				expect(projectView.initialize).toHaveBeenCalledWith('plan-selection-container');
+			});
+
 			it('should focus on url on load', function () {
 				controller.show(settings);
 
@@ -93,29 +93,29 @@
 			});
 
 			it('should display projects after button clicked', function () {
-			    mockProjectViewShow.andCallFake(function(model, selectedProjects) {
-			        expect(model.items[0].id).toBe('PROJECT1-PLAN1');
-			        expect(model.items[0].name).toBe('Plan 1');
-			        expect(model.items[0].group).toBe('Project 1');
-			        expect(model.items[0].enabled).toBeTruthy();
-			        expect(model.items[0].selected).toBeTruthy();
-			    });
-			    
+				mockProjectViewShow.andCallFake(function (model, selectedProjects) {
+					expect(model.items[0].id).toBe('PROJECT1-PLAN1');
+					expect(model.items[0].name).toBe('Plan 1');
+					expect(model.items[0].group).toBe('Project 1');
+					expect(model.items[0].enabled).toBeTruthy();
+					expect(model.items[0].selected).toBeTruthy();
+				});
+
 				showPlans();
 
 				expect(mockProjectViewShow).toHaveBeenCalled();
 			});
 
-		    it('should pass all projects and plans to projectView', function() {
-		        mockProjectViewShow.andCallFake(function (model, selectedProjects) {
-		            expect(model.items.length).toBe(5);
-		        });
+			it('should pass all projects and plans to projectView', function () {
+				mockProjectViewShow.andCallFake(function (model, selectedProjects) {
+					expect(model.items.length).toBe(5);
+				});
 
-		        showPlans();
+				showPlans();
 
-		        expect(mockProjectViewShow).toHaveBeenCalled();
-		    });
-		    
+				expect(mockProjectViewShow).toHaveBeenCalled();
+			});
+
 			it('should disable button while waiting for response', function () {
 				mockBambooRequest.andCallFake(function () {
 					expect($('.plans-button')).toBeDisabled();
@@ -150,7 +150,7 @@
 				$('.plans-button').click();
 
 				expect($('.alert-error')).toBeVisible();
-			    expect(projectView.hide).toHaveBeenCalled();
+				expect(projectView.hide).toHaveBeenCalled();
 			});
 
 			it('should clear error when getting plans', function () {
@@ -166,13 +166,13 @@
 				jasmine.getFixtures().load('bamboo/validSettingsFixture.html');
 				controller.show(settings);
 				var settingsSavedSpy = spyOnSignal(controller.settingsChanged).matching(function (newSettings) {
-				    expect(newSettings.url).toBe(settings.url);
-				    expect(newSettings.username).toBe(settings.username);
-				    expect(newSettings.password).toBe(settings.password);
-				    expect(newSettings.updateInterval).toBe(settings.updateInterval);
-				    expect(newSettings.plans[0]).toBe('PROJECT1-PLAN1');
-				    expect(newSettings.plans[1]).toBe('PROJECT1-PLAN2');
-				    return true;
+					expect(newSettings.url).toBe(settings.url);
+					expect(newSettings.username).toBe(settings.username);
+					expect(newSettings.password).toBe(settings.password);
+					expect(newSettings.updateInterval).toBe(settings.updateInterval);
+					expect(newSettings.plans[0]).toBe('PROJECT1-PLAN1');
+					expect(newSettings.plans[1]).toBe('PROJECT1-PLAN2');
+					return true;
 				});
 
 				$('.save-button').click();

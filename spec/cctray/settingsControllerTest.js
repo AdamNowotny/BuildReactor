@@ -1,7 +1,7 @@
 ﻿define([
-	'src/cctray/settingsController',
-	'src/cctray/ccRequest',
-	'src/common/projectView',
+	'cctray/settingsController',
+	'cctray/ccRequest',
+	'common/projectView',
 	'jquery',
 	'signals',
 	'jasmineSignals',
@@ -29,7 +29,7 @@
 			errorReceived.memorize = true;
 			settings = {
 				name: 'My Bamboo CI',
-				baseUrl: 'src/cruisecontrol',
+				baseUrl: 'cctray',
 				url: 'http://example.com/',
 				updateInterval: 10,
 				username: 'username1',

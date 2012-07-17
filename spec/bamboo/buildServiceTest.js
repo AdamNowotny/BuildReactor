@@ -1,8 +1,8 @@
 ﻿define([
-		'src/bamboo/buildService',
-		'src/bamboo/bambooPlan',
-		'src/bamboo/bambooRequest',
-		'src/timer',
+		'bamboo/buildService',
+		'bamboo/bambooPlan',
+		'bamboo/bambooRequest',
+		'timer',
 		'jquery',
 		'signals',
 		'jasmineSignals',

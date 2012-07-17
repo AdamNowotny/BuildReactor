@@ -1,7 +1,7 @@
 ﻿define([
 		'jquery',
-		'src/settings/addModal',
-		'src/serviceTypesRepository',
+		'settings/addModal',
+		'serviceTypesRepository',
 		'jasmineSignals',
 		'jqueryTools'
 	], function ($, addModal, serviceTypesRepository, jasmineSignals) {
@@ -13,11 +13,11 @@
 
 			var serviceType1 = {
 				typeName: 'Atlassian Bamboo',
-				baseUrl: 'src/bamboo'
+				baseUrl: 'bamboo'
 			};
 			var serviceType2 = {
 				typeName: 'CruiseControl',
-				baseUrl: 'src/cruisecontrol'
+				baseUrl: 'cruisecontrol'
 			};
 			var newSettings = serviceType1;
 
@@ -145,7 +145,7 @@
 				var name = 'My CI service name';
 				var serviceAddedSpy = spyOnSignal(addModal.serviceAdded).matching(function (info) {
 				    return info.name == name &&
-				        info.baseUrl == 'src/bamboo' &&
+				        info.baseUrl == 'bamboo' &&
 				        info.typeName == 'Atlassian Bamboo';
 				});
 				modalWindow.selectService();

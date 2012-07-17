@@ -1,17 +1,17 @@
-﻿define([
-		'signals',
-		'jquery'
+define([
+	'signals',
+	'jquery'
 ], function (signals, $) {
 
-	var loaded = new signals.Signal();
-	var saved = new signals.Signal();
-
-	var iframe;
-	var currentSettings;
+	var loaded = new signals.Signal(),
+		saved = new signals.Signal(),
+		srcPrefix = 'src/',
+		iframe,
+		currentSettings;
 
 	function initialize() {
 		iframe = $('#settings-frame')[0];
-	};
+	}
 
 	var show = function (serviceInfo) {
 		if (serviceInfo === currentSettings) {
@@ -28,7 +28,7 @@
 				serviceSettingsController.show(serviceInfo);
 			});
 		};
-		$('#settings-frame').attr('src', serviceInfo.baseUrl + '/options.html');
+		$('#settings-frame').attr('src', srcPrefix + serviceInfo.baseUrl + '/options.html');
 	};
 
 	var settingsChanged = function (newSettings) {
@@ -47,6 +47,12 @@
 		show: show,
 		showEmpty: showEmpty,
 		loaded: loaded,
-		saved: saved
+		saved: saved,
+		srcPrefix: function (value) {
+			if (value === undefined) {
+				return srcPrefix;
+			}
+			srcPrefix = value;
+		}
 	};
 });

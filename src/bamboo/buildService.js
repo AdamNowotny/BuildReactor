@@ -1,8 +1,8 @@
 ﻿define([
 		'signals',
-		'./bambooRequest',
-		'./bambooPlan',
-		'../timer',
+		'bamboo/bambooRequest',
+		'bamboo/bambooPlan',
+		'timer',
 		'amdUtils/string/interpolate'
 	], function (signals, BambooRequest, BambooPlan, Timer, interpolate) {
 

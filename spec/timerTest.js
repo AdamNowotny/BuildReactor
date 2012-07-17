@@ -1,4 +1,4 @@
-﻿define(['src/timer', 'jasmineSignals'], function (Timer, jasmineSignals) {
+﻿define(['timer', 'jasmineSignals'], function (Timer, jasmineSignals) {
 
         describe('timer', function () {
 

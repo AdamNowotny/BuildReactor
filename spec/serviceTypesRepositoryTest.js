@@ -1,4 +1,4 @@
-﻿define(['src/serviceTypesRepository'], function (repository) {
+﻿define(['serviceTypesRepository'], function (repository) {
 
 	describe('serviceTypesRepository', function () {
 
@@ -12,7 +12,7 @@
 			var settings = repository.createSettingsFor('CCTray Generic');
 
 			expect(settings.typeName).toBe('CCTray Generic');
-			expect(settings.baseUrl).toBe('src/cctray');
+			expect(settings.baseUrl).toBe('cctray');
 		});
 
 	});

@@ -1,6 +1,6 @@
 ﻿define([
 		'jquery',
-		'src/settings/savePrompt',
+		'settings/savePrompt',
 		'jasmineSignals'
 	], function ($, savePrompt, jasmineSignals) {
 		describe('savePrompt', function () {

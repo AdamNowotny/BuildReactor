@@ -8,7 +8,7 @@
 		this.buildFixed = new signals.Signal();
 		this.errorThrown = new signals.Signal();
 		this.start = function () { };
-		this.stop = function() { };
+		this.stop = function () { };
 		this.initializeFromSettings = function (settings) {
 			this.name = settings.name;
 		};

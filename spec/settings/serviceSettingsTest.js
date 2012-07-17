@@ -1,5 +1,5 @@
 ﻿define([
-		'src/settings/serviceSettings',
+		'settings/serviceSettings',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals'
 	], function (serviceSettings, MockSettingsBuilder, jasmineSignals) {

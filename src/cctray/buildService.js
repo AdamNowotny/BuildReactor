@@ -1,8 +1,8 @@
 ﻿define([
 		'signals',
-		'./ccRequest',
-		'./projectFactory',
-		'../timer',
+		'cctray/ccRequest',
+		'cctray/projectFactory',
+		'timer',
 		'amdUtils/string/interpolate',
 		'amdUtils/array/contains'
 	], function (signals, ccRequest, projectFactory, Timer, interpolate, contains) {
