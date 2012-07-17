@@ -18,7 +18,7 @@
     "dojo"          : false,
 
     "predef"        : [  // Extra globals.
-        "define", "require", "jasmine", "describe", "it", "beforeEach", "expect", "spyOn"
+        "chrome", "define", "require", "jasmine", "describe", "it", "beforeEach", "expect", "spyOn"
     ],
 
 
