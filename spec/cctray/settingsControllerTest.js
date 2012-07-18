@@ -89,7 +89,7 @@ define([
 		it('should focus on url on load', function () {
 			controller.show(settings);
 
-			expect($('.url-input:focus').length).toBe(1);
+			expect($(document.activeElement)).toHaveClass('url-input');
 		});
 
 		describe('Projects', function () {
