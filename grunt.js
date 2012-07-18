@@ -3,9 +3,12 @@ module.exports = function (grunt) {
 
 	// Project configuration.
 	grunt.initConfig({
-		distDir: 'build/BuildReactor',
+		vars: {
+			build: 'build',
+			dist: 'build/BuildReactor'
+		},
 		clean: {
-			src: [ 'build' ]
+			src: [ '<config:vars.build>' ]
 		},
 		lint: {
 			files: ['src/**/*.js', 'spec/**/*.js']
@@ -56,9 +59,9 @@ module.exports = function (grunt) {
 		mincss: {
 			compress: {
 				files: {
-					'build/BuildReactor/css/options.css': [ 'css/options.css' ],
-					'build/BuildReactor/src/bamboo/options.css': [ 'src/bamboo/options.css' ],
-					'build/BuildReactor/src/cctray/options.css': [ 'src/cctray/options.css' ]
+					'<%= vars.dist %>/css/options.css': [ 'css/options.css' ],
+					'<%= vars.dist %>/src/bamboo/options.css': [ 'src/bamboo/options.css' ],
+					'<%= vars.dist %>/src/cctray/options.css': [ 'src/cctray/options.css' ]
 				}
 			}
 		},
@@ -114,7 +117,7 @@ module.exports = function (grunt) {
 					basePath: "."
 				},
 				files: {
-					'build/BuildReactor': [
+					'<%= vars.dist %>': [
 						'background.html',
 						'options.html',
 						'manifest.json',
