@@ -110,13 +110,17 @@ define([
 
 		BuildService.prototype.planUpdate = function () {
 			var plansUpdated = 0;
+			function planFinished() {
+				plansUpdated++;
+				if (plansUpdated === this.plansCount) {
+					this.updateFinished.dispatch();
+				}
+			}
+
 			for (var planKey in this.plans) {
-				this.plans[planKey].update().addOnce(function () {
-					plansUpdated++;
-					if (plansUpdated === this.plansCount) {
-						this.updateFinished.dispatch();
-					}
-				}, this);
+				if (this.plans.hasOwnProperty(planKey)) {
+					this.plans[planKey].update().addOnce(planFinished, this);
+				}
 			}
 		};
 
