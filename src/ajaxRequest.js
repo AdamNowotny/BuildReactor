@@ -39,7 +39,7 @@ define(['signals', 'jquery'], function (signals, $) {
 				error: onAjaxError,
 				dataType: dataType
 			};
-		if (this.settings.username !== null && this.settings.username.trim() !== '') {
+		if (this.settings.username != null && this.settings.username.trim() !== '') {
 			ajaxOptions.username = this.settings.username;
 			ajaxOptions.password = this.settings.password;
 			ajaxOptions.data = { os_authType: 'basic' };
