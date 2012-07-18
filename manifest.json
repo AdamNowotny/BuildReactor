@@ -1,6 +1,6 @@
 {
 	"name": "BuildReactor",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"manifest_version": 1,
 	"description": "Provides notifications on CI server events",
 	"browser_action": {
@@ -9,10 +9,10 @@
 	},
 	"icons": { "128": "img/icon-128.png" },
 	"background": {
-		"scripts": ["lib/requirejs/require.min.js", "src/main.js"]
+		"scripts": [ "lib/requirejs/require.min.js", "src/main.js" ]
 	},
 	"options_page": "options.html",
 	"homepage_url": "https://github.com/AdamNowotny/BuildReactor",
 	"offline_enabled": false,
-	"permissions": ["http://*/*", "https://*/*", "notifications"]
+	"permissions": [ "http://*/*", "https://*/*", "notifications", "background" ]
 }
