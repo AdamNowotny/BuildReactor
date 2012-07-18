@@ -1,4 +1,4 @@
-﻿define(function () {
+define(function () {
 
 	var MockSettingsBuilder = function () {
 		this.settings = {
@@ -13,7 +13,7 @@
 			this.settings.name = name;
 			return this;
 		};
-		this.withBaseUrl = function(url) {
+		this.withBaseUrl = function (url) {
 			this.settings.baseUrl = url;
 			return this;
 		};

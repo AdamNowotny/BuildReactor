@@ -1,4 +1,4 @@
-﻿define([
+define([
 		'ajaxRequest',
 		'jquery',
 		'jasmineSignals'
@@ -33,130 +33,130 @@
 				expect(responseReceivedSpy).toHaveBeenDispatched(1);
 			});
 
-		    describe('authType', function() {
+			describe('authType', function () {
 
-		        it('should set authType to basic if username specified', function() {
-		            var requestOptions = {
-		                url: 'http://example.com',
-		                username: 'username1',
-		                password: 'password123'
-		            };
-		            mockAjax.andCallFake(function(ajaxOptions) {
-		                expect(ajaxOptions.username).toBe(requestOptions.username);
-		                expect(ajaxOptions.password).toBe(requestOptions.password);
-		                expect(ajaxOptions.data).toBeDefined();
-		                expect(ajaxOptions.data.os_authType).toBe('basic');
-		            });
+				it('should set authType to basic if username specified', function () {
+					var requestOptions = {
+						url: 'http://example.com',
+						username: 'username1',
+						password: 'password123'
+					};
+					mockAjax.andCallFake(function (ajaxOptions) {
+						expect(ajaxOptions.username).toBe(requestOptions.username);
+						expect(ajaxOptions.password).toBe(requestOptions.password);
+						expect(ajaxOptions.data).toBeDefined();
+						expect(ajaxOptions.data.os_authType).toBe('basic');
+					});
 
-		            request = new AjaxRequest(requestOptions);
-		            request.send();
+					request = new AjaxRequest(requestOptions);
+					request.send();
 
-		            expect(mockAjax).toHaveBeenCalled();
-		        });
+					expect(mockAjax).toHaveBeenCalled();
+				});
 
-		        it('should not set authType if username not specified', function() {
-		            var requestOptions = { url: 'http://example.com' };
-		            mockAjax.andCallFake(function(ajaxOptions) {
-		                expect(ajaxOptions.username).not.toBeDefined();
-		                expect(ajaxOptions.password).not.toBeDefined();
-		                expect(ajaxOptions.data).not.toBeDefined();
-		            });
+				it('should not set authType if username not specified', function () {
+					var requestOptions = { url: 'http://example.com' };
+					mockAjax.andCallFake(function (ajaxOptions) {
+						expect(ajaxOptions.username).not.toBeDefined();
+						expect(ajaxOptions.password).not.toBeDefined();
+						expect(ajaxOptions.data).not.toBeDefined();
+					});
 
-		            request = new AjaxRequest(requestOptions);
-		            request.send();
+					request = new AjaxRequest(requestOptions);
+					request.send();
 
-		            expect(mockAjax).toHaveBeenCalled();
-		        });
+					expect(mockAjax).toHaveBeenCalled();
+				});
 
-		        it('should not set authType if username is empty', function() {
-		            var requestOptions = {
-		                url: 'http://example.com',
-		                username: '    ',
-		                password: ''
-		            };
-		            mockAjax.andCallFake(function(ajaxOptions) {
-		                expect(ajaxOptions.username).not.toBeDefined();
-		                expect(ajaxOptions.password).not.toBeDefined();
-		                expect(ajaxOptions.data).not.toBeDefined();
-		            });
+				it('should not set authType if username is empty', function () {
+					var requestOptions = {
+						url: 'http://example.com',
+						username: '    ',
+						password: ''
+					};
+					mockAjax.andCallFake(function (ajaxOptions) {
+						expect(ajaxOptions.username).not.toBeDefined();
+						expect(ajaxOptions.password).not.toBeDefined();
+						expect(ajaxOptions.data).not.toBeDefined();
+					});
 
-		            request = new AjaxRequest(requestOptions);
-		            request.send();
+					request = new AjaxRequest(requestOptions);
+					request.send();
 
-		            expect(mockAjax).toHaveBeenCalled();
-		        });
-		    });
+					expect(mockAjax).toHaveBeenCalled();
+				});
+			});
 
 			it('should set dataType if specified', function () {
-			    var requestOptions = {
-			        url: 'http://example.com',
-			        dataType: 'xml'
-			    };
-			    mockAjax.andCallFake(function (ajaxOptions) {
-			        expect(ajaxOptions.dataType).toBe(requestOptions.dataType);
-			    });
+				var requestOptions = {
+					url: 'http://example.com',
+					dataType: 'xml'
+				};
+				mockAjax.andCallFake(function (ajaxOptions) {
+					expect(ajaxOptions.dataType).toBe(requestOptions.dataType);
+				});
 
-			    request = new AjaxRequest(requestOptions);
-			    request.send();
+				request = new AjaxRequest(requestOptions);
+				request.send();
 
-			    expect(mockAjax).toHaveBeenCalled();
+				expect(mockAjax).toHaveBeenCalled();
 			});
 
 			it('should set RequestHeader if specified', function () {
-			    var requestOptions = {
-			        url: 'http://example.com',
-			        dataType: 'xml'
-			    };
-			    mockAjax.andCallFake(function (ajaxOptions) {
-			        var map = { };
-			        var beforeSendRequest = {
-			            setRequestHeader: function (key, value) {
-			                map[key] = value;
-			            }
-			        };
-			        ajaxOptions.beforeSend(beforeSendRequest);
-			        expect(map.Accept).toBe('application/xml');
-			    });
+				var requestOptions = {
+					url: 'http://example.com',
+					dataType: 'xml'
+				};
+				mockAjax.andCallFake(function (ajaxOptions) {
+					var map = { };
+					var beforeSendRequest = {
+						setRequestHeader: function (key, value) {
+							map[key] = value;
+						}
+					};
+					ajaxOptions.beforeSend(beforeSendRequest);
+					expect(map.Accept).toBe('application/xml');
+				});
 
-			    request = new AjaxRequest(requestOptions);
-			    request.send();
+				request = new AjaxRequest(requestOptions);
+				request.send();
 
-			    expect(mockAjax).toHaveBeenCalled();
+				expect(mockAjax).toHaveBeenCalled();
 			});
 
 			it('should set json dataType as default', function () {
-			    var requestOptions = {
-			        url: 'http://example.com'
-			    };
-			    mockAjax.andCallFake(function (ajaxOptions) {
-			        expect(ajaxOptions.dataType).toBe('json');
-			    });
+				var requestOptions = {
+					url: 'http://example.com'
+				};
+				mockAjax.andCallFake(function (ajaxOptions) {
+					expect(ajaxOptions.dataType).toBe('json');
+				});
 
-			    request = new AjaxRequest(requestOptions);
-			    request.send();
+				request = new AjaxRequest(requestOptions);
+				request.send();
 
-			    expect(mockAjax).toHaveBeenCalled();
+				expect(mockAjax).toHaveBeenCalled();
 			});
 
 			it('should set RequestHeader to json by default', function () {
-			    var requestOptions = {
-			        url: 'http://example.com'
-			    };
-			    mockAjax.andCallFake(function (ajaxOptions) {
-			        var map = {};
-			        var beforeSendRequest = {
-			            setRequestHeader: function (key, value) {
-			                map[key] = value;
-			            }
-			        };
-			        ajaxOptions.beforeSend(beforeSendRequest);
-			        expect(map.Accept).toBe('application/json');
-			    });
+				var requestOptions = {
+					url: 'http://example.com'
+				};
+				mockAjax.andCallFake(function (ajaxOptions) {
+					var map = {};
+					var beforeSendRequest = {
+						setRequestHeader: function (key, value) {
+							map[key] = value;
+						}
+					};
+					ajaxOptions.beforeSend(beforeSendRequest);
+					expect(map.Accept).toBe('application/json');
+				});
 
-			    request = new AjaxRequest(requestOptions);
-			    request.send();
+				request = new AjaxRequest(requestOptions);
+				request.send();
 
-			    expect(mockAjax).toHaveBeenCalled();
+				expect(mockAjax).toHaveBeenCalled();
 			});
 
 			describe('error handling', function () {

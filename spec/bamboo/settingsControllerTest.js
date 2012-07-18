@@ -1,4 +1,4 @@
-﻿define([
+define([
 		'bamboo/settingsController',
 		'bamboo/bambooRequest',
         'common/projectView',
@@ -15,7 +15,7 @@
 			var spyOnSignal = jasmineSignals.spyOnSignal;
 			var mockProjectViewShow;
 			var mockProjectViewGet;
-		    
+
 			beforeEach(function () {
 				settings = {
 					name: 'My Bamboo CI',
@@ -34,9 +34,9 @@
 				spyOn(projectView, 'hide');
 				spyOn(projectView, 'initialize');
 				mockProjectViewGet = spyOn(projectView, 'get').andCallFake(function () {
-				    return {
-				        projects: settings.plans
-				    };
+					return {
+						projects: settings.plans
+					};
 				});
 				jasmine.getFixtures().load('bamboo/settingsFixture.html');
 			});
@@ -66,7 +66,7 @@
 				expect(settings.plans.length).toBe(0);
 			});
 
-			it('should initialize projectView', function() {
+			it('should initialize projectView', function () {
 				controller.show(settings);
 
 				expect(projectView.initialize).toHaveBeenCalledWith('plan-selection-container');

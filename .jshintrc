@@ -41,7 +41,7 @@
     "scripturl"     : false,  // Tolerate script-targeted URLs.
     "smarttabs"     : false,  // Allow mixed tabs and spaces
     "shadow"        : false,  // Allows re-define variables later in code e.g. `var x=1; x=2;`.
-    "sub"           : false,  // Tolerate all forms of subscript notation besides dot notation e.g. `dict['key']` instead of `dict.key`.
+    "sub"           : true,  // Tolerate all forms of subscript notation besides dot notation e.g. `dict['key']` instead of `dict.key`.
     "supernew"      : false,  // Tolerate `new function () { ... };` and `new Object;`.
 
     // Environments
@@ -55,9 +55,10 @@
     "nonstandard"   : false,
     "prototypejs"   : false,
     "rhino"         : false,
-    "wsh"           : true,   // Windows Scripting Host.
+    "wsh"           : false,  // Windows Scripting Host.
 
     "predef"        : [  // Extra globals.
+    	"afterEach",
         "beforeEach",
         "chrome",
         "define",
@@ -67,7 +68,9 @@
         "jasmine",
         "loadFixtures",
         "require",
-        "spyOn"
+        "runs",
+        "spyOn",
+        "waitsFor"
     ],
 
     // Legacy

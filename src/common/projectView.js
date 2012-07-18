@@ -1,4 +1,4 @@
-﻿define([
+define([
 	'jquery',
 	'text!./projectViewTemplate.hbs',
 	'handlebars',
@@ -8,7 +8,7 @@
 	var planSelectionTemplate = handlebars.compile(planSelectionText),
 		rootElement;
 
-	var initialize = function(rootClassName) {
+	var initialize = function (rootClassName) {
 		rootElement = $('.' + rootClassName);
 	};
 
@@ -16,14 +16,14 @@
 		var templateJson = createModel(json),
 			html = planSelectionTemplate(templateJson);
 		rootElement.html(html);
-		rootElement.collapse();
+		rootElement.collapse('show');
 		rootElement.find('.project-item input:checked').each(function () {
 			$(this).closest('.collapse').addClass('in');
 		});
 		rootElement.show();
 	};
 
-	var createModel = function(json) {
+	var createModel = function (json) {
 		sortBy('group', json.items);
 		var groups = [],
 			groupNames = getGroups(json.items);
@@ -59,7 +59,7 @@
 		return groupList;
 	};
 
-	var getItemsForGroup = function(items, name) {
+	var getItemsForGroup = function (items, name) {
 		sortBy('name', items);
 		var groupItems = [];
 		for (var i = 0; i < items.length; i++) {

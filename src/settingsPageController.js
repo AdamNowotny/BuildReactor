@@ -1,4 +1,4 @@
-﻿define([
+define([
 	'signals',
 	'jquery',
 	'settings/serviceSettings',
@@ -62,7 +62,7 @@
 			isInitialized = true;
 		}
 		reset(supportedServiceTypes);
-	};
+	}
 
 	function reset(supportedServiceTypes) {
 		savePrompt.initialize();

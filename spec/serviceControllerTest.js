@@ -1,4 +1,4 @@
-﻿define([
+define([
 		'jquery',
 		'serviceController',
 		'spec/mocks/mockBuildService',
@@ -141,7 +141,7 @@
 
 			it('should update state on build failure', function () {
 				var buildFailedSpy = spyOnSignal(controller.buildFailed).matching(function (buildInfo) {
-					return buildInfo.state.failedBuildsCount == 1;
+					return buildInfo.state.failedBuildsCount === 1;
 				});
 				var mockService = new MockBuildService();
 				controller.addService(mockService);
@@ -154,7 +154,7 @@
 
 			it('should update state on build fixed event', function () {
 				var buildFailedSpy = spyOnSignal(controller.buildFailed).matching(function (buildInfo) {
-					return buildInfo.state.failedBuildsCount == 1;
+					return buildInfo.state.failedBuildsCount === 1;
 				});
 				var mockService = new MockBuildService();
 				controller.addService(mockService);
@@ -196,7 +196,7 @@
 			it('should reset state on load', function () {
 				// TODO: fix referencing ../../spec/mocks/mockBuildService
 				var buildFailedSpy = spyOnSignal(controller.buildFailed).matching(function (buildInfo) {
-					return buildInfo.state.failedBuildsCount == 1;
+					return buildInfo.state.failedBuildsCount === 1;
 				});
 				var settings = new MockSettingsBuilder().create();
 				var mockService = new MockBuildService();

@@ -1,4 +1,4 @@
-﻿define([
+define([
 		'jquery',
 		'settings/serviceList',
 		'spec/mocks/mockSettingsBuilder',

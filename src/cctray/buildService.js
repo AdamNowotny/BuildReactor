@@ -1,16 +1,19 @@
-﻿define([
+define([
+		'jquery',
 		'signals',
 		'cctray/ccRequest',
 		'cctray/projectFactory',
 		'timer',
 		'amdUtils/string/interpolate',
 		'amdUtils/array/contains'
-	], function (signals, ccRequest, projectFactory, Timer, interpolate, contains) {
+	], function ($, signals, ccRequest, projectFactory, Timer, interpolate, contains) {
 
 		'use strict';
 
 		var CCBuildService = function (settings) {
-			if (!settings.name) { throw { name: 'ArgumentInvalid', message: 'settings.name not set' } }
+			if (!settings.name) {
+				throw { name: 'ArgumentInvalid', message: 'settings.name not set' };
+			}
 			this.settings = settings;
 			this.name = settings.name;
 			this.projects = {};
@@ -23,7 +26,7 @@
 
 		CCBuildService.prototype.start = function () {
 			if (!this.settings.updateInterval) {
-				throw { name: 'ArgumentInvalid', message: 'settings.updateInterval not set' }
+				throw { name: 'ArgumentInvalid', message: 'settings.updateInterval not set' };
 			}
 			this.timer = new Timer();
 			this.timer.elapsed.add(this.update, this);
@@ -65,7 +68,7 @@
 							isNew : self.projects[name] ? false : true,
 							name: name,
 							status: $(d).attr('lastBuildStatus')
-						}
+						};
 					})
 					.each(function createOrUpdate(i, d) {
 						if (d.isNew) {

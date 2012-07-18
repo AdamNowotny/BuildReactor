@@ -1,4 +1,4 @@
-﻿define([
+define([
 		'bamboo/buildService',
 		'bamboo/bambooPlan',
 		'bamboo/bambooRequest',
@@ -160,7 +160,7 @@
 			function initializeService() {
 				service.initialize();
 				service.isInitialized = true;
-			};
+			}
 
 			it('should not start if update interval not set', function () {
 				var service1 = new BuildService({

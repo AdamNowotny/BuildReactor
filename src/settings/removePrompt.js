@@ -1,7 +1,7 @@
-﻿define([
-		'signals',
-		'jquery',
-		'bootstrap'
+define([
+	'signals',
+	'jquery',
+	'bootstrap'
 ], function (signals, $) {
 
 	'use strict';

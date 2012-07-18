@@ -1,4 +1,4 @@
-﻿define(function () {
+define(function () {
 
 	function store(settings) {
 		var settingsString = JSON.stringify(settings);

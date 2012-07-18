@@ -1,4 +1,4 @@
-﻿define(['signals'], function (signals) {
+define(['signals'], function (signals) {
 
 	var settingsChanged = new signals.Signal();
 	var showCalledCount = 0;

@@ -1,4 +1,4 @@
-﻿define([
+define([
 		'signals'
 	], function (signals) {
 
@@ -16,13 +16,7 @@
 		var servicesToLoadCount = 0;
 
 		function load(newSettings) {
-			removeAllServices();
-			settings = newSettings;
-			servicesToLoadCount = settings.length;
-			for (var i = 0; i < settings.length; i++) {
-				loadService(settings[i]);
-			}
-
+			
 			function loadService(serviceSettings) {
 				var serviceName = serviceSettings.baseUrl + '/buildService';
 				require([serviceName], function (Service) {
@@ -43,6 +37,14 @@
 				});
 				services = [];
 			}
+
+			removeAllServices();
+			settings = newSettings;
+			servicesToLoadCount = settings.length;
+			for (var i = 0; i < settings.length; i++) {
+				loadService(settings[i]);
+			}
+
 		}
 
 		function run() {
@@ -59,7 +61,9 @@
 		}
 
 		function addService(service) {
-			if (!service.name) throw { name: 'ArgumentInvalid', message: 'service.name not defined' };
+			if (!service.name) {
+				throw { name: 'ArgumentInvalid', message: 'service.name not defined' };
+			}
 			initializeServiceLogging(service);
 			subscribeTo(service);
 			services.push(service);
@@ -69,7 +73,9 @@
 
 		function removeService(service) {
 			var index = services.indexOf(service);
-			if (index < 0) throw { name: 'NotFound', message: 'Service not found' };
+			if (index < 0) {
+				throw { name: 'NotFound', message: 'Service not found' };
+			}
 			services.splice(index, 1);
 			service.stop();
 			unsubscribeFrom(service);

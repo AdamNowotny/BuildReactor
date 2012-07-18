@@ -1,4 +1,4 @@
-﻿define([
+define([
 		'serviceController',
 		'notificationController',
 		'settingsStore',
@@ -8,17 +8,17 @@
 
 		'use strict';
 
-		initializeLogging();
-		var settings = settingsStore.getAll();
-		notificationController.initialize();
-		serviceController.load(settings);
-
 		function initializeLogging() {
 			window.onerror = function (message, url, line) {
 				window.console.error(interpolate('Unhandled error. message=[{{0}}], url=[{{1}}], line=[{{2}}]', [message, url, line]));
 				return false; // don't suppress default handling
 			};
 		}
+
+		initializeLogging();
+		var settings = settingsStore.getAll();
+		notificationController.initialize();
+		serviceController.load(settings);
 
 		return {
 			run: function () {

@@ -6,7 +6,7 @@ define([
 	], function (signals, AjaxRequest, endsWith, interpolate) {
 
 		var BambooRequest = function (settings) {
-			if (!(settings && settings.url && settings.url != '')) {
+			if (!(settings && settings.url && settings.url !== '')) {
 				throw new Error('settings.url-input not set');
 			}
 			this.settings = settings;
@@ -16,7 +16,7 @@ define([
 
 		function createAjaxRequestSettings(settings, urlPath) {
 			var url = settings.url;
-			if (!endsWith(url, '/')) url += '/';
+			if (!endsWith(url, '/')) { url += '/'; }
 			url += 'rest/api/latest/' + urlPath;
 			return {
 				url: url,

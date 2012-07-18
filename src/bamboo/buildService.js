@@ -1,4 +1,4 @@
-﻿define([
+define([
 		'signals',
 		'bamboo/bambooRequest',
 		'bamboo/bambooPlan',
@@ -7,7 +7,9 @@
 	], function (signals, BambooRequest, BambooPlan, Timer, interpolate) {
 
 		var BuildService = function (settings) {
-			if (!settings.name) throw { name: 'ArgumentInvalid', message: 'settings.name not set' };
+			if (!settings.name) {
+				throw { name: 'ArgumentInvalid', message: 'settings.name not set' };
+			}
 			this.isInitialized = false;
 			this.settings = settings;
 			this.name = settings.name;
@@ -21,7 +23,9 @@
 		};
 
 		BuildService.prototype.start = function () {
-			if (!this.settings.updateInterval) throw { name: 'ArgumentInvalid', message: 'settings.updateInterval not set' };
+			if (!this.settings.updateInterval) {
+				throw { name: 'ArgumentInvalid', message: 'settings.updateInterval not set' };
+			}
 			this.timer = new Timer();
 			this.timer.elapsed.add(this.update, this);
 			this.scheduleUpdate = function () {
@@ -39,6 +43,33 @@
 		};
 
 		BuildService.prototype.initialize = function () {
+			function initializeFrom(projectsResponse) {
+				for (var i = 0; i < projectsResponse.projects.project.length; i++) {
+					var responseProject = projectsResponse.projects.project[i];
+					initializeFromProject(responseProject);
+				}
+			}
+			function initializeFromProject(project) {
+				for (var j = 0; j < project.plans.plan.length; j++) {
+					var responsePlan = project.plans.plan[j];
+					if (self.settings.plans.indexOf(responsePlan.key) < 0) {
+						continue;
+					}
+					initializePlan(responsePlan);
+				}
+			}
+
+			function initializePlan(responsePlan) {
+				if (!responsePlan.enabled) { return; }
+				var plan = new BambooPlan(self.settings);
+				plan.buildFailed.add(self.onBuildFailed, self);
+				plan.buildFixed.add(self.onBuildFixed, self);
+				plan.errorThrown.add(self.onPlanError, self);
+				self.plans[responsePlan.key] = plan;
+				self.plansCount++;
+				plan.initialize(responsePlan);
+			}
+
 			var initializeFinished = new signals.Signal();
 			initializeFinished.memorize = true;
 			var self = this;
@@ -55,32 +86,8 @@
 			initRequest.projects();
 			return initializeFinished;
 
-			function initializeFrom(projectsResponse) {
-				for (var i = 0; i < projectsResponse.projects.project.length; i++) {
-					var responseProject = projectsResponse.projects.project[i];
-					initializeFromProject(responseProject);
-				}
 
-				function initializeFromProject(project) {
-					for (var j = 0; j < project.plans.plan.length; j++) {
-						var responsePlan = project.plans.plan[j];
-						if (self.settings.plans.indexOf(responsePlan.key) < 0) continue;
-						initializePlan(responsePlan);
-					}
-				}
 
-				function initializePlan(responsePlan) {
-					if (!responsePlan.enabled) return;
-					var plan = new BambooPlan(self.settings);
-					plan.buildFailed.add(self.onBuildFailed, self);
-					plan.buildFixed.add(self.onBuildFixed, self);
-					plan.errorThrown.add(self.onPlanError, self);
-					self.plans[responsePlan.key] = plan;
-					self.plansCount++;
-					plan.initialize(responsePlan);
-				}
-
-			}
 		};
 
 		BuildService.prototype.update = function () {
@@ -106,7 +113,7 @@
 			for (var planKey in this.plans) {
 				this.plans[planKey].update().addOnce(function () {
 					plansUpdated++;
-					if (plansUpdated == this.plansCount) {
+					if (plansUpdated === this.plansCount) {
 						this.updateFinished.dispatch();
 					}
 				}, this);

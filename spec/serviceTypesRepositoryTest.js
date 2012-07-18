@@ -1,4 +1,4 @@
-﻿define(['serviceTypesRepository'], function (repository) {
+define(['serviceTypesRepository'], function (repository) {
 
 	describe('serviceTypesRepository', function () {
 

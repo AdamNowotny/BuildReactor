@@ -1,4 +1,4 @@
-﻿define([
+define([
 	'cctray/projectFactory',
 	'jquery',
 	'jasmineSignals',

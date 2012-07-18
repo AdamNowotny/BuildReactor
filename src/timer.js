@@ -1,19 +1,21 @@
-﻿define(['signals'], function (signals) {
+define(['signals'], function (signals) {
 
-    var Timer = function () {
-        this.timeout = 0;
-        this.elapsed = new signals.Signal();
-    };
+	var Timer = function () {
+		this.timeout = 0;
+		this.elapsed = new signals.Signal();
+	};
 
-    Timer.prototype.start = function (seconds) {
-        this.timeout = seconds;
-        var self = this;
-        setTimeout(onTimeout, this.timeout * 1000);
+	Timer.prototype.start = function (seconds) {
+		function onTimeout() {
+			self.elapsed.dispatch();
+		}
 
-        function onTimeout() {
-            self.elapsed.dispatch();
-        }
-    };
+		this.timeout = seconds;
+		var self = this;
+		setTimeout(onTimeout, this.timeout * 1000);
 
-    return Timer;
+	
+	};
+
+	return Timer;
 });

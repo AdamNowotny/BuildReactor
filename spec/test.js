@@ -1,4 +1,4 @@
-﻿var chrome = {
+var chrome = {
 	browserAction: {
 		setBadgeText: function () { },
 		setBadgeBackgroundColor: function () { }
@@ -50,7 +50,7 @@ require([
 	'spec/cctray/settingsControllerTest',
 	'spec/cctray/ccRequestTest',
 	'spec/common/projectViewTest'
-], function (testModule) {
+], function ($) {
 	$.fx.off = true;
 	jasmine.getFixtures().fixturesPath = 'fixtures';
 	jasmine.getEnv().addReporter(new jasmine.TrivialReporter());

@@ -30,11 +30,15 @@ module.exports = function (grunt) {
 
 				eqnull: true,
 				es5: true,
+				sub: true,
 
 				browser: true,
-				devel: true
+				devel: true,
+
+				white: true
 			},
 			globals: {
+				afterEach: true,
 				beforeEach: true,
 				chrome: true,
 				define: true,
@@ -44,7 +48,9 @@ module.exports = function (grunt) {
 				jasmine: true,
 				loadFixtures: true,
 				require: true,
-				spyOn: true
+				runs: true,
+				spyOn: true,
+				waitsFor: true
 			}
 		},
 		mincss: {

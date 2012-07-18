@@ -1,4 +1,4 @@
-﻿define([
+define([
 		'signals',
 		'bamboo/bambooRequest',
 		'jquery',
@@ -13,7 +13,7 @@
 				name: activeSettings.name,
 				baseUrl: 'bamboo',
 				url: $('.url-input').val(),
-				updateInterval: parseInt($('.update-interval-input').val()),
+				updateInterval: parseInt($('.update-interval-input').val(), 10),
 				username: $('.username-input').val(),
 				password: $('.password-input').val(),
 				plans: projectView.get().projects
@@ -22,7 +22,7 @@
 		};
 
 		var show = function (settings) {
-		    projectView.initialize('plan-selection-container');
+			projectView.initialize('plan-selection-container');
 			if (!settings) {
 				throw { name: 'ArgumentUndefined', message: 'settings not defined' };
 			}
@@ -33,7 +33,7 @@
 			$('.password-input').val(settings.password);
 			$('.update-interval-input').val(settings.updateInterval);
 			$('.plans-button').click(updatePlans);
-			$('.save-button').click(function() {
+			$('.save-button').click(function () {
 				settingsChanged.dispatch(getVisibleSettings());
 			});
 			$('.settings-form').submit(function () {
@@ -54,7 +54,7 @@
 		var updatePlans = function () {
 			$('.plans-button').attr('disabled', 'disabled');
 			$('.alert-error').hide();
-		    projectView.hide();
+			projectView.hide();
 			var plansRequest = new BambooRequest(getRequestSettings());
 			plansRequest.responseReceived.addOnce(function (response) {
 				renderPlans(response, activeSettings.plans);
@@ -91,14 +91,14 @@
 		};
 
 		var createTemplateData = function (response, selectedPlans) {
-		    var projects = response.projects.project;
-		    var items = [];
+			var projects = response.projects.project;
+			var items = [];
 			for (var projectIndex = 0; projectIndex < projects.length; projectIndex++) {
 				var project = projects[projectIndex];
 				for (var planIndex = 0; planIndex < project.plans.plan.length; planIndex++) {
 					var plan = project.plans.plan[planIndex];
 					var item = {
-					    id: plan.key,
+						id: plan.key,
 						name: plan.shortName,
 						group: project.name,
 						enabled: plan.enabled,
@@ -108,8 +108,8 @@
 				}
 			}
 			return {
-			    items: items
-			};;
+				items: items
+			};
 		};
 
 		return {

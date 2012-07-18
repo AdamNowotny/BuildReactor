@@ -1,6 +1,6 @@
-﻿define([
-		'signals',
-		'amdUtils/array/remove'
+define([
+	'signals',
+	'amdUtils/array/remove'
 ], function (signals, remove) {
 
 	var settingsList;
@@ -12,7 +12,7 @@
 			throw { name: 'ArgumentInvalid', message: 'Expected array of settings' };
 		}
 		settingsList = allSettings;
-	};
+	}
 
 	var clear = function () {
 		settingsList = [];

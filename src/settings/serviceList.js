@@ -1,6 +1,6 @@
-﻿define([
-		'signals',
-		'jquery'
+define([
+	'signals',
+	'jquery'
 ], function (signals, $) {
 
 	var itemClicked = new signals.Signal();
@@ -51,7 +51,9 @@
 
 	var selectItem = function (linkElement) {
 		var serviceLink = $(linkElement);
-		if (serviceLink.hasClass('active')) return;
+		if (serviceLink.hasClass('active')) {
+			return;
+		}
 		$('#service-list li').removeClass('active');
 		serviceLink.addClass('active');
 		itemSelected.dispatch(linkElement);

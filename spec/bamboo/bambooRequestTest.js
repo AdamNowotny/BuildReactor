@@ -1,7 +1,7 @@
-﻿define([
+define([
 	'bamboo/bambooRequest',
 	'ajaxRequest'
-	],
+],
 	function (BambooRequest, AjaxRequest) {
 
 		describe('BambooRequest', function () {
@@ -34,7 +34,7 @@
 					url: ''
 				};
 
-				expect(function() {
+				expect(function () {
 					new BambooRequest(settings);
 				}).toThrow();
 			});

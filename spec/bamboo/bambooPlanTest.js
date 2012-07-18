@@ -30,7 +30,7 @@ define([
 				mockBambooRequest.andCallFake(function (key) {
 					this.responseReceived.dispatch(json);
 				});
-			};
+			}
 
 			it('should set properties on initialize', function () {
 				var newPlan = new BambooPlan(settings);

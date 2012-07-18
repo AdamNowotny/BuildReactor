@@ -1,4 +1,4 @@
-﻿define([
+define([
 	'cctray/buildService',
 	'cctray/projectFactory',
 	'cctray/ccRequest',

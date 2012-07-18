@@ -1,4 +1,4 @@
-﻿define([
+define([
 	'cctray/settingsController',
 	'cctray/ccRequest',
 	'common/projectView',
@@ -19,7 +19,7 @@
 			spyOnSignal = jasmineSignals.spyOnSignal,
 			responseReceived,
 			errorReceived,
-			projectsXml
+			projectsXml;
 		
 		beforeEach(function () {
 			projectsXml = $.parseXML(projectsXmlText);
@@ -190,11 +190,11 @@
 		it('should signal save with settings', function () {
 			jasmine.getFixtures().load('bamboo/validSettingsFixture.html');
 			var settingsSavedSpy = spyOnSignal(controller.settingsChanged).matching(function (newSettings) {
-				return newSettings.url === settings.url
-				&& newSettings.username === settings.username
-				&& newSettings.password === settings.password
-				&& newSettings.updateInterval === settings.updateInterval
-				&& newSettings.projects === settings.projects;
+				return newSettings.url === settings.url &&
+					newSettings.username === settings.username &&
+					newSettings.password === settings.password &&
+					newSettings.updateInterval === settings.updateInterval &&
+					newSettings.projects === settings.projects;
 			});
 			mockProjectViewGet.andCallFake(function () {
 				return {

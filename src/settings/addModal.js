@@ -1,10 +1,10 @@
-﻿define([
-		'signals',
-		'jquery',
-		'text!./addModalService.hbs',
-		'handlebars',
-		'jqueryTools',
-		'bootstrap'
+define([
+	'signals',
+	'jquery',
+	'text!./addModalService.hbs',
+	'handlebars',
+	'jqueryTools',
+	'bootstrap'
 ], function (signals, $, serviceTemplateText, handlebars) {
 
 	'use strict';
@@ -71,13 +71,13 @@
 	var initializeScrollable = function () {
 		var scrollable = $('.scrollable').scrollable().data('scrollable');
 		scrollable.onBeforeSeek(function (event, index) {
-			if (scrollable.getIndex() != index) {
+			if (scrollable.getIndex() !== index) {
 				$('#service-add-wizard .steps li.active').removeClass('active');
 				$('#service-add-wizard .steps li').eq(index).addClass('active');
 			}
 		});
 		scrollable.onSeek(function (event, index) {
-			if (index == 1) {
+			if (index === 1) {
 				$('#service-add-name').focus();
 			}
 		});

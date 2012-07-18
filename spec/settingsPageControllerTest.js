@@ -1,4 +1,4 @@
-﻿define([
+define([
 		'jquery',
 		'settingsPageController',
 		'settings/addModal',

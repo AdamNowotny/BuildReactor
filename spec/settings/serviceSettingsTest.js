@@ -1,4 +1,4 @@
-﻿define([
+define([
 		'settings/serviceSettings',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals'

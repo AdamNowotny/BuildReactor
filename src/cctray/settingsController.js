@@ -1,4 +1,4 @@
-﻿define([
+define([
 	'signals',
 	'jquery',
 	'cctray/ccRequest',

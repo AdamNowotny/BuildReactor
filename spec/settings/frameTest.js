@@ -1,4 +1,4 @@
-﻿define([
+define([
 		'jquery',
 		'settings/frame',
 		'jasmineSignals',
@@ -71,7 +71,7 @@
 			});
 
 			it('should not regenerate settings page if already active', function () {
-				var spyJQuery = spyOn(jQuery, 'attr');
+				var spyJQuery = spyOn($, 'attr');
 				var mockSettings = new MockSettingsBuilder().create();
 
 				frame.show(mockSettings);
@@ -81,7 +81,7 @@
 			});
 
 			it('should regenerate settings page if same service type with different settings', function () {
-				var spyJQuery = spyOn(jQuery, 'attr');
+				var spyJQuery = spyOn($, 'attr');
 				var mockSettings1 = new MockSettingsBuilder().create();
 				var mockSettings2 = new MockSettingsBuilder().create();
 
@@ -123,7 +123,7 @@
 
 				// wait for RequireJS to be loaded
 				waitsFor(function () {
-					return iframeElement.contentWindow.require != undefined;
+					return iframeElement.contentWindow.require !== undefined;
 				});
 				// get service settings controller from iframe
 				runs(function () {

@@ -1,4 +1,4 @@
-﻿define([
+define([
 		'jquery',
 		'settings/addModal',
 		'serviceTypesRepository',
@@ -144,9 +144,9 @@
 			it('should add service', function () {
 				var name = 'My CI service name';
 				var serviceAddedSpy = spyOnSignal(addModal.serviceAdded).matching(function (info) {
-				    return info.name == name &&
-				        info.baseUrl == 'bamboo' &&
-				        info.typeName == 'Atlassian Bamboo';
+					return info.name === name &&
+						info.baseUrl === 'bamboo' &&
+						info.typeName === 'Atlassian Bamboo';
 				});
 				modalWindow.selectService();
 				modalWindow.enterServiceName(name);
