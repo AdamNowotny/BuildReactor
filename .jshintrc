@@ -1,69 +1,78 @@
 {
-    // Settings
-    "passfail"      : false,  // Stop on first error.
-    "maxerr"        : 100,    // Maximum errors before stopping.
+    // From http://www.jshint.com/options/
 
-
-    // Predefined globals whom JSHint will ignore.
-    "browser"       : true,   // Standard browser globals e.g. `window`, `document`.
-
-    "node"          : false,
-    "rhino"         : false,
-    "couch"         : false,
-    "wsh"           : true,   // Windows Scripting Host.
-
-    "jquery"        : true,
-    "prototypejs"   : false,
-    "mootools"      : false,
-    "dojo"          : false,
-
-    "predef"        : [  // Extra globals.
-        "chrome", "define", "require", "jasmine", "describe", "it", "beforeEach", "expect", "spyOn"
-    ],
-
-
-    // Development.
-    "debug"         : false,  // Allow debugger statements e.g. browser breakpoints.
-    "devel"         : true,   // Allow development statements e.g. `console.log();`.
-
-
-    // EcmaScript 5.
-    "es5"           : true,   // Allow EcmaScript 5 syntax.
-    "strict"        : false,  // Require `use strict` pragma in every file.
-    "globalstrict"  : false,  // Allow global "use strict" (also enables 'strict').
-
-
-    // The Good Parts.
-    "asi"           : true,   // Tolerate Automatic Semicolon Insertion (no semicolons).
-    "laxbreak"      : true,   // Tolerate unsafe line breaks e.g. `return [\n] x` without semicolons.
+    // Enforcing rules
     "bitwise"       : true,   // Prohibit bitwise operators (&, |, ^, etc.).
-    "boss"          : true,   // Tolerate assignments inside if, for & while. Usually conditions & loops are for comparison, not assignments.
     "curly"         : true,   // Require {} for every new block or scope.
     "eqeqeq"        : true,   // Require triple equals i.e. `===`.
-    "eqnull"        : true,   // Tolerate use of `== null`.
-    "evil"          : true,   // Tolerate use of `eval`.
-    "expr"          : true,   // Tolerate `ExpressionStatement` as Programs.
     "forin"         : true,   // Tolerate `for in` loops without `hasOwnPrototype`.
     "immed"         : true,   // Require immediate invocations to be wrapped in parens e.g. `( function(){}() );`
     "latedef"       : true,   // Prohibit variable use before definition.
-    "loopfunc"      : true,   // Allow functions to be defined within loops.
-    "noarg"         : true,   // Prohibit use of `arguments.caller` and `arguments.callee`.
-    "regexp"        : true,   // Prohibit `.` and `[^...]` in regular expressions.
-    "regexdash"     : true,   // Tolerate unescaped last dash i.e. `[-...]`.
-    "scripturl"     : true,   // Tolerate script-targeted URLs.
-    "shadow"        : true,   // Allows re-define variables later in code e.g. `var x=1; x=2;`.
-    "supernew"      : true,   // Tolerate `new function () { ... };` and `new Object;`.
-    "undef"         : true,   // Require all non-global variables be declared before they are used.
-
-
-    // Persone styling prefrences.
     "newcap"        : true,   // Require capitalization of all constructor functions e.g. `new F()`.
+    "noarg"         : true,   // Prohibit use of `arguments.caller` and `arguments.callee`.
     "noempty"       : true,   // Prohibit use of empty blocks.
     "nonew"         : true,   // Prohibit use of constructors for side-effects.
-    "nomen"         : true,   // Prohibit use of initial or trailing underbars in names.
-    "onevar"        : true,   // Allow only one `var` statement per function.
-    "plusplus"      : false,   // Prohibit use of `++` & `--`.
-    "sub"           : true,   // Tolerate all forms of subscript notation besides dot notation e.g. `dict['key']` instead of `dict.key`.
+    "plusplus"      : false,  // Prohibit use of `++` & `--`.
+    "regexp"        : true,   // Prohibit `.` and `[^...]` in regular expressions.
+    "undef"         : true,   // Require all non-global variables be declared before they are used.
+    "strict"        : false,  // Require `use strict` pragma in every file.
     "trailing"      : true,   // Prohibit trailing whitespaces.
+    
+    // Relaxing options
+    "asi"           : false,  // Tolerate Automatic Semicolon Insertion (no semicolons).
+    "boss"          : false,  // Tolerate assignments inside if, for & while. Usually conditions & loops are for comparison, not assignments.
+    "debug"         : false,  // Allow debugger statements e.g. browser breakpoints.
+    "eqnull"        : true,   // Tolerate use of `== null`.
+    "es5"           : true,   // Allow EcmaScript 5 syntax.
+    "esnext"        : false,  // Allow ES.next specific features such as const.
+    "evil"          : false,  // Tolerate use of `eval`.
+    "expr"          : false,  // Tolerate `ExpressionStatement` as Programs.
+    "funcscope"     : false,  // Tolerate declaring variables inside of control structures while accessing them later from the outside
+    "globalstrict"  : false,  // Allow global "use strict" (also enables 'strict').
+    "iterator"      : false,  // Suppress warnings about the __iterator__ property
+    "lastsemic"     : false,  // Suppress warnings about missing semicolons, but only when it is omitted for the last statement in a one-line block
+    "laxbreak"      : false,  // Tolerate unsafe line breaks e.g. `return [\n] x` without semicolons.
+    "laxcomma"      : false,  // Suppress warnings about comma-first coding style
+    "loopfunc"      : false,  // Allow functions to be defined within loops.
+    "multistr"      : false,  // Allow multi-line strings
+    "onecase"       : false,  // Allow switches with just one case
+    "proto"         : false,  // Suppress warnings about the __proto__ property
+    "regexdash"     : false,  // Tolerate unescaped last dash i.e. `[-...]`.
+    "scripturl"     : false,  // Tolerate script-targeted URLs.
+    "smarttabs"     : false,  // Allow mixed tabs and spaces
+    "shadow"        : false,  // Allows re-define variables later in code e.g. `var x=1; x=2;`.
+    "sub"           : false,  // Tolerate all forms of subscript notation besides dot notation e.g. `dict['key']` instead of `dict.key`.
+    "supernew"      : false,  // Tolerate `new function () { ... };` and `new Object;`.
+
+    // Environments
+    "browser"       : true,   // Standard browser globals e.g. `window`, `document`.
+    "couch"         : false,  // Globals exposed by CouchDB
+    "devel"         : true,   // Allow development statements e.g. `console.log();`.
+    "dojo"          : false,  // Globals exposed by Dojo Toolkit
+    "jquery"        : false,
+    "mootools"      : false,
+    "node"          : false,
+    "nonstandard"   : false,
+    "prototypejs"   : false,
+    "rhino"         : false,
+    "wsh"           : true,   // Windows Scripting Host.
+
+    "predef"        : [  // Extra globals.
+        "beforeEach",
+        "chrome",
+        "define",
+        "describe",
+        "expect",
+        "it",
+        "jasmine",
+        "loadFixtures",
+        "require",
+        "spyOn"
+    ],
+
+    // Legacy
+    "nomen"         : false,  // Prohibit use of initial or trailing underbars in names.
+    "onevar"        : false,  // Allow only one `var` statement per function.
+    "passfail"      : false,  // Stop on first error.
     "white"         : true    // Check against strict whitespace and indentation rules.
 }

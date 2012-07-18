@@ -12,7 +12,8 @@ module.exports = function (grunt) {
 		},
 		jshint: {
 			options: {
-				curly: false,
+				bitwise: true,
+				curly: true,
 				eqeqeq: true,
 				forin: true,
 				immed: true,
@@ -21,21 +22,29 @@ module.exports = function (grunt) {
 				noarg: true,
 				noempty: true,
 				nonew: true,
+				plusplus: false,
+				regexp: true,
 				undef: true,
+				strict: false,
+				trailing: true,
+
+				eqnull: true,
+				es5: true,
+
 				browser: true,
-				strict: true,
-				trailing: true
+				devel: true
 			},
 			globals: {
+				beforeEach: true,
+				chrome: true,
 				define: true,
 				describe: true,
-				it: true,
 				expect: true,
+				it: true,
 				jasmine: true,
-				beforeEach: true,
 				loadFixtures: true,
 				require: true,
-				chrome: true
+				spyOn: true
 			}
 		},
 		mincss: {
