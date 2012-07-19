@@ -1,6 +1,5 @@
 define([
 	'cctray/buildService',
-	'cctray/projectFactory',
 	'cctray/ccRequest',
 	'timer',
 	'jquery',
@@ -8,7 +7,7 @@ define([
 	'jasmineSignals',
 	'text!spec/fixtures/cctray/cruisecontrolnet.xml'
 ],
-function (BuildService, projectFactory, ccRequest, Timer, $, signals, jasmineSignals, projectsXmlText) {
+function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXmlText) {
 
 	'use strict';
 
@@ -58,13 +57,6 @@ function (BuildService, projectFactory, ccRequest, Timer, $, signals, jasmineSig
 			mockRequest = spyOn(ccRequest, 'projects');
 			initResponse();
 			mockTimer = spyOn(Timer.prototype, 'start');
-			spyOn(projectFactory, 'create').andReturn({
-				name: 'CruiseControl.NET',
-				buildFailed: new signals.Signal(),
-				buildFixed: new signals.Signal(),
-				update: function () {
-				}
-			});
 		});
 
 		
@@ -90,15 +82,6 @@ function (BuildService, projectFactory, ccRequest, Timer, $, signals, jasmineSig
 			expect(mockRequest).toHaveBeenCalled();
 			expect(service.projects['CruiseControl.NET']).toBeDefined();
 			expect(service.projects['NetReflector']).toBeDefined();
-		});
-
-		it('should only update projects on subsequent calls', function () {
-			service.update();
-			projectFactory.create.reset();
-
-			service.update();
-
-			expect(projectFactory.create).not.toHaveBeenCalled();
 		});
 
 		it('should try again if request failed', function () {

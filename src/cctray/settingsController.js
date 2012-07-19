@@ -94,7 +94,7 @@ define([
 				var item = $(d),
 					projectName = item.attr('name');
 				return {
-					id: i,
+					id: projectName,
 					name: projectName,
 					group: item.attr('category'),
 					enabled: true,

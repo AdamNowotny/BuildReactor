@@ -2,11 +2,11 @@ define([
 		'jquery',
 		'signals',
 		'cctray/ccRequest',
-		'cctray/projectFactory',
+		'cctray/project',
 		'timer',
 		'amdUtils/string/interpolate',
 		'amdUtils/array/contains'
-	], function ($, signals, ccRequest, projectFactory, Timer, interpolate, contains) {
+	], function ($, signals, ccRequest, project, Timer, interpolate, contains) {
 
 		'use strict';
 
@@ -65,28 +65,27 @@ define([
 					.map(function projectInfo(i, d) {
 						var name = $(d).attr('name');
 						return {
-							isNew : self.projects[name] ? false : true,
 							name: name,
 							status: $(d).attr('lastBuildStatus')
 						};
 					})
 					.each(function createOrUpdate(i, d) {
-						if (d.isNew) {
-							var newProject = projectFactory.create(d);
-							newProject.buildFailed.add(self.onBuildFailed, self);
-							newProject.buildFixed.add(self.onBuildFixed, self);
-							self.projects[d.name] = newProject;
-						} else {
-							self.projects[d.name].update(d);
+						var projectInstance = self.projects[d.name];
+						if (!projectInstance) {
+							projectInstance = project();
+							projectInstance.buildFailed.add(self.onBuildFailed, self);
+							projectInstance.buildFixed.add(self.onBuildFixed, self);
+							self.projects[d.name] = projectInstance;
 						}
+						projectInstance.update(d);
 					});
 			}
 		};
 
 		CCBuildService.prototype.onBuildFailed = function (project) {
 			var buildEvent = {
-				message: interpolate('Build failed - {{0}}', [project.name]),
-				details: project.name,
+				message: interpolate('Build failed - {{0}}', [project.projectName()]),
+				details: project.projectName(),
 				url: project.url
 			};
 			this.buildFailed.dispatch(buildEvent);
@@ -94,8 +93,8 @@ define([
 
 		CCBuildService.prototype.onBuildFixed = function (project) {
 			var buildEvent = {
-				message: interpolate('Build fixed - {{0}}', [project.name]),
-				details: project.name,
+				message: interpolate('Build fixed - {{0}}', [project.projectName()]),
+				details: project.projectName(),
 				url: project.url
 			};
 			this.buildFixed.dispatch(buildEvent);

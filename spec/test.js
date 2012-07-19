@@ -46,7 +46,7 @@ require([
 	'spec/bamboo/bambooRequestTest',
 	'spec/bamboo/settingsControllerTest',
 	'spec/cctray/buildServiceTest',
-	'spec/cctray/projectFactoryTest',
+	'spec/cctray/projectTest',
 	'spec/cctray/settingsControllerTest',
 	'spec/cctray/ccRequestTest',
 	'spec/common/projectViewTest'
