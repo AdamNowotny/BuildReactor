@@ -145,14 +145,14 @@ define([
 				expect($('#project-group-1')).not.toHaveClass('in');
 			});
 
-			it('should get current state', function () {
+			it('should get selected keys', function () {
 				projectView.show(json);
 
 				var state = projectView.get();
 
 				expect(state.projects.length).toBe(2);
-				expect(state.projects[0]).toBe('CruiseControl.NET');
-				expect(state.projects[1]).toBe('Project3-1');
+				expect(state.projects[0]).toBe(0);
+				expect(state.projects[1]).toBe(4);
 			});
 		});
 	}

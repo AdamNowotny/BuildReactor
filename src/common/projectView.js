@@ -78,7 +78,7 @@ define([
 	var get = function () {
 		var projects = [];
 		rootElement.find('.project-item input:checked').each(function () {
-			projects.push($(this).next('.project-item-name').text());
+			projects.push($(this).parent('.project-item').data('id'));
 		});
 		return {
 			projects: projects
