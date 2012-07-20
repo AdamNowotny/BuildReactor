@@ -7,6 +7,10 @@ define([
 
 		'use strict';
 		
+		var ajaxOptions = {
+			sessionCookie: 'JSESSIONID'
+		};
+
 		var BambooRequest = function (settings) {
 			if (!(this instanceof BambooRequest)) {
 				return new BambooRequest(settings);
@@ -32,7 +36,7 @@ define([
 
 		BambooRequest.prototype.send = function (urlPath) {
 			var ajaxSettings = createAjaxRequestSettings(this.settings, urlPath);
-			var request = new AjaxRequest(ajaxSettings);
+			var request = new AjaxRequest(ajaxSettings, ajaxOptions);
 			request.responseReceived.addOnce(function (response) {
 				this.responseReceived.dispatch(response);
 			}, this);

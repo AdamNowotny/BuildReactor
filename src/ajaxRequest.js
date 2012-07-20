@@ -2,7 +2,9 @@ define(['signals', 'jquery'], function (signals, $) {
 
 	'use strict';
 	
-	var AjaxRequest = function (settings) {
+	var cookieExpiredStatusCode = 401;
+
+	var AjaxRequest = function (settings, options) {
 		if (!(this instanceof AjaxRequest)) {
 			return new AjaxRequest(settings);
 		}
@@ -12,23 +14,42 @@ define(['signals', 'jquery'], function (signals, $) {
 			};
 		}
 		this.settings = settings;
+		this.options = options;
 		this.responseReceived = new signals.Signal();
 		this.errorReceived = new signals.Signal();
+		this.retry = false;
 	};
 
+	function removeCookies(url, cookieName) {
+		chrome.cookies.remove({ url: url, name: cookieName });
+	}
+	
 	AjaxRequest.prototype.send = function () {
 
 		function onAjaxError(jqXhr, ajaxStatus, ajaxError) {
-			var error = {
-				httpStatus: (jqXhr) ? jqXhr.status : null,
-				ajaxStatus: ajaxStatus,
-				message: (ajaxError !== '') ? ajaxError : 'Ajax connection error',
-				url: self.settings.url,
-				settings: ajaxOptions
-			};
-			self.errorReceived.dispatch(error);
+			var status = (jqXhr) ? jqXhr.status : null;
+			if (!self.retry && status === cookieExpiredStatusCode) {
+				removeCookies(self.settings.url, self.options.sessionCookie);
+				self.retry = true;
+				self.send();
+			} else {
+				var error = {
+					httpStatus: status,
+					ajaxStatus: ajaxStatus,
+					message: (ajaxError) ? ajaxError : 'Ajax connection error',
+					url: self.settings.url,
+					settings: ajaxOptions
+				};
+				self.retry = false;
+				self.errorReceived.dispatch(error);
+			}
 		}
 		
+		function onSuccess(data, textStatus, jqXhr) {
+			self.retry = false;
+			self.responseReceived.dispatch(data);
+		}
+
 		var self = this,
 			dataType = this.settings.dataType || 'json',
 			ajaxOptions = {
@@ -38,9 +59,7 @@ define(['signals', 'jquery'], function (signals, $) {
 					request.setRequestHeader('Accept', 'application/' + dataType);
 				},
 				cache: false,
-				success: function (data, textStatus, jqXhr) {
-					self.responseReceived.dispatch(data);
-				},
+				success: onSuccess,
 				error: onAjaxError,
 				dataType: dataType
 			};
@@ -50,7 +69,6 @@ define(['signals', 'jquery'], function (signals, $) {
 			ajaxOptions.data = { os_authType: 'basic' };
 		}
 		$.ajax(ajaxOptions);
-
 		
 	};
 

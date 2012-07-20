@@ -14,5 +14,5 @@
 	"options_page": "options.html",
 	"homepage_url": "https://github.com/AdamNowotny/BuildReactor",
 	"offline_enabled": false,
-	"permissions": [ "http://*/*", "https://*/*", "notifications", "background" ]
+	"permissions": [ "http://*/*", "https://*/*", "notifications", "background", "cookies" ]
 }

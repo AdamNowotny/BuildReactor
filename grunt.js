@@ -142,7 +142,7 @@ module.exports = function (grunt) {
 	});
 
 	// Default task.
-	grunt.registerTask('default', 'clean mincss requirejs copy');
+	grunt.registerTask('default', 'clean lint jasmine mincss requirejs copy');
 	grunt.registerTask('test', 'lint jasmine');
 
 	grunt.loadNpmTasks('grunt-contrib');

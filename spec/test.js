@@ -2,6 +2,9 @@ var chrome = {
 	browserAction: {
 		setBadgeText: function () { },
 		setBadgeBackgroundColor: function () { }
+	},
+	cookies: {
+		remove: function () {}
 	}
 };
 require.config({

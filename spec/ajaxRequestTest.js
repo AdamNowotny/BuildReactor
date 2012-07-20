@@ -36,7 +36,7 @@ define([
 				expect(responseReceivedSpy).toHaveBeenDispatched(1);
 			});
 
-			describe('authType', function () {
+			describe('authentication', function () {
 
 				it('should set authType to basic if username specified', function () {
 					var requestOptions = {
@@ -87,6 +87,41 @@ define([
 					request.send();
 
 					expect(mockAjax).toHaveBeenCalled();
+				});
+
+				it('should remove cookie and try again if session expired', function () {
+					spyOn(chrome.cookies, 'remove').andCallFake(function (details) {
+						expect(details.url).toBe(options.url);
+						expect(details.name).toBe('SESSIONID');
+					});
+					var attempt = 0;
+					mockAjax.andCallFake(function (ajaxOptions) {
+						attempt++;
+						if (attempt === 1) {
+							ajaxOptions.error({ status: 401 }, 'error', "os_authType was 'any' and an invalid cookie was sent.");
+						} else {
+							ajaxOptions.success({}, null, null);
+						}
+					});
+
+					request = new AjaxRequest(options, { sessionCookie: 'SESSIONID' });
+					request.send();
+
+					expect(attempt).toBe(2);
+					expect(chrome.cookies.remove).toHaveBeenCalled();
+				});
+
+				it('should try again only once if session is not renewed', function () {
+					var attempt = 0;
+					mockAjax.andCallFake(function (ajaxOptions) {
+						attempt++;
+						ajaxOptions.error({ status: 401 }, 'error', "os_authType was 'any' and an invalid cookie was sent.");
+					});
+
+					request = new AjaxRequest(options, { sessionCookie: 'SESSIONID' });
+					request.send();
+
+					expect(attempt).toBe(2);
 				});
 			});
 
