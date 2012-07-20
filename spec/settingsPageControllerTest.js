@@ -11,6 +11,9 @@ define([
 		'jasmineSignals',
 		'Timer'
 	], function ($, controller, addModal, serviceSettings, frame, serviceList, savePrompt, removePrompt, MockSettingsBuilder, jasmineSignals, Timer) {
+
+		'use strict';
+		
 		describe('settingsPageController', function () {
 
 			var spyOnSignal = jasmineSignals.spyOnSignal;

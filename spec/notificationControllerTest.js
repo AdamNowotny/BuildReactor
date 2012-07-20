@@ -5,6 +5,8 @@ define([
 		'spec/mocks/mockBuildEventBuilder'
 	], function (notificationController, serviceController, Timer, MockBuildEventBuilder) {
 
+		'use strict';
+		
 		describe('NotificationController', function () {
 
 			var mockBadgeText;

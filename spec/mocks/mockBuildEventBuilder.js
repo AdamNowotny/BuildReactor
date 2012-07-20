@@ -1,5 +1,7 @@
 define(function () {
 
+	'use strict';
+	
 	var MockBuildEventBuilder = function () {
 		var failedBuildsCount = 0;
 		var buildName = 'Build name';

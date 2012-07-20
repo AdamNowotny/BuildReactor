@@ -5,6 +5,8 @@ define([
         'common/projectView'
 	], function (signals, BambooRequest, $, projectView) {
 
+		'use strict';
+		
 		var settingsChanged = new signals.Signal();
 		var activeSettings;
 

@@ -1,5 +1,7 @@
 define(['signals'], function (signals) {
 
+	'use strict';
+	
 	var settingsChanged = new signals.Signal();
 	var showCalledCount = 0;
 

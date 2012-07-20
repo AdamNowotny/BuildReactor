@@ -51,6 +51,9 @@ require([
 	'spec/cctray/ccRequestTest',
 	'spec/common/projectViewTest'
 ], function ($) {
+	
+	'use strict';
+
 	$.fx.off = true;
 	jasmine.getFixtures().fixturesPath = 'fixtures';
 	jasmine.getEnv().addReporter(new jasmine.TrivialReporter());

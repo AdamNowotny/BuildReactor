@@ -3,6 +3,8 @@ define([
 	'amdUtils/array/remove'
 ], function (signals, remove) {
 
+	'use strict';
+	
 	var settingsList;
 
 	var cleared = new signals.Signal();

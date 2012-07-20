@@ -3,6 +3,9 @@ define([
 		'jquery',
 		'jasmineSignals'
 	], function (AjaxRequest, $, jasmineSignals) {
+
+		'use strict';
+		
 		describe('AjaxRequest', function () {
 			var request;
 			var options;

@@ -7,6 +7,8 @@ define([
 		'json!spec/fixtures/bamboo/latestPlanResultFailed.json'
 	], function (BambooPlan, BambooRequest, jasmineSignals, projects, latestPlanResultJson, latestPlanResultFailedJson) {
 
+		'use strict';
+
 		describe('BambooPlan', function () {
 
 			var plan;

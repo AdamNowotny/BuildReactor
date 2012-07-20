@@ -3,6 +3,9 @@ define([
 		'settings/savePrompt',
 		'jasmineSignals'
 	], function ($, savePrompt, jasmineSignals) {
+
+		'use strict';
+		
 		describe('savePrompt', function () {
 
 			var spyOnSignal = jasmineSignals.spyOnSignal;

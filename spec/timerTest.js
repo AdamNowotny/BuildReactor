@@ -1,25 +1,27 @@
 define(['timer', 'jasmineSignals'], function (Timer, jasmineSignals) {
 
-		describe('timer', function () {
+	'use strict';
 
-			var timer;
-			var elapsedSpy;
+	describe('timer', function () {
 
-			beforeEach(function () {
-				timer = new Timer();
-				elapsedSpy = jasmineSignals.spyOnSignal(timer.elapsed);
-			});
+		var timer;
+		var elapsedSpy;
 
-			it('should signal elapsed after timeout on start', function () {
-				spyOn(window, 'setTimeout').andCallFake(function (func, timeout) {
-					expect(timeout).toBe(5000);
-					func();
-				});
-
-				timer.start(5);
-
-				expect(elapsedSpy).toHaveBeenDispatched(1);
-			});
-
+		beforeEach(function () {
+			timer = new Timer();
+			elapsedSpy = jasmineSignals.spyOnSignal(timer.elapsed);
 		});
+
+		it('should signal elapsed after timeout on start', function () {
+			spyOn(window, 'setTimeout').andCallFake(function (func, timeout) {
+				expect(timeout).toBe(5000);
+				func();
+			});
+
+			timer.start(5);
+
+			expect(elapsedSpy).toHaveBeenDispatched(1);
+		});
+
 	});
+});

@@ -8,6 +8,8 @@ define([
 	],
 	function (controller, BambooRequest, projectView, $, jasmineSignals, jsonProjects) {
 
+		'use strict';
+		
 		describe('bamboo/settingsController', function () {
 
 			var settings;

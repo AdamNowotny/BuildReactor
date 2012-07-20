@@ -3,6 +3,8 @@ define([
 	'jquery'
 ], function (signals, $) {
 
+	'use strict';
+	
 	var itemClicked = new signals.Signal();
 	var itemSelected = new signals.Signal();
 

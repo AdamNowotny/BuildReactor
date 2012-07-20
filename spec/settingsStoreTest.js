@@ -1,4 +1,7 @@
 define(['settingsStore'], function (settingsStore) {
+
+	'use strict';
+	
 	describe('SettingsStore', function () {
 
 		it('should get all settings from local storage', function () {

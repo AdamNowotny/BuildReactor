@@ -10,6 +10,8 @@ define([
 	'timer'
 ], function (signals, $, serviceSettings, frame, addModal, serviceList, savePrompt, removePrompt, Timer) {
 
+	'use strict';
+	
 	var isInitialized = false;
 	var settingsChanged = new signals.Signal();
 	var isSaveNeeded = false;

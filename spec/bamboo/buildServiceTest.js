@@ -10,6 +10,8 @@ define([
 	],
 	function (BuildService, BambooPlan, BambooRequest, Timer, $, signals, jasmineSignals, projectsJson) {
 
+		'use strict';
+		
 		describe('bamboo/BuildService', function () {
 
 			var service;

@@ -5,6 +5,8 @@ define([
 		'amdUtils/string/interpolate'
 	], function (signals, AjaxRequest, endsWith, interpolate) {
 
+		'use strict';
+		
 		var BambooRequest = function (settings) {
 			if (!(this instanceof BambooRequest)) {
 				return new BambooRequest(settings);

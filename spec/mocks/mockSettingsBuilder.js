@@ -1,5 +1,7 @@
 define(function () {
 
+	'use strict';
+	
 	var MockSettingsBuilder = function () {
 		this.settings = {
 			baseUrl: 'mocks',

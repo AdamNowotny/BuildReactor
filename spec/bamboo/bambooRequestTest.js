@@ -4,6 +4,8 @@ define([
 ],
 	function (BambooRequest, AjaxRequest) {
 
+		'use strict';
+		
 		describe('BambooRequest', function () {
 
 			var request;

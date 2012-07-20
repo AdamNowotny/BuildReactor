@@ -28,7 +28,7 @@ module.exports = function (grunt) {
 				plusplus: false,
 				regexp: true,
 				undef: true,
-				strict: false,
+				strict: true,
 				trailing: true,
 
 				es5: true,

@@ -5,6 +5,8 @@ define([
 	'bootstrap'
 ], function ($, planSelectionText, handlebars) {
 
+	'use strict';
+	
 	var planSelectionTemplate = handlebars.compile(planSelectionText),
 		rootElement;
 

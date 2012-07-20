@@ -4,6 +4,9 @@ define([
 		'jasmineSignals',
 		'spec/mocks/mockSettingsBuilder'
 	], function ($, frame, jasmineSignals, MockSettingsBuilder) {
+
+		'use strict';
+		
 		describe('frame', function () {
 
 			var spyOnSignal = jasmineSignals.spyOnSignal;

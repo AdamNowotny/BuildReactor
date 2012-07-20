@@ -1,5 +1,7 @@
 define(['signals'], function (signals) {
 
+	'use strict';
+	
 	var MockBuildService = function () {
 		this.name = 'Sample service';
 		this.updateStarted = new signals.Signal();

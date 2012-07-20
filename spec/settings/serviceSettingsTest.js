@@ -3,6 +3,9 @@ define([
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals'
 	], function (serviceSettings, MockSettingsBuilder, jasmineSignals) {
+
+		'use strict';
+		
 		describe('serviceSettings', function () {
 
 			var spyOnSignal = jasmineSignals.spyOnSignal;

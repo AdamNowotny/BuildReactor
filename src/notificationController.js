@@ -4,6 +4,8 @@ define([
 	'amdUtils/string/interpolate'
 ], function (serviceController, Timer, interpolate) {
 
+	'use strict';
+	
 	var notificationTimeoutInSec = 5;
 
 	function initialize() {

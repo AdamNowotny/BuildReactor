@@ -1,5 +1,7 @@
 define(['serviceTypesRepository'], function (repository) {
 
+	'use strict';
+	
 	describe('serviceTypesRepository', function () {
 
 		it('should get all types as array', function () {

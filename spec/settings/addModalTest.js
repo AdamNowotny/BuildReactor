@@ -6,6 +6,8 @@ define([
 		'jqueryTools'
 	], function ($, addModal, serviceTypesRepository, jasmineSignals) {
 
+		'use strict';
+
 		describe('addModal', function () {
 
 			var serviceAddedSpy;

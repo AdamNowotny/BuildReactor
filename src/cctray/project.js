@@ -1,5 +1,7 @@
 define(['signals'], function (signals) {
 
+	'use strict';
+	
 	function project() {
 
 		var status,

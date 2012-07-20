@@ -3,6 +3,8 @@ define([
 	'jquery'
 ], function (signals, $) {
 
+	'use strict';
+	
 	var loaded = new signals.Signal(),
 		saved = new signals.Signal(),
 		srcPrefix = 'src/',

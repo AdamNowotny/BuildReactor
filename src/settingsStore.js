@@ -1,5 +1,7 @@
 define(function () {
 
+	'use strict';
+	
 	function store(settings) {
 		var settingsString = JSON.stringify(settings);
 		localStorage.setItem('services', settingsString);

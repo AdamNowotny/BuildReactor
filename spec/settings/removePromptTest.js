@@ -3,6 +3,9 @@ define([
 		'settings/removePrompt',
 		'jasmineSignals'
 	], function ($, removePrompt, jasmineSignals) {
+
+		'use strict';
+		
 		describe('removePrompt', function () {
 
 			var spyOnSignal = jasmineSignals.spyOnSignal;

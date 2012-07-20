@@ -1,5 +1,7 @@
 define(['signals'], function (signals) {
 
+	'use strict';
+	
 	var Timer = function () {
 		this.timeout = 0;
 		this.elapsed = new signals.Signal();

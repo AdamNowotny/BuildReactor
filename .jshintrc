@@ -15,7 +15,7 @@
     "plusplus"      : false,  // Prohibit use of `++` & `--`.
     "regexp"        : true,   // Prohibit `.` and `[^...]` in regular expressions.
     "undef"         : true,   // Require all non-global variables be declared before they are used.
-    "strict"        : false,  // Require `use strict` pragma in every file.
+    "strict"        : true,  // Require `use strict` pragma in every file.
     "trailing"      : true,   // Prohibit trailing whitespaces.
     
     // Relaxing options

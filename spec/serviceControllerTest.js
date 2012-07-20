@@ -9,6 +9,8 @@ define([
 	],
 	function ($, controller, MockBuildService, MockBuildEventBuilder, MockSettingsBuilder, endsWith, jasmineSignals) {
 
+		'use strict';
+		
 		describe('ServiceController', function () {
 
 			var spyOnSignal = jasmineSignals.spyOnSignal;

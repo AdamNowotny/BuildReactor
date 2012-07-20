@@ -4,6 +4,8 @@ define([
 ],
 	function (projectView, $) {
 
+		'use strict';
+		
 		describe('common/projectView', function () {
 
 			var json = {

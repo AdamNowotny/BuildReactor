@@ -6,6 +6,8 @@ define([
 		'amdUtils/string/interpolate'
 	], function (signals, BambooRequest, BambooPlan, Timer, interpolate) {
 
+		'use strict';
+
 		var BuildService = function (settings) {
 			if (!settings.name) {
 				throw { name: 'ArgumentInvalid', message: 'settings.name not set' };
@@ -109,11 +111,12 @@ define([
 		};
 
 		BuildService.prototype.planUpdate = function () {
-			var plansUpdated = 0;
+			var plansUpdated = 0,
+				self = this;
 			function planFinished() {
 				plansUpdated++;
-				if (plansUpdated === this.plansCount) {
-					this.updateFinished.dispatch();
+				if (plansUpdated === self.plansCount) {
+					self.updateFinished.dispatch();
 				}
 			}
 

@@ -1,5 +1,7 @@
 define(['signals', 'jquery'], function (signals, $) {
 
+	'use strict';
+	
 	var AjaxRequest = function (settings) {
 		if (!(this instanceof AjaxRequest)) {
 			return new AjaxRequest(settings);
