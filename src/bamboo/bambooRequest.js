@@ -16,7 +16,10 @@ define([
 				return new BambooRequest(settings);
 			}
 			if (!(settings && settings.url && settings.url !== '')) {
-				throw new Error('settings.url-input not set');
+				throw {
+					name: 'ArgumentInvalid',
+					message: 'settings.url not set'
+				};
 			}
 			this.settings = settings;
 			this.responseReceived = new signals.Signal();

@@ -33,6 +33,7 @@ define([
 		function projects(settings) {
 			if (!(settings && settings.url && settings.url !== '')) {
 				throw {
+					name: 'ArgumentInvalid',
 					message: 'settings.url not set'
 				};
 			}

@@ -131,6 +131,14 @@ define([
 				expect(mockBambooRequest).toHaveBeenCalled();
 			});
 
+			it('should disable plans button if url empty', function () {
+				settings.url = '';
+
+				showPlans();
+
+				expect($('.plans-button')).toBeDisabled();
+			});
+
 			it('should display error if call failed when getting plans', function () {
 				mockBambooRequest.andCallFake(function () {
 					this.errorReceived.dispatch({ message: 'error message' });

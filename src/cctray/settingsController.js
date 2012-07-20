@@ -30,7 +30,7 @@ define([
 			}
 			updateWithDefaults(settings);
 			activeSettings = settings;
-			$('.url-input').val(settings.url);
+			$('.url-input').keyup(urlChanged).change(urlChanged).val(settings.url);
 			$('.username-input').val(settings.username);
 			$('.password-input').val(settings.password);
 			$('.update-interval-input').val(settings.updateInterval);
@@ -41,7 +41,17 @@ define([
 			$('.settings-form').submit(function () {
 				return false;
 			});
+			urlChanged();
 			$('.url-input').focus();
+		}
+
+		function urlChanged() {
+			var url = $('.url-input').val();
+			if (url) {
+				$('.projects-button').removeAttr('disabled');
+			} else {
+				$('.projects-button').attr('disabled', 'disabled');
+			}
 		}
 
 		function updateWithDefaults(settings) {
@@ -54,6 +64,9 @@ define([
 		}
 
 		function updatePlans() {
+			if ($('.projects-button').attr('disabled')) {
+				return;
+			}
 			$('.projects-button').attr('disabled', 'disabled');
 			$('.alert-error').hide();
 			projectView.hide();
@@ -82,7 +95,7 @@ define([
 
 		function renderError(ajaxError) {
 			console.error('BambooSettingsController: Ajax request failed: ' + ajaxError.message, ajaxError);
-			$('.plans-button').removeAttr('disabled');
+			$('.projects-button').removeAttr('disabled');
 			$('.error-message').text(ajaxError.message);
 			$('.error-url').text(ajaxError.url);
 			$('.alert-error').show();

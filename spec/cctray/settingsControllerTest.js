@@ -185,6 +185,28 @@ define([
 				expect($('.save-button')).not.toBeDisabled();
 			});
 
+			it('should enable projects button after error', function () {
+				mockCcRequest.andCallFake(function () {
+					errorReceived.dispatch({ message: 'error message' });
+					return {
+						responseReceived: responseReceived,
+						errorReceived: errorReceived
+					};
+				});
+
+				showPlans();
+
+				expect($('.projects-button')).not.toBeDisabled();
+			});
+
+		});
+
+		it('should disable build button if url empty', function () {
+			settings.url = '';
+
+			showPlans();
+
+			expect($('.projects-button')).toBeDisabled();
 		});
 
 		it('should signal save with settings', function () {

@@ -30,7 +30,7 @@ define([
 			}
 			updateWithDefaults(settings);
 			activeSettings = settings;
-			$('.url-input').val(settings.url);
+			$('.url-input').keyup(urlChanged).change(urlChanged).val(settings.url);
 			$('.username-input').val(settings.username);
 			$('.password-input').val(settings.password);
 			$('.update-interval-input').val(settings.updateInterval);
@@ -41,8 +41,18 @@ define([
 			$('.settings-form').submit(function () {
 				return false;
 			});
+			urlChanged();
 			$('.url-input').focus();
 		};
+
+		function urlChanged() {
+			var url = $('.url-input').val();
+			if (url) {
+				$('.plans-button').removeAttr('disabled');
+			} else {
+				$('.plans-button').attr('disabled', 'disabled');
+			}
+		}
 
 		var updateWithDefaults = function (settings) {
 			if (settings.updateInterval === undefined) {
@@ -54,6 +64,9 @@ define([
 		};
 
 		var updatePlans = function () {
+			if ($('.plans-button').attr('disabled')) {
+				return;
+			}
 			$('.plans-button').attr('disabled', 'disabled');
 			$('.alert-error').hide();
 			projectView.hide();
