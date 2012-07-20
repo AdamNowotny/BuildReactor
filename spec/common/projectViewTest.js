@@ -100,7 +100,7 @@ define([
 				expect($('.accordion-group a').eq(1)).toHaveText('group 2');
 			});
 
-			it('should sort projects within a group', function () {
+			it('should sort projects by name within a group', function () {
 				var unsortedJson = {
 					items: [
 						{
@@ -145,6 +145,48 @@ define([
 
 				expect($('#project-group-0')).toHaveClass('in');
 				expect($('#project-group-1')).not.toHaveClass('in');
+			});
+
+			it('should display as "Projects" group if no group exists', function () {
+				var noGroupJson = {
+					items: [
+						{
+							id: 'proj1',
+							name: 'project 1',
+							group: undefined
+						},
+						{
+							id: 'proj2',
+							name: 'project 2',
+							group: undefined
+						}
+					]
+				};
+
+				projectView.show(noGroupJson);
+
+				expect($('.accordion-group a').eq(0)).toHaveText('Projects');
+			});
+
+			it('should expand if only 1 group present', function () {
+				var noGroupJson = {
+					items: [
+						{
+							id: 'proj1',
+							name: 'project 1',
+							group: 'group'
+						},
+						{
+							id: 'proj2',
+							name: 'project 2',
+							group: 'group'
+						}
+					]
+				};
+
+				projectView.show(noGroupJson);
+
+				expect($('#project-group-0')).toHaveClass('in');
 			});
 
 			it('should get selected keys', function () {

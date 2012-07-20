@@ -8,7 +8,8 @@ define([
 	'use strict';
 	
 	var planSelectionTemplate = handlebars.compile(planSelectionText),
-		rootElement;
+		rootElement,
+		noGroupName = 'Projects';
 
 	var initialize = function (rootClassName) {
 		rootElement = $('.' + rootClassName);
@@ -19,10 +20,17 @@ define([
 			html = planSelectionTemplate(templateJson);
 		rootElement.html(html);
 		rootElement.collapse({ toggle: false});
+		expandGroups(json.items);
+		rootElement.show();
+	};
+
+	var expandGroups = function (items) {
 		rootElement.find('.project-item input:checked').each(function () {
 			$(this).closest('.collapse').addClass('in');
 		});
-		rootElement.show();
+		if (getGroups(items).length === 1) {
+			rootElement.find('.collapse').addClass('in');
+		}
 	};
 
 	var createModel = function (json) {
@@ -34,7 +42,7 @@ define([
 				itemsForGroup = getItemsForGroup(json.items, groupName);
 			groups.push({
 				items: itemsForGroup,
-				name: groupName,
+				name: groupName || noGroupName,
 				id: i
 			});
 		}
