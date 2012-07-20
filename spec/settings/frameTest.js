@@ -118,7 +118,7 @@ define([
 			});
 
 			function runsToGetController(settings) {
-				var childController;
+				var childController = null;
 				var controllerName = settings.baseUrl + '/settingsController';
 
 				// wait for RequireJS to be loaded
@@ -133,7 +133,7 @@ define([
 						});
 				});
 				waitsFor(function () {
-					return childController != null;
+					return childController !== null;
 				});
 				return function () { return childController; };
 			}

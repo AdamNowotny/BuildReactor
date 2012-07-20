@@ -30,12 +30,10 @@ define([
 			});
 
 			it('should fail if url empty', function () {
-				var settings = {
-					url: ''
-				};
+				var settings = { url: '' };
 
 				expect(function () {
-					new BambooRequest(settings);
+					var request = new BambooRequest(settings);
 				}).toThrow();
 			});
 

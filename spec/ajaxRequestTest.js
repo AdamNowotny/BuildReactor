@@ -173,15 +173,15 @@ define([
 				});
 
 				it('should fail if url not present', function () {
-					expect(function () { new AjaxRequest({ url: null }); }).toThrow();
+					expect(function () { var request = new AjaxRequest({ url: null }); }).toThrow();
 				});
 
 				it('should fail if success callback not present', function () {
-					expect(function () { new AjaxRequest({ success: undefined }); }).toThrow();
+					expect(function () { var request = new AjaxRequest({ success: undefined }); }).toThrow();
 				});
 
 				it('should fail if error callback not present', function () {
-					expect(function () { new AjaxRequest({ error: undefined }); }).toThrow();
+					expect(function () { var request = new AjaxRequest({ error: undefined }); }).toThrow();
 				});
 
 			});

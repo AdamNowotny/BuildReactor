@@ -86,7 +86,7 @@ define([
 			chrome.browserAction.setBadgeBackgroundColor({ color: badgeInfo.color });
 		}
 
-		if (state == null) {
+		if (!state) {
 			showStateUnknownBadge();
 		} else if (state.failedBuildsCount === 0) {
 			showBuildFixedBadge();

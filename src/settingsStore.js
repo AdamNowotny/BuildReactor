@@ -8,7 +8,7 @@ define(function () {
 
 	function getAll() {
 		var settings;
-		if (localStorage.getItem('services') == null) {
+		if (!localStorage.getItem('services')) {
 			settings = [];
 		} else {
 			var settingsString = localStorage.getItem('services');

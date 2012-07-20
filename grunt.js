@@ -31,7 +31,6 @@ module.exports = function (grunt) {
 				strict: false,
 				trailing: true,
 
-				eqnull: true,
 				es5: true,
 				sub: true,
 
@@ -144,7 +143,7 @@ module.exports = function (grunt) {
 
 	// Default task.
 	grunt.registerTask('default', 'clean mincss requirejs copy');
-	grunt.registerTask('full', 'clean lint jasmine mincss requirejs copy');
+	grunt.registerTask('test', 'lint jasmine');
 
 	grunt.loadNpmTasks('grunt-contrib');
 	grunt.loadNpmTasks('grunt-jasmine-task');

@@ -6,6 +6,9 @@ define([
 	], function (signals, AjaxRequest, endsWith, interpolate) {
 
 		var BambooRequest = function (settings) {
+			if (!(this instanceof BambooRequest)) {
+				return new BambooRequest(settings);
+			}
 			if (!(settings && settings.url && settings.url !== '')) {
 				throw new Error('settings.url-input not set');
 			}

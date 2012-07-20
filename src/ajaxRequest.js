@@ -1,6 +1,9 @@
 define(['signals', 'jquery'], function (signals, $) {
 
 	var AjaxRequest = function (settings) {
+		if (!(this instanceof AjaxRequest)) {
+			return new AjaxRequest(settings);
+		}
 		if (!settings.url) {
 			throw {
 				message: 'options.url not set'
@@ -39,7 +42,7 @@ define(['signals', 'jquery'], function (signals, $) {
 				error: onAjaxError,
 				dataType: dataType
 			};
-		if (this.settings.username != null && this.settings.username.trim() !== '') {
+		if (this.settings.username && this.settings.username.trim() !== '') {
 			ajaxOptions.username = this.settings.username;
 			ajaxOptions.password = this.settings.password;
 			ajaxOptions.data = { os_authType: 'basic' };
