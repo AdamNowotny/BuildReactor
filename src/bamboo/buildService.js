@@ -126,8 +126,8 @@ define([
 
 		BuildService.prototype.onBuildFailed = function (plan) {
 			var buildEvent = {
-				message: interpolate('Build failed - {{0}}', [plan.projectName]),
-				details: plan.name,
+				buildName: plan.name,
+				group: plan.projectName,
 				url: plan.url
 			};
 			this.buildFailed.dispatch(buildEvent);
@@ -135,8 +135,8 @@ define([
 
 		BuildService.prototype.onBuildFixed = function (plan) {
 			var buildEvent = {
-				message: interpolate('Build fixed - {{0}}', [plan.projectName]),
-				details: plan.name,
+				buildName: plan.name,
+				group: plan.projectName,
 				url: plan.url
 			};
 			this.buildFixed.dispatch(buildEvent);

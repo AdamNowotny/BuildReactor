@@ -4,6 +4,7 @@ define(['signals'], function (signals) {
 
 		var status,
 			projectName,
+			category,
 			buildFailed = new signals.Signal(),
 			buildFixed = new signals.Signal();
 
@@ -16,9 +17,9 @@ define(['signals'], function (signals) {
 		projectInstance.update = function (newProjectInfo) {
 			var oldStatus = status;
 			projectName = newProjectInfo.name;
+			category = newProjectInfo.category;
 			status = newProjectInfo.status;
 			if (!oldStatus && newProjectInfo.status !== 'Success') {
-				console.log('cc build failed', projectName);
 				buildFailed.dispatch(this);
 			}
 			if (oldStatus === 'Success' && newProjectInfo.status !== 'Success') {
@@ -38,6 +39,10 @@ define(['signals'], function (signals) {
 			return projectName;
 		};
 
+		projectInstance.category = function () {
+			return category;
+		};
+		
 		return projectInstance;
 	}
 

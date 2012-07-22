@@ -1,7 +1,8 @@
 define([
 	'serviceController',
-	'timer'
-], function (serviceController, Timer) {
+	'timer',
+	'amdUtils/string/interpolate'
+], function (serviceController, Timer, interpolate) {
 
 	var notificationTimeoutInSec = 5;
 
@@ -18,8 +19,8 @@ define([
 
 	function onBuildFailed(buildEvent) {
 		var notification = {
-			message: buildEvent.message,
-			details: buildEvent.details,
+			message: interpolate('Build failed - {{0}}', [buildEvent.buildName]),
+			details: buildEvent.group,
 			url: buildEvent.url,
 			backgroundColor: '#0D0',
 			sticky: true
@@ -29,15 +30,27 @@ define([
 	}
 
 	function onBuildFixed(buildEvent) {
-		var message = (buildEvent.state.failedBuildsCount === 0) ?
-			'All builds are green !' :
-			buildEvent.message;
-		var notification = {
-			message: message,
-			details: buildEvent.details,
-			url: buildEvent.url,
-			backgroundColor: '#D00'
-		};
+
+		function allFixedNotification(buildEvent) {
+			return {
+				message: 'All builds are green',
+				details: '',
+				url: buildEvent.url,
+				backgroundColor: '#D00'
+			};
+		}
+
+		function fixedNotification(buildEvent) {
+			return {
+				message: interpolate('Build fixed - {{0}}', [buildEvent.buildName]),
+				details: buildEvent.group,
+				url: buildEvent.url,
+				backgroundColor: '#D00'
+			};
+		}
+		
+		var notification = (buildEvent.state.failedBuildsCount === 0) ?
+			allFixedNotification(buildEvent) : fixedNotification(buildEvent);
 		showNotification(notification);
 		updateBadge(buildEvent.state);
 	}

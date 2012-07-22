@@ -187,11 +187,12 @@ function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXm
 		it('should signal buildFailed if project signaled', function () {
 			var failedProject,
 				buildFailedSpy = spyOnSignal(service.buildFailed).matching(function (info) {
-					return info.message === 'Build failed - CruiseControl.NET';
+					return info.buildName === 'NetReflector' &&
+						info.group === 'CruiseControl.NET';
 				});
 			initResponse();
 			service.update();
-			failedProject = service.projects['CruiseControl.NET'];
+			failedProject = service.projects['NetReflector'];
 
 			failedProject.buildFailed.dispatch(failedProject);
 
@@ -201,11 +202,12 @@ function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXm
 		it('should signal buildFixed if project signaled', function () {
 			var fixedProject,
 				buildFixedSpy = spyOnSignal(service.buildFixed).matching(function (info) {
-					return info.message === 'Build fixed - CruiseControl.NET';
+					return info.buildName === 'NetReflector' &&
+						info.group === 'CruiseControl.NET';
 				});
 			initResponse();
 			service.update();
-			fixedProject = service.projects['CruiseControl.NET'];
+			fixedProject = service.projects['NetReflector'];
 
 			fixedProject.buildFixed.dispatch(fixedProject);
 

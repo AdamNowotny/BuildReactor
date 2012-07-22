@@ -66,6 +66,7 @@ define([
 						var name = $(d).attr('name');
 						return {
 							name: name,
+							category: $(d).attr('category'),
 							status: $(d).attr('lastBuildStatus')
 						};
 					})
@@ -84,8 +85,8 @@ define([
 
 		CCBuildService.prototype.onBuildFailed = function (project) {
 			var buildEvent = {
-				message: interpolate('Build failed - {{0}}', [project.projectName()]),
-				details: project.projectName(),
+				buildName: project.projectName(),
+				group: project.category(),
 				url: project.url
 			};
 			this.buildFailed.dispatch(buildEvent);
@@ -93,8 +94,8 @@ define([
 
 		CCBuildService.prototype.onBuildFixed = function (project) {
 			var buildEvent = {
-				message: interpolate('Build fixed - {{0}}', [project.projectName()]),
-				details: project.projectName(),
+				buildName: project.projectName(),
+				group: project.category(),
 				url: project.url
 			};
 			this.buildFixed.dispatch(buildEvent);

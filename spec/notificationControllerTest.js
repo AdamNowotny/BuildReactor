@@ -70,7 +70,7 @@ define([
 				serviceController.buildFailed.dispatch(buildEvent);
 
 				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'img/icon-128.png', buildEvent.message, buildEvent.details
+					'img/icon-128.png', 'Build failed - ' + buildEvent.buildName, buildEvent.group
 				);
 			});
 
@@ -91,7 +91,7 @@ define([
 				serviceController.buildFixed.dispatch(buildEvent);
 
 				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'img/icon-128.png', buildEvent.message, buildEvent.details
+					'img/icon-128.png', 'Build fixed - ' + buildEvent.buildName, buildEvent.group
 				);
 			});
 
@@ -102,7 +102,7 @@ define([
 				serviceController.buildFixed.dispatch(buildEvent);
 
 				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'img/icon-128.png', 'All builds are green !', buildEvent.details
+					'img/icon-128.png', 'All builds are green', ''
 				);
 			});
 
