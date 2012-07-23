@@ -194,7 +194,7 @@ function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXm
 			service.update();
 			failedProject = service.projects['NetReflector'];
 
-			failedProject.buildFailed.dispatch(failedProject);
+			failedProject.failed.dispatch(failedProject);
 
 			expect(buildFailedSpy).toHaveBeenDispatched(1);
 		});
@@ -209,7 +209,7 @@ function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXm
 			service.update();
 			fixedProject = service.projects['NetReflector'];
 
-			fixedProject.buildFixed.dispatch(fixedProject);
+			fixedProject.fixed.dispatch(fixedProject);
 
 			expect(buildFixedSpy).toHaveBeenDispatched(1);
 		});

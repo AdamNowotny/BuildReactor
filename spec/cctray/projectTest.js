@@ -24,36 +24,36 @@ define([
 			expect(someProject.projectName()).toBe('project name');
 		});
 
-		it('should dispatch buildFailed if build is broken while initializing', function () {
+		it('should dispatch failed if build is broken while initializing', function () {
 			var someProject = project();
-			var buildFailedSpy = spyOnSignal(someProject.buildFailed);
+			var buildFailedSpy = spyOnSignal(someProject.failed);
 
 			someProject.update(projectFailureInfo);
 
 			expect(buildFailedSpy).toHaveBeenDispatched();
 		});
 
-		it('should dispatch buildFailed if build failed', function () {
+		it('should dispatch failed if build failed', function () {
 			var someProject = project().update(projectSuccessInfo),
-				buildFailedSpy = spyOnSignal(someProject.buildFailed);
+				buildFailedSpy = spyOnSignal(someProject.failed);
 
 			someProject.update(projectFailureInfo);
 
 			expect(buildFailedSpy).toHaveBeenDispatched();
 		});
 
-		it('should dispatch buildFixed if build was fixed', function () {
+		it('should dispatch fixed if build was fixed', function () {
 			var someProject = project().update(projectFailureInfo),
-				buildFixedSpy = spyOnSignal(someProject.buildFixed);
+				buildFixedSpy = spyOnSignal(someProject.fixed);
 
 			someProject.update(projectSuccessInfo);
 
 			expect(buildFixedSpy).toHaveBeenDispatched();
 		});
 
-		it('should not dispatch buildFixed if initializing', function () {
+		it('should not dispatch fixed if initializing', function () {
 			var someProject = project(),
-				buildFixedSpy = spyOnSignal(someProject.buildFixed);
+				buildFixedSpy = spyOnSignal(someProject.fixed);
 
 			someProject.update(projectSuccessInfo);
 

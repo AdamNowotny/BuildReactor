@@ -7,14 +7,14 @@ define(['signals'], function (signals) {
 		var status,
 			projectName,
 			category,
-			buildFailed = new signals.Signal(),
-			buildFixed = new signals.Signal();
+			failed = new signals.Signal(),
+			fixed = new signals.Signal();
 
 		function projectInstance() { }
 
-		projectInstance.buildFailed = buildFailed;
+		projectInstance.failed = failed;
 		
-		projectInstance.buildFixed = buildFixed;
+		projectInstance.fixed = fixed;
 
 		projectInstance.update = function (newProjectInfo) {
 			var oldStatus = status;
@@ -22,13 +22,13 @@ define(['signals'], function (signals) {
 			category = newProjectInfo.category;
 			status = newProjectInfo.status;
 			if (!oldStatus && newProjectInfo.status !== 'Success') {
-				buildFailed.dispatch(this);
+				failed.dispatch(this);
 			}
 			if (oldStatus === 'Success' && newProjectInfo.status !== 'Success') {
-				buildFailed.dispatch(this);
+				failed.dispatch(this);
 			}
 			if (oldStatus && oldStatus !== 'Success' && newProjectInfo.status === 'Success') {
-				buildFixed.dispatch(this);
+				fixed.dispatch(this);
 			}
 			return projectInstance;
 		};

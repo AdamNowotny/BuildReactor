@@ -148,7 +148,7 @@ define([
 				it('should signal buildFailed when any build failed on first update', function () {
 					var buildFailedSpy = spyOnSignal(service.buildFailed);
 					mockBambooPlanUpdate.andCallFake(function () {
-						this.buildFailed.dispatch(this);
+						this.failed.dispatch(this);
 						return updateSuccessSignal;
 					});
 
@@ -268,7 +268,7 @@ define([
 				var buildFailedSpy = spyOnSignal(service.buildFailed);
 				var plan = service.plans['PROJECT1-PLAN1'];
 
-				plan.buildFailed.dispatch(plan);
+				plan.failed.dispatch(plan);
 
 				expect(buildFailedSpy).toHaveBeenDispatched(1);
 			});
@@ -278,7 +278,7 @@ define([
 				var buildFixedSpy = spyOnSignal(service.buildFixed);
 				var plan = service.plans['PROJECT1-PLAN1'];
 
-				plan.buildFixed.dispatch(plan);
+				plan.fixed.dispatch(plan);
 
 				expect(buildFixedSpy).toHaveBeenDispatched(1);
 			});

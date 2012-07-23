@@ -115,22 +115,14 @@ define([
 
 		function onBuildFailed(buildEvent) {
 			failedCount++;
-			buildFailed.dispatch({
-				buildName: buildEvent.buildName,
-				group: buildEvent.group,
-				url: buildEvent.url,
-				state: getCurrentState()
-			});
+			buildEvent.state = getCurrentState();
+			buildFailed.dispatch(buildEvent);
 		}
 
 		function onBuildFixed(buildEvent) {
 			failedCount--;
-			buildFixed.dispatch({
-				buildName: buildEvent.buildName,
-				group: buildEvent.group,
-				url: buildEvent.url,
-				state: getCurrentState()
-			});
+			buildEvent.state = getCurrentState();
+			buildFixed.dispatch(buildEvent);
 		}
 
 		function getCurrentState() {

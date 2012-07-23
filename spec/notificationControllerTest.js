@@ -67,12 +67,17 @@ define([
 
 			it('should show message when build fails', function () {
 				notificationController.initialize();
-				var buildEvent = new MockBuildEventBuilder().withFailedBuilds(2).create();
+				var buildEvent = new MockBuildEventBuilder()
+					.withServiceName('service')
+					.withGroup('group')
+					.withBuildName('build')
+					.withFailedBuilds(2)
+					.create();
 
 				serviceController.buildFailed.dispatch(buildEvent);
 
 				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'img/icon-128.png', 'Build failed - ' + buildEvent.buildName, buildEvent.group
+					'img/icon-128.png', 'Build failed - service',  'build (group)'
 				);
 			});
 
@@ -88,12 +93,17 @@ define([
 
 			it('should show message if build fixed', function () {
 				notificationController.initialize();
-				var buildEvent = new MockBuildEventBuilder().withFailedBuilds(2).create();
+				var buildEvent = new MockBuildEventBuilder()
+					.withServiceName('service')
+					.withGroup('group')
+					.withBuildName('build')
+					.withFailedBuilds(2)
+					.create();
 
 				serviceController.buildFixed.dispatch(buildEvent);
 
 				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'img/icon-128.png', 'Build fixed - ' + buildEvent.buildName, buildEvent.group
+					'img/icon-128.png', 'Build fixed - service', 'build (group)'
 				);
 			});
 

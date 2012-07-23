@@ -4,8 +4,8 @@ define(['signals', 'bamboo/bambooRequest'], function (signals, BambooRequest) {
 
 	var BambooPlan = function (settings) {
 		this.settings = settings;
-		this.buildFailed = new signals.Signal();
-		this.buildFixed = new signals.Signal();
+		this.failed = new signals.Signal();
+		this.fixed = new signals.Signal();
 		this.errorThrown = new signals.Signal();
 	};
 
@@ -29,11 +29,11 @@ define(['signals', 'bamboo/bambooRequest'], function (signals, BambooRequest) {
 				self.buildNumber = response.number;
 				if (self.state !== 'Failed' && response.state === 'Failed') {
 					self.state = 'Failed';
-					self.buildFailed.dispatch(self);
+					self.failed.dispatch(self);
 				}
 				if (self.state === 'Failed' && response.state === 'Successful') {
 					self.state = 'Successful';
-					self.buildFixed.dispatch(self);
+					self.fixed.dispatch(self);
 				}
 				updateFinished.dispatch(true, response);
 			} catch (e) {

@@ -74,8 +74,8 @@ define([
 						var projectInstance = self.projects[d.name];
 						if (!projectInstance) {
 							projectInstance = project();
-							projectInstance.buildFailed.add(self.onBuildFailed, self);
-							projectInstance.buildFixed.add(self.onBuildFixed, self);
+							projectInstance.failed.add(self.onBuildFailed, self);
+							projectInstance.fixed.add(self.onBuildFixed, self);
 							self.projects[d.name] = projectInstance;
 						}
 						projectInstance.update(d);
@@ -85,6 +85,7 @@ define([
 
 		CCBuildService.prototype.onBuildFailed = function (project) {
 			var buildEvent = {
+				serviceName: this.name,
 				buildName: project.projectName(),
 				group: project.category(),
 				url: project.url
@@ -94,6 +95,7 @@ define([
 
 		CCBuildService.prototype.onBuildFixed = function (project) {
 			var buildEvent = {
+				serviceName: this.name,
 				buildName: project.projectName(),
 				group: project.category(),
 				url: project.url

@@ -56,8 +56,8 @@ define([
 				expect(plan.buildNumber).toBe(3631);
 			});
 
-			it('should signal buildFailed on update', function () {
-				var buildFailedSpy = spyOnSignal(plan.buildFailed).matchingValues(plan);
+			it('should signal failed on update', function () {
+				var buildFailedSpy = spyOnSignal(plan.failed).matchingValues(plan);
 				setupResponse(latestPlanResultFailedJson);
 
 				plan.update();
@@ -65,8 +65,8 @@ define([
 				expect(buildFailedSpy).toHaveBeenDispatched(1);
 			});
 
-			it('should not signal buildFailed if not changed', function () {
-				var buildFailedSpy = spyOnSignal(plan.buildFailed).matchingValues(plan);
+			it('should not signal failed if not changed', function () {
+				var buildFailedSpy = spyOnSignal(plan.failed).matchingValues(plan);
 				setupResponse(latestPlanResultFailedJson);
 
 				plan.update();
@@ -77,7 +77,7 @@ define([
 			});
 
 			it('should signal when build is fixed', function () {
-				var buildFixedSpy = spyOnSignal(plan.buildFixed).matchingValues(plan);
+				var buildFixedSpy = spyOnSignal(plan.fixed).matchingValues(plan);
 				setupResponse(latestPlanResultFailedJson);
 				plan.update();
 

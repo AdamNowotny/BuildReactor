@@ -64,8 +64,8 @@ define([
 			function initializePlan(responsePlan) {
 				if (!responsePlan.enabled) { return; }
 				var plan = new BambooPlan(self.settings);
-				plan.buildFailed.add(self.onBuildFailed, self);
-				plan.buildFixed.add(self.onBuildFixed, self);
+				plan.failed.add(self.onBuildFailed, self);
+				plan.fixed.add(self.onBuildFixed, self);
 				plan.errorThrown.add(self.onPlanError, self);
 				self.plans[responsePlan.key] = plan;
 				self.plansCount++;
@@ -129,6 +129,7 @@ define([
 
 		BuildService.prototype.onBuildFailed = function (plan) {
 			var buildEvent = {
+				serviceName: this.name,
 				buildName: plan.name,
 				group: plan.projectName,
 				url: plan.url
@@ -138,6 +139,7 @@ define([
 
 		BuildService.prototype.onBuildFixed = function (plan) {
 			var buildEvent = {
+				serviceName: this.name,
 				buildName: plan.name,
 				group: plan.projectName,
 				url: plan.url
