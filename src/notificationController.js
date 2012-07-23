@@ -22,7 +22,7 @@ define([
 	function onBuildFailed(buildEvent) {
 		var notification = {
 			message: interpolate('Build failed - {{0}}', [buildEvent.buildName]),
-			details: buildEvent.group,
+			details: buildEvent.group || '',
 			url: buildEvent.url,
 			backgroundColor: '#0D0',
 			sticky: true
@@ -45,7 +45,7 @@ define([
 		function fixedNotification(buildEvent) {
 			return {
 				message: interpolate('Build fixed - {{0}}', [buildEvent.buildName]),
-				details: buildEvent.group,
+				details: buildEvent.group || '',
 				url: buildEvent.url,
 				backgroundColor: '#D00'
 			};
