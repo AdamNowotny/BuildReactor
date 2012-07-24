@@ -1,15 +1,12 @@
 define([
 	'signals',
 	'jquery',
-	'text!./addModalService.hbs',
-	'handlebars',
+	'hbs!template/addModalService',
 	'jqueryTools',
 	'bootstrap'
-], function (signals, $, serviceTemplateText, handlebars) {
+], function (signals, $, addModalServiceTemplate) {
 
 	'use strict';
-
-	var serviceTemplate = handlebars.compile(serviceTemplateText);
 
 	var serviceAdded = new signals.Signal();
 	var scrollableApi;
@@ -35,7 +32,7 @@ define([
 	};
 
 	var renderServiceTypes = function (serviceTypes) {
-		$('#service-add-list').html(serviceTemplate({ services: serviceTypes }));
+		$('#service-add-list').html(addModalServiceTemplate({ services: serviceTypes }));
 	};
 
 	var show = function () {

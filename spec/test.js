@@ -13,7 +13,6 @@ require.config({
 		amdUtils: '../lib/amd-utils',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap',
 		fixtures: '../spec/fixtures',
-		handlebars: '../lib/requirejs-handlebars-plugin/Handlebars',
 		jasmineSignals: '../lib/jasmine-signals/jasmine-signals',
 		jqueryTools: '../lib/jquery-tools/jquery.tools.min',
 		jquery: '../lib/jquery/jquery',
@@ -21,7 +20,14 @@ require.config({
 		mocks: '../spec/mocks',
 		spec: '../spec',
 		signals: '../lib/js-signals/signals',
-		text: '../lib/requirejs/text'
+		text: '../lib/requirejs/text',
+		// Handlebars plugin does not like to be in lib folder.
+		// Needed to rename to hbs-plugin and specifiy all paths here.
+		hbs: '../lib/requirejs/hbs-plugin',
+		Handlebars: '../lib/requirejs/Handlebars',
+		'hbs/underscore': '../lib/requirejs/hbs/underscore',
+		'hbs/i18nprecompile': '../lib/requirejs/hbs/i18nprecompile',
+		'hbs/json2': '../lib/requirejs/hbs/json2'
 	},
 	shim: {
 		bootstrap: [ 'jquery' ],

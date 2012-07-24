@@ -1,6 +1,8 @@
 /*global module:false*/
 module.exports = function (grunt) {
 
+	'use strict';
+
 	// Project configuration.
 	grunt.initConfig({
 		vars: {
@@ -71,8 +73,9 @@ module.exports = function (grunt) {
 					dir: 'build/BuildReactor/src',
 					removeCombined: true,
 					inlineText: true,
-					//useStrict: true,
+					useStrict: true,
 					preserveLicenseComments: true,
+					optimize: 'uglify',
 					optimizeCss: 'none',
 					wrap: {
 						startFile: 'grunt.startFile.js',
@@ -81,11 +84,16 @@ module.exports = function (grunt) {
 					paths: {
 						amdUtils: '../lib/amd-utils',
 						bootstrap: 'empty:',
-						handlebars: '../lib/requirejs-handlebars-plugin/Handlebars',
 						jquery: 'empty:',
 						jqueryTools: 'empty:',
 						signals: 'empty:',
-						text: '../lib/requirejs/text',
+						// Handlebars plugin does not like to be in lib folder.
+						// Needed to rename to hbs-plugin and specifiy all paths here.
+						hbs: '../lib/requirejs/hbs-plugin',
+						Handlebars: '../lib/requirejs/Handlebars',
+						'hbs/underscore': '../lib/requirejs/hbs/underscore',
+						'hbs/i18nprecompile': '../lib/requirejs/hbs/i18nprecompile',
+						'hbs/json2': '../lib/requirejs/hbs/json2'
 					},
 					modules: [
 						{
@@ -144,6 +152,7 @@ module.exports = function (grunt) {
 	// Default task.
 	grunt.registerTask('default', 'clean lint jasmine mincss requirejs copy');
 	grunt.registerTask('test', 'lint jasmine');
+	grunt.registerTask('dist', 'clean mincss requirejs copy');
 
 	grunt.loadNpmTasks('grunt-contrib');
 	grunt.loadNpmTasks('grunt-jasmine-task');

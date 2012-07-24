@@ -1,10 +1,8 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
-		amdUtils: '../lib/amd-utils',
 		jquery: '../lib/jquery/jquery',
-		signals: '../lib/js-signals/signals',
-		text: '../lib/requirejs/text'
+		signals: '../lib/js-signals/signals'
 	}
 });
 require(["app"], function (app) {

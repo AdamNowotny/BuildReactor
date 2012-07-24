@@ -1,15 +1,12 @@
 define([
 	'jquery',
-	'text!./projectViewTemplate.hbs',
-	'handlebars',
+	'hbs!template/projectView',
 	'bootstrap'
-], function ($, planSelectionText, handlebars) {
+], function ($, projectViewTemplate) {
 
 	'use strict';
 	
-	var planSelectionTemplate = handlebars.compile(planSelectionText),
-		rootElement,
-		noGroupName = 'Projects';
+	var rootElement;
 
 	var initialize = function (rootClassName) {
 		rootElement = $('.' + rootClassName);
@@ -17,7 +14,7 @@ define([
 
 	var show = function (json) {
 		var templateJson = createModel(json),
-			html = planSelectionTemplate(templateJson);
+			html = projectViewTemplate(templateJson);
 		rootElement.html(html);
 		rootElement.collapse({ toggle: false});
 		expandGroups(json.items);
@@ -42,7 +39,7 @@ define([
 				itemsForGroup = getItemsForGroup(json.items, groupName);
 			groups.push({
 				items: itemsForGroup,
-				name: groupName || noGroupName,
+				name: groupName,
 				id: i
 			});
 		}

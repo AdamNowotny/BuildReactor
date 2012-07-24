@@ -1,13 +1,10 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
-		amdUtils: '../lib/amd-utils',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
-		handlebars: '../lib/requirejs-handlebars-plugin/Handlebars',
 		jquery: '../lib/jquery/jquery',
 		jqueryTools: '../lib/jquery-tools/jquery.tools.min',
-		signals: '../lib/js-signals/signals',
-		text: '../lib/requirejs/text'
+		signals: '../lib/js-signals/signals'
 	},
 	shim: {
 		bootstrap: [ 'jquery' ],
