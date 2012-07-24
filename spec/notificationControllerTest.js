@@ -107,17 +107,6 @@ define([
 				);
 			});
 
-			it('should show message if all builds are fixed', function () {
-				notificationController.initialize();
-				var buildEvent = new MockBuildEventBuilder().withFailedBuilds(0).create();
-
-				serviceController.buildFixed.dispatch(buildEvent);
-
-				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'img/icon-128.png', 'All builds are green', ''
-				);
-			});
-
 			it('should close notifications about fixed builds after 5 seconds', function () {
 				notificationController.initialize();
 				spyOn(mockNotification, 'cancel');

@@ -33,15 +33,6 @@ define([
 
 	function onBuildFixed(buildEvent) {
 
-		function allFixedNotification(buildEvent) {
-			return {
-				message: 'All builds are green',
-				details: '',
-				url: buildEvent.url,
-				backgroundColor: '#D00'
-			};
-		}
-
 		function fixedNotification(buildEvent) {
 			return {
 				message: interpolate('Build fixed - {{0}}', [buildEvent.serviceName]),
@@ -51,8 +42,7 @@ define([
 			};
 		}
 		
-		var notification = (buildEvent.state.failedBuildsCount === 0) ?
-			allFixedNotification(buildEvent) : fixedNotification(buildEvent);
+		var notification = fixedNotification(buildEvent);
 		showNotification(notification);
 		updateBadge(buildEvent.state);
 	}
