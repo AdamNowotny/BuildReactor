@@ -15,6 +15,7 @@ define([
 				name: activeSettings.name,
 				baseUrl: 'cctray',
 				url: $('.url-input').val(),
+				icon: 'cctray/icon.png',
 				updateInterval: parseInt($('.update-interval-input').val(), 10),
 				username: $('.username-input').val(),
 				password: $('.password-input').val(),

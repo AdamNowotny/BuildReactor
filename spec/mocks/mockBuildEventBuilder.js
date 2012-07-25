@@ -14,6 +14,7 @@ define(function () {
 				buildName: buildName,
 				group: group,
 				url: 'http://example.com/project/build/100',
+				icon: 'icon.png',
 				state: {
 					failedBuildsCount: failedBuildsCount
 				}

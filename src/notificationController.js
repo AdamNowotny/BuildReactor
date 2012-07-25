@@ -25,7 +25,8 @@ define([
 			details: buildEvent.buildName + (buildEvent.group ? ' (' + buildEvent.group + ')' : ''),
 			url: buildEvent.url,
 			backgroundColor: '#0D0',
-			sticky: true
+			sticky: true,
+			icon: buildEvent.icon
 		};
 		showNotification(notification);
 		updateBadge(buildEvent.state);
@@ -38,7 +39,8 @@ define([
 				message: interpolate('Build fixed - {{0}}', [buildEvent.serviceName]),
 				details: buildEvent.buildName + (buildEvent.group ? ' (' + buildEvent.group + ')' : ''),
 				url: buildEvent.url,
-				backgroundColor: '#D00'
+				backgroundColor: '#D00',
+				icon: buildEvent.icon
 			};
 		}
 		
@@ -94,9 +96,9 @@ define([
 		}
 
 		var notification = window.webkitNotifications.createNotification(
-			"img/icon-128.png", // The image.
-			notificationInfo.message, // The title.
-			notificationInfo.details // The body.
+			'src/' + notificationInfo.icon,
+			notificationInfo.message,
+			notificationInfo.details
 		);
 		notification.show();
 		if (!notificationInfo.sticky) {

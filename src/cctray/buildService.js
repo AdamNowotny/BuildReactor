@@ -88,7 +88,8 @@ define([
 				serviceName: this.name,
 				buildName: project.projectName(),
 				group: project.category(),
-				url: project.url
+				url: project.url,
+				icon: this.settings.icon
 			};
 			this.buildFailed.dispatch(buildEvent);
 		};
@@ -98,7 +99,8 @@ define([
 				serviceName: this.name,
 				buildName: project.projectName(),
 				group: project.category(),
-				url: project.url
+				url: project.url,
+				icon: this.settings.icon
 			};
 			this.buildFixed.dispatch(buildEvent);
 		};

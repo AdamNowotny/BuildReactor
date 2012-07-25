@@ -14,6 +14,7 @@ define([
 			var newSettings = {
 				name: activeSettings.name,
 				baseUrl: 'bamboo',
+				icon: 'bamboo/icon.png',
 				url: $('.url-input').val(),
 				updateInterval: parseInt($('.update-interval-input').val(), 10),
 				username: $('.username-input').val(),
