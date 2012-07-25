@@ -3,11 +3,14 @@
 	width: 170px;
 	text-align: center;
 }
+ 
+.logo {
+ 	width: 19px;
+}
 
 #service-name {
 	color: white;
 	font-size: large;
-	color: white;
 }
 
 #alert-saved 

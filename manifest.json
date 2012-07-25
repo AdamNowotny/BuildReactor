@@ -5,9 +5,12 @@
 	"description": "Provides notifications on CI server events",
 	"browser_action": {
 		"default_title": "BuildReactor notifications",
-		"default_icon": "img/icon.png"
+		"default_icon": "img/icon-19.png"
 	},
-	"icons": { "128": "img/icon-128.png" },
+	"icons": {
+		"128": "img/icon-128.png",
+		"48": "img/icon-48.png"
+	},
 	"background": {
 		"scripts": [ "lib/requirejs/require.min.js", "src/main.js" ]
 	},
@@ -16,8 +19,6 @@
 	"offline_enabled": false,
 	"permissions": [ "http://*/*", "https://*/*", "notifications", "background", "cookies" ],
 	"web_accessible_resources": [
-		"img/icon.png",
-		"img/icon-128.png",
 		"src/cctray/options.html",
 		"src/cctray/icon.png",
 		"src/bamboo/options.html",

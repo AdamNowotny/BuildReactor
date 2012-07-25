@@ -4,7 +4,7 @@ BuildReactor
 
 <img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/notifications.png" alt="BuildReactor notifications">
 
-So far only Atlassian Bamboo 3.1 is supported but more are planned, starting with CruiseControl.
+So far Atlassian Bamboo and CruiseControl are supported.
 
 After installing the extension go to options page and enter the URL for Bamboo instance and username and password if required.
 
@@ -12,7 +12,18 @@ After installing the extension go to options page and enter the URL for Bamboo i
 
 Installation
 ============
-You can install the latest version by clicking [here](http://goo.gl/ecuQ5) using Google Chrome.
+Node required to build the extension.
+
+```
+npm install grunt grunt-contrib grunt-jasmine-task
+node_modules/.bin/grunt
+```
+
+Point Chrome to build/BuildReactor folder.
+
+Attribution
+===========
+Application icon based on https://commons.wikimedia.org/wiki/File:Radiation_warning_symbol_3.svg
 
 What's new
 ============
