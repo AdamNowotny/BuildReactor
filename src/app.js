@@ -1,10 +1,11 @@
 define([
 		'serviceController',
 		'notificationController',
+		'badgeController',
 		'settingsStore',
 		'serviceTypesRepository',
 		'amdUtils/string/interpolate'
-	], function (serviceController, notificationController, settingsStore, serviceTypesRepository, interpolate) {
+	], function (serviceController, notificationController, badgeController, settingsStore, serviceTypesRepository, interpolate) {
 
 		'use strict';
 
@@ -17,6 +18,7 @@ define([
 
 		initializeLogging();
 		var settings = settingsStore.getAll();
+		badgeController();
 		notificationController.initialize();
 		serviceController.load(settings);
 

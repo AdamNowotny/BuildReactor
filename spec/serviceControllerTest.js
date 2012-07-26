@@ -2,12 +2,12 @@ define([
 		'jquery',
 		'serviceController',
 		'spec/mocks/mockBuildService',
-		'spec/mocks/mockBuildEventBuilder',
+		'spec/mocks/mockBuildEvent',
 		'spec/mocks/mockSettingsBuilder',
 		'amdUtils/string/endsWith',
 		'jasmineSignals'
 	],
-	function ($, controller, MockBuildService, MockBuildEventBuilder, MockSettingsBuilder, endsWith, jasmineSignals) {
+	function ($, controller, MockBuildService, mockBuildEvent, MockSettingsBuilder, endsWith, jasmineSignals) {
 
 		'use strict';
 		
@@ -124,8 +124,7 @@ define([
 				var mockService = new MockBuildService();
 				controller.addService(mockService);
 
-				var buildEvent = new MockBuildEventBuilder().withFailedBuilds(1).create();
-				mockService.buildFailed.dispatch(buildEvent);
+				mockService.buildFailed.dispatch(mockBuildEvent());
 
 				expect(buildFailedSpy).toHaveBeenDispatched(1);
 			});
@@ -135,38 +134,9 @@ define([
 				var mockService = new MockBuildService();
 				controller.addService(mockService);
 
-				var buildEvent = new MockBuildEventBuilder().withFailedBuilds(0).create();
-				mockService.buildFixed.dispatch(buildEvent);
+				mockService.buildFixed.dispatch(mockBuildEvent());
 
 				expect(buildFixedSpy).toHaveBeenDispatched(1);
-			});
-
-			it('should update state on build failure', function () {
-				var buildFailedSpy = spyOnSignal(controller.buildFailed).matching(function (buildInfo) {
-					return buildInfo.state.failedBuildsCount === 1;
-				});
-				var mockService = new MockBuildService();
-				controller.addService(mockService);
-
-				var buildEvent = new MockBuildEventBuilder().withFailedBuilds(1).create();
-				mockService.buildFailed.dispatch(buildEvent);
-
-				expect(buildFailedSpy).toHaveBeenDispatched(1);
-			});
-
-			it('should update state on build fixed event', function () {
-				var buildFailedSpy = spyOnSignal(controller.buildFailed).matching(function (buildInfo) {
-					return buildInfo.state.failedBuildsCount === 1;
-				});
-				var mockService = new MockBuildService();
-				controller.addService(mockService);
-
-				var buildEvent = new MockBuildEventBuilder().create();
-				mockService.buildFailed.dispatch(buildEvent);
-				mockService.buildFailed.dispatch(buildEvent);
-				mockService.buildFixed.dispatch(buildEvent);
-
-				expect(buildFailedSpy).toHaveBeenDispatched(1);
 			});
 
 			it('should run services only after all are loaded', function () {
@@ -195,24 +165,12 @@ define([
 				expect(servicesStartedSpy).toHaveBeenDispatched(1);
 			});
 
-			it('should reset state on load', function () {
-				// TODO: fix referencing ../../spec/mocks/mockBuildService
-				var buildFailedSpy = spyOnSignal(controller.buildFailed).matching(function (buildInfo) {
-					return buildInfo.state.failedBuildsCount === 1;
-				});
-				var settings = new MockSettingsBuilder().create();
-				var mockService = new MockBuildService();
-				controller.addService(mockService);
-				var buildEvent = new MockBuildEventBuilder().withFailedBuilds(1).create();
-				mockService.buildFailed.dispatch(buildEvent);
+			it('should notifiy when services are reloaded', function () {
+				var startedLoadingSpy = spyOnSignal(controller.startedLoading);
 
-				expect(buildFailedSpy).toHaveBeenDispatched(1);
-				buildFailedSpy.reset();
-				controller.load([settings]);
-				controller.addService(mockService);
-				mockService.buildFailed.dispatch(buildEvent);
+				controller.load([]);
 
-				expect(buildFailedSpy).toHaveBeenDispatched(1);
+				expect(startedLoadingSpy).toHaveBeenDispatched(1);
 			});
 
 		});

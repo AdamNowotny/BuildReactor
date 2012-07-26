@@ -2,8 +2,8 @@ define([
 	'notificationController',
 	'serviceController',
 	'timer',
-	'spec/mocks/mockBuildEventBuilder'
-], function (notificationController, serviceController, Timer, MockBuildEventBuilder) {
+	'spec/mocks/mockBuildEvent'
+], function (notificationController, serviceController, Timer, mockBuildEvent) {
 
 	'use strict';
 	
@@ -28,61 +28,9 @@ define([
 			serviceController.buildFixed.removeAll();
 		});
 
-		it('should show grey badge if state is unknown', function () {
-			notificationController.initialize();
-
-			expect(chrome.browserAction.setBadgeText).toHaveBeenCalledWith({ text: ' ' });
-			expect(chrome.browserAction.setBadgeBackgroundColor).toHaveBeenCalledWith({ color: [200, 200, 200, 200] });
-		});
-
-		it('should show green badge when services are initialized and builds are fine', function () {
-			notificationController.initialize();
-
-			serviceController.servicesStarted.dispatch({ failedBuildsCount: 0 });
-
-			expect(window.webkitNotifications.createNotification).not.toHaveBeenCalled();
-			expect(chrome.browserAction.setBadgeText).toHaveBeenCalledWith({ text: '\u2022' });
-			expect(chrome.browserAction.setBadgeBackgroundColor).toHaveBeenCalledWith({ color: [0, 255, 0, 200] });
-		});
-
-		it('should show red badge when services are initialized and some builds are broken', function () {
-			notificationController.initialize();
-
-			serviceController.servicesStarted.dispatch({ failedBuildsCount: 2 });
-
-			expect(window.webkitNotifications.createNotification).not.toHaveBeenCalled();
-			expect(chrome.browserAction.setBadgeText).toHaveBeenCalledWith({ text: '2' });
-			expect(chrome.browserAction.setBadgeBackgroundColor).toHaveBeenCalledWith({ color: [255, 0, 0, 200] });
-		});
-
-		it('should show red badge with amount of failed builds when build fails', function () {
-			notificationController.initialize();
-			var buildEvent = new MockBuildEventBuilder().withFailedBuilds(2).create();
-
-			serviceController.buildFailed.dispatch(buildEvent);
-
-			expect(chrome.browserAction.setBadgeText).toHaveBeenCalledWith({ text: '2' });
-			expect(chrome.browserAction.setBadgeBackgroundColor).toHaveBeenCalledWith({ color: [255, 0, 0, 200] });
-		});
-
-		it('should show green badge when all builds are fixed', function () {
-			notificationController.initialize();
-			var buildEvent = new MockBuildEventBuilder().withFailedBuilds(0).create();
-
-			serviceController.buildFixed.dispatch(buildEvent);
-
-			expect(chrome.browserAction.setBadgeText).toHaveBeenCalledWith({ text: '\u2022' });
-			expect(chrome.browserAction.setBadgeBackgroundColor).toHaveBeenCalledWith({ color: [0, 255, 0, 200] });
-		});
-
 		it('should show message when build fails', function () {
 			notificationController.initialize();
-			var buildEvent = new MockBuildEventBuilder()
-				.withServiceName('service')
-				.withGroup('group')
-				.withBuildName('build')
-				.withFailedBuilds(2)
-				.create();
+			var buildEvent = mockBuildEvent.withServiceName('service').withGroup('group').withBuildName('build')();
 
 			serviceController.buildFailed.dispatch(buildEvent);
 
@@ -93,12 +41,7 @@ define([
 
 		it('should show message if build fixed', function () {
 			notificationController.initialize();
-			var buildEvent = new MockBuildEventBuilder()
-				.withServiceName('service')
-				.withGroup('group')
-				.withBuildName('build')
-				.withFailedBuilds(2)
-				.create();
+			var buildEvent = mockBuildEvent.withServiceName('service').withGroup('group').withBuildName('build')();
 
 			serviceController.buildFixed.dispatch(buildEvent);
 
@@ -114,9 +57,8 @@ define([
 				expect(timeout).toBe(5);
 				this.elapsed.dispatch();
 			});
-			var buildEvent = new MockBuildEventBuilder().withFailedBuilds(2).create();
 
-			serviceController.buildFixed.dispatch(buildEvent);
+			serviceController.buildFixed.dispatch(mockBuildEvent());
 
 			expect(Timer.prototype.start).toHaveBeenCalledWith(5);
 			expect(mockNotification.cancel).toHaveBeenCalled();
@@ -125,9 +67,8 @@ define([
 		it('should not close notifications about failed builds', function () {
 			notificationController.initialize();
 			spyOn(mockNotification, 'cancel');
-			var buildEvent = new MockBuildEventBuilder().withFailedBuilds(2).create();
 
-			serviceController.buildFailed.dispatch(buildEvent);
+			serviceController.buildFailed.dispatch(mockBuildEvent());
 
 			expect(mockNotification.cancel).not.toHaveBeenCalled();
 		});

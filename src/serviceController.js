@@ -5,11 +5,11 @@ define([
 		'use strict';
 
 		var servicesStarted = new signals.Signal();
+		var startedLoading = new signals.Signal();
 		var buildFailed = new signals.Signal();
 		var buildFixed = new signals.Signal();
 		var services = [];
 		var settings = [];
-		var failedCount = 0;
 		var serviceAdded = new signals.Signal();
 		var serviceRemoved = new signals.Signal();
 		var servicesLoaded = new signals.Signal();
@@ -30,7 +30,6 @@ define([
 			}
 
 			function removeAllServices() {
-				failedCount = 0;
 				services.forEach(function (s) {
 					unsubscribeFrom(s);
 					serviceRemoved.dispatch(s);
@@ -38,6 +37,7 @@ define([
 				services = [];
 			}
 
+			startedLoading.dispatch();
 			removeAllServices();
 			settings = newSettings;
 			servicesToLoadCount = settings.length;
@@ -57,7 +57,7 @@ define([
 				console.log('Service started: ' + s.name);
 				s.start();
 			});
-			servicesStarted.dispatch(getCurrentState());
+			servicesStarted.dispatch();
 		}
 
 		function addService(service) {
@@ -114,26 +114,17 @@ define([
 		}
 
 		function onBuildFailed(buildEvent) {
-			failedCount++;
-			buildEvent.state = getCurrentState();
 			buildFailed.dispatch(buildEvent);
 		}
 
 		function onBuildFixed(buildEvent) {
-			failedCount--;
-			buildEvent.state = getCurrentState();
 			buildFixed.dispatch(buildEvent);
-		}
-
-		function getCurrentState() {
-			return {
-				failedBuildsCount: failedCount
-			};
 		}
 
 		return {
 			load: load,
 			servicesStarted: servicesStarted,
+			startedLoading: startedLoading,
 			buildFailed: buildFailed,
 			buildFixed: buildFixed,
 			addService: addService,

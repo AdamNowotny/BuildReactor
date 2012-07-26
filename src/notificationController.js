@@ -9,14 +9,8 @@ define([
 	var notificationTimeoutInSec = 5;
 
 	function initialize() {
-		updateBadge(null);
-		serviceController.servicesStarted.add(onServicesStarted);
 		serviceController.buildFailed.add(onBuildFailed);
 		serviceController.buildFixed.add(onBuildFixed);
-	}
-
-	function onServicesStarted(state) {
-		updateBadge(state);
 	}
 
 	function onBuildFailed(buildEvent) {
@@ -29,7 +23,6 @@ define([
 			icon: buildEvent.icon
 		};
 		showNotification(notification);
-		updateBadge(buildEvent.state);
 	}
 
 	function onBuildFixed(buildEvent) {
@@ -46,48 +39,6 @@ define([
 		
 		var notification = fixedNotification(buildEvent);
 		showNotification(notification);
-		updateBadge(buildEvent.state);
-	}
-
-	function updateBadge(state) {
-		
-		function showBuildFailedBadge(state) {
-			var badgeInfo = {
-				text: state.failedBuildsCount.toString(),
-				color: [255, 0, 0, 200]
-			};
-			setBadge(badgeInfo);
-		}
-
-		function showBuildFixedBadge() {
-			var badgeInfo = {
-				text: '\u2022',
-				color: [0, 255, 0, 200]
-			};
-			setBadge(badgeInfo);
-		}
-
-		function showStateUnknownBadge() {
-			var badgeInfo = {
-				text: ' ',
-				color: [200, 200, 200, 200]
-			};
-			setBadge(badgeInfo);
-		}
-
-		function setBadge(badgeInfo) {
-			chrome.browserAction.setBadgeText({ text: badgeInfo.text });
-			chrome.browserAction.setBadgeBackgroundColor({ color: badgeInfo.color });
-		}
-
-		if (!state) {
-			showStateUnknownBadge();
-		} else if (state.failedBuildsCount === 0) {
-			showBuildFixedBadge();
-		} else {
-			showBuildFailedBadge(state);
-		}
-
 	}
 
 	function showNotification(notificationInfo) {

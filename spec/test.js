@@ -39,6 +39,7 @@ require([
 	'jquery',
 	'spec/ajaxRequestTest',
 	'spec/notificationControllerTest',
+	'spec/badgeControllerTest',
 	'spec/serviceControllerTest',
 	'spec/settingsPageControllerTest',
 	'spec/settingsStoreTest',
@@ -65,6 +66,6 @@ require([
 
 	$.fx.off = true;
 	jasmine.getFixtures().fixturesPath = 'fixtures';
-	jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+	jasmine.getEnv().addReporter(new jasmine.HtmlReporter());
 	jasmine.getEnv().execute();
 });
