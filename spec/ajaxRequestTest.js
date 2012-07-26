@@ -29,7 +29,7 @@ define([
 				mockAjax.andCallFake(function (onSuccessOptions) {
 					onSuccessOptions.success(result, null, null);
 				});
-				var responseReceivedSpy = spyOnSignal(request.responseReceived);
+				var responseReceivedSpy = spyOnSignal(request.on.responseReceived);
 
 				request.send();
 
@@ -203,7 +203,7 @@ define([
 					mockAjax.andCallFake(function (onErrorOptions) {
 						onErrorOptions.error(null, null, null);
 					});
-					var errorReceivedSpy = spyOnSignal(request.errorReceived);
+					var errorReceivedSpy = spyOnSignal(request.on.errorReceived);
 
 					request.send();
 

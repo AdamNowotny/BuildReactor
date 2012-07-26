@@ -19,7 +19,7 @@ define([
 	var current;
 
 	var alertTimer = new Timer();
-	alertTimer.elapsed.add(function () {
+	alertTimer.on.elapsed.add(function () {
 		$('#alert-saved .alert').removeClass('in');
 	});
 

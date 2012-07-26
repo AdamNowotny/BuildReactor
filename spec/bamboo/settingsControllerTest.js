@@ -30,7 +30,7 @@ define([
 				};
 				mockBambooRequest = spyOn(BambooRequest.prototype, 'projects');
 				mockBambooRequest.andCallFake(function () {
-					this.responseReceived.dispatch(jsonProjects);
+					this.on.responseReceived.dispatch(jsonProjects);
 				});
 				mockProjectViewShow = spyOn(projectView, 'show');
 				spyOn(projectView, 'hide');
@@ -85,7 +85,7 @@ define([
 					expect(this.settings.username).toBe(settings.username);
 					expect(this.settings.password).toBe(settings.password);
 					expect(this.settings.url).toBe(settings.url);
-					this.responseReceived.dispatch(jsonProjects);
+					this.on.responseReceived.dispatch(jsonProjects);
 				});
 				controller.show(settings);
 
@@ -121,7 +121,7 @@ define([
 			it('should disable button while waiting for response', function () {
 				mockBambooRequest.andCallFake(function () {
 					expect($('.plans-button')).toBeDisabled();
-					this.responseReceived.dispatch(jsonProjects);
+					this.on.responseReceived.dispatch(jsonProjects);
 				});
 				controller.show(settings);
 
@@ -141,7 +141,7 @@ define([
 
 			it('should display error if call failed when getting plans', function () {
 				mockBambooRequest.andCallFake(function () {
-					this.errorReceived.dispatch({ message: 'error message' });
+					this.on.errorReceived.dispatch({ message: 'error message' });
 				});
 				controller.show(settings);
 
@@ -154,7 +154,7 @@ define([
 			it('should hide plans when getting new ones', function () {
 				showPlans();
 				mockBambooRequest.andCallFake(function () {
-					this.errorReceived.dispatch({ message: 'error message' });
+					this.on.errorReceived.dispatch({ message: 'error message' });
 				});
 
 				$('.plans-button').click();

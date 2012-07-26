@@ -17,11 +17,13 @@ define([
 			this.settings = settings;
 			this.name = settings.name;
 			this.projects = {};
-			this.errorThrown = new signals.Signal();
-			this.updateStarted = new signals.Signal();
-			this.updateFinished = new signals.Signal();
-			this.buildFailed = new signals.Signal();
-			this.buildFixed = new signals.Signal();
+			this.on = {
+				errorThrown: new signals.Signal(),
+				updating: new signals.Signal(),
+				updated: new signals.Signal(),
+				brokenBuild: new signals.Signal(),
+				fixedBuild: new signals.Signal()
+			};
 		};
 
 		CCBuildService.prototype.start = function () {
@@ -29,31 +31,30 @@ define([
 				throw { name: 'ArgumentInvalid', message: 'settings.updateInterval not set' };
 			}
 			this.timer = new Timer();
-			this.timer.elapsed.add(this.update, this);
+			this.timer.on.elapsed.add(this.update, this);
 			this.scheduleUpdate = function () {
-				console.log(interpolate('{{0}}: Next check scheduled in {{1}} seconds', [ this.name, this.settings.updateInterval ]));
 				this.timer.start(this.settings.updateInterval);
 			};
-			this.updateFinished.add(this.scheduleUpdate, this);
+			this.on.updated.add(this.scheduleUpdate, this);
 			this.update();
 		};
 
 		CCBuildService.prototype.stop = function () {
-			this.updateFinished.remove(this.scheduleUpdate, this);
-			this.timer.elapsed.remove(this.update, this);
+			this.on.updated.remove(this.scheduleUpdate, this);
+			this.timer.on.elapsed.remove(this.update, this);
 		};
 
 		CCBuildService.prototype.update = function () {
-			this.updateStarted.dispatch();
+			this.on.updating.dispatch();
 			var self = this,
 				request = ccRequest.projects(this.settings);
 			request.responseReceived.addOnce(function (projectsResponse) {
 				processResponse(projectsResponse);
-				self.updateFinished.dispatch();
+				self.on.updated.dispatch();
 			}, this);
 			request.errorReceived.addOnce(function (errorInfo) {
-				self.errorThrown.dispatch(errorInfo);
-				self.updateFinished.dispatch();
+				self.on.errorThrown.dispatch(errorInfo);
+				self.on.updated.dispatch();
 			}, this);
 
 			function processResponse(projects) {
@@ -91,7 +92,7 @@ define([
 				url: project.url,
 				icon: this.settings.icon
 			};
-			this.buildFailed.dispatch(buildEvent);
+			this.on.brokenBuild.dispatch(buildEvent);
 		};
 
 		CCBuildService.prototype.onBuildFixed = function (project) {
@@ -102,7 +103,7 @@ define([
 				url: project.url,
 				icon: this.settings.icon
 			};
-			this.buildFixed.dispatch(buildEvent);
+			this.on.fixedBuild.dispatch(buildEvent);
 		};
 
 		return CCBuildService;

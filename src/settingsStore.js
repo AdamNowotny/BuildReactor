@@ -1,11 +1,15 @@
-define(function () {
+define(['signals'], function (signals) {
 
 	'use strict';
 	
+	var on = {
+		storedSettings: new signals.Signal()
+	};
+
 	function store(settings) {
 		var settingsString = JSON.stringify(settings);
 		localStorage.setItem('services', settingsString);
-		console.log('settingsStore: new settings stored', settings);
+		on.storedSettings.dispatch(settings);
 	}
 
 	function getAll() {
@@ -21,6 +25,7 @@ define(function () {
 
 	return {
 		store: store,
+		on: on,
 		getAll: getAll
 	};
 });

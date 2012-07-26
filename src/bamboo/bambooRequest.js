@@ -22,8 +22,11 @@ define([
 				};
 			}
 			this.settings = settings;
-			this.responseReceived = new signals.Signal();
-			this.errorReceived = new signals.Signal();
+			this.on = {
+				responseReceived: new signals.Signal(),
+				errorReceived: new signals.Signal()
+			};
+			
 		};
 
 		function createAjaxRequestSettings(settings, urlPath) {
@@ -40,11 +43,11 @@ define([
 		BambooRequest.prototype.send = function (urlPath) {
 			var ajaxSettings = createAjaxRequestSettings(this.settings, urlPath);
 			var request = new AjaxRequest(ajaxSettings, ajaxOptions);
-			request.responseReceived.addOnce(function (response) {
-				this.responseReceived.dispatch(response);
+			request.on.responseReceived.addOnce(function (response) {
+				this.on.responseReceived.dispatch(response);
 			}, this);
-			request.errorReceived.addOnce(function (ajaxError) {
-				this.errorReceived.dispatch(ajaxError);
+			request.on.errorReceived.addOnce(function (ajaxError) {
+				this.on.errorReceived.dispatch(ajaxError);
 			}, this);
 			request.send();
 		};

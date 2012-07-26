@@ -157,7 +157,7 @@ define([
 			it('should show alert when settings saved', function () {
 				spyOn(Timer.prototype, 'start').andCallFake(function () {
 					expect('#alert-saved').toBeVisible();
-					this.elapsed.dispatch();
+					this.on.elapsed.dispatch();
 				});
 				var mockSettings = new MockSettingsBuilder().create();
 

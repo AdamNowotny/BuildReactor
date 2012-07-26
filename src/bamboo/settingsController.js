@@ -72,10 +72,10 @@ define([
 			$('.alert-error').hide();
 			projectView.hide();
 			var plansRequest = new BambooRequest(getRequestSettings());
-			plansRequest.responseReceived.addOnce(function (response) {
+			plansRequest.on.responseReceived.addOnce(function (response) {
 				renderPlans(response, activeSettings.plans);
 			});
-			plansRequest.errorReceived.addOnce(renderError);
+			plansRequest.on.errorReceived.addOnce(renderError);
 			plansRequest.projects();
 		};
 

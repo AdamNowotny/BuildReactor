@@ -4,15 +4,21 @@ define([
 
 		'use strict';
 
-		var servicesStarted = new signals.Signal();
-		var startedLoading = new signals.Signal();
-		var buildFailed = new signals.Signal();
-		var buildFixed = new signals.Signal();
+		var on = {
+			reset: new signals.Signal(),
+			added: new signals.Signal(),
+			updating: new signals.Signal(),
+			updated: new signals.Signal(),
+			brokenBuild: new signals.Signal(),
+			fixedBuild: new signals.Signal(),
+			started: new signals.Signal(),
+			startedAll: new signals.Signal(),
+			loadedAll: new signals.Signal(),
+			errorThrown: new signals.Signal()
+		};
+
 		var services = [];
 		var settings = [];
-		var serviceAdded = new signals.Signal();
-		var serviceRemoved = new signals.Signal();
-		var servicesLoaded = new signals.Signal();
 		var servicesToLoadCount = 0;
 
 		function load(newSettings) {
@@ -24,7 +30,7 @@ define([
 					addService(serviceInstance);
 					servicesToLoadCount--;
 					if (servicesToLoadCount === 0) {
-						servicesLoaded.dispatch();
+						on.loadedAll.dispatch();
 					}
 				});
 			}
@@ -32,12 +38,11 @@ define([
 			function removeAllServices() {
 				services.forEach(function (s) {
 					unsubscribeFrom(s);
-					serviceRemoved.dispatch(s);
 				});
 				services = [];
 			}
 
-			startedLoading.dispatch();
+			on.reset.dispatch();
 			removeAllServices();
 			settings = newSettings;
 			servicesToLoadCount = settings.length;
@@ -49,26 +54,23 @@ define([
 
 		function run() {
 			if (servicesToLoadCount > 0) {
-				servicesLoaded.addOnce(run);
-				console.log('Waiting for ' + servicesToLoadCount + ' services to load');
+				on.loadedAll.addOnce(run);
 				return;
 			}
 			services.forEach(function (s) {
-				console.log('Service started: ' + s.name);
+				on.started.dispatch({ serviceName: s.name });
 				s.start();
 			});
-			servicesStarted.dispatch();
+			on.startedAll.dispatch();
 		}
 
 		function addService(service) {
 			if (!service.name) {
 				throw { name: 'ArgumentInvalid', message: 'service.name not defined' };
 			}
-			initializeServiceLogging(service);
 			subscribeTo(service);
 			services.push(service);
-			console.log('Service added: ' + service.name, service.settings);
-			serviceAdded.dispatch(service);
+			on.added.dispatch(service);
 		}
 
 		function removeService(service) {
@@ -79,54 +81,37 @@ define([
 			services.splice(index, 1);
 			service.stop();
 			unsubscribeFrom(service);
-			serviceRemoved.dispatch(service);
 		}
 
 		function subscribeTo(service) {
-			service.buildFailed.add(onBuildFailed);
-			service.buildFixed.add(onBuildFixed);
+			service.on.updating.add(function () {
+				on.updating.dispatch({ serviceName: service.name });
+			});
+			service.on.updated.add(function () {
+				on.updated.dispatch({ serviceName: service.name });
+			});
+			service.on.errorThrown.add(function (errorInfo) {
+				on.errorThrown.dispatch(errorInfo);
+			});
+			service.on.brokenBuild.add(function (buildEvent) {
+				on.brokenBuild.dispatch(buildEvent);
+			});
+			service.on.fixedBuild.add(function (buildEvent) {
+				on.fixedBuild.dispatch(buildEvent);
+			});
 		}
 
 		function unsubscribeFrom(service) {
-			service.updateStarted.removeAll();
-			service.updateFinished.removeAll();
-			service.buildFailed.removeAll();
-			service.buildFixed.removeAll();
-			service.errorThrown.removeAll();
-		}
-
-		function initializeServiceLogging(service) {
-			service.updateStarted.add(function () {
-				console.log(service.name + ': update started');
-			});
-			service.updateFinished.add(function () {
-				console.log(service.name + ': update finished');
-			});
-			service.buildFailed.add(function (plan) {
-				console.log(service.name + ': build failed', plan);
-			});
-			service.buildFixed.add(function (plan) {
-				console.log(service.name + ': build fixed', plan);
-			});
-			service.errorThrown.add(function (errorInfo) {
-				console.error(service.name + ': ' + errorInfo.message, errorInfo);
-			});
-		}
-
-		function onBuildFailed(buildEvent) {
-			buildFailed.dispatch(buildEvent);
-		}
-
-		function onBuildFixed(buildEvent) {
-			buildFixed.dispatch(buildEvent);
+			service.on.updating.removeAll();
+			service.on.updated.removeAll();
+			service.on.brokenBuild.removeAll();
+			service.on.fixedBuild.removeAll();
+			service.on.errorThrown.removeAll();
 		}
 
 		return {
 			load: load,
-			servicesStarted: servicesStarted,
-			startedLoading: startedLoading,
-			buildFailed: buildFailed,
-			buildFixed: buildFixed,
+			on: on,
 			addService: addService,
 			removeService: removeService,
 			services: services,

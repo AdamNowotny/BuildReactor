@@ -9,7 +9,7 @@ define(['timer', 'jasmineSignals'], function (Timer, jasmineSignals) {
 
 		beforeEach(function () {
 			timer = new Timer();
-			elapsedSpy = jasmineSignals.spyOnSignal(timer.elapsed);
+			elapsedSpy = jasmineSignals.spyOnSignal(timer.on.elapsed);
 		});
 
 		it('should signal elapsed after timeout on start', function () {

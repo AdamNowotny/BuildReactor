@@ -6,7 +6,6 @@ define(['signals'], function (signals) {
 	var showCalledCount = 0;
 
 	function show(settings) {
-		console.log('settingsController.show called with', settings);
 		showCalledCount++;
 	}
 

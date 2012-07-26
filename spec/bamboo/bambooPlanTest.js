@@ -30,7 +30,7 @@ define([
 
 			function setupResponse(json) {
 				mockBambooRequest.andCallFake(function (key) {
-					this.responseReceived.dispatch(json);
+					this.on.responseReceived.dispatch(json);
 				});
 			}
 
@@ -57,7 +57,7 @@ define([
 			});
 
 			it('should signal failed on update', function () {
-				var buildFailedSpy = spyOnSignal(plan.failed).matchingValues(plan);
+				var buildFailedSpy = spyOnSignal(plan.on.failed).matchingValues(plan);
 				setupResponse(latestPlanResultFailedJson);
 
 				plan.update();
@@ -66,7 +66,7 @@ define([
 			});
 
 			it('should not signal failed if not changed', function () {
-				var buildFailedSpy = spyOnSignal(plan.failed).matchingValues(plan);
+				var buildFailedSpy = spyOnSignal(plan.on.failed).matchingValues(plan);
 				setupResponse(latestPlanResultFailedJson);
 
 				plan.update();
@@ -77,7 +77,7 @@ define([
 			});
 
 			it('should signal when build is fixed', function () {
-				var buildFixedSpy = spyOnSignal(plan.fixed).matchingValues(plan);
+				var buildFixedSpy = spyOnSignal(plan.on.fixed).matchingValues(plan);
 				setupResponse(latestPlanResultFailedJson);
 				plan.update();
 
@@ -101,10 +101,10 @@ define([
 				expect(success).toBe(true);
 			});
 
-			it('should signal error and updateFinished when error response received', function () {
-				var errorThrownSpy = spyOnSignal(plan.errorThrown);
+			it('should signal error when error response received', function () {
+				var errorThrownSpy = spyOnSignal(plan.on.errorThrown);
 				mockBambooRequest.andCallFake(function (key) {
-					this.errorReceived.dispatch();
+					this.on.errorReceived.dispatch();
 				});
 
 				var finished = false;
@@ -119,8 +119,8 @@ define([
 				expect(success).toBe(false);
 			});
 
-			it('should signal error and updateFinished when parsing response fails', function () {
-				var errorThrownSpy = spyOnSignal(plan.errorThrown);
+			it('should signal error when parsing response fails', function () {
+				var errorThrownSpy = spyOnSignal(plan.on.errorThrown);
 				setupResponse(null);
 
 				var finished = false;

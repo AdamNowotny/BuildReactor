@@ -17,10 +17,10 @@ define([
 				request = new AjaxRequest(ajaxSettings);
 			responseReceived.memorize = true;
 			errorReceived.memorize = true;
-			request.responseReceived.addOnce(function (response) {
+			request.on.responseReceived.addOnce(function (response) {
 				responseReceived.dispatch(response);
 			}, this);
-			request.errorReceived.addOnce(function (ajaxError) {
+			request.on.errorReceived.addOnce(function (ajaxError) {
 				errorReceived.dispatch(ajaxError);
 			}, this);
 			request.send();

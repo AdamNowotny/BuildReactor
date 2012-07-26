@@ -23,16 +23,16 @@ define([
 		});
 
 		afterEach(function () {
-			serviceController.servicesStarted.removeAll();
-			serviceController.buildFailed.removeAll();
-			serviceController.buildFixed.removeAll();
+			serviceController.on.startedAll.removeAll();
+			serviceController.on.brokenBuild.removeAll();
+			serviceController.on.fixedBuild.removeAll();
 		});
 
 		it('should show message when build fails', function () {
 			notificationController.initialize();
 			var buildEvent = mockBuildEvent.withServiceName('service').withGroup('group').withBuildName('build')();
 
-			serviceController.buildFailed.dispatch(buildEvent);
+			serviceController.on.brokenBuild.dispatch(buildEvent);
 
 			expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
 				'src/icon.png', 'Build failed - service',  'build (group)'
@@ -43,7 +43,7 @@ define([
 			notificationController.initialize();
 			var buildEvent = mockBuildEvent.withServiceName('service').withGroup('group').withBuildName('build')();
 
-			serviceController.buildFixed.dispatch(buildEvent);
+			serviceController.on.fixedBuild.dispatch(buildEvent);
 
 			expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
 				'src/icon.png', 'Build fixed - service', 'build (group)'
@@ -55,10 +55,10 @@ define([
 			spyOn(mockNotification, 'cancel');
 			spyOn(Timer.prototype, 'start').andCallFake(function (timeout) {
 				expect(timeout).toBe(5);
-				this.elapsed.dispatch();
+				this.on.elapsed.dispatch();
 			});
 
-			serviceController.buildFixed.dispatch(mockBuildEvent());
+			serviceController.on.fixedBuild.dispatch(mockBuildEvent());
 
 			expect(Timer.prototype.start).toHaveBeenCalledWith(5);
 			expect(mockNotification.cancel).toHaveBeenCalled();
@@ -68,7 +68,7 @@ define([
 			notificationController.initialize();
 			spyOn(mockNotification, 'cancel');
 
-			serviceController.buildFailed.dispatch(mockBuildEvent());
+			serviceController.on.brokenBuild.dispatch(mockBuildEvent());
 
 			expect(mockNotification.cancel).not.toHaveBeenCalled();
 		});

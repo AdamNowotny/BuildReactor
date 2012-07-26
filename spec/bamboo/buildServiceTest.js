@@ -34,13 +34,13 @@ define([
 				};
 				service = new BuildService(settings);
 				mockBambooRequestProjects = spyOn(BambooRequest.prototype, 'projects').andCallFake(function () {
-					this.responseReceived.dispatch(projectsJson);
+					this.on.responseReceived.dispatch(projectsJson);
 				});
 				mockBambooPlanUpdate = spyOn(BambooPlan.prototype, 'update').andCallFake(function () {
-					var updateFinished = new signals.Signal();
-					updateFinished.memorize = true;
-					updateFinished.dispatch();
-					return updateFinished;
+					var finishedUpdate = new signals.Signal();
+					finishedUpdate.memorize = true;
+					finishedUpdate.dispatch();
+					return finishedUpdate;
 				});
 				mockTimer = spyOn(Timer.prototype, 'start');
 				updateSuccessSignal = new signals.Signal();
@@ -64,8 +64,11 @@ define([
 
 			it('should expose service interface', function () {
 				expect(service.name).toBe(settings.name);
-				expect(service.buildFailed).toBeDefined();
-				expect(service.buildFixed).toBeDefined();
+				expect(service.on.brokenBuild).toBeDefined();
+				expect(service.on.fixedBuild).toBeDefined();
+				expect(service.on.errorThrown).toBeDefined();
+				expect(service.on.updating).toBeDefined();
+				expect(service.on.updated).toBeDefined();
 			});
 
 			describe('initialize', function () {
@@ -92,9 +95,9 @@ define([
 				});
 
 				it('should signal error if initialization request failed', function () {
-					var errorThrownSpy = spyOnSignal(service.errorThrown);
+					var errorThrownSpy = spyOnSignal(service.on.errorThrown);
 					mockBambooRequestProjects.andCallFake(function () {
-						this.errorReceived.dispatch({ message: 'error message' });
+						this.on.errorReceived.dispatch({ message: 'error message' });
 					});
 
 					service.start();
@@ -103,9 +106,9 @@ define([
 				});
 
 				it('should signal error if initialization request parsing failed', function () {
-					var errorThrownSpy = spyOnSignal(service.errorThrown);
+					var errorThrownSpy = spyOnSignal(service.on.errorThrown);
 					mockBambooRequestProjects.andCallFake(function () {
-						this.errorReceived.dispatch({ message: 'error message' });
+						this.on.errorReceived.dispatch({ message: 'error message' });
 					});
 
 					service.start();
@@ -117,22 +120,22 @@ define([
 					var attempt = 0;
 					mockTimer.andCallFake(function () {
 						if (attempt <= 1) {
-							this.elapsed.dispatch();
+							this.on.elapsed.dispatch();
 						}
 					});
 					mockBambooRequestProjects.andCallFake(function () {
 						attempt++;
 						if (attempt <= 1) {
-							this.errorReceived.dispatch({ message: 'ajax error' });
+							this.on.errorReceived.dispatch({ message: 'ajax error' });
 						} else {
-							this.responseReceived.dispatch(projectsJson);
+							this.on.responseReceived.dispatch(projectsJson);
 						}
 					});
-					var updateFinishedSpy = spyOnSignal(service.updateFinished);
+					var updatedSpy = spyOnSignal(service.on.updated);
 
 					service.start();
 
-					expect(updateFinishedSpy).toHaveBeenDispatched(2);
+					expect(updatedSpy).toHaveBeenDispatched(2);
 					expect(service.isInitialized).toBe(true);
 					expect(mockBambooRequestProjects.callCount).toBe(2);
 					expect(mockBambooPlanUpdate).toHaveBeenCalled();
@@ -145,16 +148,16 @@ define([
 					expect(mockBambooPlanUpdate).toHaveBeenCalled();
 				});
 
-				it('should signal buildFailed when any build failed on first update', function () {
-					var buildFailedSpy = spyOnSignal(service.buildFailed);
+				it('should signal brokenBuild when any build failed on first update', function () {
+					var brokenBuildSpy = spyOnSignal(service.on.brokenBuild);
 					mockBambooPlanUpdate.andCallFake(function () {
-						this.failed.dispatch(this);
+						this.on.failed.dispatch(this);
 						return updateSuccessSignal;
 					});
 
 					service.start();
 
-					expect(buildFailedSpy).toHaveBeenDispatched(settings.plans.length);
+					expect(brokenBuildSpy).toHaveBeenDispatched(settings.plans.length);
 				});
 
 			});
@@ -175,46 +178,46 @@ define([
 				expect(function () { service1.start(); }).toThrow();
 			});
 
-			it('should signal updateFinished when all plan updates finished', function () {
+			it('should signal updated when all plan updates finished', function () {
 				initializeService();
-				var updateFinishedSpy = spyOnSignal(service.updateFinished);
+				var updatedSpy = spyOnSignal(service.on.updated);
 				mockBambooPlanUpdate.andReturn(updateSuccessSignal);
 
 				service.update();
 
-				expect(updateFinishedSpy).toHaveBeenDispatched(1);
+				expect(updatedSpy).toHaveBeenDispatched(1);
 			});
 
-			it('should signal updateFinished when all plan updates finished with error', function () {
+			it('should signal updated when all plan updates finished with error', function () {
 				initializeService();
-				var updateFinishedSpy = spyOnSignal(service.updateFinished);
+				var updatedSpy = spyOnSignal(service.on.updated);
 				mockBambooPlanUpdate.andReturn(updateErrorSignal);
 
 				service.update();
 
-				expect(updateFinishedSpy).toHaveBeenDispatched(1);
+				expect(updatedSpy).toHaveBeenDispatched(1);
 			});
 
-			it('should not signal updateFinished when some plans still not finished', function () {
+			it('should not signal updated when some plans still not finished', function () {
 				initializeService();
-				var updateFinishedSpy = spyOnSignal(service.updateFinished);
+				var updatedSpy = spyOnSignal(service.on.updated);
 				var plansUpdated = 0;
 				mockBambooPlanUpdate.andCallFake(function () {
 					plansUpdated++;
-					expect(updateFinishedSpy).not.toHaveBeenDispatched();
+					expect(updatedSpy).not.toHaveBeenDispatched();
 					return updateSuccessSignal;
 				});
 
 				service.update();
 
-				expect(updateFinishedSpy).toHaveBeenDispatched(1);
+				expect(updatedSpy).toHaveBeenDispatched(1);
 			});
 
 			it('should signal errorThrown if plan update failed', function () {
 				initializeService();
-				var errorThrownSpy = spyOnSignal(service.errorThrown);
+				var errorThrownSpy = spyOnSignal(service.on.errorThrown);
 				mockBambooPlanUpdate.andCallFake(function () {
-					this.errorThrown.dispatch({ message: 'ajax error' });
+					this.on.errorThrown.dispatch({ message: 'ajax error' });
 					return updateErrorSignal;
 				});
 
@@ -234,9 +237,9 @@ define([
 
 			it('should update until stopped', function () {
 				mockTimer.andCallFake(function () {
-					this.elapsed.dispatch();
+					this.on.elapsed.dispatch();
 				});
-				var updateStartedSpy = spyOnSignal(service.updateStarted).matching(function () {
+				var updatingSpy = spyOnSignal(service.on.updating).matching(function () {
 					if (this.count > 2) {
 						service.stop();
 						return false;
@@ -246,41 +249,41 @@ define([
 
 				service.start();
 
-				expect(updateStartedSpy).toHaveBeenDispatched(3);
+				expect(updatingSpy).toHaveBeenDispatched(3);
 			});
 
 			it('multiple services should update independently', function () {
 				initializeService();
 				var service1 = new BuildService({ name: 'Bamboo', url: 'http://example1.com/', plans: [] });
-				var updateStartedSpy1 = spyOnSignal(service1.updateStarted);
+				var updatingSpy1 = spyOnSignal(service1.on.updating);
 				var service2 = new BuildService({ name: 'Bamboo', url: 'http://example2.com/', plans: [] });
-				var updateStartedSpy2 = spyOnSignal(service2.updateStarted);
+				var updatingSpy2 = spyOnSignal(service2.on.updating);
 
 				service1.update();
 				service2.update();
 
-				expect(updateStartedSpy1).toHaveBeenDispatched(1);
-				expect(updateStartedSpy2).toHaveBeenDispatched(1);
+				expect(updatingSpy1).toHaveBeenDispatched(1);
+				expect(updatingSpy2).toHaveBeenDispatched(1);
 			});
 
-			it('should signal buildFailed if plan signaled', function () {
+			it('should signal brokenBuild if plan signaled', function () {
 				initializeService();
-				var buildFailedSpy = spyOnSignal(service.buildFailed);
+				var brokenBuildSpy = spyOnSignal(service.on.brokenBuild);
 				var plan = service.plans['PROJECT1-PLAN1'];
 
-				plan.failed.dispatch(plan);
+				plan.on.failed.dispatch(plan);
 
-				expect(buildFailedSpy).toHaveBeenDispatched(1);
+				expect(brokenBuildSpy).toHaveBeenDispatched(1);
 			});
 
-			it('should signal buildFixed if plan signaled', function () {
+			it('should signal fixedBuild if plan signaled', function () {
 				initializeService();
-				var buildFixedSpy = spyOnSignal(service.buildFixed);
+				var fixedBuildSpy = spyOnSignal(service.on.fixedBuild);
 				var plan = service.plans['PROJECT1-PLAN1'];
 
-				plan.fixed.dispatch(plan);
+				plan.on.fixed.dispatch(plan);
 
-				expect(buildFixedSpy).toHaveBeenDispatched(1);
+				expect(fixedBuildSpy).toHaveBeenDispatched(1);
 			});
 
 			it('should ignore disabled plans', function () {

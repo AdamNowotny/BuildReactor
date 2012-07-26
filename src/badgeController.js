@@ -6,17 +6,18 @@ define([
 
 	var colors = {
 		grey: [200, 200, 200, 200],
-		red: [255, 0, 0, 200]
+		red: [255, 0, 0, 200],
+		green: [0, 255, 0, 200]
 	};
 
 	function badgeController() {
 
-		function onBuildFailed(buildEvent) {
+		function onBrokenBuild(buildEvent) {
 			failedBuildsCount++;
 			updateBadge();
 		}
 
-		function onBuildFixed(buildEvent) {
+		function onFixedBuild(buildEvent) {
 			failedBuildsCount--;
 			updateBadge();
 		}
@@ -26,7 +27,7 @@ define([
 			updateBadge();
 		}
 		
-		function onStartedLoading() {
+		function onReset() {
 			servicesStarted = false;
 			failedBuildsCount = 0;
 			updateBadge();
@@ -44,7 +45,8 @@ define([
 
 			function showBuildFixedBadge() {
 				var badgeInfo = {
-					text: ''
+					text: '',
+					color: colors.green
 				};
 				setBadge(badgeInfo);
 			}
@@ -76,10 +78,10 @@ define([
 		var servicesStarted = false;
 		var failedBuildsCount = 0;
 		updateBadge(failedBuildsCount);
-		serviceController.startedLoading.add(onStartedLoading);
-		serviceController.servicesStarted.add(onServicesStarted);
-		serviceController.buildFailed.add(onBuildFailed);
-		serviceController.buildFixed.add(onBuildFixed);
+		serviceController.on.reset.add(onReset);
+		serviceController.on.startedAll.add(onServicesStarted);
+		serviceController.on.brokenBuild.add(onBrokenBuild);
+		serviceController.on.fixedBuild.add(onFixedBuild);
 	}
 
 	

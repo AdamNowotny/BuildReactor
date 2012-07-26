@@ -4,9 +4,11 @@ define(['signals', 'bamboo/bambooRequest'], function (signals, BambooRequest) {
 
 	var BambooPlan = function (settings) {
 		this.settings = settings;
-		this.failed = new signals.Signal();
-		this.fixed = new signals.Signal();
-		this.errorThrown = new signals.Signal();
+		this.on = {
+			failed: new signals.Signal(),
+			fixed: new signals.Signal(),
+			errorThrown: new signals.Signal()
+		};
 	};
 
 	BambooPlan.prototype.initialize = function (responsePlan) {
@@ -29,31 +31,31 @@ define(['signals', 'bamboo/bambooRequest'], function (signals, BambooRequest) {
 				self.buildNumber = response.number;
 				if (self.state !== 'Failed' && response.state === 'Failed') {
 					self.state = 'Failed';
-					self.failed.dispatch(self);
+					self.on.failed.dispatch(self);
 				}
 				if (self.state === 'Failed' && response.state === 'Successful') {
 					self.state = 'Successful';
-					self.fixed.dispatch(self);
+					self.on.fixed.dispatch(self);
 				}
-				updateFinished.dispatch(true, response);
+				updated.dispatch(true, response);
 			} catch (e) {
-				self.errorThrown.dispatch(e);
-				updateFinished.dispatch(false, e);
+				self.on.errorThrown.dispatch(e);
+				updated.dispatch(false, e);
 			}
 		}
 
 		function processError(ajaxError) {
-			self.errorThrown.dispatch(ajaxError);
-			updateFinished.dispatch(false, ajaxError);
+			self.on.errorThrown.dispatch(ajaxError);
+			updated.dispatch(false, ajaxError);
 		}
 		
-		var updateFinished = new signals.Signal();
-		updateFinished.memorize = true;
+		var updated = new signals.Signal();
+		updated.memorize = true;
 		var request = new BambooRequest(this.settings);
-		request.responseReceived.addOnce(processResponse, this);
-		request.errorReceived.addOnce(processError, this);
+		request.on.responseReceived.addOnce(processResponse, this);
+		request.on.errorReceived.addOnce(processError, this);
 		request.latestPlanResult(this.key);
-		return updateFinished;
+		return updated;
 	};
 
 	return BambooPlan;

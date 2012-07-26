@@ -4,12 +4,14 @@ define(['signals'], function (signals) {
 	
 	var Timer = function () {
 		this.timeout = 0;
-		this.elapsed = new signals.Signal();
+		this.on = {
+			elapsed: new signals.Signal()
+		};
 	};
 
 	Timer.prototype.start = function (seconds) {
 		function onTimeout() {
-			self.elapsed.dispatch();
+			self.on.elapsed.dispatch();
 		}
 
 		this.timeout = seconds;

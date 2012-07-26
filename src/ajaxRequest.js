@@ -15,8 +15,10 @@ define(['signals', 'jquery'], function (signals, $) {
 		}
 		this.settings = settings;
 		this.options = options;
-		this.responseReceived = new signals.Signal();
-		this.errorReceived = new signals.Signal();
+		this.on = {
+			responseReceived: new signals.Signal(),
+			errorReceived: new signals.Signal()
+		};
 		this.retry = false;
 	};
 
@@ -41,13 +43,13 @@ define(['signals', 'jquery'], function (signals, $) {
 					settings: ajaxOptions
 				};
 				self.retry = false;
-				self.errorReceived.dispatch(error);
+				self.on.errorReceived.dispatch(error);
 			}
 		}
 		
 		function onSuccess(data, textStatus, jqXhr) {
 			self.retry = false;
-			self.responseReceived.dispatch(data);
+			self.on.responseReceived.dispatch(data);
 		}
 
 		var self = this,

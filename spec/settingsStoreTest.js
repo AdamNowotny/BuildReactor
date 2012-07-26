@@ -1,8 +1,15 @@
-define(['settingsStore'], function (settingsStore) {
+define(['settingsStore', 'jasmineSignals'], function (settingsStore, jasmineSignals) {
 
 	'use strict';
 	
 	describe('SettingsStore', function () {
+
+		var spyOnSignal = jasmineSignals.spyOnSignal;
+		var mockLocalStorage;
+
+		beforeEach(function () {
+			mockLocalStorage = spyOn(localStorage, 'setItem');
+		});
 
 		it('should get all settings from local storage', function () {
 			spyOn(localStorage, 'getItem').andReturn('{ "field": "value" }');
@@ -13,12 +20,17 @@ define(['settingsStore'], function (settingsStore) {
 		});
 
 		it('should store settings', function () {
-			var mockLocalStorage = spyOn(localStorage, 'setItem');
-
 			settingsStore.store({ field: 'value2' });
 
 			expect(mockLocalStorage).toHaveBeenCalled();
 		});
 
+		it('should dispatch storedSettings when settings saved', function () {
+			var storedSpy = spyOnSignal(settingsStore.on.storedSettings);
+
+			settingsStore.store({ field: 'value2' });
+
+			expect(storedSpy).toHaveBeenDispatched(1);
+		});
 	});
 });

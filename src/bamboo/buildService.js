@@ -17,11 +17,13 @@ define([
 			this.name = settings.name;
 			this.plans = {};
 			this.plansCount = 0;
-			this.errorThrown = new signals.Signal();
-			this.updateStarted = new signals.Signal();
-			this.updateFinished = new signals.Signal();
-			this.buildFailed = new signals.Signal();
-			this.buildFixed = new signals.Signal();
+			this.on = {
+				errorThrown: new signals.Signal(),
+				updating: new signals.Signal(),
+				updated: new signals.Signal(),
+				brokenBuild: new signals.Signal(),
+				fixedBuild: new signals.Signal()
+			};
 		};
 
 		BuildService.prototype.start = function () {
@@ -29,18 +31,17 @@ define([
 				throw { name: 'ArgumentInvalid', message: 'settings.updateInterval not set' };
 			}
 			this.timer = new Timer();
-			this.timer.elapsed.add(this.update, this);
+			this.timer.on.elapsed.add(this.update, this);
 			this.scheduleUpdate = function () {
-				console.log(interpolate('{{0}}: Next check scheduled in {{1}} seconds', [ this.name, this.settings.updateInterval ]));
 				this.timer.start(this.settings.updateInterval);
 			};
-			this.updateFinished.add(this.scheduleUpdate, this);
+			this.on.updated.add(this.scheduleUpdate, this);
 			this.update();
 		};
 
 		BuildService.prototype.stop = function () {
-			this.updateFinished.remove(this.scheduleUpdate, this);
-			this.timer.elapsed.remove(this.update, this);
+			this.on.updated.remove(this.scheduleUpdate, this);
+			this.timer.on.elapsed.remove(this.update, this);
 			this.isInitialized = false;
 		};
 
@@ -64,9 +65,9 @@ define([
 			function initializePlan(responsePlan) {
 				if (!responsePlan.enabled) { return; }
 				var plan = new BambooPlan(self.settings);
-				plan.failed.add(self.onBuildFailed, self);
-				plan.fixed.add(self.onBuildFixed, self);
-				plan.errorThrown.add(self.onPlanError, self);
+				plan.on.failed.add(self.onBuildFailed, self);
+				plan.on.fixed.add(self.onBuildFixed, self);
+				plan.on.errorThrown.add(self.onPlanError, self);
 				self.plans[responsePlan.key] = plan;
 				self.plansCount++;
 				plan.initialize(responsePlan);
@@ -78,22 +79,19 @@ define([
 			this.plans = {};
 			this.plansCount = 0;
 			var initRequest = new BambooRequest(this.settings);
-			initRequest.responseReceived.addOnce(function (projectsResponse) {
+			initRequest.on.responseReceived.addOnce(function (projectsResponse) {
 				initializeFrom(projectsResponse);
 				initializeFinished.dispatch(true, projectsResponse);
 			}, this);
-			initRequest.errorReceived.addOnce(function (errorInfo) {
+			initRequest.on.errorReceived.addOnce(function (errorInfo) {
 				initializeFinished.dispatch(false, errorInfo);
 			}, this);
 			initRequest.projects();
 			return initializeFinished;
-
-
-
 		};
 
 		BuildService.prototype.update = function () {
-			this.updateStarted.dispatch();
+			this.on.updating.dispatch();
 			if (this.isInitialized) {
 				this.planUpdate();
 			} else {
@@ -103,8 +101,8 @@ define([
 						this.planUpdate();
 					} else {
 						// login invalid ?
-						this.errorThrown.dispatch(result);
-						this.updateFinished.dispatch();
+						this.on.errorThrown.dispatch(result);
+						this.on.updated.dispatch();
 					}
 				}, this);
 			}
@@ -116,7 +114,7 @@ define([
 			function planFinished() {
 				plansUpdated++;
 				if (plansUpdated === self.plansCount) {
-					self.updateFinished.dispatch();
+					self.on.updated.dispatch();
 				}
 			}
 
@@ -135,7 +133,7 @@ define([
 				url: plan.url,
 				icon: this.settings.icon
 			};
-			this.buildFailed.dispatch(buildEvent);
+			this.on.brokenBuild.dispatch(buildEvent);
 		};
 
 		BuildService.prototype.onBuildFixed = function (plan) {
@@ -146,11 +144,11 @@ define([
 				url: plan.url,
 				icon: this.settings.icon
 			};
-			this.buildFixed.dispatch(buildEvent);
+			this.on.fixedBuild.dispatch(buildEvent);
 		};
 
 		BuildService.prototype.onPlanError = function (ajaxError) {
-			this.errorThrown.dispatch(ajaxError);
+			this.on.errorThrown.dispatch(ajaxError);
 		};
 
 		return BuildService;

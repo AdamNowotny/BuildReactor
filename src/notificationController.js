@@ -9,11 +9,11 @@ define([
 	var notificationTimeoutInSec = 5;
 
 	function initialize() {
-		serviceController.buildFailed.add(onBuildFailed);
-		serviceController.buildFixed.add(onBuildFixed);
+		serviceController.on.brokenBuild.add(onBrokenBuild);
+		serviceController.on.fixedBuild.add(onFixedBuild);
 	}
 
-	function onBuildFailed(buildEvent) {
+	function onBrokenBuild(buildEvent) {
 		var notification = {
 			message: interpolate('Build failed - {{0}}', [buildEvent.serviceName]),
 			details: buildEvent.buildName + (buildEvent.group ? ' (' + buildEvent.group + ')' : ''),
@@ -25,7 +25,7 @@ define([
 		showNotification(notification);
 	}
 
-	function onBuildFixed(buildEvent) {
+	function onFixedBuild(buildEvent) {
 
 		function fixedNotification(buildEvent) {
 			return {
@@ -54,7 +54,7 @@ define([
 		notification.show();
 		if (!notificationInfo.sticky) {
 			var timer = new Timer();
-			timer.elapsed.addOnce(closeNotification);
+			timer.on.elapsed.addOnce(closeNotification);
 			timer.start(notificationTimeoutInSec);
 		}
 	}

@@ -60,7 +60,7 @@ define([
 
 		it('should pass XML response returned from Ajax call', function () {
 			spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
-				this.responseReceived.dispatch(projectsXml);
+				this.on.responseReceived.dispatch(projectsXml);
 			});
 
 			var result = request.projects(settings);

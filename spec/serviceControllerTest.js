@@ -28,37 +28,30 @@ define([
 					expect(function () { controller.addService(service); }).toThrow();
 				});
 
-				it('should require buildFailed signal', function () {
+				it('should require brokenBuild signal', function () {
 					var service = new MockBuildService();
-					service.buildFailed = undefined;
+					service.on.brokenBuild = undefined;
 					
 					expect(function () { controller.addService(service); }).toThrow();
 				});
 
-				it('should require buildFixed signal', function () {
+				it('should require fixedBuild signal', function () {
 					var service = new MockBuildService();
-					service.buildFixed = undefined;
+					service.on.fixedBuild = undefined;
 					
 					expect(function () { controller.addService(service); }).toThrow();
 				});
 
-				it('should require updateStarted signal', function () {
+				it('should require updating signal', function () {
 					var service = new MockBuildService();
-					service.updateStarted = undefined;
+					service.on.updating = undefined;
 					
 					expect(function () { controller.addService(service); }).toThrow();
 				});
 
-				it('should require updateFinished signal', function () {
+				it('should require updated signal', function () {
 					var service = new MockBuildService();
-					service.updateFinished = undefined;
-					
-					expect(function () { controller.addService(service); }).toThrow();
-				});
-
-				it('should require errorThrown signal', function () {
-					var service = new MockBuildService();
-					service.errorThrown = undefined;
+					service.on.updated = undefined;
 					
 					expect(function () { controller.addService(service); }).toThrow();
 				});
@@ -87,11 +80,11 @@ define([
 				controller.addService(mockService);
 				controller.removeService(mockService);
 
-				expect(mockService.buildFailed.getNumListeners()).toBe(0);
-				expect(mockService.buildFixed.getNumListeners()).toBe(0);
-				expect(mockService.updateFinished.getNumListeners()).toBe(0);
-				expect(mockService.updateStarted.getNumListeners()).toBe(0);
-				expect(mockService.errorThrown.getNumListeners()).toBe(0);
+				expect(mockService.on.brokenBuild.getNumListeners()).toBe(0);
+				expect(mockService.on.fixedBuild.getNumListeners()).toBe(0);
+				expect(mockService.on.updating.getNumListeners()).toBe(0);
+				expect(mockService.on.updated.getNumListeners()).toBe(0);
+				expect(mockService.on.errorThrown.getNumListeners()).toBe(0);
 			});
 
 			it('should remove all services when empty settings passed', function () {
@@ -119,28 +112,28 @@ define([
 				expect(mockService2.start).toHaveBeenCalled();
 			});
 
-			it('should signal buildFailed on build failure', function () {
-				var buildFailedSpy = spyOnSignal(controller.buildFailed);
+			it('should signal brokenBuild on build failure', function () {
+				var buildFailedSpy = spyOnSignal(controller.on.brokenBuild);
 				var mockService = new MockBuildService();
 				controller.addService(mockService);
 
-				mockService.buildFailed.dispatch(mockBuildEvent());
+				mockService.on.brokenBuild.dispatch(mockBuildEvent());
 
 				expect(buildFailedSpy).toHaveBeenDispatched(1);
 			});
 
-			it('should signal buildFixed on build fixed event', function () {
-				var buildFixedSpy = spyOnSignal(controller.buildFixed);
+			it('should signal fixedBuild on build fixed event', function () {
+				var buildFixedSpy = spyOnSignal(controller.on.fixedBuild);
 				var mockService = new MockBuildService();
 				controller.addService(mockService);
 
-				mockService.buildFixed.dispatch(mockBuildEvent());
+				mockService.on.fixedBuild.dispatch(mockBuildEvent());
 
 				expect(buildFixedSpy).toHaveBeenDispatched(1);
 			});
 
 			it('should run services only after all are loaded', function () {
-				var servicesStartedSpy = spyOnSignal(controller.servicesStarted);
+				var servicesStartedSpy = spyOnSignal(controller.on.startedAll);
 				var settings1 = new MockSettingsBuilder().withName('service 1').withBaseUrl('service1').create();
 				var settings2 = new MockSettingsBuilder().withName('service 2').withBaseUrl('service2').create();
 				var loaded1callback;
@@ -166,11 +159,11 @@ define([
 			});
 
 			it('should notifiy when services are reloaded', function () {
-				var startedLoadingSpy = spyOnSignal(controller.startedLoading);
+				var resetSpy = spyOnSignal(controller.on.reset);
 
 				controller.load([]);
 
-				expect(startedLoadingSpy).toHaveBeenDispatched(1);
+				expect(resetSpy).toHaveBeenDispatched(1);
 			});
 
 		});
