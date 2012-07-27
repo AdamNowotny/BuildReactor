@@ -1,7 +1,8 @@
 define([
 	'serviceController',
-	'settingsStore'
-], function (serviceController, settingsStore) {
+	'settingsStore',
+	'amdUtils/string/interpolate'
+], function (serviceController, settingsStore, interpolate) {
 
 	'use strict';
 
@@ -31,6 +32,11 @@ define([
 		settingsStore.on.storedSettings.add(function (settings) {
 			console.log('settingsStore: New settings', settings);
 		});
+
+		window.onerror = function (message, url, line) {
+			window.console.error(interpolate('Unhandled error. message=[{{0}}], url=[{{1}}], line=[{{2}}]', [message, url, line]));
+			return false; // don't suppress default handling
+		};
 	}
 
 	return loggingController;

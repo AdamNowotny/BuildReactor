@@ -4,19 +4,12 @@ define([
 		'badgeController',
 		'settingsStore',
 		'serviceTypesRepository',
-		'amdUtils/string/interpolate'
-	], function (serviceController, notificationController, badgeController, settingsStore, serviceTypesRepository, interpolate) {
+		'loggingController'
+	], function (serviceController, notificationController, badgeController, settingsStore, serviceTypesRepository, loggingController) {
 
 		'use strict';
 
-		function initializeLogging() {
-			window.onerror = function (message, url, line) {
-				window.console.error(interpolate('Unhandled error. message=[{{0}}], url=[{{1}}], line=[{{2}}]', [message, url, line]));
-				return false; // don't suppress default handling
-			};
-		}
-
-		initializeLogging();
+		loggingController();
 		var settings = settingsStore.getAll();
 		badgeController();
 		notificationController.initialize();
