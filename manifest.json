@@ -17,7 +17,7 @@
 	"options_page": "options.html",
 	"homepage_url": "https://github.com/AdamNowotny/BuildReactor",
 	"offline_enabled": false,
-	"permissions": [ "http://*/*", "https://*/*", "notifications", "background", "cookies" ],
+	"permissions": [ "http://*/*", "https://*/*", "notifications", "cookies" ],
 	"web_accessible_resources": [
 		"src/cctray/options.html",
 		"src/cctray/icon.png",
