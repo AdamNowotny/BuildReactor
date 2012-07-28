@@ -10,28 +10,28 @@ define([
 
 	function logger() {
 		serviceController.on.reset.add(function (service) {
-			console.log('serviceController.reset: ', settingsStore.getAll());
+			console.log('serviceController.reset:      ', settingsStore.getAll());
 		});
 		serviceController.on.added.add(function (service) {
-			console.log('serviceController.added: ' + service.name, service.settings);
+			console.log('serviceController.added:       ' + service.name, service.settings);
 		});
 		serviceController.on.updating.add(function (serviceInfo) {
-			console.log('serviceController.updating: ' + serviceInfo.serviceName);
+			console.log('serviceController.updating:    ' + serviceInfo.serviceName);
 		});
 		serviceController.on.updated.add(function (serviceInfo) {
-			console.log('serviceController.updated: ' + serviceInfo.serviceName);
+			console.log('serviceController.updated:     ' + serviceInfo.serviceName);
 		});
 		serviceController.on.brokenBuild.add(function (buildEvent) {
 			console.log('serviceController.brokenBuild: ' + buildEvent.serviceName, buildEvent);
 		});
 		serviceController.on.fixedBuild.add(function (buildEvent) {
-			console.log('serviceController.fixedBuild: ' + buildEvent.serviceName, buildEvent);
+			console.log('serviceController.fixedBuild:  ' + buildEvent.serviceName, buildEvent);
 		});
 		serviceController.on.errorThrown.add(function (errorInfo) {
-			console.error(interpolate('serviceController.errorThrown: {{0}} [{{1}}]', errorInfo.serviceName, errorInfo.message), errorInfo);
+			console.error(interpolate('serviceController.errorThrown:  {{0}} [{{1}}]', errorInfo.serviceName, errorInfo.message), errorInfo);
 		});
 		serviceController.on.started.add(function (serviceInfo) {
-			console.log('serviceController.started: ' + serviceInfo.serviceName);
+			console.log('serviceController.started:     ' + serviceInfo.serviceName);
 		});
 
 		settingsStore.on.storedSettings.add(function (settings) {
