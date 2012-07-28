@@ -6,8 +6,8 @@ module.exports = function (grunt) {
 	// Project configuration.
 	grunt.initConfig({
 		vars: {
-			build: 'build',
-			dist: 'build/BuildReactor'
+			build: '_build',
+			dist: '_build/BuildReactor'
 		},
 		clean: {
 			src: [ '<config:vars.build>' ]
@@ -70,16 +70,29 @@ module.exports = function (grunt) {
 			compile: {
 				options: {
 					baseUrl: "src",
-					dir: 'build/BuildReactor/src',
+					dir: '_build/BuildReactor/src',
 					removeCombined: true,
 					inlineText: true,
 					useStrict: true,
 					preserveLicenseComments: true,
-					optimize: 'uglify',
+					optimize: 'none',//'uglify',
 					optimizeCss: 'none',
+					uglify: {
+						toplevel: true,
+						max_line_length: 200
+					},
 					wrap: {
 						startFile: 'grunt.startFile.js',
 						endFile: 'grunt.endFile.js'
+					},
+					pragmasOnSave: {
+						//removes Handlebars.Parser code (used to compile template strings) set
+						//it to `false` if you need to parse template strings even after build
+						excludeHbsParser : true,
+						// kills the entire plugin set once it's built.
+						excludeHbs: true,
+						// removes i18n precompiler, handlebars and json2
+						excludeAfterBuild: true
 					},
 					paths: {
 						amdUtils: '../lib/amd-utils',
@@ -97,7 +110,8 @@ module.exports = function (grunt) {
 					},
 					modules: [
 						{
-							name: 'main'
+							name: 'main',
+							include: [ 'bamboo/buildService', 'cctray/buildService' ]
 						},
 						{
 							name: 'options'
@@ -105,14 +119,9 @@ module.exports = function (grunt) {
 						{
 							name: 'bamboo/settingsController'
 						},
-						{
-							name: 'bamboo/buildService'
-						},
+						
 						{
 							name: 'cctray/settingsController'
-						},
-						{
-							name: 'cctray/buildService'
 						}
 					]
 				}
