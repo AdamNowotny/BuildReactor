@@ -13,7 +13,9 @@ define([
 	'use strict';
 	
 	var isInitialized = false;
-	var settingsChanged = new signals.Signal();
+	var on = {
+		settingsChanged: new signals.Signal()
+	};
 	var isSaveNeeded = false;
 	var serviceNameElement;
 	var current;
@@ -88,7 +90,7 @@ define([
 		setSaveNeeded(false);
 		serviceSettings.remove(current);
 		serviceList.update(serviceSettings.getAll());
-		settingsChanged.dispatch(serviceSettings.getAll());
+		on.settingsChanged.dispatch(serviceSettings.getAll());
 	}
 
 	function load(newSettings) {
@@ -106,7 +108,7 @@ define([
 
 	function serviceSettingsChanged(updatedSettings) {
 		serviceSettings.update(current, updatedSettings);
-		settingsChanged.dispatch(serviceSettings.getAll());
+		on.settingsChanged.dispatch(serviceSettings.getAll());
 		$('#alert-saved .alert').addClass('in');
 		alertTimer.start(3);
 		setSaveNeeded(false);
@@ -115,6 +117,6 @@ define([
 	return {
 		initialize: initialize,
 		load: load,
-		settingsChanged: settingsChanged
+		on: on
 	};
 });

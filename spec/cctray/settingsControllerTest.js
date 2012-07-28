@@ -211,7 +211,7 @@ define([
 
 		it('should signal save with settings', function () {
 			jasmine.getFixtures().load('bamboo/validSettingsFixture.html');
-			var settingsSavedSpy = spyOnSignal(controller.settingsChanged).matching(function (newSettings) {
+			var settingsSavedSpy = spyOnSignal(controller.on.settingsChanged).matching(function (newSettings) {
 				return newSettings.url === settings.url &&
 					newSettings.username === settings.username &&
 					newSettings.password === settings.password &&

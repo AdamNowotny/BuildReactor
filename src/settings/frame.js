@@ -26,7 +26,7 @@ define([
 			var controllerName = serviceInfo.baseUrl + '/settingsController';
 			iframe.contentWindow.require([controllerName], function (serviceSettingsController) {
 				// executed in iframe context
-				serviceSettingsController.settingsChanged.add(settingsChanged);
+				serviceSettingsController.on.settingsChanged.add(settingsChanged);
 				serviceSettingsController.show(serviceInfo);
 			});
 		};

@@ -7,8 +7,10 @@ define([
 
 		'use strict';
 
-		var settingsChanged = new signals.Signal(),
-			activeSettings;
+		var on = {
+			settingsChanged: new signals.Signal()
+		};
+		var activeSettings;
 
 		function getVisibleSettings() {
 			var newSettings = {
@@ -37,7 +39,7 @@ define([
 			$('.update-interval-input').val(settings.updateInterval);
 			$('.projects-button').click(updatePlans);
 			$('.save-button').click(function () {
-				settingsChanged.dispatch(getVisibleSettings());
+				on.settingsChanged.dispatch(getVisibleSettings());
 			});
 			$('.settings-form').submit(function () {
 				return false;
@@ -89,13 +91,11 @@ define([
 		function renderPlans(projectsXml, selectedProjects) {
 			$('.projects-button').removeAttr('disabled');
 			$('.save-button').removeAttr('disabled');
-			console.log('cruisecontrol/settingsController: Plans received', projectsXml);
 			var templateData = createTemplateData(projectsXml, selectedProjects);
 			projectView.show(templateData);
 		}
 
 		function renderError(ajaxError) {
-			console.error('BambooSettingsController: Ajax request failed: ' + ajaxError.message, ajaxError);
 			$('.projects-button').removeAttr('disabled');
 			$('.error-message').text(ajaxError.message);
 			$('.error-url').text(ajaxError.url);
@@ -127,6 +127,6 @@ define([
 
 		return {
 			show: show,
-			settingsChanged: settingsChanged
+			on: on
 		};
 	});

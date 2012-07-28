@@ -113,7 +113,7 @@ define([
 				});
 				var getController = runsToGetController(settings);
 				runs(function () {
-					getController().settingsChanged.dispatch(settings);
+					getController().on.settingsChanged.dispatch(settings);
 				});
 				runs(function () {
 					expect(spySaved).toHaveBeenDispatched();

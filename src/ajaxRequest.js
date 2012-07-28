@@ -15,11 +15,12 @@ define(['signals', 'jquery'], function (signals, $) {
 		}
 		this.settings = settings;
 		this.options = options;
-		this.on = {
-			responseReceived: new signals.Signal(),
-			errorReceived: new signals.Signal()
-		};
 		this.retry = false;
+	};
+
+	AjaxRequest.prototype.on = {
+		responseReceived: new signals.Signal(),
+		errorReceived: new signals.Signal()
 	};
 
 	function removeCookies(url, cookieName) {

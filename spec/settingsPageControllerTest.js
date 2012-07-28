@@ -146,7 +146,7 @@ define([
 			it('should signal settingsChanged when settings saved', function () {
 				var newServiceSettings = new MockSettingsBuilder().create();
 				var settings = [createSettings('service 1'), newServiceSettings];
-				var spySettingsChanged = spyOnSignal(controller.settingsChanged).matchingValues(settings);
+				var spySettingsChanged = spyOnSignal(controller.on.settingsChanged).matchingValues(settings);
 				spyServiceSettingsGetAll.andReturn(settings);
 
 				frame.saved.dispatch(newServiceSettings);
@@ -161,7 +161,7 @@ define([
 				});
 				var mockSettings = new MockSettingsBuilder().create();
 
-				controller.settingsChanged.dispatch(mockSettings);
+				controller.on.settingsChanged.dispatch(mockSettings);
 
 				expect('#alert-saved').not.toBeVisible();
 			});
@@ -294,7 +294,7 @@ define([
 				});
 
 				it('should dispatch settingsChanged after removing service', function () {
-					var settingsChangedSpy = spyOnSignal(controller.settingsChanged);
+					var settingsChangedSpy = spyOnSignal(controller.on.settingsChanged);
 
 					removePrompt.removeSelected.dispatch();
 

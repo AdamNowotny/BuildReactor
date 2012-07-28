@@ -4,12 +4,12 @@ define([
 		'badgeController',
 		'settingsStore',
 		'serviceTypesRepository',
-		'loggingController'
-	], function (serviceController, notificationController, badgeController, settingsStore, serviceTypesRepository, loggingController) {
+		'backgroundLogger'
+	], function (serviceController, notificationController, badgeController, settingsStore, serviceTypesRepository, backgroundLogger) {
 
 		'use strict';
 
-		loggingController();
+		backgroundLogger();
 		var settings = settingsStore.getAll();
 		badgeController();
 		notificationController.initialize();

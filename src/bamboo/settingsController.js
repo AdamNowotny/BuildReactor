@@ -7,7 +7,10 @@ define([
 
 		'use strict';
 		
-		var settingsChanged = new signals.Signal();
+		var on = {
+			settingsChanged: new signals.Signal()
+		};
+
 		var activeSettings;
 
 		var getVisibleSettings = function () {
@@ -37,7 +40,7 @@ define([
 			$('.update-interval-input').val(settings.updateInterval);
 			$('.plans-button').click(updatePlans);
 			$('.save-button').click(function () {
-				settingsChanged.dispatch(getVisibleSettings());
+				on.settingsChanged.dispatch(getVisibleSettings());
 			});
 			$('.settings-form').submit(function () {
 				return false;
@@ -91,7 +94,6 @@ define([
 		};
 
 		var renderPlans = function (response, selectedPlans) {
-			console.log('bamboo/settingsController: Plans received', response);
 			$('.plans-button').removeAttr('disabled');
 			$('.save-button').removeAttr('disabled');
 			var templateData = createTemplateData(response, selectedPlans);
@@ -99,7 +101,6 @@ define([
 		};
 
 		var renderError = function (ajaxError) {
-			console.error('bamboo/settingsController: Ajax request failed: ' + ajaxError.message, ajaxError);
 			$('.plans-button').removeAttr('disabled');
 			$('.error-message').text(ajaxError.message);
 			$('.error-url').text(ajaxError.url);
@@ -130,6 +131,6 @@ define([
 
 		return {
 			show: show,
-			settingsChanged: settingsChanged
+			on: on
 		};
 	});
