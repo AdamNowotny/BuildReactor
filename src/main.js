@@ -2,7 +2,8 @@ require.config({
 	baseUrl: 'src',
 	paths: {
 		jquery: '../lib/jquery/jquery',
-		signals: '../lib/js-signals/signals'
+		signals: '../lib/js-signals/signals',
+		has: '../lib/requirejs/has'
 	}
 });
 require([

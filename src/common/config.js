@@ -3,7 +3,8 @@ require.config({
 	paths: {
 		jquery: '../lib/jquery/jquery',
 		signals: '../lib/js-signals/signals',
-		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min'
+		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
+		has: '../lib/requirejs/has'
 	},
 	shim: {
 		bootstrap: [ 'jquery' ]

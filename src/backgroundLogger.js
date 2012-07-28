@@ -1,9 +1,10 @@
 define([
-	'AjaxRequest',
+	'ajaxRequest',
 	'serviceController',
 	'settingsStore',
-	'amdUtils/string/interpolate'
-], function (AjaxRequest, serviceController, settingsStore, interpolate) {
+	'amdUtils/string/interpolate',
+	'has'
+], function (AjaxRequest, serviceController, settingsStore, interpolate, has) {
 
 	'use strict';
 
@@ -33,7 +34,16 @@ define([
 		settingsStore.on.storedSettings.add(function (settings) {
 			console.log('settingsStore: New settings', settings);
 		});
-		
+
+		if (has('debug')) {
+			AjaxRequest.prototype.all.responseReceived.add(function (response) {
+				console.log('Ajax response received: ', response);
+			});
+			AjaxRequest.prototype.all.errorReceived.add(function (errorInfo) {
+				console.log('Error response:', errorInfo);
+			});
+		}
+
 		window.onerror = function (message, url, line) {
 			window.console.error(interpolate('Unhandled error. message=[{{0}}], url=[{{1}}], line=[{{2}}]', [message, url, line]));
 			return false; // don't suppress default handling

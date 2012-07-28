@@ -75,7 +75,7 @@ module.exports = function (grunt) {
 					inlineText: true,
 					useStrict: true,
 					preserveLicenseComments: true,
-					optimize: 'none',//'uglify',
+					optimize: 'none', // 'uglify', 'none'
 					optimizeCss: 'none',
 					uglify: {
 						toplevel: true,
@@ -94,8 +94,12 @@ module.exports = function (grunt) {
 						// removes i18n precompiler, handlebars and json2
 						excludeAfterBuild: true
 					},
+					has: {
+						debug: true
+					},
 					paths: {
 						amdUtils: '../lib/amd-utils',
+						has: '../lib/requirejs/has',
 						bootstrap: 'empty:',
 						jquery: 'empty:',
 						jqueryTools: 'empty:',

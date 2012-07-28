@@ -21,6 +21,7 @@ require.config({
 		spec: '../spec',
 		signals: '../lib/js-signals/signals',
 		text: '../lib/requirejs/text',
+		has: '../lib/requirejs/has',
 		// Handlebars plugin does not like to be in lib folder.
 		// Needed to rename to hbs-plugin and specifiy all paths here.
 		hbs: '../lib/requirejs/hbs-plugin',

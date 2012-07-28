@@ -1,4 +1,4 @@
-define(['signals', 'jquery'], function (signals, $) {
+define(['signals', 'jquery', 'has'], function (signals, $, has) {
 
 	'use strict';
 	
@@ -44,12 +44,14 @@ define(['signals', 'jquery'], function (signals, $) {
 				};
 				self.retry = false;
 				self.on.errorReceived.dispatch(error);
+				if (has('debug')) { self.all.errorReceived.dispatch(error); }
 			}
 		}
 		
 		function onSuccess(data, textStatus, jqXhr) {
 			self.retry = false;
 			self.on.responseReceived.dispatch(data);
+			if (has('debug')) { self.all.responseReceived.dispatch(data); }
 		}
 
 		var self = this,
@@ -71,8 +73,14 @@ define(['signals', 'jquery'], function (signals, $) {
 			ajaxOptions.data = { os_authType: 'basic' };
 		}
 		$.ajax(ajaxOptions);
-		
 	};
+
+	if (has('debug')) {
+		AjaxRequest.prototype.all = {
+			responseReceived: new signals.Signal(),
+			errorReceived: new signals.Signal()
+		};
+	}
 
 	return AjaxRequest;
 });
