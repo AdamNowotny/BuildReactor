@@ -9,38 +9,41 @@ define([
 	'use strict';
 
 	function logger() {
+		serviceController.on.reset.add(function (service) {
+			console.log('serviceController.reset: ', settingsStore.getAll());
+		});
 		serviceController.on.added.add(function (service) {
-			console.log('Service added: ' + service.name, service.settings);
+			console.log('serviceController.added: ' + service.name, service.settings);
 		});
 		serviceController.on.updating.add(function (serviceInfo) {
-			console.log(serviceInfo.serviceName + ': update started');
+			console.log('serviceController.updating: ' + serviceInfo.serviceName);
 		});
 		serviceController.on.updated.add(function (serviceInfo) {
-			console.log(serviceInfo.serviceName + ': update finished');
+			console.log('serviceController.updated: ' + serviceInfo.serviceName);
 		});
 		serviceController.on.brokenBuild.add(function (buildEvent) {
-			console.log(buildEvent.serviceName + ': build failed', buildEvent);
+			console.log('serviceController.brokenBuild: ' + buildEvent.serviceName, buildEvent);
 		});
 		serviceController.on.fixedBuild.add(function (buildEvent) {
-			console.log(buildEvent.serviceName + ': build fixed', buildEvent);
+			console.log('serviceController.fixedBuild: ' + buildEvent.serviceName, buildEvent);
 		});
 		serviceController.on.errorThrown.add(function (errorInfo) {
-			console.error(errorInfo.serviceName + ': ' + errorInfo.message, errorInfo);
+			console.error(interpolate('serviceController.errorThrown: {{0}} [{{1}}]', errorInfo.serviceName, errorInfo.message), errorInfo);
 		});
 		serviceController.on.started.add(function (serviceInfo) {
-			console.log('Service started: ' + serviceInfo.serviceName);
+			console.log('serviceController.started: ' + serviceInfo.serviceName);
 		});
 
 		settingsStore.on.storedSettings.add(function (settings) {
-			console.log('settingsStore: New settings', settings);
+			console.log('settingsStore.storedSettings: ', settings);
 		});
 
 		if (has('debug')) {
 			AjaxRequest.prototype.all.responseReceived.add(function (response) {
-				console.log('Ajax response received: ', response);
+				console.log('AjaxRequest.responseReceived: ', response);
 			});
 			AjaxRequest.prototype.all.errorReceived.add(function (errorInfo) {
-				console.log('Error response:', errorInfo);
+				console.log('AjaxRequest.errorReceived: ', errorInfo);
 			});
 		}
 

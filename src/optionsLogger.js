@@ -10,10 +10,10 @@ define([
 
 		if (has('debug')) {
 			AjaxRequest.prototype.all.responseReceived.add(function (response) {
-				console.log('Ajax response received: ', response);
+				console.log('AjaxRequest.responseReceived: ', response);
 			});
 			AjaxRequest.prototype.all.errorReceived.add(function (errorInfo) {
-				console.log('Error response:', errorInfo);
+				console.log('AjaxRequest.errorReceived: ', errorInfo);
 			});
 		}
 
