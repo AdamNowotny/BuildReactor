@@ -18,7 +18,7 @@ define([
 	};
 	var isSaveNeeded = false;
 	var serviceNameElement;
-	var current;
+	var currentSettings;
 
 	var alertTimer = new Timer();
 	alertTimer.on.elapsed.add(function () {
@@ -88,7 +88,7 @@ define([
 
 	function removeCurrentService() {
 		setSaveNeeded(false);
-		serviceSettings.remove(current);
+		serviceSettings.remove(currentSettings);
 		serviceList.update(serviceSettings.getAll());
 		on.settingsChanged.dispatch(serviceSettings.getAll());
 	}
@@ -102,16 +102,17 @@ define([
 		if (serviceInfo === undefined) {
 			throw { name: 'showServicePage', message: 'serviceInfo is undefined' };
 		}
-		current = serviceInfo;
+		currentSettings = serviceInfo;
 		frame.show(serviceInfo);
 	}
 
 	function serviceSettingsChanged(updatedSettings) {
-		serviceSettings.update(current, updatedSettings);
+		serviceSettings.update(currentSettings, updatedSettings);
 		on.settingsChanged.dispatch(serviceSettings.getAll());
 		$('#alert-saved .alert').addClass('in');
 		alertTimer.start(3);
 		setSaveNeeded(false);
+		currentSettings = updatedSettings;
 	}
 
 	return {

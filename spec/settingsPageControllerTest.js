@@ -143,6 +143,20 @@ define([
 				expect(serviceSettings.update).toHaveBeenCalledWith(currentSettings, newServiceSettings);
 			});
 
+			it('should update settings when settings saved multiple times', function () {
+				var settings1 = new MockSettingsBuilder().withName('1').create();
+				var settings2 = new MockSettingsBuilder().withName('2').create();
+				var settings3 = new MockSettingsBuilder().withName('3').create();
+				spyServiceSettingsGetByIndex.andReturn(settings1);
+				serviceList.itemSelected.dispatch(createItem(0, settings1.name));
+
+				frame.saved.dispatch(settings2);
+				frame.saved.dispatch(settings3);
+
+				expect(serviceSettings.update).toHaveBeenCalledWith(settings1, settings2);
+				expect(serviceSettings.update).toHaveBeenCalledWith(settings2, settings3);
+			});
+
 			it('should signal settingsChanged when settings saved', function () {
 				var newServiceSettings = new MockSettingsBuilder().create();
 				var settings = [createSettings('service 1'), newServiceSettings];
@@ -164,10 +178,6 @@ define([
 				controller.on.settingsChanged.dispatch(mockSettings);
 
 				expect('#alert-saved').not.toBeVisible();
-			});
-
-			it('should fail if subcontroller does not implement required API', function () {
-				// TODO implement test
 			});
 
 			it('should not display name after services cleared', function () {

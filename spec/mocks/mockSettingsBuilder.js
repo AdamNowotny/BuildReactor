@@ -9,7 +9,11 @@ define(function () {
 			name: 'service name'
 		};
 		this.create = function () {
-			return this.settings;
+			return {
+				baseUrl: this.settings.baseUrl,
+				url: this.settings.url,
+				name: this.settings.name
+			};
 		};
 		this.withName = function (name) {
 			this.settings.name = name;
