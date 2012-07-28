@@ -7,10 +7,10 @@ define([
 		'settings/serviceList',
 		'settings/savePrompt',
 		'settings/removePrompt',
+		'settings/alert',
 		'spec/mocks/mockSettingsBuilder',
-		'jasmineSignals',
-		'Timer'
-	], function ($, controller, addModal, serviceSettings, frame, serviceList, savePrompt, removePrompt, MockSettingsBuilder, jasmineSignals, Timer) {
+		'jasmineSignals'
+	], function ($, controller, addModal, serviceSettings, frame, serviceList, savePrompt, removePrompt, alert, MockSettingsBuilder, jasmineSignals) {
 
 		'use strict';
 		
@@ -60,6 +60,8 @@ define([
 				spyOn(removePrompt, 'show');
 				spyOn(removePrompt, 'hide');
 
+				spyOn(alert, 'show');
+
 				spyOn(frame, 'initialize');
 				spyOn(frame, 'show');
 				spyOn(frame, 'showEmpty');
@@ -79,6 +81,16 @@ define([
 				spyOn(serviceSettings, 'update');
 
 				controller.initialize(serviceTypes);
+			});
+
+			afterEach(function () {
+				savePrompt.removeSelected.removeAll();
+				addModal.serviceAdded.removeAll();
+				removePrompt.removeSelected.removeAll();
+				serviceSettings.cleared.removeAll();
+				serviceList.itemClicked.removeAll();
+				serviceList.itemSelected.removeAll();
+				frame.saved.removeAll();
 			});
 
 			var createItem = function (index, name) {
@@ -169,15 +181,11 @@ define([
 			});
 
 			it('should show alert when settings saved', function () {
-				spyOn(Timer.prototype, 'start').andCallFake(function () {
-					expect('#alert-saved').toBeVisible();
-					this.on.elapsed.dispatch();
-				});
 				var mockSettings = new MockSettingsBuilder().create();
 
-				controller.on.settingsChanged.dispatch(mockSettings);
+				frame.saved.dispatch(mockSettings);
 
-				expect('#alert-saved').not.toBeVisible();
+				expect(alert.show).toHaveBeenCalled();
 			});
 
 			it('should not display name after services cleared', function () {

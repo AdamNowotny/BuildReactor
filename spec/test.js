@@ -47,6 +47,7 @@ require([
 	'spec/serviceTypesRepositoryTest',
 	'spec/timerTest',
 	'spec/settings/addModalTest',
+	'spec/settings/alertTest',
 	'spec/settings/serviceSettingsTest',
 	'spec/settings/serviceListTest',
 	'spec/settings/savePromptTest',
