@@ -29,7 +29,7 @@ define([
 		});
 
 		it('should show message when build fails', function () {
-			notificationController.initialize();
+			notificationController();
 			var buildEvent = mockBuildEvent.withServiceName('service').withGroup('group').withBuildName('build')();
 
 			serviceController.on.brokenBuild.dispatch(buildEvent);
@@ -40,7 +40,7 @@ define([
 		});
 
 		it('should show message if build fixed', function () {
-			notificationController.initialize();
+			notificationController();
 			var buildEvent = mockBuildEvent.withServiceName('service').withGroup('group').withBuildName('build')();
 
 			serviceController.on.fixedBuild.dispatch(buildEvent);
@@ -51,7 +51,7 @@ define([
 		});
 
 		it('should close notifications about fixed builds after 5 seconds', function () {
-			notificationController.initialize();
+			notificationController();
 			spyOn(mockNotification, 'cancel');
 			spyOn(Timer.prototype, 'start').andCallFake(function (timeout) {
 				expect(timeout).toBe(5);
@@ -65,7 +65,7 @@ define([
 		});
 
 		it('should not close notifications about failed builds', function () {
-			notificationController.initialize();
+			notificationController();
 			spyOn(mockNotification, 'cancel');
 
 			serviceController.on.brokenBuild.dispatch(mockBuildEvent());

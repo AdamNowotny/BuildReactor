@@ -12,7 +12,7 @@ define([
 		backgroundLogger();
 		var settings = settingsStore.getAll();
 		badgeController();
-		notificationController.initialize();
+		notificationController();
 		serviceController.load(settings);
 
 		return {
