@@ -13,20 +13,20 @@ require.config({
 });
 require([
 	'settingsPageController',
+	'serviceTypesRepository',
 	'optionsLogger'
-], function (settingsPageController, optionsLogger) {
+], function (settingsPageController, serviceTypesRepository, optionsLogger) {
 
 	'use strict';
 	
 	function settingsChanged(updatedSettings) {
-		app.updateSettings(updatedSettings);
+		chrome.extension.sendMessage({name: "updateSettings", settings: updatedSettings});
 	}
 
 	optionsLogger();
-	// app already loaded
-	var app = chrome.extension.getBackgroundPage().require("app");
-	settingsPageController.initialize(app.getSupportedServiceTypes());
 	settingsPageController.on.settingsChanged.add(settingsChanged);
-	settingsPageController.load(app.getSettings());
-	
+	settingsPageController.initialize(serviceTypesRepository);
+	chrome.extension.sendMessage({name: "getSettings"}, function (response) {
+		settingsPageController.load(response.settings);
+	});
 });
