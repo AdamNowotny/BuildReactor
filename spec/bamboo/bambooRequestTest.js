@@ -62,7 +62,7 @@ define([
 
 			it('should get plan information', function () {
 				spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
-					expect(this.settings.url).toBe('http://example.com/rest/api/latest/result/SOME-PLAN-KEY/latest?expand=jiraIssues,changes.change');
+					expect(this.settings.url).toBe('http://example.com/rest/api/latest/result/SOME-PLAN-KEY/latest?expand=changes');
 				});
 
 				request.latestPlanResult('SOME-PLAN-KEY');

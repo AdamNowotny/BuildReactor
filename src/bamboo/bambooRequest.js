@@ -57,7 +57,7 @@ define([
 		};
 
 		BambooRequest.prototype.latestPlanResult = function (planKey) {
-			var urlPath = interpolate('result/{{0}}/latest?expand=jiraIssues,changes.change', [planKey]);
+			var urlPath = interpolate('result/{{0}}/latest?expand=changes', [planKey]);
 			this.send(urlPath);
 		};
 
