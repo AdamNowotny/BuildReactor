@@ -13,15 +13,14 @@ define([
 			fixedBuild: new signals.Signal(),
 			started: new signals.Signal(),
 			startedAll: new signals.Signal(),
-			loadedAll: new signals.Signal(),
 			errorThrown: new signals.Signal()
 		};
 
 		var services = [];
-		var settings = [];
+		
 		var servicesToLoadCount = 0;
 
-		function load(newSettings) {
+		function load(settings) {
 			
 			function loadService(serviceSettings) {
 				var serviceName = serviceSettings.baseUrl + '/buildService';
@@ -30,38 +29,33 @@ define([
 					addService(serviceInstance);
 					servicesToLoadCount--;
 					if (servicesToLoadCount === 0) {
-						on.loadedAll.dispatch();
+						loadedAll.dispatch();
 					}
 				});
 			}
 
-			function removeAllServices() {
-				services.forEach(function (s) {
-					unsubscribeFrom(s);
-				});
-				services = [];
-			}
-
-			on.reset.dispatch();
+			var loadedAll = new signals.Signal();
+			loadedAll.memorize = true;
 			removeAllServices();
-			settings = newSettings;
 			servicesToLoadCount = settings.length;
 			for (var i = 0; i < settings.length; i++) {
 				loadService(settings[i]);
 			}
-
+			return loadedAll;
 		}
 
 		function run() {
-			if (servicesToLoadCount > 0) {
-				on.loadedAll.addOnce(run);
-				return;
-			}
+			var toInitializeCount = services.length;
 			services.forEach(function (s) {
-				on.started.dispatch({ serviceName: s.name });
 				s.start();
+				s.on.updated.addOnce(function () {
+					on.started.dispatch({ serviceName: s.name });
+					toInitializeCount--;
+					if (toInitializeCount === 0) {
+						on.startedAll.dispatch();
+					}
+				});
 			});
-			on.startedAll.dispatch();
 		}
 
 		function addService(service) {
@@ -81,6 +75,14 @@ define([
 			services.splice(index, 1);
 			service.stop();
 			unsubscribeFrom(service);
+		}
+
+		function removeAllServices() {
+			services.forEach(function (s) {
+				unsubscribeFrom(s);
+			});
+			services = [];
+			on.reset.dispatch();
 		}
 
 		function subscribeTo(service) {

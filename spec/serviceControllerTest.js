@@ -1,7 +1,7 @@
 define([
 		'jquery',
 		'serviceController',
-		'spec/mocks/mockBuildService',
+		'spec/mocks/buildService',
 		'spec/mocks/mockBuildEvent',
 		'spec/mocks/mockSettingsBuilder',
 		'amdUtils/string/endsWith',
@@ -132,30 +132,20 @@ define([
 				expect(buildFixedSpy).toHaveBeenDispatched(1);
 			});
 
-			it('should run services only after all are loaded', function () {
-				var servicesStartedSpy = spyOnSignal(controller.on.startedAll);
-				var settings1 = new MockSettingsBuilder().withName('service 1').withBaseUrl('service1').create();
-				var settings2 = new MockSettingsBuilder().withName('service 2').withBaseUrl('service2').create();
-				var loaded1callback;
-				var loaded2callback;
-				spyOn(window, 'require').andCallFake(function (serviceNames, callback) {
-					if (endsWith(serviceNames[0], 'service1/buildService')) {
-						loaded1callback = callback;
-					} else if (endsWith(serviceNames[0], 'service2/buildService')) {
-						loaded2callback = callback;
-					} else {
-						throw 'Service unknown: ' + serviceNames[0];
-					}
+			it('should signal when all services are loaded', function () {
+				var settings1 = new MockSettingsBuilder().withName('service 1').withBaseUrl('spec/mocks').create();
+				var settings2 = new MockSettingsBuilder().withName('service 2').withBaseUrl('spec/mocks').create();
+				var loaded = false;
+
+				runs(function () {
+					controller.load([settings1, settings2]).addOnce(function () {
+						loaded = true;
+					});
 				});
 
-				controller.load([settings1, settings2]);
-				controller.run();
-
-				expect(servicesStartedSpy).not.toHaveBeenDispatched();
-				loaded1callback(MockBuildService);
-				expect(servicesStartedSpy).not.toHaveBeenDispatched();
-				loaded2callback(MockBuildService);
-				expect(servicesStartedSpy).toHaveBeenDispatched(1);
+				waitsFor(function () {
+					return loaded;
+				});
 			});
 
 			it('should notifiy when services are reloaded', function () {
@@ -166,5 +156,52 @@ define([
 				expect(resetSpy).toHaveBeenDispatched(1);
 			});
 
+			it('should dispatch started when service finishes update', function () {
+				var startedSpy = spyOnSignal(controller.on.started);
+				var mockService = new MockBuildService();
+
+				controller.addService(mockService);
+				controller.run();
+				mockService.on.updated.dispatch();
+
+				expect(startedSpy).toHaveBeenDispatched();
+			});
+
+			it('should not dispatch started before service finishes update', function () {
+				var startedSpy = spyOnSignal(controller.on.started);
+				var mockService = new MockBuildService();
+
+				controller.addService(mockService);
+				controller.run();
+
+				expect(startedSpy).not.toHaveBeenDispatched();
+			});
+
+			it('should dispatch startedAll when all services finish update', function () {
+				var startedAllSpy = spyOnSignal(controller.on.startedAll);
+				var mockService1 = new MockBuildService();
+				var mockService2 = new MockBuildService();
+
+				controller.addService(mockService1);
+				controller.addService(mockService2);
+				controller.run();
+				mockService1.on.updated.dispatch();
+				mockService2.on.updated.dispatch();
+
+				expect(startedAllSpy).toHaveBeenDispatched();
+			});
+
+			it('should not dispatch startedAll before all services finish update', function () {
+				var startedAllSpy = spyOnSignal(controller.on.startedAll);
+				var mockService1 = new MockBuildService();
+				var mockService2 = new MockBuildService();
+
+				controller.addService(mockService1);
+				controller.addService(mockService2);
+				controller.run();
+				mockService1.on.updated.dispatch();
+
+				expect(startedAllSpy).not.toHaveBeenDispatched();
+			});
 		});
 	});

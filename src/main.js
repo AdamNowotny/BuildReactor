@@ -25,20 +25,22 @@ require([
 			break;
 		case 'updateSettings':
 			settingsStore.store(request.settings);
-			serviceController.load(request.settings);
-			serviceController.run();
-			sendResponse({
-				name: 'settingsSaved'
+			serviceController.load(request.settings).addOnce(function () {
+				serviceController.run();
+				sendResponse({
+					name: 'settingsSaved'
+				});
 			});
 			break;
 		}
 	}
 
+	chrome.extension.onMessage.addListener(onMessage);
 	backgroundLogger();
 	badgeController();
 	notificationController();
 	var settings = settingsStore.getAll();
-	serviceController.load(settings);
-	chrome.extension.onMessage.addListener(onMessage);
-	serviceController.run();
+	serviceController.load(settings).addOnce(function () {
+		serviceController.run();
+	});
 });
