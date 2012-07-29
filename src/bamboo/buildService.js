@@ -110,15 +110,21 @@ define([
 		};
 
 		BuildService.prototype.planUpdate = function () {
-			var plansUpdated = 0,
-				self = this;
+			
 			function planFinished() {
-				plansUpdated++;
-				if (plansUpdated === self.plansCount) {
+				plansToUpdate--;
+				signalIfUpdated();
+			}
+
+			function signalIfUpdated() {
+				if (plansToUpdate === 0) {
 					self.on.updated.dispatch();
 				}
 			}
-
+			
+			var plansToUpdate = this.plansCount;
+			var self = this;
+			signalIfUpdated();
 			for (var planKey in this.plans) {
 				if (this.plans.hasOwnProperty(planKey)) {
 					this.plans[planKey].update().addOnce(planFinished, this);

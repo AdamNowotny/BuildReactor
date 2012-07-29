@@ -187,6 +187,18 @@ define([
 
 				expect(updatedSpy).toHaveBeenDispatched(1);
 			});
+			
+			it('should signal updated when no plans selected', function () {
+				settings.plans = [];
+				service = new BuildService(settings);
+				initializeService();
+				var updatedSpy = spyOnSignal(service.on.updated);
+				mockBambooPlanUpdate.andReturn(updateSuccessSignal);
+
+				service.update();
+
+				expect(updatedSpy).toHaveBeenDispatched(1);
+			});
 
 			it('should signal updated when all plan updates finished with error', function () {
 				initializeService();
