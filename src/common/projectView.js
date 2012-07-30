@@ -1,6 +1,6 @@
 define([
 	'jquery',
-	'hbs!template/projectView',
+	'hbs!templates/projectView',
 	'bootstrap'
 ], function ($, projectViewTemplate) {
 

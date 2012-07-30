@@ -34,6 +34,10 @@ require.config({
 		bootstrap: [ 'jquery' ],
 		jqueryTools: [ 'jquery' ]
 	},
+	hbs: {
+		helperDirectory: 'templates/helpers/',
+		i18nDirectory:   'templates/i18n/'
+	},
 	waitSeconds: 2
 });
 require([

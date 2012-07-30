@@ -1,7 +1,7 @@
 define([
 	'signals',
 	'jquery',
-	'hbs!template/addModalService',
+	'hbs!templates/addModalService',
 	'jqueryTools',
 	'bootstrap'
 ], function (signals, $, addModalServiceTemplate) {

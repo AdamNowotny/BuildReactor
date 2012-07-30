@@ -112,6 +112,10 @@ module.exports = function (grunt) {
 						'hbs/i18nprecompile': '../lib/requirejs/hbs/i18nprecompile',
 						'hbs/json2': '../lib/requirejs/hbs/json2'
 					},
+					hbs: {
+						helperDirectory: 'templates/helpers/',
+						i18nDirectory:   'templates/i18n/'
+					},
 					modules: [
 						{
 							name: 'main',

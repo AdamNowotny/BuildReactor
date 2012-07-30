@@ -4,6 +4,10 @@ require.config({
 		jquery: '../lib/jquery/jquery',
 		signals: '../lib/js-signals/signals',
 		has: '../lib/requirejs/has'
+	},
+	hbs: {
+		helperDirectory: 'templates/helpers/',
+		i18nDirectory:   'templates/i18n/'
 	}
 });
 require([
