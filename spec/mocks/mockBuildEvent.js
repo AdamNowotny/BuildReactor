@@ -6,6 +6,7 @@ define(function () {
 	var serviceName = 'Service name';
 	var buildName = 'Build name';
 	var group = 'Project name';
+	var url = 'http://example.com/project/build/100';
 
 	var mockBuildEvent = function () {
 
@@ -13,23 +14,29 @@ define(function () {
 			serviceName: serviceName,
 			buildName: buildName,
 			group: group,
-			url: 'http://example.com/project/build/100',
+			url: url,
 			icon: 'icon.png'
 		};
 	};
 
-	mockBuildEvent.withServiceName = function (value) {
+	mockBuildEvent.serviceName = function (value) {
 		serviceName = value;
 		return mockBuildEvent;
 	};
 
-	mockBuildEvent.withBuildName = function (value) {
+	mockBuildEvent.buildName = function (value) {
 		buildName = value;
 		return mockBuildEvent;
 	};
 
-	mockBuildEvent.withGroup = function (value) {
+	mockBuildEvent.group = function (value) {
 		group = value;
+		return mockBuildEvent;
+	};
+
+	mockBuildEvent.url = function (value) {
+		if (!arguments) { return value; }
+		url = value;
 		return mockBuildEvent;
 	};
 

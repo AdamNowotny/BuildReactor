@@ -5,6 +5,9 @@ var chrome = {
 	},
 	cookies: {
 		remove: function () {}
+	},
+	tabs : {
+		create: function () {}
 	}
 };
 require.config({
