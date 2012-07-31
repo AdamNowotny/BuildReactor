@@ -33,6 +33,9 @@ define([
 		serviceController.on.started.add(function (serviceInfo) {
 			console.log('serviceController.started:     ' + serviceInfo.serviceName);
 		});
+		serviceController.on.startedAll.add(function () {
+			console.log('serviceController.startedAll');
+		});
 
 		settingsStore.on.storedSettings.add(function (settings) {
 			console.log('settingsStore.storedSettings: ', settings);
