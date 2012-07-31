@@ -10,7 +10,7 @@ module.exports = function (grunt) {
 			dist: '_build/BuildReactor'
 		},
 		clean: {
-			src: [ '<config:vars.build>' ]
+			src: [ '<%= vars.build %>' ]
 		},
 		lint: {
 			files: ['src/**/*.js', 'spec/**/*.js']
@@ -70,12 +70,12 @@ module.exports = function (grunt) {
 			compile: {
 				options: {
 					baseUrl: "src",
-					dir: '_build/BuildReactor/src',
+					dir: '<%= vars.dist %>/src',
 					removeCombined: true,
 					inlineText: true,
 					useStrict: true,
 					preserveLicenseComments: true,
-					optimize: 'none', // 'uglify', 'none'
+					optimize: 'uglify',
 					optimizeCss: 'none',
 					uglify: {
 						toplevel: true,
