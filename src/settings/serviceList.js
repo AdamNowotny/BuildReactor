@@ -9,7 +9,7 @@ define([
 	var itemSelected = new signals.Signal();
 
 	var add = function (serviceInfo) {
-		addItem(serviceInfo.name);
+		addItem(serviceInfo);
 		selectLast();
 	};
 
@@ -35,7 +35,7 @@ define([
 	var render = function (settings) {
 		clear();
 		for (var i = 0; i < settings.length; i++) {
-			addItem(settings[i].name);
+			addItem(settings[i]);
 		}
 		$('#service-list li').click(function (event) {
 			event.preventDefault();
@@ -86,9 +86,9 @@ define([
 		$('#service-list').html('');
 	};
 
-	var addItem = function (name) {
+	var addItem = function (settings) {
 		var index = $('#service-list li').length;
-		var html = '<li data-service-index="' + index + '"><a href="#">' + name + '</a></li>';
+		var html = '<li data-service-index="' + index + '"><a href="#"><img class="service-icon" src="src/' + settings.icon + '"><br>' + settings.name + '</a></li>';
 		$("#service-list").append(html);
 	};
 

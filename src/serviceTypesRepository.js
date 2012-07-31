@@ -21,7 +21,8 @@ define(function () {
 		var typeInfo = getByName(name);
 		var newSettings = {
 			typeName: name,
-			baseUrl: typeInfo.baseUrl
+			baseUrl: typeInfo.baseUrl,
+			icon: typeInfo.baseUrl + '/icon.png'
 		};
 		return newSettings;
 	};
