@@ -53,6 +53,7 @@ define([
 		});
 
 		it('should close notifications about fixed builds after 5 seconds', function () {
+			var timeout = notificationController.notificationTimeoutInSec();
 			notificationController();
 			spyOn(mockNotification, 'cancel');
 			spyOn(Timer.prototype, 'start').andCallFake(function (timeout) {
@@ -62,7 +63,7 @@ define([
 
 			serviceController.on.fixedBuild.dispatch(mockBuildEvent());
 
-			expect(Timer.prototype.start).toHaveBeenCalledWith(5);
+			expect(Timer.prototype.start).toHaveBeenCalledWith(timeout);
 			expect(mockNotification.cancel).toHaveBeenCalled();
 		});
 
@@ -70,9 +71,25 @@ define([
 			notificationController();
 			spyOn(mockNotification, 'cancel');
 
+			serviceController.on.startedAll.dispatch();
 			serviceController.on.brokenBuild.dispatch(mockBuildEvent());
 
 			expect(mockNotification.cancel).not.toHaveBeenCalled();
+		});
+
+		it('should close notifications about failed builds if initializing', function () {
+			var timeout = notificationController.notificationTimeoutInSec();
+			notificationController();
+			spyOn(mockNotification, 'cancel');
+			spyOn(Timer.prototype, 'start').andCallFake(function (timeout) {
+				expect(timeout).toBe(timeout);
+				this.on.elapsed.dispatch();
+			});
+
+			serviceController.on.brokenBuild.dispatch(mockBuildEvent());
+
+			expect(Timer.prototype.start).toHaveBeenCalledWith(timeout);
+			expect(mockNotification.cancel).toHaveBeenCalled();
 		});
 
 		it('should show url when notification clicked', function () {

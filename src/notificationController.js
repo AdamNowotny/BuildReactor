@@ -16,7 +16,7 @@ define([
 				details: buildEvent.buildName + (buildEvent.group ? ' (' + buildEvent.group + ')' : ''),
 				url: buildEvent.url,
 				backgroundColor: '#0D0',
-				sticky: true,
+				sticky: startedAll,
 				icon: buildEvent.icon
 			};
 			showNotification(notification);
@@ -24,18 +24,19 @@ define([
 
 		function onFixedBuild(buildEvent) {
 
-			function fixedNotification(buildEvent) {
-				return {
-					message: interpolate('Build fixed - {{0}}', [buildEvent.serviceName]),
-					details: buildEvent.buildName + (buildEvent.group ? ' (' + buildEvent.group + ')' : ''),
-					url: buildEvent.url,
-					backgroundColor: '#D00',
-					icon: buildEvent.icon
-				};
-			}
-
-			var notification = fixedNotification(buildEvent);
+			var notification = {
+				message: interpolate('Build fixed - {{0}}', [buildEvent.serviceName]),
+				details: buildEvent.buildName + (buildEvent.group ? ' (' + buildEvent.group + ')' : ''),
+				url: buildEvent.url,
+				backgroundColor: '#D00',
+				sticky: false,
+				icon: buildEvent.icon
+			};
 			showNotification(notification);
+		}
+
+		function onStartedAll() {
+			startedAll = true;
 		}
 
 		function showNotification(notificationInfo) {
@@ -50,19 +51,28 @@ define([
 				'src/' + notificationInfo.icon,
 				notificationInfo.message,
 				notificationInfo.details
-				);
+			);
+			console.log('sticky=', notificationInfo.sticky);
 			notification.onclick = onNotificationClick;
 			notification.show();
 			if (!notificationInfo.sticky) {
 				var timer = new Timer();
-				timer.on.elapsed.addOnce(notification.cancel);
+				timer.on.elapsed.addOnce(function () { notification.cancel(); });
 				timer.start(notificationTimeoutInSec);
 			}
 		}
 
+		var startedAll = false;
 		serviceController.on.brokenBuild.add(onBrokenBuild);
 		serviceController.on.fixedBuild.add(onFixedBuild);
+		serviceController.on.startedAll.add(onStartedAll);
 	}
 	
+	notificationController.notificationTimeoutInSec = function (value) {
+		if (!arguments.count) { return notificationTimeoutInSec; }
+		notificationTimeoutInSec = value;
+		return notificationController;
+	};
+
 	return notificationController;
 });
