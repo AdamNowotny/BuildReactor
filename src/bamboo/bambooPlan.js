@@ -20,7 +20,6 @@ define(['signals', 'bamboo/bambooRequest'], function (signals, BambooRequest) {
 		this.isEnabled = responsePlan.enabled;
 		this.isBuilding = responsePlan.isBuilding;
 		this.isActive = responsePlan.isActive;
-		this.url = responsePlan.link.href;
 	};
 
 	BambooPlan.prototype.update = function () {
@@ -29,6 +28,7 @@ define(['signals', 'bamboo/bambooRequest'], function (signals, BambooRequest) {
 		function processResponse(response) {
 			try {
 				self.buildNumber = response.number;
+				self.url = self.settings.url + 'browse/' + response.key;
 				if (self.state !== 'Failed' && response.state === 'Failed') {
 					self.state = 'Failed';
 					self.on.failed.dispatch(self);

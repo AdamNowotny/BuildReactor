@@ -45,7 +45,6 @@ define([
 				expect(newPlan.isEnabled).toBe(true);
 				expect(newPlan.isBuilding).toBe(false);
 				expect(newPlan.isActive).toBe(false);
-				expect(newPlan.url).toBe('https://example.com/rest/api/latest/plan/PROJECT1-PLAN1');
 			});
 
 			it('should set last build number on update', function () {
@@ -54,6 +53,14 @@ define([
 				plan.update();
 
 				expect(plan.buildNumber).toBe(3631);
+			});
+
+			it('should set build url on update', function () {
+				setupResponse(latestPlanResultJson);
+
+				plan.update();
+
+				expect(plan.url).toBe('http://example.com/browse/PROJECT1-PLAN1-3631');
 			});
 
 			it('should signal failed on update', function () {
