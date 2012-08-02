@@ -14,13 +14,14 @@ define([
 			spyOnSignal = jasmineSignals.spyOnSignal;
 
 		beforeEach(function () {
-			projectSuccessInfo = { name: 'project name', status: 'Success' };
-			projectFailureInfo = { name: 'project name', status: 'Failure' };
+			projectSuccessInfo = { name: 'project name', status: 'Success', url: 'http://www.example.com/' };
+			projectFailureInfo = { name: 'project name', status: 'Failure', url: 'http://www.example.com/' };
 		});
 
-		it('should initialize name and status from JSON', function () {
+		it('should initialize from JSON', function () {
 			var someProject = project().update(projectSuccessInfo);
 
+			expect(someProject.url()).toBe('http://www.example.com/');
 			expect(someProject.projectName()).toBe('project name');
 		});
 

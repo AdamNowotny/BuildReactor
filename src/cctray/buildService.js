@@ -68,7 +68,8 @@ define([
 						return {
 							name: name,
 							category: $(d).attr('category'),
-							status: $(d).attr('lastBuildStatus')
+							status: $(d).attr('lastBuildStatus'),
+							url: $(d).attr('webUrl')
 						};
 					})
 					.each(function createOrUpdate(i, d) {
@@ -89,7 +90,7 @@ define([
 				serviceName: this.name,
 				buildName: project.projectName(),
 				group: project.category(),
-				url: project.url,
+				url: project.url(),
 				icon: this.settings.icon
 			};
 			this.on.brokenBuild.dispatch(buildEvent);
@@ -100,7 +101,7 @@ define([
 				serviceName: this.name,
 				buildName: project.projectName(),
 				group: project.category(),
-				url: project.url,
+				url: project.url(),
 				icon: this.settings.icon
 			};
 			this.on.fixedBuild.dispatch(buildEvent);

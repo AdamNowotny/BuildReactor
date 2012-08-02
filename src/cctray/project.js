@@ -7,6 +7,7 @@ define(['signals'], function (signals) {
 		var status,
 			projectName,
 			category,
+			url,
 			failed = new signals.Signal(),
 			fixed = new signals.Signal();
 
@@ -21,6 +22,7 @@ define(['signals'], function (signals) {
 			projectName = newProjectInfo.name;
 			category = newProjectInfo.category;
 			status = newProjectInfo.status;
+			url = newProjectInfo.url;
 			if (!oldStatus && newProjectInfo.status !== 'Success') {
 				failed.dispatch(this);
 			}
@@ -31,6 +33,10 @@ define(['signals'], function (signals) {
 				fixed.dispatch(this);
 			}
 			return projectInstance;
+		};
+
+		projectInstance.url = function () {
+			return url;
 		};
 
 		projectInstance.status = function () {

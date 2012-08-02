@@ -52,7 +52,6 @@ define([
 				notificationInfo.message,
 				notificationInfo.details
 			);
-			console.log('sticky=', notificationInfo.sticky);
 			notification.onclick = onNotificationClick;
 			notification.show();
 			if (!notificationInfo.sticky) {
