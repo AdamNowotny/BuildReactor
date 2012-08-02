@@ -4,9 +4,11 @@ require.config({
 		jquery: '../lib/jquery/jquery',
 		signals: '../lib/js-signals/signals',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
-		has: '../lib/requirejs/has'
+		has: '../lib/requirejs/has',
+		urljs: '../lib/urljs/url-min'
 	},
 	shim: {
-		bootstrap: [ 'jquery' ]
+		bootstrap: [ 'jquery' ],
+		urljs: { exports: 'URL' }
 	}
 });

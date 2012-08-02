@@ -3,7 +3,11 @@ require.config({
 	paths: {
 		jquery: '../lib/jquery/jquery',
 		signals: '../lib/js-signals/signals',
-		has: '../lib/requirejs/has'
+		has: '../lib/requirejs/has',
+		urljs: '../lib/urljs/url-min'
+	},
+	shim: {
+		urljs: { exports: 'URL' }
 	},
 	hbs: {
 		helperDirectory: 'templates/helpers/',

@@ -1,4 +1,4 @@
-define(['signals', 'bamboo/bambooRequest'], function (signals, BambooRequest) {
+define(['signals', 'bamboo/bambooRequest', 'urljs'], function (signals, BambooRequest, URL) {
 
 	'use strict';
 
@@ -28,7 +28,7 @@ define(['signals', 'bamboo/bambooRequest'], function (signals, BambooRequest) {
 		function processResponse(response) {
 			try {
 				self.buildNumber = response.number;
-				self.url = self.settings.url + 'browse/' + response.key;
+				self.url = URL.resolve(self.settings.url, 'browse/' + response.key);
 				if (self.state !== 'Failed' && response.state === 'Failed') {
 					self.state = 'Failed';
 					self.on.failed.dispatch(self);

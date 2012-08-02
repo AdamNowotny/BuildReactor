@@ -104,6 +104,7 @@ module.exports = function (grunt) {
 						jquery: 'empty:',
 						jqueryTools: 'empty:',
 						signals: 'empty:',
+						urljs: 'empty:',
 						// Handlebars plugin does not like to be in lib folder.
 						// Needed to rename to hbs-plugin and specifiy all paths here.
 						hbs: '../lib/requirejs/hbs-plugin',
@@ -156,7 +157,8 @@ module.exports = function (grunt) {
 						'lib/requirejs/require.min.js',
 						'lib/twitter-bootstrap/css/bootstrap.css',
 						'lib/twitter-bootstrap/img/*',
-						'lib/twitter-bootstrap/js/bootstrap.min.js'
+						'lib/twitter-bootstrap/js/bootstrap.min.js',
+						'lib/urljs/url-min.js'
 					]
 				}
 			}

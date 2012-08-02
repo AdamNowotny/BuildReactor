@@ -1,9 +1,10 @@
 define([
 		'signals',
 		'ajaxRequest',
+		'urljs',
 		'amdUtils/string/endsWith',
 		'amdUtils/string/interpolate'
-	], function (signals, AjaxRequest, endsWith, interpolate) {
+	], function (signals, AjaxRequest, URL, endsWith, interpolate) {
 
 		'use strict';
 		
@@ -30,9 +31,7 @@ define([
 		};
 
 		function createAjaxRequestSettings(settings, urlPath) {
-			var url = settings.url;
-			if (!endsWith(url, '/')) { url += '/'; }
-			url += 'rest/api/latest/' + urlPath;
+			var url = URL.resolve(settings.url, 'rest/api/latest/' + urlPath);
 			return {
 				url: url,
 				username: settings.username,
