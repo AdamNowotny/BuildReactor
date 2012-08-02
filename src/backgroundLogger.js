@@ -28,7 +28,7 @@ define([
 			console.log('serviceController.fixedBuild:  ' + buildEvent.serviceName, buildEvent);
 		});
 		serviceController.on.errorThrown.add(function (errorInfo) {
-			console.error(interpolate('serviceController.errorThrown:  {{0}} [{{1}}]', errorInfo.serviceName, errorInfo.message), errorInfo);
+			console.error(interpolate('serviceController.errorThrown:  {{0}} [{{1}}]', [ errorInfo.serviceName, errorInfo.message]), errorInfo);
 		});
 		serviceController.on.started.add(function (serviceInfo) {
 			console.log('serviceController.started:     ' + serviceInfo.serviceName);
