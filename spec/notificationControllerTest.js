@@ -16,12 +16,12 @@ define([
 			cancel: function () { },
 			onclick: function () { }
 		};
-		var spyNotification;
+		var timeout = notificationController.notificationTimeoutInSec();
 
 		beforeEach(function () {
-			spyNotification = spyOn(window.webkitNotifications, 'createNotification').andReturn(mockNotification);
-			mockBadgeText = spyOn(chrome.browserAction, 'setBadgeText');
-			mockBadgeColor = spyOn(chrome.browserAction, 'setBadgeBackgroundColor');
+			spyOn(window.webkitNotifications, 'createNotification').andReturn(mockNotification);
+			spyOn(mockNotification, 'cancel');
+			notificationController();
 		});
 
 		afterEach(function () {
@@ -31,7 +31,6 @@ define([
 		});
 
 		it('should show message when build fails', function () {
-			notificationController();
 			var buildEvent = mockBuildEvent.serviceName('service').group('group').buildName('build')();
 
 			serviceController.on.brokenBuild.dispatch(buildEvent);
@@ -42,7 +41,6 @@ define([
 		});
 
 		it('should show message if build fixed', function () {
-			notificationController();
 			var buildEvent = mockBuildEvent.serviceName('service').group('group').buildName('build')();
 
 			serviceController.on.fixedBuild.dispatch(buildEvent);
@@ -53,11 +51,8 @@ define([
 		});
 
 		it('should close notifications about fixed builds after 5 seconds', function () {
-			var timeout = notificationController.notificationTimeoutInSec();
-			notificationController();
-			spyOn(mockNotification, 'cancel');
-			spyOn(Timer.prototype, 'start').andCallFake(function (timeout) {
-				expect(timeout).toBe(5);
+			spyOn(Timer.prototype, 'start').andCallFake(function (value) {
+				expect(value).toBe(timeout);
 				this.on.elapsed.dispatch();
 			});
 
@@ -68,9 +63,6 @@ define([
 		});
 
 		it('should not close notifications about failed builds', function () {
-			notificationController();
-			spyOn(mockNotification, 'cancel');
-
 			serviceController.on.startedAll.dispatch();
 			serviceController.on.brokenBuild.dispatch(mockBuildEvent());
 
@@ -79,10 +71,8 @@ define([
 
 		it('should close notifications about failed builds if initializing', function () {
 			var timeout = notificationController.notificationTimeoutInSec();
-			notificationController();
-			spyOn(mockNotification, 'cancel');
-			spyOn(Timer.prototype, 'start').andCallFake(function (timeout) {
-				expect(timeout).toBe(timeout);
+			spyOn(Timer.prototype, 'start').andCallFake(function (value) {
+				expect(value).toBe(timeout);
 				this.on.elapsed.dispatch();
 			});
 
@@ -95,7 +85,6 @@ define([
 		it('should show url when notification clicked', function () {
 			spyOn(chrome.tabs, 'create');
 			var buildEvent = mockBuildEvent.url('http://example.com/')();
-			notificationController();
 
 			serviceController.on.brokenBuild.dispatch(buildEvent);
 			mockNotification.onclick();
@@ -107,13 +96,32 @@ define([
 			spyOn(chrome.tabs, 'create').andCallFake(function (obj, callback) {
 				callback();
 			});
-			spyOn(mockNotification, 'cancel');
-			notificationController();
 
 			serviceController.on.brokenBuild.dispatch(mockBuildEvent());
 			mockNotification.onclick();
 
 			expect(mockNotification.cancel).toHaveBeenCalled();
 		});
+
+		it('should hide notifications about failed build if already fixed', function () {
+			var brokenBuild = mockBuildEvent();
+			var fixedBuild = mockBuildEvent();
+
+			serviceController.on.brokenBuild.dispatch(brokenBuild);
+			serviceController.on.fixedBuild.dispatch(fixedBuild);
+
+			expect(mockNotification.cancel).toHaveBeenCalled();
+		});
+
+		it('should not hide notifications about failed build if another fixed', function () {
+			var brokenBuild = mockBuildEvent.serviceName('service 1')();
+			var fixedBuild = mockBuildEvent.serviceName('service 2')();
+
+			serviceController.on.brokenBuild.dispatch(brokenBuild);
+			serviceController.on.fixedBuild.dispatch(fixedBuild);
+
+			expect(mockNotification.cancel).not.toHaveBeenCalled();
+		});
+
 	});
 });
