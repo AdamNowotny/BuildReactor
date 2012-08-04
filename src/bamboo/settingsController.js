@@ -72,11 +72,13 @@ define([
 				return;
 			}
 			$('.plans-button').attr('disabled', 'disabled');
+			$('.plans-button i').addClass('animate');
 			$('.alert-error').hide();
 			projectView.hide();
 			var plansRequest = new BambooRequest(getRequestSettings());
 			plansRequest.on.responseReceived.addOnce(function (response) {
 				renderPlans(response, activeSettings.plans);
+				$('.plans-button i').removeClass('animate');
 			});
 			plansRequest.on.errorReceived.addOnce(renderError);
 			plansRequest.projects();
@@ -105,6 +107,7 @@ define([
 			$('.error-message').text(ajaxError.message);
 			$('.error-url').text(ajaxError.url);
 			$('.alert-error').show();
+			$('.plans-button i').removeClass('animate');
 		};
 
 		var createTemplateData = function (response, selectedPlans) {

@@ -5,3 +5,8 @@
 .project-selection-container {
 	margin: 0 5px 0 5px;
 }
+
+.icon-refresh.animate {
+	background-image: url(../../img/loading.gif);
+	background-position: 0 0;
+}

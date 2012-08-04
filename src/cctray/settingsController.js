@@ -71,11 +71,13 @@ define([
 				return;
 			}
 			$('.projects-button').attr('disabled', 'disabled');
+			$('.projects-button i').addClass('animate');
 			$('.alert-error').hide();
 			projectView.hide();
 			var plansRequest = ccRequest.projects(getRequestSettings());
 			plansRequest.responseReceived.addOnce(function (response) {
 				renderPlans(response, activeSettings.projects);
+				$('.projects-button i').removeClass('animate');
 			});
 			plansRequest.errorReceived.addOnce(renderError);
 		}
@@ -100,6 +102,7 @@ define([
 			$('.error-message').text(ajaxError.message);
 			$('.error-url').text(ajaxError.url);
 			$('.alert-error').show();
+			$('.projects-button i').removeClass('animate');
 		}
 
 		function createTemplateData(projectsXml, selectedProjects) {
