@@ -75,7 +75,8 @@ module.exports = function (grunt) {
 					inlineText: true,
 					useStrict: true,
 					preserveLicenseComments: true,
-					optimize: 'uglify',
+					optimize: 'none',
+					// optimize: 'uglify',
 					optimizeCss: 'none',
 					uglify: {
 						toplevel: true,
@@ -123,14 +124,8 @@ module.exports = function (grunt) {
 							include: [ 'bamboo/buildService', 'cctray/buildService' ]
 						},
 						{
-							name: 'options'
-						},
-						{
-							name: 'bamboo/settingsController'
-						},
-						
-						{
-							name: 'cctray/settingsController'
+							name: 'options',
+							include: [ 'bamboo/buildService', 'cctray/buildService' ]
 						}
 					]
 				}

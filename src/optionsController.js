@@ -2,13 +2,13 @@ define([
 	'signals',
 	'jquery',
 	'settings/serviceSettings',
-	'settings/frame',
+	'settings/serviceOptions',
 	'settings/addModal',
 	'settings/serviceList',
 	'settings/savePrompt',
 	'settings/removePrompt',
 	'settings/alert'
-], function (signals, $, serviceSettings, frame, addModal, serviceList, savePrompt, removePrompt, alert) {
+], function (signals, $, serviceSettings, serviceOptions, addModal, serviceList, savePrompt, removePrompt, alert) {
 
 	'use strict';
 	
@@ -39,7 +39,7 @@ define([
 		});
 		serviceSettings.cleared.add(function () {
 			serviceNameElement.text('');
-			frame.showEmpty();
+			serviceOptions.show(null);
 		});
 		serviceList.itemClicked.add(function (item) {
 			if (isSaveNeeded) {
@@ -55,7 +55,7 @@ define([
 			var serviceInfo = serviceSettings.getByIndex(index);
 			showServicePage(serviceInfo);
 		});
-		frame.saved.add(serviceSettingsChanged);
+		serviceOptions.on.updated.add(serviceSettingsChanged);
 		reset(supportedServiceTypes);
 	}
 
@@ -63,7 +63,7 @@ define([
 		savePrompt.initialize();
 		addModal.initialize(supportedServiceTypes);
 		removePrompt.initialize();
-		frame.initialize();
+		serviceOptions.initialize();
 		setSaveNeeded(false);
 		serviceSettings.clear();
 		serviceNameElement = $('#service-name');
@@ -94,7 +94,7 @@ define([
 			throw { name: 'showServicePage', message: 'serviceInfo is undefined' };
 		}
 		currentSettings = serviceInfo;
-		frame.show(serviceInfo);
+		serviceOptions.show(serviceInfo);
 	}
 
 	function serviceSettingsChanged(updatedSettings) {

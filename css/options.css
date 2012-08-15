@@ -51,28 +51,28 @@
 	height: 60px;
 }
 
+.icon-refresh.animate {
+	background-image: url(../../img/loading.gif);
+	background-position: 0 0;
+}
+
 #settings-container {
 	position: absolute;
-	top: 0px;
+	top: 60px;
 	bottom: 3px;
 	left: 221px;
 	right: 0;
+	overflow: auto;
 }
 
-	#settings-frame-container 
-	{
-		position: absolute;
-		top: 50px;
-		bottom: 0;
-		width: 100%;
+	.alert-error {
+		margin: 5px;
+	}
+	
+	.project-selection-container {
+		margin: 0 5px 0 5px;
 	}
 
-	#settings-frame {
-		border: 0;
-		width: 100%;
-		height: 100%;
-		overflow: auto;
-	}
 
 .scrollable {
 

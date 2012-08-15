@@ -107,5 +107,43 @@ define([
 			this.on.fixedBuild.dispatch(buildEvent);
 		};
 
+		CCBuildService.prototype.getProjects = function (requestSettings, selectedPlans) {
+			var on = {
+				errorThrown: new signals.Signal(),
+				receivedProjects: new signals.Signal()
+			};
+			var plansRequest = ccRequest.projects(requestSettings);
+			plansRequest.responseReceived.addOnce(function (response) {
+				var templateData = createTemplateData(response, selectedPlans);
+				on.receivedProjects.dispatch(templateData);
+			});
+			plansRequest.errorReceived.addOnce(function (ajaxError) {
+				on.errorThrown.dispatch(ajaxError);
+			});
+			return on;
+		};
+
+		function createTemplateData(projectsXml, selectedProjects) {
+			
+			function createItem(i, d) {
+				var item = $(d),
+					projectName = item.attr('name');
+				return {
+					id: projectName,
+					name: projectName,
+					group: item.attr('category'),
+					enabled: true,
+					selected: selectedProjects.indexOf(projectName) > -1
+				};
+			}
+
+			return {
+				items: $(projectsXml)
+					.find('Project')
+					.map(createItem)
+					.toArray()
+			};
+		}
+
 		return CCBuildService;
 	});

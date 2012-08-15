@@ -1,0 +1,43 @@
+{{!
+{
+	'name' : 'settings',
+	'description' : 'Service settings form with Save button',
+	'styles' : [ 'css/settingsForm.css' ]
+}
+}}
+<form class="settings-form form-horizontal" action="">
+	<fieldset>
+		<div class="control-group">
+			<label class="control-label" for="url">URL</label>
+			<div class="controls">
+				<input type="url" name="url" class="input-xxlarge url-input" required="required" placeholder="http://cruisecontrol.instance.com/tray.xml" value="{{ url }}" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="update-interval">Update interval</label>
+			<div class="controls">
+				<div class="input-append">
+					<input type="number" name="update-interval" class="input-mini update-interval-input" min="1" value="{{ updateInterval }}" />
+					<span class="add-on">sec</span>
+				</div>
+				<p class="help-block">Default is 60</p>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="username">Username</label>
+			<div class="controls">
+				<input type="text" name="username" class="username-input" placeholder="optional" value="{{ username }}" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="password">Password</label>
+			<div class="controls">
+				<input type="password" name="password" class="password-input" placeholder="optional" value="{{ password }}" />
+			</div>
+		</div>
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary show-button" name="show-button"><i class="icon-refresh"></i> Show</button>
+			<button type="button" class="btn btn-success save-button" name="save-button" disabled="disabled"><i class="icon-ok"></i> Save</button>
+		</div>
+	</fieldset>
+</form>

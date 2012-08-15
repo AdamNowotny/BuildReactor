@@ -2,6 +2,11 @@ define(['signals'], function (signals) {
 
 	'use strict';
 	
+	var receivedProjects = new signals.Signal();
+	var errorThrown = new signals.Signal();
+	receivedProjects.memorize = true;
+	errorThrown.memorize = true;
+
 	var MockBuildService = function () {
 		this.name = 'Sample service';
 		this.on = {
@@ -15,6 +20,13 @@ define(['signals'], function (signals) {
 		this.stop = function () { };
 		this.initializeFromSettings = function (settings) {
 			this.name = settings.name;
+		};
+	};
+
+	MockBuildService.prototype.getProjects = function () {
+		return {
+			receivedProjects: receivedProjects,
+			errorThrown: errorThrown
 		};
 	};
 

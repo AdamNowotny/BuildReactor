@@ -1,20 +1,20 @@
 define([
 		'jquery',
-		'settingsPageController',
+		'optionsController',
 		'settings/addModal',
 		'settings/serviceSettings',
-		'settings/frame',
+		'settings/serviceOptions',
 		'settings/serviceList',
 		'settings/savePrompt',
 		'settings/removePrompt',
 		'settings/alert',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals'
-	], function ($, controller, addModal, serviceSettings, frame, serviceList, savePrompt, removePrompt, alert, MockSettingsBuilder, jasmineSignals) {
+	], function ($, controller, addModal, serviceSettings, serviceOptions, serviceList, savePrompt, removePrompt, alert, MockSettingsBuilder, jasmineSignals) {
 
 		'use strict';
 		
-		describe('settingsPageController', function () {
+		describe('optionsController', function () {
 
 			var spyOnSignal = jasmineSignals.spyOnSignal;
 
@@ -48,7 +48,7 @@ define([
 			var spyServiceSettingsGetByIndex;
 
 			beforeEach(function () {
-				jasmine.getFixtures().load('settingsPageControllerFixture.html');
+				jasmine.getFixtures().load('optionsControllerFixture.html');
 				spyOn(addModal, 'show');
 				spyOn(addModal, 'initialize');
 
@@ -62,9 +62,8 @@ define([
 
 				spyOn(alert, 'show');
 
-				spyOn(frame, 'initialize');
-				spyOn(frame, 'show');
-				spyOn(frame, 'showEmpty');
+				spyOn(serviceOptions, 'initialize');
+				spyOn(serviceOptions, 'show');
 
 				spyOn(serviceList, 'load');
 				spyOn(serviceList, 'update');
@@ -90,7 +89,7 @@ define([
 				serviceSettings.cleared.removeAll();
 				serviceList.itemClicked.removeAll();
 				serviceList.itemSelected.removeAll();
-				frame.saved.removeAll();
+				serviceOptions.on.updated.removeAll();
 			});
 
 			var createItem = function (index, name) {
@@ -107,7 +106,7 @@ define([
 			it('should initialize components on initialize', function () {
 				controller.initialize(serviceTypes);
 
-				expect(frame.initialize).toHaveBeenCalled();
+				expect(serviceOptions.initialize).toHaveBeenCalled();
 				expect(removePrompt.initialize).toHaveBeenCalled();
 				expect(savePrompt.initialize).toHaveBeenCalled();
 				expect(addModal.initialize).toHaveBeenCalledWith(serviceTypes);
@@ -133,7 +132,7 @@ define([
 
 				serviceList.itemSelected.dispatch(item);
 
-				expect(frame.show).toHaveBeenCalledWith(serviceInfo);
+				expect(serviceOptions.show).toHaveBeenCalledWith(serviceInfo);
 			});
 
 			it('should update service name when selected', function () {
@@ -144,38 +143,38 @@ define([
 				expect($('#service-name')).toHaveText('Service name');
 			});
 
-			it('should update settings when settings saved', function () {
+			it('should update settings', function () {
 				var currentSettings = new MockSettingsBuilder().create();
 				var newServiceSettings = new MockSettingsBuilder().create();
 				spyServiceSettingsGetByIndex.andReturn(currentSettings);
 				serviceList.itemSelected.dispatch(createItem(0, currentSettings.name));
 
-				frame.saved.dispatch(newServiceSettings);
+				serviceOptions.on.updated.dispatch(newServiceSettings);
 
 				expect(serviceSettings.update).toHaveBeenCalledWith(currentSettings, newServiceSettings);
 			});
 
-			it('should update settings when settings saved multiple times', function () {
+			it('should update settings multiple times', function () {
 				var settings1 = new MockSettingsBuilder().withName('1').create();
 				var settings2 = new MockSettingsBuilder().withName('2').create();
 				var settings3 = new MockSettingsBuilder().withName('3').create();
 				spyServiceSettingsGetByIndex.andReturn(settings1);
 				serviceList.itemSelected.dispatch(createItem(0, settings1.name));
 
-				frame.saved.dispatch(settings2);
-				frame.saved.dispatch(settings3);
+				serviceOptions.on.updated.dispatch(settings2);
+				serviceOptions.on.updated.dispatch(settings3);
 
 				expect(serviceSettings.update).toHaveBeenCalledWith(settings1, settings2);
 				expect(serviceSettings.update).toHaveBeenCalledWith(settings2, settings3);
 			});
 
-			it('should signal settingsChanged when settings saved', function () {
+			it('should signal settingsChanged when settings updated', function () {
 				var newServiceSettings = new MockSettingsBuilder().create();
 				var settings = [createSettings('service 1'), newServiceSettings];
 				var spySettingsChanged = spyOnSignal(controller.on.settingsChanged).matchingValues(settings);
 				spyServiceSettingsGetAll.andReturn(settings);
 
-				frame.saved.dispatch(newServiceSettings);
+				serviceOptions.on.updated.dispatch(newServiceSettings);
 
 				expect(spySettingsChanged).toHaveBeenDispatched();
 			});
@@ -183,7 +182,7 @@ define([
 			it('should show alert when settings saved', function () {
 				var mockSettings = new MockSettingsBuilder().create();
 
-				frame.saved.dispatch(mockSettings);
+				serviceOptions.on.updated.dispatch(mockSettings);
 
 				expect(alert.show).toHaveBeenCalled();
 			});
@@ -199,7 +198,7 @@ define([
 			it('should display empty page after services cleared', function () {
 				serviceSettings.cleared.dispatch();
 
-				expect(frame.showEmpty).toHaveBeenCalled();
+				expect(serviceOptions.show).toHaveBeenCalledWith(null);
 			});
 
 			describe('Adding service', function () {
@@ -279,7 +278,7 @@ define([
 				it('should enable add button if service saved', function () {
 					page.isAddButtonEnabled(false);
 
-					frame.saved.dispatch(createSettings('service'));
+					serviceOptions.on.updated.dispatch(createSettings('service'));
 					
 					expect(page.isAddButtonEnabled()).toBeTruthy();
 				});

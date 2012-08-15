@@ -15,10 +15,10 @@ require.config({
 	}
 });
 require([
-	'settingsPageController',
+	'optionsController',
 	'serviceTypesRepository',
 	'optionsLogger'
-], function (settingsPageController, serviceTypesRepository, optionsLogger) {
+], function (optionsController, serviceTypesRepository, optionsLogger) {
 
 	'use strict';
 	
@@ -27,9 +27,9 @@ require([
 	}
 
 	optionsLogger();
-	settingsPageController.on.settingsChanged.add(onSettingsChanged);
-	settingsPageController.initialize(serviceTypesRepository);
+	optionsController.on.settingsChanged.add(onSettingsChanged);
+	optionsController.initialize(serviceTypesRepository);
 	chrome.extension.sendMessage({name: "getSettings"}, function (response) {
-		settingsPageController.load(response.settings);
+		optionsController.load(response.settings);
 	});
 });

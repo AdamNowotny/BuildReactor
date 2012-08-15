@@ -223,5 +223,27 @@ function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXm
 			expect(service.projects['FastForward.NET']).not.toBeDefined();
 		});
 
+		describe('getProjects', function () {
+
+
+			it('should use url and credentials when getting plans', function () {
+				mockRequest.andCallFake(function (requestSettings) {
+					expect(requestSettings.username).toBe(settings.username);
+					expect(requestSettings.password).toBe(settings.password);
+					expect(requestSettings.url).toBe(settings.url);
+					responseReceived.dispatch(projectsXml);
+					return {
+						responseReceived: responseReceived,
+						errorReceived: errorReceived
+					};
+				});
+
+				service.getProjects(settings, []);
+
+				expect(mockRequest).toHaveBeenCalled();
+			});
+
+		});
+		
 	});
 });

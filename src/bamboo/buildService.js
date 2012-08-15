@@ -56,7 +56,7 @@ define([
 			function initializeFromProject(project) {
 				for (var j = 0; j < project.plans.plan.length; j++) {
 					var responsePlan = project.plans.plan[j];
-					if (self.settings.plans.indexOf(responsePlan.key) < 0) {
+					if (self.settings.projects.indexOf(responsePlan.key) < 0) {
 						continue;
 					}
 					initializePlan(responsePlan);
@@ -156,6 +156,45 @@ define([
 
 		BuildService.prototype.onPlanError = function (ajaxError) {
 			this.on.errorThrown.dispatch(ajaxError);
+		};
+
+		BuildService.prototype.getProjects = function (requestSettings, selectedPlans) {
+			var on = {
+				errorThrown: new signals.Signal(),
+				receivedProjects: new signals.Signal()
+			};
+			var plansRequest = new BambooRequest(requestSettings);
+			plansRequest.on.responseReceived.addOnce(function (response) {
+				var templateData = createTemplateData(response, selectedPlans);
+				on.receivedProjects.dispatch(templateData);
+			});
+			plansRequest.on.errorReceived.addOnce(function (ajaxError) {
+				on.errorThrown.dispatch(ajaxError);
+			});
+			plansRequest.projects();
+			return on;
+		};
+
+		var createTemplateData = function (response, selectedPlans) {
+			var projects = response.projects.project;
+			var items = [];
+			for (var projectIndex = 0; projectIndex < projects.length; projectIndex++) {
+				var project = projects[projectIndex];
+				for (var planIndex = 0; planIndex < project.plans.plan.length; planIndex++) {
+					var plan = project.plans.plan[planIndex];
+					var item = {
+						id: plan.key,
+						name: plan.shortName,
+						group: project.name,
+						enabled: plan.enabled,
+						selected: selectedPlans.indexOf(plan.key) > -1
+					};
+					items.push(item);
+				}
+			}
+			return {
+				items: items
+			};
 		};
 
 		return BuildService;

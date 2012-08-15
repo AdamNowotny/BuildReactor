@@ -30,7 +30,7 @@ define([
 					password: null,
 					url: 'http://example.com/',
 					updateInterval: 10000,
-					plans: ['PROJECT1-PLAN1', 'PROJECT2-PLAN2']
+					projects: ['PROJECT1-PLAN1', 'PROJECT2-PLAN2']
 				};
 				service = new BuildService(settings);
 				mockBambooRequestProjects = spyOn(BambooRequest.prototype, 'projects').andCallFake(function () {
@@ -157,7 +157,7 @@ define([
 
 					service.start();
 
-					expect(brokenBuildSpy).toHaveBeenDispatched(settings.plans.length);
+					expect(brokenBuildSpy).toHaveBeenDispatched(settings.projects.length);
 				});
 
 			});
@@ -189,7 +189,7 @@ define([
 			});
 			
 			it('should signal updated when no plans selected', function () {
-				settings.plans = [];
+				settings.projects = [];
 				service = new BuildService(settings);
 				initializeService();
 				var updatedSpy = spyOnSignal(service.on.updated);
@@ -235,7 +235,7 @@ define([
 
 				service.update();
 
-				expect(errorThrownSpy).toHaveBeenDispatched(settings.plans.length);
+				expect(errorThrownSpy).toHaveBeenDispatched(settings.projects.length);
 			});
 
 
@@ -266,9 +266,9 @@ define([
 
 			it('multiple services should update independently', function () {
 				initializeService();
-				var service1 = new BuildService({ name: 'Bamboo', url: 'http://example1.com/', plans: [] });
+				var service1 = new BuildService({ name: 'Bamboo', url: 'http://example1.com/', projects: [] });
 				var updatingSpy1 = spyOnSignal(service1.on.updating);
-				var service2 = new BuildService({ name: 'Bamboo', url: 'http://example2.com/', plans: [] });
+				var service2 = new BuildService({ name: 'Bamboo', url: 'http://example2.com/', projects: [] });
 				var updatingSpy2 = spyOnSignal(service2.on.updating);
 
 				service1.update();
@@ -302,7 +302,7 @@ define([
 				settings = {
 					name: 'My Bamboo CI',
 					url: 'http://example.com/',
-					plans: ['PROJECT1-PLAN1', 'PROJECT1-PLAN2']
+					projects: ['PROJECT1-PLAN1', 'PROJECT1-PLAN2']
 				};
 				service = new BuildService(settings);
 
@@ -311,5 +311,21 @@ define([
 				expect(mockBambooPlanUpdate.callCount).toBe(1);
 			});
 
+			describe('getProjects', function () {
+
+				it('should use url and credentials when getting available projects', function () {
+					mockBambooRequestProjects.andCallFake(function () {
+						expect(this.settings.username).toBe(settings.username);
+						expect(this.settings.password).toBe(settings.password);
+						expect(this.settings.url).toBe(settings.url);
+						this.on.responseReceived.dispatch(projectsJson);
+					});
+					
+					service.getProjects(settings, []);
+
+					expect(mockBambooRequestProjects).toHaveBeenCalled();
+				});
+
+			});
 		});
 	});
