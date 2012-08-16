@@ -57,6 +57,9 @@ module.exports = function (grunt) {
 				waitsFor: true
 			}
 		},
+		jasmine: {
+			all: ['spec/specrunner.html']
+		},
 		mincss: {
 			compress: {
 				files: {
@@ -157,13 +160,20 @@ module.exports = function (grunt) {
 				}
 			}
 		},
-		jasmine: {
-			all: ['spec/specrunner.html']
+		compress: {
+			zip: {
+				options: {
+					mode: "zip"
+				},
+				files: {
+					"<%= vars.build %>/BuildReactor.zip": "<%= vars.dist %>/**"
+				}
+			}
 		}
 	});
 
 	// Default task.
-	grunt.registerTask('default', 'clean lint jasmine mincss requirejs copy');
+	grunt.registerTask('default', 'clean lint jasmine mincss requirejs copy compress');
 	grunt.registerTask('travis', 'clean lint jasmine');
 	grunt.registerTask('test', 'lint jasmine');
 	grunt.registerTask('dist', 'clean mincss requirejs copy');
