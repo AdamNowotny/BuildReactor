@@ -53,6 +53,8 @@ Chrome badge
 ------------
 <img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/chrome-failed.png" alt="BuildReactor action icon">
 
+The number in the badge shows how many builds are currently broken. 
+
 Developer setup
 ===============
 
