@@ -41,11 +41,17 @@ Travis CI - http://travis-ci.org/AdamNowotny/BuildReactor/cc.xml
 Screenshots
 ===========
 
+Notifications
+-------------
 <img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/notifications.png" alt="BuildReactor notifications">
 
-After installing the extension go to options page and enter the URL for Bamboo instance and username and password if required.
+Options page
+------------
+<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/settings-1280x800.png" alt="BuildReactor options page">
 
-<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/settings.png" alt="BuildReactor options page">
+Chrome badge
+------------
+<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/chrome-failed.png" alt="BuildReactor action icon">
 
 Developer setup
 ===============
