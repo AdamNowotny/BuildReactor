@@ -43,7 +43,7 @@ Screenshots
 
 Notifications
 -------------
-<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/notifications.png" alt="BuildReactor notifications">
+<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/notifications-640x400.png" alt="BuildReactor notifications">
 
 Options page
 ------------
