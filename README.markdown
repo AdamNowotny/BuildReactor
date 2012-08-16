@@ -1,6 +1,6 @@
 BuildReactor
 ============
-`BuildReactor` is a Google Chrome extension that shows notifications for CI server events.
+`BuildReactor` is a Google Chrome extension that shows notifications for CI server events.[![Build Status](https://secure.travis-ci.org/AdamNowotny/BuildReactor.png)](http://travis-ci.org/AdamNowotny/BuildReactor)
 
 <img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/notifications.png" alt="BuildReactor notifications">
 
@@ -10,16 +10,16 @@ After installing the extension go to options page and enter the URL for Bamboo i
 
 <img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/settings.png" alt="BuildReactor options page">
 
-Installation
+Developer installation
 ============
-Node required to build the extension.
+[Node.js](http://nodejs.org/) is required to build the extension. After it's installed go to project directory and run:
 
 ```
-npm install grunt grunt-contrib grunt-jasmine-task
-node_modules/.bin/grunt
+npm install
+./node_modules/.bin/grunt
 ```
 
-Point Chrome to build/BuildReactor folder.
+Open Chrome Extension manager and "Load unpacked extension.." from "_build/BuildReactor" folder.
 
 Attribution
 ===========
@@ -27,8 +27,15 @@ Application icon based on https://commons.wikimedia.org/wiki/File:Radiation_warn
 
 What's new
 ============
+
+0.3.0 (16/08/2012)
+ * First public version
+ * Support for cctray XML reporting format
+ * Automated build
+ * Switched to Chrome extensions manifest version 2
+
 0.2.0 (8/04/2012)
-Lots of UI improvements, using Twitter bootstrap
+ * Lots of UI improvements, using Twitter bootstrap
 
 0.1.0 (23/12/2011)
-First version with Bamboo support
+ * First version with Bamboo support
