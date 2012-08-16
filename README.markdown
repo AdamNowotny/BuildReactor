@@ -7,7 +7,7 @@ The idea is to show only the relevant events and minimise distractions. That is 
  * not all builds are shown, only if they fail or are fixed
  * click on notification opens the page with build results
  * notifications about broken builds stay on screen to let you know the build needs your attention
- * fixed builds dissapear automatically and hide all previous messages about that particular build (so if you go for lunch you are presented only with the builds that broke while you were away and are still broken)
+ * fixed builds dissapear automatically and hide all previous messages about that particular build (so you are presented only with the builds that broke while you were away and are still need fixing)
 
 Supported services
 ==================
@@ -25,13 +25,17 @@ CCtray
 Most CI servers report the status of the builds using cctray XML reporting format, you just need to add the location of the XML to the address of your server.
 
 CruiseControl.rb - http://cruisecontrolrb.thoughtworks.com/XmlStatusReport.aspx
+
 CruiseControl - http://example.com:8080/cctray.xml
+
 CruiseControl.NET - http://build.nauck-it.de/XmlStatusReport.aspx
-Cruise
-Go
-Hudson - http://example.com:8080/cc.xml
+
+Go - http://example.com:8153/go/cctray.xml
+
 Jenkins - http://ci.jenkins-ci.org/cc.xml
-TeamCity (version 7)
+
+TeamCity (version 7) - http://teamcity.jetbrains.com/guestAuth/app/rest/cctray/projects.xml 
+
 Travis CI - http://travis-ci.org/AdamNowotny/BuildReactor/cc.xml
 
 Screenshots
