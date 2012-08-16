@@ -1,6 +1,6 @@
 {
   "name": "BuildReactor",
-  "description": "Provides notifications for CI server events",
+  "description": "Google Chrome extension that shows notifications for CI server events",
   "version": "0.3.0",
   "homepage": "https://github.com/AdamNowotny/BuildReactor",
   "author": {

@@ -2,7 +2,7 @@
 	"name": "BuildReactor",
 	"version": "0.3.0",
 	"manifest_version": 2,
-	"description": "Provides notifications on CI server events",
+	"description": "Google Chrome extension that shows notifications for CI server events",
 	"browser_action": {
 		"default_title": "BuildReactor notifications",
 		"default_icon": "img/icon-19.png"
