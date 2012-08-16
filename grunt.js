@@ -75,7 +75,6 @@ module.exports = function (grunt) {
 					inlineText: true,
 					useStrict: true,
 					preserveLicenseComments: true,
-					optimize: 'none',
 					// optimize: 'uglify',
 					optimizeCss: 'none',
 					uglify: {
@@ -165,6 +164,7 @@ module.exports = function (grunt) {
 
 	// Default task.
 	grunt.registerTask('default', 'clean lint jasmine mincss requirejs copy');
+	grunt.registerTask('travis', 'clean lint jasmine');
 	grunt.registerTask('test', 'lint jasmine');
 	grunt.registerTask('dist', 'clean mincss requirejs copy');
 

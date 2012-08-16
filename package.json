@@ -1,0 +1,35 @@
+{
+  "name": "BuildReactor",
+  "description": "Provides notifications for CI server events",
+  "version": "0.3.0",
+  "homepage": "https://github.com/AdamNowotny/BuildReactor",
+  "author": {
+    "name": "Adam Nowotny",
+    "email": "adam.nowotny@gmail.com",
+    "url": "https://profiles.google.com/adam.nowotny"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/AdamNowotny/BuildReactor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AdamNowotny/BuildReactor/issues"
+  },
+  "licenses": [
+    {
+      "type": "Apache",
+      "url": "https://github.com/AdamNowotny/BuildReactor/blob/master/LICENSE"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "scripts": {
+    "test": "grunt travis --verbose"
+  },
+  "dependencies": {
+    "grunt": "~0.3.11",
+    "grunt-contrib": "~0.1.4",
+    "grunt-jasmine-task": "~0.2.1"
+  }
+}
