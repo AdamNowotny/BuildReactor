@@ -82,7 +82,7 @@ define([
 	};
 
 	var serviceAddSelect = function (sender) {
-		serviceTypeName = sender.target.alt;
+		serviceTypeName = $(sender.currentTarget).closest('a').data('service');
 		scrollableApi.next();
 	};
 
