@@ -1,11 +1,10 @@
 define([
 	'signals',
 	'jquery',
-	'serviceTypesRepository',
 	'hbs!templates/addModalService',
 	'jqueryTools',
 	'bootstrap'
-], function (signals, $, serviceTypesRepository, addModalServiceTemplate) {
+], function (signals, $, addModalServiceTemplate) {
 
 	'use strict';
 
@@ -16,10 +15,10 @@ define([
 	var serviceTypeName;
 	var serviceTypes;
 
-	var initialize = function () {
+	var initialize = function (serviceSettings) {
 		serviceTypeName = undefined;
 		scrollableApi = undefined;
-		serviceTypes = serviceTypesRepository.getAll();
+		serviceTypes = serviceSettings;
 		renderServiceTypes();
 		$('#service-add-wizard .thumbnails a').click(serviceAddSelect);
 		$('#service-add-form').submit(function () {

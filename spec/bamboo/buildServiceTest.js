@@ -51,6 +51,14 @@ define([
 				updateErrorSignal.dispatch(false, { message: 'error message' });
 			});
 
+			it('should provide default settings', function () {
+				var settings = BuildService.settings();
+
+				expect(settings.typeName).toBe('Atlassian Bamboo');
+				expect(settings.baseUrl).toBe('bamboo');
+				expect(settings.icon).toBe('bamboo/icon.png');
+			});
+
 			it('should require service name', function () {
 				expect(function () {
 					var service = new BuildService({

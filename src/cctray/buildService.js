@@ -26,6 +26,14 @@ define([
 			};
 		};
 
+		CCBuildService.settings = function () {
+			return {
+				typeName: 'CCTray Generic',
+				baseUrl: 'cctray',
+				icon: 'cctray/icon.png'
+			};
+		};
+
 		CCBuildService.prototype.start = function () {
 			if (!this.settings.updateInterval) {
 				throw { name: 'ArgumentInvalid', message: 'settings.updateInterval not set' };

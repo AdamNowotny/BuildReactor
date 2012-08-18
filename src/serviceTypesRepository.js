@@ -2,32 +2,24 @@ define(function () {
 
 	'use strict';
 	
-	var types = [
-		{
-			typeName: 'Atlassian Bamboo',
-			baseUrl: 'bamboo',
-			icon: 'bamboo/icon.png'
-		},
-		{
-			typeName: 'CCTray Generic',
-			baseUrl: 'cctray',
-			icon: 'cctray/icon.png'
-		}
-	];
+	var types = [];
 
 	var getAll = function () {
 		return types;
 	};
 
-	var getByName = function (name) {
-		for (var i = 0; i < types.length; i++) {
-			if (types[i].typeName === name) {
-				return types[i];
-			}
-		}
+	var register = function (Service) {
+		var settings = Service.settings();
+		types.push(settings);
+	};
+
+	var clear = function () {
+		types = [];
 	};
 
 	return {
-		getAll: getAll
+		getAll: getAll,
+		register: register,
+		clear: clear
 	};
 });

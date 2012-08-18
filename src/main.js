@@ -19,16 +19,28 @@ require([
 	'notificationController',
 	'badgeController',
 	'settingsStore',
+	'serviceTypesRepository',
+	'bamboo/buildService',
+	'cctray/buildService',
 	'backgroundLogger'
-], function (serviceController, notificationController, badgeController, settingsStore, backgroundLogger) {
+], function (
+	serviceController,
+	notificationController,
+	badgeController,
+	settingsStore,
+	serviceTypesRepository,
+	BambooService,
+	CctrayService,
+	backgroundLogger) {
 
 	'use strict';
 
 	function onMessage(request, sender, sendResponse) {
 		switch (request.name) {
-		case 'getSettings':
+		case 'initOptions':
 			sendResponse({
-				settings: settingsStore.getAll()
+				settings: settingsStore.getAll(),
+				serviceTypes: serviceTypesRepository.getAll()
 			});
 			break;
 		case 'updateSettings':
@@ -47,6 +59,9 @@ require([
 	backgroundLogger();
 	badgeController();
 	notificationController();
+	serviceTypesRepository.clear();
+	serviceTypesRepository.register(BambooService);
+	serviceTypesRepository.register(CctrayService);
 	var settings = settingsStore.getAll();
 	serviceController.load(settings).addOnce(function () {
 		serviceController.run();

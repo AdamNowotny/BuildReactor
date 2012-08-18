@@ -59,7 +59,14 @@ function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXm
 			mockTimer = spyOn(Timer.prototype, 'start');
 		});
 
-		
+		it('should provide default settings', function () {
+			var settings = BuildService.settings();
+
+			expect(settings.typeName).toBe('CCTray Generic');
+			expect(settings.baseUrl).toBe('cctray');
+			expect(settings.icon).toBe('cctray/icon.png');
+		});
+
 		it('should require service name', function () {
 			expect(function () {
 				var service = new BuildService({

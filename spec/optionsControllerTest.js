@@ -1,7 +1,6 @@
 define([
 		'jquery',
 		'optionsController',
-		'serviceTypesRepository',
 		'settings/addModal',
 		'settings/serviceSettings',
 		'settings/serviceOptions',
@@ -11,7 +10,7 @@ define([
 		'settings/alert',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals'
-	], function ($, controller, serviceTypesRepository, addModal, serviceSettings, serviceOptions, serviceList, savePrompt, removePrompt, alert, MockSettingsBuilder, jasmineSignals) {
+	], function ($, controller, addModal, serviceSettings, serviceOptions, serviceList, savePrompt, removePrompt, alert, MockSettingsBuilder, jasmineSignals) {
 
 		'use strict';
 		

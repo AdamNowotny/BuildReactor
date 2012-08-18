@@ -21,14 +21,12 @@ require([
 
 	'use strict';
 	
-	function onSettingsChanged(updatedSettings) {
-		chrome.extension.sendMessage({name: "updateSettings", settings: updatedSettings});
-	}
-
 	optionsLogger();
-	optionsController.on.settingsChanged.add(onSettingsChanged);
-	optionsController.initialize();
-	chrome.extension.sendMessage({name: "getSettings"}, function (response) {
+	optionsController.on.settingsChanged.add(function (updatedSettings) {
+		chrome.extension.sendMessage({name: "updateSettings", settings: updatedSettings});
+	});
+	chrome.extension.sendMessage({ name: "initOptions" }, function (response) {
+		optionsController.initialize(response.serviceTypes);
 		optionsController.load(response.settings);
 	});
 });

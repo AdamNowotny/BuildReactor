@@ -30,5 +30,13 @@ define(['signals'], function (signals) {
 		};
 	};
 
+	MockBuildService.settings = function () {
+		return {
+			typeName: 'Fake service',
+			baseUrl: 'mock',
+			icon: 'mock/icon.png'
+		};
+	};
+
 	return MockBuildService;
 });

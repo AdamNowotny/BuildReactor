@@ -1,10 +1,9 @@
 define([
 		'jquery',
 		'settings/addModal',
-		'serviceTypesRepository',
 		'jasmineSignals',
 		'jqueryTools'
-	], function ($, addModal, serviceTypesRepository, jasmineSignals) {
+	], function ($, addModal, jasmineSignals) {
 
 		'use strict';
 
@@ -69,9 +68,8 @@ define([
 					baseUrl: 'cruisecontrol',
 					icon: 'cruisecontrol/icon.png'
 				}];
-				spyOn(serviceTypesRepository, 'getAll').andReturn(serviceTypes);
 				jasmine.getFixtures().load('settings/addModalFixture.html');
-				addModal.initialize();
+				addModal.initialize(serviceTypes);
 				spySelected = spyOnSignal(addModal.on.selected);
 				modalWindow.show();
 			});

@@ -26,6 +26,14 @@ define([
 			};
 		};
 
+		BuildService.settings = function () {
+			return {
+				typeName: 'Atlassian Bamboo',
+				baseUrl: 'bamboo',
+				icon: 'bamboo/icon.png'
+			};
+		};
+
 		BuildService.prototype.start = function () {
 			if (!this.settings.updateInterval) {
 				throw { name: 'ArgumentInvalid', message: 'settings.updateInterval not set' };

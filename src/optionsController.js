@@ -1,7 +1,6 @@
 define([
 	'signals',
 	'jquery',
-	'serviceTypesRepository',
 	'settings/serviceSettings',
 	'settings/serviceOptions',
 	'settings/addModal',
@@ -9,7 +8,7 @@ define([
 	'settings/savePrompt',
 	'settings/removePrompt',
 	'settings/alert'
-], function (signals, $, serviceTypesRepository, serviceSettings, serviceOptions, addModal, serviceList, savePrompt, removePrompt, alert) {
+], function (signals, $, serviceSettings, serviceOptions, addModal, serviceList, savePrompt, removePrompt, alert) {
 
 	'use strict';
 	
@@ -25,7 +24,7 @@ define([
 		$('#service-add-button').toggleClass('disabled', isSaveNeeded);
 	}
 
-	function initialize() {
+	function initialize(serviceTypes) {
 		savePrompt.removeSelected.add(function () {
 			removeCurrentService();
 			savePrompt.hide();
@@ -57,12 +56,12 @@ define([
 			showServicePage(serviceInfo);
 		});
 		serviceOptions.on.updated.add(serviceSettingsChanged);
-		reset();
+		reset(serviceTypes);
 	}
 
-	function reset() {
+	function reset(serviceTypes) {
 		savePrompt.initialize();
-		addModal.initialize();
+		addModal.initialize(serviceTypes);
 		removePrompt.initialize();
 		serviceOptions.initialize();
 		setSaveNeeded(false);
