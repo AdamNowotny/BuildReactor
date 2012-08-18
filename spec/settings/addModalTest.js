@@ -10,18 +10,9 @@ define([
 
 		describe('addModal', function () {
 
-			var serviceAddedSpy;
+			var spySelected;
 			var spyOnSignal = jasmineSignals.spyOnSignal;
-
-			var serviceType1 = {
-				typeName: 'Atlassian Bamboo',
-				baseUrl: 'bamboo'
-			};
-			var serviceType2 = {
-				typeName: 'CruiseControl',
-				baseUrl: 'cruisecontrol'
-			};
-			var newSettings = serviceType1;
+			var serviceTypes;
 
 			var modalWindow = {
 				hide: function () {
@@ -69,34 +60,36 @@ define([
 			};
 
 			beforeEach(function () {
-				spyOn(serviceTypesRepository, 'getAll').andReturn([serviceType1, serviceType2]);
-				spyOn(serviceTypesRepository, 'createSettingsFor').andReturn(newSettings);
+				serviceTypes = [{
+					typeName: 'Atlassian Bamboo',
+					baseUrl: 'bamboo',
+					icon: 'bamboo/icon.png'
+				}, {
+					typeName: 'CruiseControl',
+					baseUrl: 'cruisecontrol',
+					icon: 'cruisecontrol/icon.png'
+				}];
+				spyOn(serviceTypesRepository, 'getAll').andReturn(serviceTypes);
 				jasmine.getFixtures().load('settings/addModalFixture.html');
-				addModal.initialize(serviceTypesRepository);
-				serviceAddedSpy = spyOnSignal(addModal.serviceAdded);
+				addModal.initialize();
+				spySelected = spyOnSignal(addModal.on.selected);
 				modalWindow.show();
 			});
 
 			afterEach(function () {
-				serviceAddedSpy.reset();
+				addModal.on.selected.removeAll();
 				modalWindow.hide();
 			});
 
-			it('should fail if service types not specified', function () {
-				expect(function () {
-					addModal.initialize();
-				}).toThrow();
-			});
-
-			it('should show services page', function () {
+			it('should show service selection step', function () {
 				expect($('#service-add-wizard')).toBeVisible();
 				expect(modalWindow.getActiveHeader()).toBe('Select service to add');
 			});
 
 			it('should show supported services', function () {
 				expect(modalWindow.getServiceCount()).toBe(2);
-				expect(modalWindow.getServiceNameAt(1)).toBe(serviceType1.typeName);
-				expect(modalWindow.getServiceNameAt(2)).toBe(serviceType2.typeName);
+				expect(modalWindow.getServiceNameAt(1)).toBe(serviceTypes[0].typeName);
+				expect(modalWindow.getServiceNameAt(2)).toBe(serviceTypes[1].typeName);
 			});
 
 			it('should expect name after selecting service type', function () {
@@ -143,51 +136,35 @@ define([
 				expect(modalWindow.isShown()).toBeTruthy();
 			});
 
-			it('should add service', function () {
-				var name = 'My CI service name';
-				var serviceAddedSpy = spyOnSignal(addModal.serviceAdded).matching(function (info) {
-					return info.name === name &&
-						info.baseUrl === 'bamboo' &&
-						info.typeName === 'Atlassian Bamboo';
-				});
+			it('should hide after selection', function () {
 				modalWindow.selectService();
-				modalWindow.enterServiceName(name);
+				modalWindow.enterServiceName('name');
 				modalWindow.add();
 
 				expect(modalWindow.isShown()).toBeFalsy();
-				expect(serviceAddedSpy).toHaveBeenDispatched(1);
 			});
 
-			it('should add on enter when name is in focus', function () {
+			it('should dispatch selected', function () {
+				spySelected.andCallFake(function (info) {
+					expect(info).toBe(serviceTypes[1]);
+					expect(info.name).toBe('CI 2');
+				});
+
+				modalWindow.selectService(2);
+				modalWindow.enterServiceName('CI 2');
+				modalWindow.add();
+
+				expect(spySelected).toHaveBeenDispatched(1);
+			});
+
+			it('should select on enter when name is in focus', function () {
 				modalWindow.selectService();
 				modalWindow.enterServiceName('My server');
 
 				modalWindow.pressEnter();
 
 				expect(modalWindow.isShown()).toBeFalsy();
-				expect(serviceAddedSpy).toHaveBeenDispatched(1);
-			});
-
-			it('should dispatch added with selected service', function () {
-				var spyServiceAdded = spyOnSignal(addModal.serviceAdded).matchingValues(newSettings);
-
-				modalWindow.selectService(2);
-				modalWindow.enterServiceName('CI 2');
-				modalWindow.add();
-
-				expect(spyServiceAdded).toHaveBeenDispatched(1);
-			});
-
-			it('should add name to new settings', function () {
-				var spyServiceAdded = spyOnSignal(addModal.serviceAdded).matching(function (settings) {
-					return settings.name === 'CI 2';
-				});
-
-				modalWindow.selectService(2);
-				modalWindow.enterServiceName('CI 2');
-				modalWindow.add();
-
-				expect(spyServiceAdded).toHaveBeenDispatched(1);
+				expect(spySelected).toHaveBeenDispatched(1);
 			});
 
 		});

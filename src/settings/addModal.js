@@ -1,29 +1,26 @@
 define([
 	'signals',
 	'jquery',
+	'serviceTypesRepository',
 	'hbs!templates/addModalService',
 	'jqueryTools',
 	'bootstrap'
-], function (signals, $, addModalServiceTemplate) {
+], function (signals, $, serviceTypesRepository, addModalServiceTemplate) {
 
 	'use strict';
 
-	var serviceAdded = new signals.Signal();
+	var on = {
+		selected: new signals.Signal()
+	};
 	var scrollableApi;
 	var serviceTypeName;
-	var typesRepository;
+	var serviceTypes;
 
-	var initialize = function (serviceTypesRepository) {
-		if (!serviceTypesRepository) {
-			throw {
-				name: 'ArgumentUndefined',
-				message: 'Supported service types must be specified'
-			};
-		}
-		typesRepository = serviceTypesRepository;
+	var initialize = function () {
 		serviceTypeName = undefined;
-		renderServiceTypes(typesRepository.getAll());
 		scrollableApi = undefined;
+		serviceTypes = serviceTypesRepository.getAll();
+		renderServiceTypes();
 		$('#service-add-wizard .thumbnails a').click(serviceAddSelect);
 		$('#service-add-form').submit(function () {
 			serviceAdd();
@@ -31,7 +28,7 @@ define([
 		});
 	};
 
-	var renderServiceTypes = function (serviceTypes) {
+	var renderServiceTypes = function () {
 		$('#service-add-list').html(addModalServiceTemplate({ services: serviceTypes }));
 	};
 
@@ -47,10 +44,6 @@ define([
 
 	var hide = function () {
 		$('#service-add-wizard').modal('hide');
-	};
-
-	var getName = function () {
-		return $('#service-add-name').val();
 	};
 
 	var initializeModal = function () {
@@ -91,14 +84,16 @@ define([
 			return;
 		}
 		hide();
-		var newSettings = typesRepository.createSettingsFor(serviceTypeName);
-		newSettings.name = getName();
-		serviceAdded.dispatch(newSettings);
+		var selected = serviceTypes.filter(function (d) {
+			return d.typeName === serviceTypeName;
+		})[0];
+		selected.name = $('#service-add-name').val();
+		on.selected.dispatch(selected);
 	};
 
 	return {
 		initialize: initialize,
 		show: show,
-		serviceAdded: serviceAdded
+		on: on
 	};
 });

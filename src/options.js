@@ -16,9 +16,8 @@ require.config({
 });
 require([
 	'optionsController',
-	'serviceTypesRepository',
 	'optionsLogger'
-], function (optionsController, serviceTypesRepository, optionsLogger) {
+], function (optionsController, optionsLogger) {
 
 	'use strict';
 	
@@ -28,7 +27,7 @@ require([
 
 	optionsLogger();
 	optionsController.on.settingsChanged.add(onSettingsChanged);
-	optionsController.initialize(serviceTypesRepository);
+	optionsController.initialize();
 	chrome.extension.sendMessage({name: "getSettings"}, function (response) {
 		optionsController.load(response.settings);
 	});

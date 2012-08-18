@@ -4,6 +4,7 @@ define(function () {
 	
 	var MockSettingsBuilder = function () {
 		this.settings = {
+			typeName: 'service type',
 			baseUrl: 'mocks',
 			url: 'http://www.example.com/',
 			name: 'service name'

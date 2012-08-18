@@ -5,26 +5,18 @@ define(function () {
 	var types = [
 		{
 			typeName: 'Atlassian Bamboo',
-			baseUrl: 'bamboo'
+			baseUrl: 'bamboo',
+			icon: 'bamboo/icon.png'
 		},
 		{
 			typeName: 'CCTray Generic',
-			baseUrl: 'cctray'
+			baseUrl: 'cctray',
+			icon: 'cctray/icon.png'
 		}
 	];
 
 	var getAll = function () {
 		return types;
-	};
-
-	var createSettingsFor = function (name) {
-		var typeInfo = getByName(name);
-		var newSettings = {
-			typeName: name,
-			baseUrl: typeInfo.baseUrl,
-			icon: typeInfo.baseUrl + '/icon.png'
-		};
-		return newSettings;
 	};
 
 	var getByName = function (name) {
@@ -36,7 +28,6 @@ define(function () {
 	};
 
 	return {
-		getAll: getAll,
-		createSettingsFor: createSettingsFor
+		getAll: getAll
 	};
 });

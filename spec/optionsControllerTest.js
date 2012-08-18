@@ -1,6 +1,7 @@
 define([
 		'jquery',
 		'optionsController',
+		'serviceTypesRepository',
 		'settings/addModal',
 		'settings/serviceSettings',
 		'settings/serviceOptions',
@@ -10,15 +11,13 @@ define([
 		'settings/alert',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals'
-	], function ($, controller, addModal, serviceSettings, serviceOptions, serviceList, savePrompt, removePrompt, alert, MockSettingsBuilder, jasmineSignals) {
+	], function ($, controller, serviceTypesRepository, addModal, serviceSettings, serviceOptions, serviceList, savePrompt, removePrompt, alert, MockSettingsBuilder, jasmineSignals) {
 
 		'use strict';
 		
 		describe('optionsController', function () {
 
 			var spyOnSignal = jasmineSignals.spyOnSignal;
-
-			var serviceTypes = [{ name: 'service name'}];
 
 			var page = {
 				getServiceName: function () {
@@ -46,6 +45,7 @@ define([
 			var spyServiceListGetSelectedName;
 			var spyServiceSettingsGetAll;
 			var spyServiceSettingsGetByIndex;
+			var spyServiceListAdd;
 
 			beforeEach(function () {
 				jasmine.getFixtures().load('optionsControllerFixture.html');
@@ -67,7 +67,7 @@ define([
 
 				spyOn(serviceList, 'load');
 				spyOn(serviceList, 'update');
-				spyOn(serviceList, 'add');
+				spyServiceListAdd = spyOn(serviceList, 'add');
 				spyOn(serviceList, 'selectItem');
 				spyServiceListGetSelectedName = spyOn(serviceList, 'getSelectedName');
 
@@ -79,12 +79,12 @@ define([
 				spyOn(serviceSettings, 'remove');
 				spyOn(serviceSettings, 'update');
 
-				controller.initialize(serviceTypes);
+				controller.initialize();
 			});
 
 			afterEach(function () {
 				savePrompt.removeSelected.removeAll();
-				addModal.serviceAdded.removeAll();
+				addModal.on.selected.removeAll();
 				removePrompt.removeSelected.removeAll();
 				serviceSettings.cleared.removeAll();
 				serviceList.itemClicked.removeAll();
@@ -104,12 +104,12 @@ define([
 			};
 
 			it('should initialize components on initialize', function () {
-				controller.initialize(serviceTypes);
+				controller.initialize();
 
 				expect(serviceOptions.initialize).toHaveBeenCalled();
 				expect(removePrompt.initialize).toHaveBeenCalled();
 				expect(savePrompt.initialize).toHaveBeenCalled();
-				expect(addModal.initialize).toHaveBeenCalledWith(serviceTypes);
+				expect(addModal.initialize).toHaveBeenCalled();
 			});
 
 			it('should display list of services', function () {
@@ -205,7 +205,7 @@ define([
 
 				function addService(name) {
 					var serviceInfo = new MockSettingsBuilder().withName(name).create();
-					addModal.serviceAdded.dispatch(serviceInfo);
+					addModal.on.selected.dispatch(serviceInfo);
 					return serviceInfo;
 				}
 
