@@ -39,8 +39,13 @@ define([
 			$('.alert-error').hide();
 			var serviceModuleName = serviceInfo.baseUrl + '/buildService';
 			require([serviceModuleName], function (BuildService) {
-				var service = new BuildService(serviceInfo);
-				var result = service.getProjects(currentValues, serviceInfo.projects);
+				var settings = {
+					url: currentValues.url,
+					username: currentValues.username,
+					password: currentValues.password
+				};
+				var service = new BuildService(settings);
+				var result = service.projects(serviceInfo.projects);
 				result.receivedProjects.addOnce(projectsReceived);
 				result.errorThrown.addOnce(renderError);
 			});

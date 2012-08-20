@@ -19,9 +19,8 @@
 	"offline_enabled": false,
 	"permissions": [ "http://*/*", "https://*/*", "notifications", "cookies" ],
 	"web_accessible_resources": [
-		"src/cctray/options.html",
+		"src/bamboo/icon.png",
 		"src/cctray/icon.png",
-		"src/bamboo/options.html",
-		"src/bamboo/icon.png"
+		"src/jenkins/icon.png"
 	]
 }

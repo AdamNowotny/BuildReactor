@@ -23,7 +23,7 @@ define(['signals'], function (signals) {
 		};
 	};
 
-	MockBuildService.prototype.getProjects = function () {
+	MockBuildService.prototype.projects = function () {
 		return {
 			receivedProjects: receivedProjects,
 			errorThrown: errorThrown

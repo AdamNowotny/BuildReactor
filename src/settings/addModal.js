@@ -15,10 +15,10 @@ define([
 	var serviceTypeName;
 	var serviceTypes;
 
-	var initialize = function (serviceSettings) {
+	var initialize = function (availableServices) {
 		serviceTypeName = undefined;
 		scrollableApi = undefined;
-		serviceTypes = serviceSettings;
+		serviceTypes = availableServices;
 		renderServiceTypes();
 		$('#service-add-wizard .thumbnails a').click(serviceAddSelect);
 		$('#service-add-form').submit(function () {

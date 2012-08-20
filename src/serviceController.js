@@ -22,10 +22,10 @@ define([
 
 		function load(settings) {
 			
-			function loadService(serviceSettings) {
-				var serviceName = serviceSettings.baseUrl + '/buildService';
+			function loadService(serviceInfo) {
+				var serviceName = serviceInfo.baseUrl + '/buildService';
 				require([serviceName], function (Service) {
-					var serviceInstance = new Service(serviceSettings);
+					var serviceInstance = new Service(serviceInfo);
 					addService(serviceInstance);
 					servicesToLoadCount--;
 					if (servicesToLoadCount === 0) {

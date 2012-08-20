@@ -61,6 +61,7 @@ require([
 	'spec/cctray/buildServiceTest',
 	'spec/cctray/ccRequestTest',
 	'spec/cctray/projectTest',
+	'spec/jenkins/buildServiceTest',
 	'spec/settings/addModalTest',
 	'spec/settings/alertTest',
 	'spec/settings/projectViewTest',

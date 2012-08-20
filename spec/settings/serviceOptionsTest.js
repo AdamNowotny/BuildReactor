@@ -49,7 +49,7 @@ define([
 			errorThrown = new signals.Signal();
 			receivedProjects.memorize = true;
 			errorThrown.memorize = true;
-			spyOn(MockBuildService.prototype, 'getProjects').andCallFake(function () {
+			spyOn(MockBuildService.prototype, 'projects').andCallFake(function () {
 				return {
 					receivedProjects: receivedProjects,
 					errorThrown: errorThrown
@@ -175,13 +175,13 @@ define([
 			var formValues = { url: settings.url };
 			settingsFormView.on.clickedShow.dispatch(formValues);
 
-			expect(MockBuildService.prototype.getProjects).toHaveBeenCalledWith(formValues, settings.projects);
+			expect(MockBuildService.prototype.projects).toHaveBeenCalledWith(settings.projects);
 		});
 
 		it('should reset buttons after projects loaded', function () {
 			serviceOptions.show(settings);
 
-			settingsFormView.on.clickedShow.dispatch();
+			settingsFormView.on.clickedShow.dispatch({});
 			receivedProjects.dispatch();
 
 			expect(settingsFormView.resetButtons).toHaveBeenCalled();
@@ -191,7 +191,7 @@ define([
 			serviceOptions.show(settings);
 			var projects = {};
 
-			settingsFormView.on.clickedShow.dispatch();
+			settingsFormView.on.clickedShow.dispatch({});
 			receivedProjects.dispatch(projects);
 
 			expect(projectView.show).toHaveBeenCalledWith(projects);
@@ -200,7 +200,7 @@ define([
 		it('should reset buttons after request error', function () {
 			serviceOptions.show(settings);
 
-			settingsFormView.on.clickedShow.dispatch();
+			settingsFormView.on.clickedShow.dispatch({});
 			errorThrown.dispatch({ message: 'error message', url: settings.url });
 
 			expect(settingsFormView.resetButtons).toHaveBeenCalled();
@@ -209,7 +209,7 @@ define([
 		it('should display error if call failed when getting plans', function () {
 			serviceOptions.show(settings);
 
-			settingsFormView.on.clickedShow.dispatch();
+			settingsFormView.on.clickedShow.dispatch({});
 			errorThrown.dispatch({ message: 'error message', url: 'http://error.com/' });
 
 			expect($('.alert-error')).toBeVisible();
@@ -224,7 +224,7 @@ define([
 			var formValues = { url: settings.url };
 			settingsFormView.on.clickedShow.dispatch(formValues);
 
-			expect(MockBuildService.prototype.getProjects).toHaveBeenCalledWith(formValues, []);
+			expect(MockBuildService.prototype.projects).toHaveBeenCalledWith([]);
 		});
 
 	});

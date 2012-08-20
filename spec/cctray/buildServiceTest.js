@@ -65,16 +65,7 @@ function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXm
 			expect(settings.typeName).toBe('CCTray Generic');
 			expect(settings.baseUrl).toBe('cctray');
 			expect(settings.icon).toBe('cctray/icon.png');
-		});
-
-		it('should require service name', function () {
-			expect(function () {
-				var service = new BuildService({
-					name: null,
-					url: 'http://example.com/',
-					updateInterval: 10000
-				});
-			}).toThrow();
+			expect(settings.projects.length).toBe(0);
 		});
 
 		it('should expose service interface', function () {
@@ -90,8 +81,8 @@ function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXm
 			service.start();
 
 			expect(mockRequest).toHaveBeenCalled();
-			expect(service.projects['CruiseControl.NET']).toBeDefined();
-			expect(service.projects['NetReflector']).toBeDefined();
+			expect(service._selectedProjects['CruiseControl.NET']).toBeDefined();
+			expect(service._selectedProjects['NetReflector']).toBeDefined();
 		});
 
 		it('should try again if request failed', function () {
@@ -202,7 +193,7 @@ function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXm
 				});
 			initResponse();
 			service.update();
-			failedProject = service.projects['NetReflector'];
+			failedProject = service._selectedProjects['NetReflector'];
 
 			failedProject.failed.dispatch(failedProject);
 
@@ -217,7 +208,7 @@ function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXm
 				});
 			initResponse();
 			service.update();
-			fixedProject = service.projects['NetReflector'];
+			fixedProject = service._selectedProjects['NetReflector'];
 
 			fixedProject.fixed.dispatch(fixedProject);
 
@@ -227,10 +218,10 @@ function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXm
 		it('should ignore plans that are not monitored', function () {
 			service.update();
 
-			expect(service.projects['FastForward.NET']).not.toBeDefined();
+			expect(service._selectedProjects['FastForward.NET']).not.toBeDefined();
 		});
 
-		describe('getProjects', function () {
+		describe('projects', function () {
 
 
 			it('should use url and credentials when getting plans', function () {
@@ -245,7 +236,7 @@ function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXm
 					};
 				});
 
-				service.getProjects(settings, []);
+				service.projects([]);
 
 				expect(mockRequest).toHaveBeenCalled();
 			});

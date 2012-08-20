@@ -9,9 +9,6 @@ define([
 		'use strict';
 
 		var BuildService = function (settings) {
-			if (!settings.name) {
-				throw { name: 'ArgumentInvalid', message: 'settings.name not set' };
-			}
 			this.isInitialized = false;
 			this.settings = settings;
 			this.name = settings.name;
@@ -30,7 +27,8 @@ define([
 			return {
 				typeName: 'Atlassian Bamboo',
 				baseUrl: 'bamboo',
-				icon: 'bamboo/icon.png'
+				icon: 'bamboo/icon.png',
+				projects: []
 			};
 		};
 
@@ -166,12 +164,12 @@ define([
 			this.on.errorThrown.dispatch(ajaxError);
 		};
 
-		BuildService.prototype.getProjects = function (requestSettings, selectedPlans) {
+		BuildService.prototype.projects = function (selectedPlans) {
 			var on = {
 				errorThrown: new signals.Signal(),
 				receivedProjects: new signals.Signal()
 			};
-			var plansRequest = new BambooRequest(requestSettings);
+			var plansRequest = new BambooRequest(this.settings);
 			plansRequest.on.responseReceived.addOnce(function (response) {
 				var templateData = createTemplateData(response, selectedPlans);
 				on.receivedProjects.dispatch(templateData);

@@ -22,6 +22,7 @@ require([
 	'serviceTypesRepository',
 	'bamboo/buildService',
 	'cctray/buildService',
+	'jenkins/buildService',
 	'backgroundLogger'
 ], function (
 	serviceController,
@@ -31,6 +32,7 @@ require([
 	serviceTypesRepository,
 	BambooService,
 	CctrayService,
+	JenkinsService,
 	backgroundLogger) {
 
 	'use strict';
@@ -62,6 +64,7 @@ require([
 	serviceTypesRepository.clear();
 	serviceTypesRepository.register(BambooService);
 	serviceTypesRepository.register(CctrayService);
+	serviceTypesRepository.register(JenkinsService);
 	var settings = settingsStore.getAll();
 	serviceController.load(settings).addOnce(function () {
 		serviceController.run();

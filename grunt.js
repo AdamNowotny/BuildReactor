@@ -123,11 +123,11 @@ module.exports = function (grunt) {
 					modules: [
 						{
 							name: 'main',
-							include: [ 'bamboo/buildService', 'cctray/buildService' ]
+							include: [ 'bamboo/buildService', 'cctray/buildService', 'jenkins/buildService' ]
 						},
 						{
 							name: 'options',
-							include: [ 'bamboo/buildService', 'cctray/buildService' ]
+							include: [ 'bamboo/buildService', 'cctray/buildService', 'jenkins/buildService' ]
 						}
 					]
 				}

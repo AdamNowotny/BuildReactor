@@ -57,17 +57,7 @@ define([
 				expect(settings.typeName).toBe('Atlassian Bamboo');
 				expect(settings.baseUrl).toBe('bamboo');
 				expect(settings.icon).toBe('bamboo/icon.png');
-			});
-
-			it('should require service name', function () {
-				expect(function () {
-					var service = new BuildService({
-						username: null,
-						password: null,
-						url: 'http://example.com/',
-						updateInterval: 10000
-					});
-				}).toThrow();
+				expect(settings.projects.length).toBe(0);
 			});
 
 			it('should expose service interface', function () {
@@ -319,7 +309,7 @@ define([
 				expect(mockBambooPlanUpdate.callCount).toBe(1);
 			});
 
-			describe('getProjects', function () {
+			describe('projects', function () {
 
 				it('should use url and credentials when getting available projects', function () {
 					mockBambooRequestProjects.andCallFake(function () {
@@ -329,7 +319,7 @@ define([
 						this.on.responseReceived.dispatch(projectsJson);
 					});
 					
-					service.getProjects(settings, []);
+					service.projects([]);
 
 					expect(mockBambooRequestProjects).toHaveBeenCalled();
 				});

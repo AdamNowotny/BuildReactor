@@ -11,12 +11,9 @@ define([
 		'use strict';
 
 		var CCBuildService = function (settings) {
-			if (!settings.name) {
-				throw { name: 'ArgumentInvalid', message: 'settings.name not set' };
-			}
 			this.settings = settings;
 			this.name = settings.name;
-			this.projects = {};
+			this._selectedProjects = {};
 			this.on = {
 				errorThrown: new signals.Signal(),
 				updating: new signals.Signal(),
@@ -30,7 +27,8 @@ define([
 			return {
 				typeName: 'CCTray Generic',
 				baseUrl: 'cctray',
-				icon: 'cctray/icon.png'
+				icon: 'cctray/icon.png',
+				projects: []
 			};
 		};
 
@@ -81,12 +79,12 @@ define([
 						};
 					})
 					.each(function createOrUpdate(i, d) {
-						var projectInstance = self.projects[d.name];
+						var projectInstance = self._selectedProjects[d.name];
 						if (!projectInstance) {
 							projectInstance = project();
 							projectInstance.failed.add(self.onBuildFailed, self);
 							projectInstance.fixed.add(self.onBuildFixed, self);
-							self.projects[d.name] = projectInstance;
+							self._selectedProjects[d.name] = projectInstance;
 						}
 						projectInstance.update(d);
 					});
@@ -115,12 +113,12 @@ define([
 			this.on.fixedBuild.dispatch(buildEvent);
 		};
 
-		CCBuildService.prototype.getProjects = function (requestSettings, selectedPlans) {
+		CCBuildService.prototype.projects = function (selectedPlans) {
 			var on = {
 				errorThrown: new signals.Signal(),
 				receivedProjects: new signals.Signal()
 			};
-			var plansRequest = ccRequest.projects(requestSettings);
+			var plansRequest = ccRequest.projects(this.settings);
 			plansRequest.responseReceived.addOnce(function (response) {
 				var templateData = createTemplateData(response, selectedPlans);
 				on.receivedProjects.dispatch(templateData);
