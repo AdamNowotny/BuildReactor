@@ -23,7 +23,10 @@ define(['signals'], function (signals) {
 			category = newProjectInfo.category;
 			status = newProjectInfo.status;
 			url = newProjectInfo.url;
-			if (!oldStatus && newProjectInfo.status !== 'Success') {
+			if (newProjectInfo.status === 'Unknown') {
+				return projectInstance;
+			}
+			if (!oldStatus && (newProjectInfo.status === 'Failure' || newProjectInfo.status === 'Exception')) {
 				failed.dispatch(this);
 			}
 			if (oldStatus === 'Success' && newProjectInfo.status !== 'Success') {

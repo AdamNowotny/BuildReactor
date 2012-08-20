@@ -11,11 +11,13 @@ define([
 
 		var projectSuccessInfo,
 			projectFailureInfo,
+			projectBuildingInfo,
 			spyOnSignal = jasmineSignals.spyOnSignal;
 
 		beforeEach(function () {
 			projectSuccessInfo = { name: 'project name', status: 'Success', url: 'http://www.example.com/' };
 			projectFailureInfo = { name: 'project name', status: 'Failure', url: 'http://www.example.com/' };
+			projectBuildingInfo = { name: 'project name', status: 'Unknown', url: 'http://www.example.com/' };
 		});
 
 		it('should initialize from JSON', function () {
@@ -59,6 +61,17 @@ define([
 			someProject.update(projectSuccessInfo);
 
 			expect(buildFixedSpy).not.toHaveBeenDispatched();
+		});
+
+		it('should ignore if building', function () {
+			var someProject = project(),
+				buildFixedSpy = spyOnSignal(someProject.fixed),
+				buildBrokenSpy = spyOnSignal(someProject.failed);
+
+			someProject.update(projectBuildingInfo);
+
+			expect(buildFixedSpy).not.toHaveBeenDispatched();
+			expect(buildBrokenSpy).not.toHaveBeenDispatched();
 		});
 	});
 });
