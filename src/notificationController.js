@@ -13,7 +13,7 @@ define([
 
 		function onBrokenBuild(buildEvent) {
 			var notificationInfo = {
-				message: interpolate('Build failed - {{0}}', [buildEvent.serviceName]),
+				message: interpolate('Build fixed - {{0}}', [buildEvent.serviceName]),
 				details: buildEvent.buildName + (buildEvent.group ? ' (' + buildEvent.group + ')' : ''),
 				url: buildEvent.url,
 				sticky: startedAll,

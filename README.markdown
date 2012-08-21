@@ -16,29 +16,23 @@ Supported services
 
 Below are the supported services and example urls for public instances if available.
 
-Atlassian Bamboo
-----------------
-
-To connect to Bamboo just type the url of your Bamboo instance, f.e https://ci.openmrs.org/
+ * Atlassian Bamboo - https://ci.openmrs.org/
+ * CruiseControl
+ * CruiseControl.NET - http://build.nauck-it.de/
+ * CruiseControl.rb - http://cruisecontrolrb.thoughtworks.com/
+ * Jenkins (Hudson) - http://ci.jenkins-ci.org/
+ * ThoughtWorks GO
+ * TeamCity 7+ - http://teamcity.jetbrains.com/
+ * Generic cctray XML (Travis-CI)
 
 CCtray
 ------
 
 Most CI servers report the status of the builds using cctray XML reporting format, you just need to add the location of the XML to the address of your server.
 
-CruiseControl.rb - http://cruisecontrolrb.thoughtworks.com/XmlStatusReport.aspx
+For example if you want to monitor a Travis-CI build, use this format:
 
-CruiseControl - http://example.com:8080/cctray.xml
-
-CruiseControl.NET - http://build.nauck-it.de/XmlStatusReport.aspx
-
-Go - http://example.com:8153/go/cctray.xml
-
-Jenkins - http://ci.jenkins-ci.org/cc.xml
-
-TeamCity (version 7) - http://teamcity.jetbrains.com/guestAuth/app/rest/cctray/projects.xml 
-
-Travis CI - http://travis-ci.org/AdamNowotny/BuildReactor/cc.xml
+http://travis-ci.org/AdamNowotny/BuildReactor/cc.xml
 
 Screenshots
 ===========
