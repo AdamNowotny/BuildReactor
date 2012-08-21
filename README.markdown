@@ -104,6 +104,9 @@ Application icon based on https://commons.wikimedia.org/wiki/File:Radiation_warn
 What's new
 ============
 
+0.3.1 (22/08/2012)
+ * Added new services (CC.NET, CC.rb, CC, Jenkins, TeamCity 7, ThoughtWorks GO)
+ 
 0.3.0 (16/08/2012)
  * First public version
  * Support for cctray XML reporting format
