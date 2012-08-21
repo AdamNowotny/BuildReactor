@@ -68,6 +68,22 @@ function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXm
 			expect(settings.projects.length).toBe(0);
 		});
 
+		it('should create valid url', function () {
+			settings.url = 'http://example.com';
+
+			var GoBuildService = function (settings) {
+				this.cctrayLocation = function () {
+					return 'cc.xml';
+				};
+				BuildService.apply(this, [settings]);
+			};
+			GoBuildService.prototype = BuildService.prototype;
+
+			var service = new GoBuildService(settings);
+
+			expect(service.settings.url).toBe('http://example.com/cc.xml');
+		});
+
 		it('should expose service interface', function () {
 			expect(service.name).toBe(settings.name);
 			expect(service.on.brokenBuild).toBeDefined();

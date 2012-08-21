@@ -3,30 +3,21 @@ define(['cctray/buildService'], function (CCTrayBuildService) {
 		'use strict';
 
 		var JenkinsBuildService = function (settings) {
-			var cctraySettings = createCCTraySettings(settings);
-			CCTrayBuildService.apply(this, [cctraySettings]);
+			this.cctrayLocation = function (url) {
+				return 'cc.xml';
+			};
+			CCTrayBuildService.apply(this, [settings]);
 		};
 		
 		JenkinsBuildService.prototype = CCTrayBuildService.prototype;
 
-		function createCCTraySettings(settings) {
-			var cctraySettings = JenkinsBuildService.settings();
-			cctraySettings.name = settings.name;
-			cctraySettings.url = settings.url + 'cc.xml';
-			cctraySettings.updateInterval = settings.updateInterval;
-			cctraySettings.projects = settings.projects;
-			cctraySettings.icon = settings.icon;
-			return cctraySettings;
-		}
-
 		JenkinsBuildService.settings = function () {
-			return {
-				typeName: 'Jenkins',
-				baseUrl: 'jenkins',
-				icon: 'jenkins/icon.png',
-				logo: 'jenkins/logo.png',
-				projects: []
-			};
+			var settings = CCTrayBuildService.settings();
+			settings.typeName = 'Jenkins';
+			settings.baseUrl = 'jenkins';
+			settings.icon = 'jenkins/icon.png';
+			settings.logo = 'jenkins/logo.png';
+			return settings;
 		};
 
 		return JenkinsBuildService;

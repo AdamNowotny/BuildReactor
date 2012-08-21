@@ -6,7 +6,7 @@ require([
 
 	'use strict';
 
-	describe('cruisecontrol.rb/buildService', function () {
+	describe('cruisecontrol/buildService', function () {
 
 		var settings;
 		var ccBuildInfo;
@@ -57,24 +57,6 @@ require([
 			service.start();
 
 			expect(CCTrayBuildService.prototype.start).toHaveBeenCalled();
-		});
-
-		it('should stop', function () {
-			spyOn(CCTrayBuildService.prototype, 'stop');
-
-			var service = new BuildService(settings);
-			service.stop();
-
-			expect(CCTrayBuildService.prototype.stop).toHaveBeenCalled();
-		});
-
-		it('should update', function () {
-			spyOn(CCTrayBuildService.prototype, 'update');
-
-			var service = new BuildService(settings);
-			service.update();
-
-			expect(CCTrayBuildService.prototype.update).toHaveBeenCalled();
 		});
 
 	});

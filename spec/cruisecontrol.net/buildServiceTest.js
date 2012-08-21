@@ -59,24 +59,6 @@ require([
 			expect(CCTrayBuildService.prototype.start).toHaveBeenCalled();
 		});
 
-		it('should stop', function () {
-			spyOn(CCTrayBuildService.prototype, 'stop');
-
-			var service = new BuildService(settings);
-			service.stop();
-
-			expect(CCTrayBuildService.prototype.stop).toHaveBeenCalled();
-		});
-
-		it('should update', function () {
-			spyOn(CCTrayBuildService.prototype, 'update');
-
-			var service = new BuildService(settings);
-			service.update();
-
-			expect(CCTrayBuildService.prototype.update).toHaveBeenCalled();
-		});
-
 	});
 
 });

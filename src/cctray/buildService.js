@@ -5,14 +5,15 @@ define([
 		'cctray/project',
 		'timer',
 		'amdUtils/string/interpolate',
-		'amdUtils/array/contains'
-	], function ($, signals, ccRequest, project, Timer, interpolate, contains) {
+		'amdUtils/array/contains',
+		'urljs'
+	], function ($, signals, ccRequest, project, Timer, interpolate, contains, URL) {
 
 		'use strict';
 
 		var CCBuildService = function (settings) {
-			this.settings = settings;
-			this.name = settings.name;
+			this.settings = this.createSettings(settings);
+			this.name = this.settings.name;
 			this._selectedProjects = {};
 			this.on = {
 				errorThrown: new signals.Signal(),
@@ -23,12 +24,30 @@ define([
 			};
 		};
 
+		CCBuildService.prototype.createSettings = function (settings) {
+			var newSettings = CCBuildService.settings();
+			newSettings.name = settings.name;
+			newSettings.url = URL.resolve(settings.url, this.cctrayLocation());
+			newSettings.updateInterval = settings.updateInterval;
+			newSettings.projects = settings.projects;
+			newSettings.icon = settings.icon;
+			newSettings.logo = settings.logo;
+			newSettings.username = settings.username;
+			newSettings.password = settings.password;
+			return newSettings;
+		};
+
+		CCBuildService.prototype.cctrayLocation = function () {
+			return '';
+		};
+
 		CCBuildService.settings = function () {
 			return {
 				typeName: 'CCTray Generic',
 				baseUrl: 'cctray',
 				icon: 'cctray/icon.png',
 				logo: 'cctray/logo.png',
+				updateInterval: 60,
 				projects: []
 			};
 		};

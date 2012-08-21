@@ -3,30 +3,21 @@ define(['cctray/buildService'], function (CCTrayBuildService) {
 		'use strict';
 
 		var GoBuildService = function (settings) {
-			var cctraySettings = createCCTraySettings(settings);
-			CCTrayBuildService.apply(this, [cctraySettings]);
+			this.cctrayLocation = function () {
+				return 'guestAuth/app/rest/cctray/projects.xml';
+			};
+			CCTrayBuildService.apply(this, [settings]);
 		};
 		
 		GoBuildService.prototype = CCTrayBuildService.prototype;
 
-		function createCCTraySettings(settings) {
-			var cctraySettings = GoBuildService.settings();
-			cctraySettings.name = settings.name;
-			cctraySettings.url = settings.url + 'guestAuth/app/rest/cctray/projects.xml';
-			cctraySettings.updateInterval = settings.updateInterval;
-			cctraySettings.projects = settings.projects;
-			cctraySettings.icon = settings.icon;
-			return cctraySettings;
-		}
-
 		GoBuildService.settings = function () {
-			return {
-				typeName: 'TeamCity 7+',
-				baseUrl: 'teamcity',
-				icon: 'teamcity/icon.png',
-				logo: 'teamcity/logo.png',
-				projects: []
-			};
+			var settings = CCTrayBuildService.settings();
+			settings.typeName = 'TeamCity 7+';
+			settings.baseUrl = 'teamcity';
+			settings.icon = 'teamcity/icon.png';
+			settings.logo = 'teamcity/logo.png';
+			return settings;
 		};
 
 		return GoBuildService;
