@@ -28,6 +28,7 @@ define([
 				typeName: 'CCTray Generic',
 				baseUrl: 'cctray',
 				icon: 'cctray/icon.png',
+				logo: 'cctray/logo.png',
 				projects: []
 			};
 		};

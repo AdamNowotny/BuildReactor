@@ -28,6 +28,7 @@ define([
 				typeName: 'Atlassian Bamboo',
 				baseUrl: 'bamboo',
 				icon: 'bamboo/icon.png',
+				logo: 'bamboo/logo.png',
 				projects: []
 			};
 		};

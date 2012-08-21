@@ -9,32 +9,32 @@ define([
 
 		'use strict';
 
-		var JenkinsBuildService = function (settings) {
+		var CcrbBuildService = function (settings) {
 			var cctraySettings = createCCTraySettings(settings);
 			CCTrayBuildService.apply(this, [cctraySettings]);
 		};
 		
-		JenkinsBuildService.prototype = CCTrayBuildService.prototype;
+		CcrbBuildService.prototype = CCTrayBuildService.prototype;
 
 		function createCCTraySettings(settings) {
-			var cctraySettings = JenkinsBuildService.settings();
+			var cctraySettings = CcrbBuildService.settings();
 			cctraySettings.name = settings.name;
-			cctraySettings.url = settings.url + 'cc.xml';
+			cctraySettings.url = settings.url + 'XmlStatusReport.aspx';
 			cctraySettings.updateInterval = settings.updateInterval;
 			cctraySettings.projects = settings.projects;
 			cctraySettings.icon = settings.icon;
 			return cctraySettings;
 		}
 
-		JenkinsBuildService.settings = function () {
+		CcrbBuildService.settings = function () {
 			return {
-				typeName: 'Jenkins',
-				baseUrl: 'jenkins',
-				icon: 'jenkins/icon.png',
-				logo: 'jenkins/logo.png',
+				typeName: 'CruiseControl.rb',
+				baseUrl: 'cruisecontrol.rb',
+				icon: 'cruisecontrol.rb/icon.png',
+				logo: 'cruisecontrol.rb/logo.png',
 				projects: []
 			};
 		};
 
-		return JenkinsBuildService;
+		return CcrbBuildService;
 	});

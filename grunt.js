@@ -78,7 +78,7 @@ module.exports = function (grunt) {
 					inlineText: true,
 					useStrict: true,
 					preserveLicenseComments: true,
-					// optimize: 'none',
+					optimize: 'none',
 					optimizeCss: 'none',
 					uglify: {
 						toplevel: true,
@@ -123,11 +123,21 @@ module.exports = function (grunt) {
 					modules: [
 						{
 							name: 'main',
-							include: [ 'bamboo/buildService', 'cctray/buildService', 'jenkins/buildService' ]
+							include: [
+								'bamboo/buildService',
+								'cctray/buildService',
+								'jenkins/buildService',
+								'cruisecontrol.rb/buildService'
+							]
 						},
 						{
 							name: 'options',
-							include: [ 'bamboo/buildService', 'cctray/buildService', 'jenkins/buildService' ]
+							include: [
+								'bamboo/buildService',
+								'cctray/buildService',
+								'jenkins/buildService',
+								'cruisecontrol.rb/buildService'
+							]
 						}
 					]
 				}

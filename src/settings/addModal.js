@@ -28,7 +28,7 @@ define([
 	};
 
 	var renderServiceTypes = function () {
-		$('#service-add-list').html(addModalServiceTemplate({ services: serviceTypes }));
+		$('.service-add-list').html(addModalServiceTemplate({ services: serviceTypes }));
 	};
 
 	var show = function () {
