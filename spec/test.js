@@ -65,6 +65,7 @@ require([
 	'spec/cruisecontrol.net/buildServiceTest',
 	'spec/cruisecontrol.rb/buildServiceTest',
 	'spec/jenkins/buildServiceTest',
+	'spec/go/buildServiceTest',
 	'spec/settings/addModalTest',
 	'spec/settings/alertTest',
 	'spec/settings/projectViewTest',

@@ -23,6 +23,7 @@ require([
 	'bamboo/buildService',
 	'cctray/buildService',
 	'jenkins/buildService',
+	'go/buildService',
 	'cruisecontrol/buildService',
 	'cruisecontrol.net/buildService',
 	'cruisecontrol.rb/buildService',
@@ -36,6 +37,7 @@ require([
 	BambooService,
 	CctrayService,
 	JenkinsService,
+	GoService,
 	CruiseControlService,
 	CruiseControlNetService,
 	CruiseControlRBService,
@@ -73,6 +75,7 @@ require([
 	serviceTypesRepository.register(CruiseControlNetService);
 	serviceTypesRepository.register(CruiseControlRBService);
 	serviceTypesRepository.register(JenkinsService);
+	serviceTypesRepository.register(GoService);
 	serviceTypesRepository.register(CctrayService);
 	var settings = settingsStore.getAll();
 	serviceController.load(settings).addOnce(function () {
