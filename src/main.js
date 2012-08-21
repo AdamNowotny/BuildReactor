@@ -24,6 +24,7 @@ require([
 	'cctray/buildService',
 	'jenkins/buildService',
 	'cruisecontrol/buildService',
+	'cruisecontrol.net/buildService',
 	'cruisecontrol.rb/buildService',
 	'backgroundLogger'
 ], function (
@@ -36,6 +37,7 @@ require([
 	CctrayService,
 	JenkinsService,
 	CruiseControlService,
+	CruiseControlNetService,
 	CruiseControlRBService,
 	backgroundLogger) {
 
@@ -67,10 +69,11 @@ require([
 	notificationController();
 	serviceTypesRepository.clear();
 	serviceTypesRepository.register(BambooService);
-	serviceTypesRepository.register(CctrayService);
-	serviceTypesRepository.register(JenkinsService);
 	serviceTypesRepository.register(CruiseControlService);
+	serviceTypesRepository.register(CruiseControlNetService);
 	serviceTypesRepository.register(CruiseControlRBService);
+	serviceTypesRepository.register(JenkinsService);
+	serviceTypesRepository.register(CctrayService);
 	var settings = settingsStore.getAll();
 	serviceController.load(settings).addOnce(function () {
 		serviceController.run();

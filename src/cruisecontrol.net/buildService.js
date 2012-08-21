@@ -2,32 +2,32 @@ define(['cctray/buildService'], function (CCTrayBuildService) {
 
 		'use strict';
 
-		var CCBuildService = function (settings) {
+		var CcnetBuildService = function (settings) {
 			var cctraySettings = createCCTraySettings(settings);
 			CCTrayBuildService.apply(this, [cctraySettings]);
 		};
 		
-		CCBuildService.prototype = CCTrayBuildService.prototype;
+		CcnetBuildService.prototype = CCTrayBuildService.prototype;
 
 		function createCCTraySettings(settings) {
-			var cctraySettings = CCBuildService.settings();
+			var cctraySettings = CcnetBuildService.settings();
 			cctraySettings.name = settings.name;
-			cctraySettings.url = settings.url + 'cctray.xml';
+			cctraySettings.url = settings.url + 'XmlStatusReport.aspx';
 			cctraySettings.updateInterval = settings.updateInterval;
 			cctraySettings.projects = settings.projects;
 			cctraySettings.icon = settings.icon;
 			return cctraySettings;
 		}
 
-		CCBuildService.settings = function () {
+		CcnetBuildService.settings = function () {
 			return {
-				typeName: 'CruiseControl',
-				baseUrl: 'cruisecontrol',
-				icon: 'cruisecontrol/icon.png',
-				logo: 'cruisecontrol/logo.png',
+				typeName: 'CruiseControl.NET',
+				baseUrl: 'cruisecontrol.net',
+				icon: 'cruisecontrol.net/icon.png',
+				logo: 'cruisecontrol.net/logo.png',
 				projects: []
 			};
 		};
 
-		return CCBuildService;
+		return CcnetBuildService;
 	});
