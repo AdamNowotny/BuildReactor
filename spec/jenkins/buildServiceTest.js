@@ -76,62 +76,6 @@ require([
 			expect(CCTrayBuildService.prototype.update).toHaveBeenCalled();
 		});
 
-		it('should signal brokenBuild when CC signals', function () {
-			var service = new BuildService(settings);
-			var spyBrokenBuild = jasmineSignals.spyOnSignal(service.on.brokenBuild).andCallFake(function (buildInfo) {
-				expect(buildInfo.serviceName).toBe(settings.name);
-				expect(buildInfo.buildName).toBe(ccBuildInfo.buildName);
-				expect(buildInfo.group).toBe(ccBuildInfo.group);
-				expect(buildInfo.url).toBe(ccBuildInfo.url);
-				expect(buildInfo.icon).toBe(settings.icon);
-			});
-
-			service._cctrayService.on.brokenBuild.dispatch(ccBuildInfo);
-
-			expect(spyBrokenBuild).toHaveBeenDispatched(1);
-		});
-
-		it('should signal fixedBuild when CC signals', function () {
-			var service = new BuildService(settings);
-			var spyFixedBuild = jasmineSignals.spyOnSignal(service.on.fixedBuild).andCallFake(function (buildInfo) {
-				expect(buildInfo.serviceName).toBe(settings.name);
-				expect(buildInfo.buildName).toBe(ccBuildInfo.buildName);
-				expect(buildInfo.group).toBe(ccBuildInfo.group);
-				expect(buildInfo.url).toBe(ccBuildInfo.url);
-				expect(buildInfo.icon).toBe(settings.icon);
-			});
-
-			service._cctrayService.on.fixedBuild.dispatch(ccBuildInfo);
-
-			expect(spyFixedBuild).toHaveBeenDispatched(1);
-		});
-
-		it('should signal updating when CC signals', function () {
-			var service = new BuildService(settings);
-			var spyUpdating = jasmineSignals.spyOnSignal(service.on.updating);
-
-			service._cctrayService.on.updating.dispatch(ccBuildInfo);
-
-			expect(spyUpdating).toHaveBeenDispatched(1);
-		});
-
-		it('should signal updated when CC signals', function () {
-			var service = new BuildService(settings);
-			var spyUpdated = jasmineSignals.spyOnSignal(service.on.updated);
-
-			service._cctrayService.on.updated.dispatch(ccBuildInfo);
-
-			expect(spyUpdated).toHaveBeenDispatched(1);
-		});
-
-		it('should signal errorThrown when CC signals', function () {
-			var service = new BuildService(settings);
-			var spyErrorThrown = jasmineSignals.spyOnSignal(service.on.errorThrown);
-
-			service._cctrayService.on.errorThrown.dispatch(ccBuildInfo);
-
-			expect(spyErrorThrown).toHaveBeenDispatched(1);
-		});
 	});
 
 });
