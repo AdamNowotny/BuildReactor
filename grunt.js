@@ -126,11 +126,12 @@ module.exports = function (grunt) {
 							include: [
 								'bamboo/buildService',
 								'cctray/buildService',
-								'jenkins/buildService',
-								'go/buildService',
 								'cruisecontrol/buildService',
 								'cruisecontrol.net/buildService',
-								'cruisecontrol.rb/buildService'
+								'cruisecontrol.rb/buildService',
+								'jenkins/buildService',
+								'go/buildService',
+								'teamcity/buildService'
 							]
 						},
 						{
@@ -138,11 +139,12 @@ module.exports = function (grunt) {
 							include: [
 								'bamboo/buildService',
 								'cctray/buildService',
-								'jenkins/buildService',
-								'go/buildService',
 								'cruisecontrol/buildService',
 								'cruisecontrol.net/buildService',
-								'cruisecontrol.rb/buildService'
+								'cruisecontrol.rb/buildService',
+								'jenkins/buildService',
+								'go/buildService',
+								'teamcity/buildService'
 							]
 						}
 					]

@@ -22,11 +22,12 @@ require([
 	'serviceTypesRepository',
 	'bamboo/buildService',
 	'cctray/buildService',
-	'jenkins/buildService',
-	'go/buildService',
 	'cruisecontrol/buildService',
 	'cruisecontrol.net/buildService',
 	'cruisecontrol.rb/buildService',
+	'go/buildService',
+	'jenkins/buildService',
+	'teamcity/buildService',
 	'backgroundLogger'
 ], function (
 	serviceController,
@@ -36,11 +37,12 @@ require([
 	serviceTypesRepository,
 	BambooService,
 	CctrayService,
-	JenkinsService,
-	GoService,
 	CruiseControlService,
 	CruiseControlNetService,
 	CruiseControlRBService,
+	GoService,
+	JenkinsService,
+	TeamCityService,
 	backgroundLogger) {
 
 	'use strict';
@@ -74,8 +76,9 @@ require([
 	serviceTypesRepository.register(CruiseControlService);
 	serviceTypesRepository.register(CruiseControlNetService);
 	serviceTypesRepository.register(CruiseControlRBService);
-	serviceTypesRepository.register(JenkinsService);
 	serviceTypesRepository.register(GoService);
+	serviceTypesRepository.register(JenkinsService);
+	serviceTypesRepository.register(TeamCityService);
 	serviceTypesRepository.register(CctrayService);
 	var settings = settingsStore.getAll();
 	serviceController.load(settings).addOnce(function () {

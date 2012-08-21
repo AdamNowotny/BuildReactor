@@ -1,23 +1,23 @@
 require([
 	'jasmineSignals',
-	'cruisecontrol.net/buildService',
+	'teamcity/buildService',
 	'cctray/buildService'
 ], function (jasmineSignals, BuildService, CCTrayBuildService) {
 
 	'use strict';
 
-	describe('cruisecontrol.net/buildService', function () {
+	describe('teamcity/buildService', function () {
 
 		var settings;
 		var ccBuildInfo;
 
 		beforeEach(function () {
 			settings = {
-				typeName: 'CruiseControl.NET',
-				baseUrl: 'cruisecontrol.net',
-				icon: 'cruisecontrol.net/icon.png',
+				typeName: 'TeamCity 7',
+				baseUrl: 'teamcity',
+				icon: 'teamcity/icon.png',
 				url: 'http://example.com/',
-				name: 'CC.NET instance'
+				name: 'TeamCity instance'
 			};
 			ccBuildInfo = {
 				serviceName: 'service name',
@@ -31,15 +31,15 @@ require([
 		it('should provide default settings', function () {
 			var defaultSettings = BuildService.settings();
 
-			expect(defaultSettings.typeName).toBe('CruiseControl.NET');
-			expect(defaultSettings.baseUrl).toBe('cruisecontrol.net');
-			expect(defaultSettings.icon).toBe('cruisecontrol.net/icon.png');
-			expect(defaultSettings.logo).toBe('cruisecontrol.net/logo.png');
+			expect(defaultSettings.typeName).toBe('TeamCity 7+');
+			expect(defaultSettings.baseUrl).toBe('teamcity');
+			expect(defaultSettings.icon).toBe('teamcity/icon.png');
+			expect(defaultSettings.logo).toBe('teamcity/logo.png');
 		});
 
 		it('should modify url used to get projects', function () {
 			spyOn(CCTrayBuildService.prototype, 'projects').andCallFake(function (selectedPlans) {
-				expect(this.settings.url).toBe('http://example.com/XmlStatusReport.aspx');
+				expect(this.settings.url).toBe('http://example.com/guestAuth/app/rest/cctray/projects.xml');
 			});
 
 			var service = new BuildService(settings);
@@ -50,7 +50,7 @@ require([
 
 		it('should modify url', function () {
 			spyOn(CCTrayBuildService.prototype, 'start').andCallFake(function () {
-				expect(this.settings.url).toBe('http://example.com/XmlStatusReport.aspx');
+				expect(this.settings.url).toBe('http://example.com/guestAuth/app/rest/cctray/projects.xml');
 			});
 
 			var service = new BuildService(settings);

@@ -34,6 +34,7 @@ require([
 			expect(defaultSettings.typeName).toBe('Jenkins');
 			expect(defaultSettings.baseUrl).toBe('jenkins');
 			expect(defaultSettings.icon).toBe('jenkins/icon.png');
+			expect(defaultSettings.logo).toBe('jenkins/logo.png');
 		});
 
 		it('should modify url used to get projects', function () {

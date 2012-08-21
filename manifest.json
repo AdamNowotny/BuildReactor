@@ -23,11 +23,17 @@
 		"src/bamboo/logo.png",
 		"src/cctray/icon.png",
 		"src/cctray/logo.png",
-		"src/jenkins/icon.png",
-		"src/jenkins/logo.png",
 		"src/cruisecontrol/icon.png",
 		"src/cruisecontrol/logo.png",
+		"src/cruisecontrol.net/icon.png",
+		"src/cruisecontrol.net/logo.png",
 		"src/cruisecontrol.rb/icon.png",
-		"src/cruisecontrol.rb/logo.png"
+		"src/cruisecontrol.rb/logo.png",
+		"src/go/icon.png",
+		"src/go/logo.png",
+		"src/jenkins/icon.png",
+		"src/jenkins/logo.png",
+		"src/teamcity/icon.png",
+		"src/teamcity/logo.png"
 	]
 }
