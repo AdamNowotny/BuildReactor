@@ -1,11 +1,4 @@
-define([
-		'jquery',
-		'signals',
-		'cctray/buildService',
-		'timer',
-		'amdUtils/string/interpolate',
-		'amdUtils/array/contains'
-	], function ($, signals, CCTrayBuildService, Timer, interpolate, contains) {
+define(['cctray/buildService'], function (CCTrayBuildService) {
 
 		'use strict';
 

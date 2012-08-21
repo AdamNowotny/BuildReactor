@@ -61,6 +61,7 @@ require([
 	'spec/cctray/buildServiceTest',
 	'spec/cctray/ccRequestTest',
 	'spec/cctray/projectTest',
+	'spec/cruisecontrol/buildServiceTest',
 	'spec/cruisecontrol.rb/buildServiceTest',
 	'spec/jenkins/buildServiceTest',
 	'spec/settings/addModalTest',

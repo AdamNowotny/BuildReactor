@@ -127,6 +127,7 @@ module.exports = function (grunt) {
 								'bamboo/buildService',
 								'cctray/buildService',
 								'jenkins/buildService',
+								'cruisecontrol/buildService',
 								'cruisecontrol.rb/buildService'
 							]
 						},
@@ -136,6 +137,7 @@ module.exports = function (grunt) {
 								'bamboo/buildService',
 								'cctray/buildService',
 								'jenkins/buildService',
+								'cruisecontrol/buildService',
 								'cruisecontrol.rb/buildService'
 							]
 						}
