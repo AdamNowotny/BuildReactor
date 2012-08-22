@@ -13,7 +13,7 @@ define(['settings/alert', 'jquery', 'timer'], function (alert, $, Timer) {
 
 			alert.show();
 
-			expect($('#alert-saved .alert')).toBeVisible();
+			expect($('.alert-saved .alert')).toBeVisible();
 		});
 
 		it('should hide alert after 3 seconds', function () {
@@ -23,7 +23,7 @@ define(['settings/alert', 'jquery', 'timer'], function (alert, $, Timer) {
 
 			alert.show();
 
-			expect($('#alert-saved .alert')).not.toHaveClass('in');
+			expect($('.alert-saved .alert')).not.toHaveClass('in');
 		});
 	});
 });

@@ -67,7 +67,7 @@ define([
 		serviceOptions.initialize();
 		setSaveNeeded(false);
 		serviceSettings.clear();
-		serviceNameElement = $('#service-name');
+		serviceNameElement = $('.service-name');
 		$('#service-add-button').click(function () {
 			if (!$('#service-add-button').hasClass('disabled')) {
 				addModal.show();

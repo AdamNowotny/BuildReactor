@@ -20,10 +20,10 @@ define([
 
 			var page = {
 				getServiceName: function () {
-					return $('#service-name').text();
+					return $('.service-name').text();
 				},
 				setServiceName: function (name) {
-					return $('#service-name').text(name);
+					return $('.service-name').text(name);
 				},
 				isAddButtonEnabled: function (enable) {
 					if (enable === undefined) {
@@ -138,7 +138,7 @@ define([
 
 				serviceList.itemSelected.dispatch(createItem(2, 'Service name'));
 
-				expect($('#service-name')).toHaveText('Service name');
+				expect($('.service-name')).toHaveText('Service name');
 			});
 
 			it('should update settings', function () {

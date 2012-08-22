@@ -4,11 +4,11 @@ define(['timer', 'jquery'], function (Timer, $) {
 
 	var alertTimer = new Timer();
 	alertTimer.on.elapsed.add(function () {
-		$('#alert-saved .alert').removeClass('in');
+		$('.alert-saved .alert').removeClass('in');
 	});
 
 	function show() {
-		$('#alert-saved .alert').addClass('in');
+		$('.alert-saved .alert').addClass('in');
 		alertTimer.start(3);
 	}
 

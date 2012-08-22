@@ -8,12 +8,12 @@
  	width: 19px;
 }
 
-#service-name {
+.service-name {
 	color: white;
 	font-size: large;
 }
 
-#alert-saved 
+.alert-saved 
 {
 	position: absolute;
 	display: inline;
@@ -23,7 +23,7 @@
 	z-index: 2000;
 }
 
-	#alert-saved .alert 
+	.alert-saved .alert 
 	{
 		position: absolute;
 		display: inline-block;
