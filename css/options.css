@@ -42,9 +42,19 @@
 	overflow: auto;
 }
 	
+	.service-list-container li a {
+		height: 48px;
+	}
+
 	.service-list-container .service-icon {
-		margin-top: 10px;
-		margin-bottom: 10px;
+		margin-top: 0;
+		margin-bottom: 0;
+		float: left;
+	}
+
+	.service-list-container .service-type-name {
+		padding-top: 18px;
+		float: right;
 	}
 
 .icon-refresh.animate {

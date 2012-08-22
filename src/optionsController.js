@@ -31,7 +31,8 @@ define([
 		});
 		addModal.on.selected.add(function (serviceInfo) {
 			serviceSettings.add(serviceInfo);
-			serviceList.add(serviceInfo);
+			serviceList.update(serviceSettings.getAll());
+			serviceList.selectLast();
 			setSaveNeeded(true);
 		});
 		removePrompt.removeSelected.add(function () {

@@ -1,0 +1,15 @@
+{{!
+{
+	'name' : 'serviceListItem',
+	'description' : 'Service in the menu',
+	'styles' : []
+}
+}}
+{{#each services}}
+<li data-service-index="{{index}}">
+	<a href="#">
+		<img class="service-icon" src="src/{{icon}}">
+		<span class="service-type-name">{{name}}</span>
+	</a>
+</li>		
+{{/each}}

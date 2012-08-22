@@ -1,17 +1,13 @@
 define([
 	'signals',
-	'jquery'
-], function (signals, $) {
+	'jquery',
+	'hbs!templates/serviceListItem'
+], function (signals, $, serviceListItemTemplate) {
 
 	'use strict';
 	
 	var itemClicked = new signals.Signal();
 	var itemSelected = new signals.Signal();
-
-	var add = function (serviceInfo) {
-		addItem(serviceInfo);
-		selectLast();
-	};
 
 	var load = function (settings) {
 		render(settings);
@@ -29,18 +25,31 @@ define([
 	};
 
 	var getSelectedName = function () {
-		return $('#service-list li.active').text();
+		return $('#service-list li.active .service-type-name').text();
 	};
 
 	var render = function (settings) {
-		clear();
-		for (var i = 0; i < settings.length; i++) {
-			addItem(settings[i]);
-		}
+		var templateData = createTemplateData(settings);
+		var html = serviceListItemTemplate(templateData);
+		$("#service-list").html(html);
 		$('#service-list li').click(function (event) {
 			event.preventDefault();
 			itemClicked.dispatch(this);
 		});
+	};
+
+	var createTemplateData = function (settings) {
+		var data = [];
+		for (var i = 0; i < settings.length; i++) {
+			data[i] = {
+				index: i,
+				icon: settings[i].icon,
+				name: settings[i].name
+			};
+		}
+		return {
+			services: data
+		};
 	};
 
 	var selectFirst = function () {
@@ -82,23 +91,13 @@ define([
 		return $('#service-list li.active').index();
 	};
 
-	var clear = function () {
-		$('#service-list').html('');
-	};
-
-	var addItem = function (settings) {
-		var index = $('#service-list li').length;
-		var html = '<li data-service-index="' + index + '"><a href="#"><img class="service-icon" src="src/' + settings.icon + '"><br>' + settings.name + '</a></li>';
-		$("#service-list").append(html);
-	};
-
 	return {
 		load: load,
 		update: update,
-		add: add,
 		itemClicked: itemClicked,
 		itemSelected: itemSelected,
 		selectItem: selectItem,
+		selectLast: selectLast,
 		getSelectedName: getSelectedName
 	};
 });

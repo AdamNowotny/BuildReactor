@@ -44,7 +44,6 @@ define([
 			var spyServiceListGetSelectedName;
 			var spyServiceSettingsGetAll;
 			var spyServiceSettingsGetByIndex;
-			var spyServiceListAdd;
 
 			beforeEach(function () {
 				jasmine.getFixtures().load('optionsControllerFixture.html');
@@ -66,7 +65,7 @@ define([
 
 				spyOn(serviceList, 'load');
 				spyOn(serviceList, 'update');
-				spyServiceListAdd = spyOn(serviceList, 'add');
+				spyOn(serviceList, 'selectLast');
 				spyOn(serviceList, 'selectItem');
 				spyServiceListGetSelectedName = spyOn(serviceList, 'getSelectedName');
 
@@ -220,12 +219,6 @@ define([
 					page.addService();
 
 					expect(addModal.show).not.toHaveBeenCalled();
-				});
-
-				it('should add new service to list', function () {
-					var serviceInfo = addService('Service');
-
-					expect(serviceList.add).toHaveBeenCalledWith(serviceInfo);
 				});
 
 				it('should prompt to save before switching to another service', function () {

@@ -78,14 +78,15 @@ define([
 				expect(page.count()).toBe(2);
 			});
 
-			it('should add item and select it', function () {
+			it('should select last item', function () {
 				initializeServiceList();
-				var mockSettings = createSettings('service 4');
+				var mockSettings1 = createSettings('service 1');
+				var mockSettings2 = createSettings('service 2');
+				serviceList.update([mockSettings1, mockSettings2]);
 
-				serviceList.add(mockSettings);
-
-				expect(page.count()).toBe(4);
-				expect(page.serviceAt(3)).toHaveText('service 4');
+				serviceList.selectLast();
+				expect(page.count()).toBe(2);
+				expect(page.getSelectedIndex()).toBe(1);
 			});
 
 			it('should select item', function () {
