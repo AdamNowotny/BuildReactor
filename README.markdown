@@ -104,6 +104,9 @@ Application icon based on https://commons.wikimedia.org/wiki/File:Radiation_warn
 What's new
 ============
 
+0.3.2 (6/09/2012)
+ * new "add service" page
+ 
 0.3.1 (22/08/2012)
  * Added new services (CC.NET, CC.rb, CC, Jenkins, TeamCity 7, ThoughtWorks GO)
  
