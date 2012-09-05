@@ -1,26 +1,35 @@
 {
 	"name": "BuildReactor",
-	"version": "0.3.2",
+	"version": "0.3.2.1",
 	"manifest_version": 2,
-	"description": "Google Chrome extension that shows notifications for CI server events",
-	"browser_action": {
-		"default_title": "BuildReactor notifications",
-		"default_icon": "img/icon-19.png"
-	},
+	"description": "Shows notifications for CI server events",
 	"icons": {
+		"16": "img/icon-16.png",
 		"48": "img/icon-48.png",
 		"128": "img/icon-128.png"
+	},
+	"browser_action": {
+		"default_title": "BuildReactor",
+		"default_icon": "img/icon-19.png"
 	},
 	"background": {
 		"scripts": [ "lib/requirejs/require.min.js", "src/main.js" ]
 	},
-	"options_page": "options.html",
 	"homepage_url": "https://github.com/AdamNowotny/BuildReactor",
 	"offline_enabled": false,
-	"permissions": [ "http://*/*", "https://*/*", "notifications", "cookies" ],
+	"options_page": "options.html",
+	"permissions": [
+		"http://*/*",
+		"https://*/*",
+		"notifications",
+		"cookies"
+	],
 	"web_accessible_resources": [
+		"img/icon-16.png",
+		"img/icon-19.png",
 		"img/icon-48.png",
 		"img/icon-128.png",
+		"img/loading.png",
 		"src/bamboo/icon.png",
 		"src/bamboo/logo.png",
 		"src/cctray/icon.png",
