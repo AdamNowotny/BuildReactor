@@ -61,13 +61,21 @@ define([
 	};
 
 	var selectItem = function (linkElement) {
+		if (!linkElement) {
+			unselect();
+			return;
+		}
 		var serviceLink = $(linkElement);
 		if (serviceLink.hasClass('active')) {
 			return;
 		}
-		$('#service-list li').removeClass('active');
+		unselect();
 		serviceLink.addClass('active');
 		itemSelected.dispatch(linkElement);
+	};
+
+	var unselect = function () {
+		$('#service-list li').removeClass('active');
 	};
 
 	var selectAt = function (index) {

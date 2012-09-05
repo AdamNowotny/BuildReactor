@@ -30,6 +30,7 @@ define([
 		$('.save-button', container).click(saveClicked);
 		$('.url-input', container).focus();
 		urlChanged();
+		container.show();
 	};
 
 	settingsFormView.hide = function () {

@@ -1,7 +1,7 @@
 define([
 		'jquery',
 		'optionsController',
-		'settings/addModal',
+		'settings/addService',
 		'settings/serviceSettings',
 		'settings/serviceOptions',
 		'settings/serviceList',
@@ -10,7 +10,7 @@ define([
 		'settings/alert',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals'
-	], function ($, controller, addModal, serviceSettings, serviceOptions, serviceList, savePrompt, removePrompt, alert, MockSettingsBuilder, jasmineSignals) {
+	], function ($, controller, addService, serviceSettings, serviceOptions, serviceList, savePrompt, removePrompt, alert, MockSettingsBuilder, jasmineSignals) {
 
 		'use strict';
 		
@@ -33,11 +33,15 @@ define([
 						return undefined;
 					}
 				},
+				isAddButtonActive: function (enable) {
+					if (enable === undefined) {
+						return $('#service-add-button').hasClass('btn-primary');
+					} else {
+						$('#service-add-button').toggleClass('btn-primary');
+					}
+				},
 				removeService: function () {
 					$('#service-remove-button').click();
-				},
-				addService: function () {
-					$('#service-add-button').click();
 				}
 			};
 
@@ -47,8 +51,9 @@ define([
 
 			beforeEach(function () {
 				jasmine.getFixtures().load('optionsControllerFixture.html');
-				spyOn(addModal, 'show');
-				spyOn(addModal, 'initialize');
+				spyOn(addService, 'show');
+				spyOn(addService, 'hide');
+				spyOn(addService, 'initialize');
 
 				spyOn(savePrompt, 'initialize');
 				spyOn(savePrompt, 'show');
@@ -82,7 +87,7 @@ define([
 
 			afterEach(function () {
 				savePrompt.removeSelected.removeAll();
-				addModal.on.selected.removeAll();
+				addService.on.selected.removeAll();
 				removePrompt.removeSelected.removeAll();
 				serviceSettings.cleared.removeAll();
 				serviceList.itemClicked.removeAll();
@@ -107,7 +112,7 @@ define([
 				expect(serviceOptions.initialize).toHaveBeenCalled();
 				expect(removePrompt.initialize).toHaveBeenCalled();
 				expect(savePrompt.initialize).toHaveBeenCalled();
-				expect(addModal.initialize).toHaveBeenCalled();
+				expect(addService.initialize).toHaveBeenCalled();
 			});
 
 			it('should display list of services', function () {
@@ -201,28 +206,46 @@ define([
 
 			describe('Adding service', function () {
 
-				function addService(name) {
+				function add(name) {
 					var serviceInfo = new MockSettingsBuilder().withName(name).create();
-					addModal.on.selected.dispatch(serviceInfo);
+					addService.on.selected.dispatch(serviceInfo);
 					return serviceInfo;
 				}
 
-				it('should show dialog when adding service', function () {
-					page.addService();
+				it('should hide service settings when adding service', function () {
+					$('#service-add-button').click();
 
-					expect(addModal.show).toHaveBeenCalled();
+					expect(serviceOptions.show).toHaveBeenCalledWith(null);
 				});
 
-				it('should not show dialog if button disabled', function () {
+				it('should show services when adding service', function () {
+					$('#service-add-button').click();
+
+					expect(addService.show).toHaveBeenCalled();
+				});
+
+				it('should highlight button', function () {
+					$('#service-add-button').click();
+
+					expect($('#service-add-button')).toHaveClass('btn-primary');
+				});
+
+				it('should remove service highlight', function () {
+					$('#service-add-button').click();
+
+					expect(serviceList.selectItem).toHaveBeenCalledWith(null);
+				});
+
+				it('should not show if button disabled', function () {
 					$('#service-add-button').addClass('disabled');
 
-					page.addService();
+					$('#service-add-button').click();
 
-					expect(addModal.show).not.toHaveBeenCalled();
+					expect(addService.show).not.toHaveBeenCalled();
 				});
 
 				it('should prompt to save before switching to another service', function () {
-					addService('Server 2');
+					add('Server 2');
 					spyServiceListGetSelectedName.andReturn('Server 2');
 
 					serviceList.itemClicked.dispatch(createItem(0, 'Server 1'));
@@ -231,7 +254,7 @@ define([
 				});
 
 				it('should not switch if prompt to save shown', function () {
-					addService('Server 2');
+					add('Server 2');
 
 					serviceList.itemClicked.dispatch(createItem(0, 'Server 1'));
 
@@ -253,7 +276,7 @@ define([
 
 				it('should not show save prompt after removing service', function () {
 					spyServiceSettingsGetByIndex.andReturn(createSettings('Server 2'));
-					addService('Server 2');
+					add('Server 2');
 
 					removePrompt.removeSelected.dispatch();
 					serviceList.itemSelected.dispatch(createItem(0, 'Server 1'));
@@ -262,7 +285,7 @@ define([
 				});
 
 				it('should disable add button if new service not saved yet', function () {
-					addService('Service');
+					add('Service');
 
 					expect(page.isAddButtonEnabled()).toBeFalsy();
 				});
@@ -275,8 +298,29 @@ define([
 					expect(page.isAddButtonEnabled()).toBeTruthy();
 				});
 
+				it('should deactivate add button if service selected', function () {
+					page.isAddButtonActive(true);
+					var serviceInfo = new MockSettingsBuilder().create();
+					var item = createItem(0, 'service name');
+					spyServiceSettingsGetByIndex.andReturn(serviceInfo);
+
+					serviceList.itemSelected.dispatch(item);
+
+					expect(page.isAddButtonActive()).toBeFalsy();
+				});
+
+				it('should hide new service list if service selected', function () {
+					var serviceInfo = new MockSettingsBuilder().create();
+					var item = createItem(0, 'service name');
+					spyServiceSettingsGetByIndex.andReturn(serviceInfo);
+
+					serviceList.itemSelected.dispatch(item);
+
+					expect(addService.hide).toHaveBeenCalled();
+				});
+
 				it('should enable add button if new service removed', function () {
-					addService('Service');
+					add('Service');
 
 					savePrompt.removeSelected.dispatch();
 

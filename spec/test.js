@@ -67,7 +67,7 @@ require([
 	'spec/go/buildServiceTest',
 	'spec/jenkins/buildServiceTest',
 	'spec/teamcity/buildServiceTest',
-	'spec/settings/addModalTest',
+	'spec/settings/addServiceTest',
 	'spec/settings/alertTest',
 	'spec/settings/projectViewTest',
 	'spec/settings/removePromptTest',

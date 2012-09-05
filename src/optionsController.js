@@ -3,12 +3,12 @@ define([
 	'jquery',
 	'settings/serviceSettings',
 	'settings/serviceOptions',
-	'settings/addModal',
+	'settings/addService',
 	'settings/serviceList',
 	'settings/savePrompt',
 	'settings/removePrompt',
 	'settings/alert'
-], function (signals, $, serviceSettings, serviceOptions, addModal, serviceList, savePrompt, removePrompt, alert) {
+], function (signals, $, serviceSettings, serviceOptions, addService, serviceList, savePrompt, removePrompt, alert) {
 
 	'use strict';
 	
@@ -29,7 +29,7 @@ define([
 			removeCurrentService();
 			savePrompt.hide();
 		});
-		addModal.on.selected.add(function (serviceInfo) {
+		addService.on.selected.add(function (serviceInfo) {
 			serviceSettings.add(serviceInfo);
 			serviceList.update(serviceSettings.getAll());
 			serviceList.selectLast();
@@ -62,7 +62,7 @@ define([
 
 	function reset(serviceTypes) {
 		savePrompt.initialize();
-		addModal.initialize(serviceTypes);
+		addService.initialize('.service-add-container', serviceTypes);
 		removePrompt.initialize();
 		serviceOptions.initialize();
 		setSaveNeeded(false);
@@ -70,7 +70,10 @@ define([
 		serviceNameElement = $('.service-name');
 		$('#service-add-button').click(function () {
 			if (!$('#service-add-button').hasClass('disabled')) {
-				addModal.show();
+				serviceOptions.show(null);
+				addService.show();
+				serviceList.selectItem(null);
+				$('#service-add-button').addClass('btn-primary');
 			}
 		});
 		$('#service-remove-button').click(function () {
@@ -96,6 +99,8 @@ define([
 		}
 		currentSettings = serviceInfo;
 		serviceOptions.show(serviceInfo);
+		$('#service-add-button').removeClass('btn-primary');
+		addService.hide();
 	}
 
 	function serviceSettingsChanged(updatedSettings) {

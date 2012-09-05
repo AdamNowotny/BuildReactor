@@ -159,6 +159,14 @@ define([
 			expect($('.settings-container')).toBeEmpty();
 		});
 
+		it('should show form', function () {
+			form.hide();
+
+			form.show(settings);
+
+			expect($('.settings-container')).toBeVisible();
+		});
+
 		it('should unsubscribe previous signal handlers when showing new service', function () {
 			form.show(settings);
 

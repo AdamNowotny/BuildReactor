@@ -118,6 +118,16 @@ define([
 				expect(page.getSelectedIndex()).toBe(0);
 			});
 
+			it('should unselect when null passed to selectItem', function () {
+				initializeServiceList();
+				var item = $('#service-list li').eq(2);
+				serviceList.selectItem(item);
+
+				serviceList.selectItem(null);
+
+				expect(page.getSelectedIndex()).toBe(-1);
+			});
+
 			it('should not select if empty list on update', function () {
 				serviceList.update([]);
 

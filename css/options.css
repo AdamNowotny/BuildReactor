@@ -62,10 +62,10 @@
 	background-position: 0 0;
 }
 
-#settings-container {
+.settings-container {
 	position: absolute;
-	top: 60px;
-	bottom: 3px;
+	top: 42px;
+	bottom: 0;
 	left: 221px;
 	right: 0;
 	overflow: auto;
@@ -80,63 +80,47 @@
 	}
 
 
-.scrollable {
-
-	/* required settings */
-	position:relative;
-	overflow:hidden;
-	width: auto;
-	height:200px;
+.settings-form {
+	padding-top: 10px;
 }
 
-	.steps {
-		position: relative;
-		height: 2em;
-		margin-right: 2em; /* don't hide the close button' */
-	}
+.service-add-container {
+	display: none;
+}
 
-	.steps li 
-	{
+	.service-add-list {
+		padding: 10px;
+		overflow: auto;
 		position: absolute;
-		opacity:0;
-		-webkit-transition:opacity 0.5s linear;
+		top: 0;
+		bottom: 82px;
 	}
 
-	.steps .active {
-		opacity:1;
-	}
+		.service-add-list .thumbnail {
+			height: 140px;
+			text-align: center;
+		}
 
-	.scrollable .items {
-		/* this cannot be too large */
-		width:2000em;
-		position:absolute;
-	}
+			.service-add-list .caption {
+				text-align: center;
+			}
+			
+			.service-add-list .thumbnail-image {
+				height: 110px;
+				line-height: 150px;
+			}
 
-	.items .page {
-		float:left;
-		width: 560px;
-	}
+			.service-add-list .thumbnail:hover {
+				text-decoration: none;
+			}
 
-.page-content {
-	width: 512px;
-	height: 199px;
-	overflow: auto;
+.panel-footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
 }
 
-.service-add-list .thumbnail {
-	height: 140px;
-	text-align: center;
-}
-
-	.service-add-list .thumbnail .caption {
-		text-align: center;
-	}
-	
-	.service-add-list .thumbnail-image {
-		height: 110px;
-		line-height: 150px;
-	}
-
-	.service-add-list .thumbnail:hover {
-		text-decoration: none;
+	.panel-footer .form-actions {
+		margin-bottom: 0;
+		margin-top: 0;
 	}

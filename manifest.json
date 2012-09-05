@@ -8,8 +8,8 @@
 		"default_icon": "img/icon-19.png"
 	},
 	"icons": {
-		"128": "img/icon-128.png",
-		"48": "img/icon-48.png"
+		"48": "img/icon-48.png",
+		"128": "img/icon-128.png"
 	},
 	"background": {
 		"scripts": [ "lib/requirejs/require.min.js", "src/main.js" ]
@@ -19,6 +19,8 @@
 	"offline_enabled": false,
 	"permissions": [ "http://*/*", "https://*/*", "notifications", "cookies" ],
 	"web_accessible_resources": [
+		"img/icon-48.png",
+		"img/icon-128.png",
 		"src/bamboo/icon.png",
 		"src/bamboo/logo.png",
 		"src/cctray/icon.png",
