@@ -1,8 +1,12 @@
-﻿.brand 
-{
+﻿.brand {
 	width: 170px;
 	text-align: center;
 }
+
+	.brand-name 
+	{
+		color: #999;
+	}
  
 .logo {
  	width: 19px;

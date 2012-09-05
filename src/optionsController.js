@@ -73,6 +73,7 @@ define([
 				serviceOptions.show(null);
 				addService.show();
 				serviceList.selectItem(null);
+				$('.service-name').text('Add new service');
 				$('#service-add-button').addClass('btn-primary');
 			}
 		});

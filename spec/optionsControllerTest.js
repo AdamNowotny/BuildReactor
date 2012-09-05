@@ -218,6 +218,14 @@ define([
 					expect(serviceOptions.show).toHaveBeenCalledWith(null);
 				});
 
+				it('should hide service name when adding service', function () {
+					$('.service-name').text('service name');
+					
+					$('#service-add-button').click();
+
+					expect($('.service-name')).toHaveText('Add new service');
+				});
+
 				it('should show services when adding service', function () {
 					$('#service-add-button').click();
 
