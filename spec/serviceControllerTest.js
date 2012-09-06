@@ -148,6 +148,20 @@ define([
 				});
 			});
 
+			it('should signal loaded when no services configured', function () {
+				var loaded = false;
+
+				runs(function () {
+					controller.load([]).addOnce(function () {
+						loaded = true;
+					});
+				});
+
+				waitsFor(function () {
+					return loaded;
+				});
+			});
+
 			it('should notifiy when services are reloaded', function () {
 				var resetSpy = spyOnSignal(controller.on.reset);
 
@@ -202,6 +216,14 @@ define([
 				mockService1.on.updated.dispatch();
 
 				expect(startedAllSpy).not.toHaveBeenDispatched();
+			});
+
+			it('should signal startedAll if no services configured', function () {
+				var startedAllSpy = spyOnSignal(controller.on.startedAll);
+
+				controller.run();
+
+				expect(startedAllSpy).toHaveBeenDispatched();
 			});
 		});
 	});

@@ -38,13 +38,20 @@ define([
 			loadedAll.memorize = true;
 			removeAllServices();
 			servicesToLoadCount = settings.length;
-			for (var i = 0; i < settings.length; i++) {
-				loadService(settings[i]);
+			if (settings.length === 0) {
+				loadedAll.dispatch();
+			} else {
+				settings.forEach(function (settingsItem) {
+					loadService(settingsItem);
+				});
 			}
 			return loadedAll;
 		}
 
 		function run() {
+			if (services.length === 0) {
+				on.startedAll.dispatch();
+			}
 			var toInitializeCount = services.length;
 			services.forEach(function (s) {
 				s.start();
