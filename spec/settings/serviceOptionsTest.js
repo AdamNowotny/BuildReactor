@@ -101,6 +101,16 @@ define([
 			expect(spySettingsFormViewShow).toHaveBeenCalled();
 		});
 
+		it('should show service if previously empty', function () {
+			serviceOptions.show(settings);
+			serviceOptions.show(null);
+			spySettingsFormViewShow.reset();
+			
+			serviceOptions.show(settings);
+
+			expect(spySettingsFormViewShow).toHaveBeenCalled();
+		});
+
 		it('should show form with default updateInterval', function () {
 			spySettingsFormViewShow.andCallFake(function (formValues) {
 				expect(formValues.updateInterval).toBe(60);

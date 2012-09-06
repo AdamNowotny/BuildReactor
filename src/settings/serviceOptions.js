@@ -89,6 +89,7 @@ define([
 	var showEmpty = function () {
 		settingsFormView.hide();
 		projectView.hide();
+		currentServiceInfo = null;
 	};
 
 	return {
