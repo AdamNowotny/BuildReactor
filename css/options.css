@@ -105,6 +105,10 @@
 			text-align: center;
 		}
 
+		.service-add-list .thumbnail.active {
+			background-color: #D1D5E4;
+		}
+		
 			.service-add-list .caption {
 				text-align: center;
 			}

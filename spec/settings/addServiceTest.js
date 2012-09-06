@@ -82,7 +82,27 @@ define([
 				expect(container.getServiceNameAt(2)).toBe(serviceTypes[1].typeName);
 			});
 
-			it('should expect name after selecting service type', function () {
+			it('should disable name if service type not selected', function () {
+				container.show();
+
+				expect($('#service-add-name')).toBeDisabled();
+			});
+
+			it('should enable name after service type selected', function () {
+				container.selectService();
+
+				expect($('#service-add-name')).not.toBeDisabled();
+			});
+
+			it('should highlight selected service', function () {
+				container.selectService(2);
+				container.selectService(1);
+
+				expect($('.thumbnail.active').length).toBe(1);
+				expect($('.thumbnail').eq(0)).toHaveClass('active');
+			});
+
+			it('should focus name after selecting service type', function () {
 				container.selectService();
 
 				expect($(document.activeElement)).toHaveId('service-add-name');

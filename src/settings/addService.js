@@ -1,9 +1,9 @@
 define([
 	'signals',
 	'jquery',
-	'hbs!templates/addModalService',
+	'hbs!templates/addServiceItem',
 	'bootstrap'
-], function (signals, $, addModalServiceTemplate) {
+], function (signals, $, addServiceItemTemplate) {
 
 	'use strict';
 
@@ -18,7 +18,7 @@ define([
 		container = $(selector);
 		serviceTypeName = undefined;
 		serviceTypes = availableServices;
-		$('.service-add-list ul', container).html(addModalServiceTemplate({ services: serviceTypes }));
+		$('.service-add-list ul', container).html(addServiceItemTemplate({ services: serviceTypes }));
 		$('.thumbnails a', container).click(serviceAddSelect);
 		$('.service-add-form', container).submit(function () {
 			serviceAdd();
@@ -45,8 +45,16 @@ define([
 	};
 
 	var serviceAddSelect = function (sender) {
-		serviceTypeName = $(sender.currentTarget).closest('a').data('service');
+		var serviceElement = $(sender.currentTarget).closest('a');
+		serviceTypeName = serviceElement.data('service');
+		unselectAll();
+		serviceElement.addClass('active');
+		$('#service-add-name', container).removeAttr('disabled');
 		$('#service-add-name', container).focus();
+	};
+
+	var unselectAll = function () {
+		$('.thumbnail.active', container).removeClass('active');
 	};
 
 	var serviceAdd = function () {
