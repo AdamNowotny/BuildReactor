@@ -63,9 +63,7 @@ module.exports = function (grunt) {
 		mincss: {
 			compress: {
 				files: {
-					'<%= vars.dist %>/css/options.css': [ 'css/options.css' ],
-					'<%= vars.dist %>/src/bamboo/options.css': [ 'src/bamboo/options.css' ],
-					'<%= vars.dist %>/src/cctray/options.css': [ 'src/cctray/options.css' ]
+					'<%= vars.dist %>/css/options.css': [ 'css/options.css' ]
 				}
 			}
 		},
@@ -161,7 +159,12 @@ module.exports = function (grunt) {
 						'background.html',
 						'options.html',
 						'manifest.json',
-						'img/*',
+						'img/icon.svg',
+						'img/icon-16.png',
+						'img/icon-19.png',
+						'img/icon-48.png',
+						'img/icon-128.png',
+						'img/loading.gif',
 						'src/bamboo/*.html',
 						'src/bamboo/*.png',
 						'src/cctray/*.html',
@@ -177,21 +180,11 @@ module.exports = function (grunt) {
 					]
 				}
 			}
-		},
-		compress: {
-			zip: {
-				options: {
-					mode: "zip"
-				},
-				files: {
-					"<%= vars.build %>/BuildReactor.zip": "<%= vars.dist %>/**"
-				}
-			}
 		}
 	});
 
 	// Default task.
-	grunt.registerTask('default', 'clean lint jasmine mincss requirejs copy compress');
+	grunt.registerTask('default', 'clean lint jasmine mincss requirejs copy');
 	grunt.registerTask('travis', 'clean lint jasmine');
 	grunt.registerTask('test', 'lint jasmine');
 	grunt.registerTask('dist', 'clean mincss requirejs copy');

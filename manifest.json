@@ -25,11 +25,6 @@
 		"cookies"
 	],
 	"web_accessible_resources": [
-		"img/icon-16.png",
-		"img/icon-19.png",
-		"img/icon-48.png",
-		"img/icon-128.png",
-		"img/loading.png",
 		"src/bamboo/icon.png",
 		"src/bamboo/logo.png",
 		"src/cctray/icon.png",
