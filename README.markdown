@@ -104,27 +104,4 @@ Application icon based on https://commons.wikimedia.org/wiki/File:Radiation_warn
 What's new
 ============
 
-0.3.2.2 (6/09/2012)
- * "Add service" UI fixes and enhancements
- * don't display badge if no services configured
-
-0.3.2.1 (6/09/2012)
- * fixed package installation for Mac and Linux
-
-0.3.2 (6/09/2012)
- * new "add service" page
-
-0.3.1 (22/08/2012)
- * Added new services (CC.NET, CC.rb, CC, Jenkins, TeamCity 7, ThoughtWorks GO)
- 
-0.3.0 (16/08/2012)
- * First public version
- * Support for cctray XML reporting format
- * Automated build (using Travis-CI)
- * Upgraded to Chrome extensions version 2 manifest
-
-0.2.0 (8/04/2012)
- * Lots of UI improvements, using Twitter bootstrap
-
-0.1.0 (23/12/2011)
- * First version with Bamboo support
+Version history can be found [here](https://github.com/AdamNowotny/BuildReactor/wiki/What's-new)
