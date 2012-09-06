@@ -104,9 +104,13 @@ Application icon based on https://commons.wikimedia.org/wiki/File:Radiation_warn
 What's new
 ============
 
+0.3.2.2 (6/09/2012)
+ * "Add service" UI fixes and enhancements
+ * don't display badge if no services configured
+
 0.3.2.1 (6/09/2012)
  * fixed package installation for Mac and Linux
- 
+
 0.3.2 (6/09/2012)
  * new "add service" page
 
