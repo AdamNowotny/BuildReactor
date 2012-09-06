@@ -28,9 +28,9 @@ define([
 		$('.url-input', container).keyup(urlChanged).change(urlChanged);
 		$('.show-button', container).click(showClicked);
 		$('.save-button', container).click(saveClicked);
-		$('.url-input', container).focus();
-		urlChanged();
 		container.show();
+		urlChanged();
+		$('.url-input', container).focus();
 	};
 
 	settingsFormView.hide = function () {

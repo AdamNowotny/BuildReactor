@@ -99,9 +99,9 @@ define([
 			throw { name: 'showServicePage', message: 'serviceInfo is undefined' };
 		}
 		currentSettings = serviceInfo;
-		serviceOptions.show(serviceInfo);
 		$('#service-add-button').removeClass('btn-primary');
 		addService.hide();
+		serviceOptions.show(serviceInfo);
 	}
 
 	function serviceSettingsChanged(updatedSettings) {
