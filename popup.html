@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>BuildReactor popup page</title>
+		<link rel="stylesheet" type="text/css" href="lib/twitter-bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="css/popup.css" />
+		<script type="text/javascript" data-main="src/popup" src="lib/requirejs/require.min.js"></script>
+	</head>
+	<body>
+		<div class="service-info-container">
+			<ul class="info-list">
+				<li class="info">
+					<div class="service-name">Bamboo</div>
+					<ul class="service-item-list">
+						<li class="service-item">Build 1 <span class="service-group">(Acceptance Tests)</span></li>
+						<li class="service-item">Build 2 <span class="service-group">(Acceptance Tests)</span></li>
+					</ul>
+				</li>
+				<li class="info">
+					<div class="service-name">Bamboo 2</div>
+					<ul class="service-item-list">
+						<li class="service-item">Build 1 <span class="service-group">(Group 1)</span></li>
+						<li class="service-item failed">Build 2 <span class="service-group">(Group 1)</span></li>
+					</ul>
+					<ul class="service-item-list">
+						<li class="service-item">Build 1 <span class="service-group">(Group 2)</span></li>
+						<li class="service-item">Build 2 <span class="service-group">(Group 2)</span></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>

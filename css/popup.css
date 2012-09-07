@@ -1,0 +1,25 @@
+.info-list, ul {
+	margin: 0;
+}
+
+li {
+	list-style: none;
+}
+
+.service-name {
+	font-weight: bold;	
+	background-color: #DCA;	
+}
+
+.service-item {
+	white-space: nowrap;
+}
+
+	.service-item.failed {
+		background-color: #F88;
+	}
+
+.service-group {
+	color: #333;
+}
+
