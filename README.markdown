@@ -7,7 +7,7 @@ The idea is to show only the relevant events and minimise distractions. That is 
  * not all builds are shown, only if they fail or are fixed
  * click on notification opens the page with build results
  * notifications about broken builds stay on screen to let you know the build needs your attention
- * fixed builds dissapear automatically and hide all previous messages about that particular build (so you are presented only with the builds that broke while you were away and are still need fixing)
+ * fixed builds dissapear automatically and hide all previous messages about that particular build (so you are presented only with the builds that broke while you were away and are still broken)
 
 You can **install the latest stable version** of the extension from [Chrome Web Store](http://goo.gl/BX01T)
 
