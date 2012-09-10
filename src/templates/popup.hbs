@@ -1,0 +1,19 @@
+{{!
+{
+	'name' : 'popup',
+	'description' : 'Popup window',
+	'styles' : []
+}
+}}
+<ul class="info-list">
+	{{#each services}}
+	<li class="info">
+		<div class="service-name">{{name}}</div>
+		<ul class="service-item-list">
+			{{#each items}}
+			<li class="service-item"><span class="service-item-name">{{name}}</span> (<span class="service-group">{{group}}</span>)</li>
+			{{/each}}
+		</ul>
+	</li>
+	{{/each}}
+</ul>

@@ -51,6 +51,7 @@ require([
 	'spec/badgeControllerTest',
 	'spec/optionsControllerTest',
 	'spec/notificationControllerTest',
+	'spec/popupControllerTest',
 	'spec/serviceControllerTest',
 	'spec/serviceTypesRepositoryTest',
 	'spec/settingsStoreTest',

@@ -225,5 +225,20 @@ define([
 
 				expect(startedAllSpy).toHaveBeenDispatched();
 			});
+
+			xit('should get project state from all services', function () {
+				var mockService1 = new MockBuildService();
+				var mockService2 = new MockBuildService();
+				controller.addService(mockService1);
+				controller.addService(mockService2);
+
+				var projectsSignals = controller.projects();
+
+				projectsSignals.addOnce(function (response) {
+
+				});
+
+
+			});
 		});
 	});

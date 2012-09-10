@@ -10,15 +10,12 @@ require.config({
 	}
 });
 require([
-], function () {
+	'popupController'
+], function (popupController) {
 
 	'use strict';
 	
-	// optionsController.on.settingsChanged.add(function (updatedSettings) {
-	// chrome.extension.sendMessage({name: "updateSettings", settings: updatedSettings});
-	// });
-	// chrome.extension.sendMessage({ name: "initOptions" }, function (response) {
-	// optionsController.initialize(response.serviceTypes);
-	// optionsController.load(response.settings);
-	// });
+	chrome.extension.sendMessage({ name: "serviceStateRequest" }, function (response) {
+		popupController.show(response.serviceState);
+	});
 });
