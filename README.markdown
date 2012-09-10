@@ -43,7 +43,11 @@ Notifications
 
 Options page
 ------------
+Settings page (Bamboo):
 <img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/settings-1280x800.jpg" alt="BuildReactor options page">
+
+Adding new service:
+<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/settings-new-1280x800.jpg" alt="BuildReactor options page">
 
 Chrome badge
 ------------
