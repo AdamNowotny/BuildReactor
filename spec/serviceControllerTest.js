@@ -98,20 +98,6 @@ define([
 				expect(controller.services.length).toBe(0);
 			});
 
-			it('should start all services', function () {
-				var mockService1 = new MockBuildService();
-				var mockService2 = new MockBuildService();
-				spyOn(mockService1, 'start');
-				spyOn(mockService2, 'start');
-				controller.addService(mockService1);
-				controller.addService(mockService2);
-
-				controller.run();
-
-				expect(mockService1.start).toHaveBeenCalled();
-				expect(mockService2.start).toHaveBeenCalled();
-			});
-
 			it('should signal brokenBuild on build failure', function () {
 				var buildFailedSpy = spyOnSignal(controller.on.brokenBuild);
 				var mockService = new MockBuildService();
@@ -170,75 +156,95 @@ define([
 				expect(resetSpy).toHaveBeenDispatched(1);
 			});
 
-			it('should dispatch started when service finishes update', function () {
-				var startedSpy = spyOnSignal(controller.on.started);
-				var mockService = new MockBuildService();
+			describe('run', function () {
 
-				controller.addService(mockService);
-				controller.run();
-				mockService.on.updated.dispatch();
+				it('should start all services', function () {
+					var mockService1 = new MockBuildService();
+					var mockService2 = new MockBuildService();
+					spyOn(mockService1, 'start');
+					spyOn(mockService2, 'start');
+					controller.addService(mockService1);
+					controller.addService(mockService2);
 
-				expect(startedSpy).toHaveBeenDispatched();
-			});
+					controller.run();
 
-			it('should not dispatch started before service finishes update', function () {
-				var startedSpy = spyOnSignal(controller.on.started);
-				var mockService = new MockBuildService();
-
-				controller.addService(mockService);
-				controller.run();
-
-				expect(startedSpy).not.toHaveBeenDispatched();
-			});
-
-			it('should dispatch startedAll when all services finish update', function () {
-				var startedAllSpy = spyOnSignal(controller.on.startedAll);
-				var mockService1 = new MockBuildService();
-				var mockService2 = new MockBuildService();
-
-				controller.addService(mockService1);
-				controller.addService(mockService2);
-				controller.run();
-				mockService1.on.updated.dispatch();
-				mockService2.on.updated.dispatch();
-
-				expect(startedAllSpy).toHaveBeenDispatched();
-			});
-
-			it('should not dispatch startedAll before all services finish update', function () {
-				var startedAllSpy = spyOnSignal(controller.on.startedAll);
-				var mockService1 = new MockBuildService();
-				var mockService2 = new MockBuildService();
-
-				controller.addService(mockService1);
-				controller.addService(mockService2);
-				controller.run();
-				mockService1.on.updated.dispatch();
-
-				expect(startedAllSpy).not.toHaveBeenDispatched();
-			});
-
-			it('should signal startedAll if no services configured', function () {
-				var startedAllSpy = spyOnSignal(controller.on.startedAll);
-
-				controller.run();
-
-				expect(startedAllSpy).toHaveBeenDispatched();
-			});
-
-			xit('should get project state from all services', function () {
-				var mockService1 = new MockBuildService();
-				var mockService2 = new MockBuildService();
-				controller.addService(mockService1);
-				controller.addService(mockService2);
-
-				var projectsSignals = controller.projects();
-
-				projectsSignals.addOnce(function (response) {
-
+					expect(mockService1.start).toHaveBeenCalled();
+					expect(mockService2.start).toHaveBeenCalled();
 				});
 
+				it('should dispatch started when service finishes update', function () {
+					var startedSpy = spyOnSignal(controller.on.started);
+					var mockService = new MockBuildService();
 
+					controller.addService(mockService);
+					controller.run();
+					mockService.on.updated.dispatch();
+
+					expect(startedSpy).toHaveBeenDispatched();
+				});
+
+				it('should not dispatch started before service finishes update', function () {
+					var startedSpy = spyOnSignal(controller.on.started);
+					var mockService = new MockBuildService();
+
+					controller.addService(mockService);
+					controller.run();
+
+					expect(startedSpy).not.toHaveBeenDispatched();
+				});
+
+				it('should dispatch startedAll when all services finish update', function () {
+					var startedAllSpy = spyOnSignal(controller.on.startedAll);
+					var mockService1 = new MockBuildService();
+					var mockService2 = new MockBuildService();
+
+					controller.addService(mockService1);
+					controller.addService(mockService2);
+					controller.run();
+					mockService1.on.updated.dispatch();
+					mockService2.on.updated.dispatch();
+
+					expect(startedAllSpy).toHaveBeenDispatched();
+				});
+
+				it('should not dispatch startedAll before all services finish update', function () {
+					var startedAllSpy = spyOnSignal(controller.on.startedAll);
+					var mockService1 = new MockBuildService();
+					var mockService2 = new MockBuildService();
+
+					controller.addService(mockService1);
+					controller.addService(mockService2);
+					controller.run();
+					mockService1.on.updated.dispatch();
+
+					expect(startedAllSpy).not.toHaveBeenDispatched();
+				});
+
+				it('should signal startedAll if no services configured', function () {
+					var startedAllSpy = spyOnSignal(controller.on.startedAll);
+
+					controller.run();
+
+					expect(startedAllSpy).toHaveBeenDispatched();
+				});
+
+			});
+
+			it('should get project state from all services', function () {
+				var mockService1 = new MockBuildService();
+				var mockService2 = new MockBuildService();
+				var projects1 = { name: 'service 1' };
+				var projects2 = { name: 'service 2' };
+				spyOn(mockService1, 'activeProjects').andReturn(projects1);
+				spyOn(mockService2, 'activeProjects').andReturn(projects2);
+				controller.addService(mockService1);
+				controller.addService(mockService2);
+
+				var projects = controller.activeProjects();
+
+				expect(projects.length).toBe(2);
+				expect(projects[0]).toBe(projects1);
+				expect(projects[1]).toBe(projects2);
 			});
 		});
 	});

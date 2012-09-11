@@ -259,5 +259,39 @@ function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXm
 
 		});
 		
+		describe('activeProjects', function () {
+
+			it('should return service name', function () {
+				var result = service.activeProjects();
+
+				expect(result.name).toBe(settings.name);
+			});
+
+			it('should return empty if no projects monitored', function () {
+				var result = service.activeProjects();
+
+				expect(result.items.length).toBe(0);
+			});
+
+			it('should return item name', function () {
+				service.update();
+
+				var result = service.activeProjects();
+
+				expect(result.items[0].name).toBe('CruiseControl.NET');
+				expect(result.items[1].name).toBe('NetReflector');
+			});
+
+			it('should return group name', function () {
+				service.update();
+
+				var result = service.activeProjects();
+
+				expect(result.items[0].group).toBe('CruiseControl.NET');
+				expect(result.items[1].group).toBe('CruiseControl.NET');
+			});
+
+		});
+
 	});
 });

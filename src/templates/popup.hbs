@@ -11,7 +11,10 @@
 		<div class="service-name">{{name}}</div>
 		<ul class="service-item-list">
 			{{#each items}}
-			<li class="service-item"><span class="service-item-name">{{name}}</span> (<span class="service-group">{{group}}</span>)</li>
+			<li class="service-item">
+				<span class="service-item-name">{{name}}</span>
+				{{#if group}}(<span class="service-group">{{group}}</span>){{/if}}
+			</li>
 			{{/each}}
 		</ul>
 	</li>

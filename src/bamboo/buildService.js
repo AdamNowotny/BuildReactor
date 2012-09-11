@@ -3,8 +3,9 @@ define([
 		'bamboo/bambooRequest',
 		'bamboo/bambooPlan',
 		'timer',
-		'amdUtils/string/interpolate'
-	], function (signals, BambooRequest, BambooPlan, Timer, interpolate) {
+		'amdUtils/string/interpolate',
+		'amdUtils/object/values'
+	], function (signals, BambooRequest, BambooPlan, Timer, interpolate, values) {
 
 		'use strict';
 
@@ -180,6 +181,19 @@ define([
 			});
 			plansRequest.projects();
 			return on;
+		};
+
+		BuildService.prototype.activeProjects = function () {
+			var projectsInfo = values(this.plans).map(function (p) {
+				return {
+					name: p.name,
+					group: p.projectName
+				};
+			});
+			return {
+				name: this.name,
+				items: projectsInfo
+			};
 		};
 
 		var createTemplateData = function (response, selectedPlans) {

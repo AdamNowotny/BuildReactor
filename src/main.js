@@ -65,10 +65,8 @@ require([
 			});
 			break;
 		case 'serviceStateRequest':
-			serviceController.projects().addOnce(function (result) {
-				sendResponse({
-					serviceState: result.response
-				});
+			sendResponse({
+				serviceState: serviceController.activeProjects()
 			});
 			break;
 		}

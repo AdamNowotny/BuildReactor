@@ -20,6 +20,11 @@ define([
 						id: 'id2',
 						name: 'build name 2',
 						group: 'build group 2'
+					},
+					{
+						id: 'id_no_group',
+						name: 'build with no group',
+						group: ''
 					}
 				]
 			},
@@ -36,7 +41,7 @@ define([
 		it('should show service names', function () {
 			controller.show(state);
 
-			expect($('.service-name').length).toBe(2);
+			expect($('.service-name').length).toBeGreaterThan(1);
 			expect($('.service-name').eq(0)).toHaveText('service 1');
 			expect($('.service-name').eq(1)).toHaveText('service 2');
 		});
@@ -44,7 +49,7 @@ define([
 		it('should show build names', function () {
 			controller.show(state);
 
-			expect($('.service-item-name').length).toBe(2);
+			expect($('.service-item-name').length).toBeGreaterThan(1);
 			expect($('.service-item-name').eq(0)).toHaveText('build name 1');
 			expect($('.service-item-name').eq(1)).toHaveText('build name 2');
 		});
@@ -52,9 +57,15 @@ define([
 		it('should show group names', function () {
 			controller.show(state);
 
-			expect($('.service-group').length).toBe(2);
+			expect($('.service-group').length).toBeGreaterThan(1);
 			expect($('.service-group').eq(0)).toHaveText('build group 1');
 			expect($('.service-group').eq(1)).toHaveText('build group 2');
+		});
+
+		it('should not show group name if none', function () {
+			controller.show(state);
+
+			expect($('.service-item').eq(2)).toHaveText('build with no group');
 		});
 	});
 
