@@ -54,7 +54,8 @@ module.exports = function (grunt) {
 				require: true,
 				runs: true,
 				spyOn: true,
-				waitsFor: true
+				waitsFor: true,
+				xit: true
 			}
 		},
 		jasmine: {
