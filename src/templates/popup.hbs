@@ -14,12 +14,12 @@
 			{{#if isBroken}}
 			<li class="service-item build-broken">
 				<span class="service-item-name">{{name}}</span>
-				{{#if group}}(<span class="service-group">{{group}}</span>){{/if}}
+				{{#if group}}<span class="service-group">{{group}}</span>{{/if}}
 			</li>
 			{{else}}
 			<li class="service-item">
 				<span class="service-item-name">{{name}}</span>
-				{{#if group}}(<span class="service-group">{{group}}</span>){{/if}}
+				{{#if group}}<span class="service-group">{{group}}</span>{{/if}}
 			</li>
 			{{/if}}
 			{{/each}}

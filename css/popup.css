@@ -1,3 +1,9 @@
+body {
+	background-color: #141414;
+	color: white;
+	min-width: 250px;
+}
+
 ul {
 	margin: 0;
 }
@@ -6,20 +12,43 @@ li {
 	list-style: none;
 }
 
+	li.info {
+		background-color: #222;
+		margin: 5px 5px 10px 5px;
+		padding: 5px;
+	}
+
 .service-name {
+	color: #F90;
 	font-weight: bold;	
-	background-color: #DCA;	
+	text-align: center;
 }
 
-.service-item {
+li.service-item {
+	background-color: #360;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-top: 5px;
+	padding: 5px;
 	white-space: nowrap;
 }
 
 	.service-item.build-broken {
-		background-color: #F88;
+		background-color: #900;
+		background-image: url(../img/exclamation.png);
+		background-repeat: no-repeat;
+		background-size: 20px;
+		background-position: right top;
+		background-origin: content-box;
 	}
 
 .service-group {
-	color: #333;
+	border-top: 1px solid #333;
+	color: #999;
+	display: block;
+	font-size: 8pt;
+	margin-top: 5px;
+	margin-bottom: -5px;
+	text-align: right;
 }
 
