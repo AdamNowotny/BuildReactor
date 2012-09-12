@@ -4,6 +4,11 @@ body {
 	min-width: 250px;
 }
 
+a, a:hover, a:visited {
+	color: white;
+	text-decoration: none;
+}
+
 ul {
 	margin: 0;
 }
