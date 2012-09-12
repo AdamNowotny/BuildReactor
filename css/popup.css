@@ -15,7 +15,7 @@ li {
 	white-space: nowrap;
 }
 
-	.service-item.failed {
+	.service-item.build-broken {
 		background-color: #F88;
 	}
 

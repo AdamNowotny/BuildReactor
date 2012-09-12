@@ -1,13 +1,14 @@
 define([
 	'cctray/buildService',
 	'cctray/ccRequest',
+	'cctray/project',
 	'timer',
 	'jquery',
 	'signals',
 	'jasmineSignals',
 	'text!spec/fixtures/cctray/cruisecontrolnet.xml'
 ],
-function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXmlText) {
+function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, projectsXmlText) {
 
 	'use strict';
 
@@ -289,6 +290,19 @@ function (BuildService, ccRequest, Timer, $, signals, jasmineSignals, projectsXm
 
 				expect(result.items[0].group).toBe('CruiseControl.NET');
 				expect(result.items[1].group).toBe('CruiseControl.NET');
+			});
+
+			it('should indicate if broken', function () {
+				service.update();
+				var failedProject = project();
+				failedProject.update({
+					status: 'Failure'
+				});
+				service._selectedProjects['CruiseControl.NET'] = failedProject;
+
+				var result = service.activeProjects();
+
+				expect(result.items[0].isBroken).toBeTruthy();
 			});
 
 		});

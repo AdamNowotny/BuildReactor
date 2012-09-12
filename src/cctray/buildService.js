@@ -154,7 +154,8 @@ define([
 			var projectsInfo = values(this._selectedProjects).map(function (p) {
 				return {
 					name: p.projectName(),
-					group: p.category()
+					group: p.category(),
+					isBroken: p.status() === 'Failure'
 				};
 			});
 			return {

@@ -358,6 +358,15 @@ define([
 					expect(result.items[1].group).toBe('Project 2');
 				});
 
+				it('should indicate if broken', function () {
+					service.update();
+
+					service.plans['PROJECT1-PLAN1'].state = 'Failed';
+					var result = service.activeProjects();
+
+					expect(result.items[0].isBroken).toBeTruthy();
+				});
+
 			});
 		});
 	});

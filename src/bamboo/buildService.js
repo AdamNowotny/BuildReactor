@@ -187,7 +187,8 @@ define([
 			var projectsInfo = values(this.plans).map(function (p) {
 				return {
 					name: p.name,
-					group: p.projectName
+					group: p.projectName,
+					isBroken: p.state === 'Failed'
 				};
 			});
 			return {

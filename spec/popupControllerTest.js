@@ -12,19 +12,19 @@ define([
 				name: 'service 1',
 				items: [
 					{
-						id: 'id1',
 						name: 'build name 1',
-						group: 'build group 1'
+						group: 'build group 1',
+						isBroken: false,
 					},
 					{
-						id: 'id2',
 						name: 'build name 2',
-						group: 'build group 2'
+						group: 'build group 2',
+						isBroken: true,
 					},
 					{
-						id: 'id_no_group',
 						name: 'build with no group',
-						group: ''
+						group: '',
+						isBroken: false,
 					}
 				]
 			},
@@ -66,6 +66,12 @@ define([
 			controller.show(state);
 
 			expect($('.service-item').eq(2)).toHaveText('build with no group');
+		});
+
+		it('should indicate broken build', function () {
+			controller.show(state);
+
+			expect($('.service-item').eq(1)).toHaveClass('build-broken');
 		});
 	});
 
