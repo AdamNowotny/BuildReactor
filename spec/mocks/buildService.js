@@ -30,6 +30,12 @@ define(['signals'], function (signals) {
 		};
 	};
 
+	MockBuildService.prototype.activeProjects = function () {
+		return {
+			name: this.name
+		};
+	};
+
 	MockBuildService.settings = function () {
 		return {
 			typeName: 'Fake service',

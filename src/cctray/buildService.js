@@ -6,8 +6,9 @@ define([
 		'timer',
 		'amdUtils/string/interpolate',
 		'amdUtils/array/contains',
+		'amdUtils/object/values',
 		'urljs'
-	], function ($, signals, ccRequest, project, Timer, interpolate, contains, URL) {
+	], function ($, signals, ccRequest, project, Timer, interpolate, contains, values, URL) {
 
 		'use strict';
 
@@ -147,6 +148,20 @@ define([
 				on.errorThrown.dispatch(ajaxError);
 			});
 			return on;
+		};
+
+		CCBuildService.prototype.activeProjects = function () {
+			var projectsInfo = values(this._selectedProjects).map(function (p) {
+				return {
+					name: p.projectName(),
+					group: p.category(),
+					isBroken: p.status() === 'Failure'
+				};
+			});
+			return {
+				name: this.name,
+				items: projectsInfo
+			};
 		};
 
 		function createTemplateData(projectsXml, selectedProjects) {

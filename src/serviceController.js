@@ -65,6 +65,13 @@ define([
 			});
 		}
 
+		function activeProjects() {
+			var projects = services.map(function (s) {
+				return s.activeProjects();
+			});
+			return projects;
+		}
+
 		function addService(service) {
 			if (!service.name) {
 				throw { name: 'ArgumentInvalid', message: 'service.name not defined' };
@@ -124,6 +131,7 @@ define([
 			addService: addService,
 			removeService: removeService,
 			services: services,
-			run: run
+			run: run,
+			activeProjects: activeProjects
 		};
 	});

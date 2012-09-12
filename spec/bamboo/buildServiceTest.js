@@ -325,5 +325,48 @@ define([
 				});
 
 			});
+
+			describe('activeProjects', function () {
+
+				it('should return service name', function () {
+					var result = service.activeProjects();
+
+					expect(result.name).toBe(settings.name);
+				});
+
+				it('should return empty if no projects monitored', function () {
+					var result = service.activeProjects();
+
+					expect(result.items.length).toBe(0);
+				});
+
+				it('should return item name', function () {
+					service.update();
+
+					var result = service.activeProjects();
+
+					expect(result.items[0].name).toBe('Plan 1');
+					expect(result.items[1].name).toBe('Plan 2');
+				});
+
+				it('should return group name', function () {
+					service.update();
+
+					var result = service.activeProjects();
+
+					expect(result.items[0].group).toBe('Project 1');
+					expect(result.items[1].group).toBe('Project 2');
+				});
+
+				it('should indicate if broken', function () {
+					service.update();
+
+					service.plans['PROJECT1-PLAN1'].state = 'Failed';
+					var result = service.activeProjects();
+
+					expect(result.items[0].isBroken).toBeTruthy();
+				});
+
+			});
 		});
 	});

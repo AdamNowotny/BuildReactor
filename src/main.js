@@ -64,6 +64,11 @@ require([
 				});
 			});
 			break;
+		case 'serviceStateRequest':
+			sendResponse({
+				serviceState: serviceController.activeProjects()
+			});
+			break;
 		}
 	}
 

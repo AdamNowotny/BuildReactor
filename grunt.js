@@ -54,7 +54,8 @@ module.exports = function (grunt) {
 				require: true,
 				runs: true,
 				spyOn: true,
-				waitsFor: true
+				waitsFor: true,
+				xit: true
 			}
 		},
 		jasmine: {
@@ -63,7 +64,8 @@ module.exports = function (grunt) {
 		mincss: {
 			compress: {
 				files: {
-					'<%= vars.dist %>/css/options.css': [ 'css/options.css' ]
+					'<%= vars.dist %>/css/options.css': [ 'css/options.css' ],
+					'<%= vars.dist %>/css/popup.css': [ 'css/popup.css' ]
 				}
 			}
 		},
@@ -144,6 +146,9 @@ module.exports = function (grunt) {
 								'go/buildService',
 								'teamcity/buildService'
 							]
+						},
+						{
+							name: 'popup'
 						}
 					]
 				}
@@ -158,7 +163,9 @@ module.exports = function (grunt) {
 					'<%= vars.dist %>': [
 						'background.html',
 						'options.html',
+						'popup.html',
 						'manifest.json',
+						'img/exclamation.png',
 						'img/icon.svg',
 						'img/icon-16.png',
 						'img/icon-19.png',
