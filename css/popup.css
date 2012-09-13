@@ -6,6 +6,7 @@ body {
 
 a, a:hover, a:visited {
 	color: white;
+	display: block;
 	text-decoration: none;
 }
 

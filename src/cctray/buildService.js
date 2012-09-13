@@ -155,7 +155,8 @@ define([
 				return {
 					name: p.projectName(),
 					group: p.category(),
-					isBroken: p.status() === 'Failure'
+					isBroken: p.status() === 'Failure',
+					url: p.url()
 				};
 			});
 			return {

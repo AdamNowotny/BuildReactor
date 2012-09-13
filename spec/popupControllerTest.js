@@ -15,16 +15,19 @@ define([
 						name: 'build name 1',
 						group: 'build group 1',
 						isBroken: false,
+						url: 'http://example1.com/'
 					},
 					{
 						name: 'build name 2',
 						group: 'build group 2',
 						isBroken: true,
+						url: 'http://example2.com/'
 					},
 					{
 						name: 'build with no group',
 						group: '',
 						isBroken: false,
+						url: 'http://example3.com/'
 					}
 				]
 			},
@@ -69,6 +72,12 @@ define([
 		});
 
 		it('should indicate broken build', function () {
+			controller.show(state);
+
+			expect($('.service-item').eq(1)).toHaveClass('build-broken');
+		});
+
+		it('should add link for each build', function () {
 			controller.show(state);
 
 			expect($('.service-item').eq(1)).toHaveClass('build-broken');

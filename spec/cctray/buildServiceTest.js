@@ -305,6 +305,20 @@ function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, p
 				expect(result.items[0].isBroken).toBeTruthy();
 			});
 
+			it('should render link', function () {
+				service.update();
+				var failedProject = project();
+				failedProject.update({
+					status: 'Failure',
+					url: 'http://example.com/project'
+				});
+				service._selectedProjects['CruiseControl.NET'] = failedProject;
+
+				var result = service.activeProjects();
+
+				expect(result.items[0].url).toBe('http://example.com/project');
+			});
+
 		});
 
 	});

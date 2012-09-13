@@ -367,6 +367,15 @@ define([
 					expect(result.items[0].isBroken).toBeTruthy();
 				});
 
+				it('should render link', function () {
+					service.update();
+
+					service.plans['PROJECT1-PLAN1'].url = 'http://example.com/plan1';
+					var result = service.activeProjects();
+
+					expect(result.items[0].url).toBe('http://example.com/plan1');
+				});
+
 			});
 		});
 	});

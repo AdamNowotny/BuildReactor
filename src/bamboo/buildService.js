@@ -188,7 +188,8 @@ define([
 				return {
 					name: p.name,
 					group: p.projectName,
-					isBroken: p.state === 'Failed'
+					isBroken: p.state === 'Failed',
+					url: p.url
 				};
 			});
 			return {
