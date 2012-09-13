@@ -41,17 +41,17 @@ Notifications
 -------------
 <img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/notifications-640x400.jpg" alt="BuildReactor notifications">
 
-Options page
-------------
-Settings page (Bamboo):
+Service settings (options page)
+-------------------------------
 <img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/settings-1280x800.jpg" alt="BuildReactor options page">
 
-Adding new service:
+Adding new service (options page)
+---------------------------------
 <img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/settings-new-1280x800.jpg" alt="BuildReactor options page">
 
-Chrome badge
-------------
-<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/chrome-failed.jpg" alt="BuildReactor action icon">
+Popup and chrome badge
+----------------------
+<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/popup.jpg" alt="BuildReactor action icon">
 
 The number in the badge shows how many builds are currently broken. 
 
