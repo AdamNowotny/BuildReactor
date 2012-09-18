@@ -37,6 +37,7 @@ define([
 	var show = function () {
 		$('.btn-primary', container).addClass('disabled');
 		$('#service-add-name', container).val('');
+		unselectAll();
 		container.show();
 	};
 

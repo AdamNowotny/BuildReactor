@@ -102,6 +102,14 @@ define([
 				expect($('.thumbnail').eq(0)).toHaveClass('active');
 			});
 
+			it('should unselect by default', function () {
+				container.selectService(1);
+
+				container.show();
+
+				expect($('.thumbnail.active').length).toBe(0);
+			});
+
 			it('should focus name after selecting service type', function () {
 				container.selectService();
 
