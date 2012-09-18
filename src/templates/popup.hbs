@@ -5,6 +5,7 @@
 	'styles' : []
 }
 }}
+{{#if services}}
 <ul class="info-list">
 	{{#each services}}
 	<li class="info">
@@ -31,3 +32,6 @@
 	</li>
 	{{/each}}
 </ul>
+{{else}}
+<div class="no-services-message"><a href="options.html" target="_blank">No services configured</a></div>
+{{/if}}

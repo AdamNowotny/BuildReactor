@@ -41,6 +41,19 @@ define([
 			jasmine.getFixtures().set('<div class="service-info-container">content</div>');
 		});
 
+		it('should show message if no services configured', function () {
+			controller.show([]);
+
+			expect($('.no-services-message')).toHaveText('No services configured');
+			expect($('.no-services-message')).toBeVisible();
+		});
+
+		it('should not show message if at least 1 service configured', function () {
+			controller.show(state);
+
+			expect($('.no-services-message')).not.toBeVisible();
+		});
+
 		it('should show service names', function () {
 			controller.show(state);
 

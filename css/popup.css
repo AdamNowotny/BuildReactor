@@ -4,12 +4,6 @@ body {
 	min-width: 250px;
 }
 
-a, a:hover, a:visited {
-	color: white;
-	display: block;
-	text-decoration: none;
-}
-
 ul {
 	margin: 0;
 }
@@ -24,9 +18,23 @@ li {
 		padding: 5px;
 	}
 
+		li.info a, li.info a:hover, li.info a:visited {
+			color: white;
+			display: block;
+			text-decoration: none;
+		}
+
 .service-name {
 	color: #F90;
 	font-weight: bold;	
+	text-align: center;
+}
+
+.no-services-message {
+	color: #F90;
+	font-weight: bold;
+	margin-top: 1em;
+	margin-bottom: 1em;	
 	text-align: center;
 }
 
