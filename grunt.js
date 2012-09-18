@@ -172,6 +172,7 @@ module.exports = function (grunt) {
 						'img/icon-48.png',
 						'img/icon-128.png',
 						'img/loading.gif',
+						'img/tool.png',
 						'src/bamboo/*.html',
 						'src/bamboo/*.png',
 						'src/cctray/*.html',

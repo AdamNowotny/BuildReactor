@@ -66,3 +66,21 @@ li.service-item {
 	text-align: right;
 }
 
+.actions {
+	background-color: #555;
+	text-align: right;
+}
+
+.actions a {
+	display: inline-block;
+	padding: 5px 5px 0 5px;
+}
+
+.actions a:hover {
+	background-color: #999;
+}
+
+.actions img {
+	height: 25px;
+	width: 25px;
+}

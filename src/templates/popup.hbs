@@ -5,6 +5,9 @@
 	'styles' : []
 }
 }}
+<div class="actions">
+	<a href="options.html" target="_blank" title="Configuration..."><img src="../img/tool.png" alt="Options" /></a>
+</div>
 {{#if services}}
 <ul class="info-list">
 	{{#each services}}
@@ -33,5 +36,5 @@
 	{{/each}}
 </ul>
 {{else}}
-<div class="no-services-message"><a href="options.html" target="_blank">No services configured</a></div>
+<div class="no-services-message">No services configured</div>
 {{/if}}
