@@ -105,6 +105,17 @@ define([
 			expect($('.show-button')).toBeDisabled();
 		});
 	
+		it('should disable show button when enter pressed', function () {
+			form.show(settings);
+			
+			$('.url-input').keypress();
+			// jQuery binds that to form submit
+			$('.show-button').click();
+			$('.url-input').keyup();
+
+			expect($('.show-button')).toBeDisabled();
+		});
+	
 		it('should animate show button icon when clicked', function () {
 			form.show(settings);
 			

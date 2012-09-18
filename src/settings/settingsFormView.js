@@ -25,11 +25,11 @@ define([
 		$('.settings-form', container).submit(function () {
 			return false;
 		});
-		$('.url-input', container).keyup(urlChanged).change(urlChanged);
+		$('.url-input', container).keypress(updateShowButtonState).change(updateShowButtonState);
 		$('.show-button', container).click(showClicked);
 		$('.save-button', container).click(saveClicked);
 		container.show();
-		urlChanged();
+		updateShowButtonState();
 		$('.url-input', container).focus();
 	};
 
@@ -56,7 +56,7 @@ define([
 		settingsFormView.on.changed.dispatch(getCurrentValues());
 	}
 
-	function urlChanged() {
+	function updateShowButtonState() {
 		var url = $('.url-input', container).val();
 		if (url) {
 			$('.show-button', container).removeAttr('disabled');
