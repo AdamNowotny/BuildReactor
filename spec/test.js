@@ -47,7 +47,6 @@ require.config({
 });
 require([
 	'jquery',
-	'../lib/jasmine-reporters/jasmine.console_reporter.js',
 	'spec/ajaxRequestTest',
 	'spec/badgeControllerTest',
 	'spec/optionsControllerTest',
@@ -78,7 +77,7 @@ require([
 	'spec/settings/serviceOptionsTest',
 	'spec/settings/serviceSettingsTest',
 	'spec/settings/settingsFormViewTest'
-], function ($, ConsoleReporter) {
+], function ($) {
 	
 	'use strict';
 
