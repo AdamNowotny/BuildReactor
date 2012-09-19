@@ -166,6 +166,7 @@ module.exports = function (grunt) {
 						'popup.html',
 						'manifest.json',
 						'img/exclamation.png',
+						'img/feedback.png',
 						'img/icon.svg',
 						'img/icon-16.png',
 						'img/icon-19.png',
