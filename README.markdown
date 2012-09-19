@@ -104,6 +104,7 @@ Legal
 This code is distributed under Apache License version 2.0
 
 Application icon based on https://commons.wikimedia.org/wiki/File:Radiation_warning_symbol_3.svg
+
 Tool icon taken from http://www.iconspedia.com/icon/metro-tools-black-18254.html
 
 What's new
