@@ -174,12 +174,12 @@ define([
 			it('should signal settingsChanged when settings updated', function () {
 				var newServiceSettings = new MockSettingsBuilder().create();
 				var settings = [createSettings('service 1'), newServiceSettings];
-				var spySettingsChanged = spyOnSignal(controller.on.settingsChanged).matchingValues(settings);
+				var spySettingsChanged = spyOnSignal(controller.on.settingsChanged);
 				spyServiceSettingsGetAll.andReturn(settings);
 
 				serviceOptions.on.updated.dispatch(newServiceSettings);
 
-				expect(spySettingsChanged).toHaveBeenDispatched();
+				expect(spySettingsChanged).toHaveBeenDispatchedWith(settings);
 			});
 
 			it('should show alert when settings saved', function () {

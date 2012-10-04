@@ -64,34 +64,34 @@ define([
 			});
 
 			it('should signal failed on update', function () {
-				var buildFailedSpy = spyOnSignal(plan.on.failed).matchingValues(plan);
+				var buildFailedSpy = spyOnSignal(plan.on.failed);
 				setupResponse(latestPlanResultFailedJson);
 
 				plan.update();
 
-				expect(buildFailedSpy).toHaveBeenDispatched(1);
+				expect(buildFailedSpy).toHaveBeenDispatchedWith(plan);
 			});
 
 			it('should not signal failed if not changed', function () {
-				var buildFailedSpy = spyOnSignal(plan.on.failed).matchingValues(plan);
+				var buildFailedSpy = spyOnSignal(plan.on.failed);
 				setupResponse(latestPlanResultFailedJson);
 
 				plan.update();
-				expect(buildFailedSpy).toHaveBeenDispatched(1);
+				expect(buildFailedSpy).toHaveBeenDispatchedWith(plan);
 
 				plan.update();
-				expect(buildFailedSpy).toHaveBeenDispatched(1);
+				expect(buildFailedSpy).toHaveBeenDispatchedWith(plan);
 			});
 
 			it('should signal when build is fixed', function () {
-				var buildFixedSpy = spyOnSignal(plan.on.fixed).matchingValues(plan);
+				var buildFixedSpy = spyOnSignal(plan.on.fixed);
 				setupResponse(latestPlanResultFailedJson);
 				plan.update();
 
 				setupResponse(latestPlanResultJson);
 				plan.update();
 
-				expect(buildFixedSpy).toHaveBeenDispatched(1);
+				expect(buildFixedSpy).toHaveBeenDispatchedWith(plan);
 			});
 
 			it('should signal success when response received', function () {

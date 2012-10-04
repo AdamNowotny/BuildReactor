@@ -7,7 +7,7 @@ define([
 
 		'use strict';
 
-		describe('addModal', function () {
+		describe('addService', function () {
 
 			var spySelected;
 			var spyOnSignal = jasmineSignals.spyOnSignal;
@@ -143,7 +143,7 @@ define([
 			});
 
 			it('should dispatch selected', function () {
-				spySelected.andCallFake(function (info) {
+				addService.on.selected.addOnce(function (info) {
 					expect(info).toBe(serviceTypes[1]);
 					expect(info.name).toBe('CI 2');
 				});
