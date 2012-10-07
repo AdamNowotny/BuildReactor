@@ -27,6 +27,7 @@ define([
 		updateWithDefaults(serviceInfo);
 		currentServiceInfo = serviceInfo;
 		projectView.hide();
+		$('.alert-error').hide();
 		settingsFormView.show({
 			url: serviceInfo.url,
 			updateInterval: serviceInfo.updateInterval,
@@ -34,25 +35,27 @@ define([
 			password: serviceInfo.password
 		});
 		settingsFormView.on.changed.add(settingsChanged);
-		settingsFormView.on.clickedShow.add(function req(currentValues) {
-			projectView.hide();
-			$('.alert-error').hide();
-			var serviceModuleName = serviceInfo.baseUrl + '/buildService';
-			require([serviceModuleName], function (BuildService) {
-				var settings = {
-					url: currentValues.url,
-					username: currentValues.username,
-					password: currentValues.password,
-					projects: serviceInfo.projects
-				};
-				var service = new BuildService(settings);
-				var result = service.projects(settings.projects);
-				result.receivedProjects.addOnce(projectsReceived);
-				result.errorThrown.addOnce(renderError);
-			});
-		});
+		settingsFormView.on.clickedShow.add(showProjects);
 	};
 	
+	function showProjects(currentValues) {
+		projectView.hide();
+		$('.alert-error').hide();
+		var serviceModuleName = currentServiceInfo.baseUrl + '/buildService';
+		require([serviceModuleName], function (BuildService) {
+			var settings = {
+				url: currentValues.url,
+				username: currentValues.username,
+				password: currentValues.password,
+				projects: currentServiceInfo.projects
+			};
+			var service = new BuildService(settings);
+			var result = service.projects(settings.projects);
+			result.receivedProjects.addOnce(projectsReceived);
+			result.errorThrown.addOnce(renderError);
+		});
+	}
+
 	function projectsReceived(projects) {
 		projectView.show(projects);
 		settingsFormView.resetButtons();
@@ -90,6 +93,7 @@ define([
 	var showEmpty = function () {
 		settingsFormView.hide();
 		projectView.hide();
+		$('.alert-error').hide();
 		currentServiceInfo = null;
 	};
 
