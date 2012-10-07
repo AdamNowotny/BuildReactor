@@ -18,7 +18,7 @@ require.config({
 		fixtures: '../spec/fixtures',
 		jasmineSignals: '../lib/jasmine-signals/jasmine-signals',
 		jqueryTools: '../lib/jquery-tools/jquery.tools.min',
-		jquery: '../lib/jquery/jquery',
+		jquery: [ '../lib/jquery/jquery-1.8.2.min', '../lib/jquery/jquery-1.8.2'],
 		json: '../lib/requirejs/json',
 		mocks: '../spec/mocks',
 		spec: '../spec',

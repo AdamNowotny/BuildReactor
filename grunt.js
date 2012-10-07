@@ -178,7 +178,7 @@ module.exports = function (grunt) {
 						'src/bamboo/*.png',
 						'src/cctray/*.html',
 						'src/cctray/*.png',
-						'lib/jquery/jquery.js',
+						'lib/jquery/jquery-1.8.2.min.js',
 						'lib/jquery-tools/jquery.tools.min.js',
 						'lib/js-signals/signals.js',
 						'lib/requirejs/require.min.js',

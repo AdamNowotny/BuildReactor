@@ -1,7 +1,7 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
-		jquery: '../lib/jquery/jquery',
+		jquery: [ '../lib/jquery/jquery-1.8.2.min', '../lib/jquery/jquery-1.8.2'],
 		signals: '../lib/js-signals/signals',
 		has: '../lib/requirejs/has',
 		urljs: '../lib/urljs/url-min'
