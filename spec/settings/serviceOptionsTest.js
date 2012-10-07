@@ -4,21 +4,15 @@ define([
 	'settings/serviceOptions',
 	'settings/settingsFormView',
 	'settings/projectView',
-	'jasmineSignals',
 	'spec/mocks/buildService',
 	'spec/mocks/mockSettingsBuilder'
-], function ($, signals, serviceOptions, settingsFormView, projectView, jasmineSignals, MockBuildService, MockSettingsBuilder) {
+], function ($, signals, serviceOptions, settingsFormView, projectView, MockBuildService, MockSettingsBuilder) {
 
 	'use strict';
 
-	define('spec/buildService', function () {
-		return MockBuildService;
-	});
-
 	describe('serviceOptions', function () {
 
-		var spyOnSignal = jasmineSignals.spyOnSignal,
-			settingsFormContainer,
+		var settingsFormContainer,
 			spySettingsFormViewShow,
 			projectViewContainer,
 			spyProjectViewGet,
@@ -179,62 +173,107 @@ define([
 			expect($('.error')).not.toBeVisible();
 		});
 
-		it('should get projects from service', function () {
-			serviceOptions.show(settings);
+		describe('async', function () {
 
-			var formValues = { url: settings.url };
-			settingsFormView.on.clickedShow.dispatch(formValues);
+			define('spec/buildService', function () {
+				return MockBuildService;
+			});
 
-			expect(MockBuildService.prototype.projects).toHaveBeenCalledWith(settings.projects);
-		});
+			var readyModules = [];
 
-		it('should reset buttons after projects loaded', function () {
-			serviceOptions.show(settings);
+			beforeEach(function () {
+				readyModules = [];
+			});
 
-			settingsFormView.on.clickedShow.dispatch({});
-			receivedProjects.dispatch();
+			function isLoaded() {
+				require(['spec/buildService'], function () {
+					readyModules = arguments;
+				});
+				return readyModules.length === 1;
+			}
 
-			expect(settingsFormView.resetButtons).toHaveBeenCalled();
-		});
+			it('should get projects from service', function () {
+				runs(function () {
+					serviceOptions.show(settings);
 
-		it('should show projects after projects loaded', function () {
-			serviceOptions.show(settings);
-			var projects = {};
+					var formValues = { url: settings.url };
+					settingsFormView.on.clickedShow.dispatch(formValues);
+				});
+				waitsFor(isLoaded, 'Service not loaded', 1000);
+				runs(function () {
+					expect(MockBuildService.prototype.projects).toHaveBeenCalledWith(settings.projects);
+				});
+			});
 
-			settingsFormView.on.clickedShow.dispatch({});
-			receivedProjects.dispatch(projects);
+			it('should reset buttons after projects loaded', function () {
+				runs(function () {
+					serviceOptions.show(settings);
 
-			expect(projectView.show).toHaveBeenCalledWith(projects);
-		});
+					settingsFormView.on.clickedShow.dispatch({});
+					receivedProjects.dispatch();
+				});
+				waitsFor(isLoaded, 'Service not loaded', 1000);
+				runs(function () {
+					expect(settingsFormView.resetButtons).toHaveBeenCalled();
+				});
+			});
 
-		it('should reset buttons after request error', function () {
-			serviceOptions.show(settings);
+			it('should show projects after projects loaded', function () {
+				var projects = {};
+				runs(function () {
+					serviceOptions.show(settings);
 
-			settingsFormView.on.clickedShow.dispatch({});
-			errorThrown.dispatch({ message: 'error message', url: settings.url });
+					settingsFormView.on.clickedShow.dispatch({});
+					receivedProjects.dispatch(projects);
+				});
+				waitsFor(isLoaded, 'Service not loaded', 1000);
+				runs(function () {
+					expect(projectView.show).toHaveBeenCalledWith(projects);
+				});
+			});
 
-			expect(settingsFormView.resetButtons).toHaveBeenCalled();
-		});
+			it('should reset buttons after request error', function () {
+				runs(function () {
+					serviceOptions.show(settings);
 
-		it('should display error if call failed when getting plans', function () {
-			serviceOptions.show(settings);
+					settingsFormView.on.clickedShow.dispatch({});
+					errorThrown.dispatch({ message: 'error message', url: settings.url });
+				});
+				waitsFor(isLoaded, 'Service not loaded', 1000);
+				runs(function () {
+					expect(settingsFormView.resetButtons).toHaveBeenCalled();
+				});
+			});
 
-			settingsFormView.on.clickedShow.dispatch({});
-			errorThrown.dispatch({ message: 'error message', url: 'http://error.com/' });
+			it('should display error if call failed when getting plans', function () {
+				runs(function () {
+					serviceOptions.show(settings);
 
-			expect($('.alert-error')).toBeVisible();
-			expect($('.error-message')).toHaveText('error message');
-			expect($('.error-url')).toHaveText('http://error.com/');
-		});
+					settingsFormView.on.clickedShow.dispatch({});
+					errorThrown.dispatch({ message: 'error message', url: 'http://error.com/' });
+				});
+				waitsFor(isLoaded, 'Service not loaded', 1000);
+				runs(function () {
+					expect($('.alert-error')).toBeVisible();
+					expect($('.error-message')).toHaveText('error message');
+					expect($('.error-url')).toHaveText('http://error.com/');
+				});
+			});
 
-		it('should update projects to empty array if undefined', function () {
-			settings.projects = undefined;
-			serviceOptions.show(settings);
+			it('should update projects to empty array if undefined', function () {
+				runs(function () {
+					settings.projects = undefined;
+					serviceOptions.show(settings);
 
-			var formValues = { url: settings.url };
-			settingsFormView.on.clickedShow.dispatch(formValues);
+					var formValues = { url: settings.url };
+					settingsFormView.on.clickedShow.dispatch(formValues);
+				});
+				waitsFor(isLoaded, 'Service not loaded', 1000);
+				runs(function () {
+					expect(MockBuildService.prototype.projects).toHaveBeenCalledWith([]);
+				});
+			});
 
-			expect(MockBuildService.prototype.projects).toHaveBeenCalledWith([]);
 		});
 
 	});

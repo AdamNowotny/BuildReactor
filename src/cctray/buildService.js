@@ -13,7 +13,7 @@ define([
 		'use strict';
 
 		var CCBuildService = function (settings) {
-			this.settings = this.createSettings(settings);
+			this.settings = this._createSettings(settings);
 			this.name = this.settings.name;
 			this._selectedProjects = {};
 			this.on = {
@@ -25,7 +25,7 @@ define([
 			};
 		};
 
-		CCBuildService.prototype.createSettings = function (settings) {
+		CCBuildService.prototype._createSettings = function (settings) {
 			var newSettings = CCBuildService.settings();
 			newSettings.name = settings.name;
 			newSettings.url = URL.resolve(settings.url, this.cctrayLocation());
@@ -48,7 +48,6 @@ define([
 				baseUrl: 'cctray',
 				icon: 'cctray/icon.png',
 				logo: 'cctray/logo.png',
-				updateInterval: 60,
 				projects: []
 			};
 		};

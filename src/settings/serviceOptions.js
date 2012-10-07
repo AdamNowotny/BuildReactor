@@ -42,10 +42,11 @@ define([
 				var settings = {
 					url: currentValues.url,
 					username: currentValues.username,
-					password: currentValues.password
+					password: currentValues.password,
+					projects: serviceInfo.projects
 				};
 				var service = new BuildService(settings);
-				var result = service.projects(serviceInfo.projects);
+				var result = service.projects(settings.projects);
 				result.receivedProjects.addOnce(projectsReceived);
 				result.errorThrown.addOnce(renderError);
 			});
