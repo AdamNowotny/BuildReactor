@@ -2,9 +2,31 @@ define(['signals'], function (signals) {
 
 	'use strict';
 	
+	var projectStatus = {
+		unknown: 'Unknown',
+		success: 'Success',
+		failure: 'Failure',
+		building: 'Building'
+	};
+
+	function parseStatus(status) {
+		switch (status) {
+		case 'Success':
+			return projectStatus.success;
+		case 'Failure':
+			return projectStatus.failure;
+		case 'Exception':
+			return projectStatus.failure;
+		case 'Building':
+			return projectStatus.building;
+		default:
+			return projectStatus.unknown;
+		}
+	}
+
 	function project() {
 
-		var status,
+		var status = projectStatus.unknown,
 			projectName,
 			category,
 			url,
@@ -18,22 +40,28 @@ define(['signals'], function (signals) {
 		projectInstance.fixed = fixed;
 
 		projectInstance.update = function (newProjectInfo) {
+			var that = this;
+
+			function initialize() {
+				if (status === projectStatus.failure) {
+					failed.dispatch(that);
+				}
+			}
+
 			var oldStatus = status;
 			projectName = newProjectInfo.name;
 			category = newProjectInfo.category;
-			status = newProjectInfo.status;
+			status = parseStatus(newProjectInfo.status);
 			url = newProjectInfo.url;
-			if (newProjectInfo.status === 'Unknown') {
-				return projectInstance;
-			}
-			if (!oldStatus && (newProjectInfo.status === 'Failure' || newProjectInfo.status === 'Exception')) {
-				failed.dispatch(this);
-			}
-			if (oldStatus === 'Success' && newProjectInfo.status !== 'Success') {
-				failed.dispatch(this);
-			}
-			if (oldStatus && oldStatus !== 'Success' && newProjectInfo.status === 'Success') {
-				fixed.dispatch(this);
+			if (oldStatus === projectStatus.unknown) {
+				initialize();
+			} else {
+				if (oldStatus === projectStatus.success && status === projectStatus.failure) {
+					failed.dispatch(this);
+				}
+				if ((oldStatus === projectStatus.failure) && status === projectStatus.success) {
+					fixed.dispatch(this);
+				}
 			}
 			return projectInstance;
 		};
