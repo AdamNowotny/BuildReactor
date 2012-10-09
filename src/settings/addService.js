@@ -1,9 +1,10 @@
 define([
+	'resourceFinder',
 	'signals',
 	'jquery',
 	'hbs!templates/addServiceItem',
 	'bootstrap'
-], function (signals, $, addServiceItemTemplate) {
+], function (resourceFinder, signals, $, addServiceItemTemplate) {
 
 	'use strict';
 
@@ -18,7 +19,8 @@ define([
 		container = $(selector);
 		serviceTypeName = undefined;
 		serviceTypes = availableServices;
-		$('.service-add-list ul', container).html(addServiceItemTemplate({ services: serviceTypes }));
+		var templateInput = createTemplateInput(serviceTypes);
+		$('.service-add-list ul', container).html(addServiceItemTemplate(templateInput));
 		$('.thumbnails a', container).click(serviceAddSelect);
 		$('.service-add-form', container).submit(function () {
 			serviceAdd();
@@ -32,6 +34,17 @@ define([
 				$('.btn-primary', container).removeClass('disabled');
 			}
 		});
+	};
+
+	var createTemplateInput = function (serviceTypes) {
+		var input = [];
+		serviceTypes.forEach(function (d) {
+			input.push({
+				typeName: d.typeName,
+				logo: resourceFinder.logo(d)
+			});
+		});
+		return { services: input };
 	};
 
 	var show = function () {

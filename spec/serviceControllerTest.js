@@ -1,13 +1,14 @@
 define([
 		'jquery',
 		'serviceController',
+		'resourceFinder',
 		'spec/mocks/buildService',
 		'spec/mocks/mockBuildEvent',
 		'spec/mocks/mockSettingsBuilder',
 		'amdUtils/string/endsWith',
 		'jasmineSignals'
 	],
-	function ($, controller, MockBuildService, mockBuildEvent, MockSettingsBuilder, endsWith, jasmineSignals) {
+	function ($, controller, resourceFinder, MockBuildService, mockBuildEvent, MockSettingsBuilder, endsWith, jasmineSignals) {
 
 		'use strict';
 		
@@ -119,9 +120,10 @@ define([
 			});
 
 			it('should signal when all services are loaded', function () {
-				var settings1 = new MockSettingsBuilder().withName('service 1').withBaseUrl('spec/mocks').create();
-				var settings2 = new MockSettingsBuilder().withName('service 2').withBaseUrl('spec/mocks').create();
+				var settings1 = new MockSettingsBuilder().create();
+				var settings2 = new MockSettingsBuilder().create();
 				var loaded = false;
+				spyOn(resourceFinder, 'service').andReturn('spec/mocks/buildService');
 
 				runs(function () {
 					controller.load([settings1, settings2]).addOnce(function () {

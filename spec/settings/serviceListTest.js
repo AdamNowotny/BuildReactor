@@ -18,6 +18,9 @@ define([
 				serviceAt: function (index) {
 					return $('#service-list li').eq(index);
 				},
+				iconAt: function (index) {
+					return $('#service-list li img').eq(index).attr('src');
+				},
 				clickServiceAt: function (index) {
 					this.serviceAt(index).click();
 				},
@@ -76,6 +79,16 @@ define([
 				serviceList.load([mockSettings1, mockSettings2]);
 
 				expect(page.count()).toBe(2);
+			});
+
+			it('should display icons', function () {
+				var mockSettings1 = new MockSettingsBuilder().withIcon('service1/icon.png').create();
+				var mockSettings2 = new MockSettingsBuilder().withIcon('service2/icon.png').create();
+
+				serviceList.load([mockSettings1, mockSettings2]);
+
+				expect(page.iconAt(0)).toBe('src/services/service1/icon.png');
+				expect(page.iconAt(1)).toBe('src/services/service2/icon.png');
 			});
 
 			it('should select last item', function () {

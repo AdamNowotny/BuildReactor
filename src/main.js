@@ -15,26 +15,27 @@ require.config({
 	}
 });
 require([
-	'serviceController',
-	'notificationController',
 	'badgeController',
-	'settingsStore',
+	'backgroundLogger',
+	'notificationController',
+	'serviceController',
 	'serviceTypesRepository',
-	'bamboo/buildService',
-	'cctray/buildService',
-	'cruisecontrol/buildService',
-	'cruisecontrol.net/buildService',
-	'cruisecontrol.rb/buildService',
-	'go/buildService',
-	'jenkins/buildService',
-	'teamcity/buildService',
-	'backgroundLogger'
+	'settingsStore',
+	'services/bamboo/buildService',
+	'services/cctray/buildService',
+	'services/cruisecontrol/buildService',
+	'services/cruisecontrol.net/buildService',
+	'services/cruisecontrol.rb/buildService',
+	'services/go/buildService',
+	'services/jenkins/buildService',
+	'services/teamcity/buildService',
 ], function (
-	serviceController,
-	notificationController,
 	badgeController,
-	settingsStore,
+	backgroundLogger,
+	notificationController,
+	serviceController,
 	serviceTypesRepository,
+	settingsStore,
 	BambooService,
 	CctrayService,
 	CruiseControlService,
@@ -42,8 +43,8 @@ require([
 	CruiseControlRBService,
 	GoService,
 	JenkinsService,
-	TeamCityService,
-	backgroundLogger) {
+	TeamCityService
+) {
 
 	'use strict';
 

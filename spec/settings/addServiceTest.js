@@ -1,9 +1,10 @@
 define([
-		'jquery',
 		'settings/addService',
+		'resourceFinder',
+		'jquery',
 		'jasmineSignals',
 		'jqueryTools'
-	], function ($, addService, jasmineSignals) {
+	], function (addService, resourceFinder, $, jasmineSignals) {
 
 		'use strict';
 
@@ -52,6 +53,9 @@ define([
 				},
 				getServiceNameAt: function (index) {
 					return $('.thumbnail .caption h5').eq(index - 1).text();
+				},
+				getServiceIconAt: function (index) {
+					return $('.thumbnail img').eq(index - 1).attr('src');
 				}
 			};
 
@@ -59,15 +63,20 @@ define([
 				serviceTypes = [{
 					typeName: 'Atlassian Bamboo',
 					baseUrl: 'bamboo',
-					icon: 'bamboo/icon.png'
+					icon: 'bamboo/icon.png',
+					logo: 'bamboo/icon.png'
 				}, {
 					typeName: 'CruiseControl',
 					baseUrl: 'cruisecontrol',
-					icon: 'cruisecontrol/icon.png'
+					icon: 'cruisecontrol/icon.png',
+					logo: 'cruisecontrol/icon.png'
 				}];
 				jasmine.getFixtures().load('settings/addServiceFixture.html');
 				addService.initialize('.service-add-container', serviceTypes);
 				spySelected = spyOnSignal(addService.on.selected);
+				spyOn(resourceFinder, 'logo').andCallFake(function (settings) {
+					return 'src/services/' + settings.logo;
+				});
 				container.show();
 			});
 
@@ -76,10 +85,15 @@ define([
 				container.hide();
 			});
 
-			it('should show supported services', function () {
+			it('should show supported services name', function () {
 				expect(container.getServiceCount()).toBe(2);
 				expect(container.getServiceNameAt(1)).toBe(serviceTypes[0].typeName);
 				expect(container.getServiceNameAt(2)).toBe(serviceTypes[1].typeName);
+			});
+
+			it('should show supported services icons', function () {
+				expect(container.getServiceIconAt(1)).toBe('src/services/' + serviceTypes[0].logo);
+				expect(container.getServiceIconAt(2)).toBe('src/services/' + serviceTypes[1].logo);
 			});
 
 			it('should disable name if service type not selected', function () {

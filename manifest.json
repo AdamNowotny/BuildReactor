@@ -26,21 +26,21 @@
 		"cookies"
 	],
 	"web_accessible_resources": [
-		"src/bamboo/icon.png",
-		"src/bamboo/logo.png",
-		"src/cctray/icon.png",
-		"src/cctray/logo.png",
-		"src/cruisecontrol/icon.png",
-		"src/cruisecontrol/logo.png",
-		"src/cruisecontrol.net/icon.png",
-		"src/cruisecontrol.net/logo.png",
-		"src/cruisecontrol.rb/icon.png",
-		"src/cruisecontrol.rb/logo.png",
-		"src/go/icon.png",
-		"src/go/logo.png",
-		"src/jenkins/icon.png",
-		"src/jenkins/logo.png",
-		"src/teamcity/icon.png",
-		"src/teamcity/logo.png"
+		"src/services/bamboo/icon.png",
+		"src/services/bamboo/logo.png",
+		"src/services/cctray/icon.png",
+		"src/services/cctray/logo.png",
+		"src/services/cruisecontrol/icon.png",
+		"src/services/cruisecontrol/logo.png",
+		"src/services/cruisecontrol.net/icon.png",
+		"src/services/cruisecontrol.net/logo.png",
+		"src/services/cruisecontrol.rb/icon.png",
+		"src/services/cruisecontrol.rb/logo.png",
+		"src/services/go/icon.png",
+		"src/services/go/logo.png",
+		"src/services/jenkins/icon.png",
+		"src/services/jenkins/logo.png",
+		"src/services/teamcity/icon.png",
+		"src/services/teamcity/logo.png"
 	]
 }

@@ -4,16 +4,19 @@ define(function () {
 	
 	var MockSettingsBuilder = function () {
 		this.settings = {
-			typeName: 'service type',
 			baseUrl: 'mocks',
 			url: 'http://www.example.com/',
-			name: 'service name'
+			name: 'service name',
+			icon: 'mocks/icon.png',
+			logo: 'mocks/icon.png'
 		};
 		this.create = function () {
 			return {
 				baseUrl: this.settings.baseUrl,
 				url: this.settings.url,
-				name: this.settings.name
+				name: this.settings.name,
+				icon: this.settings.icon,
+				logo: this.settings.logo
 			};
 		};
 		this.withName = function (name) {
@@ -22,6 +25,14 @@ define(function () {
 		};
 		this.withBaseUrl = function (url) {
 			this.settings.baseUrl = url;
+			return this;
+		};
+		this.withIcon = function (icon) {
+			this.settings.icon = icon;
+			return this;
+		};
+		this.withLogo = function (logo) {
+			this.settings.logo = logo;
 			return this;
 		};
 	};

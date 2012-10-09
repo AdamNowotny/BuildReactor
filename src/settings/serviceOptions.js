@@ -2,8 +2,9 @@ define([
 	'signals',
 	'jquery',
 	'settings/settingsFormView',
-	'settings/projectView'
-], function (signals, $, settingsFormView, projectView) {
+	'settings/projectView',
+	'resourceFinder'
+], function (signals, $, settingsFormView, projectView, resourceFinder) {
 
 	'use strict';
 	
@@ -41,7 +42,7 @@ define([
 	function showProjects(currentValues) {
 		projectView.hide();
 		$('.alert-error').hide();
-		var serviceModuleName = currentServiceInfo.baseUrl + '/buildService';
+		var serviceModuleName = resourceFinder.service(currentServiceInfo);
 		require([serviceModuleName], function (BuildService) {
 			var settings = {
 				url: currentValues.url,

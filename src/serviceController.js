@@ -1,6 +1,7 @@
 define([
+		'resourceFinder',
 		'signals'
-	], function (signals) {
+	], function (resourceFinder, signals) {
 
 		'use strict';
 
@@ -23,7 +24,7 @@ define([
 		function load(settings) {
 			
 			function loadService(serviceInfo) {
-				var serviceName = serviceInfo.baseUrl + '/buildService';
+				var serviceName = resourceFinder.service(serviceInfo);
 				require([serviceName], function (Service) {
 					var serviceInstance = new Service(serviceInfo);
 					addService(serviceInstance);

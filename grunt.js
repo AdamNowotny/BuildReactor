@@ -98,7 +98,7 @@ module.exports = function (grunt) {
 						excludeAfterBuild: true
 					},
 					has: {
-						debug: true
+						debug: false
 					},
 					paths: {
 						amdUtils: '../lib/amd-utils',
@@ -124,27 +124,27 @@ module.exports = function (grunt) {
 						{
 							name: 'main',
 							include: [
-								'bamboo/buildService',
-								'cctray/buildService',
-								'cruisecontrol/buildService',
-								'cruisecontrol.net/buildService',
-								'cruisecontrol.rb/buildService',
-								'jenkins/buildService',
-								'go/buildService',
-								'teamcity/buildService'
+								'services/bamboo/buildService',
+								'services/cctray/buildService',
+								'services/cruisecontrol/buildService',
+								'services/cruisecontrol.net/buildService',
+								'services/cruisecontrol.rb/buildService',
+								'services/jenkins/buildService',
+								'services/go/buildService',
+								'services/teamcity/buildService'
 							]
 						},
 						{
 							name: 'options',
 							include: [
-								'bamboo/buildService',
-								'cctray/buildService',
-								'cruisecontrol/buildService',
-								'cruisecontrol.net/buildService',
-								'cruisecontrol.rb/buildService',
-								'jenkins/buildService',
-								'go/buildService',
-								'teamcity/buildService'
+								'services/bamboo/buildService',
+								'services/cctray/buildService',
+								'services/cruisecontrol/buildService',
+								'services/cruisecontrol.net/buildService',
+								'services/cruisecontrol.rb/buildService',
+								'services/jenkins/buildService',
+								'services/go/buildService',
+								'services/teamcity/buildService'
 							]
 						},
 						{
@@ -174,10 +174,6 @@ module.exports = function (grunt) {
 						'img/icon-128.png',
 						'img/loading.gif',
 						'img/tool.png',
-						'src/bamboo/*.html',
-						'src/bamboo/*.png',
-						'src/cctray/*.html',
-						'src/cctray/*.png',
 						'lib/jquery/jquery-1.8.2.min.js',
 						'lib/jquery-tools/jquery.tools.min.js',
 						'lib/js-signals/signals.js',
