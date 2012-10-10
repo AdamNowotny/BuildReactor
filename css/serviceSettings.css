@@ -1,0 +1,25 @@
+.settings-container {
+	position: absolute;
+	top: 42px;
+	bottom: 0;
+	left: 221px;
+	right: 0;
+	overflow: auto;
+}
+
+	.settings-form {
+		padding-top: 10px;
+	}
+
+	.project-selection-container {
+		margin: 0 5px 0 5px;
+	}
+
+.alert-error {
+	margin: 5px;
+}
+	
+.icon-refresh.animate {
+	background-image: url(../../img/loading.gif);
+	background-position: 0 0;
+}

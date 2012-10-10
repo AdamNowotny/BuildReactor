@@ -1,0 +1,16 @@
+.alert-saved 
+{
+	position: absolute;
+	display: inline;
+	top: 3px;
+	width: 100%;
+	text-align: center;
+	z-index: 2000;
+}
+
+	.alert-saved .alert 
+	{
+		position: absolute;
+		display: inline-block;
+		width: 200px;
+	}

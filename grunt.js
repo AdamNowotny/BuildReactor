@@ -64,7 +64,13 @@ module.exports = function (grunt) {
 		mincss: {
 			compress: {
 				files: {
-					'<%= vars.dist %>/css/options.css': [ 'css/options.css' ],
+					'<%= vars.dist %>/css/options.css': [
+						'css/addService.css',
+						'css/alert.css',
+						'css/options.css',
+						'css/serviceList.css',
+						'css/serviceSettings.css'
+					],
 					'<%= vars.dist %>/css/popup.css': [ 'css/popup.css' ]
 				}
 			}
@@ -79,10 +85,10 @@ module.exports = function (grunt) {
 					useStrict: true,
 					preserveLicenseComments: true,
 					// optimize: 'none',
-					optimizeCss: 'none',
+					//optimizeCss: 'standard',
 					uglify: {
 						toplevel: true,
-						max_line_length: 200
+						max_line_length: 100
 					},
 					wrap: {
 						startFile: 'grunt.startFile.js',
