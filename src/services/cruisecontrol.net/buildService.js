@@ -12,12 +12,14 @@ define(['services/cctray/buildService'], function (CCTrayBuildService) {
 		CcnetBuildService.prototype = CCTrayBuildService.prototype;
 
 		CcnetBuildService.settings = function () {
-			var settings = CCTrayBuildService.settings();
-			settings.typeName = 'CruiseControl.NET';
-			settings.baseUrl = 'cruisecontrol.net';
-			settings.icon = 'cruisecontrol.net/icon.png';
-			settings.logo = 'cruisecontrol.net/logo.png';
-			return settings;
+			return {
+				typeName: 'CruiseControl.NET',
+				baseUrl: 'cruisecontrol.net',
+				icon: 'cruisecontrol.net/icon.png',
+				logo: 'cruisecontrol.net/logo.png',
+				projects: [],
+				urlHint: 'http://build.nauck-it.de/'
+			};
 		};
 
 		return CcnetBuildService;

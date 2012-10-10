@@ -18,10 +18,10 @@ define([
 		changed: new signals.Signal()
 	};
 
-	settingsFormView.show = function (d) {
+	settingsFormView.show = function (serviceInfo) {
 		settingsFormView.on.clickedShow.removeAll();
 		settingsFormView.on.changed.removeAll();
-		container.html(template(d));
+		container.html(template(serviceInfo));
 		$('.settings-form', container).submit(function () {
 			return false;
 		});

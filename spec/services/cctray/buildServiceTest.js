@@ -67,6 +67,7 @@ function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, p
 			expect(settings.baseUrl).toBe('cctray');
 			expect(settings.icon).toBe('cctray/icon.png');
 			expect(settings.projects.length).toBe(0);
+			expect(settings.urlHint).toBe('http://cruisecontrol.instance.com/cctray.xml');
 		});
 
 		it('should create valid url', function () {

@@ -12,12 +12,14 @@ define(['services/cctray/buildService'], function (CCTrayBuildService) {
 		JenkinsBuildService.prototype = CCTrayBuildService.prototype;
 
 		JenkinsBuildService.settings = function () {
-			var settings = CCTrayBuildService.settings();
-			settings.typeName = 'Jenkins';
-			settings.baseUrl = 'jenkins';
-			settings.icon = 'jenkins/icon.png';
-			settings.logo = 'jenkins/logo.png';
-			return settings;
+			return {
+				typeName: 'Jenkins',
+				baseUrl: 'jenkins',
+				icon: 'jenkins/icon.png',
+				logo: 'jenkins/logo.png',
+				projects: [],
+				urlHint: 'http://ci.jenkins-ci.org/'
+			};
 		};
 
 		return JenkinsBuildService;

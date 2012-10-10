@@ -35,6 +35,7 @@ require([
 			expect(defaultSettings.baseUrl).toBe('teamcity');
 			expect(defaultSettings.icon).toBe('teamcity/icon.png');
 			expect(defaultSettings.logo).toBe('teamcity/logo.png');
+			expect(defaultSettings.urlHint).toBe('http://teamcity.jetbrains.com/');
 		});
 
 		it('should modify url used to get projects', function () {

@@ -35,6 +35,7 @@ require([
 			expect(defaultSettings.baseUrl).toBe('jenkins');
 			expect(defaultSettings.icon).toBe('jenkins/icon.png');
 			expect(defaultSettings.logo).toBe('jenkins/logo.png');
+			expect(defaultSettings.urlHint).toBe('http://ci.jenkins-ci.org/');
 		});
 
 		it('should modify url used to get projects', function () {

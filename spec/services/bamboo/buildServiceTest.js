@@ -58,6 +58,7 @@ define([
 				expect(settings.baseUrl).toBe('bamboo');
 				expect(settings.icon).toBe('bamboo/icon.png');
 				expect(settings.projects.length).toBe(0);
+				expect(settings.urlHint).toBe('https://ci.openmrs.org/');
 			});
 
 			it('should expose service interface', function () {

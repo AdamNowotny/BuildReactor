@@ -85,7 +85,7 @@ module.exports = function (grunt) {
 					useStrict: true,
 					preserveLicenseComments: true,
 					// optimize: 'none',
-					//optimizeCss: 'standard',
+					// optimizeCss: 'standard',
 					uglify: {
 						toplevel: true,
 						max_line_length: 100

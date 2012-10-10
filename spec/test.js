@@ -65,12 +65,12 @@ require([
 	'spec/services/cctray/ccRequestTest',
 	'spec/services/cctray/projectTest',
 
-	// 'spec/cruisecontrol/buildServiceTest',
-	// 'spec/cruisecontrol.net/buildServiceTest',
-	// 'spec/cruisecontrol.rb/buildServiceTest',
-	// 'spec/go/buildServiceTest',
-	// 'spec/jenkins/buildServiceTest',
-	// 'spec/teamcity/buildServiceTest',
+	'spec/services/cruisecontrol/buildServiceTest',
+	'spec/services/cruisecontrol.net/buildServiceTest',
+	'spec/services/cruisecontrol.rb/buildServiceTest',
+	'spec/services/go/buildServiceTest',
+	'spec/services/jenkins/buildServiceTest',
+	'spec/services/teamcity/buildServiceTest',
 
 	'spec/settings/addServiceTest',
 	'spec/settings/alertTest',

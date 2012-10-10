@@ -35,6 +35,7 @@ require([
 			expect(defaultSettings.baseUrl).toBe('go');
 			expect(defaultSettings.icon).toBe('go/icon.png');
 			expect(defaultSettings.logo).toBe('go/logo.png');
+			expect(defaultSettings.urlHint).toBe('http://example-go.thoughtworks.com/');
 		});
 
 		it('should modify url used to get projects', function () {

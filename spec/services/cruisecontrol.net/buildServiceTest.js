@@ -35,6 +35,7 @@ require([
 			expect(defaultSettings.baseUrl).toBe('cruisecontrol.net');
 			expect(defaultSettings.icon).toBe('cruisecontrol.net/icon.png');
 			expect(defaultSettings.logo).toBe('cruisecontrol.net/logo.png');
+			expect(defaultSettings.urlHint).toBe('http://build.nauck-it.de/');
 		});
 
 		it('should modify url used to get projects', function () {

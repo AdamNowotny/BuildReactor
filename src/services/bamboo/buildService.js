@@ -30,7 +30,8 @@ define([
 				baseUrl: 'bamboo',
 				icon: 'bamboo/icon.png',
 				logo: 'bamboo/logo.png',
-				projects: []
+				projects: [],
+				urlHint: 'https://ci.openmrs.org/'
 			};
 		};
 

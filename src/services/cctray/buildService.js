@@ -48,7 +48,8 @@ define([
 				baseUrl: 'cctray',
 				icon: 'cctray/icon.png',
 				logo: 'cctray/logo.png',
-				projects: []
+				projects: [],
+				urlHint: 'http://cruisecontrol.instance.com/cctray.xml'
 			};
 		};
 

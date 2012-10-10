@@ -12,12 +12,14 @@ define(['services/cctray/buildService'], function (CCTrayBuildService) {
 		CCBuildService.prototype = CCTrayBuildService.prototype;
 
 		CCBuildService.settings = function () {
-			var settings = CCTrayBuildService.settings();
-			settings.typeName = 'CruiseControl';
-			settings.baseUrl = 'cruisecontrol';
-			settings.icon = 'cruisecontrol/icon.png';
-			settings.logo = 'cruisecontrol/logo.png';
-			return settings;
+			return {
+				typeName: 'CruiseControl',
+				baseUrl: 'cruisecontrol',
+				icon: 'cruisecontrol/icon.png',
+				logo: 'cruisecontrol/logo.png',
+				projects: [],
+				urlHint: 'http://cruisecontrol.instance.com/'
+			};
 		};
 
 		return CCBuildService;

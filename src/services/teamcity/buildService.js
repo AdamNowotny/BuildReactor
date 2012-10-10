@@ -12,12 +12,14 @@ define(['services/cctray/buildService'], function (CCTrayBuildService) {
 		GoBuildService.prototype = CCTrayBuildService.prototype;
 
 		GoBuildService.settings = function () {
-			var settings = CCTrayBuildService.settings();
-			settings.typeName = 'TeamCity 7+';
-			settings.baseUrl = 'teamcity';
-			settings.icon = 'teamcity/icon.png';
-			settings.logo = 'teamcity/logo.png';
-			return settings;
+			return {
+				typeName: 'TeamCity 7+',
+				baseUrl: 'teamcity',
+				icon: 'teamcity/icon.png',
+				logo: 'teamcity/logo.png',
+				projects: [],
+				urlHint: 'http://teamcity.jetbrains.com/'
+			};
 		};
 
 		return GoBuildService;

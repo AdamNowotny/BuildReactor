@@ -29,12 +29,7 @@ define([
 		currentServiceInfo = serviceInfo;
 		projectView.hide();
 		$('.alert-error').hide();
-		settingsFormView.show({
-			url: serviceInfo.url,
-			updateInterval: serviceInfo.updateInterval,
-			username: serviceInfo.username,
-			password: serviceInfo.password
-		});
+		settingsFormView.show(serviceInfo);
 		settingsFormView.on.changed.add(settingsChanged);
 		settingsFormView.on.clickedShow.add(showProjects);
 	};

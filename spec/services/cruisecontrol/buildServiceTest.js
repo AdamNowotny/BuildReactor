@@ -35,6 +35,7 @@ require([
 			expect(defaultSettings.baseUrl).toBe('cruisecontrol');
 			expect(defaultSettings.icon).toBe('cruisecontrol/icon.png');
 			expect(defaultSettings.logo).toBe('cruisecontrol/logo.png');
+			expect(defaultSettings.urlHint).toBe('http://cruisecontrol.instance.com/');
 		});
 
 		it('should modify url used to get projects', function () {
