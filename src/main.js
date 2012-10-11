@@ -15,6 +15,7 @@ require.config({
 	}
 });
 require([
+	'common/resourceFinder',
 	'main/backgroundLogger',
 	'main/badgeController',
 	'main/notificationController',
@@ -30,6 +31,7 @@ require([
 	'services/jenkins/buildService',
 	'services/teamcity/buildService',
 ], function (
+	resourceFinder,
 	badgeController,
 	backgroundLogger,
 	notificationController,
@@ -70,6 +72,23 @@ require([
 				serviceState: serviceController.activeProjects()
 			});
 			break;
+		case 'availableProjects':
+			var serviceModuleName = resourceFinder.service(request.serviceSettings);
+			require([serviceModuleName], function (BuildService) {
+				var service = new BuildService(request.serviceSettings);
+				var result = service.projects(request.serviceSettings.projects);
+				result.receivedProjects.addOnce(function (projects) {
+					sendResponse({
+						result: projects
+					});
+				});
+				result.errorThrown.addOnce(function (errorInfo) {
+					sendResponse({
+						error: errorInfo
+					});
+				});
+			});
+			return true;
 		}
 	}
 

@@ -194,105 +194,74 @@ define([
 			expect($('.alert-error')).not.toBeVisible();
 		});
 
-		describe('async', function () {
+		describe('show projects', function () {
 
-			define('spec/buildService', function () {
-				return MockBuildService;
-			});
+			it('should send message to get available projects', function () {
+				spyOn(chrome.extension, 'sendMessage');
+				serviceOptions.show(settings);
 
-			var readyModules = [];
+				var formValues = { url: settings.url };
+				settingsFormView.on.clickedShow.dispatch(formValues);
 
-			beforeEach(function () {
-				readyModules = [];
-			});
-
-			function isLoaded() {
-				require(['spec/buildService'], function () {
-					readyModules = arguments;
-				});
-				return readyModules.length === 1;
-			}
-
-			it('should get projects from service', function () {
-				runs(function () {
-					serviceOptions.show(settings);
-
-					var formValues = { url: settings.url };
-					settingsFormView.on.clickedShow.dispatch(formValues);
-				});
-				waitsFor(isLoaded, 'Service not loaded', 1000);
-				runs(function () {
-					expect(MockBuildService.prototype.projects).toHaveBeenCalledWith(settings.projects);
-				});
+				expect(chrome.extension.sendMessage).toHaveBeenCalled();
 			});
 
 			it('should reset buttons after projects loaded', function () {
-				runs(function () {
-					serviceOptions.show(settings);
+				spyOn(chrome.extension, 'sendMessage').andCallFake(function (message, responseFunction) {
+					responseFunction({ result: {} });
+				});
+				serviceOptions.show(settings);
 
-					settingsFormView.on.clickedShow.dispatch({});
-					receivedProjects.dispatch();
-				});
-				waitsFor(isLoaded, 'Service not loaded', 1000);
-				runs(function () {
-					expect(settingsFormView.resetButtons).toHaveBeenCalled();
-				});
+				settingsFormView.on.clickedShow.dispatch({});
+
+				expect(settingsFormView.resetButtons).toHaveBeenCalled();
 			});
 
 			it('should show projects after projects loaded', function () {
 				var projects = {};
-				runs(function () {
-					serviceOptions.show(settings);
+				spyOn(chrome.extension, 'sendMessage').andCallFake(function (message, responseFunction) {
+					responseFunction({ result: projects });
+				});
+				serviceOptions.show(settings);
 
-					settingsFormView.on.clickedShow.dispatch({});
-					receivedProjects.dispatch(projects);
-				});
-				waitsFor(isLoaded, 'Service not loaded', 1000);
-				runs(function () {
-					expect(projectView.show).toHaveBeenCalledWith(projects);
-				});
+				settingsFormView.on.clickedShow.dispatch({});
+
+				expect(projectView.show).toHaveBeenCalledWith(projects);
 			});
 
 			it('should reset buttons after request error', function () {
-				runs(function () {
-					serviceOptions.show(settings);
+				spyOn(chrome.extension, 'sendMessage').andCallFake(function (message, responseFunction) {
+					responseFunction({ result: { message: 'error message', url: settings.url } });
+				});
+				serviceOptions.show(settings);
 
-					settingsFormView.on.clickedShow.dispatch({});
-					errorThrown.dispatch({ message: 'error message', url: settings.url });
-				});
-				waitsFor(isLoaded, 'Service not loaded', 1000);
-				runs(function () {
-					expect(settingsFormView.resetButtons).toHaveBeenCalled();
-				});
+				settingsFormView.on.clickedShow.dispatch({});
+
+				expect(settingsFormView.resetButtons).toHaveBeenCalled();
 			});
 
 			it('should display error if call failed when getting plans', function () {
-				runs(function () {
-					serviceOptions.show(settings);
+				spyOn(chrome.extension, 'sendMessage').andCallFake(function (message, responseFunction) {
+					responseFunction({ error: { message: 'error message', url: 'http://error.com/' } });
+				});
+				serviceOptions.show(settings);
 
-					settingsFormView.on.clickedShow.dispatch({});
-					errorThrown.dispatch({ message: 'error message', url: 'http://error.com/' });
-				});
-				waitsFor(isLoaded, 'Service not loaded', 1000);
-				runs(function () {
-					expect($('.alert-error')).toBeVisible();
-					expect($('.error-message')).toHaveText('error message');
-					expect($('.error-url')).toHaveText('http://error.com/');
-				});
+				settingsFormView.on.clickedShow.dispatch({});
+
+				expect($('.alert-error')).toBeVisible();
+				expect($('.error-message')).toHaveText('error message');
+				expect($('.error-url')).toHaveText('http://error.com/');
 			});
 
 			it('should update projects to empty array if undefined', function () {
-				runs(function () {
-					settings.projects = undefined;
-					serviceOptions.show(settings);
+				spySettingsFormViewShow.andCallFake(function (settings) {
+					expect(settings.projects.length).toBe(0);
+				});
+				settings.projects = undefined;
 
-					var formValues = { url: settings.url };
-					settingsFormView.on.clickedShow.dispatch(formValues);
-				});
-				waitsFor(isLoaded, 'Service not loaded', 1000);
-				runs(function () {
-					expect(MockBuildService.prototype.projects).toHaveBeenCalledWith([]);
-				});
+				serviceOptions.show(settings);
+
+				expect(spySettingsFormViewShow).toHaveBeenCalled();
 			});
 
 		});

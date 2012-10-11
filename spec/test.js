@@ -1,13 +1,16 @@
 var chrome = {
 	browserAction: {
-		setBadgeText: function () { },
-		setBadgeBackgroundColor: function () { }
+		setBadgeText: function () {},
+		setBadgeBackgroundColor: function () {}
 	},
 	cookies: {
 		remove: function () {}
 	},
 	tabs : {
 		create: function () {}
+	},
+	extension: {
+		sendMessage: function () {}
 	}
 };
 require.config({

@@ -38,17 +38,22 @@ define([
 		projectView.hide();
 		$('.alert-error').hide();
 		var settings = {
+			baseUrl: currentServiceInfo.baseUrl,
 			url: currentValues.url,
 			username: currentValues.username,
 			password: currentValues.password,
 			projects: currentServiceInfo.projects
 		};
-		var serviceModuleName = resourceFinder.service(currentServiceInfo);
-		require([serviceModuleName], function (BuildService) {
-			var service = new BuildService(settings);
-			var result = service.projects(settings.projects);
-			result.receivedProjects.addOnce(projectsReceived);
-			result.errorThrown.addOnce(renderError);
+		var message = {
+			name: 'availableProjects',
+			serviceSettings: settings
+		};
+		chrome.extension.sendMessage(message, function (response) {
+			if (response.error) {
+				renderError(response.error);
+			} else {
+				projectsReceived(response.result);
+			}
 		});
 	}
 
