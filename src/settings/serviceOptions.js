@@ -3,7 +3,7 @@ define([
 	'jquery',
 	'settings/settingsFormView',
 	'settings/projectView',
-	'resourceFinder'
+	'common/resourceFinder'
 ], function (signals, $, settingsFormView, projectView, resourceFinder) {
 
 	'use strict';
@@ -37,14 +37,14 @@ define([
 	function showProjects(currentValues) {
 		projectView.hide();
 		$('.alert-error').hide();
+		var settings = {
+			url: currentValues.url,
+			username: currentValues.username,
+			password: currentValues.password,
+			projects: currentServiceInfo.projects
+		};
 		var serviceModuleName = resourceFinder.service(currentServiceInfo);
 		require([serviceModuleName], function (BuildService) {
-			var settings = {
-				url: currentValues.url,
-				username: currentValues.username,
-				password: currentValues.password,
-				projects: currentServiceInfo.projects
-			};
 			var service = new BuildService(settings);
 			var result = service.projects(settings.projects);
 			result.receivedProjects.addOnce(projectsReceived);

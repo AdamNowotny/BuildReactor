@@ -1,4 +1,4 @@
-define(['settings/alert', 'jquery', 'timer'], function (alert, $, Timer) {
+define(['settings/alert', 'jquery', 'common/timer'], function (alert, $, Timer) {
 
 	'use strict';
 

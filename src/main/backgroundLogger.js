@@ -1,7 +1,7 @@
 define([
-	'ajaxRequest',
-	'serviceController',
-	'settingsStore',
+	'main/ajaxRequest',
+	'main/serviceController',
+	'main/settingsStore',
 	'amdUtils/string/interpolate',
 	'has'
 ], function (AjaxRequest, serviceController, settingsStore, interpolate, has) {

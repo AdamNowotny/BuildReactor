@@ -2,7 +2,7 @@ define([
 		'signals',
 		'./bambooRequest',
 		'./bambooPlan',
-		'timer',
+		'common/timer',
 		'amdUtils/string/interpolate',
 		'amdUtils/object/values'
 	], function (signals, BambooRequest, BambooPlan, Timer, interpolate, values) {

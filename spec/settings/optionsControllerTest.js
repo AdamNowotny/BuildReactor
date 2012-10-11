@@ -1,6 +1,6 @@
 define([
 		'jquery',
-		'optionsController',
+		'settings/optionsController',
 		'settings/addService',
 		'settings/serviceSettings',
 		'settings/serviceOptions',

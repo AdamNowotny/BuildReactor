@@ -1,4 +1,4 @@
-define(['timer', 'jquery'], function (Timer, $) {
+define(['common/timer', 'jquery'], function (Timer, $) {
 
 	'use strict';
 

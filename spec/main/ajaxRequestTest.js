@@ -1,5 +1,5 @@
 define([
-		'ajaxRequest',
+		'main/ajaxRequest',
 		'jquery',
 		'jasmineSignals'
 	], function (AjaxRequest, $, jasmineSignals) {

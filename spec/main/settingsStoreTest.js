@@ -1,4 +1,4 @@
-define(['settingsStore', 'jasmineSignals'], function (settingsStore, jasmineSignals) {
+define(['main/settingsStore', 'jasmineSignals'], function (settingsStore, jasmineSignals) {
 
 	'use strict';
 	

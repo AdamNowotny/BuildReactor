@@ -15,8 +15,8 @@ require.config({
 	}
 });
 require([
-	'optionsController',
-	'optionsLogger'
+	'settings/optionsController',
+	'settings/optionsLogger'
 ], function (optionsController, optionsLogger) {
 
 	'use strict';

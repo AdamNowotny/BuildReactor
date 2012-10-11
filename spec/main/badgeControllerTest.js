@@ -1,6 +1,6 @@
 define([
-	'badgeController',
-	'serviceController',
+	'main/badgeController',
+	'main/serviceController',
 	'spec/mocks/mockBuildEvent'
 ], function (badgeController, serviceController, mockBuildEvent) {
 

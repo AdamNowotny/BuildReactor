@@ -1,6 +1,6 @@
 define([
 	'services/cctray/ccRequest',
-	'ajaxRequest',
+	'main/ajaxRequest',
 	'signals',
 	'text!spec/fixtures/cctray/cruisecontrolnet.xml'
 ], function (request, AjaxRequest, signals, projectsXml) {

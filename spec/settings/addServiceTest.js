@@ -1,6 +1,6 @@
 define([
 		'settings/addService',
-		'resourceFinder',
+		'common/resourceFinder',
 		'jquery',
 		'jasmineSignals',
 		'jqueryTools'

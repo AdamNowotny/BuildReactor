@@ -1,6 +1,6 @@
 define([
-	'serviceController',
-	'timer',
+	'main/serviceController',
+	'common/timer',
 	'amdUtils/string/interpolate',
 	'amdUtils/array/remove'
 ], function (serviceController, Timer, interpolate, remove) {

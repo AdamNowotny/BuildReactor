@@ -1,6 +1,6 @@
 define([
 	'services/bamboo/bambooRequest',
-	'ajaxRequest'
+	'main/ajaxRequest'
 ],
 	function (BambooRequest, AjaxRequest) {
 

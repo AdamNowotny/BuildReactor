@@ -3,7 +3,7 @@ define([
 		'signals',
 		'./ccRequest',
 		'./project',
-		'timer',
+		'common/timer',
 		'amdUtils/string/interpolate',
 		'amdUtils/array/contains',
 		'amdUtils/object/values',

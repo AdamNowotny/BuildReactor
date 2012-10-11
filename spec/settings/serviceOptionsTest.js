@@ -2,7 +2,7 @@ define([
 	'settings/serviceOptions',
 	'settings/settingsFormView',
 	'settings/projectView',
-	'resourceFinder',
+	'common/resourceFinder',
 	'jquery',
 	'signals',
 	'spec/mocks/buildService',

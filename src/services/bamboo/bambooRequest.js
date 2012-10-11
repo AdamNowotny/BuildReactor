@@ -1,6 +1,6 @@
 define([
 		'signals',
-		'ajaxRequest',
+		'main/ajaxRequest',
 		'urljs',
 		'amdUtils/string/endsWith',
 		'amdUtils/string/interpolate'

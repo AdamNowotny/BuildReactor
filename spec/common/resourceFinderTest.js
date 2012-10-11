@@ -1,4 +1,4 @@
-define(['resourceFinder', 'spec/mocks/mockSettingsBuilder'], function (finder, MockSettingsBuilder) {
+define(['common/resourceFinder', 'spec/mocks/mockSettingsBuilder'], function (finder, MockSettingsBuilder) {
 
 	'use strict';
 	

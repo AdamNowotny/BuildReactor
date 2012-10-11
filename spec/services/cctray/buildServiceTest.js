@@ -2,7 +2,7 @@ define([
 	'services/cctray/buildService',
 	'services/cctray/ccRequest',
 	'services/cctray/project',
-	'timer',
+	'common/timer',
 	'jquery',
 	'signals',
 	'jasmineSignals',

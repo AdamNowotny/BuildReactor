@@ -1,4 +1,4 @@
-define(['timer', 'jasmineSignals'], function (Timer, jasmineSignals) {
+define(['common/timer', 'jasmineSignals'], function (Timer, jasmineSignals) {
 
 	'use strict';
 

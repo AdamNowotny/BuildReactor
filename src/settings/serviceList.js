@@ -1,5 +1,5 @@
 define([
-	'resourceFinder',
+	'common/resourceFinder',
 	'signals',
 	'jquery',
 	'hbs!templates/serviceListItem'

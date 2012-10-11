@@ -1,5 +1,5 @@
 define([
-	'serviceController'
+	'main/serviceController'
 ], function (serviceController) {
 	
 	'use strict';

@@ -2,7 +2,7 @@ define([
 		'services/bamboo/buildService',
 		'services/bamboo/bambooPlan',
 		'services/bamboo/bambooRequest',
-		'timer',
+		'common/timer',
 		'jquery',
 		'signals',
 		'jasmineSignals',

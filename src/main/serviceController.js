@@ -1,5 +1,5 @@
 define([
-		'resourceFinder',
+		'common/resourceFinder',
 		'signals'
 	], function (resourceFinder, signals) {
 

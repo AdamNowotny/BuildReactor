@@ -1,4 +1,4 @@
-define(['serviceTypesRepository', 'spec/mocks/buildService'], function (repository, MockBuildService) {
+define(['main/serviceTypesRepository', 'spec/mocks/buildService'], function (repository, MockBuildService) {
 
 	'use strict';
 	
