@@ -1,8 +1,8 @@
 define([
 	'signals',
 	'jquery',
-	'settings/settingsFormView',
-	'settings/projectView',
+	'options/settingsFormView',
+	'options/projectView',
 	'common/resourceFinder'
 ], function (signals, $, settingsFormView, projectView, resourceFinder) {
 
@@ -52,7 +52,7 @@ define([
 			if (response.error) {
 				renderError(response.error);
 			} else {
-				projectsReceived(response.result);
+				projectsReceived(response.projects);
 			}
 		});
 	}

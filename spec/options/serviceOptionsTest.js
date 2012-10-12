@@ -1,7 +1,7 @@
 define([
-	'settings/serviceOptions',
-	'settings/settingsFormView',
-	'settings/projectView',
+	'options/serviceOptions',
+	'options/settingsFormView',
+	'options/projectView',
 	'common/resourceFinder',
 	'jquery',
 	'signals',
@@ -208,7 +208,7 @@ define([
 
 			it('should reset buttons after projects loaded', function () {
 				spyOn(chrome.extension, 'sendMessage').andCallFake(function (message, responseFunction) {
-					responseFunction({ result: {} });
+					responseFunction({ projects: {} });
 				});
 				serviceOptions.show(settings);
 
@@ -220,7 +220,7 @@ define([
 			it('should show projects after projects loaded', function () {
 				var projects = {};
 				spyOn(chrome.extension, 'sendMessage').andCallFake(function (message, responseFunction) {
-					responseFunction({ result: projects });
+					responseFunction({ projects: projects });
 				});
 				serviceOptions.show(settings);
 
@@ -231,7 +231,7 @@ define([
 
 			it('should reset buttons after request error', function () {
 				spyOn(chrome.extension, 'sendMessage').andCallFake(function (message, responseFunction) {
-					responseFunction({ result: { message: 'error message', url: settings.url } });
+					responseFunction({ error: { message: 'error message', url: settings.url } });
 				});
 				serviceOptions.show(settings);
 

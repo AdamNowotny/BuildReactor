@@ -71,16 +71,16 @@ require([
 	'spec/services/go/buildServiceTest',
 	'spec/services/jenkins/buildServiceTest',
 	'spec/services/teamcity/buildServiceTest',
-	'spec/settings/addServiceTest',
-	'spec/settings/alertTest',
-	'spec/settings/optionsControllerTest',
-	'spec/settings/projectViewTest',
-	'spec/settings/removePromptTest',
-	'spec/settings/savePromptTest',
-	'spec/settings/serviceListTest',
-	'spec/settings/serviceOptionsTest',
-	'spec/settings/serviceSettingsTest',
-	'spec/settings/settingsFormViewTest'
+	'spec/options/addServiceTest',
+	'spec/options/alertTest',
+	'spec/options/optionsControllerTest',
+	'spec/options/projectViewTest',
+	'spec/options/removePromptTest',
+	'spec/options/savePromptTest',
+	'spec/options/serviceListTest',
+	'spec/options/serviceOptionsTest',
+	'spec/options/serviceSettingsTest',
+	'spec/options/settingsFormViewTest'
 ], function ($) {
 	
 	'use strict';

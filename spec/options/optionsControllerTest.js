@@ -1,13 +1,13 @@
 define([
 		'jquery',
-		'settings/optionsController',
-		'settings/addService',
-		'settings/serviceSettings',
-		'settings/serviceOptions',
-		'settings/serviceList',
-		'settings/savePrompt',
-		'settings/removePrompt',
-		'settings/alert',
+		'options/optionsController',
+		'options/addService',
+		'options/serviceSettings',
+		'options/serviceOptions',
+		'options/serviceList',
+		'options/savePrompt',
+		'options/removePrompt',
+		'options/alert',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals'
 	], function ($, controller, addService, serviceSettings, serviceOptions, serviceList, savePrompt, removePrompt, alert, MockSettingsBuilder, jasmineSignals) {
@@ -171,15 +171,18 @@ define([
 				expect(serviceSettings.update).toHaveBeenCalledWith(settings2, settings3);
 			});
 
-			it('should signal settingsChanged when settings updated', function () {
+			it('should send message to main when settings updated', function () {
 				var newServiceSettings = new MockSettingsBuilder().create();
 				var settings = [createSettings('service 1'), newServiceSettings];
-				var spySettingsChanged = spyOnSignal(controller.on.settingsChanged);
+				spyOn(chrome.extension, 'sendMessage').andCallFake(function (message) {
+					expect(message.name).toBe('updateSettings');
+					expect(message.settings).toBe(settings);
+				});
 				spyServiceSettingsGetAll.andReturn(settings);
 
 				serviceOptions.on.updated.dispatch(newServiceSettings);
 
-				expect(spySettingsChanged).toHaveBeenDispatchedWith(settings);
+				expect(chrome.extension.sendMessage).toHaveBeenCalled();
 			});
 
 			it('should show alert when settings saved', function () {
@@ -355,11 +358,13 @@ define([
 				});
 
 				it('should dispatch settingsChanged after removing service', function () {
-					var settingsChangedSpy = spyOnSignal(controller.on.settingsChanged);
+					spyOn(chrome.extension, 'sendMessage').andCallFake(function (message) {
+						expect(message.name).toBe('updateSettings');
+					});
 
 					removePrompt.removeSelected.dispatch();
 
-					expect(settingsChangedSpy).toHaveBeenDispatched();
+					expect(chrome.extension.sendMessage).toHaveBeenCalled();
 				});
 
 			});

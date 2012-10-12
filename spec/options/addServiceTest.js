@@ -1,5 +1,5 @@
 define([
-		'settings/addService',
+		'options/addService',
 		'common/resourceFinder',
 		'jquery',
 		'jasmineSignals',

@@ -15,16 +15,13 @@ require.config({
 	}
 });
 require([
-	'settings/optionsController',
-	'settings/optionsLogger'
+	'options/optionsController',
+	'options/optionsLogger'
 ], function (optionsController, optionsLogger) {
 
 	'use strict';
 	
 	optionsLogger();
-	optionsController.on.settingsChanged.add(function (updatedSettings) {
-		chrome.extension.sendMessage({name: "updateSettings", settings: updatedSettings});
-	});
 	chrome.extension.sendMessage({ name: "initOptions" }, function (response) {
 		optionsController.initialize(response.serviceTypes);
 		optionsController.load(response.settings);

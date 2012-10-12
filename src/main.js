@@ -15,9 +15,9 @@ require.config({
 	}
 });
 require([
-	'common/resourceFinder',
 	'main/backgroundLogger',
 	'main/badgeController',
+	'main/messageHandlers',
 	'main/notificationController',
 	'main/serviceController',
 	'main/serviceTypesRepository',
@@ -31,9 +31,9 @@ require([
 	'services/jenkins/buildService',
 	'services/teamcity/buildService',
 ], function (
-	resourceFinder,
-	badgeController,
 	backgroundLogger,
+	badgeController,
+	messageHandlers,
 	notificationController,
 	serviceController,
 	serviceTypesRepository,
@@ -50,52 +50,10 @@ require([
 
 	'use strict';
 
-	function onMessage(request, sender, sendResponse) {
-		switch (request.name) {
-		case 'initOptions':
-			sendResponse({
-				settings: settingsStore.getAll(),
-				serviceTypes: serviceTypesRepository.getAll()
-			});
-			break;
-		case 'updateSettings':
-			settingsStore.store(request.settings);
-			serviceController.load(request.settings).addOnce(function () {
-				serviceController.run();
-				sendResponse({
-					name: 'settingsSaved'
-				});
-			});
-			break;
-		case 'serviceStateRequest':
-			sendResponse({
-				serviceState: serviceController.activeProjects()
-			});
-			break;
-		case 'availableProjects':
-			var serviceModuleName = resourceFinder.service(request.serviceSettings);
-			require([serviceModuleName], function (BuildService) {
-				var service = new BuildService(request.serviceSettings);
-				var result = service.projects(request.serviceSettings.projects);
-				result.receivedProjects.addOnce(function (projects) {
-					sendResponse({
-						result: projects
-					});
-				});
-				result.errorThrown.addOnce(function (errorInfo) {
-					sendResponse({
-						error: errorInfo
-					});
-				});
-			});
-			return true;
-		}
-	}
-
-	chrome.extension.onMessage.addListener(onMessage);
 	backgroundLogger();
 	badgeController();
 	notificationController();
+	messageHandlers();
 	serviceTypesRepository.clear();
 	serviceTypesRepository.register(BambooService);
 	serviceTypesRepository.register(CruiseControlService);

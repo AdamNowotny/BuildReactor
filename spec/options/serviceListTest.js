@@ -1,6 +1,6 @@
 define([
 		'jquery',
-		'settings/serviceList',
+		'options/serviceList',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals'
 	], function ($, serviceList, MockSettingsBuilder, jasmineSignals) {

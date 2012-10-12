@@ -1,20 +1,17 @@
 define([
 	'signals',
 	'jquery',
-	'settings/serviceSettings',
-	'settings/serviceOptions',
-	'settings/addService',
-	'settings/serviceList',
-	'settings/savePrompt',
-	'settings/removePrompt',
-	'settings/alert'
+	'options/serviceSettings',
+	'options/serviceOptions',
+	'options/addService',
+	'options/serviceList',
+	'options/savePrompt',
+	'options/removePrompt',
+	'options/alert'
 ], function (signals, $, serviceSettings, serviceOptions, addService, serviceList, savePrompt, removePrompt, alert) {
 
 	'use strict';
 	
-	var on = {
-		settingsChanged: new signals.Signal()
-	};
 	var isSaveNeeded = false;
 	var serviceNameElement;
 	var currentSettings;
@@ -86,7 +83,7 @@ define([
 		setSaveNeeded(false);
 		serviceSettings.remove(currentSettings);
 		serviceList.update(serviceSettings.getAll());
-		on.settingsChanged.dispatch(serviceSettings.getAll());
+		chrome.extension.sendMessage({name: "updateSettings", settings: serviceSettings.getAll()});
 	}
 
 	function load(newSettings) {
@@ -106,7 +103,7 @@ define([
 
 	function serviceSettingsChanged(updatedSettings) {
 		serviceSettings.update(currentSettings, updatedSettings);
-		on.settingsChanged.dispatch(serviceSettings.getAll());
+		chrome.extension.sendMessage({name: "updateSettings", settings: serviceSettings.getAll()});
 		alert.show();
 		setSaveNeeded(false);
 		currentSettings = updatedSettings;
@@ -114,7 +111,6 @@ define([
 
 	return {
 		initialize: initialize,
-		load: load,
-		on: on
+		load: load
 	};
 });

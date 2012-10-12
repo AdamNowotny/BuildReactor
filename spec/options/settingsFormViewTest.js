@@ -1,5 +1,5 @@
 define([
-	'settings/settingsFormView',
+	'options/settingsFormView',
 	'jquery',
 	'jasmineSignals'
 ], function (settingsFormView, $, jasmineSignals) {
