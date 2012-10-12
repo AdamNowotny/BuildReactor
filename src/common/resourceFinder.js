@@ -6,12 +6,12 @@ define(function () {
 		return 'services/' + settings.baseUrl + '/buildService';
 	}
 
-	function icon(settings) {
-		return 'src/services/' + settings.icon;
+	function icon(iconUrl) {
+		return 'src/services/' + iconUrl;
 	}
 	
-	function logo(settings) {
-		return 'src/services/' + settings.logo;
+	function logo(logoUrl) {
+		return 'src/services/' + logoUrl;
 	}
 
 	return {

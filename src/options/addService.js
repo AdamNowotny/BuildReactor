@@ -41,7 +41,7 @@ define([
 		serviceTypes.forEach(function (d) {
 			input.push({
 				typeName: d.typeName,
-				logo: resourceFinder.logo(d)
+				logo: resourceFinder.logo(d.logo)
 			});
 		});
 		return { services: input };

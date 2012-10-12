@@ -44,7 +44,7 @@ define([
 		for (var i = 0; i < settings.length; i++) {
 			data[i] = {
 				index: i,
-				icon: resourceFinder.icon(settings[i]),
+				icon: resourceFinder.icon(settings[i].icon),
 				name: settings[i].name
 			};
 		}

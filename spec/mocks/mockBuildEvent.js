@@ -7,6 +7,7 @@ define(function () {
 	var buildName = 'Build name';
 	var group = 'Project name';
 	var url = 'http://example.com/project/build/100';
+	var icon = 'icon.png';
 
 	var mockBuildEvent = function () {
 
@@ -15,7 +16,7 @@ define(function () {
 			buildName: buildName,
 			group: group,
 			url: url,
-			icon: 'icon.png'
+			icon: icon
 		};
 	};
 
@@ -37,6 +38,12 @@ define(function () {
 	mockBuildEvent.url = function (value) {
 		if (!arguments) { return value; }
 		url = value;
+		return mockBuildEvent;
+	};
+
+	mockBuildEvent.icon = function (value) {
+		if (!arguments) { return value; }
+		icon = value;
 		return mockBuildEvent;
 	};
 

@@ -11,15 +11,11 @@ define(['common/resourceFinder', 'spec/mocks/mockSettingsBuilder'], function (fi
 		});
 
 		it('should return icon location', function () {
-			var settings = new MockSettingsBuilder().withIcon('service1/icon.png').create();
-
-			expect(finder.icon(settings)).toBe('src/services/service1/icon.png');
+			expect(finder.icon('service1/icon.png')).toBe('src/services/service1/icon.png');
 		});
 
 		it('should return logo location', function () {
-			var settings = new MockSettingsBuilder().withLogo('service1/icon.png').create();
-
-			expect(finder.logo(settings)).toBe('src/services/service1/icon.png');
+			expect(finder.logo('service1/logo.png')).toBe('src/services/service1/logo.png');
 		});
 
 	});

@@ -1,9 +1,10 @@
 define([
 	'main/serviceController',
+	'common/resourceFinder',
 	'common/timer',
 	'amdUtils/string/interpolate',
 	'amdUtils/array/remove'
-], function (serviceController, Timer, interpolate, remove) {
+], function (serviceController, resourceFinder, Timer, interpolate, remove) {
 
 	'use strict';
 	
@@ -82,7 +83,7 @@ define([
 			}
 
 			var notification = window.webkitNotifications.createNotification(
-				'src/' + notificationInfo.icon,
+				resourceFinder.icon(notificationInfo.icon),
 				notificationInfo.message,
 				notificationInfo.details
 			);

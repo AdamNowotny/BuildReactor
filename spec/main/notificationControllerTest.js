@@ -1,9 +1,10 @@
 define([
 	'main/notificationController',
 	'main/serviceController',
+	'common/resourceFinder',
 	'common/timer',
 	'spec/mocks/mockBuildEvent'
-], function (notificationController, serviceController, Timer, mockBuildEvent) {
+], function (notificationController, serviceController, resourceFinder, Timer, mockBuildEvent) {
 
 	'use strict';
 	
@@ -21,6 +22,9 @@ define([
 		beforeEach(function () {
 			spyOn(window.webkitNotifications, 'createNotification').andReturn(mockNotification);
 			spyOn(mockNotification, 'cancel');
+			spyOn(resourceFinder, 'icon').andCallFake(function (url) {
+				return 'prefix/' + url;
+			});
 			notificationController();
 		});
 
@@ -31,22 +35,22 @@ define([
 		});
 
 		it('should show message when build fails', function () {
-			var buildEvent = mockBuildEvent.serviceName('service').group('group').buildName('build')();
+			var buildEvent = mockBuildEvent.serviceName('service').group('group').buildName('build').icon('icon.png')();
 
 			serviceController.on.brokenBuild.dispatch(buildEvent);
 
 			expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-				'src/icon.png', 'Build failed - service',  'build (group)'
+				'prefix/icon.png', 'Build failed - service',  'build (group)'
 			);
 		});
 
 		it('should show message if build fixed', function () {
-			var buildEvent = mockBuildEvent.serviceName('service').group('group').buildName('build')();
+			var buildEvent = mockBuildEvent.serviceName('service').group('group').buildName('build').icon('icon.png')();
 
 			serviceController.on.fixedBuild.dispatch(buildEvent);
 
 			expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-				'src/icon.png', 'Build fixed - service', 'build (group)'
+				'prefix/icon.png', 'Build fixed - service', 'build (group)'
 			);
 		});
 
