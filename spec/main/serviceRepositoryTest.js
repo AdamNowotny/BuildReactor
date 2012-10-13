@@ -1,8 +1,14 @@
-define(['main/serviceTypesRepository', 'spec/mocks/buildService'], function (repository, MockBuildService) {
+define([
+	'main/serviceRepository',
+	'spec/mocks/buildService',
+	'spec/mocks/mockSettingsBuilder',
+	'common/resourceFinder',
+	'signals'
+], function (repository, MockBuildService, MockSettingsBuilder, resourceFinder, Signal) {
 
 	'use strict';
 	
-	describe('serviceTypesRepository', function () {
+	describe('serviceRepository', function () {
 
 		afterEach(function () {
 			repository.clear();
@@ -36,6 +42,23 @@ define(['main/serviceTypesRepository', 'spec/mocks/buildService'], function (rep
 			repository.clear();
 
 			expect(repository.getAll().length).toBe(0);
+		});
+
+		it('should create service', function () {
+			spyOn(resourceFinder, 'service').andReturn('spec/mocks/buildService');
+			var settings = new MockSettingsBuilder().create();
+			var created = false;
+
+			runs(function () {
+				repository.create(settings).addOnce(function (service) {
+					expect(service).toBeDefined();
+					created = true;
+				});
+			});
+
+			waitsFor(function () {
+				return created;
+			});
 		});
 
 	});

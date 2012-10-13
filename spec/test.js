@@ -10,7 +10,10 @@ var chrome = {
 		create: function () {}
 	},
 	extension: {
-		sendMessage: function () {}
+		sendMessage: function () {},
+		onMessage: {
+			addListener: function () {}
+		}
 	}
 };
 require.config({
@@ -55,9 +58,10 @@ require([
 	'spec/common/resourceFinderTest',
 	'spec/main/ajaxRequestTest',
 	'spec/main/badgeControllerTest',
+	'spec/main/messageHandlersTest',
 	'spec/main/notificationControllerTest',
 	'spec/main/serviceControllerTest',
-	'spec/main/serviceTypesRepositoryTest',
+	'spec/main/serviceRepositoryTest',
 	'spec/main/settingsStoreTest',
 	'spec/services/bamboo/bambooPlanTest',
 	'spec/services/bamboo/bambooRequestTest',

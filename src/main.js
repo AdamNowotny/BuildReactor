@@ -20,7 +20,7 @@ require([
 	'main/messageHandlers',
 	'main/notificationController',
 	'main/serviceController',
-	'main/serviceTypesRepository',
+	'main/serviceRepository',
 	'main/settingsStore',
 	'services/bamboo/buildService',
 	'services/cctray/buildService',
@@ -36,7 +36,7 @@ require([
 	messageHandlers,
 	notificationController,
 	serviceController,
-	serviceTypesRepository,
+	serviceRepository,
 	settingsStore,
 	BambooService,
 	CctrayService,
@@ -54,15 +54,15 @@ require([
 	badgeController();
 	notificationController();
 	messageHandlers();
-	serviceTypesRepository.clear();
-	serviceTypesRepository.register(BambooService);
-	serviceTypesRepository.register(CruiseControlService);
-	serviceTypesRepository.register(CruiseControlNetService);
-	serviceTypesRepository.register(CruiseControlRBService);
-	serviceTypesRepository.register(GoService);
-	serviceTypesRepository.register(JenkinsService);
-	serviceTypesRepository.register(TeamCityService);
-	serviceTypesRepository.register(CctrayService);
+	serviceRepository.clear();
+	serviceRepository.register(BambooService);
+	serviceRepository.register(CruiseControlService);
+	serviceRepository.register(CruiseControlNetService);
+	serviceRepository.register(CruiseControlRBService);
+	serviceRepository.register(GoService);
+	serviceRepository.register(JenkinsService);
+	serviceRepository.register(TeamCityService);
+	serviceRepository.register(CctrayService);
 	var settings = settingsStore.getAll();
 	serviceController.load(settings).addOnce(function () {
 		serviceController.run();

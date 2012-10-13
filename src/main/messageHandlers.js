@@ -1,9 +1,9 @@
 define([
 	'common/resourceFinder',
 	'main/settingsStore',
-	'main/serviceTypesRepository',
+	'main/serviceRepository',
 	'main/serviceController'
-], function (resourceFinder, settingsStore, serviceTypesRepository, serviceController) {
+], function (resourceFinder, settingsStore, serviceRepository, serviceController) {
 
 	'use strict';
 
@@ -12,7 +12,7 @@ define([
 		case 'initOptions':
 			sendResponse({
 				settings: settingsStore.getAll(),
-				serviceTypes: serviceTypesRepository.getAll()
+				serviceTypes: serviceRepository.getAll()
 			});
 			break;
 		case 'updateSettings':
@@ -27,9 +27,7 @@ define([
 			});
 			break;
 		case 'availableProjects':
-			var serviceModuleName = resourceFinder.service(request.serviceSettings);
-			require([serviceModuleName], function (BuildService) {
-				var service = new BuildService(request.serviceSettings);
+			serviceRepository.create(request.serviceSettings).addOnce(function (service) {
 				var result = service.projects(request.serviceSettings.projects);
 				result.receivedProjects.addOnce(function (projects) {
 					sendResponse({
