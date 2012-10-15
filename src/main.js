@@ -55,14 +55,14 @@ require([
 	notificationController();
 	messageHandlers();
 	serviceRepository.clear();
-	serviceRepository.register(BambooService);
-	serviceRepository.register(CruiseControlService);
-	serviceRepository.register(CruiseControlNetService);
-	serviceRepository.register(CruiseControlRBService);
-	serviceRepository.register(GoService);
-	serviceRepository.register(JenkinsService);
-	serviceRepository.register(TeamCityService);
-	serviceRepository.register(CctrayService);
+	serviceRepository.registerType(BambooService);
+	serviceRepository.registerType(CruiseControlService);
+	serviceRepository.registerType(CruiseControlNetService);
+	serviceRepository.registerType(CruiseControlRBService);
+	serviceRepository.registerType(GoService);
+	serviceRepository.registerType(JenkinsService);
+	serviceRepository.registerType(TeamCityService);
+	serviceRepository.registerType(CctrayService);
 	var settings = settingsStore.getAll();
 	serviceController.load(settings).addOnce(function () {
 		serviceController.run();

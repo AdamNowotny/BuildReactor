@@ -5,7 +5,7 @@ define([
 		'common/timer',
 		'amdUtils/string/interpolate',
 		'amdUtils/object/values'
-	], function (signals, BambooRequest, BambooPlan, Timer, interpolate, values) {
+	], function (Signal, BambooRequest, BambooPlan, Timer, interpolate, values) {
 
 		'use strict';
 
@@ -16,11 +16,11 @@ define([
 			this.plans = {};
 			this.plansCount = 0;
 			this.on = {
-				errorThrown: new signals.Signal(),
-				updating: new signals.Signal(),
-				updated: new signals.Signal(),
-				brokenBuild: new signals.Signal(),
-				fixedBuild: new signals.Signal()
+				errorThrown: new Signal(),
+				updating: new Signal(),
+				updated: new Signal(),
+				brokenBuild: new Signal(),
+				fixedBuild: new Signal()
 			};
 		};
 
@@ -83,7 +83,7 @@ define([
 				plan.initialize(responsePlan);
 			}
 
-			var initializeFinished = new signals.Signal();
+			var initializeFinished = new Signal();
 			initializeFinished.memorize = true;
 			var self = this;
 			this.plans = {};
@@ -168,20 +168,22 @@ define([
 		};
 
 		BuildService.prototype.projects = function (selectedPlans) {
-			var on = {
-				errorThrown: new signals.Signal(),
-				receivedProjects: new signals.Signal()
-			};
+			var receivedProjects = new Signal();
+			receivedProjects.memorize = true;
 			var plansRequest = new BambooRequest(this.settings);
 			plansRequest.on.responseReceived.addOnce(function (response) {
 				var templateData = createTemplateData(response, selectedPlans);
-				on.receivedProjects.dispatch(templateData);
+				receivedProjects.dispatch({
+					projects: templateData
+				});
 			});
 			plansRequest.on.errorReceived.addOnce(function (ajaxError) {
-				on.errorThrown.dispatch(ajaxError);
+				receivedProjects.dispatch({
+					error: ajaxError
+				});
 			});
 			plansRequest.projects();
-			return on;
+			return receivedProjects;
 		};
 
 		BuildService.prototype.activeProjects = function () {

@@ -12,7 +12,7 @@ define([
 		case 'initOptions':
 			sendResponse({
 				settings: settingsStore.getAll(),
-				serviceTypes: serviceRepository.getAll()
+				serviceTypes: serviceRepository.getAllTypes()
 			});
 			break;
 		case 'updateSettings':
@@ -28,16 +28,8 @@ define([
 			break;
 		case 'availableProjects':
 			serviceRepository.create(request.serviceSettings).addOnce(function (service) {
-				var result = service.projects(request.serviceSettings.projects);
-				result.receivedProjects.addOnce(function (projects) {
-					sendResponse({
-						projects: projects
-					});
-				});
-				result.errorThrown.addOnce(function (errorInfo) {
-					sendResponse({
-						error: errorInfo
-					});
+				service.projects(request.serviceSettings.projects).addOnce(function (response) {
+					sendResponse(response);
 				});
 			});
 			return true;

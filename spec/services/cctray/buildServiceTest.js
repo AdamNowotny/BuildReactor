@@ -259,6 +259,28 @@ function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, p
 				expect(mockRequest).toHaveBeenCalled();
 			});
 
+			it('should return available projects', function () {
+				var response;
+
+				service.projects([]).addOnce(function (result) {
+					response = result;
+				});
+
+				expect(response.error).not.toBeDefined();
+				expect(response.projects).toBeDefined();
+			});
+
+			it('should return error', function () {
+				initErrorResponse();
+				var response;
+
+				service.projects([]).addOnce(function (result) {
+					response = result;
+				});
+
+				expect(response.error).toBeDefined();
+				expect(response.projects).not.toBeDefined();
+			});
 		});
 		
 		describe('activeProjects', function () {

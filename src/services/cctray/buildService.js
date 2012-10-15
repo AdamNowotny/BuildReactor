@@ -8,7 +8,7 @@ define([
 		'amdUtils/array/contains',
 		'amdUtils/object/values',
 		'urljs'
-	], function ($, signals, ccRequest, project, Timer, interpolate, contains, values, URL) {
+	], function ($, Signal, ccRequest, project, Timer, interpolate, contains, values, URL) {
 
 		'use strict';
 
@@ -17,11 +17,11 @@ define([
 			this.name = this.settings.name;
 			this._selectedProjects = {};
 			this.on = {
-				errorThrown: new signals.Signal(),
-				updating: new signals.Signal(),
-				updated: new signals.Signal(),
-				brokenBuild: new signals.Signal(),
-				fixedBuild: new signals.Signal()
+				errorThrown: new Signal(),
+				updating: new Signal(),
+				updated: new Signal(),
+				brokenBuild: new Signal(),
+				fixedBuild: new Signal()
 			};
 		};
 
@@ -135,19 +135,21 @@ define([
 		};
 
 		CCBuildService.prototype.projects = function (selectedPlans) {
-			var on = {
-				errorThrown: new signals.Signal(),
-				receivedProjects: new signals.Signal()
-			};
+			var receivedProjects = new Signal();
+			receivedProjects.memorize = true;
 			var plansRequest = ccRequest.projects(this.settings);
 			plansRequest.responseReceived.addOnce(function (response) {
 				var templateData = createTemplateData(response, selectedPlans);
-				on.receivedProjects.dispatch(templateData);
+				receivedProjects.dispatch({
+					projects: templateData
+				});
 			});
 			plansRequest.errorReceived.addOnce(function (ajaxError) {
-				on.errorThrown.dispatch(ajaxError);
+				receivedProjects.dispatch({
+					error: ajaxError
+				});
 			});
-			return on;
+			return receivedProjects;
 		};
 
 		CCBuildService.prototype.activeProjects = function () {

@@ -2,9 +2,7 @@ define(['signals'], function (signals) {
 
 	'use strict';
 	
-	var receivedProjects = new signals.Signal();
 	var errorThrown = new signals.Signal();
-	receivedProjects.memorize = true;
 	errorThrown.memorize = true;
 
 	var MockBuildService = function () {
@@ -24,10 +22,9 @@ define(['signals'], function (signals) {
 	};
 
 	MockBuildService.prototype.projects = function () {
-		return {
-			receivedProjects: receivedProjects,
-			errorThrown: errorThrown
-		};
+		var receivedProjects = new signals.Signal();
+		receivedProjects.memorize = true;
+		return receivedProjects;
 	};
 
 	MockBuildService.prototype.activeProjects = function () {

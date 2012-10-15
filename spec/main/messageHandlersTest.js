@@ -6,7 +6,7 @@ define([
 ], function (messageHandlers, serviceRepository, Signal, MockBuildService) {
 	'use strict';
 
-	describe('availableProjects', function () {
+	describe('messageHandlers', function () {
 
 		var handler;
 
@@ -23,7 +23,7 @@ define([
 			var service;
 			var sendResponse;
 			var request;
-			var receivedProjects;
+			var projectsSignal;
 			var errorThrown;
 
 			beforeEach(function () {
@@ -40,13 +40,10 @@ define([
 					serviceSettings: {}
 				};
 
-				receivedProjects = new Signal();
+				projectsSignal = new Signal();
 				errorThrown = new Signal();
 				spyOn(service, 'projects').andCallFake(function () {
-					return {
-						receivedProjects: receivedProjects,
-						errorThrown: errorThrown
-					};
+					return projectsSignal;
 				});
 
 			});
@@ -64,29 +61,33 @@ define([
 			});
 
 			it('should send projects back', function () {
-				var projects = {};
+				var projectsResponse = {
+					projects: {}
+				};
 				var responseSent = false;
 				var sendResponse = function (response) {
 					responseSent = true;
-					expect(response.projects).toBe(projects);
+					expect(response).toBe(projectsResponse);
 				};
 
 				handler(request, null, sendResponse);
-				receivedProjects.dispatch(projects);
+				projectsSignal.dispatch(projectsResponse);
 
 				expect(responseSent).toBe(true);
 			});
 			
 			it('should send error back', function () {
-				var errorInfo = {};
+				var errorResponse = {
+					error: {}
+				};
 				var responseSent = false;
 				var sendResponse = function (response) {
 					responseSent = true;
-					expect(response.error).toBe(errorInfo);
+					expect(response).toBe(errorResponse);
 				};
 
 				handler(request, null, sendResponse);
-				errorThrown.dispatch(errorInfo);
+				projectsSignal.dispatch(errorResponse);
 
 				expect(responseSent).toBe(true);
 			});

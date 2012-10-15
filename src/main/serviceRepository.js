@@ -4,11 +4,11 @@ define(['common/resourceFinder', 'signals'], function (resourceFinder, Signal) {
 	
 	var types = [];
 
-	var getAll = function () {
+	var getAllTypes = function () {
 		return types;
 	};
 
-	var register = function (Service) {
+	var registerType = function (Service) {
 		var settings = Service.settings();
 		types.push(settings);
 	};
@@ -30,8 +30,8 @@ define(['common/resourceFinder', 'signals'], function (resourceFinder, Signal) {
 	};
 
 	return {
-		getAll: getAll,
-		register: register,
+		getAllTypes: getAllTypes,
+		registerType: registerType,
 		clear: clear,
 		create: create
 	};

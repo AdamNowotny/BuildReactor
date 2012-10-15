@@ -15,7 +15,7 @@ define([
 		});
 
 		it('should return empty array if no services registered', function () {
-			var types = repository.getAll();
+			var types = repository.getAllTypes();
 
 			expect(types.length).toBe(0);
 		});
@@ -23,25 +23,25 @@ define([
 		it('should register service', function () {
 			spyOn(MockBuildService, 'settings');
 
-			repository.register(MockBuildService);
+			repository.registerType(MockBuildService);
 
 			expect(MockBuildService.settings).toHaveBeenCalled();
 		});
 
 		it('should return registered services settings', function () {
-			repository.register(MockBuildService);
-			var types = repository.getAll();
+			repository.registerType(MockBuildService);
+			var types = repository.getAllTypes();
 
 			expect(types.length).toBe(1);
 			expect(types[0].typeName).toBe(MockBuildService.settings().typeName);
 		});
 
 		it('should clear registrations', function () {
-			repository.register(MockBuildService);
+			repository.registerType(MockBuildService);
 
 			repository.clear();
 
-			expect(repository.getAll().length).toBe(0);
+			expect(repository.getAllTypes().length).toBe(0);
 		});
 
 		it('should create service', function () {

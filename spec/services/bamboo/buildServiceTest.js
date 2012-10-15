@@ -325,6 +325,30 @@ define([
 					expect(mockBambooRequestProjects).toHaveBeenCalled();
 				});
 
+				it('should return available projects', function () {
+					var response;
+
+					service.projects([]).addOnce(function (result) {
+						response = result;
+					});
+
+					expect(response.error).not.toBeDefined();
+					expect(response.projects).toBeDefined();
+				});
+
+				it('should return error', function () {
+					mockBambooRequestProjects.andCallFake(function () {
+						this.on.errorReceived.dispatch({ message: 'error message' });
+					});
+					var response;
+
+					service.projects([]).addOnce(function (result) {
+						response = result;
+					});
+
+					expect(response.error).toBeDefined();
+					expect(response.projects).not.toBeDefined();
+				});
 			});
 
 			describe('activeProjects', function () {
