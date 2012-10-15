@@ -1,7 +1,8 @@
 define([
+		'main/serviceRepository',
 		'common/resourceFinder',
 		'signals'
-	], function (resourceFinder, signals) {
+	], function (serviceRepository, resourceFinder, signals) {
 
 		'use strict';
 
@@ -24,10 +25,8 @@ define([
 		function load(settings) {
 			
 			function loadService(serviceInfo) {
-				var serviceName = resourceFinder.service(serviceInfo);
-				require([serviceName], function (Service) {
-					var serviceInstance = new Service(serviceInfo);
-					addService(serviceInstance);
+				serviceRepository.create(serviceInfo).addOnce(function (service) {
+					addService(service);
 					servicesToLoadCount--;
 					if (servicesToLoadCount === 0) {
 						loadedAll.dispatch();

@@ -1,14 +1,15 @@
 define([
 		'jquery',
 		'main/serviceController',
-		'common/resourceFinder',
+		'main/serviceRepository',
 		'spec/mocks/buildService',
 		'spec/mocks/mockBuildEvent',
 		'spec/mocks/mockSettingsBuilder',
 		'amdUtils/string/endsWith',
+		'signals',
 		'jasmineSignals'
 	],
-	function ($, controller, resourceFinder, MockBuildService, mockBuildEvent, MockSettingsBuilder, endsWith, jasmineSignals) {
+	function ($, controller, serviceRepository, MockBuildService, mockBuildEvent, MockSettingsBuilder, endsWith, Signal, jasmineSignals) {
 
 		'use strict';
 		
@@ -122,32 +123,27 @@ define([
 			it('should signal when all services are loaded', function () {
 				var settings1 = new MockSettingsBuilder().create();
 				var settings2 = new MockSettingsBuilder().create();
+				var createdSignal = new Signal();
+				createdSignal.memorize = true;
+				createdSignal.dispatch(new MockBuildService());
+				spyOn(serviceRepository, 'create').andReturn(createdSignal);
 				var loaded = false;
-				spyOn(resourceFinder, 'service').andReturn('spec/mocks/buildService');
 
-				runs(function () {
-					controller.load([settings1, settings2]).addOnce(function () {
-						loaded = true;
-					});
+				controller.load([settings1, settings2]).addOnce(function () {
+					loaded = true;
 				});
 
-				waitsFor(function () {
-					return loaded;
-				});
+				expect(loaded).toBeTruthy();
 			});
 
 			it('should signal loaded when no services configured', function () {
 				var loaded = false;
 
-				runs(function () {
-					controller.load([]).addOnce(function () {
-						loaded = true;
-					});
+				controller.load([]).addOnce(function () {
+					loaded = true;
 				});
 
-				waitsFor(function () {
-					return loaded;
-				});
+				expect(loaded).toBeTruthy();
 			});
 
 			it('should notifiy when services are reloaded', function () {
