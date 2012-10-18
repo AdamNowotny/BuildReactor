@@ -141,17 +141,7 @@ module.exports = function (grunt) {
 							]
 						},
 						{
-							name: 'options',
-							include: [
-								'services/bamboo/buildService',
-								'services/cctray/buildService',
-								'services/cruisecontrol/buildService',
-								'services/cruisecontrol.net/buildService',
-								'services/cruisecontrol.rb/buildService',
-								'services/jenkins/buildService',
-								'services/go/buildService',
-								'services/teamcity/buildService'
-							]
+							name: 'options'
 						},
 						{
 							name: 'popup'
