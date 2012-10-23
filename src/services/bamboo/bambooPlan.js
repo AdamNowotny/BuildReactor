@@ -7,6 +7,8 @@ define(['signals', './bambooRequest', 'urljs'], function (signals, BambooRequest
 		this.on = {
 			failed: new signals.Signal(),
 			fixed: new signals.Signal(),
+			started: new signals.Signal(),
+			finished: new signals.Signal(),
 			errorThrown: new signals.Signal()
 		};
 	};

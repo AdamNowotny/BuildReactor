@@ -21,7 +21,9 @@ define([
 				updating: new Signal(),
 				updated: new Signal(),
 				brokenBuild: new Signal(),
-				fixedBuild: new Signal()
+				fixedBuild: new Signal(),
+				startedBuild: new Signal(),
+				finishedBuild: new Signal()
 			};
 		};
 
@@ -105,6 +107,8 @@ define([
 							projectInstance = project();
 							projectInstance.failed.add(self.onBuildFailed, self);
 							projectInstance.fixed.add(self.onBuildFixed, self);
+							projectInstance.started.add(self.onBuildStarted, self);
+							projectInstance.finished.add(self.onBuildFinished, self);
 							self._selectedProjects[d.name] = projectInstance;
 						}
 						projectInstance.update(d);
@@ -132,6 +136,28 @@ define([
 				icon: this.settings.icon
 			};
 			this.on.fixedBuild.dispatch(buildEvent);
+		};
+
+		CCBuildService.prototype.onBuildStarted = function (project) {
+			var buildEvent = {
+				serviceName: this.name,
+				buildName: project.projectName(),
+				group: project.category(),
+				url: project.url(),
+				icon: this.settings.icon
+			};
+			this.on.startedBuild.dispatch(buildEvent);
+		};
+
+		CCBuildService.prototype.onBuildFinished = function (project) {
+			var buildEvent = {
+				serviceName: this.name,
+				buildName: project.projectName(),
+				group: project.category(),
+				url: project.url(),
+				icon: this.settings.icon
+			};
+			this.on.finishedBuild.dispatch(buildEvent);
 		};
 
 		CCBuildService.prototype.projects = function (selectedPlans) {

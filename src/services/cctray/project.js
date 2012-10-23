@@ -5,8 +5,7 @@ define(['signals'], function (signals) {
 	var projectStatus = {
 		unknown: 'Unknown',
 		success: 'Success',
-		failure: 'Failure',
-		building: 'Building'
+		failure: 'Failure'
 	};
 
 	function parseStatus(status) {
@@ -17,8 +16,6 @@ define(['signals'], function (signals) {
 			return projectStatus.failure;
 		case 'Exception':
 			return projectStatus.failure;
-		case 'Building':
-			return projectStatus.building;
 		default:
 			return projectStatus.unknown;
 		}
@@ -27,17 +24,21 @@ define(['signals'], function (signals) {
 	function project() {
 
 		var status = projectStatus.unknown,
+			activity = 'Sleeping',
 			projectName,
 			category,
 			url,
 			failed = new signals.Signal(),
-			fixed = new signals.Signal();
+			fixed = new signals.Signal(),
+			started = new signals.Signal(),
+			finished = new signals.Signal();
 
 		function projectInstance() { }
 
 		projectInstance.failed = failed;
-		
 		projectInstance.fixed = fixed;
+		projectInstance.started = started;
+		projectInstance.finished = finished;
 
 		projectInstance.update = function (newProjectInfo) {
 			var that = this;
@@ -46,13 +47,18 @@ define(['signals'], function (signals) {
 				if (status === projectStatus.failure) {
 					failed.dispatch(that);
 				}
+				if (activity === 'Building') {
+					started.dispatch(that);
+				}
 			}
 
 			var oldStatus = status;
+			var oldActivity = activity;
 			projectName = newProjectInfo.name;
 			category = newProjectInfo.category;
 			status = parseStatus(newProjectInfo.status);
 			url = newProjectInfo.url;
+			activity = newProjectInfo.activity;
 			if (oldStatus === projectStatus.unknown) {
 				initialize();
 			} else {
@@ -61,6 +67,12 @@ define(['signals'], function (signals) {
 				}
 				if ((oldStatus === projectStatus.failure) && status === projectStatus.success) {
 					fixed.dispatch(this);
+				}
+				if (oldActivity === 'Sleeping' && activity === 'Building') {
+					started.dispatch(this);
+				}
+				if (oldActivity === 'Building' && activity === 'Sleeping') {
+					finished.dispatch(this);
 				}
 			}
 			return projectInstance;

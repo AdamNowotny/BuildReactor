@@ -6,7 +6,7 @@ define([
 	'use strict';
 	
 	function show(state) {
-		var html = popupTemplate({ services: state});
+		var html = popupTemplate({ services: state });
 		$('.service-info-container').html(html);
 	}
 

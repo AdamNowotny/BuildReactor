@@ -84,14 +84,25 @@ define([
 			});
 
 			it('should signal when build is fixed', function () {
-				var buildFixedSpy = spyOnSignal(plan.on.fixed);
+				spyOnSignal(plan.on.fixed);
 				setupResponse(latestPlanResultFailedJson);
 				plan.update();
 
 				setupResponse(latestPlanResultJson);
 				plan.update();
 
-				expect(buildFixedSpy).toHaveBeenDispatchedWith(plan);
+				expect(plan.on.fixed).toHaveBeenDispatchedWith(plan);
+			});
+
+			xit('should signal when build is started', function () {
+				spyOnSignal(plan.on.started);
+				setupResponse(latestPlanResultJson);
+				plan.update();
+
+				setupResponse(latestPlanResultJson);
+				plan.update();
+
+				expect(plan.on.fixed).toHaveBeenDispatchedWith(plan);
 			});
 
 			it('should signal success when response received', function () {
@@ -108,39 +119,42 @@ define([
 				expect(success).toBe(true);
 			});
 
-			it('should signal error when error response received', function () {
-				var errorThrownSpy = spyOnSignal(plan.on.errorThrown);
-				mockBambooRequest.andCallFake(function (key) {
-					this.on.errorReceived.dispatch();
+			describe('error', function () {
+	
+				it('should signal error when error response received', function () {
+					var errorThrownSpy = spyOnSignal(plan.on.errorThrown);
+					mockBambooRequest.andCallFake(function (key) {
+						this.on.errorReceived.dispatch();
+					});
+
+					var finished = false;
+					var success = false;
+					plan.update().addOnce(function (status, errorInfo) {
+						finished = true;
+						success = status;
+					});
+
+					expect(finished).toBe(true);
+					expect(errorThrownSpy).toHaveBeenDispatched(1);
+					expect(success).toBe(false);
 				});
 
-				var finished = false;
-				var success = false;
-				plan.update().addOnce(function (status, errorInfo) {
-					finished = true;
-					success = status;
-				});
+				it('should signal error when parsing response fails', function () {
+					var errorThrownSpy = spyOnSignal(plan.on.errorThrown);
+					setupResponse(null);
 
-				expect(finished).toBe(true);
-				expect(errorThrownSpy).toHaveBeenDispatched(1);
-				expect(success).toBe(false);
+					var finished = false;
+					var success = false;
+					plan.update().addOnce(function (status, errorInfo) {
+						finished = true;
+						success = status;
+					});
+
+					expect(finished).toBe(true);
+					expect(errorThrownSpy).toHaveBeenDispatched(1);
+					expect(success).toBe(false);
+				});
 			});
-
-			it('should signal error when parsing response fails', function () {
-				var errorThrownSpy = spyOnSignal(plan.on.errorThrown);
-				setupResponse(null);
-
-				var finished = false;
-				var success = false;
-				plan.update().addOnce(function (status, errorInfo) {
-					finished = true;
-					success = status;
-				});
-
-				expect(finished).toBe(true);
-				expect(errorThrownSpy).toHaveBeenDispatched(1);
-				expect(success).toBe(false);
-			});
-
+	
 		});
 	});

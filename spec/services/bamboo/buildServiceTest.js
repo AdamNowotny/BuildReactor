@@ -297,6 +297,26 @@ define([
 				expect(fixedBuildSpy).toHaveBeenDispatched(1);
 			});
 
+			it('should signal startedBuild if plan signaled', function () {
+				initializeService();
+				spyOnSignal(service.on.startedBuild);
+				var plan = service.plans['PROJECT1-PLAN1'];
+
+				plan.on.started.dispatch(plan);
+
+				expect(service.on.startedBuild).toHaveBeenDispatched(1);
+			});
+
+			it('should signal finishedBuild if plan signaled', function () {
+				initializeService();
+				spyOnSignal(service.on.finishedBuild);
+				var plan = service.plans['PROJECT1-PLAN1'];
+
+				plan.on.finished.dispatch(plan);
+
+				expect(service.on.finishedBuild).toHaveBeenDispatched(1);
+			});
+
 			it('should ignore disabled plans', function () {
 				settings = {
 					name: 'My Bamboo CI',
@@ -390,6 +410,15 @@ define([
 					var result = service.activeProjects();
 
 					expect(result.items[0].isBroken).toBeTruthy();
+				});
+
+				it('should indicate if building', function () {
+					service.update();
+
+					service.plans['PROJECT1-PLAN1'].isBuilding = true;
+					var result = service.activeProjects();
+
+					expect(result.items[0].isBuilding).toBeTruthy();
 				});
 
 				it('should render link', function () {

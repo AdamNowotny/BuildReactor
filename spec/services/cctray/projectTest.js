@@ -9,9 +9,13 @@ define([
 	
 	describe('services/cctray/project', function () {
 
-		var projectSuccessInfo = { name: 'project name', status: 'Success', url: 'http://www.example.com/' };
+		var projectSuccessInfo = {
+			name: 'project name',
+			activity: 'Sleeping',
+			status: 'Success',
+			url: 'http://www.example.com/'
+		};
 		var projectFailureInfo = { name: 'project name', status: 'Failure', url: 'http://www.example.com/' };
-		var projectBuildingInfo = { name: 'project name', status: 'Unknown', url: 'http://www.example.com/' };
 		var spyOnSignal = jasmineSignals.spyOnSignal;
 		var someProject;
 
@@ -19,6 +23,8 @@ define([
 			someProject = project();
 			spyOnSignal(someProject.failed);
 			spyOnSignal(someProject.fixed);
+			spyOnSignal(someProject.started);
+			spyOnSignal(someProject.finished);
 		});
 
 		it('should initialize from JSON', function () {
@@ -56,16 +62,38 @@ define([
 			expect(someProject.fixed).not.toHaveBeenDispatched();
 		});
 
-		it('should ignore if building', function () {
-			someProject.update(projectBuildingInfo);
+		it('should dispatch started if activity changed to building', function () {
+			someProject.update({ status: 'Success', activity: 'Sleeping' });
+
+			someProject.update({ status: 'Success', activity: 'Building' });
+
+			expect(someProject.started).toHaveBeenDispatched();
+		});
+
+		it('should dispatch started if building while initializing', function () {
+			someProject.update({ status: 'Success', activity: 'Building' });
+
+			expect(someProject.started).toHaveBeenDispatched();
+		});
+
+		it('should dispatch finished if activity changed from building', function () {
+			someProject.update({ status: 'Success', activity: 'Building' });
+
+			someProject.update({ status: 'Success', activity: 'Sleeping' });
+
+			expect(someProject.finished).toHaveBeenDispatched();
+		});
+
+		it('should ignore if status unknown', function () {
+			someProject.update({ status: 'Unknown' });
 
 			expect(someProject.fixed).not.toHaveBeenDispatched();
 			expect(someProject.failed).not.toHaveBeenDispatched();
 		});
 
 		it('should not signal fixed if previous state unknown', function () {
-			someProject.update(projectBuildingInfo);
-			someProject.update(projectSuccessInfo);
+			someProject.update({ status: 'Unknown' });
+			someProject.update({ status: 'Success' });
 
 			expect(someProject.fixed).not.toHaveBeenDispatched();
 		});

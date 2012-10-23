@@ -20,7 +20,9 @@ define([
 				updating: new Signal(),
 				updated: new Signal(),
 				brokenBuild: new Signal(),
-				fixedBuild: new Signal()
+				fixedBuild: new Signal(),
+				startedBuild: new Signal(),
+				finishedBuild: new Signal()
 			};
 		};
 
@@ -77,6 +79,8 @@ define([
 				var plan = new BambooPlan(self.settings);
 				plan.on.failed.add(self.onBuildFailed, self);
 				plan.on.fixed.add(self.onBuildFixed, self);
+				plan.on.started.add(self.onBuildStarted, self);
+				plan.on.finished.add(self.onBuildFinished, self);
 				plan.on.errorThrown.add(self.onPlanError, self);
 				self.plans[responsePlan.key] = plan;
 				self.plansCount++;
@@ -163,6 +167,28 @@ define([
 			this.on.fixedBuild.dispatch(buildEvent);
 		};
 
+		BuildService.prototype.onBuildStarted = function (plan) {
+			var buildEvent = {
+				serviceName: this.name,
+				buildName: plan.name,
+				group: plan.projectName,
+				url: plan.url,
+				icon: this.settings.icon
+			};
+			this.on.startedBuild.dispatch(buildEvent);
+		};
+
+		BuildService.prototype.onBuildFinished = function (plan) {
+			var buildEvent = {
+				serviceName: this.name,
+				buildName: plan.name,
+				group: plan.projectName,
+				url: plan.url,
+				icon: this.settings.icon
+			};
+			this.on.finishedBuild.dispatch(buildEvent);
+		};
+
 		BuildService.prototype.onPlanError = function (ajaxError) {
 			this.on.errorThrown.dispatch(ajaxError);
 		};
@@ -192,7 +218,8 @@ define([
 					name: p.name,
 					group: p.projectName,
 					isBroken: p.state === 'Failed',
-					url: p.url
+					url: p.url,
+					isBuilding: p.isBuilding
 				};
 			});
 			return {

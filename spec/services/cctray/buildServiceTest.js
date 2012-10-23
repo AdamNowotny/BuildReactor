@@ -90,6 +90,8 @@ function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, p
 			expect(service.name).toBe(settings.name);
 			expect(service.on.brokenBuild).toBeDefined();
 			expect(service.on.fixedBuild).toBeDefined();
+			expect(service.on.startedBuild).toBeDefined();
+			expect(service.on.finishedBuild).toBeDefined();
 			expect(service.on.errorThrown).toBeDefined();
 			expect(service.on.updating).toBeDefined();
 			expect(service.on.updated).toBeDefined();
@@ -198,9 +200,10 @@ function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, p
 
 			service1.update();
 			service2.update();
+			service2.update();
 
 			expect(service1.on.updating).toHaveBeenDispatched(1);
-			expect(service2.on.updating).toHaveBeenDispatched(1);
+			expect(service2.on.updating).toHaveBeenDispatched(2);
 		});
 
 		it('should signal brokenBuild if project signaled', function () {
@@ -231,6 +234,28 @@ function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, p
 			fixedProject.fixed.dispatch(fixedProject);
 
 			expect(service.on.fixedBuild).toHaveBeenDispatched(1);
+		});
+
+		it('should signal startedBuild if project signaled', function () {
+			spyOnSignal(service.on.startedBuild);
+			initResponse();
+			service.update();
+			var startedProject = service._selectedProjects['NetReflector'];
+
+			startedProject.started.dispatch(startedProject);
+
+			expect(service.on.startedBuild).toHaveBeenDispatched();
+		});
+
+		it('should signal finishedBuild if project signaled', function () {
+			spyOnSignal(service.on.finishedBuild);
+			initResponse();
+			service.update();
+			var finishedProject = service._selectedProjects['NetReflector'];
+
+			finishedProject.finished.dispatch(finishedProject);
+
+			expect(service.on.finishedBuild).toHaveBeenDispatched();
 		});
 
 		it('should ignore plans that are not monitored', function () {
