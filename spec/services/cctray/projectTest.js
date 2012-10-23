@@ -70,6 +70,19 @@ define([
 			expect(someProject.started).toHaveBeenDispatched();
 		});
 
+		it('should know if building', function () {
+			someProject.update({ status: 'Success', activity: 'Building' });
+
+			expect(someProject.isBuilding()).toBeTruthy();
+		});
+
+		it('should know if building finished', function () {
+			someProject.update({ status: 'Success', activity: 'Building' });
+			someProject.update({ status: 'Success', activity: 'Sleeping' });
+
+			expect(someProject.isBuilding()).toBeFalsy();
+		});
+
 		it('should dispatch started if building while initializing', function () {
 			someProject.update({ status: 'Success', activity: 'Building' });
 

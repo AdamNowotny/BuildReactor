@@ -342,6 +342,20 @@ function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, p
 
 			it('should indicate if broken', function () {
 				service.update();
+				var buildingProject = project();
+				buildingProject.update({
+					status: 'Success',
+					activity: 'Building'
+				});
+				service._selectedProjects['CruiseControl.NET'] = buildingProject;
+
+				var result = service.activeProjects();
+
+				expect(result.items[0].isBuilding).toBeTruthy();
+			});
+
+			it('should indicate if building', function () {
+				service.update();
 				var failedProject = project();
 				failedProject.update({
 					status: 'Failure'

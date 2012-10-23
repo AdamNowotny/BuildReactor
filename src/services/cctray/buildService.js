@@ -184,7 +184,8 @@ define([
 					name: p.projectName(),
 					group: p.category(),
 					isBroken: p.status() === 'Failure',
-					url: p.url()
+					url: p.url(),
+					isBuilding: p.isBuilding()
 				};
 			});
 			return {

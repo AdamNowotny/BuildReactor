@@ -94,6 +94,10 @@ define(['signals'], function (signals) {
 			return category;
 		};
 		
+		projectInstance.isBuilding = function () {
+			return activity === 'Building';
+		};
+		
 		return projectInstance;
 	}
 
