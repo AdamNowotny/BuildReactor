@@ -40,7 +40,7 @@ require([
 
 		it('should modify url used to get projects', function () {
 			spyOn(CCTrayBuildService.prototype, 'projects').andCallFake(function (selectedPlans) {
-				expect(this.settings.url).toBe('http://example.com/cc.xml');
+				expect(this.settings.url).toBe('http://example.com/view/All/cc.xml');
 			});
 
 			var service = new BuildService(settings);
@@ -51,7 +51,7 @@ require([
 
 		it('should modify url', function () {
 			spyOn(CCTrayBuildService.prototype, 'start').andCallFake(function () {
-				expect(this.settings.url).toBe('http://example.com/cc.xml');
+				expect(this.settings.url).toBe('http://example.com/view/All/cc.xml');
 			});
 
 			var service = new BuildService(settings);
