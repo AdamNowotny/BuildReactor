@@ -98,7 +98,8 @@ define([
 							name: name,
 							category: $(d).attr('category'),
 							status: $(d).attr('lastBuildStatus'),
-							url: $(d).attr('webUrl')
+							url: $(d).attr('webUrl'),
+							activity: $(d).attr('activity')
 						};
 					})
 					.each(function createOrUpdate(i, d) {

@@ -97,55 +97,76 @@ function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, p
 			expect(service.on.updated).toBeDefined();
 		});
 
-		it('should get projects state on start', function () {
-			service.start();
+		describe('start', function () {
 
-			expect(mockRequest).toHaveBeenCalled();
-			expect(service._selectedProjects['CruiseControl.NET']).toBeDefined();
-			expect(service._selectedProjects['NetReflector']).toBeDefined();
-		});
+			it('should get projects state on start', function () {
+				service.start();
 
-		it('should try again if request failed', function () {
-			// TODO: this looks ugly, time for a mock builder ?
-			var attempt = 0;
-			spyOnSignal(service.on.updated);
-			mockTimer.andCallFake(function () {
-				if (attempt <= 1) {
+				expect(mockRequest).toHaveBeenCalled();
+				expect(service._selectedProjects['CruiseControl.NET']).toBeDefined();
+				expect(service._selectedProjects['NetReflector']).toBeDefined();
+			});
+
+			it('should try again if request failed', function () {
+				// TODO: this looks ugly, time for a mock builder ?
+				var attempt = 0;
+				spyOnSignal(service.on.updated);
+				mockTimer.andCallFake(function () {
+					if (attempt <= 1) {
+						this.on.elapsed.dispatch();
+					}
+				});
+				mockRequest.andCallFake(function () {
+					attempt++;
+					responseReceived = new signals.Signal();
+					responseReceived.memorize = true;
+					errorReceived = new signals.Signal();
+					errorReceived.memorize = true;
+					if (attempt <= 1) {
+						errorReceived.dispatch({ message: 'ajax error' });
+					} else {
+						responseReceived.dispatch(projectsXml);
+					}
+					return {
+						responseReceived: responseReceived,
+						errorReceived: errorReceived
+					};
+				});
+
+				service.start();
+
+				expect(service.on.updated).toHaveBeenDispatched(2);
+				expect(mockRequest.callCount).toBe(2);
+				expect(mockTimer).toHaveBeenCalled();
+			});
+
+			it('should not start if update interval not set', function () {
+				var service1 = new BuildService({
+					name: 'My Bamboo CI',
+					updateInterval: undefined,
+					url: 'http://example.com/'
+				});
+
+				expect(function () { service1.start(); }).toThrow();
+			});
+
+			it('should update until stopped', function () {
+				mockTimer.andCallFake(function () {
 					this.on.elapsed.dispatch();
-				}
-			});
-			mockRequest.andCallFake(function () {
-				attempt++;
-				responseReceived = new signals.Signal();
-				responseReceived.memorize = true;
-				errorReceived = new signals.Signal();
-				errorReceived.memorize = true;
-				if (attempt <= 1) {
-					errorReceived.dispatch({ message: 'ajax error' });
-				} else {
-					responseReceived.dispatch(projectsXml);
-				}
-				return {
-					responseReceived: responseReceived,
-					errorReceived: errorReceived
-				};
+				});
+				spyOnSignal(service.on.updating).matching(function () {
+					if (this.count > 2) {
+						service.stop();
+						return false;
+					}
+					return true;
+				});
+
+				service.start();
+
+				expect(service.on.updating).toHaveBeenDispatched(3);
 			});
 
-			service.start();
-
-			expect(service.on.updated).toHaveBeenDispatched(2);
-			expect(mockRequest.callCount).toBe(2);
-			expect(mockTimer).toHaveBeenCalled();
-		});
-
-		it('should not start if update interval not set', function () {
-			var service1 = new BuildService({
-				name: 'My Bamboo CI',
-				updateInterval: undefined,
-				url: 'http://example.com/'
-			});
-
-			expect(function () { service1.start(); }).toThrow();
 		});
 
 		it('should signal updated when update finished', function () {
@@ -174,24 +195,6 @@ function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, p
 			expect(service.on.errorThrown).toHaveBeenDispatched();
 		});
 
-
-		it('should update until stopped', function () {
-			mockTimer.andCallFake(function () {
-				this.on.elapsed.dispatch();
-			});
-			spyOnSignal(service.on.updating).matching(function () {
-				if (this.count > 2) {
-					service.stop();
-					return false;
-				}
-				return true;
-			});
-
-			service.start();
-
-			expect(service.on.updating).toHaveBeenDispatched(3);
-		});
-
 		it('multiple services should update independently', function () {
 			var service1 = new BuildService({ name: 'Bamboo', url: 'http://example1.com/', projects: [] });
 			var service2 = new BuildService({ name: 'Bamboo', url: 'http://example2.com/', projects: [] });
@@ -206,62 +209,82 @@ function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, p
 			expect(service2.on.updating).toHaveBeenDispatched(2);
 		});
 
-		it('should signal brokenBuild if project signaled', function () {
-			var failedProject;
-			spyOnSignal(service.on.brokenBuild).matching(function (info) {
-				return info.buildName === 'NetReflector' &&
-					info.group === 'CruiseControl.NET';
+		describe('monitoring', function () {
+
+			it('should update project', function () {
+				service.update();
+				var updateProject = service._selectedProjects['NetReflector'];
+				spyOn(updateProject, 'update').andCallFake(function (info) {
+					expect(info.name).toBeDefined();
+					expect(info.category).toBeDefined();
+					expect(info.status).toBeDefined();
+					expect(info.url).toBeDefined();
+					expect(info.activity).toBeDefined();
+				});
+
+				service.update();
+
+				expect(updateProject.update).toHaveBeenCalled();
 			});
-			initResponse();
-			service.update();
-			failedProject = service._selectedProjects['NetReflector'];
 
-			failedProject.failed.dispatch(failedProject);
+			it('should signal brokenBuild if project signaled', function () {
+				var failedProject;
+				spyOnSignal(service.on.brokenBuild).matching(function (info) {
+					return info.buildName === 'NetReflector' &&
+						info.group === 'CruiseControl.NET';
+				});
+				initResponse();
+				service.update();
+				failedProject = service._selectedProjects['NetReflector'];
 
-			expect(service.on.brokenBuild).toHaveBeenDispatched(1);
-		});
+				failedProject.failed.dispatch(failedProject);
 
-		it('should signal fixedBuild if project signaled', function () {
-			var fixedProject;
-			spyOnSignal(service.on.fixedBuild).matching(function (info) {
-				return info.buildName === 'NetReflector' &&
-					info.group === 'CruiseControl.NET';
+				expect(service.on.brokenBuild).toHaveBeenDispatched(1);
 			});
-			initResponse();
-			service.update();
-			fixedProject = service._selectedProjects['NetReflector'];
 
-			fixedProject.fixed.dispatch(fixedProject);
+			it('should signal fixedBuild if project signaled', function () {
+				var fixedProject;
+				spyOnSignal(service.on.fixedBuild).matching(function (info) {
+					return info.buildName === 'NetReflector' &&
+						info.group === 'CruiseControl.NET';
+				});
+				initResponse();
+				service.update();
+				fixedProject = service._selectedProjects['NetReflector'];
 
-			expect(service.on.fixedBuild).toHaveBeenDispatched(1);
-		});
+				fixedProject.fixed.dispatch(fixedProject);
 
-		it('should signal startedBuild if project signaled', function () {
-			spyOnSignal(service.on.startedBuild);
-			initResponse();
-			service.update();
-			var startedProject = service._selectedProjects['NetReflector'];
+				expect(service.on.fixedBuild).toHaveBeenDispatched(1);
+			});
 
-			startedProject.started.dispatch(startedProject);
+			it('should signal startedBuild if project signaled', function () {
+				spyOnSignal(service.on.startedBuild);
+				initResponse();
+				service.update();
+				var startedProject = service._selectedProjects['NetReflector'];
 
-			expect(service.on.startedBuild).toHaveBeenDispatched();
-		});
+				startedProject.started.dispatch(startedProject);
 
-		it('should signal finishedBuild if project signaled', function () {
-			spyOnSignal(service.on.finishedBuild);
-			initResponse();
-			service.update();
-			var finishedProject = service._selectedProjects['NetReflector'];
+				expect(service.on.startedBuild).toHaveBeenDispatched();
+			});
 
-			finishedProject.finished.dispatch(finishedProject);
+			it('should signal finishedBuild if project signaled', function () {
+				spyOnSignal(service.on.finishedBuild);
+				initResponse();
+				service.update();
+				var finishedProject = service._selectedProjects['NetReflector'];
 
-			expect(service.on.finishedBuild).toHaveBeenDispatched();
-		});
+				finishedProject.finished.dispatch(finishedProject);
 
-		it('should ignore plans that are not monitored', function () {
-			service.update();
+				expect(service.on.finishedBuild).toHaveBeenDispatched();
+			});
 
-			expect(service._selectedProjects['FastForward.NET']).not.toBeDefined();
+			it('should ignore plans that are not monitored', function () {
+				service.update();
+
+				expect(service._selectedProjects['FastForward.NET']).not.toBeDefined();
+			});
+
 		});
 
 		describe('projects', function () {
