@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Projects>
-  <Project name="kabbadi :: buildAndUnitTest" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="150" lastBuildTime="2012-05-03T10:01:20" webUrl="http://10.4.4.235:8153/go/pipelines/kabbadi/150/buildAndUnitTest/1" />
-  <Project name="kabbadi :: buildAndUnitTest :: gradleTest" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="150" lastBuildTime="2012-05-03T10:01:20" webUrl="http://10.4.4.235:8153/go/tab/build/detail/kabbadi/150/buildAndUnitTest/1/gradleTest" />
-  <Project name="kabbadi :: integration" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="150" lastBuildTime="2012-05-03T10:01:45" webUrl="http://10.4.4.235:8153/go/pipelines/kabbadi/150/integration/1" />
-  <Project name="kabbadi :: integration :: run_integration_tests" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="150" lastBuildTime="2012-05-03T10:01:45" webUrl="http://10.4.4.235:8153/go/tab/build/detail/kabbadi/150/integration/1/run_integration_tests" />
-  <Project name="kabbadi :: Functional" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="150" lastBuildTime="2012-05-03T10:03:27" webUrl="http://10.4.4.235:8153/go/pipelines/kabbadi/150/Functional/1" />
-  <Project name="kabbadi :: Functional :: gradleFunctional" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="150" lastBuildTime="2012-05-03T10:03:27" webUrl="http://10.4.4.235:8153/go/tab/build/detail/kabbadi/150/Functional/1/gradleFunctional" />
-  <Project name="kabbadi :: QA" activity="Building" lastBuildStatus="Failure" lastBuildLabel="150" lastBuildTime="2012-05-03T10:33:21" webUrl="http://10.4.4.235:8153/go/pipelines/kabbadi/150/QA/2" />
-  <Project name="kabbadi :: QA :: qa" activity="Building" lastBuildStatus="Failure" lastBuildLabel="150" lastBuildTime="2012-05-03T10:38:56" webUrl="http://10.4.4.235:8153/go/tab/build/detail/kabbadi/150/QA/2/qa" />
-  <Project name="jmspace :: UnitTest" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="135" lastBuildTime="2012-05-03T09:31:47" webUrl="http://10.4.4.235:8153/go/pipelines/jmspace/135/UnitTest/1" />
-  <Project name="jmspace :: UnitTest :: GradleTest" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="135" lastBuildTime="2012-05-03T09:31:47" webUrl="http://10.4.4.235:8153/go/tab/build/detail/jmspace/135/UnitTest/1/GradleTest" />
-  <Project name="jmspace :: FunctionalTest" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="135 :: 3" lastBuildTime="2012-05-03T09:50:24" webUrl="http://10.4.4.235:8153/go/pipelines/jmspace/135/FunctionalTest/3" />
-  <Project name="jmspace :: FunctionalTest :: FunctionalTest" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="135 :: 3" lastBuildTime="2012-05-03T09:50:24" webUrl="http://10.4.4.235:8153/go/tab/build/detail/jmspace/135/FunctionalTest/3/FunctionalTest" />
-  <Project name="jmspace :: deployToQA" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="133" lastBuildTime="2012-05-02T16:11:05" webUrl="http://10.4.4.235:8153/go/pipelines/jmspace/133/deployToQA/1" />
-  <Project name="jmspace :: deployToQA :: getWarAndRunDeploymentBashScript" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="133" lastBuildTime="2012-05-02T16:11:05" webUrl="http://10.4.4.235:8153/go/tab/build/detail/jmspace/133/deployToQA/1/getWarAndRunDeploymentBashScript" />
+  <Project name="OnlineOrderingHtml5CI :: Build" activity="Building" lastBuildStatus="Failure" lastBuildLabel="0.7" lastBuildTime="2012-10-25T14:40:15" webUrl="http://10.1.24.77:8153/go/pipelines/OnlineOrderingHtml5CI/8/Build/1" />
+  <Project name="OnlineOrderingHtml5CI :: Build :: Build" activity="Building" lastBuildStatus="Failure" lastBuildLabel="0.7" lastBuildTime="2012-10-25T14:46:23" webUrl="http://10.1.24.77:8153/go/tab/build/detail/OnlineOrderingHtml5CI/8/Build/1/Build" />
+  <Project name="OnlineOrderingHtml5CI :: UnitTest" activity="Sleeping" lastBuildStatus="Failure" lastBuildLabel="0.6" lastBuildTime="2012-10-25T14:35:15" webUrl="http://10.1.24.77:8153/go/pipelines/OnlineOrderingHtml5CI/6/UnitTest/1">
+    <messages>
+      <message text="DOMINOS\Jean.Damore-v" kind="Breakers" />
+    </messages>
+  </Project>
+  <Project name="OnlineOrderingHtml5CI :: UnitTest :: UnitTest" activity="Sleeping" lastBuildStatus="Failure" lastBuildLabel="0.6" lastBuildTime="2012-10-25T14:35:15" webUrl="http://10.1.24.77:8153/go/tab/build/detail/OnlineOrderingHtml5CI/6/UnitTest/1/UnitTest">
+    <messages>
+      <message text="DOMINOS\Jean.Damore-v" kind="Breakers" />
+    </messages>
+  </Project>
 </Projects>
 
