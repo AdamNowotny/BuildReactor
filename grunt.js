@@ -51,6 +51,7 @@ module.exports = function (grunt) {
 				it: true,
 				jasmine: true,
 				loadFixtures: true,
+				readFixtures: true,
 				require: true,
 				runs: true,
 				spyOn: true,

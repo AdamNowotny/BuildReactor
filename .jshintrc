@@ -67,6 +67,7 @@
         "it",
         "jasmine",
         "loadFixtures",
+        "readFixtures",
         "require",
         "runs",
         "spyOn",
