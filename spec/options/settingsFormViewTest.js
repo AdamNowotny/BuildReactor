@@ -53,7 +53,7 @@ define([
 		it('should show url placeholder', function () {
 			form.show({ urlHint: 'http://example.com/' });
 
-			expect($('.url-input')).toHaveAttr('placeholder', 'http://example.com/');
+			expect($('.url-input')).toHaveAttr('placeholder', 'e.g. http://example.com/');
 		});
 
 		it('should disable show button if url empty', function () {
