@@ -63,6 +63,7 @@ require([
 	'spec/main/serviceControllerTest',
 	'spec/main/serviceRepositoryTest',
 	'spec/main/settingsStoreTest',
+	'spec/services/poolingServiceTest',
 	'spec/services/bamboo/bambooPlanTest',
 	'spec/services/bamboo/bambooRequestTest',
 	'spec/services/bamboo/buildServiceTest',

@@ -107,6 +107,33 @@ function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, p
 				expect(service._selectedProjects['NetReflector']).toBeDefined();
 			});
 
+			it('should not start if update interval not set', function () {
+				var service1 = new BuildService({
+					name: 'My Bamboo CI',
+					updateInterval: undefined,
+					url: 'http://example.com/'
+				});
+
+				expect(function () { service1.start(); }).toThrow();
+			});
+
+			it('should update until stopped', function () {
+				mockTimer.andCallFake(function () {
+					this.on.elapsed.dispatch();
+				});
+				spyOnSignal(service.on.updating).matching(function () {
+					if (this.count > 2) {
+						service.stop();
+						return false;
+					}
+					return true;
+				});
+
+				service.start();
+
+				expect(service.on.updating).toHaveBeenDispatched(3);
+			});
+
 			it('should try again if request failed', function () {
 				// TODO: this looks ugly, time for a mock builder ?
 				var attempt = 0;
@@ -138,33 +165,6 @@ function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, p
 				expect(service.on.updated).toHaveBeenDispatched(2);
 				expect(mockRequest.callCount).toBe(2);
 				expect(mockTimer).toHaveBeenCalled();
-			});
-
-			it('should not start if update interval not set', function () {
-				var service1 = new BuildService({
-					name: 'My Bamboo CI',
-					updateInterval: undefined,
-					url: 'http://example.com/'
-				});
-
-				expect(function () { service1.start(); }).toThrow();
-			});
-
-			it('should update until stopped', function () {
-				mockTimer.andCallFake(function () {
-					this.on.elapsed.dispatch();
-				});
-				spyOnSignal(service.on.updating).matching(function () {
-					if (this.count > 2) {
-						service.stop();
-						return false;
-					}
-					return true;
-				});
-
-				service.start();
-
-				expect(service.on.updating).toHaveBeenDispatched(3);
 			});
 
 		});
