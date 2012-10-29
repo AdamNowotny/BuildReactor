@@ -60,7 +60,9 @@ define([
 			this.send(urlPath);
 		};
 
-		BambooRequest.prototype.plan = function () {
+		BambooRequest.prototype.plan = function (planKey) {
+			var urlPath = interpolate('plan/{{0}}', [planKey]);
+			this.send(urlPath);
 		};
 
 		return BambooRequest;

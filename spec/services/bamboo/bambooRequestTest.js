@@ -60,12 +60,22 @@ define([
 				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
 			});
 
-			it('should get plan information', function () {
+			it('should get latest plan results', function () {
 				spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
 					expect(this.settings.url).toBe('http://example.com/rest/api/latest/result/SOME-PLAN-KEY/latest?expand=changes');
 				});
 
 				request.latestPlanResult('SOME-PLAN-KEY');
+
+				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
+			});
+
+			it('should get plan details', function () {
+				spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
+					expect(this.settings.url).toBe('http://example.com/rest/api/latest/plan/SOME-PLAN-KEY');
+				});
+
+				request.plan('SOME-PLAN-KEY');
 
 				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
 			});
