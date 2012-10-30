@@ -9,7 +9,11 @@ The idea is to show only the relevant events and minimise distractions. That is 
  * notifications about broken builds stay on screen to let you know the build needs your attention
  * fixed builds dissapear automatically and hide all previous messages about that particular build (so you are presented only with the builds that broke while you were away and are still broken)
 
-You can **install the latest stable version** of the extension from [Chrome Web Store](http://goo.gl/BX01T)
+Links
+=====
+Twitter [@BuildReactor](https://twitter.com/BuildReactor)
+
+Download from [Chrome Web Store](http://goo.gl/BX01T)
 
 Supported services
 ==================
@@ -110,4 +114,4 @@ Tool icon taken from http://www.iconspedia.com/icon/metro-tools-black-18254.html
 What's new
 ============
 
-Version history can be found [here](https://github.com/AdamNowotny/BuildReactor/wiki/What's-new)
+Follow [@BuildReactor](https://twitter.com/BuildReactor) on Twitter to find out what's in new releases.
