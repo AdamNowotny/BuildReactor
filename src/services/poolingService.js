@@ -4,7 +4,7 @@ define(['common/timer', 'signals'], function (Timer, Signal) {
 
 	var PoolingService = function (settings) {
 		this.settings = settings;
-		this.name = this.settings.name;
+		this.serviceName = settings.name;
 		this.on = {
 			errorThrown: new Signal(),
 			updating: new Signal(),
@@ -14,7 +14,6 @@ define(['common/timer', 'signals'], function (Timer, Signal) {
 			startedBuild: new Signal(),
 			finishedBuild: new Signal()
 		};
-
 	};
 
 	PoolingService.prototype.start = function () {
@@ -34,8 +33,6 @@ define(['common/timer', 'signals'], function (Timer, Signal) {
 		this.on.updated.remove(this.scheduleUpdate, this);
 		this.timer.on.elapsed.remove(this.update, this);
 	};
-
-	PoolingService.prototype.update = function () { };
 
 	return PoolingService;
 });

@@ -39,25 +39,25 @@ require([
 		});
 
 		it('should modify url used to get projects', function () {
-			spyOn(CCTrayBuildService.prototype, 'projects').andCallFake(function (selectedPlans) {
+			var service = new BuildService(settings);
+			spyOn(service, 'projects').andCallFake(function (selectedPlans) {
 				expect(this.settings.url).toBe('http://example.com/view/All/cc.xml');
 			});
 
-			var service = new BuildService(settings);
 			service.projects([ 'A', 'B' ]);
 
-			expect(CCTrayBuildService.prototype.projects).toHaveBeenCalled();
+			expect(service.projects).toHaveBeenCalled();
 		});
 
 		it('should modify url', function () {
-			spyOn(CCTrayBuildService.prototype, 'start').andCallFake(function () {
+			var service = new BuildService(settings);
+			spyOn(service, 'start').andCallFake(function () {
 				expect(this.settings.url).toBe('http://example.com/view/All/cc.xml');
 			});
 
-			var service = new BuildService(settings);
 			service.start();
 
-			expect(CCTrayBuildService.prototype.start).toHaveBeenCalled();
+			expect(service.start).toHaveBeenCalled();
 		});
 
 	});

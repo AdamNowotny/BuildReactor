@@ -2,13 +2,14 @@ define([
 	'services/cctray/buildService',
 	'services/cctray/ccRequest',
 	'services/cctray/project',
+	'services/poolingService',
 	'common/timer',
 	'jquery',
 	'signals',
 	'jasmineSignals',
 	'text!spec/fixtures/cctray/cruisecontrolnet.xml'
 ],
-function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, projectsXmlText) {
+function (BuildService, ccRequest, project, PoolingService, Timer, $, signals, jasmineSignals, projectsXmlText) {
 
 	'use strict';
 
@@ -54,6 +55,8 @@ function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, p
 				updateInterval: 10000,
 				projects: ['CruiseControl.NET', 'NetReflector']
 			};
+			spyOn(PoolingService.prototype, 'start');
+			spyOn(PoolingService.prototype, 'stop');
 			service = new BuildService(settings);
 			mockRequest = spyOn(ccRequest, 'projects');
 			initResponse();
@@ -87,7 +90,7 @@ function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, p
 		});
 
 		it('should expose service interface', function () {
-			expect(service.name).toBe(settings.name);
+			expect(service.serviceName).toBe(settings.name);
 			expect(service.on.brokenBuild).toBeDefined();
 			expect(service.on.fixedBuild).toBeDefined();
 			expect(service.on.startedBuild).toBeDefined();
@@ -95,78 +98,6 @@ function (BuildService, ccRequest, project, Timer, $, signals, jasmineSignals, p
 			expect(service.on.errorThrown).toBeDefined();
 			expect(service.on.updating).toBeDefined();
 			expect(service.on.updated).toBeDefined();
-		});
-
-		describe('start', function () {
-
-			it('should get projects state on start', function () {
-				service.start();
-
-				expect(mockRequest).toHaveBeenCalled();
-				expect(service._selectedProjects['CruiseControl.NET']).toBeDefined();
-				expect(service._selectedProjects['NetReflector']).toBeDefined();
-			});
-
-			it('should not start if update interval not set', function () {
-				var service1 = new BuildService({
-					name: 'My Bamboo CI',
-					updateInterval: undefined,
-					url: 'http://example.com/'
-				});
-
-				expect(function () { service1.start(); }).toThrow();
-			});
-
-			it('should update until stopped', function () {
-				mockTimer.andCallFake(function () {
-					this.on.elapsed.dispatch();
-				});
-				spyOnSignal(service.on.updating).matching(function () {
-					if (this.count > 2) {
-						service.stop();
-						return false;
-					}
-					return true;
-				});
-
-				service.start();
-
-				expect(service.on.updating).toHaveBeenDispatched(3);
-			});
-
-			it('should try again if request failed', function () {
-				// TODO: this looks ugly, time for a mock builder ?
-				var attempt = 0;
-				spyOnSignal(service.on.updated);
-				mockTimer.andCallFake(function () {
-					if (attempt <= 1) {
-						this.on.elapsed.dispatch();
-					}
-				});
-				mockRequest.andCallFake(function () {
-					attempt++;
-					responseReceived = new signals.Signal();
-					responseReceived.memorize = true;
-					errorReceived = new signals.Signal();
-					errorReceived.memorize = true;
-					if (attempt <= 1) {
-						errorReceived.dispatch({ message: 'ajax error' });
-					} else {
-						responseReceived.dispatch(projectsXml);
-					}
-					return {
-						responseReceived: responseReceived,
-						errorReceived: errorReceived
-					};
-				});
-
-				service.start();
-
-				expect(service.on.updated).toHaveBeenDispatched(2);
-				expect(mockRequest.callCount).toBe(2);
-				expect(mockTimer).toHaveBeenCalled();
-			});
-
 		});
 
 		it('should signal updated when update finished', function () {

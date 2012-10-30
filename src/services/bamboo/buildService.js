@@ -1,30 +1,22 @@
 define([
+	'jquery',
 	'signals',
 	'./bambooRequest',
 	'./bambooPlan',
 	'common/timer',
 	'amdUtils/string/interpolate',
-	'amdUtils/object/values'
-], function (Signal, BambooRequest, BambooPlan, Timer, interpolate, values) {
+	'amdUtils/object/values',
+	'services/poolingService'
+], function ($, Signal, BambooRequest, BambooPlan, Timer, interpolate, values, PoolingService) {
 
 	'use strict';
 
-	var BuildService = function (settings) {
-		this.settings = settings;
-		this.name = settings.name;
+	var BambooBuildService = function (settings) {
+		$.extend(this, new PoolingService(settings));
 		this.plans = {};
-		this.on = {
-			errorThrown: new Signal(),
-			updating: new Signal(),
-			updated: new Signal(),
-			brokenBuild: new Signal(),
-			fixedBuild: new Signal(),
-			startedBuild: new Signal(),
-			finishedBuild: new Signal()
-		};
 	};
 
-	BuildService.settings = function () {
+	BambooBuildService.settings = function () {
 		return {
 			typeName: 'Atlassian Bamboo',
 			baseUrl: 'bamboo',
@@ -35,25 +27,7 @@ define([
 		};
 	};
 
-	BuildService.prototype.start = function () {
-		if (!this.settings.updateInterval) {
-			throw { name: 'ArgumentInvalid', message: 'settings.updateInterval not set' };
-		}
-		this.timer = new Timer();
-		this.timer.on.elapsed.add(this.update, this);
-		this.scheduleUpdate = function () {
-			this.timer.start(this.settings.updateInterval);
-		};
-		this.on.updated.add(this.scheduleUpdate, this);
-		this.update();
-	};
-
-	BuildService.prototype.stop = function () {
-		this.on.updated.remove(this.scheduleUpdate, this);
-		this.timer.on.elapsed.remove(this.update, this);
-	};
-
-	BuildService.prototype.projects = function (selectedPlans) {
+	BambooBuildService.prototype.projects = function (selectedPlans) {
 		var receivedProjects = new Signal();
 		receivedProjects.memorize = true;
 		var plansRequest = new BambooRequest(this.settings);
@@ -72,7 +46,7 @@ define([
 		return receivedProjects;
 	};
 
-	BuildService.prototype.activeProjects = function () {
+	BambooBuildService.prototype.activeProjects = function () {
 		var projectsInfo = values(this.plans).map(function (p) {
 			return {
 				name: p.name,
@@ -83,19 +57,19 @@ define([
 			};
 		});
 		return {
-			name: this.name,
+			name: this.serviceName,
 			items: projectsInfo
 		};
 	};
 
-	BuildService.prototype.update = function () {
+	BambooBuildService.prototype.update = function () {
 		this.on.updating.dispatch();
 		this.updateAllPlans().addOnce(function () {
 			this.on.updated.dispatch();
 		}, this);
 	};
 
-	BuildService.prototype.updateAllPlans = function () {
+	BambooBuildService.prototype.updateAllPlans = function () {
 		
 		function planFinished() {
 			remaining--;
@@ -129,7 +103,7 @@ define([
 
 	var onBuildFailed = function (plan) {
 		var buildEvent = {
-			serviceName: this.name,
+			serviceName: this.serviceName,
 			buildName: plan.name,
 			group: plan.projectName,
 			url: plan.url,
@@ -140,7 +114,7 @@ define([
 
 	var onBuildFixed = function (plan) {
 		var buildEvent = {
-			serviceName: this.name,
+			serviceName: this.serviceName,
 			buildName: plan.name,
 			group: plan.projectName,
 			url: plan.url,
@@ -151,7 +125,7 @@ define([
 
 	var onBuildStarted = function (plan) {
 		var buildEvent = {
-			serviceName: this.name,
+			serviceName: this.serviceName,
 			buildName: plan.name,
 			group: plan.projectName,
 			url: plan.url,
@@ -162,7 +136,7 @@ define([
 
 	var onBuildFinished = function (plan) {
 		var buildEvent = {
-			serviceName: this.name,
+			serviceName: this.serviceName,
 			buildName: plan.name,
 			group: plan.projectName,
 			url: plan.url,
@@ -197,5 +171,5 @@ define([
 		};
 	};
 
-	return BuildService;
+	return BambooBuildService;
 });

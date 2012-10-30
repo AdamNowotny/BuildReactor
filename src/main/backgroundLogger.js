@@ -13,7 +13,7 @@ define([
 			console.log('serviceController.reset:      ', settingsStore.getAll());
 		});
 		serviceController.on.added.add(function (service) {
-			console.log('serviceController.added:       ' + service.name, service.settings);
+			console.log('serviceController.added:       ' + service.serviceName, service.settings);
 		});
 		serviceController.on.updating.add(function (serviceInfo) {
 			console.log('serviceController.updating:    ' + serviceInfo.serviceName);

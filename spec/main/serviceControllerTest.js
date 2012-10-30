@@ -25,7 +25,7 @@ define([
 
 				it('should require name', function () {
 					var service = new MockBuildService();
-					service.name = undefined;
+					service.serviceName = undefined;
 					
 					expect(function () { controller.addService(service); }).toThrow();
 				});

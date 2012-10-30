@@ -6,7 +6,7 @@ define(['signals'], function (signals) {
 	errorThrown.memorize = true;
 
 	var MockBuildService = function () {
-		this.name = 'Sample service';
+		this.serviceName = 'Sample service';
 		this.on = {
 			errorThrown: new signals.Signal(),
 			updating: new signals.Signal(),
@@ -17,7 +17,7 @@ define(['signals'], function (signals) {
 		this.start = function () { };
 		this.stop = function () { };
 		this.initializeFromSettings = function (settings) {
-			this.name = settings.name;
+			this.serviceName = settings.name;
 		};
 	};
 

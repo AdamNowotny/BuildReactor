@@ -2,7 +2,7 @@ define(['services/poolingService', 'common/timer', 'jasmineSignals'], function (
 
 	'use strict';
 
-	describe('start', function () {
+	describe('poolingService', function () {
 
 		var service;
 		var settings;
@@ -18,10 +18,11 @@ define(['services/poolingService', 'common/timer', 'jasmineSignals'], function (
 				projects: ['build1', 'build2']
 			};
 			service = new PoolingService(settings);
+			service.update = function () {};
 		});
 
 		it('should expose service interface', function () {
-			expect(service.name).toBe(settings.name);
+			expect(service.serviceName).toBe(settings.name);
 			expect(service.on.brokenBuild).toBeDefined();
 			expect(service.on.fixedBuild).toBeDefined();
 			expect(service.on.errorThrown).toBeDefined();

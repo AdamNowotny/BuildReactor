@@ -7,26 +7,19 @@ define([
 	'amdUtils/string/interpolate',
 	'amdUtils/array/contains',
 	'amdUtils/object/values',
-	'urljs'
-], function ($, Signal, ccRequest, project, Timer, interpolate, contains, values, URL) {
+	'urljs',
+	'services/poolingService'
+], function ($, Signal, ccRequest, project, Timer, interpolate, contains, values, URL, PoolingService) {
 
 	'use strict';
 
 	var CCBuildService = function (settings) {
+		$.extend(this, new PoolingService(settings));
 		this.settings = this._createSettings(settings);
-		this.name = this.settings.name;
 		this._selectedProjects = {};
-		this.on = {
-			errorThrown: new Signal(),
-			updating: new Signal(),
-			updated: new Signal(),
-			brokenBuild: new Signal(),
-			fixedBuild: new Signal(),
-			startedBuild: new Signal(),
-			finishedBuild: new Signal()
-		};
 	};
 
+		
 	CCBuildService.prototype._createSettings = function (settings) {
 		var newSettings = CCBuildService.settings();
 		newSettings.name = settings.name;
@@ -53,24 +46,6 @@ define([
 			projects: [],
 			urlHint: 'http://cruisecontrol.instance.com/cctray.xml'
 		};
-	};
-
-	CCBuildService.prototype.start = function () {
-		if (!this.settings.updateInterval) {
-			throw { name: 'ArgumentInvalid', message: 'settings.updateInterval not set' };
-		}
-		this.timer = new Timer();
-		this.timer.on.elapsed.add(this.update, this);
-		this.scheduleUpdate = function () {
-			this.timer.start(this.settings.updateInterval);
-		};
-		this.on.updated.add(this.scheduleUpdate, this);
-		this.update();
-	};
-
-	CCBuildService.prototype.stop = function () {
-		this.on.updated.remove(this.scheduleUpdate, this);
-		this.timer.on.elapsed.remove(this.update, this);
 	};
 
 	CCBuildService.prototype.update = function () {
@@ -119,7 +94,7 @@ define([
 
 	CCBuildService.prototype.onBuildFailed = function (project) {
 		var buildEvent = {
-			serviceName: this.name,
+			serviceName: this.serviceName,
 			buildName: project.projectName(),
 			group: project.category(),
 			url: project.url(),
@@ -130,7 +105,7 @@ define([
 
 	CCBuildService.prototype.onBuildFixed = function (project) {
 		var buildEvent = {
-			serviceName: this.name,
+			serviceName: this.serviceName,
 			buildName: project.projectName(),
 			group: project.category(),
 			url: project.url(),
@@ -141,7 +116,7 @@ define([
 
 	CCBuildService.prototype.onBuildStarted = function (project) {
 		var buildEvent = {
-			serviceName: this.name,
+			serviceName: this.serviceName,
 			buildName: project.projectName(),
 			group: project.category(),
 			url: project.url(),
@@ -152,7 +127,7 @@ define([
 
 	CCBuildService.prototype.onBuildFinished = function (project) {
 		var buildEvent = {
-			serviceName: this.name,
+			serviceName: this.serviceName,
 			buildName: project.projectName(),
 			group: project.category(),
 			url: project.url(),
@@ -190,7 +165,7 @@ define([
 			};
 		});
 		return {
-			name: this.name,
+			name: this.serviceName,
 			items: projectsInfo
 		};
 	};

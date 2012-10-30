@@ -3,12 +3,13 @@ define([
 		'services/bamboo/bambooPlan',
 		'services/bamboo/bambooRequest',
 		'common/timer',
+		'services/poolingService',
 		'jquery',
 		'signals',
 		'jasmineSignals',
 		'json!spec/fixtures/bamboo/projects.json'
 	],
-	function (BuildService, BambooPlan, BambooRequest, Timer, $, signals, jasmineSignals, projectsJson) {
+	function (BuildService, BambooPlan, BambooRequest, Timer, PoolingService, $, signals, jasmineSignals, projectsJson) {
 
 		'use strict';
 		
@@ -53,9 +54,11 @@ define([
 					return finishedUpdate;
 				});
 				mockTimer = spyOn(Timer.prototype, 'start');
+				spyOn(PoolingService.prototype, 'start');
+				spyOn(PoolingService.prototype, 'stop');
 				updateSuccessSignal = new signals.Signal();
 				updateSuccessSignal.memorize = true;
-				updateSuccessSignal.dispatch(true, {});
+				updateSuccessSignal.dispatch({ result: {} });
 				updateErrorSignal = new signals.Signal();
 				updateErrorSignal.memorize = true;
 				updateErrorSignal.dispatch(false, { message: 'error message' });
@@ -72,48 +75,12 @@ define([
 			});
 
 			it('should expose service interface', function () {
-				expect(service.name).toBe(settings.name);
+				expect(service.serviceName).toBe(settings.name);
 				expect(service.on.brokenBuild).toBeDefined();
 				expect(service.on.fixedBuild).toBeDefined();
 				expect(service.on.errorThrown).toBeDefined();
 				expect(service.on.updating).toBeDefined();
 				expect(service.on.updated).toBeDefined();
-			});
-
-			it('should update plans on start', function () {
-				service.start();
-
-				expect(mockBambooPlanUpdate).toHaveBeenCalled();
-				expect(service.plans['PROJECT1-PLAN1']).toBeDefined();
-				expect(service.plans['PROJECT2-PLAN2']).toBeDefined();
-			});
-
-			describe('initialize', function () {
-
-
-				it('should signal brokenBuild when any build failed on first update', function () {
-					var brokenBuildSpy = spyOnSignal(service.on.brokenBuild);
-					mockBambooPlanUpdate.andCallFake(function () {
-						this.on.failed.dispatch(this);
-						return updateSuccessSignal;
-					});
-
-					service.start();
-
-					expect(brokenBuildSpy).toHaveBeenDispatched(settings.projects.length);
-				});
-
-			});
-
-			it('should not start if update interval not set', function () {
-				var service1 = new BuildService({
-					name: 'My Bamboo CI',
-					username: null,
-					password: null,
-					url: 'http://example.com/'
-				});
-
-				expect(function () { service1.start(); }).toThrow();
 			});
 
 			it('should signal updated when all plan updates finished', function () {
@@ -176,23 +143,6 @@ define([
 				service.update();
 
 				expect(mockBambooPlanUpdate).toHaveBeenCalled();
-			});
-
-			it('should update until stopped', function () {
-				mockTimer.andCallFake(function () {
-					this.on.elapsed.dispatch();
-				});
-				spyOnSignal(service.on.updating).matching(function () {
-					if (this.count > 2) {
-						service.stop();
-						return false;
-					}
-					return true;
-				});
-
-				service.start();
-
-				expect(service.on.updating).toHaveBeenDispatched(3);
 			});
 
 			it('multiple services should update independently', function () {

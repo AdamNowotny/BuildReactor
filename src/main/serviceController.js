@@ -56,7 +56,7 @@ define([
 			services.forEach(function (s) {
 				s.start();
 				s.on.updated.addOnce(function () {
-					on.started.dispatch({ serviceName: s.name });
+					on.started.dispatch({ serviceName: s.serviceName });
 					toInitializeCount--;
 					if (toInitializeCount === 0) {
 						on.startedAll.dispatch();
@@ -73,8 +73,8 @@ define([
 		}
 
 		function addService(service) {
-			if (!service.name) {
-				throw { name: 'ArgumentInvalid', message: 'service.name not defined' };
+			if (!service.serviceName) {
+				throw { name: 'ArgumentInvalid', message: 'service.serviceName not defined' };
 			}
 			subscribeTo(service);
 			services.push(service);
@@ -101,10 +101,10 @@ define([
 
 		function subscribeTo(service) {
 			service.on.updating.add(function () {
-				on.updating.dispatch({ serviceName: service.name });
+				on.updating.dispatch({ serviceName: service.serviceName });
 			});
 			service.on.updated.add(function () {
-				on.updated.dispatch({ serviceName: service.name });
+				on.updated.dispatch({ serviceName: service.serviceName });
 			});
 			service.on.errorThrown.add(function (errorInfo) {
 				on.errorThrown.dispatch(errorInfo);
