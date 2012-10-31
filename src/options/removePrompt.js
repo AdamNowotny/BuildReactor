@@ -16,7 +16,6 @@ define([
 	}
 
 	function show(serviceName) {
-		$('#service-remove-modal .service-name').html(serviceName);
 		$('#service-remove-modal').modal();
 	}
 

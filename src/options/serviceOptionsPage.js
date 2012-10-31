@@ -1,3 +1,4 @@
+// testcomment
 define([
 	'signals',
 	'jquery',
@@ -20,7 +21,7 @@ define([
 
 	var show = function (serviceInfo) {
 		if (!serviceInfo) {
-			return showEmpty();
+			throw { name: 'ArgumentInvalid', message: 'serviceInfo is undefined' };
 		}
 		if (serviceInfo === currentServiceInfo) {
 			return;
@@ -91,7 +92,7 @@ define([
 		}
 	};
 
-	var showEmpty = function () {
+	var hide = function () {
 		settingsFormView.hide();
 		projectView.hide();
 		$('.alert-error').hide();
@@ -101,6 +102,7 @@ define([
 	return {
 		initialize: initialize,
 		show: show,
+		hide: hide,
 		on: on
 	};
 });

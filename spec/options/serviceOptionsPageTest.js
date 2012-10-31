@@ -1,5 +1,5 @@
 define([
-	'options/serviceOptions',
+	'options/serviceOptionsPage',
 	'options/settingsFormView',
 	'options/projectView',
 	'common/resourceFinder',
@@ -11,7 +11,7 @@ define([
 
 	'use strict';
 
-	describe('serviceOptions', function () {
+	describe('serviceOptionsPage', function () {
 
 		var settingsFormContainer,
 			spySettingsFormViewShow,
@@ -80,7 +80,7 @@ define([
 		});
 
 		it('should show empty page', function () {
-			serviceOptions.show(null);
+			serviceOptions.hide();
 
 			expect(settingsFormView.hide).toHaveBeenCalled();
 			expect(projectView.hide).toHaveBeenCalled();
@@ -90,7 +90,7 @@ define([
 		it('should hide previous errors if showing empty page', function () {
 			$('.alert-error').show();
 
-			serviceOptions.show(null);
+			serviceOptions.hide();
 
 			expect($('.alert-error')).not.toBeVisible();
 		});
@@ -108,9 +108,9 @@ define([
 			expect(spySettingsFormViewShow).toHaveBeenCalled();
 		});
 
-		it('should show service if previously empty', function () {
+		it('should show service if previously hiden', function () {
 			serviceOptions.show(settings);
-			serviceOptions.show(null);
+			serviceOptions.hide();
 			spySettingsFormViewShow.reset();
 			
 			serviceOptions.show(settings);

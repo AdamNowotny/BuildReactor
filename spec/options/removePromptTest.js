@@ -25,12 +25,6 @@ define([
 				expect($('#service-remove-modal')).toBeVisible();
 			});
 
-			it('should show service name', function () {
-				removePrompt.show('sample name');
-
-				expect($('#service-remove-modal .service-name')).toHaveHtml('sample name');
-			});
-
 			it('should hide prompt', function () {
 				removePrompt.show();
 

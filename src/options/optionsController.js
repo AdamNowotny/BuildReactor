@@ -2,18 +2,17 @@ define([
 	'signals',
 	'jquery',
 	'options/serviceSettings',
-	'options/serviceOptions',
+	'options/serviceOptionsPage',
 	'options/addService',
 	'options/serviceList',
 	'options/savePrompt',
 	'options/removePrompt',
 	'options/alert'
-], function (signals, $, serviceSettings, serviceOptions, addService, serviceList, savePrompt, removePrompt, alert) {
+], function (signals, $, serviceSettings, serviceOptionsPage, addService, serviceList, savePrompt, removePrompt, alert) {
 
 	'use strict';
 	
 	var isSaveNeeded = false;
-	var serviceNameElement;
 	var currentSettings;
 
 	function setSaveNeeded(isNeeded) {
@@ -36,8 +35,8 @@ define([
 			removeCurrentService();
 		});
 		serviceSettings.cleared.add(function () {
-			serviceNameElement.text('');
-			serviceOptions.show(null);
+			$('.service-actions').hide();
+			serviceOptionsPage.hide();
 		});
 		serviceList.itemClicked.add(function (item) {
 			if (isSaveNeeded) {
@@ -48,12 +47,13 @@ define([
 		});
 		serviceList.itemSelected.add(function (item) {
 			var link = $(item);
-			serviceNameElement.text(link.text());
+			$('.service-name').text(link.text());
+			$('.service-actions').show();
 			var index = link.data('service-index');
 			var serviceInfo = serviceSettings.getByIndex(index);
 			showServicePage(serviceInfo);
 		});
-		serviceOptions.on.updated.add(serviceSettingsChanged);
+		serviceOptionsPage.on.updated.add(serviceSettingsChanged);
 		reset(serviceTypes);
 	}
 
@@ -61,16 +61,15 @@ define([
 		savePrompt.initialize();
 		addService.initialize('.service-add-container', serviceTypes);
 		removePrompt.initialize();
-		serviceOptions.initialize();
+		serviceOptionsPage.initialize();
 		setSaveNeeded(false);
 		serviceSettings.clear();
-		serviceNameElement = $('.service-name');
 		$('#service-add-button').click(function () {
 			if (!$('#service-add-button').hasClass('disabled')) {
-				serviceOptions.show(null);
+				serviceOptionsPage.hide();
 				addService.show();
+				$('.service-actions').hide();
 				serviceList.selectItem(null);
-				$('.service-name').text('Add new service');
 				$('#service-add-button').addClass('btn-primary');
 			}
 		});
@@ -98,7 +97,7 @@ define([
 		currentSettings = serviceInfo;
 		$('#service-add-button').removeClass('btn-primary');
 		addService.hide();
-		serviceOptions.show(serviceInfo);
+		serviceOptionsPage.show(serviceInfo);
 	}
 
 	function serviceSettingsChanged(updatedSettings) {

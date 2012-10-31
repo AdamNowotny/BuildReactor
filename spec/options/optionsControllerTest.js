@@ -3,14 +3,14 @@ define([
 		'options/optionsController',
 		'options/addService',
 		'options/serviceSettings',
-		'options/serviceOptions',
+		'options/serviceOptionsPage',
 		'options/serviceList',
 		'options/savePrompt',
 		'options/removePrompt',
 		'options/alert',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals'
-	], function ($, controller, addService, serviceSettings, serviceOptions, serviceList, savePrompt, removePrompt, alert, MockSettingsBuilder, jasmineSignals) {
+	], function ($, controller, addService, serviceSettings, serviceOptionsPage, serviceList, savePrompt, removePrompt, alert, MockSettingsBuilder, jasmineSignals) {
 
 		'use strict';
 		
@@ -19,12 +19,6 @@ define([
 			var spyOnSignal = jasmineSignals.spyOnSignal;
 
 			var page = {
-				getServiceName: function () {
-					return $('.service-name').text();
-				},
-				setServiceName: function (name) {
-					return $('.service-name').text(name);
-				},
 				isAddButtonEnabled: function (enable) {
 					if (enable === undefined) {
 						return !$('#service-add-button').hasClass('disabled');
@@ -65,8 +59,9 @@ define([
 
 				spyOn(alert, 'show');
 
-				spyOn(serviceOptions, 'initialize');
-				spyOn(serviceOptions, 'show');
+				spyOn(serviceOptionsPage, 'initialize');
+				spyOn(serviceOptionsPage, 'show');
+				spyOn(serviceOptionsPage, 'hide');
 
 				spyOn(serviceList, 'load');
 				spyOn(serviceList, 'update');
@@ -92,7 +87,7 @@ define([
 				serviceSettings.cleared.removeAll();
 				serviceList.itemClicked.removeAll();
 				serviceList.itemSelected.removeAll();
-				serviceOptions.on.updated.removeAll();
+				serviceOptionsPage.on.updated.removeAll();
 			});
 
 			var createItem = function (index, name) {
@@ -109,7 +104,7 @@ define([
 			it('should initialize components on initialize', function () {
 				controller.initialize();
 
-				expect(serviceOptions.initialize).toHaveBeenCalled();
+				expect(serviceOptionsPage.initialize).toHaveBeenCalled();
 				expect(removePrompt.initialize).toHaveBeenCalled();
 				expect(savePrompt.initialize).toHaveBeenCalled();
 				expect(addService.initialize).toHaveBeenCalled();
@@ -135,7 +130,7 @@ define([
 
 				serviceList.itemSelected.dispatch(item);
 
-				expect(serviceOptions.show).toHaveBeenCalledWith(serviceInfo);
+				expect(serviceOptionsPage.show).toHaveBeenCalledWith(serviceInfo);
 			});
 
 			it('should update service name when selected', function () {
@@ -146,13 +141,22 @@ define([
 				expect($('.service-name')).toHaveText('Service name');
 			});
 
+			it('should show service actions when service selected', function () {
+				$('.service-actions').hide();
+				spyServiceSettingsGetByIndex.andReturn(createSettings('Service name'));
+
+				serviceList.itemSelected.dispatch(createItem(2, 'Service name'));
+
+				expect($('.service-actions')).toBeVisible();
+			});
+
 			it('should update settings', function () {
 				var currentSettings = new MockSettingsBuilder().create();
 				var newServiceSettings = new MockSettingsBuilder().create();
 				spyServiceSettingsGetByIndex.andReturn(currentSettings);
 				serviceList.itemSelected.dispatch(createItem(0, currentSettings.name));
 
-				serviceOptions.on.updated.dispatch(newServiceSettings);
+				serviceOptionsPage.on.updated.dispatch(newServiceSettings);
 
 				expect(serviceSettings.update).toHaveBeenCalledWith(currentSettings, newServiceSettings);
 			});
@@ -164,8 +168,8 @@ define([
 				spyServiceSettingsGetByIndex.andReturn(settings1);
 				serviceList.itemSelected.dispatch(createItem(0, settings1.name));
 
-				serviceOptions.on.updated.dispatch(settings2);
-				serviceOptions.on.updated.dispatch(settings3);
+				serviceOptionsPage.on.updated.dispatch(settings2);
+				serviceOptionsPage.on.updated.dispatch(settings3);
 
 				expect(serviceSettings.update).toHaveBeenCalledWith(settings1, settings2);
 				expect(serviceSettings.update).toHaveBeenCalledWith(settings2, settings3);
@@ -180,7 +184,7 @@ define([
 				});
 				spyServiceSettingsGetAll.andReturn(settings);
 
-				serviceOptions.on.updated.dispatch(newServiceSettings);
+				serviceOptionsPage.on.updated.dispatch(newServiceSettings);
 
 				expect(chrome.extension.sendMessage).toHaveBeenCalled();
 			});
@@ -188,23 +192,23 @@ define([
 			it('should show alert when settings saved', function () {
 				var mockSettings = new MockSettingsBuilder().create();
 
-				serviceOptions.on.updated.dispatch(mockSettings);
+				serviceOptionsPage.on.updated.dispatch(mockSettings);
 
 				expect(alert.show).toHaveBeenCalled();
 			});
 
 			it('should not display name after services cleared', function () {
-				page.setServiceName('service name');
+				$('.service-actions').show();
 
 				serviceSettings.cleared.dispatch();
 
-				expect(page.getServiceName()).toBe('');
+				expect($('.service-actions')).toBeHidden();
 			});
 
 			it('should display empty page after services cleared', function () {
 				serviceSettings.cleared.dispatch();
 
-				expect(serviceOptions.show).toHaveBeenCalledWith(null);
+				expect(serviceOptionsPage.hide).toHaveBeenCalled();
 			});
 
 			describe('Adding service', function () {
@@ -218,15 +222,15 @@ define([
 				it('should hide service settings when adding service', function () {
 					$('#service-add-button').click();
 
-					expect(serviceOptions.show).toHaveBeenCalledWith(null);
+					expect(serviceOptionsPage.hide).toHaveBeenCalled();
 				});
 
-				it('should hide service name when adding service', function () {
-					$('.service-name').text('service name');
-					
+				it('should hide service actions when adding service', function () {
+					$('.service-actions').show();
+
 					$('#service-add-button').click();
 
-					expect($('.service-name')).toHaveText('Add new service');
+					expect($('.service-actions')).toBeHidden();
 				});
 
 				it('should show services when adding service', function () {
@@ -304,7 +308,7 @@ define([
 				it('should enable add button if service saved', function () {
 					page.isAddButtonEnabled(false);
 
-					serviceOptions.on.updated.dispatch(createSettings('service'));
+					serviceOptionsPage.on.updated.dispatch(createSettings('service'));
 					
 					expect(page.isAddButtonEnabled()).toBeTruthy();
 				});

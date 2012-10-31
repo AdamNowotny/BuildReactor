@@ -19,15 +19,25 @@
 								</div>
 							</li>
 							<li class="divider-vertical"></li>
-							<li>
-								<a><span class="service-name"></span></a>
-							</li>
-						</ul>
-						<ul class="pull-right">
-							<li>
-								<a id="service-remove-button" class="btn btn-danger" href="#service-remove-modal">
-									<i class="icon-remove"></i> Remove
+							<li class="dropdown service-actions">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									<span class="service-name"></span>
+									<b class="caret"></b>
 								</a>
+								<ul class="dropdown-menu">
+									<li>
+										<a id="service-remove-button" href="#service-remove-modal" tabindex="-1" href="#">
+											<i class="icon-remove"></i>
+											Remove
+										</a>
+									</li>
+<!-- 									<li>
+										<a tabindex="-1" href="#">
+											<i class="icon-pencil"></i>
+											Rename
+										</a>
+									</li>
+ -->								</ul>
 							</li>
 						</ul>
 					</div>
@@ -70,7 +80,7 @@
 				<a class="close" data-dismiss="modal">×</a>
 				<ul class="unstyled steps">
 					<li class="active">
-						<h3>Remove service ?</h3>
+						<h3>Remove</h3>
 					</li>
 				</ul>
 			</div>

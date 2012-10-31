@@ -83,7 +83,7 @@ require([
 	'spec/options/removePromptTest',
 	'spec/options/savePromptTest',
 	'spec/options/serviceListTest',
-	'spec/options/serviceOptionsTest',
+	'spec/options/serviceOptionsPageTest',
 	'spec/options/serviceSettingsTest',
 	'spec/options/settingsFormViewTest'
 ], function ($) {
