@@ -34,6 +34,7 @@ define([
 			removePrompt.show(serviceList.getSelectedName());
 		});
 		$('#service-rename-modal').on('shown', function () {
+			$('#service-rename-modal input').val(currentSettings.name);
 			$('#service-rename-modal').find('input').focus();
 		});
 		$('#service-rename-action').click(function () {
@@ -42,6 +43,7 @@ define([
 		$('#service-rename-modal form').submit(function () {
 			currentSettings.name = $("#service-rename-modal input").val();
 			serviceSettingsChanged(currentSettings);
+			serviceList.update(serviceSettings.getAll());
 			$('#service-rename-modal').modal('hide');
 			return false;
 		});

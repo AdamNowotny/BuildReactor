@@ -40,6 +40,7 @@ define([
 			};
 
 			var spyServiceListGetSelectedName;
+			var spyServiceListUpdate;
 			var spyServiceSettingsGetAll;
 			var spyServiceSettingsGetByIndex;
 			var spyServiceSettingsUpdate;
@@ -65,7 +66,7 @@ define([
 				spyOn(serviceOptionsPage, 'hide');
 
 				spyOn(serviceList, 'load');
-				spyOn(serviceList, 'update');
+				spyServiceListUpdate = spyOn(serviceList, 'update');
 				spyOn(serviceList, 'selectLast');
 				spyOn(serviceList, 'selectItem');
 				spyServiceListGetSelectedName = spyOn(serviceList, 'getSelectedName');
@@ -376,6 +377,10 @@ define([
 
 			describe('Rename', function () {
 
+				beforeEach(function () {
+					//jasmine.getFixtures().load('optionsControllerFixture.html');
+				});
+
 				afterEach(function () {
 					$('#service-rename-modal').modal('hide');
 				});
@@ -391,10 +396,10 @@ define([
 				it('should update name on submit', function () {
 					spyOnSignal(serviceOptionsPage.on.updated);
 					spyServiceSettingsUpdate.andCallFake(function (settings, sameSettings) {
-						expect(settings.name).toBe('new');
+						expect(settings.name).toBe('new name');
 					});
 
-					$('#service-rename-modal input').val('new');
+					$('#service-rename-modal input').val('new name');
 					$('#service-rename-modal button[type=submit]').click();
 
 					expect(serviceSettings.update).toHaveBeenCalled();
@@ -404,10 +409,10 @@ define([
 					$('.service-name').text('old');
 
 					$('#service-rename-modal').modal();
-					$('#service-rename-modal input').val('new');
+					$('#service-rename-modal input').val('new2');
 					$('#service-rename-modal form').submit();
 
-					expect($('.service-name')).toHaveHtml('new');
+					expect($('.service-name')).toHaveHtml('new2');
 				});
 
 				it('should hide modal', function () {
@@ -423,6 +428,25 @@ define([
 					$('#service-rename-modal').trigger('shown');
 
 					expect(document.activeElement).toHaveAttr('type', 'text');
+				});
+
+				it('should restore current name on show', function () {
+					spyServiceSettingsGetByIndex.andReturn(createSettings('current name'));
+					serviceList.itemSelected.dispatch(createItem(2, 'current name'));
+
+					$('#service-rename-modal').modal();
+					$('#service-rename-modal input').val('changed name');
+					$('#service-rename-modal').modal('hide');
+					$('#service-rename-modal').modal();
+					$('#service-rename-modal').trigger('shown');
+
+					expect($('#service-rename-modal input').val()).toBe('current name');
+				});
+
+				it('should refresh menu', function () {
+					$('#service-rename-modal form').submit();
+
+					expect(serviceList.update).toHaveBeenCalled();
 				});
 			});
 		});
