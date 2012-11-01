@@ -9,17 +9,17 @@ define([
 	'use strict';
 
 	function logger() {
-		serviceController.on.reset.add(function (service) {
+		serviceController.on.reset.add(function () {
 			console.log('serviceController.reset:      ', settingsStore.getAll());
 		});
-		serviceController.on.added.add(function (service) {
-			console.log('serviceController.added:       ' + service.serviceName, service.settings);
+		serviceController.on.added.add(function (settings) {
+			console.log('serviceController.added:       ' + settings.name, settings);
 		});
-		serviceController.on.updating.add(function (serviceInfo) {
-			console.log('serviceController.updating:    ' + serviceInfo.serviceName);
+		serviceController.on.updating.add(function (settings) {
+			console.log('serviceController.updating:    ' + settings.name);
 		});
-		serviceController.on.updated.add(function (serviceInfo) {
-			console.log('serviceController.updated:     ' + serviceInfo.serviceName);
+		serviceController.on.updated.add(function (settings) {
+			console.log('serviceController.updated:     ' + settings.name);
 		});
 		serviceController.on.brokenBuild.add(function (buildEvent) {
 			console.log('serviceController.brokenBuild: ' + buildEvent.serviceName, buildEvent);
@@ -31,7 +31,7 @@ define([
 			console.error(interpolate('serviceController.errorThrown:  {{0}} [{{1}}]', [ errorInfo.serviceName, errorInfo.message]), errorInfo);
 		});
 		serviceController.on.started.add(function (serviceInfo) {
-			console.log('serviceController.started:     ' + serviceInfo.serviceName);
+			console.log('serviceController.started:     ' + serviceInfo.name);
 		});
 		serviceController.on.startedAll.add(function () {
 			console.log('serviceController.startedAll');

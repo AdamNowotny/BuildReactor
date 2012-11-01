@@ -4,7 +4,7 @@ define(['common/timer', 'signals'], function (Timer, Signal) {
 
 	var PoolingService = function (settings) {
 		this.settings = settings;
-		this.serviceName = settings.name;
+		this.name = settings.name;
 		this.on = {
 			errorThrown: new Signal(),
 			updating: new Signal(),

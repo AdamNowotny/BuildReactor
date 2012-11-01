@@ -375,7 +375,12 @@ define([
 			});
 
 			describe('Rename', function () {
-				it('should show current name', function () {
+
+				afterEach(function () {
+					$('#service-rename-modal').modal('hide');
+				});
+
+				it('should show current name when service selected', function () {
 					spyServiceSettingsGetByIndex.andReturn(createSettings('Service name'));
 
 					serviceList.itemSelected.dispatch(createItem(2, 'Service name'));
@@ -383,10 +388,10 @@ define([
 					expect($('#service-rename-modal input[type=text]')).toHaveValue('Service name');
 				});
 
-				it('should update name', function () {
+				it('should update name on submit', function () {
 					spyOnSignal(serviceOptionsPage.on.updated);
 					spyServiceSettingsUpdate.andCallFake(function (settings, sameSettings) {
-						expect(settings.serviceName).toBe('new');
+						expect(settings.name).toBe('new');
 					});
 
 					$('#service-rename-modal input').val('new');
@@ -398,8 +403,9 @@ define([
 				it('should update service names', function () {
 					$('.service-name').text('old');
 
+					$('#service-rename-modal').modal();
 					$('#service-rename-modal input').val('new');
-					$('#service-rename-modal button[type=submit]').click();
+					$('#service-rename-modal form').submit();
 
 					expect($('.service-name')).toHaveHtml('new');
 				});
@@ -407,13 +413,13 @@ define([
 				it('should hide modal', function () {
 					$('#service-rename-modal').modal();
 
-					$('#service-rename-modal button[type=submit]').click();
+					$('#service-rename-modal form').submit();
 
 					expect($('#service-rename-modal')).toBeHidden();
 				});
 
 				it('should focus on text input', function () {
-					$('#service-rename-modal').show();
+					$('#service-rename-modal').modal();
 					$('#service-rename-modal').trigger('shown');
 
 					expect(document.activeElement).toHaveAttr('type', 'text');

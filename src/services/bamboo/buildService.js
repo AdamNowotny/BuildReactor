@@ -57,7 +57,7 @@ define([
 			};
 		});
 		return {
-			name: this.serviceName,
+			name: this.name,
 			items: projectsInfo
 		};
 	};
@@ -103,7 +103,7 @@ define([
 
 	var onBuildFailed = function (plan) {
 		var buildEvent = {
-			serviceName: this.serviceName,
+			serviceName: this.name,
 			buildName: plan.name,
 			group: plan.projectName,
 			url: plan.url,
@@ -114,7 +114,7 @@ define([
 
 	var onBuildFixed = function (plan) {
 		var buildEvent = {
-			serviceName: this.serviceName,
+			serviceName: this.name,
 			buildName: plan.name,
 			group: plan.projectName,
 			url: plan.url,
@@ -125,7 +125,7 @@ define([
 
 	var onBuildStarted = function (plan) {
 		var buildEvent = {
-			serviceName: this.serviceName,
+			serviceName: this.name,
 			buildName: plan.name,
 			group: plan.projectName,
 			url: plan.url,
@@ -136,7 +136,7 @@ define([
 
 	var onBuildFinished = function (plan) {
 		var buildEvent = {
-			serviceName: this.serviceName,
+			serviceName: this.name,
 			buildName: plan.name,
 			group: plan.projectName,
 			url: plan.url,

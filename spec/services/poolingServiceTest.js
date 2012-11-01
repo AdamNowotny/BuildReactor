@@ -22,7 +22,7 @@ define(['services/poolingService', 'common/timer', 'jasmineSignals'], function (
 		});
 
 		it('should expose service interface', function () {
-			expect(service.serviceName).toBe(settings.name);
+			expect(service.name).toBe(settings.name);
 			expect(service.on.brokenBuild).toBeDefined();
 			expect(service.on.fixedBuild).toBeDefined();
 			expect(service.on.errorThrown).toBeDefined();

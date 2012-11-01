@@ -94,7 +94,7 @@ define([
 
 	CCBuildService.prototype.onBuildFailed = function (project) {
 		var buildEvent = {
-			serviceName: this.serviceName,
+			serviceName: this.name,
 			buildName: project.projectName(),
 			group: project.category(),
 			url: project.url(),
@@ -105,7 +105,7 @@ define([
 
 	CCBuildService.prototype.onBuildFixed = function (project) {
 		var buildEvent = {
-			serviceName: this.serviceName,
+			serviceName: this.name,
 			buildName: project.projectName(),
 			group: project.category(),
 			url: project.url(),
@@ -116,7 +116,7 @@ define([
 
 	CCBuildService.prototype.onBuildStarted = function (project) {
 		var buildEvent = {
-			serviceName: this.serviceName,
+			serviceName: this.name,
 			buildName: project.projectName(),
 			group: project.category(),
 			url: project.url(),
@@ -127,7 +127,7 @@ define([
 
 	CCBuildService.prototype.onBuildFinished = function (project) {
 		var buildEvent = {
-			serviceName: this.serviceName,
+			serviceName: this.name,
 			buildName: project.projectName(),
 			group: project.category(),
 			url: project.url(),
@@ -165,7 +165,7 @@ define([
 			};
 		});
 		return {
-			name: this.serviceName,
+			name: this.name,
 			items: projectsInfo
 		};
 	};

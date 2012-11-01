@@ -14,7 +14,6 @@ define([
 	
 	var isSaveNeeded = false;
 	var currentSettings;
-	var serviceName;
 
 	function setSaveNeeded(isNeeded) {
 		isSaveNeeded = isNeeded;
@@ -38,12 +37,13 @@ define([
 			$('#service-rename-modal').find('input').focus();
 		});
 		$('#service-rename-action').click(function () {
-			$('#service-rename-modal').modal();
+			$('#service-rename-modal').modal('show');
 		});
-		$('#service-rename-modal button[type=submit]').click(function () {
-			currentSettings.serviceName = $("#service-rename-modal input").val();
+		$('#service-rename-modal form').submit(function () {
+			currentSettings.name = $("#service-rename-modal input").val();
 			serviceSettingsChanged(currentSettings);
 			$('#service-rename-modal').modal('hide');
+			return false;
 		});
 		savePrompt.removeSelected.add(function () {
 			removeCurrentService();
@@ -115,7 +115,7 @@ define([
 		alert.show();
 		setSaveNeeded(false);
 		currentSettings = updatedSettings;
-		$('.service-name').text(currentSettings.serviceName);
+		$('.service-name').text(currentSettings.name);
 	}
 
 	return {
