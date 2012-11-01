@@ -42,6 +42,7 @@ define([
 			var spyServiceListGetSelectedName;
 			var spyServiceSettingsGetAll;
 			var spyServiceSettingsGetByIndex;
+			var spyServiceSettingsUpdate;
 
 			beforeEach(function () {
 				jasmine.getFixtures().load('optionsControllerFixture.html');
@@ -75,7 +76,7 @@ define([
 				spyServiceSettingsGetByIndex = spyOn(serviceSettings, 'getByIndex');
 				spyServiceSettingsGetAll = spyOn(serviceSettings, 'getAll');
 				spyOn(serviceSettings, 'remove');
-				spyOn(serviceSettings, 'update');
+				spyServiceSettingsUpdate = spyOn(serviceSettings, 'update');
 
 				controller.initialize();
 			});
@@ -138,7 +139,7 @@ define([
 
 				serviceList.itemSelected.dispatch(createItem(2, 'Service name'));
 
-				expect($('.service-name')).toHaveText('Service name');
+				expect($('.service-name')).toHaveHtml('Service name');
 			});
 
 			it('should show service actions when service selected', function () {
@@ -371,6 +372,52 @@ define([
 					expect(chrome.extension.sendMessage).toHaveBeenCalled();
 				});
 
+			});
+
+			describe('Rename', function () {
+				it('should show current name', function () {
+					spyServiceSettingsGetByIndex.andReturn(createSettings('Service name'));
+
+					serviceList.itemSelected.dispatch(createItem(2, 'Service name'));
+
+					expect($('#service-rename-modal input[type=text]')).toHaveValue('Service name');
+				});
+
+				it('should update name', function () {
+					spyOnSignal(serviceOptionsPage.on.updated);
+					spyServiceSettingsUpdate.andCallFake(function (settings, sameSettings) {
+						expect(settings.serviceName).toBe('new');
+					});
+
+					$('#service-rename-modal input').val('new');
+					$('#service-rename-modal button[type=submit]').click();
+
+					expect(serviceSettings.update).toHaveBeenCalled();
+				});
+
+				it('should update service names', function () {
+					$('.service-name').text('old');
+
+					$('#service-rename-modal input').val('new');
+					$('#service-rename-modal button[type=submit]').click();
+
+					expect($('.service-name')).toHaveHtml('new');
+				});
+
+				it('should hide modal', function () {
+					$('#service-rename-modal').modal();
+
+					$('#service-rename-modal button[type=submit]').click();
+
+					expect($('#service-rename-modal')).toBeHidden();
+				});
+
+				it('should focus on text input', function () {
+					$('#service-rename-modal').show();
+					$('#service-rename-modal').trigger('shown');
+
+					expect(document.activeElement).toHaveAttr('type', 'text');
+				});
 			});
 		});
 	});

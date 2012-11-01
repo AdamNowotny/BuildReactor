@@ -14,6 +14,7 @@ define([
 	
 	var isSaveNeeded = false;
 	var currentSettings;
+	var serviceName;
 
 	function setSaveNeeded(isNeeded) {
 		isSaveNeeded = isNeeded;
@@ -21,6 +22,29 @@ define([
 	}
 
 	function initialize(serviceTypes) {
+		$('#service-add-button').click(function () {
+			if (!$('#service-add-button').hasClass('disabled')) {
+				serviceOptionsPage.hide();
+				addService.show();
+				$('.service-actions').hide();
+				serviceList.selectItem(null);
+				$('#service-add-button').addClass('btn-primary');
+			}
+		});
+		$('#service-remove-button').click(function () {
+			removePrompt.show(serviceList.getSelectedName());
+		});
+		$('#service-rename-modal').on('shown', function () {
+			$('#service-rename-modal').find('input').focus();
+		});
+		$('#service-rename-action').click(function () {
+			$('#service-rename-modal').modal();
+		});
+		$('#service-rename-modal button[type=submit]').click(function () {
+			currentSettings.serviceName = $("#service-rename-modal input").val();
+			serviceSettingsChanged(currentSettings);
+			$('#service-rename-modal').modal('hide');
+		});
 		savePrompt.removeSelected.add(function () {
 			removeCurrentService();
 			savePrompt.hide();
@@ -47,35 +71,20 @@ define([
 		});
 		serviceList.itemSelected.add(function (item) {
 			var link = $(item);
-			$('.service-name').text(link.text());
+			$('.service-name').text(link.text().trim());
+			$('#service-rename-modal input').attr('value', link.text().trim());
 			$('.service-actions').show();
 			var index = link.data('service-index');
 			var serviceInfo = serviceSettings.getByIndex(index);
 			showServicePage(serviceInfo);
 		});
 		serviceOptionsPage.on.updated.add(serviceSettingsChanged);
-		reset(serviceTypes);
-	}
-
-	function reset(serviceTypes) {
 		savePrompt.initialize();
 		addService.initialize('.service-add-container', serviceTypes);
 		removePrompt.initialize();
 		serviceOptionsPage.initialize();
 		setSaveNeeded(false);
 		serviceSettings.clear();
-		$('#service-add-button').click(function () {
-			if (!$('#service-add-button').hasClass('disabled')) {
-				serviceOptionsPage.hide();
-				addService.show();
-				$('.service-actions').hide();
-				serviceList.selectItem(null);
-				$('#service-add-button').addClass('btn-primary');
-			}
-		});
-		$('#service-remove-button').click(function () {
-			removePrompt.show(serviceList.getSelectedName());
-		});
 	}
 
 	function removeCurrentService() {
@@ -106,6 +115,7 @@ define([
 		alert.show();
 		setSaveNeeded(false);
 		currentSettings = updatedSettings;
+		$('.service-name').text(currentSettings.serviceName);
 	}
 
 	return {

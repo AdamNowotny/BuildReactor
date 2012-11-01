@@ -26,18 +26,18 @@
 								</a>
 								<ul class="dropdown-menu">
 									<li>
+										<a id="service-rename-action" href="#service-rename-modal" tabindex="-1" href="#">
+											<i class="icon-pencil"></i>
+											Rename
+										</a>
+									</li>
+									<li>
 										<a id="service-remove-button" href="#service-remove-modal" tabindex="-1" href="#">
 											<i class="icon-remove"></i>
 											Remove
 										</a>
 									</li>
-<!-- 									<li>
-										<a tabindex="-1" href="#">
-											<i class="icon-pencil"></i>
-											Rename
-										</a>
-									</li>
- -->								</ul>
+								</ul>
 							</li>
 						</ul>
 					</div>
@@ -76,20 +76,39 @@
 			</div>
 		</div>
 		<div id="service-remove-modal" class="modal hide">
+			<form class="service-rename-form form-horizontal" action="">
+				<div class="modal-header">
+					<a class="close" data-dismiss="modal">×</a>
+					<ul class="unstyled steps">
+						<li class="active">
+							<h3>Remove</h3>
+						</li>
+					</ul>
+				</div>
+				<div class="modal-body">
+					<div class="service-name"></div>
+				</div>			
+				<div class="modal-footer">
+					<button class="btn" data-dismiss="modal">Cancel</button>
+					<button type="submit" class="btn btn-danger">Remove</button>
+				</div>
+			</form>
+		</div>
+		<div id="service-rename-modal" class="modal hide">
 			<div class="modal-header">
 				<a class="close" data-dismiss="modal">×</a>
 				<ul class="unstyled steps">
 					<li class="active">
-						<h3>Remove</h3>
+						<h3>Rename <span class="service-name"></span></h3>
 					</li>
 				</ul>
 			</div>
 			<div class="modal-body">
-				<div class="service-name"></div>
+				<input type="text" value="name" placeholder="New name" />
 			</div>			
 			<div class="modal-footer">
 				<button class="btn" data-dismiss="modal">Cancel</button>
-				<button type="submit" class="btn btn-danger">Remove</button>
+				<button type="submit" class="btn btn-primary">Rename</button>
 			</div>
 		</div>
 		<div id="save-prompt" class="modal hide">
