@@ -4,7 +4,7 @@ define(['services/cctray/buildService'], function (CCTrayBuildService) {
 
 		var JenkinsBuildService = function (settings) {
 			this.cctrayLocation = function (url) {
-				return 'view/All/cc.xml';
+				return 'cc.xml';
 			};
 			CCTrayBuildService.apply(this, [settings]);
 		};

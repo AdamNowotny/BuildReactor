@@ -40,7 +40,7 @@ require([
 		it('should modify url used to get projects', function () {
 			var service = new BuildService(settings);
 			spyOn(service, 'projects').andCallFake(function (selectedPlans) {
-				expect(this.settings.url).toBe('http://example.com/view/All/cc.xml');
+				expect(this.settings.url).toBe('http://example.com/cc.xml');
 			});
 
 			service.projects([ 'A', 'B' ]);
@@ -51,7 +51,7 @@ require([
 		it('should modify url', function () {
 			var service = new BuildService(settings);
 			spyOn(service, 'start').andCallFake(function () {
-				expect(this.settings.url).toBe('http://example.com/view/All/cc.xml');
+				expect(this.settings.url).toBe('http://example.com/cc.xml');
 			});
 
 			service.start();
