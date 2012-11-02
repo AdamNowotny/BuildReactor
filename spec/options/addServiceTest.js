@@ -4,14 +4,13 @@ define([
 		'jquery',
 		'jasmineSignals',
 		'jqueryTools'
-	], function (addService, resourceFinder, $, jasmineSignals) {
+	], function (addService, resourceFinder, $, spyOnSignal) {
 
 		'use strict';
 
 		describe('addService', function () {
 
 			var spySelected;
-			var spyOnSignal = jasmineSignals.spyOnSignal;
 			var serviceTypes;
 
 			var container = {

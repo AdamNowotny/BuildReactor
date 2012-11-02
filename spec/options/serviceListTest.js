@@ -3,13 +3,11 @@ define([
 		'options/serviceList',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals'
-	], function ($, serviceList, MockSettingsBuilder, jasmineSignals) {
+	], function ($, serviceList, MockSettingsBuilder, spyOnSignal) {
 
 		'use strict';
 
 		describe('serviceList', function () {
-
-			var spyOnSignal = jasmineSignals.spyOnSignal;
 
 			var page = {
 				count: function () {

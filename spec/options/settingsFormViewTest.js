@@ -2,7 +2,7 @@ define([
 	'options/settingsFormView',
 	'jquery',
 	'jasmineSignals'
-], function (settingsFormView, $, jasmineSignals) {
+], function (settingsFormView, $, spyOnSignal) {
 
 	'use strict';
 
@@ -10,7 +10,6 @@ define([
 
 		var form;
 		var settings;
-		var spyOnSignal = jasmineSignals.spyOnSignal;
 
 		beforeEach(function () {
 			jasmine.getFixtures().set('<div class="settings-container">content</div>');

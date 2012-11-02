@@ -9,14 +9,12 @@ define([
 		'signals',
 		'jasmineSignals'
 	],
-	function ($, controller, serviceRepository, MockBuildService, mockBuildEvent, MockSettingsBuilder, endsWith, Signal, jasmineSignals) {
+	function ($, controller, serviceRepository, MockBuildService, mockBuildEvent, MockSettingsBuilder, endsWith, Signal, spyOnSignal) {
 
 		'use strict';
 		
 		describe('ServiceController', function () {
 
-			var spyOnSignal = jasmineSignals.spyOnSignal;
-			
 			beforeEach(function () {
 				controller.load([]);
 			});

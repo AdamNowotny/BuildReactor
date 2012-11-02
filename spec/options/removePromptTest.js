@@ -2,13 +2,11 @@ define([
 		'jquery',
 		'options/removePrompt',
 		'jasmineSignals'
-	], function ($, removePrompt, jasmineSignals) {
+	], function ($, removePrompt, spyOnSignal) {
 
 		'use strict';
 		
 		describe('removePrompt', function () {
-
-			var spyOnSignal = jasmineSignals.spyOnSignal;
 
 			beforeEach(function () {
 				jasmine.getFixtures().load('settings/removePromptFixture.html');

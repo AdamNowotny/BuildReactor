@@ -2,7 +2,7 @@ define([
 		'services/bamboo/bambooPlan',
 		'services/bamboo/bambooRequest',
 		'jasmineSignals'
-	], function (BambooPlan, BambooRequest, jasmineSignals) {
+	], function (BambooPlan, BambooRequest, spyOnSignal) {
 
 		'use strict';
 
@@ -14,7 +14,6 @@ define([
 			var settings;
 			var mockPlan;
 			var mockLatestResult;
-			var spyOnSignal = jasmineSignals.spyOnSignal;
 			
 			beforeEach(function () {
 				settings = {

@@ -10,13 +10,11 @@ define([
 		'options/alert',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals'
-	], function ($, controller, addService, serviceSettings, serviceOptionsPage, serviceList, savePrompt, removePrompt, alert, MockSettingsBuilder, jasmineSignals) {
+	], function ($, controller, addService, serviceSettings, serviceOptionsPage, serviceList, savePrompt, removePrompt, alert, MockSettingsBuilder, spyOnSignal) {
 
 		'use strict';
 		
 		describe('optionsController', function () {
-
-			var spyOnSignal = jasmineSignals.spyOnSignal;
 
 			var page = {
 				isAddButtonEnabled: function (enable) {

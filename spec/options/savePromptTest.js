@@ -2,13 +2,11 @@ define([
 		'jquery',
 		'options/savePrompt',
 		'jasmineSignals'
-	], function ($, savePrompt, jasmineSignals) {
+	], function ($, savePrompt, spyOnSignal) {
 
 		'use strict';
 		
 		describe('savePrompt', function () {
-
-			var spyOnSignal = jasmineSignals.spyOnSignal;
 
 			beforeEach(function () {
 				jasmine.getFixtures().load('settings/savePromptFixture.html');

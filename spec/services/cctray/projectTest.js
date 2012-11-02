@@ -3,7 +3,7 @@ define([
 	'jquery',
 	'jasmineSignals',
 	'text!spec/fixtures/cctray/cruisecontrolnet.xml'
-], function (project, $, jasmineSignals, projectsXml) {
+], function (project, $, spyOnSignal, projectsXml) {
 
 	'use strict';
 	
@@ -16,7 +16,6 @@ define([
 			url: 'http://www.example.com/'
 		};
 		var projectFailureInfo = { name: 'project name', status: 'Failure', url: 'http://www.example.com/' };
-		var spyOnSignal = jasmineSignals.spyOnSignal;
 		var someProject;
 
 		beforeEach(function () {

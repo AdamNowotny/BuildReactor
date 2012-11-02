@@ -1,4 +1,4 @@
-define(['services/poolingService', 'common/timer', 'jasmineSignals'], function (PoolingService, Timer, jasmineSignals) {
+define(['services/poolingService', 'common/timer', 'jasmineSignals'], function (PoolingService, Timer, spyOnSignal) {
 
 	'use strict';
 
@@ -6,7 +6,6 @@ define(['services/poolingService', 'common/timer', 'jasmineSignals'], function (
 
 		var service;
 		var settings;
-		var spyOnSignal = jasmineSignals.spyOnSignal;
 
 		beforeEach(function () {
 			settings = {

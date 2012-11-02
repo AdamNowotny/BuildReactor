@@ -9,7 +9,7 @@ define([
 	'jasmineSignals',
 	'text!spec/fixtures/cctray/cruisecontrolnet.xml'
 ],
-function (BuildService, ccRequest, project, PoolingService, Timer, $, signals, jasmineSignals, projectsXmlText) {
+function (BuildService, ccRequest, project, PoolingService, Timer, $, signals, spyOnSignal, projectsXmlText) {
 
 	'use strict';
 
@@ -19,7 +19,6 @@ function (BuildService, ccRequest, project, PoolingService, Timer, $, signals, j
 			settings,
 			mockRequest,
 			mockTimer,
-			spyOnSignal = jasmineSignals.spyOnSignal,
 			responseReceived,
 			errorReceived,
 			projectsXml = $.parseXML(projectsXmlText),

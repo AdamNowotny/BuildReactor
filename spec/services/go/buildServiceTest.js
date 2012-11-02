@@ -1,8 +1,7 @@
 require([
-	'jasmineSignals',
 	'services/go/buildService',
 	'services/cctray/buildService'
-], function (jasmineSignals, BuildService, CCTrayBuildService) {
+], function (BuildService, CCTrayBuildService) {
 
 	'use strict';
 

@@ -9,7 +9,7 @@ define([
 		'jasmineSignals',
 		'json!spec/fixtures/bamboo/projects.json'
 	],
-	function (BuildService, BambooPlan, BambooRequest, Timer, PoolingService, $, signals, jasmineSignals, projectsJson) {
+	function (BuildService, BambooPlan, BambooRequest, Timer, PoolingService, $, signals, spyOnSignal, projectsJson) {
 
 		'use strict';
 		
@@ -22,7 +22,6 @@ define([
 			var mockTimer;
 			var updateSuccessSignal;
 			var updateErrorSignal;
-			var spyOnSignal = jasmineSignals.spyOnSignal;
 			
 			beforeEach(function () {
 				settings = {

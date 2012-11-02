@@ -1,10 +1,9 @@
-define(['main/settingsStore', 'jasmineSignals'], function (settingsStore, jasmineSignals) {
+define(['main/settingsStore', 'jasmineSignals'], function (settingsStore, spyOnSignal) {
 
 	'use strict';
 	
 	describe('SettingsStore', function () {
 
-		var spyOnSignal = jasmineSignals.spyOnSignal;
 		var mockLocalStorage;
 
 		beforeEach(function () {

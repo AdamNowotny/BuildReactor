@@ -2,7 +2,7 @@ define([
 		'main/ajaxRequest',
 		'jquery',
 		'jasmineSignals'
-	], function (AjaxRequest, $, jasmineSignals) {
+	], function (AjaxRequest, $, spyOnSignal) {
 
 		'use strict';
 		
@@ -10,7 +10,6 @@ define([
 			var request;
 			var options;
 			var mockAjax;
-			var spyOnSignal = jasmineSignals.spyOnSignal;
 			
 			beforeEach(function () {
 				mockAjax = spyOn($, 'ajax');
