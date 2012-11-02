@@ -113,5 +113,6 @@ Tool icon taken from http://www.iconspedia.com/icon/metro-tools-black-18254.html
 
 What's new
 ============
+Version history can be found [here](https://github.com/AdamNowotny/BuildReactor/wiki/What's-new)
 
 Follow [@BuildReactor](https://twitter.com/BuildReactor) on Twitter to find out what's in new releases.
