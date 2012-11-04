@@ -1,0 +1,28 @@
+[
+   {
+      "id":177548,
+      "slug":"AdamNowotny/jasmine-signals",
+      "description":"Jasmine extension that simplifies writing specs for components using js-signals",
+      "last_build_id":3043631,
+      "last_build_number":"3",
+      "last_build_status":0,
+      "last_build_result":0,
+      "last_build_duration":52,
+      "last_build_language":null,
+      "last_build_started_at":"2012-11-03T09:40:11Z",
+      "last_build_finished_at":"2012-11-03T09:41:03Z"
+   },
+   {
+      "id":177547,
+      "slug":"AdamNowotny/BuildReactor",
+      "description":"Google Chrome extension that shows notifications for CI server events",
+      "last_build_id":3028899,
+      "last_build_number":"50",
+      "last_build_status":0,
+      "last_build_result":0,
+      "last_build_duration":76,
+      "last_build_language":null,
+      "last_build_started_at":"2012-11-02T07:11:24Z",
+      "last_build_finished_at":"2012-11-02T07:12:40Z"
+   }
+]
