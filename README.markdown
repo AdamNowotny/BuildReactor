@@ -1,24 +1,43 @@
-BuildReactor
+BuildReactor [![Build Status](https://secure.travis-ci.org/AdamNowotny/BuildReactor.png)](http://travis-ci.org/AdamNowotny/BuildReactor)
 ============
 
-`BuildReactor` is a Google Chrome extension that shows notifications for CI server events.[![Build Status](https://secure.travis-ci.org/AdamNowotny/BuildReactor.png)](http://travis-ci.org/AdamNowotny/BuildReactor)
-
-The idea is to show only the relevant events and minimise distractions. That is why:
- * not all builds are shown, only if they fail or are fixed
- * click on notification opens the page with build results
- * notifications about broken builds stay on screen to let you know the build needs your attention
- * fixed builds dissapear automatically and hide all previous messages about that particular build (so you are presented only with the builds that broke while you were away and are still broken)
-
-Links
-=====
-Twitter [@BuildReactor](https://twitter.com/BuildReactor)
+Notifications for CI servers events (Google Chrome extension)
 
 Download from [Chrome Web Store](http://goo.gl/BX01T)
+
+Twitter [@BuildReactor](https://twitter.com/BuildReactor)
+
+What does it do ?
+=================
+
+ * Monitors multiple continuous integration servers
+ * Gives you overview of all your builds in one place
+ * Shows notifications only about the important events to minimise distractions
+ * Works on Windows, Mac and Linux
+ * Designed with distributed teams and road warriors in mind
+
+Why do I need it ?
+==================
+
+ * The team you just joined uses a different server for continuous integration. `cctray` or similar might work for you or might not depending what server you want to connect to.
+ * Do you like being spammed about every single commit to the repository or that the server is "building"...again ? On teams using continous delivery this happens all the time.
+ * Some servers send you notifications about broken builds on your email. Try going away on vacation or even for lunch and tell me how useful all these messages were when you came back.
+ * Your team uses an information radiator or a build light, but you might not see it all the time or would like to have more information before interrupting your work.
+ * If you work remotely, how do you know it's safe to get latest changes from the repository or push your changes ? Refreshing the page and looking for relevant information until your build passes seems like a boring way to spend your time.
+
+How does it work ?
+==================
+
+ * See the state of all builds by clicking BuildReactor icon in chrome
+ * Click on notification opens page that gives you more details about this event
+ * Notifications about events that require some action (f.e. build broken) stay on screen
+ * Notifications about fixed builds show up briefly to let you know the build is reliable again and it's safe to get latest sources or commit your changes
+ * Outdated notifications are hidden, f.e. build failure if someone already fixed the build. That way you don't end up with crazy amount of notifications after being away.
 
 Supported services
 ==================
 
-Below are the supported services and example urls for public instances if available.
+Below are the supported CI servers and example urls for public instances if available.
 
  * Atlassian Bamboo - https://ci.openmrs.org/
  * CruiseControl
@@ -32,7 +51,7 @@ Below are the supported services and example urls for public instances if availa
 CCtray
 ------
 
-Most CI servers report the status of the builds using cctray XML reporting format, you just need to add the location of the XML to the address of your server.
+Most CI servers report the status of the builds using cctray [XML reporting format](http://confluence.public.thoughtworks.org/display/CI/Multiple+Project+Summary+Reporting+Standard), you just need to add the location of the XML to the address of your server.
 
 For example if you want to monitor a Travis-CI build, use this format:
 
@@ -47,17 +66,17 @@ Notifications
 
 Popup and chrome badge
 ----------------------
+The number in the badge shows how many builds are currently broken. 
+
 <img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/popup.jpg" alt="BuildReactor action icon">
 
-Adding new service (options page)
+Options page - adding new service
 ---------------------------------
 <img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/settings-new-1280x800.jpg" alt="BuildReactor options page">
 
-Service settings (options page)
+Options page - service settings
 -------------------------------
 <img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/settings-1280x800.jpg" alt="BuildReactor options page">
-
-The number in the badge shows how many builds are currently broken. 
 
 Developer setup
 ===============
