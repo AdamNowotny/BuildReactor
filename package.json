@@ -30,6 +30,7 @@
   "dependencies": {
     "grunt": "~0.3.11",
     "grunt-contrib": "~0.1.4",
-    "grunt-jasmine-task": "~0.2.1"
+    "grunt-jasmine-task": "~0.2.1",
+    "grunt-jsvalidate": "0.1.3"
   }
 }

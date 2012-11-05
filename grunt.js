@@ -3,7 +3,15 @@ module.exports = function (grunt) {
 
 	'use strict';
 
-	// Project configuration.
+	grunt.loadNpmTasks('grunt-contrib');
+	grunt.loadNpmTasks('grunt-jsvalidate');
+	grunt.loadNpmTasks('grunt-jasmine-task');
+
+	grunt.registerTask('default', 'clean jsvalidate lint jasmine mincss requirejs copy');
+	grunt.registerTask('travis', 'clean jsvalidate lint jasmine');
+	grunt.registerTask('test', 'lint jasmine');
+	grunt.registerTask('dist', 'clean mincss requirejs copy');
+
 	grunt.initConfig({
 		vars: {
 			build: '_build',
@@ -13,6 +21,9 @@ module.exports = function (grunt) {
 			src: [ '<%= vars.build %>' ]
 		},
 		lint: {
+			files: ['src/**/*.js', 'spec/**/*.js']
+		},
+		jsvalidate: {
 			files: ['src/**/*.js', 'spec/**/*.js']
 		},
 		jshint: {
@@ -61,6 +72,10 @@ module.exports = function (grunt) {
 		},
 		jasmine: {
 			all: ['spec/specrunner.html']
+		},
+		watch: {
+			files: ['spec/**/*.js'],
+			tasks: 'jasmine'
 		},
 		mincss: {
 			compress: {
@@ -177,12 +192,4 @@ module.exports = function (grunt) {
 		}
 	});
 
-	// Default task.
-	grunt.registerTask('default', 'clean lint jasmine mincss requirejs copy');
-	grunt.registerTask('travis', 'clean lint jasmine');
-	grunt.registerTask('test', 'lint jasmine');
-	grunt.registerTask('dist', 'clean mincss requirejs copy');
-
-	grunt.loadNpmTasks('grunt-contrib');
-	grunt.loadNpmTasks('grunt-jasmine-task');
 };
