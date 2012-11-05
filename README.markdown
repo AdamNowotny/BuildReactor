@@ -32,7 +32,7 @@ How does it work ?
  * Click on notification opens page that gives you more details about this event
  * Notifications about events that require some action (f.e. build broken) stay on screen
  * Notifications about fixed builds show up briefly to let you know the build is reliable again and it's safe to get latest sources or commit your changes
- * Outdated notifications are hidden, f.e. build failure if someone already fixed the build. That way you don't end up with crazy amount of notifications after being away.
+ * Outdated notifications are hidden, f.e. build failure if someone already fixed the build. That way you don't end up with crazy amount of notifications after being away. You only see how things changed since the last time you looked at the screen.
 
 Supported services
 ==================
