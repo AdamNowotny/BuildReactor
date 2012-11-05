@@ -1,4 +1,4 @@
-require([
+define([
 	'services/teamcity/buildService',
 	'services/cctray/buildService'
 ], function (BuildService, CCTrayBuildService) {

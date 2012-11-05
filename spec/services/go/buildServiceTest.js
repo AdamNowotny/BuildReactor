@@ -1,4 +1,4 @@
-require([
+define([
 	'services/go/buildService',
 	'services/cctray/buildService'
 ], function (BuildService, CCTrayBuildService) {

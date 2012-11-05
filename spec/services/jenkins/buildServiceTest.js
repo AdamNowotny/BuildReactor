@@ -1,4 +1,4 @@
-require([
+define([
 	'services/jenkins/buildService',
 	'services/cctray/buildService'
 ], function (BuildService, CCTrayBuildService) {

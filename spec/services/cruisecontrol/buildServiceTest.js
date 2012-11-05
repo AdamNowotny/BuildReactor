@@ -1,4 +1,4 @@
-require([
+define([
 	'services/cruisecontrol/buildService',
 	'services/cctray/buildService'
 ], function (BuildService, CCTrayBuildService) {
