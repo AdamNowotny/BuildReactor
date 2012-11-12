@@ -3,11 +3,10 @@ define([
 	'signals',
 	'./bambooRequest',
 	'./bambooPlan',
-	'common/timer',
 	'amdUtils/string/interpolate',
 	'amdUtils/object/values',
 	'services/poolingService'
-], function ($, Signal, BambooRequest, BambooPlan, Timer, interpolate, values, PoolingService) {
+], function ($, Signal, BambooRequest, BambooPlan, interpolate, values, PoolingService) {
 
 	'use strict';
 

@@ -1,4 +1,4 @@
-define(['signals', './bambooRequest', 'urljs'], function (Signal, BambooRequest, URL) {
+define(['signals', './bambooRequest', 'common/joinUrl'], function (Signal, BambooRequest, joinUrl) {
 
 	'use strict';
 
@@ -92,7 +92,7 @@ define(['signals', './bambooRequest', 'urljs'], function (Signal, BambooRequest,
 		function processResponse(response) {
 			try {
 				plan.buildNumber = response.number;
-				plan.url = URL.resolve(plan.settings.url, 'browse/' + response.key);
+				plan.url = joinUrl(plan.settings.url, 'browse/' + response.key);
 				if (plan.state !== 'Failed' && response.state === 'Failed') {
 					plan.state = 'Failed';
 					plan.on.failed.dispatch(plan);

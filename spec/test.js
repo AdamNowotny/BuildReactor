@@ -19,33 +19,28 @@ var chrome = {
 require.config({
 	baseUrl: '../src',
 	paths: {
-		amdUtils: '../lib/amd-utils',
+		amdUtils: '../components/amd-utils/src',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap',
 		fixtures: '../spec/fixtures',
 		jasmineSignals: '../lib/jasmine-signals/jasmine-signals',
-		jqueryTools: '../lib/jquery-tools/jquery.tools.min',
-		jquery: [ '../lib/jquery/jquery-1.8.2.min', '../lib/jquery/jquery-1.8.2'],
-		json: '../lib/requirejs/json',
+		jquery: '../components/jquery/jquery',
+		json: '../components/requirejs-plugins/src/json',
 		mocks: '../spec/mocks',
 		spec: '../spec',
-		signals: '../lib/js-signals/signals',
-		text: '../lib/requirejs/text',
-		has: '../lib/requirejs/has',
-		urljs: '../lib/urljs/url-min',
-		// Handlebars plugin does not like to be in lib folder.
-		// Needed to rename to hbs-plugin and specifiy all paths here.
-		hbs: '../lib/requirejs/hbs-plugin',
-		Handlebars: '../lib/requirejs/Handlebars',
-		'hbs/underscore': '../lib/requirejs/hbs/underscore',
-		'hbs/i18nprecompile': '../lib/requirejs/hbs/i18nprecompile',
-		'hbs/json2': '../lib/requirejs/hbs/json2'
+		signals: '../components/js-signals/dist/signals',
+		text: '../components/requirejs-text/text',
+		has: '../components/has/has',
+		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
+		handlebars: '../lib/require-handlebars-plugin/Handlebars',
+		underscore: '../lib/require-handlebars-plugin/hbs/underscore',
+		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
+		json2: '../lib/require-handlebars-plugin/hbs/json2'
 	},
 	shim: {
-		bootstrap: [ 'jquery' ],
-		jqueryTools: [ 'jquery' ],
-		urljs: { exports: 'URL' }
+		bootstrap: [ 'jquery' ]
 	},
 	hbs: {
+		templateExtension: 'html',
 		helperDirectory: 'templates/helpers/',
 		i18nDirectory:   'templates/i18n/'
 	},
@@ -54,6 +49,7 @@ require.config({
 require([
 	'jquery',
 	'spec/popupControllerTest',
+	'spec/common/joinUrlTest',
 	'spec/common/timerTest',
 	'spec/common/resourceFinderTest',
 	'spec/main/ajaxRequestTest',
@@ -93,6 +89,5 @@ require([
 	$.fx.off = true;
 	jasmine.getFixtures().fixturesPath = 'fixtures';
 	jasmine.getEnv().addReporter(new jasmine.HtmlReporter());
-	jasmine.getEnv().addReporter(new jasmine.ConsoleReporter());
 	jasmine.getEnv().execute();
 });

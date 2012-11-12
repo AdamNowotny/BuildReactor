@@ -1,15 +1,18 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
-		jquery: [ '../lib/jquery/jquery-1.8.2.min', '../lib/jquery/jquery-1.8.2'],
-		signals: '../lib/js-signals/signals',
-		has: '../lib/requirejs/has',
-		urljs: '../lib/urljs/url-min'
-	},
-	shim: {
-		urljs: { exports: 'URL' }
+		amdUtils: '../components/amd-utils/src',
+		jquery: "../components/jquery/jquery",
+		signals: '../components/js-signals/dist/signals',
+		has: '../components/has/has',
+		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
+		handlebars: '../lib/require-handlebars-plugin/Handlebars',
+		underscore: '../lib/require-handlebars-plugin/hbs/underscore',
+		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
+		json2: '../lib/require-handlebars-plugin/hbs/json2'
 	},
 	hbs: {
+		templateExtension: 'html',
 		helperDirectory: 'templates/helpers/',
 		i18nDirectory:   'templates/i18n/'
 	}
@@ -29,7 +32,7 @@ require([
 	'services/cruisecontrol.rb/buildService',
 	'services/go/buildService',
 	'services/jenkins/buildService',
-	'services/teamcity/buildService',
+	'services/teamcity/buildService'
 ], function (
 	backgroundLogger,
 	badgeController,
@@ -49,7 +52,6 @@ require([
 ) {
 
 	'use strict';
-
 	backgroundLogger();
 	badgeController();
 	notificationController();

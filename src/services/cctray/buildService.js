@@ -3,13 +3,11 @@ define([
 	'signals',
 	'./ccRequest',
 	'./project',
-	'common/timer',
-	'amdUtils/string/interpolate',
 	'amdUtils/array/contains',
 	'amdUtils/object/values',
-	'urljs',
+	'common/joinUrl',
 	'services/poolingService'
-], function ($, Signal, ccRequest, project, Timer, interpolate, contains, values, URL, PoolingService) {
+], function ($, Signal, ccRequest, project, contains, values, joinUrl, PoolingService) {
 
 	'use strict';
 
@@ -23,7 +21,7 @@ define([
 	CCBuildService.prototype._createSettings = function (settings) {
 		var newSettings = CCBuildService.settings();
 		newSettings.name = settings.name;
-		newSettings.url = URL.resolve(settings.url, this.cctrayLocation());
+		newSettings.url = joinUrl(settings.url, this.cctrayLocation());
 		newSettings.updateInterval = settings.updateInterval;
 		newSettings.projects = settings.projects;
 		newSettings.icon = settings.icon;

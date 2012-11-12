@@ -14,7 +14,7 @@
 		"default_popup": "popup.html"
 	},
 	"background": {
-		"scripts": [ "lib/requirejs/require.min.js", "src/main.js" ]
+		"scripts": [ "components/requirejs/require.js", "src/main.js" ]
 	},
 	"homepage_url": "https://github.com/AdamNowotny/BuildReactor",
 	"offline_enabled": false,

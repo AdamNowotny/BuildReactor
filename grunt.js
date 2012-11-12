@@ -3,7 +3,10 @@ module.exports = function (grunt) {
 
 	'use strict';
 
-	grunt.loadNpmTasks('grunt-contrib');
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-mincss');
+	grunt.loadNpmTasks('grunt-contrib-requirejs');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-jsvalidate');
 	grunt.loadNpmTasks('grunt-jasmine-task');
 
@@ -74,7 +77,7 @@ module.exports = function (grunt) {
 			all: ['spec/specrunner.html']
 		},
 		watch: {
-			files: ['spec/**/*.js'],
+			files: [ 'src/**/*', 'spec/**/*' ],
 			tasks: 'jasmine'
 		},
 		mincss: {
@@ -123,22 +126,19 @@ module.exports = function (grunt) {
 						debug: false
 					},
 					paths: {
-						amdUtils: '../lib/amd-utils',
-						has: '../lib/requirejs/has',
+						amdUtils: '../components/amd-utils/src',
+						has: '../components/has/has',
 						bootstrap: 'empty:',
-						jquery: 'empty:',
-						jqueryTools: 'empty:',
-						signals: 'empty:',
-						urljs: 'empty:',
-						// Handlebars plugin does not like to be in lib folder.
-						// Needed to rename to hbs-plugin and specifiy all paths here.
-						hbs: '../lib/requirejs/hbs-plugin',
-						Handlebars: '../lib/requirejs/Handlebars',
-						'hbs/underscore': '../lib/requirejs/hbs/underscore',
-						'hbs/i18nprecompile': '../lib/requirejs/hbs/i18nprecompile',
-						'hbs/json2': '../lib/requirejs/hbs/json2'
+						jquery: '../components/jquery/jquery',
+						signals: '../components/js-signals/dist/signals',
+						hbs: '../lib/require-handlebars-plugin/hbs-plugin',
+						handlebars: '../lib/require-handlebars-plugin/Handlebars',
+						underscore: '../lib/require-handlebars-plugin/hbs/underscore',
+						i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
+						json2: '../lib/require-handlebars-plugin/hbs/json2'
 					},
 					hbs: {
+						templateExtension: 'html',
 						helperDirectory: 'templates/helpers/',
 						i18nDirectory:   'templates/i18n/'
 					},
@@ -172,20 +172,18 @@ module.exports = function (grunt) {
 					basePath: "."
 				},
 				files: {
-					'<%= vars.dist %>': [
+					'<%= vars.dist %>/': [
 						'background.html',
 						'options.html',
 						'popup.html',
 						'manifest.json',
 						'img/*',
-						'lib/jquery/jquery-1.8.2.min.js',
-						'lib/jquery-tools/jquery.tools.min.js',
-						'lib/js-signals/signals.js',
-						'lib/requirejs/require.min.js',
+						'components/jquery/jquery.js',
+						'components/requirejs/require.js',
+						'components/urljs/url-min.js',
 						'lib/twitter-bootstrap/css/bootstrap.css',
 						'lib/twitter-bootstrap/img/*',
-						'lib/twitter-bootstrap/js/bootstrap.min.js',
-						'lib/urljs/url-min.js'
+						'lib/twitter-bootstrap/js/bootstrap.min.js'
 					]
 				}
 			}

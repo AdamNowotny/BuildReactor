@@ -1,17 +1,23 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
+		amdUtils: '../components/amd-utils/src',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
-		jquery: [ '../lib/jquery/jquery-1.8.2.min', '../lib/jquery/jquery-1.8.2'],
-		jqueryTools: '../lib/jquery-tools/jquery.tools.min',
-		signals: '../lib/js-signals/signals',
-		has: '../lib/requirejs/has',
-		urljs: '../lib/urljs/url-min'
+		jquery: "../components/jquery/jquery",
+		signals: '../components/js-signals/dist/signals',
+		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
+		handlebars: '../lib/require-handlebars-plugin/Handlebars',
+		underscore: '../lib/require-handlebars-plugin/hbs/underscore',
+		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
+		json2: '../lib/require-handlebars-plugin/hbs/json2'
+	},
+	hbs: {
+		templateExtension: 'html',
+		helperDirectory: 'templates/helpers/',
+		i18nDirectory:   'templates/i18n/'
 	},
 	shim: {
-		bootstrap: [ 'jquery' ],
-		jqueryTools: [ 'jquery' ],
-		urljs: { exports: 'URL' }
+		bootstrap: [ 'jquery' ]
 	}
 });
 require([

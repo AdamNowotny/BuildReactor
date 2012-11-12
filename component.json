@@ -1,0 +1,22 @@
+{
+	"name": "BuildReactor",
+	"description": "Notifications for CI servers (CruiseControl, Bamboo, Jenkins, TeamCity, GO, Travis-CI)",
+	"version": "0.5.2",
+	"main": "./jasmine-signals.js",
+	"dependencies": {
+		"amd-utils": "~0.6.0",
+		"has": "",
+		"jasmine": "~1.x.x",
+		"jasmine-jquery": "git://github.com/velesin/jasmine-jquery.git",
+		"jquery": "1.8.2",
+		"js-signals": "git://github.com/millermedeiros/js-signals.git",
+		"requirejs": "~2.1.1",
+		"requirejs-plugins": "git://github.com/millermedeiros/requirejs-plugins.git",
+		"requirejs-text": "2.0.3"
+	},
+	"homepage": "https://github.com/AdamNowotny/BuildReactor",
+	"author": {
+		"name": "Adam Nowotny",
+		"url": "http://github.com/AdamNowotny"
+	}
+}

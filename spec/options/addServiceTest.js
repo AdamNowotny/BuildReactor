@@ -2,8 +2,7 @@ define([
 		'options/addService',
 		'common/resourceFinder',
 		'jquery',
-		'jasmineSignals',
-		'jqueryTools'
+		'jasmineSignals'
 	], function (addService, resourceFinder, $, spyOnSignal) {
 
 		'use strict';
