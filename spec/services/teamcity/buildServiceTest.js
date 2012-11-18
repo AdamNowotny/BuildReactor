@@ -1,7 +1,9 @@
 define([
 	'services/teamcity/buildService',
-	'services/cctray/buildService'
-], function (BuildService, CCTrayBuildService) {
+	'services/teamcity/teamcityRequest',
+	'signals',
+	'json!fixtures/teamcity/buildTypes.json'
+], function (TeamCity, request, Signal, buildTypesJson) {
 
 	'use strict';
 
@@ -28,35 +30,82 @@ define([
 		});
 
 		it('should provide default settings', function () {
-			var defaultSettings = BuildService.settings();
+			var defaultSettings = TeamCity.settings();
 
-			expect(defaultSettings.typeName).toBe('TeamCity 7+');
+			expect(defaultSettings.typeName).toBe('TeamCity');
 			expect(defaultSettings.baseUrl).toBe('teamcity');
 			expect(defaultSettings.icon).toBe('teamcity/icon.png');
 			expect(defaultSettings.logo).toBe('teamcity/logo.png');
 			expect(defaultSettings.urlHint).toBe('http://teamcity.jetbrains.com/');
 		});
 
-		it('should modify url used to get projects', function () {
-			var service = new BuildService(settings);
-			spyOn(service, 'projects').andCallFake(function (selectedPlans) {
-				expect(this.settings.url).toBe('http://example.com/guestAuth/app/rest/cctray/projects.xml');
+		function createResult(response) {
+			var returned = new Signal();
+			returned.memorize = true;
+			returned.dispatch({ response: response});
+			return returned;
+		}
+
+		describe('projects', function () {
+
+			it('should get build types', function () {
+				var service = new TeamCity(settings);
+				spyOn(request, 'buildTypes').andCallFake(function () {
+					return createResult({});
+				});
+
+				service.projects([ 'A', 'B' ]);
+
+				expect(request.buildTypes).toHaveBeenCalled();
 			});
 
-			service.projects([ 'A', 'B' ]);
+			it('should return all build types', function () {
+				spyOn(request, 'buildTypes').andCallFake(function () {
+					return createResult(buildTypesJson);
+				});
+				var service = new TeamCity(settings);
+				var projects;
 
-			expect(service.projects).toHaveBeenCalled();
+				service.projects([ 'A', 'B' ]).addOnce(function (result) {
+					projects = result.projects;
+				});
+
+				expect(projects.items.length).toBe(207);
+			});
+
+			it('should convert to build', function () {
+				spyOn(request, 'buildTypes').andCallFake(function () {
+					return createResult(buildTypesJson);
+				});
+				var service = new TeamCity(settings);
+				var projects;
+
+				service.projects([ 'bt297', 'B' ]).addOnce(function (result) {
+					projects = result.projects.items;
+					expect(projects[0].id).toBe('bt297');
+					expect(projects[0].name).toBe('Build');
+					expect(projects[0].group).toBe('Amazon API client');
+					expect(projects[0].enabled).toBe(true);
+					expect(projects[0].selected).toBe(true);
+					expect(projects[0].webUrl).toBe('http://teamcity.jetbrains.com/viewType.html?buildTypeId=bt297');
+				});
+
+				expect(projects).toBeDefined();
+			});
+
 		});
 
-		it('should modify url', function () {
-			var service = new BuildService(settings);
-			spyOn(service, 'start').andCallFake(function () {
-				expect(this.settings.url).toBe('http://example.com/guestAuth/app/rest/cctray/projects.xml');
+		describe('updateAll', function () {
+
+			it('should update all selected builds', function () {
+
 			});
 
-			service.start();
+		});
 
-			expect(service.start).toHaveBeenCalled();
+		describe('activeProjects', function () {
+
+
 		});
 
 	});

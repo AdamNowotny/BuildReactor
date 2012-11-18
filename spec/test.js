@@ -72,6 +72,7 @@ require([
 	'spec/services/go/buildServiceTest',
 	'spec/services/jenkins/buildServiceTest',
 	'spec/services/teamcity/buildServiceTest',
+	'spec/services/teamcity/teamcityRequestTest',
 	'spec/options/addServiceTest',
 	'spec/options/alertTest',
 	'spec/options/optionsControllerTest',

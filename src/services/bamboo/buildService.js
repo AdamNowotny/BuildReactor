@@ -12,6 +12,14 @@ define([
 
 	var BambooBuildService = function (settings) {
 		$.extend(this, new PoolingService(settings));
+		this.name = settings.name;
+		$.extend(this.on, {
+			errorThrown: new Signal(),
+			brokenBuild: new Signal(),
+			fixedBuild: new Signal(),
+			startedBuild: new Signal(),
+			finishedBuild: new Signal()
+		});
 		this.plans = {};
 	};
 
@@ -32,14 +40,10 @@ define([
 		var plansRequest = new BambooRequest(this.settings);
 		plansRequest.on.responseReceived.addOnce(function (response) {
 			var templateData = createTemplateData(response, selectedPlans);
-			receivedProjects.dispatch({
-				projects: templateData
-			});
+			receivedProjects.dispatch({ projects: templateData });
 		});
 		plansRequest.on.errorReceived.addOnce(function (ajaxError) {
-			receivedProjects.dispatch({
-				error: ajaxError
-			});
+			receivedProjects.dispatch({ error: ajaxError });
 		});
 		plansRequest.projects();
 		return receivedProjects;
@@ -61,14 +65,7 @@ define([
 		};
 	};
 
-	BambooBuildService.prototype.update = function () {
-		this.on.updating.dispatch();
-		this.updateAllPlans().addOnce(function () {
-			this.on.updated.dispatch();
-		}, this);
-	};
-
-	BambooBuildService.prototype.updateAllPlans = function () {
+	BambooBuildService.prototype.updateAll = function () {
 		
 		function planFinished() {
 			remaining--;

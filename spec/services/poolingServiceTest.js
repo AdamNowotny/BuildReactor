@@ -1,4 +1,9 @@
-define(['services/poolingService', 'common/timer', 'jasmineSignals'], function (PoolingService, Timer, spyOnSignal) {
+define([
+	'services/poolingService',
+	'common/timer',
+	'signals',
+	'jasmineSignals'
+], function (PoolingService, Timer, Signal, spyOnSignal) {
 
 	'use strict';
 
@@ -17,14 +22,11 @@ define(['services/poolingService', 'common/timer', 'jasmineSignals'], function (
 				projects: ['build1', 'build2']
 			};
 			service = new PoolingService(settings);
-			service.update = function () {};
 		});
 
-		it('should expose service interface', function () {
-			expect(service.name).toBe(settings.name);
-			expect(service.on.brokenBuild).toBeDefined();
-			expect(service.on.fixedBuild).toBeDefined();
-			expect(service.on.errorThrown).toBeDefined();
+		it('should provide pooling api', function () {
+			expect(service.start).toBeDefined();
+			expect(service.stop).toBeDefined();
 			expect(service.on.updating).toBeDefined();
 			expect(service.on.updated).toBeDefined();
 		});
@@ -94,6 +96,44 @@ define(['services/poolingService', 'common/timer', 'jasmineSignals'], function (
 			elapsed.dispatch();
 
 			expect(service.update.callCount).toBe(1);
+		});
+
+		describe('update', function () {
+
+			var completed;
+
+			beforeEach(function () {
+				completed = new Signal();
+				completed.memorize = true;
+				service.updateAll = function () {
+					return completed;
+				};
+			});
+
+			it('should signal updating', function () {
+				spyOnSignal(service.on.updating);
+
+				service.update();
+
+				expect(service.on.updating).toHaveBeenDispatched();
+			});
+
+			it('should signal updated when finished', function () {
+				spyOnSignal(service.on.updated);
+				completed.dispatch();
+
+				service.update();
+
+				expect(service.on.updated).toHaveBeenDispatched();
+			});
+
+			it('should not signal updated until finished', function () {
+				spyOnSignal(service.on.updated);
+
+				service.update();
+
+				expect(service.on.updated).not.toHaveBeenDispatched();
+			});
 		});
 
 	});

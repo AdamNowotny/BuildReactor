@@ -4,19 +4,13 @@ define(['common/timer', 'signals'], function (Timer, Signal) {
 
 	var PoolingService = function (settings) {
 		this.settings = settings;
-		this.name = settings.name;
 		this.on = {
-			errorThrown: new Signal(),
 			updating: new Signal(),
-			updated: new Signal(),
-			brokenBuild: new Signal(),
-			fixedBuild: new Signal(),
-			startedBuild: new Signal(),
-			finishedBuild: new Signal()
+			updated: new Signal()
 		};
 	};
 
-	PoolingService.prototype.start = function () {
+	var start = function () {
 		if (!this.settings.updateInterval) {
 			throw { name: 'ArgumentInvalid', message: 'settings.updateInterval not set' };
 		}
@@ -29,9 +23,22 @@ define(['common/timer', 'signals'], function (Timer, Signal) {
 		this.update();
 	};
 
-	PoolingService.prototype.stop = function () {
+	var stop = function () {
 		this.on.updated.remove(this.scheduleUpdate, this);
 		this.timer.on.elapsed.remove(this.update, this);
+	};
+
+	var update = function () {
+		this.on.updating.dispatch();
+		this.updateAll().addOnce(function () {
+			this.on.updated.dispatch();
+		}, this);
+	};
+
+	PoolingService.prototype = {
+		start: start,
+		stop: stop,
+		update: update
 	};
 
 	return PoolingService;

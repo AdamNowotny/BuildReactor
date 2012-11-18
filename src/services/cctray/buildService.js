@@ -13,13 +13,22 @@ define([
 
 	var CCBuildService = function (settings) {
 		$.extend(this, new PoolingService(settings));
+		this.name = settings.name;
+		this.defaultSettings = CCBuildService.settings;
 		this.settings = this._createSettings(settings);
+		$.extend(this.on, {
+			errorThrown: new Signal(),
+			brokenBuild: new Signal(),
+			fixedBuild: new Signal(),
+			startedBuild: new Signal(),
+			finishedBuild: new Signal()
+		});
 		this._selectedProjects = {};
 	};
 
 		
 	CCBuildService.prototype._createSettings = function (settings) {
-		var newSettings = CCBuildService.settings();
+		var newSettings = this.defaultSettings();
 		newSettings.name = settings.name;
 		newSettings.url = joinUrl(settings.url, this.cctrayLocation());
 		newSettings.updateInterval = settings.updateInterval;
@@ -46,19 +55,7 @@ define([
 		};
 	};
 
-	CCBuildService.prototype.update = function () {
-		this.on.updating.dispatch();
-		var self = this,
-			request = ccRequest.projects(this.settings);
-		request.responseReceived.addOnce(function (projectsResponse) {
-			processResponse(projectsResponse);
-			self.on.updated.dispatch();
-		}, this);
-		request.errorReceived.addOnce(function (errorInfo) {
-			self.on.errorThrown.dispatch(errorInfo);
-			self.on.updated.dispatch();
-		}, this);
-
+	CCBuildService.prototype.updateAll = function () {
 		function processResponse(projects) {
 			$(projects)
 				.find('Project')
@@ -88,6 +85,20 @@ define([
 					projectInstance.update(d);
 				});
 		}
+
+		var completed = new Signal();
+		completed.memorize = true;
+		var self = this,
+			request = ccRequest.projects(this.settings);
+		request.responseReceived.addOnce(function (projectsResponse) {
+			processResponse(projectsResponse);
+			completed.dispatch();
+		}, this);
+		request.errorReceived.addOnce(function (errorInfo) {
+			self.on.errorThrown.dispatch(errorInfo);
+			completed.dispatch();
+		}, this);
+		return completed;
 	};
 
 	CCBuildService.prototype.onBuildFailed = function (project) {

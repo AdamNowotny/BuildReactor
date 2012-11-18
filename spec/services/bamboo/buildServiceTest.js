@@ -80,6 +80,8 @@ define([
 				expect(service.on.errorThrown).toBeDefined();
 				expect(service.on.updating).toBeDefined();
 				expect(service.on.updated).toBeDefined();
+				expect(service.on.startedBuild).toBeDefined();
+				expect(service.on.finishedBuild).toBeDefined();
 			});
 
 			it('should signal updated when all plan updates finished', function () {
