@@ -30,6 +30,7 @@
   "dependencies": {
     "bower": "0.3.1",
     "grunt": "~0.3.17",
+    "grunt-clear": "~0.1.2",
     "grunt-contrib-clean": "~0.3.1",
     "grunt-contrib-copy": "~0.3.2",
     "grunt-contrib-mincss": "~0.3.2",

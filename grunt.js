@@ -3,6 +3,7 @@ module.exports = function (grunt) {
 
 	'use strict';
 
+	grunt.loadNpmTasks('grunt-clear');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-mincss');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
@@ -77,6 +78,10 @@ module.exports = function (grunt) {
 			all: ['spec/specrunner.html']
 		},
 		watch: {
+			clear: {
+                files: [ 'src/**/*', 'spec/**/*' ],
+                tasks: ["clear"]
+            },
 			files: [ 'src/**/*', 'spec/**/*' ],
 			tasks: 'jasmine'
 		},
@@ -103,7 +108,7 @@ module.exports = function (grunt) {
 					inlineText: true,
 					useStrict: true,
 					preserveLicenseComments: true,
-					// optimize: 'none',
+					optimize: 'none',
 					// optimizeCss: 'standard',
 					uglify: {
 						toplevel: true,
