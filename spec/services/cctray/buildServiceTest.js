@@ -9,7 +9,7 @@ define([
 	'jasmineSignals',
 	'text!spec/fixtures/cctray/cruisecontrolnet.xml'
 ],
-function (BuildService, ccRequest, project, PoolingService, Timer, $, signals, spyOnSignal, projectsXmlText) {
+function (BuildService, ccRequest, project, PoolingService, Timer, $, Signal, spyOnSignal, projectsXmlText) {
 
 	'use strict';
 
@@ -42,9 +42,9 @@ function (BuildService, ccRequest, project, PoolingService, Timer, $, signals, s
 			};
 
 		beforeEach(function () {
-			responseReceived = new signals.Signal();
+			responseReceived = new Signal();
 			responseReceived.memorize = true;
-			errorReceived = new signals.Signal();
+			errorReceived = new Signal();
 			errorReceived.memorize = true;
 			settings = {
 				name: 'My Bamboo CI',
@@ -99,21 +99,27 @@ function (BuildService, ccRequest, project, PoolingService, Timer, $, signals, s
 			expect(service.on.updated).toBeDefined();
 		});
 
-		it('should signal updated when update finished', function () {
-			spyOnSignal(service.on.updated);
+		describe('updateAll', function () {
+			it('should signal when update finished', function () {
+				var completed = false;
 
-			service.update();
+				service.updateAll().addOnce(function () {
+					completed = true;
+				});
 
-			expect(service.on.updated).toHaveBeenDispatched(1);
-		});
+				expect(completed).toBe(true);
+			});
 
-		it('should signal updated when finished with error', function () {
-			spyOnSignal(service.on.updated);
-			initErrorResponse();
+			it('should signal if finished with error', function () {
+				initErrorResponse();
+				var completed = false;
 
-			service.update();
+				service.updateAll().addOnce(function () {
+					completed = true;
+				});
 
-			expect(service.on.updated).toHaveBeenDispatched(1);
+				expect(completed).toBe(true);
+			});
 		});
 
 		it('should signal errorThrown when update failed', function () {
@@ -123,20 +129,6 @@ function (BuildService, ccRequest, project, PoolingService, Timer, $, signals, s
 			service.update();
 
 			expect(service.on.errorThrown).toHaveBeenDispatched();
-		});
-
-		it('multiple services should update independently', function () {
-			var service1 = new BuildService({ name: 'Bamboo', url: 'http://example1.com/', projects: [] });
-			var service2 = new BuildService({ name: 'Bamboo', url: 'http://example2.com/', projects: [] });
-			spyOnSignal(service1.on.updating);
-			spyOnSignal(service2.on.updating);
-
-			service1.update();
-			service2.update();
-			service2.update();
-
-			expect(service1.on.updating).toHaveBeenDispatched(1);
-			expect(service2.on.updating).toHaveBeenDispatched(2);
 		});
 
 		describe('monitoring', function () {

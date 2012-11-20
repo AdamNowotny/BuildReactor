@@ -1,9 +1,15 @@
-define(['services/PoolingService', 'signals', 'jquery'], function (PoolingService, Signal, $) {
+define([
+	'services/PoolingService',
+	'signals',
+	'jquery',
+	'amdUtils/object/values'
+], function (PoolingService, Signal, $, values) {
 	'use strict';
 
 	function BuildService(settings) {
 		$.extend(this, new PoolingService(settings));
 		this.name = settings.name;
+		this.builds = {};
 		$.extend(this.on, {
 			errorThrown: new Signal(),
 			brokenBuild: new Signal(),
@@ -13,55 +19,68 @@ define(['services/PoolingService', 'signals', 'jquery'], function (PoolingServic
 		});
 	}
 
-	var onBuildFailed = function (project) {
-		var buildEvent = {
-			serviceName: this.name,
-			buildName: project.projectName(),
-			group: project.category(),
-			url: project.url(),
-			icon: this.settings.icon
+	var activeProjects = function () {
+		var projectsInfo = values(this.builds).map(function (build) {
+			return {
+				name: build.name,
+				group: build.projectName,
+				isBroken: build.isBroken,
+				url: build.webUrl,
+				isBuilding: build.isRunning
+			};
+		});
+		return {
+			name: this.name,
+			items: projectsInfo
 		};
-		this.on.brokenBuild.dispatch(buildEvent);
 	};
 
-	var onBuildFixed = function (project) {
-		var buildEvent = {
-			serviceName: this.name,
-			buildName: project.projectName(),
-			group: project.category(),
-			url: project.url(),
-			icon: this.settings.icon
-		};
-		this.on.fixedBuild.dispatch(buildEvent);
+	var observeBuild = function (build) {
+		build.on.broken.add(onBuildBroken, this);
+		build.on.fixed.add(onBuildFixed, this);
+		build.on.started.add(onBuildStarted, this);
+		build.on.finished.add(onBuildFinished, this);
+		build.on.errorThrown.add(onErrorThrown, this);
 	};
 
-	var onBuildStarted = function (project) {
-		var buildEvent = {
-			serviceName: this.name,
-			buildName: project.projectName(),
-			group: project.category(),
-			url: project.url(),
-			icon: this.settings.icon
-		};
-		this.on.startedBuild.dispatch(buildEvent);
+	var onErrorThrown = function (errorInfo) {
+		this.on.errorThrown.dispatch(errorInfo);
 	};
 
-	var onBuildFinished = function (project) {
-		var buildEvent = {
+	var createBuildInfo = function (build) {
+		var buildInfo = {
 			serviceName: this.name,
-			buildName: project.projectName(),
-			group: project.category(),
-			url: project.url(),
+			buildName: build.name,
+			group: build.projectName,
+			url: build.webUrl,
 			icon: this.settings.icon
 		};
-		this.on.finishedBuild.dispatch(buildEvent);
+		return buildInfo;
+	};
+
+	var onBuildBroken = function (build) {
+		var info = createBuildInfo.apply(this, [build]);
+		this.on.brokenBuild.dispatch(info);
+	};
+
+	var onBuildFixed = function (build) {
+		var info = createBuildInfo.apply(this, [build]);
+		this.on.fixedBuild.dispatch(build);
+	};
+
+	var onBuildStarted = function (build) {
+		var info = createBuildInfo.apply(this, [build]);
+		this.on.startedBuild.dispatch(build);
+	};
+
+	var onBuildFinished = function (build) {
+		var info = createBuildInfo.apply(this, [build]);
+		this.on.finishedBuild.dispatch(build);
 	};
 
 	BuildService.prototype = {
-		onBuildFailed: onBuildFailed,
-		onBuildFixed: onBuildFixed,
-		onBuildStarted: onBuildStarted,
-		onBuildFinished: onBuildFinished
+		activeProjects: activeProjects,
+		observeBuild: observeBuild
 	};
 
 	return BuildService;

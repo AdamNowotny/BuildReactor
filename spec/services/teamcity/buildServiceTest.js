@@ -1,32 +1,30 @@
 define([
 	'services/teamcity/buildService',
 	'services/teamcity/teamcityRequest',
+	'services/teamcity/teamcityBuild',
 	'signals',
-	'json!fixtures/teamcity/buildTypes.json'
-], function (TeamCity, request, Signal, buildTypesJson) {
+	'json!fixtures/teamcity/buildTypes.json',
+	'json!fixtures/teamcity/build.json'
+], function (TeamCity, request, Build, Signal, buildTypesJson, buildJson) {
 
 	'use strict';
 
 	describe('services/teamcity/buildService', function () {
 
 		var settings;
-		var ccBuildInfo;
+		var mockBuildUpdate;
 
 		beforeEach(function () {
 			settings = {
-				typeName: 'TeamCity 7',
+				typeName: 'TeamCity',
 				baseUrl: 'teamcity',
 				icon: 'teamcity/icon.png',
 				url: 'http://example.com/',
 				name: 'TeamCity instance'
 			};
-			ccBuildInfo = {
-				serviceName: 'service name',
-				buildName: 'build name',
-				group: 'group name',
-				url: 'http://example.com/link',
-				icon: 'ci/icon.png'
-			};
+			mockBuildUpdate = spyOn(Build.prototype, 'update').andCallFake(function () {
+				return createResult({});
+			});
 		});
 
 		it('should provide default settings', function () {
@@ -39,10 +37,12 @@ define([
 			expect(defaultSettings.urlHint).toBe('http://teamcity.jetbrains.com/');
 		});
 
-		function createResult(response) {
+		function createResult(result) {
 			var returned = new Signal();
 			returned.memorize = true;
-			returned.dispatch({ response: response});
+			if (result) {
+				returned.dispatch(result);
+			}
 			return returned;
 		}
 
@@ -51,7 +51,7 @@ define([
 			it('should get build types', function () {
 				var service = new TeamCity(settings);
 				spyOn(request, 'buildTypes').andCallFake(function () {
-					return createResult({});
+					return createResult({ response: {} });
 				});
 
 				service.projects([ 'A', 'B' ]);
@@ -61,7 +61,7 @@ define([
 
 			it('should return all build types', function () {
 				spyOn(request, 'buildTypes').andCallFake(function () {
-					return createResult(buildTypesJson);
+					return createResult({ response: buildTypesJson });
 				});
 				var service = new TeamCity(settings);
 				var projects;
@@ -75,7 +75,7 @@ define([
 
 			it('should convert to build', function () {
 				spyOn(request, 'buildTypes').andCallFake(function () {
-					return createResult(buildTypesJson);
+					return createResult({ response: buildTypesJson });
 				});
 				var service = new TeamCity(settings);
 				var projects;
@@ -97,15 +97,88 @@ define([
 
 		describe('updateAll', function () {
 
-			it('should update all selected builds', function () {
+			it('should signal completed when no services configured', function () {
+				var service = new TeamCity(settings);
+				var completed = false;
 
+				service.updateAll().addOnce(function () {
+					completed = true;
+				});
+
+				expect(completed).toBe(true);
 			});
 
-		});
+			it('should signal completed when build update finished', function () {
+				settings.projects = ['bt297', 'bt300'];
+				var service = new TeamCity(settings);
+				var completed = false;
 
-		describe('activeProjects', function () {
+				service.updateAll().addOnce(function () {
+					completed = true;
+				});
 
+				expect(completed).toBe(true);
+			});
 
+			it('should create selected builds', function () {
+				settings.projects = ['bt297', 'bt300'];
+				var service = new TeamCity(settings);
+
+				service.updateAll();
+
+				expect(service.builds['bt297']).toBeDefined();
+				expect(service.builds['bt300']).toBeDefined();
+			});
+
+			it('should update all selected builds', function () {
+				settings.projects = ['A', 'B'];
+				var service = new TeamCity(settings);
+
+				service.updateAll();
+
+				expect(Build.prototype.update.callCount).toBe(2);
+			});
+
+			it('should not update if no selected builds', function () {
+				settings.projects = undefined;
+				var service = new TeamCity(settings);
+
+				service.updateAll();
+
+				expect(Build.prototype.update).not.toHaveBeenCalled();
+			});
+
+			it('should create builds only once', function () {
+				settings.projects = ['bt297'];
+				var service = new TeamCity(settings);
+				service.updateAll();
+				var build = service.builds['bt297'];
+
+				service.updateAll();
+
+				expect(service.builds['bt297']).toBe(build);
+			});
+
+			it('should observe build', function () {
+				settings.projects = ['A'];
+				var service = new TeamCity(settings);
+				spyOn(service, 'observeBuild');
+
+				service.updateAll();
+
+				expect(service.observeBuild).toHaveBeenCalledWith(service.builds['A']);
+			});
+
+			it('should only observe once', function () {
+				settings.projects = ['A'];
+				var service = new TeamCity(settings);
+				spyOn(service, 'observeBuild');
+
+				service.updateAll();
+				service.updateAll();
+
+				expect(service.observeBuild.callCount).toBe(1);
+			});
 		});
 
 	});

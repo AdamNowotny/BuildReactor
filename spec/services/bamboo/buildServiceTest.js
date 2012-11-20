@@ -84,47 +84,58 @@ define([
 				expect(service.on.finishedBuild).toBeDefined();
 			});
 
-			it('should signal updated when all plan updates finished', function () {
-				var updatedSpy = spyOnSignal(service.on.updated);
-				mockBambooPlanUpdate.andReturn(updateSuccessSignal);
+			describe('updateAll', function () {
 
-				service.update();
+				it('should signal when all plan updates finished', function () {
+					mockBambooPlanUpdate.andReturn(updateSuccessSignal);
+					var completed = false;
 
-				expect(updatedSpy).toHaveBeenDispatched(1);
-			});
-			
-			it('should signal updated when no plans selected', function () {
-				settings.projects = [];
-				service = new BuildService(settings);
-				var updatedSpy = spyOnSignal(service.on.updated);
-				mockBambooPlanUpdate.andReturn(updateSuccessSignal);
+					service.updateAll().addOnce(function () {
+						completed = true;
+					});
 
-				service.update();
+					expect(completed).toBe(true);
+				});
+				
+				it('should signal when no plans selected', function () {
+					settings.projects = [];
+					mockBambooPlanUpdate.andReturn(updateSuccessSignal);
+					service = new BuildService(settings);
+					var completed = false;
 
-				expect(updatedSpy).toHaveBeenDispatched(1);
-			});
+					service.updateAll().addOnce(function () {
+						completed = true;
+					});
 
-			it('should signal updated when all plan updates finished with error', function () {
-				spyOnSignal(service.on.updated);
-				mockBambooPlanUpdate.andReturn(updateErrorSignal);
-
-				service.update();
-
-				expect(service.on.updated).toHaveBeenDispatched(1);
-			});
-
-			it('should not signal updated when some plans still not finished', function () {
-				spyOnSignal(service.on.updated);
-				var plansUpdated = 0;
-				mockBambooPlanUpdate.andCallFake(function () {
-					plansUpdated++;
-					expect(service.on.updated).not.toHaveBeenDispatched();
-					return updateSuccessSignal;
+					expect(completed).toBe(true);
 				});
 
-				service.update();
+				it('should signal updated when all plan updates finished with error', function () {
+					mockBambooPlanUpdate.andReturn(updateErrorSignal);
+					var completed = false;
 
-				expect(service.on.updated).toHaveBeenDispatched(1);
+					service.updateAll().addOnce(function () {
+						completed = true;
+					});
+
+					expect(completed).toBe(true);
+				});
+
+				it('should not signal when some plans still not finished', function () {
+					var plansUpdated = 0;
+					mockBambooPlanUpdate.andCallFake(function () {
+						plansUpdated++;
+						expect(completed).toBe(false);
+						return updateSuccessSignal;
+					});
+					var completed = false;
+
+					service.updateAll().addOnce(function () {
+						completed = true;
+					});
+
+					expect(completed).toBe(true);
+				});
 			});
 
 			it('should signal errorThrown if plan update failed', function () {
@@ -141,22 +152,9 @@ define([
 
 
 			it('should update plans', function () {
-				service.update();
+				service.updateAll();
 
 				expect(mockBambooPlanUpdate).toHaveBeenCalled();
-			});
-
-			it('multiple services should update independently', function () {
-				var service1 = new BuildService({ name: 'Bamboo', url: 'http://example1.com/', projects: [] });
-				var service2 = new BuildService({ name: 'Bamboo', url: 'http://example2.com/', projects: [] });
-				spyOnSignal(service1.on.updating);
-				spyOnSignal(service2.on.updating);
-
-				service1.update();
-				service2.update();
-
-				expect(service1.on.updating).toHaveBeenDispatched(1);
-				expect(service2.on.updating).toHaveBeenDispatched(1);
 			});
 
 			it('should signal brokenBuild if plan signaled', function () {

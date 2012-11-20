@@ -134,6 +134,23 @@ define([
 
 				expect(service.on.updated).not.toHaveBeenDispatched();
 			});
+
+			it('multiple services should update independently', function () {
+				var service1 = new PoolingService({ name: 'Bamboo', url: 'http://example1.com/', projects: [] });
+				var service2 = new PoolingService({ name: 'Bamboo', url: 'http://example2.com/', projects: [] });
+				spyOnSignal(service1.on.updating);
+				spyOnSignal(service2.on.updating);
+				service1.updateAll = function () { return completed; };
+				service2.updateAll = function () { return completed; };
+
+				service1.update();
+				service2.update();
+				service2.update();
+
+				expect(service1.on.updating).toHaveBeenDispatched(1);
+				expect(service2.on.updating).toHaveBeenDispatched(2);
+			});
+
 		});
 
 	});

@@ -1,17 +1,18 @@
 define([
 	'services/buildService',
 	'services/teamcity/teamcityRequest',
+	'services/teamcity/teamcityBuild',
 	'signals',
 	'jquery'
-], function (BuildService, teamcityRequest, Signal, $) {
+], function (BuildService, request, Build, Signal, $) {
 
 		'use strict';
 
-		var GoBuildService = function (settings) {
+		var TeamcityBuildService = function (settings) {
 			$.extend(this, new BuildService(settings));
 		};
 		
-		GoBuildService.settings = function () {
+		TeamcityBuildService.settings = function () {
 			return {
 				typeName: 'TeamCity',
 				baseUrl: 'teamcity',
@@ -25,7 +26,7 @@ define([
 		var projects = function (selectedPlans) {
 			var finished = new Signal();
 			finished.memorize = true;
-			teamcityRequest.buildTypes(this.settings).addOnce(function (result) {
+			request.buildTypes(this.settings).addOnce(function (result) {
 				if (result.error) {
 					finished.dispatch({ error: result.error	});
 				}
@@ -36,51 +37,53 @@ define([
 		};
 
 		var updateAll = function () {
-			//build
-
-		};
-
-		var activeProjects = function () {
-			//var projectsInfo = values(this._selectedProjects).map(function (p) {
-			//	return {
-			//		name: p.projectName(),
-			//		group: p.category(),
-			//		isBroken: p.status() === 'Failure',
-			//		url: p.url(),
-			//		isBuilding: p.isBuilding()
-			//	};
-			//});
-			//return {
-			//	name: this.name,
-			//	items: projectsInfo
-			//};
+			var completed = new Signal();
+			completed.memorize = true;
+			if (!this.settings.projects) {
+				completed.dispatch();
+				return completed;
+			}
+			var that = this;
+			this.settings.projects.forEach(function (id, index) {
+				var build;
+				if (that.builds[id]) {
+					build = that.builds[id];
+				} else {
+					build = new Build(id, that.settings);
+					that.builds[id] = build;
+					that.observeBuild(build);
+				}
+				build.update().addOnce(function () {
+					completed.dispatch();
+				});
+			});
+			return completed;
 		};
 
 		function createTemplateData(buildTypesJson, selectedProjects) {
 			
 			if (!buildTypesJson.buildType) {
 				return { items: [] };
-			}
-			var builds = buildTypesJson.buildType.map(function (d, i) {
+			} else {
 				return {
-					id: d.id,
-					name: d.name,
-					group: d.projectName,
-					enabled: true,
-					selected: selectedProjects.indexOf(d.id) > -1,
-					webUrl: d.webUrl
+					items: buildTypesJson.buildType.map(function (d, i) {
+						return {
+							id: d.id,
+							name: d.name,
+							group: d.projectName,
+							enabled: true,
+							selected: selectedProjects.indexOf(d.id) > -1,
+							webUrl: d.webUrl
+						};
+					})
 				};
-			});
-			return {
-				items: builds
-			};
+			}
 		}
 
-		GoBuildService.prototype = {
+		TeamcityBuildService.prototype = {
 			projects: projects,
-			activeProjects: activeProjects,
 			updateAll: updateAll
 		};
 
-		return GoBuildService;
+		return TeamcityBuildService;
 	});
