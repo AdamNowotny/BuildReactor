@@ -92,6 +92,35 @@ define([
 			expect(build.on.broken).not.toHaveBeenDispatched();
 		});
 
+		it('should signal if broken with error', function () {
+			mockRequestBuild.andCallFake(function () {
+				buildJson.status = 'ERROR';
+				return createResult({ response: buildJson });
+			});
+			var build = new Build('build_id', settings);
+			spyOnSignal(build.on.broken);
+
+			build.update();
+
+			expect(build.isBroken).toBe(true);
+			expect(build.on.broken).toHaveBeenDispatchedWith(build);
+		});
+
+		it('should not signal if still broken with error', function () {
+			mockRequestBuild.andCallFake(function () {
+				buildJson.status = 'ERROR';
+				return createResult({ response: buildJson });
+			});
+			var build = new Build('build_id', settings);
+			build.isBroken = true;
+			spyOnSignal(build.on.broken);
+
+			build.update();
+
+			expect(build.isBroken).toBe(true);
+			expect(build.on.broken).not.toHaveBeenDispatched();
+		});
+
 		it('should signal if fixed', function () {
 			mockRequestBuild.andCallFake(function () {
 				buildJson.status = 'SUCCESS';

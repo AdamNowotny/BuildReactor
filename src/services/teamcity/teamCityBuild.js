@@ -24,7 +24,7 @@ define([
 				that.isBroken = false;
 				that.on.fixed.dispatch(that);
 			}
-			if (!that.isBroken && result.response.status === 'FAILURE') {
+			if (!that.isBroken && (result.response.status in { 'FAILURE': 1, 'ERROR': 1 })) {
 				that.isBroken = true;
 				that.on.broken.dispatch(that);
 			}
