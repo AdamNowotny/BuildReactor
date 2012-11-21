@@ -24,16 +24,17 @@ define([
 		};
 
 		var projects = function (selectedPlans) {
-			var finished = new Signal();
-			finished.memorize = true;
+			var completed = new Signal();
+			completed.memorize = true;
 			request.buildTypes(this.settings).addOnce(function (result) {
 				if (result.error) {
-					finished.dispatch({ error: result.error	});
+					completed.dispatch({ error: result.error });
+				} else {
+					var templateData = createTemplateData(result.response, selectedPlans);
+					completed.dispatch({ projects: templateData });
 				}
-				var templateData = createTemplateData(result.response, selectedPlans);
-				finished.dispatch({	projects: templateData });
 			});
-			return finished;
+			return completed;
 		};
 
 		var updateAll = function () {

@@ -43,8 +43,8 @@ define([
 		build.on.errorThrown.add(onErrorThrown, this);
 	};
 
-	var onErrorThrown = function (errorInfo) {
-		this.on.errorThrown.dispatch(errorInfo);
+	var onErrorThrown = function (build) {
+		this.on.errorThrown.dispatch(build);
 	};
 
 	var createBuildInfo = function (build) {
@@ -65,17 +65,17 @@ define([
 
 	var onBuildFixed = function (build) {
 		var info = createBuildInfo.apply(this, [build]);
-		this.on.fixedBuild.dispatch(build);
+		this.on.fixedBuild.dispatch(info);
 	};
 
 	var onBuildStarted = function (build) {
 		var info = createBuildInfo.apply(this, [build]);
-		this.on.startedBuild.dispatch(build);
+		this.on.startedBuild.dispatch(info);
 	};
 
 	var onBuildFinished = function (build) {
 		var info = createBuildInfo.apply(this, [build]);
-		this.on.finishedBuild.dispatch(build);
+		this.on.finishedBuild.dispatch(info);
 	};
 
 	BuildService.prototype = {

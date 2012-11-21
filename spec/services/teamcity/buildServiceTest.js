@@ -73,6 +73,21 @@ define([
 				expect(projects.items.length).toBe(207);
 			});
 
+			it('should return errorInfo on failure', function () {
+				var errorInfo = {};
+				spyOn(request, 'buildTypes').andCallFake(function () {
+					return createResult({ error: errorInfo });
+				});
+				var service = new TeamCity(settings);
+				var result;
+
+				service.projects([ 'A', 'B' ]).addOnce(function (callbackResult) {
+					result = callbackResult;
+				});
+
+				expect(result.error).toBe(errorInfo);
+			});
+
 			it('should convert to build', function () {
 				spyOn(request, 'buildTypes').andCallFake(function () {
 					return createResult({ response: buildTypesJson });

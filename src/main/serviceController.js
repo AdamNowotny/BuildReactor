@@ -106,8 +106,8 @@ define([
 			service.on.updated.add(function () {
 				on.updated.dispatch(service.settings);
 			});
-			service.on.errorThrown.add(function (errorInfo) {
-				on.errorThrown.dispatch(errorInfo);
+			service.on.errorThrown.add(function (build) {
+				on.errorThrown.dispatch(build);
 			});
 			service.on.brokenBuild.add(function (buildEvent) {
 				on.brokenBuild.dispatch(buildEvent);

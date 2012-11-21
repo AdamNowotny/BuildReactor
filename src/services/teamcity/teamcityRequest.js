@@ -43,7 +43,7 @@ define(['main/ajaxRequest', 'common/joinUrl', 'signals'], function (AjaxRequest,
 
 	var buildRunningAjaxSettings = function (settings, buildId) {
 		var urlPath = ((settings.username) ? 'httpAuth' : 'guestAuth');
-		urlPath += '/app/rest/buildTypes/id:' + buildId + '/builds/running:true';
+		urlPath += '/app/rest/buildTypes/id:' + buildId + '/builds/running:any';
 		return createAjaxSettings(settings, urlPath);
 	};
 

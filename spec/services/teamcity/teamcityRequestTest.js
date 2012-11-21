@@ -134,7 +134,7 @@ define([
 				mockAjaxRequestSend.andCallFake(function () {
 					expect(this.settings.username).not.toBeDefined();
 					expect(this.settings.password).not.toBeDefined();
-					expect(this.settings.url).toBe('http://example.com/guestAuth/app/rest/buildTypes/id:bt345/builds/running:true');
+					expect(this.settings.url).toBe('http://example.com/guestAuth/app/rest/buildTypes/id:bt345/builds/running:any');
 				});
 
 				request.buildRunning(settings, 'bt345');
@@ -148,7 +148,7 @@ define([
 				mockAjaxRequestSend.andCallFake(function () {
 					expect(this.settings.username).toBe('USERNAME');
 					expect(this.settings.password).toBe('PASSWORD');
-					expect(this.settings.url).toBe('http://example.com/httpAuth/app/rest/buildTypes/id:bt297/builds/running:true');
+					expect(this.settings.url).toBe('http://example.com/httpAuth/app/rest/buildTypes/id:bt297/builds/running:any');
 				});
 
 				request.buildRunning(settings, 'bt297');

@@ -90,7 +90,7 @@ define([
 				service.observeBuild(build);
 				build.on.errorThrown.dispatch(build);
 
-				expect(service.on.errorThrown).toHaveBeenDispatched();
+				expect(service.on.errorThrown).toHaveBeenDispatchedWith(build);
 			});
 
 			it('should subscribe to broken', function () {
@@ -101,6 +101,7 @@ define([
 				build.on.broken.dispatch(build);
 
 				expect(service.on.brokenBuild).toHaveBeenDispatched();
+				expect(service.on.brokenBuild).not.toHaveBeenDispatchedWith(build);
 			});
 
 			it('should subscribe to fixed', function () {
@@ -111,6 +112,7 @@ define([
 				build.on.fixed.dispatch(build);
 
 				expect(service.on.fixedBuild).toHaveBeenDispatched();
+				expect(service.on.fixedBuild).not.toHaveBeenDispatchedWith(build);
 			});
 
 			it('should subscribe to started', function () {
@@ -121,6 +123,7 @@ define([
 				build.on.started.dispatch(build);
 
 				expect(service.on.startedBuild).toHaveBeenDispatched();
+				expect(service.on.startedBuild).not.toHaveBeenDispatchedWith(build);
 			});
 
 			it('should subscribe to finished', function () {
@@ -131,6 +134,7 @@ define([
 				build.on.finished.dispatch(build);
 
 				expect(service.on.finishedBuild).toHaveBeenDispatched();
+				expect(service.on.finishedBuild).not.toHaveBeenDispatchedWith(build);
 			});
 		});
 
