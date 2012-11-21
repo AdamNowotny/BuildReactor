@@ -31,7 +31,7 @@ define([
 			describe('update plan details', function () {
 
 				it('should have key', function () {
-					expect(plan.key).toBe('KEY');
+					expect(plan.id).toBe('KEY');
 				});
 
 				it('should get plan details', function () {
@@ -47,11 +47,10 @@ define([
 
 					plan.update();
 
-					expect(plan.key).toBe('NIGHTLY-TRUNK');
 					expect(plan.projectName).toBe('Nightly Builds');
 					expect(plan.name).toBe('Deploy Nightly Trunk');
 					expect(plan.isEnabled).toBe(true);
-					expect(plan.isBuilding).toBe(false);
+					expect(plan.isRunning).toBe(false);
 					expect(plan.isActive).toBe(false);
 				});
 
@@ -103,6 +102,7 @@ define([
 					});
 					plan.update();
 
+					expect(plan.on.started).toHaveBeenDispatched();
 					expect(plan.on.started).toHaveBeenDispatchedWith(plan);
 				});
 
@@ -115,17 +115,6 @@ define([
 					plan.update();
 					spyOnSignal(plan.on.started);
 
-					mockPlan.andCallFake(function () {
-						planJson.isBuilding = true;
-						this.on.responseReceived.dispatch(planJson);
-					});
-					plan.update();
-
-					expect(plan.on.started).not.toHaveBeenDispatched();
-				});
-
-				it('should not signal when build started on first check', function () {
-					spyOnSignal(plan.on.started);
 					mockPlan.andCallFake(function () {
 						planJson.isBuilding = true;
 						this.on.responseReceived.dispatch(planJson);
@@ -173,7 +162,7 @@ define([
 				it('should signal error if parsing response fails', function () {
 					spyOnSignal(plan.on.errorThrown);
 					mockPlan.andCallFake(function () {
-						this.on.responseReceived.dispatch(null);
+						this.on.responseReceived.dispatch(this);
 					});
 
 					plan.update();
@@ -243,11 +232,11 @@ define([
 
 					plan.update();
 
-					expect(plan.url).toBe('http://example.com/browse/PROJECT1-PLAN1-3631');
+					expect(plan.webUrl).toBe('http://example.com/browse/PROJECT1-PLAN1-3631');
 				});
 
-				it('should signal build failed on update', function () {
-					spyOnSignal(plan.on.failed);
+				it('should signal build broken on update', function () {
+					spyOnSignal(plan.on.broken);
 					mockLatestResult.andCallFake(function () {
 						latestPlanResultJson.state = 'Failed';
 						this.on.responseReceived.dispatch(latestPlanResultJson);
@@ -255,21 +244,21 @@ define([
 
 					plan.update();
 
-					expect(plan.on.failed).toHaveBeenDispatchedWith(plan);
+					expect(plan.on.broken).toHaveBeenDispatchedWith(plan);
 				});
 
-				it('should not signal failed if not changed', function () {
-					spyOnSignal(plan.on.failed);
+				it('should not signal broken if not changed', function () {
+					spyOnSignal(plan.on.broken);
 					mockLatestResult.andCallFake(function () {
 						latestPlanResultJson.state = 'Failed';
 						this.on.responseReceived.dispatch(latestPlanResultJson);
 					});
 
 					plan.update();
-					expect(plan.on.failed).toHaveBeenDispatchedWith(plan);
+					expect(plan.on.broken).toHaveBeenDispatchedWith(plan);
 
 					plan.update();
-					expect(plan.on.failed).toHaveBeenDispatchedWith(plan);
+					expect(plan.on.broken).toHaveBeenDispatchedWith(plan);
 				});
 
 				it('should signal when build is fixed', function () {

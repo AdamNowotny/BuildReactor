@@ -5,22 +5,13 @@ define([
 	'./bambooPlan',
 	'amdUtils/string/interpolate',
 	'amdUtils/object/values',
-	'services/poolingService'
-], function ($, Signal, BambooRequest, BambooPlan, interpolate, values, PoolingService) {
+	'services/buildService'
+], function ($, Signal, BambooRequest, BambooPlan, interpolate, values, BuildService) {
 
 	'use strict';
 
 	var BambooBuildService = function (settings) {
-		$.extend(this, new PoolingService(settings));
-		this.name = settings.name;
-		$.extend(this.on, {
-			errorThrown: new Signal(),
-			brokenBuild: new Signal(),
-			fixedBuild: new Signal(),
-			startedBuild: new Signal(),
-			finishedBuild: new Signal()
-		});
-		this.plans = {};
+		$.extend(this, new BuildService(settings));
 	};
 
 	BambooBuildService.settings = function () {
@@ -49,22 +40,6 @@ define([
 		return receivedProjects;
 	};
 
-	BambooBuildService.prototype.activeProjects = function () {
-		var projectsInfo = values(this.plans).map(function (p) {
-			return {
-				name: p.name,
-				group: p.projectName,
-				isBroken: p.state === 'Failed',
-				url: p.url,
-				isBuilding: p.isBuilding
-			};
-		});
-		return {
-			name: this.name,
-			items: projectsInfo
-		};
-	};
-
 	BambooBuildService.prototype.updateAll = function () {
 		
 		function planFinished() {
@@ -82,22 +57,22 @@ define([
 			completed.dispatch();
 		} else {
 			this.settings.projects.forEach(function (planKey) {
-				if (!self.plans.hasOwnProperty(planKey)) {
+				if (!self.builds.hasOwnProperty(planKey)) {
 					var plan = new BambooPlan(self.settings, planKey);
-					plan.on.failed.add(onBuildFailed, self);
+					plan.on.broken.add(onBuildBroken, self);
 					plan.on.fixed.add(onBuildFixed, self);
 					plan.on.started.add(onBuildStarted, self);
 					plan.on.finished.add(onBuildFinished, self);
 					plan.on.errorThrown.add(onPlanError, self);
-					self.plans[planKey] = plan;
+					self.builds[planKey] = plan;
 				}
-				self.plans[planKey].update().addOnce(planFinished, this);
+				self.builds[planKey].update().addOnce(planFinished, this);
 			});
 		}
 		return completed;
 	};
 
-	var onBuildFailed = function (plan) {
+	var onBuildBroken = function (plan) {
 		var buildEvent = {
 			serviceName: this.name,
 			buildName: plan.name,
@@ -141,8 +116,8 @@ define([
 		this.on.finishedBuild.dispatch(buildEvent);
 	};
 
-	var onPlanError = function (ajaxError) {
-		this.on.errorThrown.dispatch(ajaxError);
+	var onPlanError = function (plan) {
+		this.on.errorThrown.dispatch(plan);
 	};
 
 	var createTemplateData = function (response, selectedPlans) {
@@ -153,11 +128,11 @@ define([
 			for (var planIndex = 0; planIndex < project.plans.plan.length; planIndex++) {
 				var plan = project.plans.plan[planIndex];
 				var item = {
-					id: plan.key,
+					id: plan.id,
 					name: plan.shortName,
 					group: project.name,
 					enabled: plan.enabled,
-					selected: selectedPlans.indexOf(plan.key) > -1
+					selected: selectedPlans.indexOf(plan.id) > -1
 				};
 				items.push(item);
 			}

@@ -1,55 +1,49 @@
-define(['signals', './bambooRequest', 'common/joinUrl'], function (Signal, BambooRequest, joinUrl) {
+define([
+	'signals',
+	'./bambooRequest',
+	'common/joinUrl',
+	'jquery',
+	'services/build'
+], function (Signal, BambooRequest, joinUrl, $, Build) {
 
 	'use strict';
 
-	var BambooPlan = function (settings, key) {
-		this.key = key;
+	var BambooPlan = function (settings, id) {
+		$.extend(this, new Build(id));
 		this.settings = settings;
-		this.on = {
-			failed: new Signal(),
-			fixed: new Signal(),
-			started: new Signal(),
-			finished: new Signal(),
-			errorThrown: new Signal()
-		};
-	};
-
-	BambooPlan.prototype.initialize = function (responsePlan) {
-		if (!responsePlan.key) { throw { name: 'ArgumentInvalid', message: 'responsePlan.key is undefined' }; }
-		this.state = 'Successful';
 	};
 
 	BambooPlan.prototype.update = function () {
 		var plan = this;
-		var updated = new Signal();
-		updated.memorize = true;
+		var completed = new Signal();
+		completed.memorize = true;
 		updatePlanDetails(plan).addOnce(function (result) {
 			if (result.error) {
-				plan.on.errorThrown.dispatch(result.error);
-				updated.dispatch(plan);
+				plan.on.errorThrown.dispatch(plan);
+				completed.dispatch(plan);
 			} else if (plan.isEnabled) {
 				updateLastResult(plan).addOnce(function (result) {
 					if (result.error) {
-						plan.on.errorThrown.dispatch(result.error);
+						plan.on.errorThrown.dispatch(plan);
 					}
-					updated.dispatch(plan);
+					completed.dispatch(plan);
 				});
 			}
 		});
-		return updated;
+		return completed;
 	};
 
 	function processEvents(plan, response) {
-		if (plan.isBuilding === false && response.isBuilding) {
+		if (!plan.isRunning && response.isBuilding) {
 			plan.on.started.dispatch(plan);
 		}
-		if (plan.isBuilding === true && !response.isBuilding) {
+		if (plan.isRunning && !response.isBuilding) {
 			plan.on.finished.dispatch(plan);
 		}
 	}
 
 	function activateEvents(plan, active) {
-		plan.on.failed.active = active;
+		plan.on.broken.active = active;
 		plan.on.fixed.active = active;
 		plan.on.started.active = active;
 		plan.on.finished.active = active;
@@ -61,12 +55,11 @@ define(['signals', './bambooRequest', 'common/joinUrl'], function (Signal, Bambo
 			try {
 				if (!response.key) { throw { name: 'ArgumentInvalid', message: 'response.key is undefined' }; }
 				activateEvents(plan, response.enabled);
-				plan.key = response.key;
 				plan.projectName = response.projectName;
 				plan.name = response.shortName;
 				plan.isEnabled = response.enabled;
 				processEvents(plan, response);
-				plan.isBuilding = response.isBuilding;
+				plan.isRunning = response.isBuilding;
 				plan.isActive = response.isActive;
 				completed.dispatch({ result: response });
 			} catch (e) {
@@ -83,7 +76,7 @@ define(['signals', './bambooRequest', 'common/joinUrl'], function (Signal, Bambo
 		var request = new BambooRequest(plan.settings);
 		request.on.responseReceived.addOnce(processResponse, plan);
 		request.on.errorReceived.addOnce(processError, plan);
-		request.plan(plan.key);
+		request.plan(plan.id);
 		return completed;
 	}
 
@@ -92,13 +85,13 @@ define(['signals', './bambooRequest', 'common/joinUrl'], function (Signal, Bambo
 		function processResponse(response) {
 			try {
 				plan.buildNumber = response.number;
-				plan.url = joinUrl(plan.settings.url, 'browse/' + response.key);
-				if (plan.state !== 'Failed' && response.state === 'Failed') {
-					plan.state = 'Failed';
-					plan.on.failed.dispatch(plan);
+				plan.webUrl = joinUrl(plan.settings.url, 'browse/' + response.key);
+				if (!plan.isBroken && response.state === 'Failed') {
+					plan.isBroken = true;
+					plan.on.broken.dispatch(plan);
 				}
-				if (plan.state === 'Failed' && response.state === 'Successful') {
-					plan.state = 'Successful';
+				if (plan.isBroken && response.state === 'Successful') {
+					plan.isBroken = false;
 					plan.on.fixed.dispatch(plan);
 				}
 				completed.dispatch({ result: response });
@@ -117,7 +110,7 @@ define(['signals', './bambooRequest', 'common/joinUrl'], function (Signal, Bambo
 		var request = new BambooRequest(plan.settings);
 		request.on.responseReceived.addOnce(processResponse, plan);
 		request.on.errorReceived.addOnce(processError, plan);
-		request.latestPlanResult(plan.key);
+		request.latestPlanResult(plan.id);
 		return completed;
 	}
 

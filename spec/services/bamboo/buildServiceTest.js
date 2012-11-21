@@ -37,7 +37,7 @@ define([
 					this.on.responseReceived.dispatch(projectsJson);
 				});
 				mockBambooPlanUpdate = spyOn(BambooPlan.prototype, 'update').andCallFake(function () {
-					switch (this.key) {
+					switch (this.id) {
 					case 'PROJECT1-PLAN1':
 						this.projectName = 'Project 1';
 						this.name = 'Plan 1';
@@ -160,9 +160,9 @@ define([
 			it('should signal brokenBuild if plan signaled', function () {
 				spyOnSignal(service.on.brokenBuild);
 				service.update();
-				var plan = service.plans['PROJECT1-PLAN1'];
+				var plan = service.builds['PROJECT1-PLAN1'];
 
-				plan.on.failed.dispatch(plan);
+				plan.on.broken.dispatch(plan);
 
 				expect(service.on.brokenBuild).toHaveBeenDispatched(1);
 			});
@@ -170,7 +170,7 @@ define([
 			it('should signal fixedBuild if plan signaled', function () {
 				spyOnSignal(service.on.fixedBuild);
 				service.update();
-				var plan = service.plans['PROJECT1-PLAN1'];
+				var plan = service.builds['PROJECT1-PLAN1'];
 
 				plan.on.fixed.dispatch(plan);
 
@@ -180,7 +180,7 @@ define([
 			it('should signal startedBuild if plan signaled', function () {
 				spyOnSignal(service.on.startedBuild);
 				service.update();
-				var plan = service.plans['PROJECT1-PLAN1'];
+				var plan = service.builds['PROJECT1-PLAN1'];
 
 				plan.on.started.dispatch(plan);
 
@@ -190,7 +190,7 @@ define([
 			it('should signal finishedBuild if plan signaled', function () {
 				spyOnSignal(service.on.finishedBuild);
 				service.update();
-				var plan = service.plans['PROJECT1-PLAN1'];
+				var plan = service.builds['PROJECT1-PLAN1'];
 
 				plan.on.finished.dispatch(plan);
 
@@ -238,65 +238,5 @@ define([
 				});
 			});
 
-			describe('activeProjects', function () {
-
-				it('should return service name', function () {
-					var result = service.activeProjects();
-
-					expect(result.name).toBe(settings.name);
-				});
-
-				it('should return empty if no projects monitored', function () {
-					var result = service.activeProjects();
-
-					expect(result.items.length).toBe(0);
-				});
-
-				it('should return item name', function () {
-					service.update();
-
-					var result = service.activeProjects();
-
-					expect(result.items[0].name).toBe('Plan 1');
-					expect(result.items[1].name).toBe('Plan 2');
-				});
-
-				it('should return group name', function () {
-					service.update();
-
-					var result = service.activeProjects();
-
-					expect(result.items[0].group).toBe('Project 1');
-					expect(result.items[1].group).toBe('Project 2');
-				});
-
-				it('should indicate if broken', function () {
-					service.update();
-
-					service.plans['PROJECT1-PLAN1'].state = 'Failed';
-					var result = service.activeProjects();
-
-					expect(result.items[0].isBroken).toBeTruthy();
-				});
-
-				it('should indicate if building', function () {
-					service.update();
-
-					service.plans['PROJECT1-PLAN1'].isBuilding = true;
-					var result = service.activeProjects();
-
-					expect(result.items[0].isBuilding).toBeTruthy();
-				});
-
-				it('should render link', function () {
-					service.update();
-
-					service.plans['PROJECT1-PLAN1'].url = 'http://example.com/plan1';
-					var result = service.activeProjects();
-
-					expect(result.items[0].url).toBe('http://example.com/plan1');
-				});
-
-			});
 		});
 	});
