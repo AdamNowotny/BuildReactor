@@ -134,7 +134,7 @@ module.exports = function (grunt) {
 						amdUtils: '../components/amd-utils/src',
 						has: '../components/has/has',
 						bootstrap: 'empty:',
-						jquery: '../components/jquery/jquery',
+						jquery: 'empty:',
 						signals: '../components/js-signals/dist/signals',
 						hbs: '../lib/require-handlebars-plugin/hbs-plugin',
 						handlebars: '../lib/require-handlebars-plugin/Handlebars',
@@ -178,14 +178,12 @@ module.exports = function (grunt) {
 				},
 				files: {
 					'<%= vars.dist %>/': [
-						'background.html',
 						'options.html',
 						'popup.html',
 						'manifest.json',
 						'img/*',
 						'components/jquery/jquery.js',
 						'components/requirejs/require.js',
-						'components/urljs/url-min.js',
 						'lib/twitter-bootstrap/css/bootstrap.css',
 						'lib/twitter-bootstrap/img/*',
 						'lib/twitter-bootstrap/js/bootstrap.min.js'
