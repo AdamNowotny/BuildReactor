@@ -11,6 +11,12 @@ define([
 			expect(build.id).toBe('build_id');
 		});
 
+		it('should require id', function () {
+			expect(function () {
+				var build = new Build();
+			}).toThrow();
+		});
+
 		it('should set default properties', function () {
 			var build = new Build('id');
 

@@ -86,6 +86,13 @@ define([
 
 			describe('updateAll', function () {
 
+				it('should update plans', function () {
+					service.updateAll();
+
+					expect(mockBambooPlanUpdate).toHaveBeenCalled();
+					expect(mockBambooPlanUpdate.callCount).toBe(settings.projects.length);
+				});
+
 				it('should signal when all plan updates finished', function () {
 					mockBambooPlanUpdate.andReturn(updateSuccessSignal);
 					var completed = false;
@@ -138,65 +145,6 @@ define([
 				});
 			});
 
-			it('should signal errorThrown if plan update failed', function () {
-				spyOnSignal(service.on.errorThrown);
-				mockBambooPlanUpdate.andCallFake(function () {
-					this.on.errorThrown.dispatch({ message: 'ajax error' });
-					return updateErrorSignal;
-				});
-
-				service.update();
-
-				expect(service.on.errorThrown).toHaveBeenDispatched(settings.projects.length);
-			});
-
-
-			it('should update plans', function () {
-				service.updateAll();
-
-				expect(mockBambooPlanUpdate).toHaveBeenCalled();
-			});
-
-			it('should signal brokenBuild if plan signaled', function () {
-				spyOnSignal(service.on.brokenBuild);
-				service.update();
-				var plan = service.builds['PROJECT1-PLAN1'];
-
-				plan.on.broken.dispatch(plan);
-
-				expect(service.on.brokenBuild).toHaveBeenDispatched(1);
-			});
-
-			it('should signal fixedBuild if plan signaled', function () {
-				spyOnSignal(service.on.fixedBuild);
-				service.update();
-				var plan = service.builds['PROJECT1-PLAN1'];
-
-				plan.on.fixed.dispatch(plan);
-
-				expect(service.on.fixedBuild).toHaveBeenDispatched(1);
-			});
-
-			it('should signal startedBuild if plan signaled', function () {
-				spyOnSignal(service.on.startedBuild);
-				service.update();
-				var plan = service.builds['PROJECT1-PLAN1'];
-
-				plan.on.started.dispatch(plan);
-
-				expect(service.on.startedBuild).toHaveBeenDispatched(1);
-			});
-
-			it('should signal finishedBuild if plan signaled', function () {
-				spyOnSignal(service.on.finishedBuild);
-				service.update();
-				var plan = service.builds['PROJECT1-PLAN1'];
-
-				plan.on.finished.dispatch(plan);
-
-				expect(service.on.finishedBuild).toHaveBeenDispatched(1);
-			});
-
 			describe('projects', function () {
 
 				it('should use url and credentials when getting available projects', function () {
@@ -221,6 +169,20 @@ define([
 
 					expect(response.error).not.toBeDefined();
 					expect(response.projects).toBeDefined();
+				});
+
+				it('should return project', function () {
+					var response;
+
+					service.projects([]).addOnce(function (result) {
+						response = result;
+					});
+
+					expect(response.projects.items[0].id).toBe('PROJECT1-PLAN1');
+					expect(response.projects.items[0].name).toBe('Plan 1');
+					expect(response.projects.items[0].group).toBe('Project 1');
+					expect(response.projects.items[0].enabled).toBe(true);
+					expect(response.projects.items[0].selected).toBe(false);
 				});
 
 				it('should return error', function () {

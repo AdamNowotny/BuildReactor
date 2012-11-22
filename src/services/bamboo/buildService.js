@@ -59,65 +59,13 @@ define([
 			this.settings.projects.forEach(function (planKey) {
 				if (!self.builds.hasOwnProperty(planKey)) {
 					var plan = new BambooPlan(self.settings, planKey);
-					plan.on.broken.add(onBuildBroken, self);
-					plan.on.fixed.add(onBuildFixed, self);
-					plan.on.started.add(onBuildStarted, self);
-					plan.on.finished.add(onBuildFinished, self);
-					plan.on.errorThrown.add(onPlanError, self);
 					self.builds[planKey] = plan;
+					self.observeBuild(plan);
 				}
 				self.builds[planKey].update().addOnce(planFinished, this);
 			});
 		}
 		return completed;
-	};
-
-	var onBuildBroken = function (plan) {
-		var buildEvent = {
-			serviceName: this.name,
-			buildName: plan.name,
-			group: plan.projectName,
-			url: plan.url,
-			icon: this.settings.icon
-		};
-		this.on.brokenBuild.dispatch(buildEvent);
-	};
-
-	var onBuildFixed = function (plan) {
-		var buildEvent = {
-			serviceName: this.name,
-			buildName: plan.name,
-			group: plan.projectName,
-			url: plan.url,
-			icon: this.settings.icon
-		};
-		this.on.fixedBuild.dispatch(buildEvent);
-	};
-
-	var onBuildStarted = function (plan) {
-		var buildEvent = {
-			serviceName: this.name,
-			buildName: plan.name,
-			group: plan.projectName,
-			url: plan.url,
-			icon: this.settings.icon
-		};
-		this.on.startedBuild.dispatch(buildEvent);
-	};
-
-	var onBuildFinished = function (plan) {
-		var buildEvent = {
-			serviceName: this.name,
-			buildName: plan.name,
-			group: plan.projectName,
-			url: plan.url,
-			icon: this.settings.icon
-		};
-		this.on.finishedBuild.dispatch(buildEvent);
-	};
-
-	var onPlanError = function (plan) {
-		this.on.errorThrown.dispatch(plan);
 	};
 
 	var createTemplateData = function (response, selectedPlans) {
@@ -128,11 +76,11 @@ define([
 			for (var planIndex = 0; planIndex < project.plans.plan.length; planIndex++) {
 				var plan = project.plans.plan[planIndex];
 				var item = {
-					id: plan.id,
+					id: plan.key,
 					name: plan.shortName,
 					group: project.name,
 					enabled: plan.enabled,
-					selected: selectedPlans.indexOf(plan.id) > -1
+					selected: selectedPlans.indexOf(plan.key) > -1
 				};
 				items.push(item);
 			}
