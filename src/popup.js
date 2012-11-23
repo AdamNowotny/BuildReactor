@@ -26,7 +26,7 @@ require([
 
 	'use strict';
 	
-	chrome.extension.sendMessage({ name: "serviceStateRequest" }, function (response) {
+	chrome.extension.sendMessage({ name: 'activeProjects' }, function (response) {
 		popupController.show(response.serviceState);
 	});
 });

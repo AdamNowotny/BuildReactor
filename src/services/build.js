@@ -1,10 +1,11 @@
 define(['signals'], function (Signal) {
 	'use strict';
 
-	var Build = function (id) {
+	var Build = function (id, settings) {
 		if (!id) {
 			throw { name: 'ArgumentNull', message: 'id is required'};
 		}
+		this.settings = settings;
 		this.id = id;
 		this.name = null;
 		this.projectName = null;

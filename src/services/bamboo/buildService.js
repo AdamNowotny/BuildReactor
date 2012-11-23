@@ -12,6 +12,7 @@ define([
 
 	var BambooBuildService = function (settings) {
 		$.extend(this, new BuildService(settings));
+		this.Build = BambooPlan;
 	};
 
 	BambooBuildService.settings = function () {
@@ -38,34 +39,6 @@ define([
 		});
 		plansRequest.projects();
 		return receivedProjects;
-	};
-
-	BambooBuildService.prototype.updateAll = function () {
-		
-		function planFinished() {
-			remaining--;
-			if (remaining === 0) {
-				completed.dispatch();
-			}
-		}
-
-		var self = this;
-		var completed = new Signal();
-		completed.memorize = true;
-		var remaining = this.settings.projects.length;
-		if (remaining === 0) {
-			completed.dispatch();
-		} else {
-			this.settings.projects.forEach(function (planKey) {
-				if (!self.builds.hasOwnProperty(planKey)) {
-					var plan = new BambooPlan(self.settings, planKey);
-					self.builds[planKey] = plan;
-					self.observeBuild(plan);
-				}
-				self.builds[planKey].update().addOnce(planFinished, this);
-			});
-		}
-		return completed;
 	};
 
 	var createTemplateData = function (response, selectedPlans) {

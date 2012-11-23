@@ -21,7 +21,7 @@ define([
 				serviceController.run();
 			});
 			break;
-		case 'serviceStateRequest':
+		case 'activeProjects':
 			sendResponse({
 				serviceState: serviceController.activeProjects()
 			});

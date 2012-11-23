@@ -1,9 +1,10 @@
 define([
+	'services/build',
 	'services/PoolingService',
 	'signals',
 	'jquery',
 	'amdUtils/object/values'
-], function (PoolingService, Signal, $, values) {
+], function (Build, PoolingService, Signal, $, values) {
 	'use strict';
 
 	function BuildService(settings) {
@@ -17,6 +18,7 @@ define([
 			startedBuild: new Signal(),
 			finishedBuild: new Signal()
 		});
+		this.Build = Build;
 	}
 
 	var activeProjects = function () {
@@ -33,6 +35,34 @@ define([
 			name: this.name,
 			items: projectsInfo
 		};
+	};
+
+	var updateAll = function () {
+		
+		function buildUpdateCompleted() {
+			remaining--;
+			if (remaining === 0) {
+				completed.dispatch();
+			}
+		}
+
+		var self = this;
+		var completed = new Signal();
+		completed.memorize = true;
+		var remaining = this.settings.projects ? this.settings.projects.length : 0;
+		if (remaining === 0) {
+			completed.dispatch();
+		} else {
+			this.settings.projects.forEach(function (buildId) {
+				if (!self.builds.hasOwnProperty(buildId)) {
+					var build = new self.Build(buildId, self.settings);
+					self.builds[buildId] = build;
+					self.observeBuild(build);
+				}
+				self.builds[buildId].update().addOnce(buildUpdateCompleted, this);
+			});
+		}
+		return completed;
 	};
 
 	var observeBuild = function (build) {
@@ -80,7 +110,8 @@ define([
 
 	BuildService.prototype = {
 		activeProjects: activeProjects,
-		observeBuild: observeBuild
+		observeBuild: observeBuild,
+		updateAll: updateAll
 	};
 
 	return BuildService;

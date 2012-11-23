@@ -8,9 +8,8 @@ define([
 
 	'use strict';
 
-	var BambooPlan = function (settings, id) {
-		$.extend(this, new Build(id));
-		this.settings = settings;
+	var BambooPlan = function (id, settings) {
+		$.extend(this, new Build(id, settings));
 	};
 
 	BambooPlan.prototype.update = function () {

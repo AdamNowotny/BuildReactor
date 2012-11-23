@@ -25,7 +25,7 @@ define([
 				latestPlanResultJson = JSON.parse(readFixtures('bamboo/latestPlanResult.json'));
 				mockPlan = spyOn(BambooRequest.prototype, 'plan');
 				mockLatestResult = spyOn(BambooRequest.prototype, 'latestPlanResult');
-				plan = new BambooPlan(settings, 'KEY');
+				plan = new BambooPlan('KEY', settings);
 			});
 
 			describe('update plan details', function () {

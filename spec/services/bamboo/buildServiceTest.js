@@ -18,10 +18,7 @@ define([
 			var service;
 			var settings;
 			var mockBambooRequestProjects;
-			var mockBambooPlanUpdate;
 			var mockTimer;
-			var updateSuccessSignal;
-			var updateErrorSignal;
 			
 			beforeEach(function () {
 				settings = {
@@ -36,31 +33,9 @@ define([
 				mockBambooRequestProjects = spyOn(BambooRequest.prototype, 'projects').andCallFake(function () {
 					this.on.responseReceived.dispatch(projectsJson);
 				});
-				mockBambooPlanUpdate = spyOn(BambooPlan.prototype, 'update').andCallFake(function () {
-					switch (this.id) {
-					case 'PROJECT1-PLAN1':
-						this.projectName = 'Project 1';
-						this.name = 'Plan 1';
-						break;
-					case 'PROJECT2-PLAN2':
-						this.projectName = 'Project 2';
-						this.name = 'Plan 2';
-						break;
-					}
-					var finishedUpdate = new signals.Signal();
-					finishedUpdate.memorize = true;
-					finishedUpdate.dispatch();
-					return finishedUpdate;
-				});
 				mockTimer = spyOn(Timer.prototype, 'start');
 				spyOn(PoolingService.prototype, 'start');
 				spyOn(PoolingService.prototype, 'stop');
-				updateSuccessSignal = new signals.Signal();
-				updateSuccessSignal.memorize = true;
-				updateSuccessSignal.dispatch({ result: {} });
-				updateErrorSignal = new signals.Signal();
-				updateErrorSignal.memorize = true;
-				updateErrorSignal.dispatch(false, { message: 'error message' });
 			});
 
 			it('should provide default settings', function () {
@@ -82,67 +57,6 @@ define([
 				expect(service.on.updated).toBeDefined();
 				expect(service.on.startedBuild).toBeDefined();
 				expect(service.on.finishedBuild).toBeDefined();
-			});
-
-			describe('updateAll', function () {
-
-				it('should update plans', function () {
-					service.updateAll();
-
-					expect(mockBambooPlanUpdate).toHaveBeenCalled();
-					expect(mockBambooPlanUpdate.callCount).toBe(settings.projects.length);
-				});
-
-				it('should signal when all plan updates finished', function () {
-					mockBambooPlanUpdate.andReturn(updateSuccessSignal);
-					var completed = false;
-
-					service.updateAll().addOnce(function () {
-						completed = true;
-					});
-
-					expect(completed).toBe(true);
-				});
-				
-				it('should signal when no plans selected', function () {
-					settings.projects = [];
-					mockBambooPlanUpdate.andReturn(updateSuccessSignal);
-					service = new BuildService(settings);
-					var completed = false;
-
-					service.updateAll().addOnce(function () {
-						completed = true;
-					});
-
-					expect(completed).toBe(true);
-				});
-
-				it('should signal updated when all plan updates finished with error', function () {
-					mockBambooPlanUpdate.andReturn(updateErrorSignal);
-					var completed = false;
-
-					service.updateAll().addOnce(function () {
-						completed = true;
-					});
-
-					expect(completed).toBe(true);
-				});
-
-				it('should not signal when some plans still not finished', function () {
-					var plansUpdated = 0;
-					mockBambooPlanUpdate.andCallFake(function () {
-						plansUpdated++;
-						expect(completed).toBe(false);
-						return updateSuccessSignal;
-					});
-					var completed = false;
-
-					service.updateAll().addOnce(function () {
-						completed = true;
-					});
-
-					expect(completed).toBe(true);
-				});
 			});
 
 			describe('projects', function () {

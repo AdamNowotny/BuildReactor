@@ -10,6 +10,7 @@ define([
 
 		var TeamcityBuildService = function (settings) {
 			$.extend(this, new BuildService(settings));
+			this.Build = Build;
 		};
 		
 		TeamcityBuildService.settings = function () {
@@ -37,30 +38,6 @@ define([
 			return completed;
 		};
 
-		var updateAll = function () {
-			var completed = new Signal();
-			completed.memorize = true;
-			if (!this.settings.projects) {
-				completed.dispatch();
-				return completed;
-			}
-			var that = this;
-			this.settings.projects.forEach(function (id, index) {
-				var build;
-				if (that.builds[id]) {
-					build = that.builds[id];
-				} else {
-					build = new Build(id, that.settings);
-					that.builds[id] = build;
-					that.observeBuild(build);
-				}
-				build.update().addOnce(function () {
-					completed.dispatch();
-				});
-			});
-			return completed;
-		};
-
 		function createTemplateData(buildTypesJson, selectedProjects) {
 			
 			if (!buildTypesJson.buildType) {
@@ -82,8 +59,7 @@ define([
 		}
 
 		TeamcityBuildService.prototype = {
-			projects: projects,
-			updateAll: updateAll
+			projects: projects
 		};
 
 		return TeamcityBuildService;

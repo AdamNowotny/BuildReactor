@@ -7,8 +7,7 @@ define([
 	'use strict';
 
 	var TeamcityBuild = function (id, settings) {
-		$.extend(this, new Build(id));
-		this.settings = settings;
+		$.extend(this, new Build(id, settings));
 	};
 
 	var update = function () {
