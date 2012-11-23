@@ -103,10 +103,8 @@ The packaged version uses:
  * [JS-Signals](http://millermedeiros.github.com/js-signals/)
  * [amd-utils](http://millermedeiros.github.com/amd-utils/)
  * [jQuery](http://jquery.com/)
- * [jQuery Tools](http://jquerytools.org/)
  * [Twitter bootstrap](http://twitter.github.com/bootstrap/)
  * [Handlebars](http://handlebarsjs.com/) templates through [require-handlebars-plugin](https://github.com/SlexAxton/require-handlebars-plugin)
- * [URL.js](https://github.com/ericf/urljs)
 
 The build and tests use:
  * [node.js](http://nodejs.org/)
