@@ -8,50 +8,73 @@ define([
 		
 		describe('common/projectView', function () {
 
-			var json = {
-				items: [
-					{
-						id: 0,
-						name: 'CruiseControl.NET',
-						group: 'cc',
-						enabled: true,
-						selected: true
-					},
-					{
-						id: 1,
-						name: 'ccTray',
-						group: 'cc',
-						enabled: true,
-						selected: false
-					},
-					{
-						id: 2,
-						name: 'old ccTray',
-						group: 'cc',
-						enabled: false,
-						selected: false
-					},
-					{
-						id: 3,
-						name: 'Project2-1',
-						group: 'group2',
-						enabled: true,
-						selected: false
-					},
-					{
-						id: 4,
-						name: 'Project3-1',
-						group: 'group3',
-						enabled: true,
-						selected: true
-					}
-				]
-			};
+			var json;
 
 			beforeEach(function () {
-				jasmine.getFixtures().set('<div class="container">content</div>');
+				json = {
+					primaryView: 'All',
+					views: [
+						{
+							name: 'All disabled',
+							items: [ 2 ]
+						},
+						{
+							name: 'All',
+							items: [ 0, 1, 2, 3, 4 ]
+						},
+						{
+							name: 'Unstable',
+							items: [ 3, 4 ]
+						}
+					],
+					items: [
+						{
+							id: 0,
+							name: 'CruiseControl.NET',
+							group: 'cc',
+							enabled: true,
+							selected: true
+						},
+						{
+							id: 1,
+							name: 'ccTray',
+							group: 'cc',
+							enabled: true,
+							selected: false
+						},
+						{
+							id: 2,
+							name: 'old ccTray',
+							group: 'cc',
+							enabled: false,
+							selected: false
+						},
+						{
+							id: 3,
+							name: 'Project2-1',
+							group: 'group2',
+							enabled: true,
+							selected: false
+						},
+						{
+							id: 4,
+							name: 'Project3-1',
+							group: 'group3',
+							enabled: true,
+							selected: true
+						}
+					]
+				};
+				jasmine.getFixtures().set('<div class="container" style="display: none">content</div>');
 				projectView.initialize('container');
 			});
+
+			function getViewByName(viewName) {
+				var view = json.views.filter(function (view, index) {
+					return view.name === json.primaryView;
+				});
+				return view.length ? view[0] : null;
+			}
 
 			it('should hide view', function () {
 				projectView.hide();
@@ -68,6 +91,42 @@ define([
 				expect($('.container')).toBeVisible();
 			});
 			
+			it('should show available views', function () {
+				projectView.show(json);
+
+				expect($('.view-selection')).toBeVisible();
+				expect($('.view-selection option').length).toBe(json.views.length);
+			});
+
+			it('should select primary view', function () {
+				projectView.show(json);
+
+				expect($('.view-selection select').val()).toBe(json.primaryView);
+			});
+
+			it('should show primary view', function () {
+				projectView.show(json);
+
+				expect($('.project-item').length).toBe(getViewByName(json.primaryView).items.length);
+			});
+
+			it('should switch to selected view', function () {
+				projectView.show(json);
+				
+				$('.view-selection select').val('Unstable').change();
+
+				expect($('.view-selection select').val()).toBe('Unstable');
+				expect($('.project-item:visible').length).toBe(2);
+			});
+
+			it('should not show view selection if no views defined', function () {
+				json.primaryView = undefined;
+				json.views = undefined;
+				projectView.show(json);
+
+				expect($('.view-selection')).not.toBeVisible();
+			});
+
 			it('should show groups', function () {
 				projectView.show(json);
 
@@ -198,6 +257,28 @@ define([
 				expect(state.projects[0]).toBe(0);
 				expect(state.projects[1]).toBe(4);
 			});
+
+			it('should get selected keys from all views', function () {
+				projectView.show(json);
+				$('.view-selection select').val('Unstable').change();
+
+				var state = projectView.get();
+
+				expect(state.projects.length).toBe(2);
+				expect(state.projects[0]).toBe(0);
+				expect(state.projects[1]).toBe(4);
+				expect($('.project-item:visible input:checked').length).toBe(1);
+			});
+
+			it('should hide groups not in view', function () {
+				json.primaryView = 'Unstable';
+				
+				projectView.show(json);
+
+				expect($('.group:visible').length).toBe(2);
+				expect($('.group:visible .accordion-heading')).not.toHaveText('cc');
+			});
+
 		});
 	}
 );

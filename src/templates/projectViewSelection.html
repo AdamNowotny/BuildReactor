@@ -1,0 +1,21 @@
+﻿{{!
+{
+	'name' : 'projectViewSelection',
+	'description' : 'View selection if service supports it',
+	'styles' : ['css/projectView.css']
+}
+}}
+<div class="view-selection">
+	<form class="form-horizontal" action="">
+		<div class="control-group">
+			<label class="control-label" for="inputEmail">{{$ "projectView_view"}}</label>
+			<div class="controls">
+				<select class="span3">
+					{{#each views}}
+					<option value="{{name}}">{{name}}</option>
+					{{/each}}
+				</select>
+			</div>
+		</div>
+	</form>
+</div>

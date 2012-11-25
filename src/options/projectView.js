@@ -1,24 +1,40 @@
 define([
 	'jquery',
 	'hbs!templates/projectView',
+	'hbs!templates/projectViewSelection',
 	'bootstrap'
-], function ($, projectViewTemplate) {
+], function ($, projectViewTemplate, projectViewSelectionTemplate) {
 
 	'use strict';
 	
 	var rootElement;
+	var view;
 
 	var initialize = function (rootClassName) {
 		rootElement = $('.' + rootClassName);
 	};
 
 	var show = function (json) {
-		var templateJson = createModel(json),
-			html = projectViewTemplate(templateJson);
+		updateView(json, json.primaryView);
+	};
+
+	var updateView = function (json, viewName) {
+		view = viewName;
+		var templateJson = createModel(json);
+		var html = projectViewSelectionTemplate(templateJson);
+		html += projectViewTemplate(templateJson);
 		rootElement.html(html);
-		rootElement.collapse({ toggle: false});
+		rootElement.find('.view-selection').toggle(!!json.views);
+		rootElement.find('.view-selection select').val(viewName);
+		rootElement.find('.view-selection select').change(function (event) {
+			var viewName = $(event.target).val();
+			updateView(json, viewName);
+		});
+		rootElement.collapse({ toggle: false });
 		expandGroups(json.items);
+		hideItemsNotInView(json.views, viewName);
 		rootElement.show();
+		hideGroupsWithNoVisibleItems();
 	};
 
 	var expandGroups = function (items) {
@@ -30,13 +46,35 @@ define([
 		}
 	};
 
+	var hideGroupsWithNoVisibleItems = function () {
+		rootElement.find('.group').each(function (i, group) {
+			var items = $(this).find('.project-item:visible').length;
+			if (items === 0) {
+				$(this).hide();
+			}
+		});
+	};
+
+	var hideItemsNotInView = function (views, viewName) {
+		if (!views) {
+			return;
+		}
+		var view = views.filter(function (view, i) {
+			return view.name === viewName;
+		});
+		var viewItems = view.length ? view[0].items : null;
+		$('.project-item').each(function (i, item) {
+			$(this).toggle(viewItems.indexOf($(this).data('id')) > -1);
+		});
+	};
+
 	var createModel = function (json) {
 		sortBy('group', json.items);
-		var groups = [],
-			groupNames = getGroups(json.items);
+		var groups = [];
+		var groupNames = getGroups(json.items);
 		for (var i = 0; i < groupNames.length; i++) {
-			var groupName = groupNames[i],
-				itemsForGroup = getItemsForGroup(json.items, groupName);
+			var groupName = groupNames[i];
+			var itemsForGroup = getItemsForGroup(json.items, groupName);
 			groups.push({
 				items: itemsForGroup,
 				name: groupName,
@@ -44,7 +82,8 @@ define([
 			});
 		}
 		return {
-			groups: groups
+			groups: groups,
+			views: json.views
 		};
 	};
 

@@ -7,8 +7,8 @@
 }}
 <div class="accordion" id="projects-accordion">
 	{{#each groups}}
-	<div class="accordion-group">
-		<div class="accordion-heading project-group">
+	<div class="accordion-group group" data-id="{{id}}">
+		<div class="accordion-heading">
 			<a class="accordion-toggle" data-toggle="collapse" href="#project-group-{{id}}">{{#if name}}{{name}}{{else}}{{$ "projectView_noGroupName"}}{{/if}}</a>
 		</div>
 		<div class="accordion-body collapse" id="project-group-{{id}}">

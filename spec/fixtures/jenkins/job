@@ -1,0 +1,292 @@
+{
+  "actions" : [
+    {
+      
+    },
+    {
+      
+    },
+    {
+      
+    },
+    {
+      
+    }
+  ],
+  "description" : "CI Build for Gerrit Code Review \r\nhttp://code.google.com/p/gerrit",
+  "displayName" : "gerrit_master",
+  "displayNameOrNull" : null,
+  "name" : "gerrit_master",
+  "url" : "http://ci.jenkins-ci.org/job/gerrit_master/",
+  "buildable" : true,
+  "builds" : [
+    {
+      "number" : 2898,
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2898/"
+    },
+    {
+      "number" : 2897,
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2897/"
+    },
+    {
+      "number" : 2896,
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2896/"
+    },
+    {
+      "number" : 2895,
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2895/"
+    },
+    {
+      "number" : 2894,
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2894/"
+    },
+    {
+      "number" : 2893,
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2893/"
+    },
+    {
+      "number" : 2892,
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2892/"
+    },
+    {
+      "number" : 2891,
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2891/"
+    },
+    {
+      "number" : 2890,
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2890/"
+    },
+    {
+      "number" : 2889,
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2889/"
+    },
+    {
+      "number" : 2888,
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2888/"
+    },
+    {
+      "number" : 2887,
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2887/"
+    },
+    {
+      "number" : 2886,
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2886/"
+    },
+    {
+      "number" : 2885,
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2885/"
+    },
+    {
+      "number" : 2884,
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2884/"
+    }
+  ],
+  "color" : "red",
+  "firstBuild" : {
+    "number" : 741,
+    "url" : "http://ci.jenkins-ci.org/job/gerrit_master/741/"
+  },
+  "healthReport" : [
+    {
+      "description" : "Build stability: All recent builds failed.",
+      "iconUrl" : "health-00to19.png",
+      "score" : 0
+    }
+  ],
+  "inQueue" : false,
+  "keepDependencies" : false,
+  "lastBuild" : {
+    "number" : 2898,
+    "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2898/"
+  },
+  "lastCompletedBuild" : {
+    "number" : 2898,
+    "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2898/"
+  },
+  "lastFailedBuild" : {
+    "number" : 2898,
+    "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2898/"
+  },
+  "lastStableBuild" : {
+    "number" : 741,
+    "url" : "http://ci.jenkins-ci.org/job/gerrit_master/741/"
+  },
+  "lastSuccessfulBuild" : {
+    "number" : 741,
+    "url" : "http://ci.jenkins-ci.org/job/gerrit_master/741/"
+  },
+  "lastUnstableBuild" : null,
+  "lastUnsuccessfulBuild" : {
+    "number" : 2898,
+    "url" : "http://ci.jenkins-ci.org/job/gerrit_master/2898/"
+  },
+  "nextBuildNumber" : 2899,
+  "property" : [
+    {
+      
+    },
+    {
+      
+    },
+    {
+      
+    }
+  ],
+  "queueItem" : null,
+  "concurrentBuild" : false,
+  "downstreamProjects" : [
+    
+  ],
+  "scm" : {
+    
+  },
+  "upstreamProjects" : [
+    
+  ],
+  "modules" : [
+    {
+      "name" : "com.google.gerrit:gerrit-antlr",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-antlr/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - ANTLR"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-cache-h2",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-cache-h2/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - Guava + H2 caching"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-common",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-common/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - Common"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-ehcache",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-ehcache/",
+      "color" : "disabled",
+      "displayName" : "Gerrit Code Review - Ehcache Bindings"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-extension-api",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-extension-api/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - Extension API"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-gwtdebug",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-gwtdebug/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - GWT UI Debugging Support"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-gwtui",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-gwtui/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - GWT UI"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-httpd",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-httpd/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - HTTPd"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-launcher",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-launcher/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - Launcher"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-main",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-main/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - Main"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-openid",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-openid/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - OpenID servlet and RPC"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-parent",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-parent/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - Parent"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-patch-commonsnet",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-patch-commonsnet/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - Patch commons-net"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-patch-jgit",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-patch-jgit/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - Patch JGit"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-pgm",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-pgm/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - Pgm"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-plugin-api",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-plugin-api/",
+      "color" : "disabled",
+      "displayName" : "Gerrit Code Review - Plugin API"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-plugin-archetype",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-plugin-archetype/",
+      "color" : "disabled",
+      "displayName" : "Gerrit Code Review - Plugin Archetype"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-prettify",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-prettify/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - Prettify"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-reviewdb",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-reviewdb/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - ReviewDB"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-server",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-server/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - Server"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-sshd",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-sshd/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - SSHd"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-util-cli",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-util-cli/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - Utility - CLI"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-util-ssl",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-util-ssl/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - Utility - SSL"
+    },
+    {
+      "name" : "com.google.gerrit:gerrit-war",
+      "url" : "http://ci.jenkins-ci.org/job/gerrit_master/com.google.gerrit$gerrit-war/",
+      "color" : "blue",
+      "displayName" : "Gerrit Code Review - WAR"
+    }
+  ]
+}
