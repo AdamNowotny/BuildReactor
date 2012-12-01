@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Projects>
-  <Project name="OnlineOrderingHtml5CI :: Build" activity="Building" lastBuildStatus="Failure" lastBuildLabel="0.7" lastBuildTime="2012-10-25T14:40:15" webUrl="http://10.1.24.77:8153/go/pipelines/OnlineOrderingHtml5CI/8/Build/1" />
-  <Project name="OnlineOrderingHtml5CI :: Build :: Build" activity="Building" lastBuildStatus="Failure" lastBuildLabel="0.7" lastBuildTime="2012-10-25T14:46:23" webUrl="http://10.1.24.77:8153/go/tab/build/detail/OnlineOrderingHtml5CI/8/Build/1/Build" />
-  <Project name="OnlineOrderingHtml5CI :: UnitTest" activity="Sleeping" lastBuildStatus="Failure" lastBuildLabel="0.6" lastBuildTime="2012-10-25T14:35:15" webUrl="http://10.1.24.77:8153/go/pipelines/OnlineOrderingHtml5CI/6/UnitTest/1">
+  <Project name="Project :: Build" activity="Building" lastBuildStatus="Failure" lastBuildLabel="0.7" lastBuildTime="2012-10-25T14:40:15" webUrl="http://example.com/go/pipelines/Project/8/Build/1" />
+  <Project name="Project :: Build :: Build" activity="Building" lastBuildStatus="Failure" lastBuildLabel="0.7" lastBuildTime="2012-10-25T14:46:23" webUrl="http://example.com/go/tab/build/detail/Project/8/Build/1/Build" />
+  <Project name="Project :: UnitTest" activity="Sleeping" lastBuildStatus="Failure" lastBuildLabel="0.6" lastBuildTime="2012-10-25T14:35:15" webUrl="http://example.com/go/pipelines/Project/6/UnitTest/1">
     <messages>
-      <message text="DOMINOS\Jean.Damore-v" kind="Breakers" />
+      <message text="DOMAIN\Adam.Nowotny" kind="Breakers" />
     </messages>
   </Project>
-  <Project name="OnlineOrderingHtml5CI :: UnitTest :: UnitTest" activity="Sleeping" lastBuildStatus="Failure" lastBuildLabel="0.6" lastBuildTime="2012-10-25T14:35:15" webUrl="http://10.1.24.77:8153/go/tab/build/detail/OnlineOrderingHtml5CI/6/UnitTest/1/UnitTest">
+  <Project name="Project :: UnitTest :: UnitTest" activity="Sleeping" lastBuildStatus="Failure" lastBuildLabel="0.6" lastBuildTime="2012-10-25T14:35:15" webUrl="http://example.com/go/tab/build/detail/Project/6/UnitTest/1/UnitTest">
     <messages>
-      <message text="DOMINOS\Jean.Damore-v" kind="Breakers" />
+      <message text="DOMAIN\Adam.Nowotny" kind="Breakers" />
     </messages>
   </Project>
 </Projects>
