@@ -4,46 +4,19 @@ define([
 	'./ccRequest',
 	'./cctrayProject',
 	'amdUtils/array/contains',
-	'amdUtils/object/values',
 	'common/joinUrl',
-	'services/poolingService'
-], function ($, Signal, ccRequest, CCTrayProject, contains, values, joinUrl, PoolingService) {
+	'services/buildService'
+], function ($, Signal, ccRequest, CCTrayProject, contains, joinUrl, BuildService) {
 
 	'use strict';
 
 	var CCBuildService = function (settings) {
-		$.extend(this, new PoolingService(settings));
-		this.name = settings.name;
-		this.builds = {};
-		$.extend(this.on, {
-			errorThrown: new Signal(),
-			brokenBuild: new Signal(),
-			fixedBuild: new Signal(),
-			startedBuild: new Signal(),
-			finishedBuild: new Signal()
-		});
-		this.defaultSettings = CCBuildService.settings;
-		this.settings = this._createSettings(settings);
+		$.extend(this, new BuildService(settings));
+		this.Build = CCTrayProject;
+		this.updateAll = updateAll;
+		this.cctrayLocation = '';
 	};
-
 		
-	CCBuildService.prototype._createSettings = function (settings) {
-		var newSettings = this.defaultSettings();
-		newSettings.name = settings.name;
-		newSettings.url = joinUrl(settings.url, this.cctrayLocation());
-		newSettings.updateInterval = settings.updateInterval;
-		newSettings.projects = settings.projects;
-		newSettings.icon = settings.icon;
-		newSettings.logo = settings.logo;
-		newSettings.username = settings.username;
-		newSettings.password = settings.password;
-		return newSettings;
-	};
-
-	CCBuildService.prototype.cctrayLocation = function () {
-		return '';
-	};
-
 	CCBuildService.settings = function () {
 		return {
 			typeName: 'CCTray Generic',
@@ -55,7 +28,7 @@ define([
 		};
 	};
 
-	CCBuildService.prototype.updateAll = function () {
+	var updateAll = function () {
 		function processResponse(projects) {
 			$(projects)
 				.find('Project')
@@ -76,10 +49,7 @@ define([
 					var project = self.builds[projectInfo.name];
 					if (!project) {
 						project = new CCTrayProject(projectInfo.name, self.settings);
-						project.on.broken.add(self.onBuildBroken, self);
-						project.on.fixed.add(self.onBuildFixed, self);
-						project.on.started.add(self.onBuildStarted, self);
-						project.on.finished.add(self.onBuildFinished, self);
+						self.observeBuild(project);
 						self.builds[projectInfo.name] = project;
 					}
 					project.update(projectInfo);
@@ -88,8 +58,13 @@ define([
 
 		var completed = new Signal();
 		completed.memorize = true;
-		var self = this,
-			request = ccRequest.projects(this.settings);
+		var self = this;
+		var requestSettings = {
+			url: joinUrl(this.settings.url, this.cctrayLocation),
+			username: this.settings.username,
+			password: this.settings.password
+		};
+		var request = ccRequest.projects(requestSettings);
 		request.responseReceived.addOnce(function (projectsResponse) {
 			processResponse(projectsResponse);
 			completed.dispatch();
@@ -101,54 +76,15 @@ define([
 		return completed;
 	};
 
-	CCBuildService.prototype.onBuildBroken = function (project) {
-		var buildEvent = {
-			serviceName: this.name,
-			buildName: project.name,
-			group: project.projectName,
-			url: project.webUrl,
-			icon: this.settings.icon
-		};
-		this.on.brokenBuild.dispatch(buildEvent);
-	};
-
-	CCBuildService.prototype.onBuildFixed = function (project) {
-		var buildEvent = {
-			serviceName: this.name,
-			buildName: project.name,
-			group: project.projectName,
-			url: project.webUrl,
-			icon: this.settings.icon
-		};
-		this.on.fixedBuild.dispatch(buildEvent);
-	};
-
-	CCBuildService.prototype.onBuildStarted = function (project) {
-		var buildEvent = {
-			serviceName: this.name,
-			buildName: project.name,
-			group: project.projectName,
-			url: project.webUrl,
-			icon: this.settings.icon
-		};
-		this.on.startedBuild.dispatch(buildEvent);
-	};
-
-	CCBuildService.prototype.onBuildFinished = function (project) {
-		var buildEvent = {
-			serviceName: this.name,
-			buildName: project.name,
-			group: project.projectName,
-			url: project.webUrl,
-			icon: this.settings.icon
-		};
-		this.on.finishedBuild.dispatch(buildEvent);
-	};
-
-	CCBuildService.prototype.projects = function (selectedPlans) {
+	var projects = function (selectedPlans) {
 		var receivedProjects = new Signal();
 		receivedProjects.memorize = true;
-		var plansRequest = ccRequest.projects(this.settings);
+		var requestSettings = {
+			url: joinUrl(this.settings.url, this.cctrayLocation),
+			username: this.settings.username,
+			password: this.settings.password
+		};
+		var plansRequest = ccRequest.projects(requestSettings);
 		plansRequest.responseReceived.addOnce(function (response) {
 			var templateData = createTemplateData(response, selectedPlans);
 			receivedProjects.dispatch({
@@ -161,22 +97,6 @@ define([
 			});
 		});
 		return receivedProjects;
-	};
-
-	CCBuildService.prototype.activeProjects = function () {
-		var projectsInfo = values(this.builds).map(function (p) {
-			return {
-				name: p.name,
-				group: p.projectName,
-				isBroken: p.isBroken,
-				url: p.webUrl,
-				isBuilding: p.isRunning
-			};
-		});
-		return {
-			name: this.name,
-			items: projectsInfo
-		};
 	};
 
 	function createTemplateData(projectsXml, selectedProjects) {
@@ -200,6 +120,10 @@ define([
 				.toArray()
 		};
 	}
+
+	CCBuildService.prototype = {
+		projects: projects
+	};
 
 	return CCBuildService;
 });

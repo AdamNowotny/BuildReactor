@@ -1,16 +1,12 @@
-define(['services/cctray/buildService'], function (CCTrayBuildService) {
+define(['services/cctray/buildService', 'jquery'], function (CCTrayBuildService, $) {
 
 		'use strict';
 
 		var CcnetBuildService = function (settings) {
-			this.cctrayLocation = function () {
-				return 'XmlStatusReport.aspx';
-			};
-			CCTrayBuildService.apply(this, [settings]);
+			$.extend(this, new CCTrayBuildService(settings));
+			this.cctrayLocation = 'XmlStatusReport.aspx';
 		};
 		
-		CcnetBuildService.prototype = CCTrayBuildService.prototype;
-
 		CcnetBuildService.settings = function () {
 			return {
 				typeName: 'CruiseControl.NET',

@@ -1,16 +1,12 @@
-define(['services/cctray/buildService'], function (CCTrayBuildService) {
+define(['services/cctray/buildService', 'jquery'], function (CCTrayBuildService, $) {
 
 		'use strict';
 
 		var JenkinsBuildService = function (settings) {
-			this.cctrayLocation = function (url) {
-				return 'cc.xml';
-			};
-			CCTrayBuildService.apply(this, [settings]);
+			$.extend(this, new CCTrayBuildService(settings));
+			this.cctrayLocation = 'cc.xml';
 		};
 		
-		JenkinsBuildService.prototype = CCTrayBuildService.prototype;
-
 		JenkinsBuildService.settings = function () {
 			return {
 				typeName: 'Jenkins',

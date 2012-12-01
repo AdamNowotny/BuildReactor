@@ -1,7 +1,6 @@
 define([
-	'services/cruisecontrol.net/buildService',
-	'services/cctray/buildService'
-], function (BuildService, CCTrayBuildService) {
+	'services/cruisecontrol.net/buildService'
+], function (BuildService) {
 
 	'use strict';
 
@@ -37,26 +36,10 @@ define([
 			expect(defaultSettings.urlHint).toBe('http://build.nauck-it.de/');
 		});
 
-		it('should modify url used to get projects', function () {
+		it('should define cctray xml location', function () {
 			var service = new BuildService(settings);
-			spyOn(service, 'projects').andCallFake(function (selectedPlans) {
-				expect(this.settings.url).toBe('http://example.com/XmlStatusReport.aspx');
-			});
 
-			service.projects([ 'A', 'B' ]);
-
-			expect(service.projects).toHaveBeenCalled();
-		});
-
-		it('should modify url', function () {
-			var service = new BuildService(settings);
-			spyOn(service, 'start').andCallFake(function () {
-				expect(this.settings.url).toBe('http://example.com/XmlStatusReport.aspx');
-			});
-
-			service.start();
-
-			expect(service.start).toHaveBeenCalled();
+			expect(service.cctrayLocation).toBe('XmlStatusReport.aspx');
 		});
 
 	});

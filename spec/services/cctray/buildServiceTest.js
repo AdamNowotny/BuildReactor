@@ -72,22 +72,6 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Sign
 			expect(settings.urlHint).toBe('http://cruisecontrol.instance.com/cctray.xml');
 		});
 
-		it('should create valid url', function () {
-			settings.url = 'http://example.com';
-
-			var GoBuildService = function (settings) {
-				this.cctrayLocation = function () {
-					return 'cc.xml';
-				};
-				BuildService.apply(this, [settings]);
-			};
-			GoBuildService.prototype = BuildService.prototype;
-
-			var service = new GoBuildService(settings);
-
-			expect(service.settings.url).toBe('http://example.com/cc.xml');
-		});
-
 		it('should expose service interface', function () {
 			expect(service.name).toBe(settings.name);
 			expect(service.on.brokenBuild).toBeDefined();
@@ -100,6 +84,23 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Sign
 		});
 
 		describe('updateAll', function () {
+
+			it('should modify url', function () {
+				mockRequest.andCallFake(function (settings) {
+					expect(settings.url).toBe('http://example.com/cc.xml');
+					responseReceived.dispatch(projectsXml);
+					return {
+						responseReceived: responseReceived,
+						errorReceived: errorReceived
+					};
+				});
+
+				service.cctrayLocation = 'cc.xml';
+				service.updateAll();
+
+				expect(mockRequest).toHaveBeenCalled();
+			});
+
 			it('should signal when update finished', function () {
 				var completed = false;
 
@@ -216,7 +217,7 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Sign
 				mockRequest.andCallFake(function (requestSettings) {
 					expect(requestSettings.username).toBe(settings.username);
 					expect(requestSettings.password).toBe(settings.password);
-					expect(requestSettings.url).toBe(settings.url);
+					expect(requestSettings.url).toBe('http://example.com/cc.xml');
 					responseReceived.dispatch(projectsXml);
 					return {
 						responseReceived: responseReceived,
@@ -224,6 +225,7 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Sign
 					};
 				});
 
+				service.cctrayLocation = 'cc.xml';
 				service.projects([]);
 
 				expect(mockRequest).toHaveBeenCalled();

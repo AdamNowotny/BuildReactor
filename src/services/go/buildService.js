@@ -1,16 +1,12 @@
-define(['services/cctray/buildService'], function (CCTrayBuildService) {
+define(['services/cctray/buildService', 'jquery'], function (CCTrayBuildService, $) {
 
 		'use strict';
 
 		var GoBuildService = function (settings) {
-			this.cctrayLocation = function () {
-				return 'cctray.xml';
-			};
-			CCTrayBuildService.apply(this, [settings]);
+			$.extend(this, new CCTrayBuildService(settings));
+			this.cctrayLocation = 'cctray.xml';
 		};
 		
-		GoBuildService.prototype = CCTrayBuildService.prototype;
-
 		GoBuildService.settings = function () {
 			return {
 				typeName: 'ThoughtWorks GO',
