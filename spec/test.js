@@ -67,7 +67,7 @@ require([
 	'spec/services/bamboo/buildServiceTest',
 	'spec/services/cctray/buildServiceTest',
 	'spec/services/cctray/ccRequestTest',
-	'spec/services/cctray/projectTest',
+	'spec/services/cctray/cctrayProjectTest',
 	'spec/services/cruisecontrol/buildServiceTest',
 	'spec/services/cruisecontrol.net/buildServiceTest',
 	'spec/services/cruisecontrol.rb/buildServiceTest',

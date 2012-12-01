@@ -1,9 +1,9 @@
 define([
-	'services/cctray/project',
+	'services/cctray/cctrayProject',
 	'jquery',
 	'jasmineSignals',
 	'text!spec/fixtures/cctray/cruisecontrolnet.xml'
-], function (project, $, spyOnSignal, projectsXml) {
+], function (CCTrayProject, $, spyOnSignal, projectsXml) {
 
 	'use strict';
 	
@@ -19,32 +19,48 @@ define([
 		var someProject;
 
 		beforeEach(function () {
-			someProject = project();
-			spyOnSignal(someProject.failed);
-			spyOnSignal(someProject.fixed);
-			spyOnSignal(someProject.started);
-			spyOnSignal(someProject.finished);
+			someProject = new CCTrayProject("id");
+			spyOnSignal(someProject.on.broken);
+			spyOnSignal(someProject.on.fixed);
+			spyOnSignal(someProject.on.started);
+			spyOnSignal(someProject.on.finished);
 		});
 
 		it('should initialize from JSON', function () {
 			someProject.update(projectSuccessInfo);
 
-			expect(someProject.url()).toBe('http://www.example.com/');
-			expect(someProject.projectName()).toBe('project name');
+			expect(someProject.webUrl).toBe('http://www.example.com/');
+			expect(someProject.name).toBe('project name');
 		});
 
-		it('should dispatch failed if build is broken while initializing', function () {
-			someProject.update(projectFailureInfo);
+		describe('initialize', function () {
 
-			expect(someProject.failed).toHaveBeenDispatched();
+			it('should dispatch broken if build is broken while initializing', function () {
+				someProject.update(projectFailureInfo);
+
+				expect(someProject.on.broken).toHaveBeenDispatched();
+			});
+
+			it('should not dispatch fixed if initializing', function () {
+				someProject.update(projectSuccessInfo);
+
+				expect(someProject.on.fixed).not.toHaveBeenDispatched();
+			});
+
+			it('should dispatch started if building while initializing', function () {
+				someProject.update({ status: 'Success', activity: 'Building' });
+
+				expect(someProject.on.started).toHaveBeenDispatched();
+			});
+
 		});
 
-		it('should dispatch failed if build failed', function () {
+		it('should dispatch broken if build failed', function () {
 			someProject.update(projectSuccessInfo);
 
 			someProject.update(projectFailureInfo);
 
-			expect(someProject.failed).toHaveBeenDispatched();
+			expect(someProject.on.broken).toHaveBeenDispatched();
 		});
 
 		it('should dispatch fixed if build was fixed', function () {
@@ -52,13 +68,7 @@ define([
 
 			someProject.update(projectSuccessInfo);
 
-			expect(someProject.fixed).toHaveBeenDispatched();
-		});
-
-		it('should not dispatch fixed if initializing', function () {
-			someProject.update(projectSuccessInfo);
-
-			expect(someProject.fixed).not.toHaveBeenDispatched();
+			expect(someProject.on.fixed).toHaveBeenDispatched();
 		});
 
 		it('should dispatch started if activity changed to building', function () {
@@ -66,26 +76,32 @@ define([
 
 			someProject.update({ status: 'Success', activity: 'Building' });
 
-			expect(someProject.started).toHaveBeenDispatched();
+			expect(someProject.on.started).toHaveBeenDispatched();
 		});
 
 		it('should know if building', function () {
 			someProject.update({ status: 'Success', activity: 'Building' });
 
-			expect(someProject.isBuilding()).toBeTruthy();
+			expect(someProject.isRunning).toBe(true);
 		});
 
 		it('should know if building finished', function () {
 			someProject.update({ status: 'Success', activity: 'Building' });
 			someProject.update({ status: 'Success', activity: 'Sleeping' });
 
-			expect(someProject.isBuilding()).toBeFalsy();
+			expect(someProject.isRunning).toBe(false);
 		});
 
-		it('should dispatch started if building while initializing', function () {
-			someProject.update({ status: 'Success', activity: 'Building' });
+		it('should know if broken', function () {
+			someProject.update(projectFailureInfo);
 
-			expect(someProject.started).toHaveBeenDispatched();
+			expect(someProject.isBroken).toBe(true);
+		});
+
+		it('should know if sucessful', function () {
+			someProject.update(projectSuccessInfo);
+
+			expect(someProject.isBroken).toBe(false);
 		});
 
 		it('should dispatch finished if activity changed from building', function () {
@@ -93,21 +109,21 @@ define([
 
 			someProject.update({ status: 'Success', activity: 'Sleeping' });
 
-			expect(someProject.finished).toHaveBeenDispatched();
+			expect(someProject.on.finished).toHaveBeenDispatched();
 		});
 
 		it('should ignore if status unknown', function () {
 			someProject.update({ status: 'Unknown' });
 
-			expect(someProject.fixed).not.toHaveBeenDispatched();
-			expect(someProject.failed).not.toHaveBeenDispatched();
+			expect(someProject.on.fixed).not.toHaveBeenDispatched();
+			expect(someProject.on.broken).not.toHaveBeenDispatched();
 		});
 
 		it('should not signal fixed if previous state unknown', function () {
 			someProject.update({ status: 'Unknown' });
 			someProject.update({ status: 'Success' });
 
-			expect(someProject.fixed).not.toHaveBeenDispatched();
+			expect(someProject.on.fixed).not.toHaveBeenDispatched();
 		});
 	});
 });

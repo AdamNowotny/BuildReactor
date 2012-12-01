@@ -2,20 +2,19 @@ define([
 	'jquery',
 	'signals',
 	'./ccRequest',
-	'./project',
+	'./cctrayProject',
 	'amdUtils/array/contains',
 	'amdUtils/object/values',
 	'common/joinUrl',
 	'services/poolingService'
-], function ($, Signal, ccRequest, project, contains, values, joinUrl, PoolingService) {
+], function ($, Signal, ccRequest, CCTrayProject, contains, values, joinUrl, PoolingService) {
 
 	'use strict';
 
 	var CCBuildService = function (settings) {
 		$.extend(this, new PoolingService(settings));
 		this.name = settings.name;
-		this.defaultSettings = CCBuildService.settings;
-		this.settings = this._createSettings(settings);
+		this.builds = {};
 		$.extend(this.on, {
 			errorThrown: new Signal(),
 			brokenBuild: new Signal(),
@@ -23,7 +22,8 @@ define([
 			startedBuild: new Signal(),
 			finishedBuild: new Signal()
 		});
-		this._selectedProjects = {};
+		this.defaultSettings = CCBuildService.settings;
+		this.settings = this._createSettings(settings);
 	};
 
 		
@@ -72,17 +72,17 @@ define([
 						activity: $(d).attr('activity')
 					};
 				})
-				.each(function createOrUpdate(i, d) {
-					var projectInstance = self._selectedProjects[d.name];
-					if (!projectInstance) {
-						projectInstance = project();
-						projectInstance.failed.add(self.onBuildFailed, self);
-						projectInstance.fixed.add(self.onBuildFixed, self);
-						projectInstance.started.add(self.onBuildStarted, self);
-						projectInstance.finished.add(self.onBuildFinished, self);
-						self._selectedProjects[d.name] = projectInstance;
+				.each(function createOrUpdate(index, projectInfo) {
+					var project = self.builds[projectInfo.name];
+					if (!project) {
+						project = new CCTrayProject(projectInfo.name, self.settings);
+						project.on.broken.add(self.onBuildBroken, self);
+						project.on.fixed.add(self.onBuildFixed, self);
+						project.on.started.add(self.onBuildStarted, self);
+						project.on.finished.add(self.onBuildFinished, self);
+						self.builds[projectInfo.name] = project;
 					}
-					projectInstance.update(d);
+					project.update(projectInfo);
 				});
 		}
 
@@ -101,12 +101,12 @@ define([
 		return completed;
 	};
 
-	CCBuildService.prototype.onBuildFailed = function (project) {
+	CCBuildService.prototype.onBuildBroken = function (project) {
 		var buildEvent = {
 			serviceName: this.name,
-			buildName: project.projectName(),
-			group: project.category(),
-			url: project.url(),
+			buildName: project.name,
+			group: project.projectName,
+			url: project.webUrl,
 			icon: this.settings.icon
 		};
 		this.on.brokenBuild.dispatch(buildEvent);
@@ -115,9 +115,9 @@ define([
 	CCBuildService.prototype.onBuildFixed = function (project) {
 		var buildEvent = {
 			serviceName: this.name,
-			buildName: project.projectName(),
-			group: project.category(),
-			url: project.url(),
+			buildName: project.name,
+			group: project.projectName,
+			url: project.webUrl,
 			icon: this.settings.icon
 		};
 		this.on.fixedBuild.dispatch(buildEvent);
@@ -126,9 +126,9 @@ define([
 	CCBuildService.prototype.onBuildStarted = function (project) {
 		var buildEvent = {
 			serviceName: this.name,
-			buildName: project.projectName(),
-			group: project.category(),
-			url: project.url(),
+			buildName: project.name,
+			group: project.projectName,
+			url: project.webUrl,
 			icon: this.settings.icon
 		};
 		this.on.startedBuild.dispatch(buildEvent);
@@ -137,9 +137,9 @@ define([
 	CCBuildService.prototype.onBuildFinished = function (project) {
 		var buildEvent = {
 			serviceName: this.name,
-			buildName: project.projectName(),
-			group: project.category(),
-			url: project.url(),
+			buildName: project.name,
+			group: project.projectName,
+			url: project.webUrl,
 			icon: this.settings.icon
 		};
 		this.on.finishedBuild.dispatch(buildEvent);
@@ -164,13 +164,13 @@ define([
 	};
 
 	CCBuildService.prototype.activeProjects = function () {
-		var projectsInfo = values(this._selectedProjects).map(function (p) {
+		var projectsInfo = values(this.builds).map(function (p) {
 			return {
-				name: p.projectName(),
-				group: p.category(),
-				isBroken: p.status() === 'Failure',
-				url: p.url(),
-				isBuilding: p.isBuilding()
+				name: p.name,
+				group: p.projectName,
+				isBroken: p.isBroken,
+				url: p.webUrl,
+				isBuilding: p.isRunning
 			};
 		});
 		return {

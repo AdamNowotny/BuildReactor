@@ -1,7 +1,7 @@
 define([
 	'services/cctray/buildService',
 	'services/cctray/ccRequest',
-	'services/cctray/project',
+	'services/cctray/cctrayProject',
 	'services/poolingService',
 	'common/timer',
 	'jquery',
@@ -9,7 +9,7 @@ define([
 	'jasmineSignals',
 	'text!spec/fixtures/cctray/cruisecontrolnet.xml'
 ],
-function (BuildService, ccRequest, project, PoolingService, Timer, $, Signal, spyOnSignal, projectsXmlText) {
+function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Signal, spyOnSignal, projectsXmlText) {
 
 	'use strict';
 
@@ -135,7 +135,7 @@ function (BuildService, ccRequest, project, PoolingService, Timer, $, Signal, sp
 
 			it('should update project', function () {
 				service.update();
-				var updateProject = service._selectedProjects['NetReflector'];
+				var updateProject = service.builds['NetReflector'];
 				spyOn(updateProject, 'update').andCallFake(function (info) {
 					expect(info.name).toBeDefined();
 					expect(info.category).toBeDefined();
@@ -157,9 +157,9 @@ function (BuildService, ccRequest, project, PoolingService, Timer, $, Signal, sp
 				});
 				initResponse();
 				service.update();
-				failedProject = service._selectedProjects['NetReflector'];
+				failedProject = service.builds['NetReflector'];
 
-				failedProject.failed.dispatch(failedProject);
+				failedProject.on.broken.dispatch(failedProject);
 
 				expect(service.on.brokenBuild).toHaveBeenDispatched(1);
 			});
@@ -172,9 +172,9 @@ function (BuildService, ccRequest, project, PoolingService, Timer, $, Signal, sp
 				});
 				initResponse();
 				service.update();
-				fixedProject = service._selectedProjects['NetReflector'];
+				fixedProject = service.builds['NetReflector'];
 
-				fixedProject.fixed.dispatch(fixedProject);
+				fixedProject.on.fixed.dispatch(fixedProject);
 
 				expect(service.on.fixedBuild).toHaveBeenDispatched(1);
 			});
@@ -183,9 +183,9 @@ function (BuildService, ccRequest, project, PoolingService, Timer, $, Signal, sp
 				spyOnSignal(service.on.startedBuild);
 				initResponse();
 				service.update();
-				var startedProject = service._selectedProjects['NetReflector'];
+				var startedProject = service.builds['NetReflector'];
 
-				startedProject.started.dispatch(startedProject);
+				startedProject.on.started.dispatch(startedProject);
 
 				expect(service.on.startedBuild).toHaveBeenDispatched();
 			});
@@ -194,9 +194,9 @@ function (BuildService, ccRequest, project, PoolingService, Timer, $, Signal, sp
 				spyOnSignal(service.on.finishedBuild);
 				initResponse();
 				service.update();
-				var finishedProject = service._selectedProjects['NetReflector'];
+				var finishedProject = service.builds['NetReflector'];
 
-				finishedProject.finished.dispatch(finishedProject);
+				finishedProject.on.finished.dispatch(finishedProject);
 
 				expect(service.on.finishedBuild).toHaveBeenDispatched();
 			});
@@ -204,7 +204,7 @@ function (BuildService, ccRequest, project, PoolingService, Timer, $, Signal, sp
 			it('should ignore plans that are not monitored', function () {
 				service.update();
 
-				expect(service._selectedProjects['FastForward.NET']).not.toBeDefined();
+				expect(service.builds['FastForward.NET']).not.toBeDefined();
 			});
 
 		});
@@ -287,12 +287,12 @@ function (BuildService, ccRequest, project, PoolingService, Timer, $, Signal, sp
 
 			it('should indicate if broken', function () {
 				service.update();
-				var buildingProject = project();
+				var buildingProject = new CCTrayProject('CruiseControl.NET');
 				buildingProject.update({
 					status: 'Success',
 					activity: 'Building'
 				});
-				service._selectedProjects['CruiseControl.NET'] = buildingProject;
+				service.builds['CruiseControl.NET'] = buildingProject;
 
 				var result = service.activeProjects();
 
@@ -301,11 +301,11 @@ function (BuildService, ccRequest, project, PoolingService, Timer, $, Signal, sp
 
 			it('should indicate if building', function () {
 				service.update();
-				var failedProject = project();
+				var failedProject = new CCTrayProject('CruiseControl.NET');
 				failedProject.update({
 					status: 'Failure'
 				});
-				service._selectedProjects['CruiseControl.NET'] = failedProject;
+				service.builds['CruiseControl.NET'] = failedProject;
 
 				var result = service.activeProjects();
 
@@ -314,12 +314,12 @@ function (BuildService, ccRequest, project, PoolingService, Timer, $, Signal, sp
 
 			it('should render link', function () {
 				service.update();
-				var failedProject = project();
+				var failedProject = new CCTrayProject('CruiseControl.NET');
 				failedProject.update({
 					status: 'Failure',
 					url: 'http://example.com/project'
 				});
-				service._selectedProjects['CruiseControl.NET'] = failedProject;
+				service.builds['CruiseControl.NET'] = failedProject;
 
 				var result = service.activeProjects();
 
