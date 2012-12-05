@@ -18,14 +18,14 @@ define(['common/resourceFinder', 'signals'], function (resourceFinder, Signal) {
 	};
 
 	var create = function (settings) {
+		var result = new Signal();
+		result.memorize = true;
 		var serviceModuleName = resourceFinder.service(settings);
 		require([serviceModuleName], function (BuildService) {
 			var service = new BuildService(settings);
 			result.dispatch(service);
 		});
 
-		var result = new Signal();
-		result.memorize = true;
 		return result;
 	};
 

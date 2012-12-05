@@ -9,7 +9,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-jsvalidate');
-	grunt.loadNpmTasks('grunt-jasmine-task');
+	grunt.loadNpmTasks('grunt-jasmine-runner');
 
 	grunt.registerTask('default', 'clean jsvalidate lint jasmine mincss requirejs copy');
 	grunt.registerTask('travis', 'clean jsvalidate lint jasmine');
@@ -75,13 +75,27 @@ module.exports = function (grunt) {
 			}
 		},
 		jasmine: {
-			all: ['spec/specrunner.html']
+			specs: 'spec/**/*Test.js',
+			amd: true,
+			helpers: [
+				"components/jasmine-jquery/lib/jasmine-jquery.js",
+				"components/requirejs/require.js",
+				"spec/test.js"
+			],
+			template: {
+				src: 'spec/SpecRunner.tmpl',
+				opts: {}
+			},
+			timeout: 3000,
+			phantomjs: {
+				"ignore-ssl-errors": true
+			}
 		},
 		watch: {
 			clear: {
-                files: [ 'src/**/*', 'spec/**/*' ],
-                tasks: ["clear"]
-            },
+				files: [ 'src/**/*', 'spec/**/*' ],
+				tasks: ["clear"]
+			},
 			files: [ 'src/**/*', 'spec/**/*' ],
 			tasks: 'jasmine'
 		},

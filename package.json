@@ -28,14 +28,14 @@
     "test": "bower update; grunt travis --verbose"
   },
   "dependencies": {
-    "bower": "0.3.1",
+    "bower": "~0.3.2",
     "grunt": "~0.3.17",
     "grunt-clear": "~0.1.2",
     "grunt-contrib-clean": "~0.3.1",
     "grunt-contrib-copy": "~0.3.2",
     "grunt-contrib-mincss": "~0.3.2",
     "grunt-contrib-requirejs": "~0.3.3",
-    "grunt-jasmine-task": "~0.2.3",
+    "grunt-jasmine-runner": "git://github.com/jasmine-contrib/grunt-jasmine-runner.git",
     "grunt-jsvalidate": "~0.1.3"
   }
 }
