@@ -1,6 +1,6 @@
 define([
 	'services/build',
-	'services/PoolingService',
+	'services/poolingService',
 	'signals',
 	'jquery',
 	'amdUtils/object/values'
