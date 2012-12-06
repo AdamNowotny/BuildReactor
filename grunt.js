@@ -75,17 +75,7 @@ module.exports = function (grunt) {
 			}
 		},
 		jasmine: {
-			specs: [
-				'spec/common/*Test.js',
-				'spec/main/*Test.js',
-				'spec/options/**/*Test.js',
-				'spec/services/*Test.js',
-				'spec/services/bamboo/*Test.js',
-				'spec/services/cctray/*Test.js',
-				'spec/services/jenkins/*Test.js',
-				'spec/services/teamcity/*Test.js',
-				'spec/*Test.js'
-			],
+			specs: 'spec/**/*Test.js',
 			amd: true,
 			helpers: [
 				"components/jasmine-jquery/lib/jasmine-jquery.js",
