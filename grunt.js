@@ -81,6 +81,7 @@ module.exports = function (grunt) {
 				'spec/options/**/*Test.js',
 				'spec/services/*Test.js',
 				'spec/services/bamboo/*Test.js',
+				'spec/services/cctray/*Test.js',
 				'spec/*Test.js'
 			],
 			amd: true,
