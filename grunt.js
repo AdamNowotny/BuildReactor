@@ -79,7 +79,7 @@ module.exports = function (grunt) {
 				'spec/common/*Test.js',
 				'spec/main/*Test.js',
 				'spec/options/**/*Test.js',
-				'spec/services/poolingServiceTest.js'
+				'spec/services/buildTest.js'
 			],
 			amd: true,
 			helpers: [
