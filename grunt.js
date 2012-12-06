@@ -75,7 +75,7 @@ module.exports = function (grunt) {
 			}
 		},
 		jasmine: {
-			specs: 'spec/**/*Test.js',
+			specs: 'spec/common/joinUrlTest.js',
 			amd: true,
 			helpers: [
 				"components/jasmine-jquery/lib/jasmine-jquery.js",
