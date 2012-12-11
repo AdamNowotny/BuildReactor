@@ -8,36 +8,42 @@ define([
 	'use strict';
 	
 	var rootElement;
-	var view;
 
 	var initialize = function (rootClassName) {
 		rootElement = $('.' + rootClassName);
 	};
 
 	var show = function (json) {
+		refresh(json);
+		initializeViewSelection(json, json.primaryView);
 		updateView(json, json.primaryView);
 	};
 
 	var updateView = function (json, viewName) {
-		view = viewName;
-		var templateJson = createModel(json);
-		var html = projectViewSelectionTemplate(templateJson);
-		html += projectViewTemplate(templateJson);
-		rootElement.html(html);
-		rootElement.find('.view-selection').toggle(!!json.views);
-		rootElement.find('.view-selection select').val(viewName);
-		rootElement.find('.view-selection select').change(function (event) {
-			var viewName = $(event.target).val();
-			updateView(json, viewName);
-		});
-		rootElement.collapse({ toggle: false });
 		expandGroups(json.items);
 		hideItemsNotInView(json.views, viewName);
 		rootElement.show();
 		hideGroupsWithNoVisibleItems();
 	};
 
+	var refresh = function (json) {
+		var templateJson = createModel(json);
+		var html = projectViewSelectionTemplate(templateJson);
+		html += projectViewTemplate(templateJson);
+		rootElement.html(html);
+	};
+
+	var initializeViewSelection = function (json, viewName) {
+		rootElement.find('.view-selection').toggle(!!json.views);
+		rootElement.find('.view-selection select').val(viewName);
+		rootElement.find('.view-selection select').change(function (event) {
+			var viewName = $(event.target).val();
+			updateView(json, viewName);
+		});
+	};
+
 	var expandGroups = function (items) {
+		rootElement.collapse({ toggle: false });
 		rootElement.find('.project-item input:checked').each(function () {
 			$(this).closest('.collapse').addClass('in');
 		});

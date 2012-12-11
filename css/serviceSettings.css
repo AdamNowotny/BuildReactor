@@ -7,16 +7,29 @@
 	overflow: auto;
 }
 
-	.settings-form {
+	.settings-form-container {
 		padding-top: 10px;
+		float: left;
+		width: 480px;
 	}
 
 	.project-selection-container {
-		margin: 0 5px 0 5px;
+		display: inline-block;
+		margin: 10px 5px 0 10px;
+		width: 470px;
+	}
+
+	.view-selection {
+		text-align: right;
+	}
+
+	.view-selection .control-group > label {
+		width: 240px;
 	}
 
 .alert-error {
 	margin: 5px;
+	clear: both;
 }
 	
 .icon-refresh.animate {
