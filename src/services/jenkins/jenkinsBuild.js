@@ -28,9 +28,11 @@ define([
 			if (!result.response.result) {
 				request.lastCompletedBuild(that.settings, that.id).addOnce(function (result) {
 					updateResult(that, result.response.result);
+					completed.dispatch();
 				});
 			} else {
 				updateResult(that, result.response.result);
+				completed.dispatch();
 			}
 		};
 
@@ -63,10 +65,10 @@ define([
 		request.lastBuild(this.settings, this.id).addOnce(function (result) {
 			if (result.error) {
 				that.on.errorThrown.dispatch(that);
+				completed.dispatch();
 			} else {
 				lastBuildResponseHandler(result);
 			}
-			completed.dispatch();
 		});
 		return completed;
 	};
