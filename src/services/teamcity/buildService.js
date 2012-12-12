@@ -24,7 +24,7 @@ define([
 			};
 		};
 
-		var projects = function (selectedPlans) {
+		TeamcityBuildService.prototype.projects = function (selectedPlans) {
 			var completed = new Signal();
 			completed.memorize = true;
 			request.buildTypes(this.settings).addOnce(function (result) {
@@ -57,10 +57,6 @@ define([
 				};
 			}
 		}
-
-		TeamcityBuildService.prototype = {
-			projects: projects
-		};
 
 		return TeamcityBuildService;
 	});

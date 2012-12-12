@@ -23,7 +23,7 @@
   "id" : "2012-11-23_07-00-31",
   "keepLog" : false,
   "number" : 1036,
-  "result" : "FAILURE",
+  "result" : "SUCCESS",
   "timestamp" : 1353672031063,
   "url" : "http://ci.jenkins-ci.org/job/config-provider-model/1036/",
   "builtOn" : "remote-slave-6",

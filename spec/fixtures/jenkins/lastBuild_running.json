@@ -1,0 +1,2696 @@
+{
+  "actions" : [
+    {
+      "causes" : [
+        {
+          "shortDescription" : "Started by an SCM change"
+        }
+      ]
+    },
+    {
+      
+    },
+    {
+      "buildsByBranchName" : {
+        "origin/rc" : {
+          "buildNumber" : 299,
+          "buildResult" : null,
+          "revision" : {
+            "SHA1" : "ea39951a3b6f000a331b25b71a12286103552681",
+            "branch" : [
+              {
+                "SHA1" : "ea39951a3b6f000a331b25b71a12286103552681",
+                "name" : "origin/rc"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision" : {
+        "SHA1" : "ea39951a3b6f000a331b25b71a12286103552681",
+        "branch" : [
+          {
+            "SHA1" : "ea39951a3b6f000a331b25b71a12286103552681",
+            "name" : "origin/rc"
+          }
+        ]
+      },
+      "remoteUrls" : [
+        "git://github.com/jenkinsci/jenkins"
+      ],
+      "scmName" : ""
+    },
+    {
+      
+    },
+    {
+      
+    },
+    {
+      
+    },
+    {
+      
+    }
+  ],
+  "artifacts" : [
+    
+  ],
+  "building" : true,
+  "description" : null,
+  "duration" : 0,
+  "estimatedDuration" : 1898967,
+  "executor" : {
+    
+  },
+  "fullDisplayName" : "jenkins_rc_branch #299",
+  "id" : "2012-12-09_12-30-50",
+  "keepLog" : false,
+  "number" : 299,
+  "result" : null,
+  "timestamp" : 1355074250862,
+  "url" : "http://ci.jenkins-ci.org/job/jenkins_rc_branch/299/",
+  "builtOn" : "remote-slave-6",
+  "changeSet" : {
+    "items" : [
+      {
+        "affectedPaths" : [
+          "core/src/main/resources/hudson/cli/Messages.properties",
+          "core/src/main/java/hudson/cli/ListJobsCommand.java"
+        ],
+        "commitId" : "84193987166a37679283e76ae228fb88e694c9b3",
+        "timestamp" : 1352568153000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/michael.koch",
+          "fullName" : "michael.koch"
+        },
+        "comment" : "Add list-jobs CLI command\n",
+        "date" : "2012-11-10 12:22:33 +0100",
+        "id" : "84193987166a37679283e76ae228fb88e694c9b3",
+        "msg" : "Add list-jobs CLI command",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/cli/Messages.properties"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/java/hudson/cli/ListJobsCommand.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/cli/ListJobsCommand.java"
+        ],
+        "commitId" : "adef9aeafa336a4ff3600467074427812e781aa7",
+        "timestamp" : 1352568153000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/michael.koch",
+          "fullName" : "michael.koch"
+        },
+        "comment" : "Handle ItemGroup items\n",
+        "date" : "2012-11-10 12:22:33 +0100",
+        "id" : "adef9aeafa336a4ff3600467074427812e781aa7",
+        "msg" : "Handle ItemGroup items",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/cli/ListJobsCommand.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/cli/ListJobsCommand.java"
+        ],
+        "commitId" : "426d78af68d44aaf64c4cb50963b876bf42b7f15",
+        "timestamp" : 1352570790000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/michael.koch",
+          "fullName" : "michael.koch"
+        },
+        "comment" : "Add some more comments\n",
+        "date" : "2012-11-10 13:06:30 +0100",
+        "id" : "426d78af68d44aaf64c4cb50963b876bf42b7f15",
+        "msg" : "Add some more comments",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/cli/ListJobsCommand.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/resources/hudson/cli/Messages.properties"
+        ],
+        "commitId" : "a098e12d70bc0da84989468993a9b174f7c3e32c",
+        "timestamp" : 1352626370000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/michael.koch",
+          "fullName" : "michael.koch"
+        },
+        "comment" : "Also mention item groups in short description\n",
+        "date" : "2012-11-11 04:32:50 +0100",
+        "id" : "a098e12d70bc0da84989468993a9b174f7c3e32c",
+        "msg" : "Also mention item groups in short description",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/cli/Messages.properties"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/cli/ListJobsCommand.java"
+        ],
+        "commitId" : "317bd499efad11cae68a1da8c8b2ca23d8ea7174",
+        "timestamp" : 1352742247000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/michael.koch",
+          "fullName" : "michael.koch"
+        },
+        "comment" : "Add output to stderr if we fallback to empty job list\n",
+        "date" : "2012-11-12 12:44:07 +0100",
+        "id" : "317bd499efad11cae68a1da8c8b2ca23d8ea7174",
+        "msg" : "Add output to stderr if we fallback to empty job list",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/cli/ListJobsCommand.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/jenkins/management/GlobalSecurityLink.java",
+          "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/index.jelly",
+          "core/src/main/java/hudson/security/GlobalSecurityConfiguration.java",
+          "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/config.groovy"
+        ],
+        "commitId" : "2beb974274b2f168d509b230f1cf715cf252cbc8",
+        "timestamp" : 1353695703000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/imod",
+          "fullName" : "imod"
+        },
+        "comment" : "move security config to a separate page\n",
+        "date" : "2012-11-23 13:35:03 +0100",
+        "id" : "2beb974274b2f168d509b230f1cf715cf252cbc8",
+        "msg" : "move security config to a separate page",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/config.groovy"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/java/jenkins/management/GlobalSecurityLink.java"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/index.jelly"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/security/GlobalSecurityConfiguration.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "war/src/main/webapp/images/48x48/lock.png",
+          "core/src/main/java/jenkins/management/GlobalSecurityLink.java",
+          "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/config.groovy",
+          "core/src/main/resources/hudson/security/Messages.properties",
+          "war/src/main/webapp/images/24x24/lock.png",
+          "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/index.jelly",
+          "war/src/main/webapp/images/32x32/lock.png",
+          "core/src/main/java/hudson/security/GlobalSecurityConfiguration.java"
+        ],
+        "commitId" : "1b8048cefaf02dd9a9030cf4eb5f850f86246e61",
+        "timestamp" : 1353854907000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/imod",
+          "fullName" : "imod"
+        },
+        "comment" : "cleanup text and images\n",
+        "date" : "2012-11-25 09:48:27 +0100",
+        "id" : "1b8048cefaf02dd9a9030cf4eb5f850f86246e61",
+        "msg" : "cleanup text and images",
+        "paths" : [
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/java/jenkins/management/GlobalSecurityLink.java"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/security/Messages.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/config.groovy"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/security/GlobalSecurityConfiguration.java"
+          },
+          {
+            "editType" : "add",
+            "file" : "war/src/main/webapp/images/32x32/lock.png"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/index.jelly"
+          },
+          {
+            "editType" : "add",
+            "file" : "war/src/main/webapp/images/24x24/lock.png"
+          },
+          {
+            "editType" : "add",
+            "file" : "war/src/main/webapp/images/48x48/lock.png"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/security/GlobalSecurityConfiguration.java"
+        ],
+        "commitId" : "5bb1da3013063ad0663abd61cccecbd87cdd672a",
+        "timestamp" : 1353858476000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/imod",
+          "fullName" : "imod"
+        },
+        "comment" : "redirect to manage page\n",
+        "date" : "2012-11-25 10:47:56 +0100",
+        "id" : "5bb1da3013063ad0663abd61cccecbd87cdd672a",
+        "msg" : "redirect to manage page",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/security/GlobalSecurityConfiguration.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "maven-plugin/pom.xml",
+          "core/pom.xml",
+          "plugins/pom.xml",
+          "cli/pom.xml",
+          "test/pom.xml",
+          "war/pom.xml",
+          "ui-samples-plugin/pom.xml",
+          "pom.xml"
+        ],
+        "commitId" : "cdbd5374bbe6939a9729d5c3367e600ddb783964",
+        "timestamp" : 1353983401000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "the trunk is toward 1.494-SNAPSHOT\n",
+        "date" : "2012-11-26 21:30:01 -0800",
+        "id" : "cdbd5374bbe6939a9729d5c3367e600ddb783964",
+        "msg" : "the trunk is toward 1.494-SNAPSHOT",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "test/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "plugins/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "maven-plugin/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "war/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "cli/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "ui-samples-plugin/pom.xml"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix_fr.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer_fr.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-url_de.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-smtpPort.html",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_nb_NO.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/config_ja.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/config_es.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress_ru.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-useSsl_ru.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress_nl.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-useSsl_nl.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-url.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-useSsl.html",
+          "core/src/main/resources/hudson/tasks/Mailer/config_da.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer_pt_BR.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-smtpPort_tr.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-useSsl_zh_CN.html",
+          "core/src/main/resources/hudson/tasks/Mailer/config.jelly",
+          "core/src/main/resources/hudson/tasks/Mailer/help-useSsl_tr.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-useSsl_pt_BR.html",
+          "core/src/main/resources/hudson/tasks/Mailer/config_fr.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-useSsl_de.html",
+          "test/src/test/java/hudson/tasks/MailAddressResolverTest.java",
+          "core/src/main/resources/hudson/tasks/Mailer/help-url_tr.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer_ja.html",
+          "core/src/main/java/hudson/tasks/MailMessageIdAction.java",
+          "core/src/main/resources/hudson/tasks/Mailer/help-smtpPort_fr.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress_de.html",
+          "core/src/main/resources/hudson/tasks/Mailer/global_ko.properties",
+          "core/src/main/resources/hudson/tasks/Messages_fr.properties",
+          "core/src/main/java/hudson/tasks/MailAddressResolver.java",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_sv_SE.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/global_pt_BR.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/config_tr.properties",
+          "core/src/main/resources/hudson/tasks/Messages_es.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer_de.html",
+          "core/src/main/resources/hudson/tasks/Mailer/global_nl.properties",
+          "core/src/main/resources/hudson/tasks/Messages_ja.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer_nl.html",
+          "core/src/main/resources/hudson/tasks/Messages.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_fi.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix_pt_BR.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-url_nl.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-url_zh_CN.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix_de.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer_tr.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-url_fr.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix_nl.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-useSsl_ja.html",
+          "core/src/main/resources/hudson/tasks/Mailer/config.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_fr.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix_ja.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-smtpPort_ja.html",
+          "core/src/main/resources/hudson/tasks/Mailer/config_nl.properties",
+          "core/src/main/resources/hudson/tasks/Messages_tr.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/config_zh_CN.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer_ru.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-useSsl_fr.html",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_es.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/config_pt_BR.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_tr.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/config_bg.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/global_tr.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_zh_CN.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_cs.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress_ja.html",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_nl.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix_zh_CN.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix_tr.html",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_lv.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_da.properties",
+          "core/src/main/resources/hudson/tasks/Messages_da.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config.jelly",
+          "core/src/main/resources/hudson/tasks/Messages_de.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_de.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_ru.properties",
+          "test/src/test/java/hudson/tasks/MailSenderTest.java",
+          "core/src/main/resources/hudson/tasks/Mailer/config_ru.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/global_zh_CN.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-smtpPort_nl.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress_fr.html",
+          "core/src/main/resources/hudson/tasks/Messages_ru.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-smtpPort_de.html",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_ja.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/config_de.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_zh_TW.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress_zh_CN.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-url_ru.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer_zh_CN.html",
+          "test/src/test/java/hudson/tasks/MailerTest.java",
+          "core/src/main/resources/hudson/tasks/Mailer/config_pl.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/global_zh_TW.properties",
+          "core/src/main/resources/hudson/tasks/Messages_pt_BR.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_it.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/global_fr.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress_tr.html",
+          "core/src/main/java/hudson/tasks/Mailer.java",
+          "core/src/main/resources/hudson/tasks/Mailer/global.jelly",
+          "test/pom.xml",
+          "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix_ru.html",
+          "core/src/main/resources/hudson/tasks/Mailer/global_da.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/global_de.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-url_ja.html",
+          "core/src/main/resources/hudson/tasks/Mailer/help-url_pt_BR.html",
+          "core/src/main/resources/hudson/tasks/Mailer/global_es.properties",
+          "core/src/main/resources/hudson/tasks/Messages_nl.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress.html",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_pt_BR.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config.properties",
+          "war/pom.xml",
+          "core/src/main/resources/hudson/tasks/Mailer/help-smtpPort_zh_CN.html",
+          "pom.xml",
+          "core/src/main/resources/hudson/tasks/Mailer/global_ru.properties",
+          "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress_pt_BR.html",
+          "core/src/main/java/hudson/tasks/MailSender.java",
+          "core/src/main/resources/hudson/tasks/Mailer/global_ja.properties"
+        ],
+        "commitId" : "fd3ee4a4d80945bff189e50bd09626aab36741da",
+        "timestamp" : 1354023677000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/324706",
+          "fullName" : "324706"
+        },
+        "comment" : "Mailer removed from core\n",
+        "date" : "2012-11-27 08:41:17 +0100",
+        "id" : "fd3ee4a4d80945bff189e50bd09626aab36741da",
+        "msg" : "Mailer removed from core",
+        "paths" : [
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-url_pt_BR.html"
+          },
+          {
+            "editType" : "edit",
+            "file" : "pom.xml"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress_fr.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-smtpPort_zh_CN.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/config.jelly"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/config_da.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_zh_TW.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_ja.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/global_ru.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-url_nl.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_sv_SE.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config.jelly"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/global_zh_CN.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress_pt_BR.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer_pt_BR.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/config_tr.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/global_fr.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/global.jelly"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/tasks/Messages_nl.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-useSsl_zh_CN.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-useSsl_tr.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-url_tr.html"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/tasks/Messages_fr.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-url_zh_CN.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/global_ko.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-useSsl_ru.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/java/hudson/tasks/MailSender.java"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-smtpPort_nl.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-smtpPort_fr.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/java/hudson/tasks/MailAddressResolver.java"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix_ja.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-url_ja.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/config_ru.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_it.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/global_de.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix_tr.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/global_da.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_pt_BR.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress_nl.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_fi.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/config_fr.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-useSsl_de.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-useSsl_nl.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/global_tr.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix_ru.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-smtpPort_tr.html"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/tasks/Messages_ja.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/tasks/Messages_da.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/tasks/Messages.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer_de.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_es.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-useSsl.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_da.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/tasks/Messages_es.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer_zh_CN.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "test/src/test/java/hudson/tasks/MailAddressResolverTest.java"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/tasks/Messages_de.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer_ja.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress_tr.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-url.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "test/src/test/java/hudson/tasks/MailSenderTest.java"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-url_fr.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-url_ru.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/config_zh_CN.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/config.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/java/hudson/tasks/MailMessageIdAction.java"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress_zh_CN.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress_ja.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-smtpPort_de.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-url_de.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-useSsl_fr.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_de.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/global_ja.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix_zh_CN.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix_nl.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/config_nl.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-useSsl_pt_BR.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/config_ja.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/java/hudson/tasks/Mailer.java"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer_ru.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer_fr.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-useSsl_ja.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_nl.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/tasks/Messages_pt_BR.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/global_nl.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-smtpPort_ja.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_fr.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/global_zh_TW.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/tasks/Messages_tr.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/tasks/Messages_ru.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress_de.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "test/src/test/java/hudson/tasks/MailerTest.java"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-smtpPort.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_zh_CN.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/config_pl.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/config_bg.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/config_de.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix_pt_BR.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_lv.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer_nl.html"
+          },
+          {
+            "editType" : "edit",
+            "file" : "war/pom.xml"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_cs.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "test/pom.xml"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_nb_NO.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix_fr.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-adminAddress_ru.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_tr.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/global_pt_BR.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/UserProperty/config_ru.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-defaultSuffix_de.html"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/config_es.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/config_pt_BR.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/global_es.properties"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/tasks/Mailer/help-smtpServer_tr.html"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/resources/jenkins/management/Messages_de.properties"
+        ],
+        "commitId" : "950c1a3c326cc706345fde50f2ba0d20a56acf4a",
+        "timestamp" : 1354036261000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/github",
+          "fullName" : "github"
+        },
+        "comment" : "[FIXED JENKINS-15839] wrong unicode characters on german Manage Jenkins\npage\n\nthe german translations used the character codes CEDILLA (00B8) and PER\nMILLE SIGN (2030) instead of LATIN SMALL LETTER U WITH DIAERESIS (00FC)\nand LATIN SMALL LETTER A WITH DIAERESIS (00E4)\n",
+        "date" : "2012-11-27 12:11:01 +0100",
+        "id" : "950c1a3c326cc706345fde50f2ba0d20a56acf4a",
+        "msg" : "[FIXED JENKINS-15839] wrong unicode characters on german Manage Jenkins",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/jenkins/management/Messages_de.properties"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/model/UpdateSite.java"
+        ],
+        "commitId" : "8d22710c77a11a99c0607a5634417e848088affc",
+        "timestamp" : 1354058135000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "allow core updates to come from other IDs\n",
+        "date" : "2012-11-27 18:15:35 -0800",
+        "id" : "8d22710c77a11a99c0607a5634417e848088affc",
+        "msg" : "allow core updates to come from other IDs",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/model/UpdateSite.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "changelog.html",
+          "core/src/main/java/hudson/cli/BuildCommand.java"
+        ],
+        "commitId" : "6a2b476b808d693adff90d51b18a645d1ec54ff9",
+        "timestamp" : 1354058161000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "If the CLI client is aborted during \"build -s\", abort the build.\n",
+        "date" : "2012-11-27 18:16:01 -0800",
+        "id" : "6a2b476b808d693adff90d51b18a645d1ec54ff9",
+        "msg" : "If the CLI client is aborted during \"build -s\", abort the build.",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "changelog.html"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/cli/BuildCommand.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/resources/hudson/matrix/MatrixProject/index.jelly",
+          "core/src/main/resources/hudson/model/Job/index.jelly"
+        ],
+        "commitId" : "fa24d6a57a35cb6eaef40c9ebd899f49e4cd4524",
+        "timestamp" : 1354059379000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "show the full name here\n\nOtherwise it's not very obvious how the job name is in the abc/def/ghi notation\nthat's used in CLI and such.\n",
+        "date" : "2012-11-27 18:36:19 -0800",
+        "id" : "fa24d6a57a35cb6eaef40c9ebd899f49e4cd4524",
+        "msg" : "show the full name here",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/matrix/MatrixProject/index.jelly"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/model/Job/index.jelly"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/resources/hudson/diagnosis/Messages_de.properties",
+          "core/src/main/resources/hudson/Messages_de.properties"
+        ],
+        "commitId" : "cf66a01d2c025a3bb0cfe3d2085fb79838f77468",
+        "timestamp" : 1354098337000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/github",
+          "fullName" : "github"
+        },
+        "comment" : "German translations for AboutJenkins and OldDataMonitor links\n",
+        "date" : "2012-11-28 05:25:37 +0100",
+        "id" : "cf66a01d2c025a3bb0cfe3d2085fb79838f77468",
+        "msg" : "German translations for AboutJenkins and OldDataMonitor links",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/Messages_de.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/diagnosis/Messages_de.properties"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/resources/jenkins/management/PluginsLink/info.jelly"
+        ],
+        "commitId" : "f0ee9cda91c84628e756d52cdb63d35f6b954e8c",
+        "timestamp" : 1354099896000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/github",
+          "fullName" : "github"
+        },
+        "comment" : "inserted space between updates available message and link description\n\nthis changes the rendering from\n  ...functionality of Jenkins.(updates available)\nto\n  ...functionality of Jenkins. (updates available)\nwhich looks nicer.\n\nHad to use &nbsp;, regular whitespace wouldn't do.\n",
+        "date" : "2012-11-28 05:51:36 +0100",
+        "id" : "f0ee9cda91c84628e756d52cdb63d35f6b954e8c",
+        "msg" : "inserted space between updates available message and link description",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/jenkins/management/PluginsLink/info.jelly"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/resources/hudson/Messages.properties"
+        ],
+        "commitId" : "84d2e052dc22360c54d82b6b5234b12764a36f5e",
+        "timestamp" : 1354100209000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/github",
+          "fullName" : "github"
+        },
+        "comment" : "minor typo fix on Manage Jenkins page\n\nAdded a trailing period to english AboutJenkins.Description because it\nwas the only message on that page having none.\n",
+        "date" : "2012-11-28 05:56:49 +0100",
+        "id" : "84d2e052dc22360c54d82b6b5234b12764a36f5e",
+        "msg" : "minor typo fix on Manage Jenkins page",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/Messages.properties"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/cli/InstallPluginCommand.java"
+        ],
+        "commitId" : "5c8c643bb099b0ef5048a996b73bf6381d912e8d",
+        "timestamp" : 1354118161000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Ryan%20Campbell",
+          "fullName" : "Ryan Campbell"
+        },
+        "comment" : "Require UPLOAD_PLUGINS permission for install-plugin cli command\n",
+        "date" : "2012-11-28 10:56:01 -0600",
+        "id" : "5c8c643bb099b0ef5048a996b73bf6381d912e8d",
+        "msg" : "Require UPLOAD_PLUGINS permission for install-plugin cli command",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/cli/InstallPluginCommand.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/model/Run.java"
+        ],
+        "commitId" : "74d721845e41283fbc74b6dc0bb9387d605d15bd",
+        "timestamp" : 1354146096000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "keep track of the time when the build has actually started\n",
+        "date" : "2012-11-28 18:41:36 -0800",
+        "id" : "74d721845e41283fbc74b6dc0bb9387d605d15bd",
+        "msg" : "keep track of the time when the build has actually started",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/model/Run.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/cli/CopyJobCommand.java"
+        ],
+        "commitId" : "7eeb79ed439c229a15855f8eb5ac2e6269d17ab5",
+        "timestamp" : 1354180673000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Nicolas%20De%20Loof",
+          "fullName" : "Nicolas De Loof"
+        },
+        "comment" : "support hierarchical ItemGroup on CLI copy\n",
+        "date" : "2012-11-29 04:17:53 +0100",
+        "id" : "7eeb79ed439c229a15855f8eb5ac2e6269d17ab5",
+        "msg" : "support hierarchical ItemGroup on CLI copy",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/cli/CopyJobCommand.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/resources/jenkins/mvn/FilePathGlobalSettingsProvider/help_ja.html",
+          "core/src/main/resources/hudson/diagnosis/OldDataMonitor/manage_ja.properties",
+          "core/src/main/resources/hudson/diagnosis/Messages.properties",
+          "core/src/main/resources/jenkins/mvn/FilePathSettingsProvider/help_ja.html",
+          "core/src/main/resources/jenkins/mvn/FilePathSettingsProvider/config_ja.properties",
+          "core/src/main/resources/lib/hudson/project/config-customWorkspace_ja.properties",
+          "core/src/main/resources/hudson/cli/Messages_ja.properties",
+          "core/src/main/resources/jenkins/mvn/FilePathGlobalSettingsProvider/config_ja.properties",
+          "core/src/main/resources/jenkins/model/Jenkins/MasterComputer/configure_ja.properties",
+          "core/src/main/resources/jenkins/mvn/FilePathSettingsProvider/help.html",
+          "core/src/main/resources/hudson/model/Messages_ja.properties",
+          "core/src/main/resources/hudson/triggers/SCMTrigger/config_ja.properties",
+          "core/src/main/resources/lib/layout/progressiveRendering_ja.properties",
+          "core/src/main/resources/jenkins/mvn/FilePathGlobalSettingsProvider/help.html",
+          "core/src/main/resources/hudson/PluginManager/advanced_ja.properties",
+          "core/src/main/resources/jenkins/mvn/FilePathGlobalSettingsProvider/help-path_ja.html",
+          "core/src/main/resources/jenkins/management/Messages_ja.properties",
+          "core/src/main/resources/hudson/matrix/MatrixProject/configure-entries_ja.properties",
+          "core/src/main/resources/hudson/slaves/Messages_ja.properties",
+          "core/src/main/resources/jenkins/mvn/Messages_ja.properties",
+          "core/src/main/resources/hudson/diagnosis/Messages_ja.properties",
+          "core/src/main/resources/hudson/PluginManager/PluginUpdateMonitor/message_ja.properties",
+          "core/src/main/resources/jenkins/mvn/FilePathSettingsProvider/help-path_ja.html",
+          "core/src/main/resources/lib/hudson/project/config-upstream-pseudo-trigger_ja.properties",
+          "core/src/main/resources/hudson/Messages_ja.properties",
+          "core/src/main/resources/hudson/model/Run/logKeep_ja.properties",
+          "core/src/main/resources/hudson/triggers/Messages_ja.properties"
+        ],
+        "commitId" : "d22d3c146c6d35e02bf365214b5d0a5fdb404358",
+        "timestamp" : 1354189933000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Seiji%20Sogabe",
+          "fullName" : "Seiji Sogabe"
+        },
+        "comment" : "updated japanese\n",
+        "date" : "2012-11-29 06:52:13 +0900",
+        "id" : "d22d3c146c6d35e02bf365214b5d0a5fdb404358",
+        "msg" : "updated japanese",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/PluginManager/advanced_ja.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/model/Messages_ja.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/Messages_ja.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/model/Run/logKeep_ja.properties"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/resources/jenkins/mvn/FilePathSettingsProvider/config_ja.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/triggers/SCMTrigger/config_ja.properties"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/resources/jenkins/model/Jenkins/MasterComputer/configure_ja.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/diagnosis/Messages.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/cli/Messages_ja.properties"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/resources/jenkins/mvn/FilePathGlobalSettingsProvider/help-path_ja.html"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/resources/jenkins/mvn/Messages_ja.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/lib/hudson/project/config-customWorkspace_ja.properties"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/resources/jenkins/mvn/FilePathGlobalSettingsProvider/help_ja.html"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/slaves/Messages_ja.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/jenkins/management/Messages_ja.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/jenkins/mvn/FilePathSettingsProvider/help.html"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/resources/jenkins/mvn/FilePathSettingsProvider/help_ja.html"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/jenkins/mvn/FilePathGlobalSettingsProvider/help.html"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/matrix/MatrixProject/configure-entries_ja.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/diagnosis/Messages_ja.properties"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/resources/lib/layout/progressiveRendering_ja.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/lib/hudson/project/config-upstream-pseudo-trigger_ja.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/triggers/Messages_ja.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/diagnosis/OldDataMonitor/manage_ja.properties"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/resources/jenkins/mvn/FilePathGlobalSettingsProvider/config_ja.properties"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/resources/hudson/PluginManager/PluginUpdateMonitor/message_ja.properties"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/resources/jenkins/mvn/FilePathSettingsProvider/help-path_ja.html"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "changelog.html",
+          "core/src/main/java/hudson/tasks/Maven.java"
+        ],
+        "commitId" : "75bad0954f3b70c0fe8e75b6e676e7bac00ec009",
+        "timestamp" : 1354201824000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Seiji%20Sogabe",
+          "fullName" : "Seiji Sogabe"
+        },
+        "comment" : "[FIXED JENKINS-15940] WARNING: Caught exception evaluating: descriptor.getHelpFile(attrs.field). Reason: java.lang.NullPointerException\n",
+        "date" : "2012-11-29 10:10:24 +0900",
+        "id" : "75bad0954f3b70c0fe8e75b6e676e7bac00ec009",
+        "msg" : "[FIXED JENKINS-15940] WARNING: Caught exception evaluating: descriptor.getHelpFile(attrs.field). Reason: java.lang.NullPointerException",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "changelog.html"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/tasks/Maven.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "pom.xml"
+        ],
+        "commitId" : "76e31a3a5c039e317a84b4c3331e15c284d44435",
+        "timestamp" : 1354219251000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Olivier%20Lamy",
+          "fullName" : "Olivier Lamy"
+        },
+        "comment" : "use last remoting 2.19 fix for [JENKINS-6604]\n",
+        "date" : "2012-11-29 15:00:51 +0100",
+        "id" : "76e31a3a5c039e317a84b4c3331e15c284d44435",
+        "msg" : "use last remoting 2.19 fix for [JENKINS-6604]",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "pom.xml"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "changelog.html"
+        ],
+        "commitId" : "b80789474cacc64be4954f0f4473759311e80580",
+        "timestamp" : 1354219385000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Olivier%20Lamy",
+          "fullName" : "Olivier Lamy"
+        },
+        "comment" : "changelog entry for [JENKINS-6604]\n",
+        "date" : "2012-11-29 15:03:05 +0100",
+        "id" : "b80789474cacc64be4954f0f4473759311e80580",
+        "msg" : "changelog entry for [JENKINS-6604]",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "changelog.html"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/model/AbstractProject.java"
+        ],
+        "commitId" : "4cd8c409e1810e44c1801582c0fb13aa1315d604",
+        "timestamp" : 1354297747000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kristian.rosenvold",
+          "fullName" : "kristian.rosenvold"
+        },
+        "comment" : "Added reason for why we are rebuilding to the log message\n",
+        "date" : "2012-11-30 12:49:07 +0100",
+        "id" : "4cd8c409e1810e44c1801582c0fb13aa1315d604",
+        "msg" : "Added reason for why we are rebuilding to the log message",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/model/AbstractProject.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/resources/hudson/slaves/Messages_ja.properties"
+        ],
+        "commitId" : "e83669e111a51cae9fa6e02b2e478d69d59feee0",
+        "timestamp" : 1354323260000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Seiji%20Sogabe",
+          "fullName" : "Seiji Sogabe"
+        },
+        "comment" : "fixed typoe. missing }\n",
+        "date" : "2012-11-30 19:54:20 +0900",
+        "id" : "e83669e111a51cae9fa6e02b2e478d69d59feee0",
+        "msg" : "fixed typoe. missing }",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/slaves/Messages_ja.properties"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "maven-plugin/src/main/resources/hudson/maven/MavenModuleSet/configure-entries_fr.properties",
+          "changelog.html",
+          "maven-plugin/src/main/resources/hudson/maven/MavenModuleSet/configure-entries.jelly",
+          "maven-plugin/src/main/java/hudson/maven/MavenModuleSet.java",
+          "maven-plugin/src/main/java/hudson/maven/MavenModule.java"
+        ],
+        "commitId" : "c222acecaf0fe67d48711b9c298a85569b0a00fa",
+        "timestamp" : 1354468450000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Vincent%20Latombe",
+          "fullName" : "Vincent Latombe"
+        },
+        "comment" : "[JENKINS-1295] Disable trigger downstream for maven jobs\n",
+        "date" : "2012-12-02 12:14:10 +0100",
+        "id" : "c222acecaf0fe67d48711b9c298a85569b0a00fa",
+        "msg" : "[JENKINS-1295] Disable trigger downstream for maven jobs",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "changelog.html"
+          },
+          {
+            "editType" : "edit",
+            "file" : "maven-plugin/src/main/resources/hudson/maven/MavenModuleSet/configure-entries.jelly"
+          },
+          {
+            "editType" : "edit",
+            "file" : "maven-plugin/src/main/java/hudson/maven/MavenModuleSet.java"
+          },
+          {
+            "editType" : "edit",
+            "file" : "maven-plugin/src/main/resources/hudson/maven/MavenModuleSet/configure-entries_fr.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "maven-plugin/src/main/java/hudson/maven/MavenModule.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "maven-plugin/pom.xml"
+        ],
+        "commitId" : "73c7427fd2364e39210264eb34afec028b51491a",
+        "timestamp" : 1354522299000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Olivier%20Lamy",
+          "fullName" : "Olivier Lamy"
+        },
+        "comment" : "use last maven wagon version 2.3\n",
+        "date" : "2012-12-03 03:11:39 +0100",
+        "id" : "73c7427fd2364e39210264eb34afec028b51491a",
+        "msg" : "use last maven wagon version 2.3",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "maven-plugin/pom.xml"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "pom.xml"
+        ],
+        "commitId" : "4b8878ffdeef49abb24d64a545b87c7fe0dd11d5",
+        "timestamp" : 1354522425000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Olivier%20Lamy",
+          "fullName" : "Olivier Lamy"
+        },
+        "comment" : "use last surefire plugin version 2.12.4\n",
+        "date" : "2012-12-03 03:13:45 +0100",
+        "id" : "4b8878ffdeef49abb24d64a545b87c7fe0dd11d5",
+        "msg" : "use last surefire plugin version 2.12.4",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "pom.xml"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "pom.xml"
+        ],
+        "commitId" : "131b4fe29de40b992e0f2493317c2009f02b44ac",
+        "timestamp" : 1354522607000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Olivier%20Lamy",
+          "fullName" : "Olivier Lamy"
+        },
+        "comment" : "maven-resources-plugin -> 2.6\n",
+        "date" : "2012-12-03 03:16:47 +0100",
+        "id" : "131b4fe29de40b992e0f2493317c2009f02b44ac",
+        "msg" : "maven-resources-plugin -> 2.6",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "pom.xml"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "maven-plugin/src/main/webapp/downstreamDisabled.html"
+        ],
+        "commitId" : "b53d0bfbfee8831710164d3ac96c06b27760e2ef",
+        "timestamp" : 1354523260000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Olivier%20Lamy",
+          "fullName" : "Olivier Lamy"
+        },
+        "comment" : "fix unit test\n",
+        "date" : "2012-12-03 03:27:40 +0100",
+        "id" : "b53d0bfbfee8831710164d3ac96c06b27760e2ef",
+        "msg" : "fix unit test",
+        "paths" : [
+          {
+            "editType" : "add",
+            "file" : "maven-plugin/src/main/webapp/downstreamDisabled.html"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "changelog.html",
+          "core/src/main/java/hudson/model/FileParameterValue.java"
+        ],
+        "commitId" : "4dde24e62037439b7b73addd7cefae83a254eb3c",
+        "timestamp" : 1354573715000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Jesse%20Glick",
+          "fullName" : "Jesse Glick"
+        },
+        "comment" : "[FIXED JENKINS-13536] Using file parameters could cause build records to not load.\nSolves the issue for newly created builds by not attempting to persist the original file upload record, which is useless after the build has run (the fileParameters dir in the build already archives them).\nDoes not help loading pre-fix builds in which the upload temp file has been deleted; for these, you must manually delete <file class=\"org.apache.commons.fileupload.disk.DiskFileItem\" serialization=\"custom\">…</file> from the build.xml.\n(Did not find a straightforward way to just instruct XStream to ignore this bit of XML: it is easy to avoid serializing a field, but deserializing is different.)\n",
+        "date" : "2012-12-03 17:28:35 -0500",
+        "id" : "4dde24e62037439b7b73addd7cefae83a254eb3c",
+        "msg" : "[FIXED JENKINS-13536] Using file parameters could cause build records to not load.",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/model/FileParameterValue.java"
+          },
+          {
+            "editType" : "edit",
+            "file" : "changelog.html"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "maven-plugin/src/main/java/hudson/maven/reporters/SurefireArchiver.java"
+        ],
+        "commitId" : "4440e0f420242364975265f6db5c27bee13de4e3",
+        "timestamp" : 1354641598000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Vojtech%20Juranek",
+          "fullName" : "Vojtech Juranek"
+        },
+        "comment" : "Allow gc to remove test results from memory as these can consume a lot of memory\n",
+        "date" : "2012-12-04 12:19:58 +0100",
+        "id" : "4440e0f420242364975265f6db5c27bee13de4e3",
+        "msg" : "Allow gc to remove test results from memory as these can consume a lot of memory",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "maven-plugin/src/main/java/hudson/maven/reporters/SurefireArchiver.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/security/GlobalSecurityConfiguration.java",
+          "core/src/main/resources/hudson/security/Messages.properties"
+        ],
+        "commitId" : "11d8e23f7af96c6b457f16ca794ae1985bedcb29",
+        "timestamp" : 1354646290000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/imod",
+          "fullName" : "imod"
+        },
+        "comment" : "cleanup some minor display issues\n",
+        "date" : "2012-12-04 13:38:10 +0100",
+        "id" : "11d8e23f7af96c6b457f16ca794ae1985bedcb29",
+        "msg" : "cleanup some minor display issues",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/security/Messages.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/security/GlobalSecurityConfiguration.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/index.jelly"
+        ],
+        "commitId" : "6dabfd94c2d8d30f4dff4ee19ee072ff961eee50",
+        "timestamp" : 1354646359000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/imod",
+          "fullName" : "imod"
+        },
+        "comment" : "use existing displayName\n",
+        "date" : "2012-12-04 13:39:19 +0100",
+        "id" : "6dabfd94c2d8d30f4dff4ee19ee072ff961eee50",
+        "msg" : "use existing displayName",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/index.jelly"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/resources/hudson/model/Run/_api.jelly"
+        ],
+        "commitId" : "ac06043f6ffa2811e9acf84824d796b6fe7892d1",
+        "timestamp" : 1354653504000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Matt.Kraai",
+          "fullName" : "Matt.Kraai"
+        },
+        "comment" : "Fix escaping on builds' REST API page\n\nThe \"Accessing Progressive Console Output\" section of builds' REST API\npage is displayed incorrectly.  It should contain \"&lt;pre>\", but the\n\"&lt;\" is replaced by a less-than sign.  This causes a <pre> tag to be\napplied to the rest of the section.  Change the & to &amp; to prevent\nthis.\n",
+        "date" : "2012-12-04 15:38:24 -0800",
+        "id" : "ac06043f6ffa2811e9acf84824d796b6fe7892d1",
+        "msg" : "Fix escaping on builds' REST API page",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/model/Run/_api.jelly"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "maven-plugin/src/main/java/hudson/maven/reporters/SurefireArchiver.java"
+        ],
+        "commitId" : "b0a39275cc85b2a3d94ecfba77b1349f86780d09",
+        "timestamp" : 1354713514000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Vojtech%20Juranek",
+          "fullName" : "Vojtech Juranek"
+        },
+        "comment" : "Revert 4440e0f420242364975265f6db5c27bee13de4e3\n\nIt breaks some already fixed issues like JENKINS-1557\n",
+        "date" : "2012-12-05 08:18:34 +0100",
+        "id" : "b0a39275cc85b2a3d94ecfba77b1349f86780d09",
+        "msg" : "Revert 4440e0f420242364975265f6db5c27bee13de4e3",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "maven-plugin/src/main/java/hudson/maven/reporters/SurefireArchiver.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "maven-plugin/src/main/java/hudson/maven/reporters/SurefireArchiver.java"
+        ],
+        "commitId" : "eeb04b1f4e0e84138897a46042f704b7531bcefe",
+        "timestamp" : 1354713554000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Vojtech%20Juranek",
+          "fullName" : "Vojtech Juranek"
+        },
+        "comment" : "Allow gc to remove test results from memory in more proper way\n",
+        "date" : "2012-12-05 08:19:14 +0100",
+        "id" : "eeb04b1f4e0e84138897a46042f704b7531bcefe",
+        "msg" : "Allow gc to remove test results from memory in more proper way",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "maven-plugin/src/main/java/hudson/maven/reporters/SurefireArchiver.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/config.groovy"
+        ],
+        "commitId" : "293d3e51d75361ab26a946fb1422f4ec2be9503a",
+        "timestamp" : 1354725577000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/imod",
+          "fullName" : "imod"
+        },
+        "comment" : "fix persisting of formatter\n",
+        "date" : "2012-12-05 11:39:37 +0100",
+        "id" : "293d3e51d75361ab26a946fb1422f4ec2be9503a",
+        "msg" : "fix persisting of formatter",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/config.groovy"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/jenkins/model/GlobalSecurityConfigurationPart.java",
+          "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/index.jelly",
+          "core/src/main/java/hudson/Functions.java",
+          "core/src/main/java/hudson/security/GlobalSecurityConfiguration.java"
+        ],
+        "commitId" : "4ab6fe7cb4ccf2277da970447c50eab7c0921e47",
+        "timestamp" : 1354730352000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/imod",
+          "fullName" : "imod"
+        },
+        "comment" : "add new EP GlobalSecurityConfigurationPart to enable contributions to the global security configuration page\n",
+        "date" : "2012-12-05 12:59:12 +0100",
+        "id" : "4ab6fe7cb4ccf2277da970447c50eab7c0921e47",
+        "msg" : "add new EP GlobalSecurityConfigurationPart to enable contributions to the global security configuration page",
+        "paths" : [
+          {
+            "editType" : "add",
+            "file" : "core/src/main/java/jenkins/model/GlobalSecurityConfigurationPart.java"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/Functions.java"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/index.jelly"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/security/GlobalSecurityConfiguration.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/security/csrf/GlobalCrumbIssuerConfiguration.java"
+        ],
+        "commitId" : "22e0fc7966077b058a70c7e7e86b82c064dccf8b",
+        "timestamp" : 1354730456000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/imod",
+          "fullName" : "imod"
+        },
+        "comment" : "move config for 'Prevent Cross Site Request Forgery exploits' to new global security configuration page\n",
+        "date" : "2012-12-05 13:00:56 +0100",
+        "id" : "22e0fc7966077b058a70c7e7e86b82c064dccf8b",
+        "msg" : "move config for 'Prevent Cross Site Request Forgery exploits' to new global security configuration page",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/security/csrf/GlobalCrumbIssuerConfiguration.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/model/Computer.java",
+          "core/src/main/java/hudson/slaves/NodeList.java",
+          "core/src/main/java/hudson/model/AbstractBuild.java",
+          "core/src/main/java/hudson/model/AbstractCIBase.java",
+          "core/src/main/java/jenkins/model/Jenkins.java",
+          "core/src/main/java/hudson/tasks/CommandInterpreter.java",
+          "core/src/main/java/hudson/model/Node.java"
+        ],
+        "commitId" : "554d9d55a4aac0c456209e6160cf67dabeb7d8bb",
+        "timestamp" : 1354731176000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Jesse%20Glick",
+          "fullName" : "Jesse Glick"
+        },
+        "comment" : "Diagnosis of an NPE probably caused by a transient slave connection error.\njava.lang.NullPointerException\n\tat hudson.tasks.CommandInterpreter.createScriptFile(CommandInterpreter.java:104)\n\tat hudson.tasks.CommandInterpreter.perform(CommandInterpreter.java:66)\n\tat hudson.tasks.CommandInterpreter.perform(CommandInterpreter.java:58)\n\tat com.cloudbees.hudson.plugins.modeling.impl.builder.BuilderImpl.perform(BuilderImpl.java:58)\n\tat hudson.plugins.m2extrasteps.M2ExtraStepsWrapper.executeBuildSteps(M2ExtraStepsWrapper.java:166)\n\tat hudson.plugins.m2extrasteps.M2ExtraStepsWrapper.access$200(M2ExtraStepsWrapper.java:43)\n\tat hudson.plugins.m2extrasteps.M2ExtraStepsWrapper$1.tearDown(M2ExtraStepsWrapper.java:137)\n\tat hudson.maven.MavenModuleSetBuild$RunnerImpl.doRun(MavenModuleSetBuild.java:817)\n\tat hudson.model.AbstractBuild$AbstractRunner.run(AbstractBuild.java:490)\n\tat hudson.model.Run.run(Run.java:1442)\n\tat hudson.maven.MavenModuleSetBuild.run(MavenModuleSetBuild.java:477)\n\tat hudson.model.ResourceController.execute(ResourceController.java:88)\n\tat hudson.model.Executor.run(Executor.java:239)\n",
+        "date" : "2012-12-05 13:12:56 -0500",
+        "id" : "554d9d55a4aac0c456209e6160cf67dabeb7d8bb",
+        "msg" : "Diagnosis of an NPE probably caused by a transient slave connection error.",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/model/AbstractBuild.java"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/model/AbstractCIBase.java"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/slaves/NodeList.java"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/jenkins/model/Jenkins.java"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/tasks/CommandInterpreter.java"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/model/Computer.java"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/model/Node.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/jenkins/model/ModifiableTopLevelItemGroup.java"
+        ],
+        "commitId" : "7979a534a124fd16e991f9a08f390884e984e858",
+        "timestamp" : 1354735697000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Jesse%20Glick",
+          "fullName" : "Jesse Glick"
+        },
+        "comment" : "@since\n",
+        "date" : "2012-12-05 14:28:17 -0500",
+        "id" : "7979a534a124fd16e991f9a08f390884e984e858",
+        "msg" : "@since",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/jenkins/model/ModifiableTopLevelItemGroup.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/jenkins/model/Jenkins.java"
+        ],
+        "commitId" : "e4ca47e9e4b2ca5ab33dd817562ab43a5a9e74bd",
+        "timestamp" : 1354739720000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Jesse%20Glick",
+          "fullName" : "Jesse Glick"
+        },
+        "comment" : "Noting some places where Item.DISCOVER probably needs to be checked.\n",
+        "date" : "2012-12-05 15:35:20 -0500",
+        "id" : "e4ca47e9e4b2ca5ab33dd817562ab43a5a9e74bd",
+        "msg" : "Noting some places where Item.DISCOVER probably needs to be checked.",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/jenkins/model/Jenkins.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "test/src/main/java/org/jvnet/hudson/test/MockFolder.java",
+          "test/src/test/java/org/jvnet/hudson/test/MockFolderTest.java",
+          "test/src/main/java/org/jvnet/hudson/test/JenkinsRule.java"
+        ],
+        "commitId" : "a8ba1162a3d6270bd51d98453248c0a89a6fef4d",
+        "timestamp" : 1354739889000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Jesse%20Glick",
+          "fullName" : "Jesse Glick"
+        },
+        "comment" : "Introduced MockFolder for testing.\n",
+        "date" : "2012-12-05 15:38:09 -0500",
+        "id" : "a8ba1162a3d6270bd51d98453248c0a89a6fef4d",
+        "msg" : "Introduced MockFolder for testing.",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "test/src/main/java/org/jvnet/hudson/test/JenkinsRule.java"
+          },
+          {
+            "editType" : "add",
+            "file" : "test/src/test/java/org/jvnet/hudson/test/MockFolderTest.java"
+          },
+          {
+            "editType" : "add",
+            "file" : "test/src/main/java/org/jvnet/hudson/test/MockFolder.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "test/src/test/java/hudson/cli/CopyJobCommandTest.java",
+          "core/src/main/java/hudson/cli/handlers/TopLevelItemOptionHandler.java"
+        ],
+        "commitId" : "e7f56d3d3d2b485f1d082efa366ef05bbdd149a0",
+        "timestamp" : 1354739998000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Jesse%20Glick",
+          "fullName" : "Jesse Glick"
+        },
+        "comment" : "Fixing and testing 7eeb79e (CopyJobCommand with folders).\n",
+        "date" : "2012-12-05 15:39:58 -0500",
+        "id" : "e7f56d3d3d2b485f1d082efa366ef05bbdd149a0",
+        "msg" : "Fixing and testing 7eeb79e (CopyJobCommand with folders).",
+        "paths" : [
+          {
+            "editType" : "add",
+            "file" : "test/src/test/java/hudson/cli/CopyJobCommandTest.java"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/cli/handlers/TopLevelItemOptionHandler.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/resources/lib/form/breadcrumb-config-outline/init.js"
+        ],
+        "commitId" : "c6190cb707227255e956cdaaa22da8e311e847e9",
+        "timestamp" : 1354811518000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Matt.Kraai",
+          "fullName" : "Matt.Kraai"
+        },
+        "comment" : "[FIXED JENKINS-15126] Remove \";\" from closing tag\n",
+        "date" : "2012-12-06 11:31:58 -0800",
+        "id" : "c6190cb707227255e956cdaaa22da8e311e847e9",
+        "msg" : "[FIXED JENKINS-15126] Remove \";\" from closing tag",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/lib/form/breadcrumb-config-outline/init.js"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "changelog.html",
+          "core/src/main/resources/lib/hudson/queue.jelly",
+          "war/src/main/webapp/css/style.css",
+          "war/src/main/webapp/scripts/hudson-behavior.js",
+          "core/src/main/resources/lib/layout/breadcrumbs.js"
+        ],
+        "commitId" : "a2a398ed0c3c9fb7071894f240e8d28a280a2eec",
+        "timestamp" : 1354812869000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "merge the tooltip to the context menu\n",
+        "date" : "2012-12-06 11:54:29 -0800",
+        "id" : "a2a398ed0c3c9fb7071894f240e8d28a280a2eec",
+        "msg" : "merge the tooltip to the context menu",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/lib/hudson/queue.jelly"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/lib/layout/breadcrumbs.js"
+          },
+          {
+            "editType" : "edit",
+            "file" : "war/src/main/webapp/scripts/hudson-behavior.js"
+          },
+          {
+            "editType" : "edit",
+            "file" : "changelog.html"
+          },
+          {
+            "editType" : "edit",
+            "file" : "war/src/main/webapp/css/style.css"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "maven-plugin/src/main/java/hudson/maven/MavenModuleSet.java"
+        ],
+        "commitId" : "b89b4ddedf06dc4ea019c5e44dbc10884f5367d5",
+        "timestamp" : 1354813307000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "if there's only one installation, better to resolve to that one.\n\nAfter all, that's the installation the user is most likely going to choose, and if there's only one installation.\n\nPlus when there's only one installation, there's no drop-down to select the Maven installation in the config UI, so the user is asked to do a rather unnatural \"open config page\" > \"just click save\" workflow.\n",
+        "date" : "2012-12-06 12:01:47 -0800",
+        "id" : "b89b4ddedf06dc4ea019c5e44dbc10884f5367d5",
+        "msg" : "if there's only one installation, better to resolve to that one.",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "maven-plugin/src/main/java/hudson/maven/MavenModuleSet.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "maven-plugin/src/main/java/hudson/maven/MavenModuleSetBuild.java"
+        ],
+        "commitId" : "87e21359fc521ffc88398d623dee477967baa75f",
+        "timestamp" : 1354825105000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "adde a logging to find out why we aren't doing incremental build\n",
+        "date" : "2012-12-06 15:18:25 -0800",
+        "id" : "87e21359fc521ffc88398d623dee477967baa75f",
+        "msg" : "adde a logging to find out why we aren't doing incremental build",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "maven-plugin/src/main/java/hudson/maven/MavenModuleSetBuild.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "changelog.html",
+          "core/src/main/java/hudson/util/ComboBoxModel.java"
+        ],
+        "commitId" : "b6ce03878ed7523878ceffdb69e699c19a941bfc",
+        "timestamp" : 1354880268000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Vincent%20Latombe",
+          "fullName" : "Vincent Latombe"
+        },
+        "comment" : "[JENKINS-16069] Remove wrapping of JSON with ( )\nnow it is done properly on Javascript side so the current server\nimplementation triggers javascript errors.\n\nResult can be observed on DynamicComboBox within ui-samples-plugin\n",
+        "date" : "2012-12-07 06:37:48 +0100",
+        "id" : "b6ce03878ed7523878ceffdb69e699c19a941bfc",
+        "msg" : "[JENKINS-16069] Remove wrapping of JSON with ( )",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/util/ComboBoxModel.java"
+          },
+          {
+            "editType" : "edit",
+            "file" : "changelog.html"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "war/src/main/webapp/help/security/container-realm.html"
+        ],
+        "commitId" : "25cc5a87e869a0ea8a959e8a941cf8dc4ada609e",
+        "timestamp" : 1354903671000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Jesse%20Glick",
+          "fullName" : "Jesse Glick"
+        },
+        "comment" : "Minor edits.\n",
+        "date" : "2012-12-07 13:07:51 -0500",
+        "id" : "25cc5a87e869a0ea8a959e8a941cf8dc4ada609e",
+        "msg" : "Minor edits.",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "war/src/main/webapp/help/security/container-realm.html"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/jenkins/model/Jenkins.java"
+        ],
+        "commitId" : "39b77ab2487a049d18c73129389410279e0af853",
+        "timestamp" : 1354903751000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Jesse%20Glick",
+          "fullName" : "Jesse Glick"
+        },
+        "comment" : "Comment only.\n",
+        "date" : "2012-12-07 13:09:11 -0500",
+        "id" : "39b77ab2487a049d18c73129389410279e0af853",
+        "msg" : "Comment only.",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/jenkins/model/Jenkins.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "changelog.html",
+          "core/src/main/resources/hudson/security/LegacySecurityRealm/index.jelly",
+          "core/src/main/java/hudson/security/LegacySecurityRealm.java",
+          "core/src/main/resources/hudson/security/LegacySecurityRealm/sidepanel.jelly",
+          "core/src/main/resources/hudson/security/LegacySecurityRealm/index.properties",
+          "war/src/main/webapp/help/security/container-realm.html"
+        ],
+        "commitId" : "18e4e97e86227bff00be78c88b5d7ee62988b198",
+        "timestamp" : 1354905021000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Jesse%20Glick",
+          "fullName" : "Jesse Glick"
+        },
+        "comment" : "LegacySecurityRealm.getUnprotectedRootActions\n",
+        "date" : "2012-12-07 13:30:21 -0500",
+        "id" : "18e4e97e86227bff00be78c88b5d7ee62988b198",
+        "msg" : "LegacySecurityRealm.getUnprotectedRootActions",
+        "paths" : [
+          {
+            "editType" : "add",
+            "file" : "core/src/main/resources/hudson/security/LegacySecurityRealm/sidepanel.jelly"
+          },
+          {
+            "editType" : "edit",
+            "file" : "changelog.html"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/resources/hudson/security/LegacySecurityRealm/index.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "war/src/main/webapp/help/security/container-realm.html"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/security/LegacySecurityRealm.java"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/resources/hudson/security/LegacySecurityRealm/index.jelly"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "war/pom.xml"
+        ],
+        "commitId" : "8c2c59bb9d9967d98390014d5b152d04242d36b5",
+        "timestamp" : 1354918591000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/Jesse%20Glick",
+          "fullName" : "Jesse Glick"
+        },
+        "comment" : "ssh-slaves 0.22\n",
+        "date" : "2012-12-07 17:16:31 -0500",
+        "id" : "8c2c59bb9d9967d98390014d5b152d04242d36b5",
+        "msg" : "ssh-slaves 0.22",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "war/pom.xml"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/model/FileParameterValue.java"
+        ],
+        "commitId" : "0d4789ed70c6b841f413ce74a90d6916a21377c3",
+        "timestamp" : 1355011580000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "opening this up for subtypes\n",
+        "date" : "2012-12-08 19:06:20 -0800",
+        "id" : "0d4789ed70c6b841f413ce74a90d6916a21377c3",
+        "msg" : "opening this up for subtypes",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/model/FileParameterValue.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/model/FileParameterValue.java"
+        ],
+        "commitId" : "3a764e9535420521986f01a036c88dd393390b36",
+        "timestamp" : 1355011581000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "expose a copy constructor\n",
+        "date" : "2012-12-08 19:06:21 -0800",
+        "id" : "3a764e9535420521986f01a036c88dd393390b36",
+        "msg" : "expose a copy constructor",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/model/FileParameterValue.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/util/ProcessTree.java"
+        ],
+        "commitId" : "7f2e83cbca21026c7cd0614760d06349c591e778",
+        "timestamp" : 1355012059000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "Fix ProcessTree test issue on Windows by skipping System Idle and System processes\n",
+        "date" : "2012-12-08 19:14:19 -0800",
+        "id" : "7f2e83cbca21026c7cd0614760d06349c591e778",
+        "msg" : "Fix ProcessTree test issue on Windows by skipping System Idle and System processes",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/util/ProcessTree.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/model/Computer.java"
+        ],
+        "commitId" : "97b02cd3e5bde90f412882431dd489225da9d0e0",
+        "timestamp" : 1355012130000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "getOfflineCauseReason handles localization\n\nalso handles usernames that are emails\n",
+        "date" : "2012-12-08 19:15:30 -0800",
+        "id" : "97b02cd3e5bde90f412882431dd489225da9d0e0",
+        "msg" : "getOfflineCauseReason handles localization",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/model/Computer.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/hudson/ClassicPluginStrategy.java"
+        ],
+        "commitId" : "5237146b21485919a737b738f0367e947aa4878a",
+        "timestamp" : 1355012654000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "Mailer is split off to a plugin now\n",
+        "date" : "2012-12-08 19:24:14 -0800",
+        "id" : "5237146b21485919a737b738f0367e947aa4878a",
+        "msg" : "Mailer is split off to a plugin now",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/ClassicPluginStrategy.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "war/src/main/webapp/images/24x24/secure.png",
+          "core/src/main/resources/hudson/security/Messages.properties",
+          "war/src/main/webapp/images/32x32/secure.png",
+          "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/index.jelly",
+          "war/src/main/webapp/images/48x48/secure.png",
+          "core/src/main/java/hudson/security/GlobalSecurityConfiguration.java",
+          "war/src/main/webapp/images/16x16/secure.png"
+        ],
+        "commitId" : "215e22576f578bfd0ffed3410c21e6b987dff4e3",
+        "timestamp" : 1355013686000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "Minor tweaks\n\n- All our other icons do not have bounding boxes, so let's follow that\n  scheme as well.\n- Changed the name to \"Configure Global Security\" to make it clear that\n  this is a part of the configuration.\n",
+        "date" : "2012-12-08 19:41:26 -0800",
+        "id" : "215e22576f578bfd0ffed3410c21e6b987dff4e3",
+        "msg" : "Minor tweaks",
+        "paths" : [
+          {
+            "editType" : "add",
+            "file" : "war/src/main/webapp/images/24x24/secure.png"
+          },
+          {
+            "editType" : "add",
+            "file" : "war/src/main/webapp/images/32x32/secure.png"
+          },
+          {
+            "editType" : "edit",
+            "file" : "war/src/main/webapp/images/48x48/secure.png"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/security/Messages.properties"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/index.jelly"
+          },
+          {
+            "editType" : "add",
+            "file" : "war/src/main/webapp/images/16x16/secure.png"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/security/GlobalSecurityConfiguration.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/src/main/java/jenkins/model/GlobalSecurityConfigurationPart.java",
+          "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/config.groovy",
+          "core/src/main/java/jenkins/model/GlobalConfiguration.java",
+          "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/index.jelly",
+          "core/src/main/java/hudson/security/csrf/GlobalCrumbIssuerConfiguration.java",
+          "core/src/main/java/hudson/Functions.java",
+          "core/src/main/java/hudson/security/GlobalSecurityConfiguration.java",
+          "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/index.groovy",
+          "core/src/main/java/jenkins/model/GlobalConfigurationCategory.java",
+          "core/src/main/resources/jenkins/model/Jenkins/configure.jelly"
+        ],
+        "commitId" : "5218b7618ee4c8584cc9a729e785cd215b6c2fce",
+        "timestamp" : 1355016648000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "Introducing GlobalConfigurationCategory.\n\n... instead of creating a copy of each GlobalConfiguration variant (like GlobalSecurityConfigurationPart) for the following reasons:\n\n- This allows future UI to render tabs and other means to divide configurations into even smaller granularity, which is something that has been discussed before.\n\n- Eliminates code duplication between GlobalConfiguration look-alikes.\n",
+        "date" : "2012-12-08 20:30:48 -0800",
+        "id" : "5218b7618ee4c8584cc9a729e785cd215b6c2fce",
+        "msg" : "Introducing GlobalConfigurationCategory.",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/security/csrf/GlobalCrumbIssuerConfiguration.java"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/resources/jenkins/model/Jenkins/configure.jelly"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/jenkins/model/GlobalConfiguration.java"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/index.groovy"
+          },
+          {
+            "editType" : "add",
+            "file" : "core/src/main/java/jenkins/model/GlobalConfigurationCategory.java"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/index.jelly"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/resources/hudson/security/GlobalSecurityConfiguration/config.groovy"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/security/GlobalSecurityConfiguration.java"
+          },
+          {
+            "editType" : "delete",
+            "file" : "core/src/main/java/jenkins/model/GlobalSecurityConfigurationPart.java"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/src/main/java/hudson/Functions.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "test/src/main/java/org/jvnet/hudson/test/HudsonTestCase.java"
+        ],
+        "commitId" : "fe8319f971b9af365e44b7e14dcbb85ba30a3134",
+        "timestamp" : 1355060911000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "alert should be considered a test failure unless overridden by the test case\n",
+        "date" : "2012-12-09 08:48:31 -0800",
+        "id" : "fe8319f971b9af365e44b7e14dcbb85ba30a3134",
+        "msg" : "alert should be considered a test failure unless overridden by the test case",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "test/src/main/java/org/jvnet/hudson/test/HudsonTestCase.java"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "war/pom.xml"
+        ],
+        "commitId" : "228b8237a3147eef8ba234282a0a16c54987f9c9",
+        "timestamp" : 1355064539000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "Needs a newer version to avoid cyclic dependencies\n",
+        "date" : "2012-12-09 09:48:59 -0800",
+        "id" : "228b8237a3147eef8ba234282a0a16c54987f9c9",
+        "msg" : "Needs a newer version to avoid cyclic dependencies",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "war/pom.xml"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "core/pom.xml",
+          "maven-plugin/pom.xml",
+          "plugins/pom.xml",
+          "cli/pom.xml",
+          "test/pom.xml",
+          "war/pom.xml",
+          "ui-samples-plugin/pom.xml",
+          "pom.xml"
+        ],
+        "commitId" : "91c255139e7e77b4a9c4910fa373c99e93510f05",
+        "timestamp" : 1355067790000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "[maven-release-plugin] prepare release jenkins-1.493\n",
+        "date" : "2012-12-09 10:43:10 -0800",
+        "id" : "91c255139e7e77b4a9c4910fa373c99e93510f05",
+        "msg" : "[maven-release-plugin] prepare release jenkins-1.493",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "war/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "plugins/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "ui-samples-plugin/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "test/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "maven-plugin/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "cli/pom.xml"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "maven-plugin/pom.xml",
+          "core/pom.xml",
+          "plugins/pom.xml",
+          "cli/pom.xml",
+          "test/pom.xml",
+          "war/pom.xml",
+          "ui-samples-plugin/pom.xml",
+          "pom.xml"
+        ],
+        "commitId" : "d3435e1f70ffe6b2897964a6bd081d6cd4f34c8e",
+        "timestamp" : 1355067804000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "[maven-release-plugin] prepare for next development iteration\n",
+        "date" : "2012-12-09 10:43:24 -0800",
+        "id" : "d3435e1f70ffe6b2897964a6bd081d6cd4f34c8e",
+        "msg" : "[maven-release-plugin] prepare for next development iteration",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "test/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "plugins/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "maven-plugin/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "cli/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "ui-samples-plugin/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "war/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "core/pom.xml"
+          },
+          {
+            "editType" : "edit",
+            "file" : "pom.xml"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "changelog.html"
+        ],
+        "commitId" : "39d70be837fbcd921b173608a853378fdf7f75ba",
+        "timestamp" : 1355068886000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "updated changelog for release\n",
+        "date" : "2012-12-09 11:01:26 -0800",
+        "id" : "39d70be837fbcd921b173608a853378fdf7f75ba",
+        "msg" : "updated changelog for release",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "changelog.html"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "debian/debian/changelog"
+        ],
+        "commitId" : "bf7522d70e6bd3282d6edf60d143fb55571b7345",
+        "timestamp" : 1355071046000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "updated changelog as a part of the release\n",
+        "date" : "2012-12-09 11:37:26 -0800",
+        "id" : "bf7522d70e6bd3282d6edf60d143fb55571b7345",
+        "msg" : "updated changelog as a part of the release",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "debian/debian/changelog"
+          }
+        ]
+      },
+      {
+        "affectedPaths" : [
+          "changelog.html"
+        ],
+        "commitId" : "ea39951a3b6f000a331b25b71a12286103552681",
+        "timestamp" : 1355072393000,
+        "author" : {
+          "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+          "fullName" : "Kohsuke Kawaguchi"
+        },
+        "comment" : "creating an RC branch\n",
+        "date" : "2012-12-09 11:59:53 -0800",
+        "id" : "ea39951a3b6f000a331b25b71a12286103552681",
+        "msg" : "creating an RC branch",
+        "paths" : [
+          {
+            "editType" : "edit",
+            "file" : "changelog.html"
+          }
+        ]
+      }
+    ],
+    "kind" : null
+  },
+  "culprits" : [
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/Nicolas%20De%20Loof",
+      "fullName" : "Nicolas De Loof"
+    },
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/Seiji%20Sogabe",
+      "fullName" : "Seiji Sogabe"
+    },
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/imod",
+      "fullName" : "imod"
+    },
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+      "fullName" : "Kohsuke Kawaguchi"
+    },
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/Matt.Kraai",
+      "fullName" : "Matt.Kraai"
+    },
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/Ryan%20Campbell",
+      "fullName" : "Ryan Campbell"
+    },
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/kristian.rosenvold",
+      "fullName" : "kristian.rosenvold"
+    },
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/Vincent%20Latombe",
+      "fullName" : "Vincent Latombe"
+    },
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/michael.koch",
+      "fullName" : "michael.koch"
+    },
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/github",
+      "fullName" : "github"
+    },
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/Jesse%20Glick",
+      "fullName" : "Jesse Glick"
+    },
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/Olivier%20Lamy",
+      "fullName" : "Olivier Lamy"
+    },
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/Vojtech%20Juranek",
+      "fullName" : "Vojtech Juranek"
+    },
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/324706",
+      "fullName" : "324706"
+    }
+  ]
+}

@@ -42,7 +42,7 @@ define([
 	 
 			it('should get projects from correct URL', function () {
 				spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
-					expect(this.settings.url).toBe('http://example.com/api/json?pretty=true&depth=1');
+					expect(this.settings.url).toBe('http://example.com/api/json?depth=1');
 				});
 
 				request.projects(settings);
@@ -57,13 +57,70 @@ define([
 
 				var result = request.projects(settings);
 				
-				result.responseReceived.addOnce(function (response) {
-					expect(response).toBe(viewsJson);
+				result.addOnce(function (result) {
+					expect(result.response).toBe(viewsJson);
 				});
 
 				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
 			});
 			
 		});
+
+		describe('lastBuild', function () {
+
+			it('should get lastBuild from correct URL', function () {
+				spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
+					expect(this.settings.url).toBe('http://example.com/job/build_id/lastBuild/api/json');
+				});
+
+				request.lastBuild(settings, 'build_id');
+
+				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
+			});
+
+			it('should pass response returned from Ajax call', function () {
+				spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
+					this.on.responseReceived.dispatch(viewsJson);
+				});
+
+				var result = request.lastBuild(settings, 'build_id');
+				
+				result.addOnce(function (result) {
+					expect(result.response).toBe(viewsJson);
+				});
+
+				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
+			});
+
+		});
+
+		describe('lastCompletedBuild', function () {
+
+			it('should get lastCompletedBuild from correct URL', function () {
+				spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
+					expect(this.settings.url).toBe('http://example.com/job/build_id/lastCompletedBuild/api/json');
+				});
+
+				request.lastCompletedBuild(settings, 'build_id');
+
+				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
+			});
+
+			it('should pass response returned from Ajax call', function () {
+				spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
+					this.on.responseReceived.dispatch(viewsJson);
+				});
+
+				var result = request.lastCompletedBuild(settings, 'build_id');
+				
+				result.addOnce(function (result) {
+					expect(result.response).toBe(viewsJson);
+				});
+
+				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
+			});
+
+		});
+
 	});
 });

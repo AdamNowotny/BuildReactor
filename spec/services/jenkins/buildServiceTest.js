@@ -30,49 +30,22 @@ define([
 			expect(defaultSettings.urlHint).toBe('http://ci.jenkins-ci.org/');
 		});
 
-		it('should set cctrayLocation when All is primary view', function () {
-			settings.primaryView = 'All';
-			var service = new BuildService(settings);
-
-			expect(service.cctrayLocation).toBe('cc.xml');
-		});
-
-		it('should set cctrayLocation when All is not the primary view', function () {
-			settings.primaryView = 'All Failed';
-			var service = new BuildService(settings);
-
-			expect(service.cctrayLocation).toBe('view/All/cc.xml');
-		});
-
-		it('should set cctrayLocation if primaryView not set', function () {
-			settings.primaryView = undefined;
-			var service = new BuildService(settings);
-
-			expect(service.cctrayLocation).toBe('cc.xml');
-		});
-
 		describe('projects', function () {
 
 			var mockRequest;
 			var apiJson;
-			var responseReceived;
-			var errorReceived;
+			var completed;
 
 			var initResponse = function () {
 				mockRequest.andCallFake(function () {
-					responseReceived.dispatch(apiJson);
-					return {
-						responseReceived: responseReceived,
-						errorReceived: errorReceived
-					};
+					completed = new Signal();
+					completed.memorize = true;
+					completed.dispatch({ response: apiJson });
+					return completed;
 				});
 			};
 
 			beforeEach(function () {
-				responseReceived = new Signal();
-				responseReceived.memorize = true;
-				errorReceived = new Signal();
-				errorReceived.memorize = true;
 				apiJson = JSON.parse(readFixtures('jenkins/views.json'));
 				mockRequest = spyOn(jenkinsRequest, 'projects');
 			});

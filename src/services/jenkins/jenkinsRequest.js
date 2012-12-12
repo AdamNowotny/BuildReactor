@@ -6,28 +6,18 @@ define([
 
 		'use strict';
 
-		var send = function (settings) {
-			var responseReceived = new signals.Signal(),
-				errorReceived = new signals.Signal(),
-				ajaxSettings = {
-					url: settings.url,
-					username: settings.username,
-					password: settings.password
-				},
-				request = new AjaxRequest(ajaxSettings);
-			responseReceived.memorize = true;
-			errorReceived.memorize = true;
+		var send = function (ajaxSettings) {
+			var completed = new signals.Signal();
+			var request = new AjaxRequest(ajaxSettings);
+			completed.memorize = true;
 			request.on.responseReceived.addOnce(function (response) {
-				responseReceived.dispatch(response);
+				completed.dispatch({ response: response });
 			}, this);
 			request.on.errorReceived.addOnce(function (ajaxError) {
-				errorReceived.dispatch(ajaxError);
+				completed.dispatch({ error: ajaxError });
 			}, this);
 			request.send();
-			return {
-				responseReceived: responseReceived,
-				errorReceived: errorReceived
-			};
+			return completed;
 		};
 
 		function projects(settings) {
@@ -37,11 +27,47 @@ define([
 					message: 'settings.url not set'
 				};
 			}
-			settings.url = joinUrl(settings.url, 'api/json?pretty=true&depth=1');
-			return send(settings);
+			var ajaxSettings = {
+				url: joinUrl(settings.url, 'api/json?depth=1'),
+				username: settings.username,
+				password: settings.password
+			};
+			return send(ajaxSettings);
 		}
 
+		var lastBuild = function (settings, id) {
+			if (!(settings && settings.url && settings.url !== '')) {
+				throw {
+					name: 'ArgumentInvalid',
+					message: 'settings.url not set'
+				};
+			}
+			var ajaxSettings = {
+				url: joinUrl(settings.url, 'job/' + id + '/lastBuild/api/json'),
+				username: settings.username,
+				password: settings.password
+			};
+			return send(ajaxSettings);
+		};
+
+		var lastCompletedBuild = function (settings, id) {
+			if (!(settings && settings.url && settings.url !== '')) {
+				throw {
+					name: 'ArgumentInvalid',
+					message: 'settings.url not set'
+				};
+			}
+			var ajaxSettings = {
+				url: joinUrl(settings.url, 'job/' + id + '/lastCompletedBuild/api/json'),
+				username: settings.username,
+				password: settings.password
+			};
+			return send(ajaxSettings);
+		};
+
 		return {
-			projects: projects
+			projects: projects,
+			lastBuild: lastBuild,
+			lastCompletedBuild: lastCompletedBuild
 		};
 	});

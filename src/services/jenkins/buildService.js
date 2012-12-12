@@ -1,17 +1,16 @@
 define([
-	'services/cctray/buildService',
+	'services/buildService',
+	'services/jenkins/jenkinsBuild',
 	'jquery',
 	'signals',
 	'services/jenkins/jenkinsRequest'
-], function (CCTrayBuildService, $, Signal, jenkinsRequest) {
+], function (BuildService, JenkinsBuild, $, Signal, jenkinsRequest) {
 
 	'use strict';
 
 	var JenkinsBuildService = function (settings) {
-		$.extend(this, new CCTrayBuildService(settings));
-		this.projects = projects;
-		this.cctrayLocation = (settings.primaryView && settings.primaryView !== 'All') ?
-			'view/All/cc.xml' : 'cc.xml';
+		$.extend(this, new BuildService(settings));
+		this.Build = JenkinsBuild;
 	};
 	
 	JenkinsBuildService.settings = function () {
@@ -25,27 +24,23 @@ define([
 		};
 	};
 
-	var projects = function (selectedPlans) {
-		var receivedProjects = new Signal();
-		receivedProjects.memorize = true;
+	JenkinsBuildService.prototype.projects = function (selectedPlans) {
+		var completed = new Signal();
+		completed.memorize = true;
 		var requestSettings = {
 			url: this.settings.url,
 			username: this.settings.username,
 			password: this.settings.password
 		};
-		var plansRequest = jenkinsRequest.projects(requestSettings);
-		plansRequest.responseReceived.addOnce(function (response) {
-			var templateData = createTemplateData(response, selectedPlans);
-			receivedProjects.dispatch({
-				projects: templateData
-			});
+		jenkinsRequest.projects(requestSettings).addOnce(function (result) {
+			if (result.error) {
+				completed.dispatch(result);
+			} else {
+				var templateData = createTemplateData(result.response, selectedPlans);
+				completed.dispatch({ projects: templateData });
+			}
 		});
-		plansRequest.errorReceived.addOnce(function (ajaxError) {
-			receivedProjects.dispatch({
-				error: ajaxError
-			});
-		});
-		return receivedProjects;
+		return completed;
 	};
 
 	function createTemplateData(apiJson, selectedProjects) {
