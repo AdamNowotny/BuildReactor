@@ -1,7 +1,7 @@
 {
   "name": "BuildReactor",
-  "description": "Notifications for CI servers (CruiseControl, Bamboo, Jenkins, TeamCity, GO, Travis-CI)",
-  "version": "0.5.3",
+  "description": "Notifications for CI servers (CruiseControl, Bamboo, Jenkins, TeamCity, GO, Travis)",
+  "version": "0.5.4",
   "homepage": "https://github.com/AdamNowotny/BuildReactor",
   "author": {
     "name": "Adam Nowotny",
