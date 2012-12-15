@@ -14,7 +14,6 @@ What does it do ?
  * Gives you overview of all your builds in one place
  * Shows notifications only about the important events to minimise distractions
  * Works on Windows, Mac and Linux
- * Designed with distributed teams and road warriors in mind
 
 Why do I need it ?
 ==================
