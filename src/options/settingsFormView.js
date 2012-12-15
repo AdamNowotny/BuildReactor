@@ -70,7 +70,7 @@ define([
 			url: $('.url-input', container).val(),
 			username: $('.username-input', container).val(),
 			password: $('.password-input', container).val(),
-			updateInterval: parseInt($('.update-interval-input', container).val(), 10),
+			updateInterval: parseInt($('.update-interval-input', container).val(), 10)
 		};
 	}
 

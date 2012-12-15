@@ -141,12 +141,8 @@ module.exports = function (grunt) {
 						// removes i18n precompiler, handlebars and json2
 						excludeAfterBuild: true
 					},
-					has: {
-						debug: false
-					},
 					paths: {
 						amdUtils: '../components/amd-utils/src',
-						has: '../components/has/has',
 						bootstrap: 'empty:',
 						jquery: 'empty:',
 						signals: '../components/js-signals/dist/signals',

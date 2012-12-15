@@ -5,7 +5,6 @@
 	"main": "./jasmine-signals.js",
 	"dependencies": {
 		"amd-utils": "~0.6.0",
-		"has": "",
 		"jasmine": "~1.x.x",
 		"jasmine-jquery": "git://github.com/velesin/jasmine-jquery.git",
 		"jquery": "1.8.2",

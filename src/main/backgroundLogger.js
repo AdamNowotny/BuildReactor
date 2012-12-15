@@ -2,9 +2,8 @@ define([
 	'main/ajaxRequest',
 	'main/serviceController',
 	'main/settingsStore',
-	'amdUtils/string/interpolate',
-	'has'
-], function (AjaxRequest, serviceController, settingsStore, interpolate, has) {
+	'amdUtils/string/interpolate'
+], function (AjaxRequest, serviceController, settingsStore, interpolate) {
 
 	'use strict';
 
@@ -28,7 +27,7 @@ define([
 			console.log('serviceController.fixedBuild:  ' + buildEvent.serviceName, buildEvent);
 		});
 		serviceController.on.errorThrown.add(function (build) {
-			console.error('serviceController.errorThrown:  ' + build, build);
+			console.error('serviceController.errorThrown:  ' + build.id, build);
 		});
 		serviceController.on.started.add(function (serviceInfo) {
 			console.log('serviceController.started:     ' + serviceInfo.name);
@@ -40,15 +39,6 @@ define([
 		settingsStore.on.storedSettings.add(function (settings) {
 			console.log('settingsStore.storedSettings: ', settings);
 		});
-
-		if (has('debug')) {
-			AjaxRequest.prototype.all.responseReceived.add(function (response) {
-				console.log('AjaxRequest.responseReceived: ', response);
-			});
-			AjaxRequest.prototype.all.errorReceived.add(function (errorInfo) {
-				console.log('AjaxRequest.errorReceived: ', errorInfo);
-			});
-		}
 
 		window.onerror = function (message, url, line) {
 			window.console.error(interpolate('Unhandled error. message=[{{0}}], url=[{{1}}], line=[{{2}}]', [message, url, line]));

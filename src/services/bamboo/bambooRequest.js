@@ -7,10 +7,6 @@ define([
 
 		'use strict';
 		
-		var ajaxOptions = {
-			sessionCookie: 'JSESSIONID'
-		};
-
 		var BambooRequest = function (settings) {
 			if (!(this instanceof BambooRequest)) {
 				return new BambooRequest(settings);
@@ -31,16 +27,18 @@ define([
 
 		function createAjaxRequestSettings(settings, urlPath) {
 			var url = joinUrl(settings.url, 'rest/api/latest/' + urlPath);
-			return {
-				url: url,
-				username: settings.username,
-				password: settings.password
-			};
+			var ajaxSettings =  { url: url };
+			if (settings.username && settings.username.trim() !== '') {
+				ajaxSettings.username = settings.username;
+				ajaxSettings.password = settings.password;
+				ajaxSettings.data = { os_authType: 'basic' };
+			}
+			return ajaxSettings;
 		}
 
 		BambooRequest.prototype.send = function (urlPath) {
 			var ajaxSettings = createAjaxRequestSettings(this.settings, urlPath);
-			var request = new AjaxRequest(ajaxSettings, ajaxOptions);
+			var request = new AjaxRequest(ajaxSettings);
 			request.on.responseReceived.addOnce(function (response) {
 				this.on.responseReceived.dispatch(response);
 			}, this);

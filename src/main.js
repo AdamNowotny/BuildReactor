@@ -4,7 +4,6 @@ require.config({
 		amdUtils: '../components/amd-utils/src',
 		jquery: "../components/jquery/jquery",
 		signals: '../components/js-signals/dist/signals',
-		has: '../components/has/has',
 		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
 		handlebars: '../lib/require-handlebars-plugin/Handlebars',
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore',

@@ -279,6 +279,13 @@ define([
 				expect($('.group:visible .accordion-heading')).not.toHaveText('cc');
 			});
 
+			it('should show alert if no projects available', function () {
+				json.items = [];
+				projectView.show(json);
+
+				expect($('.container .alert').text()).toBe('No projects available');
+			});
+
 		});
 	}
 );

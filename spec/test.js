@@ -3,9 +3,6 @@ var chrome = {
 		setBadgeText: function () {},
 		setBadgeBackgroundColor: function () {}
 	},
-	cookies: {
-		remove: function () {}
-	},
 	tabs : {
 		create: function () {}
 	},
@@ -29,7 +26,6 @@ require.config({
 		spec: '../spec',
 		signals: '../components/js-signals/dist/signals',
 		text: '../components/requirejs-text/text',
-		has: '../components/has/has',
 		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
 		handlebars: '../lib/require-handlebars-plugin/Handlebars',
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore',

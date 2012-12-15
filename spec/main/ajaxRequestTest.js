@@ -35,93 +35,20 @@ define([
 				expect(responseReceivedSpy).toHaveBeenDispatched(1);
 			});
 
-			describe('authentication', function () {
-
-				it('should set authType to basic if username specified', function () {
-					var requestOptions = {
-						url: 'http://example.com',
-						username: 'username1',
-						password: 'password123'
-					};
-					mockAjax.andCallFake(function (ajaxOptions) {
-						expect(ajaxOptions.username).toBe(requestOptions.username);
-						expect(ajaxOptions.password).toBe(requestOptions.password);
-						expect(ajaxOptions.data).toBeDefined();
-						expect(ajaxOptions.data.os_authType).toBe('basic');
-					});
-
-					request = new AjaxRequest(requestOptions);
-					request.send();
-
-					expect(mockAjax).toHaveBeenCalled();
+			it('should set data if specified', function () {
+				var requestOptions = {
+					url: 'http://example.com',
+					data: { os_authType: 'basic' }
+				};
+				mockAjax.andCallFake(function (ajaxOptions) {
+					expect(ajaxOptions.data).toBeDefined();
+					expect(ajaxOptions.data.os_authType).toBe('basic');
 				});
 
-				it('should not set authType if username not specified', function () {
-					var requestOptions = { url: 'http://example.com' };
-					mockAjax.andCallFake(function (ajaxOptions) {
-						expect(ajaxOptions.username).not.toBeDefined();
-						expect(ajaxOptions.password).not.toBeDefined();
-						expect(ajaxOptions.data).not.toBeDefined();
-					});
+				request = new AjaxRequest(requestOptions);
+				request.send();
 
-					request = new AjaxRequest(requestOptions);
-					request.send();
-
-					expect(mockAjax).toHaveBeenCalled();
-				});
-
-				it('should not set authType if username is empty', function () {
-					var requestOptions = {
-						url: 'http://example.com',
-						username: '    ',
-						password: ''
-					};
-					mockAjax.andCallFake(function (ajaxOptions) {
-						expect(ajaxOptions.username).not.toBeDefined();
-						expect(ajaxOptions.password).not.toBeDefined();
-						expect(ajaxOptions.data).not.toBeDefined();
-					});
-
-					request = new AjaxRequest(requestOptions);
-					request.send();
-
-					expect(mockAjax).toHaveBeenCalled();
-				});
-
-				it('should remove cookie and try again if session expired', function () {
-					spyOn(chrome.cookies, 'remove').andCallFake(function (details) {
-						expect(details.url).toBe(options.url);
-						expect(details.name).toBe('SESSIONID');
-					});
-					var attempt = 0;
-					mockAjax.andCallFake(function (ajaxOptions) {
-						attempt++;
-						if (attempt === 1) {
-							ajaxOptions.error({ status: 401 }, 'error', "os_authType was 'any' and an invalid cookie was sent.");
-						} else {
-							ajaxOptions.success({}, null, null);
-						}
-					});
-
-					request = new AjaxRequest(options, { sessionCookie: 'SESSIONID' });
-					request.send();
-
-					expect(attempt).toBe(2);
-					expect(chrome.cookies.remove).toHaveBeenCalled();
-				});
-
-				it('should try again only once if session is not renewed', function () {
-					var attempt = 0;
-					mockAjax.andCallFake(function (ajaxOptions) {
-						attempt++;
-						ajaxOptions.error({ status: 401 }, 'error', "os_authType was 'any' and an invalid cookie was sent.");
-					});
-
-					request = new AjaxRequest(options, { sessionCookie: 'SESSIONID' });
-					request.send();
-
-					expect(attempt).toBe(2);
-				});
+				expect(mockAjax).toHaveBeenCalled();
 			});
 
 			it('should set dataType if specified', function () {
@@ -137,6 +64,26 @@ define([
 				request.send();
 
 				expect(mockAjax).toHaveBeenCalled();
+			});
+
+			describe('authentication', function () {
+
+				it('should set basic authentication if username specified', function () {
+					var requestOptions = {
+						url: 'http://example.com',
+						username: 'username1',
+						password: 'password123'
+					};
+					mockAjax.andCallFake(function (ajaxOptions) {
+						expect(ajaxOptions.headers.Authorization).toBe('Basic dXNlcm5hbWUxOnBhc3N3b3JkMTIz');
+					});
+
+					request = new AjaxRequest(requestOptions);
+					request.send();
+
+					expect(mockAjax).toHaveBeenCalled();
+				});
+
 			});
 
 			it('should set RequestHeader if specified', function () {

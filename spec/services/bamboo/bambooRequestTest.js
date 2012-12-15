@@ -31,6 +31,51 @@ define([
 				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
 			});
 
+			describe('credentials', function () {
+
+				it('should pass os_authType parameter to remote service', function () {
+					spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
+						expect(this.settings.data.os_authType).toBe('basic');
+					});
+
+					request.send('path');
+
+					expect(AjaxRequest.prototype.send).toHaveBeenCalled();
+				});
+
+
+				it('should not set authType if username not specified', function () {
+					var settings = { url: 'http://example.com' };
+					spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
+						expect(this.settings.data).not.toBeDefined();
+					});
+
+					var request = new BambooRequest(settings);
+					request.send('path');
+
+					expect(AjaxRequest.prototype.send).toHaveBeenCalled();
+				});
+
+				it('should not set authType if username is empty', function () {
+					var settings = {
+						url: 'http://example.com',
+						username: '    ',
+						password: ''
+					};
+					spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
+						expect(this.settings.username).not.toBeDefined();
+						expect(this.settings.password).not.toBeDefined();
+						expect(this.settings.data).not.toBeDefined();
+					});
+
+					var request = new BambooRequest(settings);
+					request.send('path');
+
+					expect(AjaxRequest.prototype.send).toHaveBeenCalled();
+				});
+
+			});
+
 			it('should fail if url empty', function () {
 				var settings = { url: '' };
 

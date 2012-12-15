@@ -5,6 +5,7 @@
 	'styles' : ['css/projectView.css']
 }
 }}
+{{#if groups}}
 <div class="accordion" id="projects-accordion">
 	{{#each groups}}
 	<div class="accordion-group group" data-id="{{id}}">
@@ -24,3 +25,6 @@
 	</div>
 	{{/each}}
 </div>
+{{else}}
+<div class="alert alert-info">No projects available</div>
+{{/if}}

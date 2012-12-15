@@ -87,10 +87,14 @@ define([
 				id: i
 			});
 		}
-		return {
-			groups: groups,
-			views: json.views
-		};
+		var model = {};
+		if (groups.length > 0) {
+			model.groups = groups;
+		}
+		if (json.views) {
+			model.views = json.views;
+		}
+		return model;
 	};
 
 	var sortBy = function (propertyName, json) {
