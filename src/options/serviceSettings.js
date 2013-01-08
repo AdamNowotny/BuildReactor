@@ -18,7 +18,6 @@ define([
 
 	var clear = function () {
 		settingsList = [];
-		cleared.dispatch();
 	};
 
 	var add = function (serviceInfo) {

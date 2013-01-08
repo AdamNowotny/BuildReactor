@@ -61,7 +61,8 @@ define([
 			removeCurrentService();
 		});
 		serviceSettings.cleared.add(function () {
-			$('#service-add-button').click();
+			$('.service-actions').hide();
+			serviceOptionsPage.hide();
 		});
 		serviceList.itemClicked.add(function (item) {
 			if (isSaveNeeded) {

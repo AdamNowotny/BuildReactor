@@ -8,10 +8,11 @@ define([
 		
 		describe('serviceSettings', function () {
 
+			var clearedSpy;
 			var settings;
 
 			beforeEach(function () {
-				spyOnSignal(serviceSettings.cleared);
+				clearedSpy = spyOnSignal(serviceSettings.cleared);
 				load();
 			});
 
@@ -44,12 +45,6 @@ define([
 				expect(serviceSettings.getAll().length).toBe(0);
 			});
 
-			it('should signal cleared on clear', function () {
-				serviceSettings.clear();
-
-				expect(serviceSettings.cleared).toHaveBeenDispatched();
-			});
-
 			it('should add', function () {
 				serviceSettings.add(createSettings('service name'));
 
@@ -68,7 +63,7 @@ define([
 				serviceSettings.remove(settings[1]);
 				serviceSettings.remove(settings[0]);
 
-				expect(serviceSettings.cleared).toHaveBeenDispatched();
+				expect(clearedSpy).toHaveBeenDispatched();
 			});
 
 			it('should get settings by index', function () {

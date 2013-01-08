@@ -9,7 +9,8 @@ require.config({
 		handlebars: '../lib/require-handlebars-plugin/Handlebars',
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore',
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
-		json2: '../lib/require-handlebars-plugin/hbs/json2'
+		json2: '../lib/require-handlebars-plugin/hbs/json2',
+		rx: '../lib/rx/rx.min'
 	},
 	hbs: {
 		templateExtension: 'html',

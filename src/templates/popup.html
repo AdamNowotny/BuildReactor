@@ -14,16 +14,18 @@
 	{{#each services}}
 	<li class="info">
 		<div class="service-name">{{name}}</div>
-		<ul class="service-item-list">
-			{{#each items}}
-			<li class="service-item{{#if isBroken}} build-broken{{/if}}{{#if isBuilding}} building{{/if}}">
-				<a href="{{url}}" target="_blank">
-					<span class="service-item-name">{{name}}</span>
-					{{#if group}}<span class="service-group">{{group}}</span>{{/if}}
-				</a>
-			</li>
-			{{/each}}
-		</ul>
+		{{#each groups}}
+			{{#if name}}<div class="service-group">{{name}}</div>{{/if}}
+			<ul class="service-item-list">
+				{{#each items}}
+				<li class="service-item{{#if isBroken}} build-broken{{/if}}{{#if isBuilding}} building{{/if}}">
+					<a href="{{url}}" target="_blank">
+						<span class="service-item-name">{{name}}</span>
+					</a>
+				</li>
+				{{/each}}
+			</ul>
+		{{/each}}
 	</li>
 	{{/each}}
 </ul>

@@ -205,10 +205,10 @@ define([
 				expect($('.service-actions')).toBeHidden();
 			});
 
-			it('should display add service page after services cleared', function () {
+			it('should display empty page after services cleared', function () {
 				serviceSettings.cleared.dispatch();
 
-				expect(addService.show).toHaveBeenCalled();
+				expect(serviceOptionsPage.hide).toHaveBeenCalled();
 			});
 
 			describe('Adding service', function () {
