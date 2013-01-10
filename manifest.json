@@ -1,6 +1,6 @@
 {
 	"name": "BuildReactor",
-	"version": "0.5.5",
+	"version": "0.5.6",
 	"manifest_version": 2,
 	"description": "Notifications for CI servers (CruiseControl, Bamboo, Jenkins, TeamCity, GO, Travis)",
 	"icons": {
