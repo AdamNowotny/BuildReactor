@@ -5,7 +5,7 @@ define([
 		'spec/mocks/buildService',
 		'spec/mocks/mockBuildEvent',
 		'spec/mocks/mockSettingsBuilder',
-		'amdUtils/string/endsWith',
+		'mout/string/endsWith',
 		'signals',
 		'jasmineSignals'
 	],

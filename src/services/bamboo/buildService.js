@@ -3,8 +3,8 @@ define([
 	'signals',
 	'./bambooRequest',
 	'./bambooPlan',
-	'amdUtils/string/interpolate',
-	'amdUtils/object/values',
+	'mout/string/interpolate',
+	'mout/object/values',
 	'services/buildService'
 ], function ($, Signal, BambooRequest, BambooPlan, interpolate, values, BuildService) {
 

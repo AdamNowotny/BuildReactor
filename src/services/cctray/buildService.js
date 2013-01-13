@@ -3,7 +3,7 @@ define([
 	'signals',
 	'./ccRequest',
 	'./cctrayProject',
-	'amdUtils/array/contains',
+	'mout/array/contains',
 	'common/joinUrl',
 	'services/buildService'
 ], function ($, Signal, ccRequest, CCTrayProject, contains, joinUrl, BuildService) {

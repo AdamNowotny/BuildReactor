@@ -16,10 +16,10 @@ var chrome = {
 require.config({
 	baseUrl: '../src',
 	paths: {
-		amdUtils: '../components/amd-utils/src',
+		mout: '../components/mout/src',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap',
 		fixtures: '../spec/fixtures',
-		jasmineSignals: '../lib/jasmine-signals/jasmine-signals',
+		jasmineSignals: '../components/jasmine-signals/jasmine-signals',
 		jquery: '../components/jquery/jquery',
 		json: '../components/requirejs-plugins/src/json',
 		mocks: '../spec/mocks',

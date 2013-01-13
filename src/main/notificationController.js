@@ -2,8 +2,8 @@ define([
 	'main/serviceController',
 	'common/resourceFinder',
 	'common/timer',
-	'amdUtils/string/interpolate',
-	'amdUtils/array/remove'
+	'mout/string/interpolate',
+	'mout/array/remove'
 ], function (serviceController, resourceFinder, Timer, interpolate, remove) {
 
 	'use strict';

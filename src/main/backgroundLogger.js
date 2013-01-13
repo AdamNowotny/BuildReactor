@@ -2,7 +2,7 @@ define([
 	'main/ajaxRequest',
 	'main/serviceController',
 	'main/settingsStore',
-	'amdUtils/string/interpolate'
+	'mout/string/interpolate'
 ], function (AjaxRequest, serviceController, settingsStore, interpolate) {
 
 	'use strict';

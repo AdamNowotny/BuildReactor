@@ -142,7 +142,7 @@ module.exports = function (grunt) {
 						excludeAfterBuild: true
 					},
 					paths: {
-						amdUtils: '../components/amd-utils/src',
+						mout: '../components/mout/src',
 						bootstrap: 'empty:',
 						jquery: 'empty:',
 						signals: '../components/js-signals/dist/signals',

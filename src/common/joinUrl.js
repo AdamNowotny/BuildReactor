@@ -1,4 +1,4 @@
-define(['amdUtils/string/endsWith'], function (endsWith) {
+define(['mout/string/endsWith'], function (endsWith) {
 
 	'use strict';
 	

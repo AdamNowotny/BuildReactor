@@ -98,25 +98,26 @@ Technical overview
 ==================
 
 The packaged version uses:
- * [Require-JS](http://requirejs.org/)
- * [JS-Signals](http://millermedeiros.github.com/js-signals/)
- * [amd-utils](http://millermedeiros.github.com/amd-utils/)
- * [jQuery](http://jquery.com/)
- * [Twitter bootstrap](http://twitter.github.com/bootstrap/)
  * [Handlebars](http://handlebarsjs.com/) templates through [require-handlebars-plugin](https://github.com/SlexAxton/require-handlebars-plugin)
+ * [JS-Signals](http://millermedeiros.github.com/js-signals/)
+ * [jQuery](http://jquery.com/)
+ * [mout](http://moutjs.com/)
+ * [Require-JS](http://requirejs.org/)
+ * [Twitter bootstrap](http://twitter.github.com/bootstrap/)
 
 The build and tests use:
- * [node.js](http://nodejs.org/)
+ * [Bower](http://twitter.github.com/bower/)
+ * [grunt](http://gruntjs.com/)
+ * [grunt-contrib](https://github.com/gruntjs/grunt-contrib)
+ * [grunt-jasmine-runner](https://github.com/jasmine-contrib/grunt-jasmine-runner)
+ * [grunt-jsvalidate](https://github.com/ariya/grunt-jsvalidate)
  * [jasmine](http://pivotal.github.com/jasmine/)
  * [jasmine-jquery](https://github.com/velesin/jasmine-jquery/)
  * [jasmine-signals](https://github.com/AdamNowotny/jasmine-signals)
- * [grunt](http://gruntjs.com/)
- * [grunt-contrib](https://github.com/gruntjs/grunt-contrib)
- * [grunt-jasmine-task](https://github.com/creynders/grunt-jasmine-task)
+ * [node.js](http://nodejs.org/)
  * [PhantomJS](http://phantomjs.org/)
- * [Travis-CI](http://travis-ci.org/)
- * [has.js](https://github.com/phiggins42/has.js) (for debug build)
  * [RequireJS plugins](https://github.com/millermedeiros/requirejs-plugins)
+ * [Travis-CI](http://travis-ci.org/)
 
 Legal
 =====

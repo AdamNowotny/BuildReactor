@@ -1,6 +1,6 @@
 define([
 	'signals',
-	'amdUtils/array/remove'
+	'mout/array/remove'
 ], function (signals, remove) {
 
 	'use strict';

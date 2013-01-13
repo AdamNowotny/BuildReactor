@@ -1,7 +1,7 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
-		amdUtils: '../components/amd-utils/src',
+		mout: '../components/mout/src',
 		jquery: "../components/jquery/jquery",
 		signals: '../components/js-signals/dist/signals',
 		hbs: '../lib/require-handlebars-plugin/hbs-plugin',

@@ -14,6 +14,7 @@ define([
 
 	function createModel(state) {
 		return state.map(function (serviceState) {
+			sortBy('group', serviceState.items);
 			return {
 				name: serviceState.name,
 				groups: getGroups(serviceState.items)
@@ -22,7 +23,6 @@ define([
 	}
 
 	function getGroups(items) {
-		sortBy('group', items);
 		var model = [];
 		Rx.Observable.fromArray(items).groupBy(function (item) {
 			return item.group || '';

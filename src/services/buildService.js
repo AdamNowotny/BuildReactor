@@ -3,7 +3,7 @@ define([
 	'services/poolingService',
 	'signals',
 	'jquery',
-	'amdUtils/object/values'
+	'mout/object/values'
 ], function (Build, PoolingService, Signal, $, values) {
 	'use strict';
 

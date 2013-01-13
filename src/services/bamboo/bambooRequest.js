@@ -2,7 +2,7 @@ define([
 		'signals',
 		'main/ajaxRequest',
 		'common/joinUrl',
-		'amdUtils/string/interpolate'
+		'mout/string/interpolate'
 	], function (signals, AjaxRequest, joinUrl, interpolate) {
 
 		'use strict';

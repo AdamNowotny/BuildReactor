@@ -1,4 +1,4 @@
-define(['amdUtils/string/interpolate'], function (interpolate) {
+define(['mout/string/interpolate'], function (interpolate) {
 
 	'use strict';
 

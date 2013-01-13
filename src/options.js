@@ -1,7 +1,7 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
-		amdUtils: '../components/amd-utils/src',
+		mout: '../components/mout/src',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
 		jquery: "../components/jquery/jquery",
 		signals: '../components/js-signals/dist/signals',
