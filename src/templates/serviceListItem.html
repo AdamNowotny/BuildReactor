@@ -5,11 +5,11 @@
 	'styles' : ['css/serviceList.css']
 }
 }}
-{{#each services}}
+{{#services}}
 <li data-service-index="{{index}}">
 	<a href="#">
 		<img class="service-icon" src="{{icon}}">
 		<span class="service-type-name">{{name}}</span>
 	</a>
 </li>		
-{{/each}}
+{{/services}}

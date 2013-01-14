@@ -11,23 +11,23 @@
 </div>
 {{#if services}}
 <ul class="info-list">
-	{{#each services}}
+	{{#services}}
 	<li class="info">
 		<div class="service-name">{{name}}</div>
-		{{#each groups}}
+		{{#groups}}
 			{{#if name}}<div class="service-group">{{name}}</div>{{/if}}
 			<ul class="service-item-list">
-				{{#each items}}
+				{{#items}}
 				<li class="service-item{{#if isBroken}} build-broken{{/if}}{{#if isBuilding}} building{{/if}}">
 					<a href="{{url}}" target="_blank">
 						<span class="service-item-name">{{name}}</span>
 					</a>
 				</li>
-				{{/each}}
+				{{/items}}
 			</ul>
-		{{/each}}
+		{{/groups}}
 	</li>
-	{{/each}}
+	{{/services}}
 </ul>
 {{else}}
 <div class="no-services-message">No services configured</div>
