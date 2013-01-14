@@ -102,6 +102,7 @@ The packaged version uses:
  * [JS-Signals](http://millermedeiros.github.com/js-signals/)
  * [jQuery](http://jquery.com/)
  * [mout](http://moutjs.com/)
+ * [RxJS](http://reactive-extensions.github.com/RxJS/)
  * [Require-JS](http://requirejs.org/)
  * [Twitter bootstrap](http://twitter.github.com/bootstrap/)
 
