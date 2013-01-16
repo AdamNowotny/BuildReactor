@@ -7,7 +7,7 @@
 		overflow: auto;
 		position: absolute;
 		top: 0;
-		bottom: 82px;
+		bottom: 70px;
 	}
 
 		.service-add-list .thumbnail {
@@ -20,12 +20,13 @@
 		}
 		
 			.service-add-list .caption {
+				padding: 0;
 				text-align: center;
 			}
 			
 			.service-add-list .thumbnail-image {
 				height: 110px;
-				line-height: 150px;
+				line-height: 130px;
 			}
 
 			.service-add-list .thumbnail:hover {
@@ -38,7 +39,7 @@
 	width: 100%;
 }
 
-	.panel-footer .form-actions {
+	.panel-footer .form-actions, .panel-footer form {
 		margin-bottom: 0;
 		margin-top: 0;
 	}
