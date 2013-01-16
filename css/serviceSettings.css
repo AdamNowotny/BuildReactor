@@ -1,38 +1,25 @@
-.settings-container {
-	position: absolute;
-	top: 42px;
-	bottom: 0;
-	left: 221px;
-	right: 0;
-	overflow: auto;
+.view-selection {
+	text-align: right;
 }
 
-	.settings-form-container {
-		padding-top: 10px;
-		float: left;
-		width: 480px;
-	}
-
-	.project-selection-container {
-		display: inline-block;
-		margin: 10px 5px 0 10px;
-		width: 470px;
-	}
-
-	.view-selection {
-		text-align: right;
-	}
-
-	.view-selection .control-group > label {
-		width: 240px;
-	}
-
-.alert-error {
-	margin: 5px;
-	clear: both;
+.view-selection .control-group > label {
+	width: 240px;
 }
-	
-.icon-refresh.animate {
-	background-image: url(../../img/loading.gif);
-	background-position: 0 0;
+
+input.url-input {
+	width: 100%;
 }
+
+div.url {
+	padding-right: 41px;
+}
+
+@media (max-width: 515px) {
+
+	input.url-input {
+		width: 206px;
+	}
+
+	div.url {
+		padding-right: 0;
+	}

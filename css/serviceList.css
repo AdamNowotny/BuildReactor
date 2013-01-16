@@ -1,26 +1,14 @@
-.service-list-container {
-	position: absolute;
-	top: 40px;
-	bottom: 0;
-	left: 0;
-	width: 200px;
-	padding: 10px;
-	text-align: center;
-	border-right: 1px solid #BBB;
-	overflow: auto;
+.service-list li a {
+	height: 48px;
 }
-	
-	.service-list-container li a {
-		height: 48px;
-	}
 
-	.service-list-container .service-icon {
-		margin-top: 0;
-		margin-bottom: 0;
-		float: left;
-	}
+.service-list li .service-icon {
+	margin-top: 0;
+	margin-bottom: 0;
+	float: left;
+}
 
-	.service-list-container .service-type-name {
-		padding-top: 18px;
-		float: right;
-	}
+.service-list li .service-type-name {
+	padding-top: 18px;
+	float: right;
+}

@@ -195,6 +195,8 @@ module.exports = function (grunt) {
 						'img/*',
 						'components/jquery/jquery.js',
 						'components/requirejs/require.js',
+						'components/font-awesome/css/font-awesome.min.css',
+						'components/font-awesome/font/*',
 						'lib/twitter-bootstrap/css/bootstrap.css',
 						'lib/twitter-bootstrap/img/*',
 						'lib/twitter-bootstrap/js/bootstrap.min.js'

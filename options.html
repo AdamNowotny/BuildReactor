@@ -1,56 +1,56 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
 		<title>BuildReactor settings page</title>
-		<link rel="stylesheet" type="text/css" href="lib/twitter-bootstrap/css/bootstrap.css" />
-		<link rel="stylesheet" type="text/css" href="css/options.css" />
+		<link rel="stylesheet" type="text/css" href="lib/twitter-bootstrap/css/bootstrap.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="css/options.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="components/font-awesome/css/font-awesome.min.css" media="screen" />
 		<script type="text/javascript" data-main="src/options" src="components/requirejs/require.js"></script>
 	</head>
 	<body>
 		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
-				<div class="container-fluid">
-					<div class="row-fluid">
-						<ul class="nav">
+				<div class="brand">
+					<img class="logo" src="img/icon.svg" alt="BuildReactor logo" />
+					<span class="brand-name">BuildReactor</span>
+				</div>
+				<ul class="nav">
+					<li class="divider-vertical"></li>
+					<li class="dropdown service-actions">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<strong><span class="service-name"></span></strong>
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
 							<li>
-								<div class="brand">
-									<img class="logo" src="img/icon.svg" alt="BuildReactor logo" />
-									<span class="brand-name">BuildReactor</span>
-								</div>
-							</li>
-							<li class="divider-vertical"></li>
-							<li class="dropdown service-actions">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-									<span class="service-name"></span>
-									<b class="caret"></b>
+								<a id="service-rename-action" href="#service-rename-modal" tabindex="-1" href="#">
+									<i class="icon-pencil"></i> Rename
 								</a>
-								<ul class="dropdown-menu">
-									<li>
-										<a id="service-rename-action" href="#service-rename-modal" tabindex="-1" href="#">
-											<i class="icon-pencil"></i>
-											Rename
-										</a>
-									</li>
-									<li>
-										<a id="service-remove-button" href="#service-remove-modal" tabindex="-1" href="#">
-											<i class="icon-remove"></i>
-											Remove
-										</a>
-									</li>
-								</ul>
+							</li>
+							<li>
+								<a id="service-remove-button" href="#service-remove-modal" tabindex="-1" href="#">
+									<i class="icon-trash"></i> Remove
+								</a>
 							</li>
 						</ul>
-					</div>
-				</div>
+					</li>
+				</ul>
 			</div>
 		</div>
-		<div class="service-list-container">
-			<ul id="service-list" class="nav nav-pills nav-stacked"></ul>
-			<a id="service-add-button" class="btn" rel="#service-add-modal"><i class="icon-plus-sign"></i> Add</a>
+		<div class="sidebar-nav">
+			<ul class="service-list nav nav-pills nav-stacked"></ul>
+			<a id="service-add-button" class="btn btn-block btn-large" rel="#service-add-modal">
+				<i class="icon-plus-sign"></i> Add
+			</a>
 		</div>
-		<div class="settings-container">
+		<div class="content-container">
 			<div class="settings-form-container"></div>
 			<div class="project-selection-container"></div>
+			<div class="alert alert-error" hidden="hidden">
+				<h4 class="alert-heading">Error getting available projects</h4>
+				<div class="error-message"></div>
+				<div>URL: <span class="error-url"></span></div>
+			</div>
 			<div class="service-add-container">
 				<form class="service-add-form form-horizontal" action="">
 					<div class="service-add-list">
@@ -63,11 +63,6 @@
 						</div>
 					</div>
 				</form>
-			</div>
-			<div class="alert alert-error" hidden="hidden">
-				<h4 class="alert-heading">Error getting available projects</h4>
-				<div class="error-message"></div>
-				<div>URL: <span class="error-url"></span></div>
 			</div>
 		</div>
 		<div class="alert-saved">

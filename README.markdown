@@ -98,7 +98,8 @@ Technical overview
 ==================
 
 The packaged version uses:
- * [Handlebars](http://handlebarsjs.com/) templates through [require-handlebars-plugin](https://github.com/SlexAxton/require-handlebars-plugin)
+ * [Font Awesome](http://fortawesome.github.com/Font-Awesome/)
+ * [Handlebars](http://handlebarsjs.com/) templates using [require-handlebars-plugin](https://github.com/SlexAxton/require-handlebars-plugin)
  * [JS-Signals](http://millermedeiros.github.com/js-signals/)
  * [jQuery](http://jquery.com/)
  * [mout](http://moutjs.com/)

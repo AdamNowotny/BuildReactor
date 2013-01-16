@@ -1,4 +1,10 @@
 {
 	"projectView_noGroupName" : "Projects",
-	"projectView_view": "View"
+	"projectView_view": "View",
+	"settings_url": "URL, e.g. ",
+	"settings_username": "Username",
+	"settings_password": "Password",
+	"settings_interval": "Update interval",
+	"settings_interval_unit": "sec",
+	"settings_showProjects": "Show"
 }

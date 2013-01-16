@@ -52,7 +52,7 @@ define([
 		it('should show url placeholder', function () {
 			form.show({ urlHint: 'http://example.com/' });
 
-			expect($('.url-input')).toHaveAttr('placeholder', 'e.g. http://example.com/');
+			expect($('.url-input')).toHaveAttr('placeholder', 'URL, e.g. http://example.com/');
 		});
 
 		it('should disable show button if url empty', function () {
@@ -126,7 +126,7 @@ define([
 			
 			$('.show-button').click();
 
-			expect($('.show-button i')).toHaveClass('animate');
+			expect($('.show-button i')).toHaveClass('icon-spin');
 		});
 
 		it('should signal changed when Save button clicked', function () {
@@ -157,13 +157,13 @@ define([
 		it('should reset buttons', function () {
 			form.show(settings);
 			$('.show-button').attr('disabled', 'disabled');
-			$('.show-button i').addClass('animate');
+			$('.show-button i').addClass('icon-spin');
 			$('.save-button').attr('disabled', 'disabled');
 
 			form.resetButtons();
 
 			expect($('.show-button')).not.toBeDisabled();
-			expect($('.show-button i')).not.toHaveClass('animate');
+			expect($('.show-button i')).not.toHaveClass('icon-spin');
 			expect($('.save-button')).not.toBeDisabled();
 		});
 

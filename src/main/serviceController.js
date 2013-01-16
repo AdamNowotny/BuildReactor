@@ -1,8 +1,7 @@
 define([
 		'main/serviceRepository',
-		'common/resourceFinder',
 		'signals'
-	], function (serviceRepository, resourceFinder, signals) {
+	], function (serviceRepository, signals) {
 
 		'use strict';
 

@@ -74,6 +74,7 @@ li.service-item {
 .actions {
 	background-color: #555;
 	text-align: right;
+	padding-bottom: 3px;
 }
 
 .actions a {

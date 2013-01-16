@@ -1,18 +1,91 @@
-﻿.brand {
-	width: 170px;
-	text-align: center;
+﻿body {
+	__min-width: 516px;
+	padding-top: 50px;
 }
 
-	.brand-name 
-	{
-		color: #999;
+.content-container {
+	bottom: 0;
+	left: 241px;
+	padding-top: 13px;
+	position: absolute;
+	right: 0;
+	overflow: auto;
+	top: 40px;
+}
+
+	.settings-form-container {
+		box-sizing: border-box;
+		float: left;
+		width: 50%;
 	}
- 
-.logo {
- 	width: 19px;
+
+		.settings-form-container fieldset {
+			padding-left: 10px;
+		}
+
+	.project-selection-container {
+		box-sizing: border-box;
+		float: left;
+		padding: 0 10px;
+		width: 50%;
+	}
+
+.navbar .brand {
+	margin-left: 0 !important;
+	text-align: center;
+	width: 190px;
 }
 
-.navbar .service-name {
-	color: white;
-	font-size: large;
+.navbar .logo {
+ 	vertical-align: top;
+ 	width: 20px;
+}
+
+.sidebar-nav {
+	border-right: 1px solid #BBB;
+	bottom: 0;
+	left: 0;
+	overflow: auto;
+	padding: 10px;
+	position: fixed;
+	text-align: center;
+	top: 40px;
+	width: 220px;
+}
+	
+.alert-error {
+	margin: 10px;
+}
+
+@media (max-width: 767px) {
+
+	.sidebar-nav {
+		position: absolute;
+	}
+
+	.settings-form-container {
+		float: none;
+		width: 100%;
+	}
+
+	.project-selection-container {
+		float: none;
+		width: 100%;
+	}
+}
+
+@media (max-width: 515px) {
+
+	.sidebar-nav {
+		border: none;
+		position: static;
+		width: auto;
+	}
+
+	.content-container {
+		width: auto;
+		right: auto;
+		position: static;
+	}
+
 }

@@ -1,11 +1,9 @@
-// testcomment
 define([
 	'signals',
 	'jquery',
 	'options/settingsFormView',
-	'options/projectView',
-	'common/resourceFinder'
-], function (signals, $, settingsFormView, projectView, resourceFinder) {
+	'options/projectView'
+], function (signals, $, settingsFormView, projectView) {
 
 	'use strict';
 	

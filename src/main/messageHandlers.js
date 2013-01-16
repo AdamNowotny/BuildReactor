@@ -1,9 +1,8 @@
 define([
-	'common/resourceFinder',
 	'main/settingsStore',
 	'main/serviceRepository',
 	'main/serviceController'
-], function (resourceFinder, settingsStore, serviceRepository, serviceController) {
+], function (settingsStore, serviceRepository, serviceController) {
 
 	'use strict';
 

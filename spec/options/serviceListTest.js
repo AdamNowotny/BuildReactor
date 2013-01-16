@@ -11,19 +11,19 @@ define([
 
 			var page = {
 				count: function () {
-					return $('#service-list li').length;
+					return $('.service-list li').length;
 				},
 				serviceAt: function (index) {
-					return $('#service-list li').eq(index);
+					return $('.service-list li').eq(index);
 				},
 				iconAt: function (index) {
-					return $('#service-list li img').eq(index).attr('src');
+					return $('.service-list li img').eq(index).attr('src');
 				},
 				clickServiceAt: function (index) {
 					this.serviceAt(index).click();
 				},
 				getSelectedIndex: function () {
-					var selectedIndex = $('#service-list li.active').index();
+					var selectedIndex = $('.service-list li.active').index();
 					return selectedIndex;
 				}
 			};
@@ -103,7 +103,7 @@ define([
 			it('should select item', function () {
 				initializeServiceList();
 
-				var item = $('#service-list li').eq(2);
+				var item = $('.service-list li').eq(2);
 				serviceList.selectItem(item);
 
 				expect(page.getSelectedIndex()).toBe(2);
@@ -111,7 +111,7 @@ define([
 
 			it('should update and select at same index', function () {
 				initializeServiceList();
-				var item = $('#service-list li').eq(2);
+				var item = $('.service-list li').eq(2);
 				serviceList.selectItem(item);
 
 				serviceList.update(settings);
@@ -121,7 +121,7 @@ define([
 
 			it('should update and select at new last index if last was selected', function () {
 				initializeServiceList();
-				var item = $('#service-list li').eq(2);
+				var item = $('.service-list li').eq(2);
 				serviceList.selectItem(item);
 
 				serviceList.update([createSettings('single')]);
@@ -131,7 +131,7 @@ define([
 
 			it('should unselect when null passed to selectItem', function () {
 				initializeServiceList();
-				var item = $('#service-list li').eq(2);
+				var item = $('.service-list li').eq(2);
 				serviceList.selectItem(item);
 
 				serviceList.selectItem(null);
@@ -156,7 +156,7 @@ define([
 			it('should dispatch itemSelected on select', function () {
 				initializeServiceList();
 
-				var item = $('#service-list li').eq(2);
+				var item = $('.service-list li').eq(2);
 				serviceList.selectItem(item);
 
 				expect(itemSelectedSpy).toHaveBeenDispatched();
@@ -165,7 +165,7 @@ define([
 			it('should get selected item name', function () {
 				initializeServiceList();
 
-				var item = $('#service-list li').eq(2);
+				var item = $('.service-list li').eq(2);
 				serviceList.selectItem(item);
 
 				expect(serviceList.getSelectedName()).toBe('service 3');

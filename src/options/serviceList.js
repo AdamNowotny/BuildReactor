@@ -26,14 +26,14 @@ define([
 	};
 
 	var getSelectedName = function () {
-		return $('#service-list li.active .service-type-name').text();
+		return $('.service-list li.active .service-type-name').text();
 	};
 
 	var render = function (settings) {
 		var templateData = createTemplateData(settings);
 		var html = serviceListItemTemplate(templateData);
-		$("#service-list").html(html);
-		$('#service-list li').click(function (event) {
+		$(".service-list").html(html);
+		$('.service-list li').click(function (event) {
 			event.preventDefault();
 			itemClicked.dispatch(this);
 		});
@@ -54,11 +54,11 @@ define([
 	};
 
 	var selectFirst = function () {
-		selectItem($('#service-list li:first')[0]);
+		selectItem($('.service-list li:first')[0]);
 	};
 
 	var selectLast = function () {
-		selectItem($('#service-list li:last')[0]);
+		selectItem($('.service-list li:last')[0]);
 	};
 
 	var selectItem = function (linkElement) {
@@ -76,28 +76,28 @@ define([
 	};
 
 	var unselect = function () {
-		$('#service-list li').removeClass('active');
+		$('.service-list li').removeClass('active');
 	};
 
 	var selectAt = function (index) {
-		var lastIndex = $('#service-list li:last').index();
+		var lastIndex = $('.service-list li:last').index();
 		if (isEmpty()) {
 			return;
 		}
 		if (index > lastIndex) {
 			index = lastIndex;
 		}
-		var menuItem = $('#service-list li').eq(index);
+		var menuItem = $('.service-list li').eq(index);
 		selectItem(menuItem);
 	};
 
 	var isEmpty = function () {
-		var lastIndex = $('#service-list li:last').index();
+		var lastIndex = $('.service-list li:last').index();
 		return lastIndex < 0;
 	};
 
 	var getSelectedIndex = function () {
-		return $('#service-list li.active').index();
+		return $('.service-list li.active').index();
 	};
 
 	return {
