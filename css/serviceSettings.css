@@ -2,9 +2,15 @@
 	text-align: right;
 }
 
-.view-selection .control-group > label {
-	width: 240px;
-}
+	.view-selection .controls {
+		float: right;
+		margin-left: 10px;
+	}
+
+	.view-selection .control-group > label {
+		float: right;
+		width: auto;
+	}
 
 input.url-input {
 	width: 100%;
