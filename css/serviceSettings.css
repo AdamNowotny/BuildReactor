@@ -7,6 +7,10 @@
 		margin-left: 10px;
 	}
 
+	.view-selection .controls > select {
+		width: 190px;
+	}
+
 	.view-selection .control-group > label {
 		float: right;
 		width: auto;
