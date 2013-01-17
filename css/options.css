@@ -1,5 +1,4 @@
 ﻿body {
-	__min-width: 516px;
 	padding-top: 50px;
 }
 
@@ -30,6 +29,11 @@
 		width: 50%;
 	}
 
+	.content-container .alert-error {
+		clear: both;
+		margin: 10px;
+	}
+
 .navbar .brand {
 	margin-left: 0 !important;
 	text-align: center;
@@ -51,11 +55,6 @@
 	text-align: center;
 	top: 40px;
 	width: 220px;
-}
-	
-.alert-error {
-	clear: both;
-	margin: 10px;
 }
 
 @media (max-width: 767px) {
