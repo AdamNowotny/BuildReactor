@@ -6,9 +6,9 @@ define([
 	'options/addService',
 	'options/serviceList',
 	'options/savePrompt',
-	'options/removePrompt',
-	'options/alert'
-], function (signals, $, serviceSettings, serviceOptionsPage, addService, serviceList, savePrompt, removePrompt, alert) {
+	'options/alert',
+	'bootbox'
+], function (signals, $, serviceSettings, serviceOptionsPage, addService, serviceList, savePrompt, alert, bootbox) {
 
 	'use strict';
 	
@@ -31,7 +31,22 @@ define([
 			}
 		});
 		$('#service-remove-button').click(function () {
-			removePrompt.show(serviceList.getSelectedName());
+			bootbox.dialog(serviceList.getSelectedName(), [
+				{
+					label: "Cancel",
+					icon: 'icon-ban-circle'
+				}, {
+					label: 'Remove',
+					icon: 'icon-trash icon-white',
+					'class': 'btn-danger',
+					callback: function () {
+						removeCurrentService();
+					}
+				}
+			], {
+				header: 'Remove',
+				onEscape: true
+			});
 		});
 		$('#service-rename-modal').on('shown', function () {
 			$('#service-rename-modal input').val(currentSettings.name);
@@ -57,9 +72,6 @@ define([
 			serviceList.selectLast();
 			setSaveNeeded(true);
 		});
-		removePrompt.removeSelected.add(function () {
-			removeCurrentService();
-		});
 		serviceSettings.cleared.add(function () {
 			$('.service-actions').hide();
 			serviceOptionsPage.hide();
@@ -83,7 +95,6 @@ define([
 		serviceOptionsPage.on.updated.add(serviceSettingsChanged);
 		savePrompt.initialize();
 		addService.initialize('.service-add-container', serviceTypes);
-		removePrompt.initialize();
 		serviceOptionsPage.initialize();
 		setSaveNeeded(false);
 		serviceSettings.clear();

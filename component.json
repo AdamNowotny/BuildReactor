@@ -12,6 +12,7 @@
     "jasmine-jquery": "~1.4.2",
     "requirejs-plugins": "latest",
     "requirejs-text": "~2.0.3",
-    "font-awesome": "~3.0.1"
+    "font-awesome": "~3.0.1",
+    "bootbox": "~3.0.0"
   }
 }

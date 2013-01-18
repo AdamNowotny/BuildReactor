@@ -6,11 +6,11 @@ define([
 		'options/serviceOptionsPage',
 		'options/serviceList',
 		'options/savePrompt',
-		'options/removePrompt',
+		'bootbox',
 		'options/alert',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals'
-	], function ($, controller, addService, serviceSettings, serviceOptionsPage, serviceList, savePrompt, removePrompt, alert, MockSettingsBuilder, spyOnSignal) {
+	], function ($, controller, addService, serviceSettings, serviceOptionsPage, serviceList, savePrompt, bootbox, alert, MockSettingsBuilder, spyOnSignal) {
 
 		'use strict';
 		
@@ -31,9 +31,6 @@ define([
 					} else {
 						$('#service-add-button').toggleClass('btn-primary');
 					}
-				},
-				removeService: function () {
-					$('#service-remove-button').click();
 				}
 			};
 
@@ -42,6 +39,7 @@ define([
 			var spyServiceSettingsGetAll;
 			var spyServiceSettingsGetByIndex;
 			var spyServiceSettingsUpdate;
+			var spyBootboxDialog;
 
 			beforeEach(function () {
 				jasmine.getFixtures().load('optionsControllerFixture.html');
@@ -53,9 +51,7 @@ define([
 				spyOn(savePrompt, 'show');
 				spyOn(savePrompt, 'hide');
 
-				spyOn(removePrompt, 'initialize');
-				spyOn(removePrompt, 'show');
-				spyOn(removePrompt, 'hide');
+				spyBootboxDialog = spyOn(bootbox, 'dialog');
 
 				spyOn(alert, 'show');
 
@@ -83,7 +79,6 @@ define([
 			afterEach(function () {
 				savePrompt.removeSelected.removeAll();
 				addService.on.selected.removeAll();
-				removePrompt.removeSelected.removeAll();
 				serviceSettings.cleared.removeAll();
 				serviceList.itemClicked.removeAll();
 				serviceList.itemSelected.removeAll();
@@ -105,7 +100,6 @@ define([
 				controller.initialize();
 
 				expect(serviceOptionsPage.initialize).toHaveBeenCalled();
-				expect(removePrompt.initialize).toHaveBeenCalled();
 				expect(savePrompt.initialize).toHaveBeenCalled();
 				expect(addService.initialize).toHaveBeenCalled();
 			});
@@ -292,8 +286,11 @@ define([
 				it('should not show save prompt after removing service', function () {
 					spyServiceSettingsGetByIndex.andReturn(createSettings('Server 2'));
 					add('Server 2');
+					spyBootboxDialog.andCallFake(function (message, buttons, options) {
+						buttons[1].callback();
+					});
+					$('#service-remove-button').click();
 
-					removePrompt.removeSelected.dispatch();
 					serviceList.itemSelected.dispatch(createItem(0, 'Server 1'));
 
 					expect(savePrompt.show.callCount).toBe(0);
@@ -349,13 +346,17 @@ define([
 				it('should show confirmation dialog before removing', function () {
 					spyServiceListGetSelectedName.andReturn('some name');
 
-					page.removeService();
+					$('#service-remove-button').click();
 
-					expect(removePrompt.show).toHaveBeenCalledWith('some name');
+					expect(bootbox.dialog).toHaveBeenCalled();
 				});
 
 				it('should remove service on removeSelected', function () {
-					removePrompt.removeSelected.dispatch();
+					spyBootboxDialog.andCallFake(function (message, buttons, options) {
+						buttons[1].callback();
+					});
+
+					$('#service-remove-button').click();
 
 					expect(serviceList.update).toHaveBeenCalled();
 					expect(serviceSettings.remove).toHaveBeenCalled();
@@ -366,7 +367,11 @@ define([
 						expect(message.name).toBe('updateSettings');
 					});
 
-					removePrompt.removeSelected.dispatch();
+					spyBootboxDialog.andCallFake(function (message, buttons, options) {
+						buttons[1].callback();
+					});
+					
+					$('#service-remove-button').click();
 
 					expect(chrome.extension.sendMessage).toHaveBeenCalled();
 				});

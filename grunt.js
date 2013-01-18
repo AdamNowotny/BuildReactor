@@ -122,7 +122,7 @@ module.exports = function (grunt) {
 					inlineText: true,
 					useStrict: true,
 					preserveLicenseComments: true,
-					// optimize: 'none',
+					optimize: 'none',
 					// optimizeCss: 'standard',
 					uglify: {
 						toplevel: true,
@@ -143,6 +143,7 @@ module.exports = function (grunt) {
 					},
 					paths: {
 						mout: '../components/mout/src',
+						bootbox: 'empty:',
 						bootstrap: 'empty:',
 						jquery: 'empty:',
 						signals: '../components/js-signals/dist/signals',
@@ -157,6 +158,12 @@ module.exports = function (grunt) {
 						templateExtension: 'html',
 						helperDirectory: 'templates/helpers/',
 						i18nDirectory:   'templates/i18n/'
+					},
+					shim: {
+						bootbox: {
+							deps: [ 'jquery', 'bootstrap' ],
+							exports: 'bootbox'
+						}
 					},
 					modules: [
 						{
@@ -193,6 +200,7 @@ module.exports = function (grunt) {
 						'popup.html',
 						'manifest.json',
 						'img/*',
+						'components/bootbox/bootbox.min.js',
 						'components/jquery/jquery.js',
 						'components/requirejs/require.js',
 						'components/font-awesome/css/font-awesome.min.css',

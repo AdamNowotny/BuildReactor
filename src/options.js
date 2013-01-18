@@ -1,6 +1,7 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
+		bootbox: '../components/bootbox/bootbox.min',
 		mout: '../components/mout/src',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
 		jquery: "../components/jquery/jquery",
@@ -17,13 +18,17 @@ require.config({
 		i18nDirectory:   'templates/i18n/'
 	},
 	shim: {
-		bootstrap: [ 'jquery' ]
+		bootstrap: [ 'jquery' ],
+		bootbox: {
+			deps: [ 'bootstrap' ],
+			exports: 'bootbox'
+		}
 	}
 });
 require([
 	'options/optionsController',
 	'options/optionsLogger'
-], function (optionsController, optionsLogger) {
+], function (optionsController, optionsLogger, bootbox) {
 
 	'use strict';
 	

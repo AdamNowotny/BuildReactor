@@ -16,6 +16,7 @@ var chrome = {
 require.config({
 	baseUrl: '../src',
 	paths: {
+		bootbox: '../components/bootbox/bootbox',
 		mout: '../components/mout/src',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap',
 		fixtures: '../spec/fixtures',
@@ -34,7 +35,11 @@ require.config({
 		rx: '../lib/rx/rx.min'
 	},
 	shim: {
-		bootstrap: [ 'jquery' ]
+		bootstrap: [ 'jquery' ],
+		bootbox: {
+			deps: [ 'bootstrap' ],
+			exports: 'bootbox'
+		}
 	},
 	hbs: {
 		templateExtension: 'html',
