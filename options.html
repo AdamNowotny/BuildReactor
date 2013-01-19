@@ -23,12 +23,12 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a id="service-rename-action" href="#service-rename-modal" tabindex="-1" href="#">
+								<a id="service-rename-action" tabindex="-1" href="#">
 									<i class="icon-pencil"></i> Rename
 								</a>
 							</li>
 							<li>
-								<a id="service-remove-button" href="#service-remove-modal" tabindex="-1" href="#">
+								<a id="service-remove-button" tabindex="-1" href="#">
 									<i class="icon-trash"></i> Remove
 								</a>
 							</li>
@@ -39,7 +39,7 @@
 		</div>
 		<div class="sidebar-nav">
 			<ul class="service-list nav nav-pills nav-stacked"></ul>
-			<a id="service-add-button" class="btn btn-block btn-large" rel="#service-add-modal">
+			<a id="service-add-button" class="btn btn-block btn-large">
 				<i class="icon-plus-sign"></i> Add
 			</a>
 		</div>
@@ -66,25 +66,6 @@
 			</div>
 		</div>
 		<div class="alert-saved alert alert-success alert-hide"><i class="icon-ok icon-large"></i> Settings saved</div>
-		<div id="service-rename-modal" class="modal hide">
-			<form class="service-rename-form form-horizontal" action="">
-				<div class="modal-header">
-					<a class="close" data-dismiss="modal">&times;</a>
-					<ul class="unstyled steps">
-						<li class="active">
-							<h3>Rename <span class="service-name"></span></h3>
-						</li>
-					</ul>
-				</div>
-				<div class="modal-body">
-					<input type="text" value="name" placeholder="New name" />
-				</div>			
-				<div class="modal-footer">
-					<button type="button" class="btn" data-dismiss="modal">Cancel</button>
-					<button type="submit" class="btn btn-primary">Rename</button>
-				</div>
-			</form>
-		</div>
 		<div id="save-prompt" class="modal hide">
 			<div class="modal-header">
 				<h3>Discard changes ?</h3>

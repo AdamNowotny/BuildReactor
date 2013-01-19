@@ -16,29 +16,12 @@ define([
 		
 		describe('optionsController', function () {
 
-			var page = {
-				isAddButtonEnabled: function (enable) {
-					if (enable === undefined) {
-						return !$('#service-add-button').hasClass('disabled');
-					} else {
-						$('#service-add-button').toggleClass('disabled', !enable);
-						return undefined;
-					}
-				},
-				isAddButtonActive: function (enable) {
-					if (enable === undefined) {
-						return $('#service-add-button').hasClass('btn-primary');
-					} else {
-						$('#service-add-button').toggleClass('btn-primary');
-					}
-				}
-			};
-
 			var spyServiceListGetSelectedName;
 			var spyServiceListUpdate;
 			var spyServiceSettingsGetAll;
 			var spyServiceSettingsGetByIndex;
 			var spyServiceSettingsUpdate;
+			var spyBootboxPrompt;
 			var spyBootboxDialog;
 
 			beforeEach(function () {
@@ -51,6 +34,8 @@ define([
 				spyOn(savePrompt, 'show');
 				spyOn(savePrompt, 'hide');
 
+				spyOn(bootbox, 'setIcons');
+				spyBootboxPrompt = spyOn(bootbox, 'prompt');
 				spyBootboxDialog = spyOn(bootbox, 'dialog');
 
 				spyOn(alert, 'show');
@@ -299,26 +284,26 @@ define([
 				it('should disable add button if new service not saved yet', function () {
 					add('Service');
 
-					expect(page.isAddButtonEnabled()).toBeFalsy();
+					expect($('#service-add-button')).toHaveClass('disabled');
 				});
 
 				it('should enable add button if service saved', function () {
-					page.isAddButtonEnabled(false);
+					$('#service-add-button').addClass('disabled');
 
 					serviceOptionsPage.on.updated.dispatch(createSettings('service'));
 					
-					expect(page.isAddButtonEnabled()).toBeTruthy();
+					expect($('#service-add-button')).not.toHaveClass('disabled');
 				});
 
 				it('should deactivate add button if service selected', function () {
-					page.isAddButtonActive(true);
+					$('#service-add-button').addClass('btn-primary');
 					var serviceInfo = new MockSettingsBuilder().create();
 					var item = createItem(0, 'service name');
 					spyServiceSettingsGetByIndex.andReturn(serviceInfo);
 
 					serviceList.itemSelected.dispatch(item);
 
-					expect(page.isAddButtonActive()).toBeFalsy();
+					expect($('#service-add-button')).not.toHaveClass('btn-primary');
 				});
 
 				it('should hide new service list if service selected', function () {
@@ -336,7 +321,7 @@ define([
 
 					savePrompt.removeSelected.dispatch();
 
-					expect(page.isAddButtonEnabled()).toBeTruthy();
+					expect($('#service-add-button')).not.toHaveClass('disabled');
 				});
 
 			});
@@ -380,74 +365,36 @@ define([
 
 			describe('Rename', function () {
 
-				beforeEach(function () {
-					//jasmine.getFixtures().load('optionsControllerFixture.html');
-				});
-
-				afterEach(function () {
-					$('#service-rename-modal').modal('hide');
-				});
-
-				it('should show current name when service selected', function () {
-					spyServiceSettingsGetByIndex.andReturn(createSettings('Service name'));
-
-					serviceList.itemSelected.dispatch(createItem(2, 'Service name'));
-
-					expect($('#service-rename-modal input[type=text]')).toHaveValue('Service name');
-				});
-
-				it('should update name on submit', function () {
-					spyOnSignal(serviceOptionsPage.on.updated);
+				it('should update settings', function () {
 					spyServiceSettingsUpdate.andCallFake(function (settings, sameSettings) {
 						expect(settings.name).toBe('new name');
 					});
+					spyBootboxPrompt.andCallFake(function (message, cancel, ok, callback, value) {
+						callback('new name');
+					});
 
-					$('#service-rename-modal input').val('new name');
-					$('#service-rename-modal button[type=submit]').click();
-
+					$('#service-rename-action').click();
+					
 					expect(serviceSettings.update).toHaveBeenCalled();
 				});
 
-				it('should update service names', function () {
+				it('should update displayed service name', function () {
 					$('.service-name').text('old');
+					spyBootboxPrompt.andCallFake(function (message, cancel, ok, callback, value) {
+						callback('new2');
+					});
 
-					$('#service-rename-modal').modal();
-					$('#service-rename-modal input').val('new2');
-					$('#service-rename-modal form').submit();
+					$('#service-rename-action').click();
 
 					expect($('.service-name')).toHaveHtml('new2');
 				});
 
-				it('should hide modal', function () {
-					$('#service-rename-modal').modal();
-
-					$('#service-rename-modal form').submit();
-
-					expect($('#service-rename-modal')).toBeHidden();
-				});
-
-				it('should focus on text input', function () {
-					$('#service-rename-modal').modal();
-					$('#service-rename-modal').trigger('shown');
-
-					expect(document.activeElement).toHaveAttr('type', 'text');
-				});
-
-				it('should restore current name on show', function () {
-					spyServiceSettingsGetByIndex.andReturn(createSettings('current name'));
-					serviceList.itemSelected.dispatch(createItem(2, 'current name'));
-
-					$('#service-rename-modal').modal();
-					$('#service-rename-modal input').val('changed name');
-					$('#service-rename-modal').modal('hide');
-					$('#service-rename-modal').modal();
-					$('#service-rename-modal').trigger('shown');
-
-					expect($('#service-rename-modal input').val()).toBe('current name');
-				});
-
 				it('should refresh menu', function () {
-					$('#service-rename-modal form').submit();
+					spyBootboxPrompt.andCallFake(function (message, cancel, ok, callback, value) {
+						callback('new name');
+					});
+
+					$('#service-rename-action').click();
 
 					expect(serviceList.update).toHaveBeenCalled();
 				});

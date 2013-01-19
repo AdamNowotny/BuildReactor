@@ -48,19 +48,24 @@ define([
 				onEscape: true
 			});
 		});
-		$('#service-rename-modal').on('shown', function () {
-			$('#service-rename-modal input').val(currentSettings.name);
-			$('#service-rename-modal').find('input').focus();
-		});
 		$('#service-rename-action').click(function () {
-			$('#service-rename-modal').modal('show');
-		});
-		$('#service-rename-modal form').submit(function () {
-			currentSettings.name = $("#service-rename-modal input").val();
-			serviceSettingsChanged(currentSettings);
-			serviceList.update(serviceSettings.getAll());
-			$('#service-rename-modal').modal('hide');
-			return false;
+			bootbox.setIcons({
+				'OK': 'icon-pencil icon-white',
+				'CANCEL'  : 'icon-ban-circle'
+			});
+			bootbox.prompt(
+				'Rename ' + serviceList.getSelectedName(),
+				'Cancel',
+				'Rename',
+				function (result) {
+					if (result !== null) {
+						currentSettings.name = result;
+						serviceSettingsChanged(currentSettings);
+						serviceList.update(serviceSettings.getAll());
+					}
+				},
+				serviceList.getSelectedName()
+			);
 		});
 		savePrompt.removeSelected.add(function () {
 			removeCurrentService();
@@ -86,7 +91,6 @@ define([
 		serviceList.itemSelected.add(function (item) {
 			var link = $(item);
 			$('.service-name').text(link.text().trim());
-			$('#service-rename-modal input').attr('value', link.text().trim());
 			$('.service-actions').show();
 			var index = link.data('service-index');
 			var serviceInfo = serviceSettings.getByIndex(index);
