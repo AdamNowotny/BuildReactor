@@ -5,10 +5,9 @@ define([
 	'options/serviceOptionsPage',
 	'options/addService',
 	'options/serviceList',
-	'options/savePrompt',
 	'options/alert',
 	'bootbox'
-], function (signals, $, serviceSettings, serviceOptionsPage, addService, serviceList, savePrompt, alert, bootbox) {
+], function (signals, $, serviceSettings, serviceOptionsPage, addService, serviceList, alert, bootbox) {
 
 	'use strict';
 	
@@ -33,7 +32,7 @@ define([
 		$('#service-remove-button').click(function () {
 			bootbox.dialog(serviceList.getSelectedName(), [
 				{
-					label: "Cancel",
+					label: 'Cancel',
 					icon: 'icon-ban-circle'
 				}, {
 					label: 'Remove',
@@ -51,7 +50,7 @@ define([
 		$('#service-rename-action').click(function () {
 			bootbox.setIcons({
 				'OK': 'icon-pencil icon-white',
-				'CANCEL'  : 'icon-ban-circle'
+				'CANCEL': 'icon-ban-circle'
 			});
 			bootbox.prompt(
 				'Rename ' + serviceList.getSelectedName(),
@@ -67,10 +66,6 @@ define([
 				serviceList.getSelectedName()
 			);
 		});
-		savePrompt.removeSelected.add(function () {
-			removeCurrentService();
-			savePrompt.hide();
-		});
 		addService.on.selected.add(function (serviceInfo) {
 			serviceSettings.add(serviceInfo);
 			serviceList.update(serviceSettings.getAll());
@@ -83,7 +78,29 @@ define([
 		});
 		serviceList.itemClicked.add(function (item) {
 			if (isSaveNeeded) {
-				savePrompt.show(serviceList.getSelectedName());
+				bootbox.dialog(serviceList.getSelectedName(), [
+					{
+						label: "Cancel",
+						icon: 'icon-ban-circle'
+					}, {
+						label: 'Remove',
+						icon: 'icon-trash icon-white',
+						'class': 'btn-danger',
+						callback: function () {
+							removeCurrentService();
+						}
+					//}, {
+					//	label: 'Save',
+					//	icon: 'icon-ok icon-white',
+					//	'class': 'btn-success',
+					//	callback: function () {
+					//		serviceList.selectItem(item);
+					//	}
+					}
+				], {
+					header: 'Service not saved yet',
+					onEscape: true
+				});
 			} else {
 				serviceList.selectItem(item);
 			}
@@ -97,7 +114,6 @@ define([
 			showServicePage(serviceInfo);
 		});
 		serviceOptionsPage.on.updated.add(serviceSettingsChanged);
-		savePrompt.initialize();
 		addService.initialize('.service-add-container', serviceTypes);
 		serviceOptionsPage.initialize();
 		setSaveNeeded(false);

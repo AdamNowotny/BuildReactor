@@ -5,12 +5,11 @@ define([
 		'options/serviceSettings',
 		'options/serviceOptionsPage',
 		'options/serviceList',
-		'options/savePrompt',
 		'bootbox',
 		'options/alert',
 		'spec/mocks/mockSettingsBuilder',
 		'jasmineSignals'
-	], function ($, controller, addService, serviceSettings, serviceOptionsPage, serviceList, savePrompt, bootbox, alert, MockSettingsBuilder, spyOnSignal) {
+	], function ($, controller, addService, serviceSettings, serviceOptionsPage, serviceList, bootbox, alert, MockSettingsBuilder, spyOnSignal) {
 
 		'use strict';
 		
@@ -29,10 +28,6 @@ define([
 				spyOn(addService, 'show');
 				spyOn(addService, 'hide');
 				spyOn(addService, 'initialize');
-
-				spyOn(savePrompt, 'initialize');
-				spyOn(savePrompt, 'show');
-				spyOn(savePrompt, 'hide');
 
 				spyOn(bootbox, 'setIcons');
 				spyBootboxPrompt = spyOn(bootbox, 'prompt');
@@ -62,7 +57,6 @@ define([
 			});
 
 			afterEach(function () {
-				savePrompt.removeSelected.removeAll();
 				addService.on.selected.removeAll();
 				serviceSettings.cleared.removeAll();
 				serviceList.itemClicked.removeAll();
@@ -85,7 +79,6 @@ define([
 				controller.initialize();
 
 				expect(serviceOptionsPage.initialize).toHaveBeenCalled();
-				expect(savePrompt.initialize).toHaveBeenCalled();
 				expect(addService.initialize).toHaveBeenCalled();
 			});
 
@@ -244,7 +237,7 @@ define([
 
 					serviceList.itemClicked.dispatch(createItem(0, 'Server 1'));
 
-					expect(savePrompt.show).toHaveBeenCalledWith('Server 2');
+					expect(bootbox.dialog).toHaveBeenCalled();
 				});
 
 				it('should not switch if prompt to save shown', function () {
@@ -256,16 +249,16 @@ define([
 				});
 
 				it('should remove new service if changes discarded', function () {
-					savePrompt.removeSelected.dispatch();
+					add('Server 2');
+					spyServiceListGetSelectedName.andReturn('Server 2');
+					spyServiceListUpdate.reset();
+					spyBootboxDialog.andCallFake(function (message, buttons, options) {
+						buttons[1].callback();
+					});
+
+					serviceList.itemClicked.dispatch(createItem(0, 'Server 1'));
 
 					expect(serviceList.update).toHaveBeenCalled();
-				});
-
-				it('should hide prompt if new service changes discarded', function () {
-					savePrompt.removeSelected.dispatch();
-
-					expect(savePrompt.hide).toHaveBeenCalled();
-					expect(savePrompt.show).not.toHaveBeenCalled();
 				});
 
 				it('should not show save prompt after removing service', function () {
@@ -275,10 +268,11 @@ define([
 						buttons[1].callback();
 					});
 					$('#service-remove-button').click();
+					spyBootboxDialog.reset();
 
 					serviceList.itemSelected.dispatch(createItem(0, 'Server 1'));
 
-					expect(savePrompt.show.callCount).toBe(0);
+					expect(bootbox.dialog).not.toHaveBeenCalled();
 				});
 
 				it('should disable add button if new service not saved yet', function () {
@@ -317,9 +311,15 @@ define([
 				});
 
 				it('should enable add button if new service removed', function () {
-					add('Service');
+					spyServiceSettingsGetByIndex.andReturn(createSettings('Server 2'));
+					add('Server 2');
+					spyBootboxDialog.andCallFake(function (message, buttons, options) {
+						buttons[1].callback();
+					});
+					$('#service-remove-button').click();
+					spyBootboxDialog.reset();
 
-					savePrompt.removeSelected.dispatch();
+					serviceList.itemSelected.dispatch(createItem(0, 'Server 1'));
 
 					expect($('#service-add-button')).not.toHaveClass('disabled');
 				});
