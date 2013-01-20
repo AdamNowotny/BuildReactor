@@ -22,11 +22,14 @@ require.config({
 	}
 });
 require([
-	'popupController'
-], function (popupController) {
+	'jquery',
+	'popupController',
+	'bootstrap'
+], function ($, popupController) {
 
 	'use strict';
 	
+	$('.navbar a').tooltip({ placement: 'bottom' });
 	chrome.extension.sendMessage({ name: 'activeProjects' }, function (response) {
 		popupController.show(response.serviceState);
 	});

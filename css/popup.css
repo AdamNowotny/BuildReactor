@@ -1,28 +1,12 @@
 body {
 	background-color: #141414;
 	color: white;
-	min-width: 250px;
+	margin-top: 45px;
 }
 
-ul {
-	margin: 0;
+.navbar {
+	padding-right: 10px;
 }
-
-li {
-	list-style: none;
-}
-
-	li.info {
-		background-color: #222;
-		margin: 5px 5px 10px 5px;
-		padding: 5px;
-	}
-
-		li.info a, li.info a:hover, li.info a:visited {
-			color: white;
-			display: block;
-			text-decoration: none;
-		}
 
 .service-name {
 	color: #F90;
@@ -38,12 +22,32 @@ li {
 	text-align: center;
 }
 
+ul {
+	margin: 0;
+}
+
+.info-list li {
+	list-style: none;
+}
+
+	.info-list li.info {
+		margin: 5px 5px 10px 5px;
+		padding: 5px;
+	}
+
+		.info-list li.info a, .info-list li.info a:hover, .info-list li.info a:visited {
+			color: white;
+			display: block;
+			text-decoration: none;
+		}
+
 li.service-item {
 	background-color: #360;
 	border-radius: 5px;
 	cursor: pointer;
 	margin-top: 5px;
-	padding: 5px;
+	padding: 5px 25px 5px 5px;
+	position: relative;
 	white-space: nowrap;
 }
 
@@ -51,16 +55,16 @@ li.service-item {
 		background-color: #900;
 	}
 
-	.service-item.building {
-		background-image: url(../img/building.gif);
-		background-repeat: no-repeat;
-		background-position: right top;
-		background-origin: content-box;
+	.service-item i {
+		display: none !important;
+		position: absolute;
+		right: 5px;
+		top: 8px;
 	}
 
-.service-item-name {
-	padding-right: 20px;
-}
+	.service-item.building i {
+		display: inline-block !important;
+	}
 
 .service-group {
 	color: #999;
@@ -69,24 +73,4 @@ li.service-item {
 	margin-top: 5px;
 	margin-bottom: -5px;
 	text-align: right;
-}
-
-.actions {
-	background-color: #555;
-	text-align: right;
-	padding-bottom: 3px;
-}
-
-.actions a {
-	display: inline-block;
-	padding: 5px 5px 0 5px;
-}
-
-.actions a:hover {
-	background-color: #999;
-}
-
-.actions img {
-	height: 25px;
-	width: 25px;
 }

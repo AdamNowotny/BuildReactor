@@ -5,10 +5,6 @@
 	'styles' : ['css/popup.css']
 }
 }}
-<div class="actions">
-	<a href="http://buildreactor.uservoice.com/" target="_blank" title="Feedback..."><img src="../img/feedback.png" alt="Feedback" /></a>
-	<a href="options.html" target="_blank" title="Configuration..."><img src="../img/tool.png" alt="Options" /></a>
-</div>
 {{#if services}}
 <ul class="info-list">
 	{{#services}}
@@ -21,6 +17,7 @@
 				<li class="service-item{{#if isBroken}} build-broken{{/if}}{{#if isBuilding}} building{{/if}}">
 					<a href="{{url}}" target="_blank">
 						<span class="service-item-name">{{name}}</span>
+						<i class="icon-spinner icon-spin pull-right"></i>
 					</a>
 				</li>
 				{{/items}}
