@@ -1,8 +1,9 @@
 define([
 	'jquery',
 	'hbs!templates/popup',
-	'rx'
-], function ($, popupTemplate, Rx) {
+	'rx',
+	'common/sortBy'
+], function ($, popupTemplate, Rx, sortBy) {
 
 	'use strict';
 	
@@ -38,14 +39,6 @@ define([
 		});
 		return model;
 	}
-
-	var sortBy = function (propertyName, items) {
-		items.sort(function (a, b) {
-			return ((a[propertyName] < b[propertyName]) ?
-				-1 :
-				((a[propertyName] > b[propertyName]) ? 1 : 0));
-		});
-	};
 
 	return {
 		show: show

@@ -2,8 +2,9 @@ define([
 	'jquery',
 	'hbs!templates/projectView',
 	'hbs!templates/projectViewSelection',
+	'common/sortBy',
 	'bootstrap'
-], function ($, projectViewTemplate, projectViewSelectionTemplate) {
+], function ($, projectViewTemplate, projectViewSelectionTemplate, sortBy) {
 
 	'use strict';
 	
@@ -95,14 +96,6 @@ define([
 			model.views = json.views;
 		}
 		return model;
-	};
-
-	var sortBy = function (propertyName, json) {
-		json.sort(function (a, b) {
-			return ((a[propertyName] < b[propertyName]) ?
-				-1 :
-				((a[propertyName] > b[propertyName]) ? 1 : 0));
-		});
 	};
 
 	var getGroups = function (items) {
