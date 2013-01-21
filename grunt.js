@@ -152,7 +152,8 @@ module.exports = function (grunt) {
 						underscore: '../lib/require-handlebars-plugin/hbs/underscore',
 						i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 						json2: '../lib/require-handlebars-plugin/hbs/json2',
-						rx: '../lib/rx/rx'
+						rx: '../lib/rx/rx',
+						rxTime: '../lib/rx/rx.time'
 					},
 					hbs: {
 						templateExtension: 'html',
@@ -198,6 +199,7 @@ module.exports = function (grunt) {
 					'<%= vars.dist %>/': [
 						'options.html',
 						'popup.html',
+						'dashboard.html',
 						'manifest.json',
 						'img/*',
 						'components/bootbox/bootbox.min.js',

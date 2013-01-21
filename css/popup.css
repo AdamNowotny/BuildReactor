@@ -1,12 +1,23 @@
 body {
 	background-color: #141414;
 	color: white;
-	margin-top: 45px;
+	margin-top: 55px;
+	min-width: 210px;
 }
 
-.navbar {
-	padding-right: 10px;
+.navbar a.brand {
+	margin-left: -10px;
 }
+
+	.navbar a.brand img {
+		height: 25px;
+		width: 25px;
+		vertical-align: text-bottom;
+	}
+
+	.navbar .nav {
+		padding-right: 10px;
+	}
 
 .service-name {
 	color: #F90;
@@ -31,8 +42,7 @@ ul {
 }
 
 	.info-list li.info {
-		margin: 5px 5px 10px 5px;
-		padding: 5px;
+		margin: 5px;
 	}
 
 		.info-list li.info a, .info-list li.info a:hover, .info-list li.info a:visited {
