@@ -114,12 +114,12 @@ define([
 			});
 
 			it('should show service actions when service selected', function () {
-				$('.service-actions').hide();
+				$('.service-action').hide();
 				spyServiceSettingsGetByIndex.andReturn(createSettings('Service name'));
 
 				serviceList.itemSelected.dispatch(createItem(2, 'Service name'));
 
-				expect($('.service-actions')).toBeVisible();
+				expect($('.service-action')).toBeVisible();
 			});
 
 			it('should update settings', function () {
@@ -170,17 +170,34 @@ define([
 			});
 
 			it('should not display name after services cleared', function () {
-				$('.service-actions').show();
+				$('.service-action').show();
 
 				serviceSettings.cleared.dispatch();
 
-				expect($('.service-actions')).toBeHidden();
+				expect($('.service-action')).toBeHidden();
 			});
 
 			it('should display empty page after services cleared', function () {
 				serviceSettings.cleared.dispatch();
 
 				expect(serviceOptionsPage.hide).toHaveBeenCalled();
+			});
+
+			it('should update services if service disabled', function () {
+				spyOn(chrome.extension, 'sendMessage');
+				
+				$('.toggle-button .labelLeft').click();
+
+				expect(chrome.extension.sendMessage).toHaveBeenCalled();
+			});
+
+			it('should not send update if disabled service loaded', function () {
+				var settings = [new MockSettingsBuilder().isDisabled().create()];
+				spyOn(chrome.extension, 'sendMessage');
+
+				controller.load(settings);
+
+				expect(chrome.extension.sendMessage).not.toHaveBeenCalled();
 			});
 
 			describe('Adding service', function () {
@@ -198,11 +215,11 @@ define([
 				});
 
 				it('should hide service actions when adding service', function () {
-					$('.service-actions').show();
+					$('.service-action').show();
 
 					$('#service-add-button').click();
 
-					expect($('.service-actions')).toBeHidden();
+					expect($('.service-action')).toBeHidden();
 				});
 
 				it('should show services when adding service', function () {
@@ -221,6 +238,16 @@ define([
 					$('#service-add-button').click();
 
 					expect(serviceList.selectItem).toHaveBeenCalledWith(null);
+				});
+
+				it('should toggle enabled when adding service', function () {
+					$('.toggle-button input').attr('checked', false);
+					add('Server 2');
+					spyServiceListGetSelectedName.andReturn('Server 2');
+
+					serviceList.itemClicked.dispatch(createItem(0, 'Server 1'));
+
+					expect($('.toggle-button input')).toBeChecked();
 				});
 
 				it('should not show if button disabled', function () {
@@ -322,6 +349,29 @@ define([
 					serviceList.itemSelected.dispatch(createItem(0, 'Server 1'));
 
 					expect($('#service-add-button')).not.toHaveClass('disabled');
+				});
+
+				it('should not send update if disabled new service', function () {
+					spyOn(chrome.extension, 'sendMessage');
+
+					add('Server 2');
+					$('.toggle-button .labelLeft').click();
+
+					expect(chrome.extension.sendMessage).not.toHaveBeenCalled();
+				});
+
+				it('should save disabled status on save', function () {
+					spyOn(chrome.extension, 'sendMessage');
+					spyServiceSettingsUpdate.andCallFake(function (oldSettings, newSettings) {
+						expect(newSettings.disabled).toBe(true);
+					});
+					add('Server 2');
+					$('.toggle-button .labelLeft').click();
+					
+					var newServiceSettings = new MockSettingsBuilder().isDisabled().create();
+					serviceOptionsPage.on.updated.dispatch(newServiceSettings);
+
+					expect(chrome.extension.sendMessage).toHaveBeenCalled();
 				});
 
 			});

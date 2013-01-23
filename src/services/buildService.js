@@ -9,7 +9,7 @@ define([
 
 	function BuildService(settings) {
 		$.extend(this, new PoolingService(settings));
-		this.name = settings.name;
+		this.settings = settings;
 		this.builds = {};
 		$.extend(this.on, {
 			errorThrown: new Signal(),
@@ -32,7 +32,7 @@ define([
 			};
 		});
 		return {
-			name: this.name,
+			name: this.settings.name,
 			items: projectsInfo
 		};
 	};
@@ -79,7 +79,7 @@ define([
 
 	var createBuildInfo = function (build) {
 		var buildInfo = {
-			serviceName: this.name,
+			serviceName: this.settings.name,
 			buildName: build.name,
 			group: build.projectName,
 			url: build.webUrl,

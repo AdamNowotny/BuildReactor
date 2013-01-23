@@ -8,7 +8,8 @@ define(function () {
 			url: 'http://www.example.com/',
 			name: 'service name',
 			icon: 'mocks/icon.png',
-			logo: 'mocks/icon.png'
+			logo: 'mocks/icon.png',
+			disabled: false
 		};
 		this.create = function () {
 			return {
@@ -16,7 +17,8 @@ define(function () {
 				url: this.settings.url,
 				name: this.settings.name,
 				icon: this.settings.icon,
-				logo: this.settings.logo
+				logo: this.settings.logo,
+				disabled: this.settings.disabled
 			};
 		};
 		this.withName = function (name) {
@@ -33,6 +35,10 @@ define(function () {
 		};
 		this.withLogo = function (logo) {
 			this.settings.logo = logo;
+			return this;
+		};
+		this.isDisabled = function () {
+			this.settings.disabled = true;
 			return this;
 		};
 	};

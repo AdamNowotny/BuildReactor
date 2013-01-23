@@ -40,10 +40,18 @@
 	width: 190px;
 }
 
-.navbar .logo {
- 	vertical-align: top;
- 	width: 20px;
-}
+	.navbar .logo {
+		vertical-align: top;
+		width: 20px;
+	}
+
+	.navbar .toggle-button {
+		top: 6px;
+	}
+
+	.navbar .nav.pull-right {
+		margin-right: 10px;
+	}
 
 .sidebar-nav {
 	border-right: 1px solid #BBB;

@@ -37,12 +37,16 @@ define([
 			loadedAll.memorize = true;
 			removeAllServices();
 			servicesToLoadCount = settings.length;
-			if (settings.length === 0) {
+			settings.filter(function (s) {
+				if (s.disabled) {
+					servicesToLoadCount--;
+				}
+				return !s.disabled;
+			}).forEach(function (s) {
+				loadService(s);
+			});
+			if (servicesToLoadCount === 0) {
 				loadedAll.dispatch();
-			} else {
-				settings.forEach(function (settingsItem) {
-					loadService(settingsItem);
-				});
 			}
 			return loadedAll;
 		}
@@ -72,8 +76,8 @@ define([
 		}
 
 		function addService(service) {
-			if (!service.name) {
-				throw { name: 'ArgumentInvalid', message: 'service.name not defined' };
+			if (!service.settings) {
+				throw { name: 'ArgumentInvalid', message: 'service.settings not defined' };
 			}
 			subscribeTo(service);
 			services.push(service);

@@ -153,7 +153,8 @@ module.exports = function (grunt) {
 						i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 						json2: '../lib/require-handlebars-plugin/hbs/json2',
 						rx: '../lib/rx/rx',
-						rxTime: '../lib/rx/rx.time'
+						rxTime: '../lib/rx/rx.time',
+						bootstrapToggle: 'empty:'
 					},
 					hbs: {
 						templateExtension: 'html',
@@ -164,6 +165,9 @@ module.exports = function (grunt) {
 						bootbox: {
 							deps: [ 'jquery', 'bootstrap' ],
 							exports: 'bootbox'
+						},
+						bootstrapToggle: {
+							deps: [ 'jquery', 'bootstrap' ]
 						}
 					},
 					modules: [
@@ -203,6 +207,8 @@ module.exports = function (grunt) {
 						'manifest.json',
 						'img/*',
 						'components/bootbox/bootbox.min.js',
+						'lib/bootstrap-toggle-buttons/stylesheets/bootstrap-toggle-buttons.css',
+						'lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons.js',
 						'components/jquery/jquery.js',
 						'components/requirejs/require.js',
 						'components/font-awesome/css/font-awesome.min.css',

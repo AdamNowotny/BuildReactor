@@ -49,7 +49,7 @@ define([
 			});
 
 			it('should expose service interface', function () {
-				expect(service.name).toBe(settings.name);
+				expect(service.settings).toBe(settings);
 				expect(service.on.brokenBuild).toBeDefined();
 				expect(service.on.fixedBuild).toBeDefined();
 				expect(service.on.errorThrown).toBeDefined();

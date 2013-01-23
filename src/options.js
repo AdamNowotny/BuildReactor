@@ -10,7 +10,8 @@ require.config({
 		handlebars: '../lib/require-handlebars-plugin/Handlebars',
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore',
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
-		json2: '../lib/require-handlebars-plugin/hbs/json2'
+		json2: '../lib/require-handlebars-plugin/hbs/json2',
+		bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons'
 	},
 	hbs: {
 		templateExtension: 'html',
@@ -22,13 +23,16 @@ require.config({
 		bootbox: {
 			deps: [ 'bootstrap' ],
 			exports: 'bootbox'
+		},
+		bootstrapToggle: {
+			deps: [ 'jquery', 'bootstrap' ]
 		}
 	}
 });
 require([
 	'options/optionsController',
 	'options/optionsLogger'
-], function (optionsController, optionsLogger, bootbox) {
+], function (optionsController, optionsLogger) {
 
 	'use strict';
 	

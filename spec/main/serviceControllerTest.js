@@ -21,9 +21,9 @@ define([
 
 			describe('service interface', function () {
 
-				it('should require name', function () {
+				it('should require settings', function () {
 					var service = new MockBuildService();
-					service.name = undefined;
+					service.settings = undefined;
 					
 					expect(function () { controller.addService(service); }).toThrow();
 				});
@@ -145,11 +145,31 @@ define([
 			});
 
 			it('should notifiy when services are reloaded', function () {
-				var resetSpy = spyOnSignal(controller.on.reset);
+				spyOnSignal(controller.on.reset);
 
 				controller.load([]);
 
-				expect(resetSpy).toHaveBeenDispatched(1);
+				expect(controller.on.reset).toHaveBeenDispatched(1);
+			});
+
+			it('should not load disabled services', function () {
+				spyOn(serviceRepository, 'create');
+				var settings = new MockSettingsBuilder().isDisabled().create();
+
+				controller.load([settings]);
+
+				expect(serviceRepository.create).not.toHaveBeenCalled();
+			});
+
+			it('should signal loaded if services disabled', function () {
+				var settings = new MockSettingsBuilder().isDisabled().create();
+				var loaded = false;
+
+				controller.load([settings]).addOnce(function () {
+					loaded = true;
+				});
+
+				expect(loaded).toBe(true);
 			});
 
 			describe('run', function () {
@@ -204,7 +224,7 @@ define([
 				});
 
 				it('should not dispatch startedAll before all services finish update', function () {
-					var startedAllSpy = spyOnSignal(controller.on.startedAll);
+					spyOnSignal(controller.on.startedAll);
 					var mockService1 = new MockBuildService();
 					var mockService2 = new MockBuildService();
 
@@ -213,15 +233,25 @@ define([
 					controller.run();
 					mockService1.on.updated.dispatch();
 
-					expect(startedAllSpy).not.toHaveBeenDispatched();
+					expect(controller.on.startedAll).not.toHaveBeenDispatched();
 				});
 
 				it('should signal startedAll if no services configured', function () {
-					var startedAllSpy = spyOnSignal(controller.on.startedAll);
+					spyOnSignal(controller.on.startedAll);
 
 					controller.run();
 
-					expect(startedAllSpy).toHaveBeenDispatched();
+					expect(controller.on.startedAll).toHaveBeenDispatched();
+				});
+
+				it('should signal startedAll even if services disabled', function () {
+					spyOnSignal(controller.on.startedAll);
+					var settings = new MockSettingsBuilder().isDisabled().create();
+
+					controller.load([settings]);
+					controller.run();
+
+					expect(controller.on.startedAll).toHaveBeenDispatched();
 				});
 
 			});
@@ -242,5 +272,6 @@ define([
 				expect(projects[0]).toBe(projects1);
 				expect(projects[1]).toBe(projects2);
 			});
+
 		});
 	});

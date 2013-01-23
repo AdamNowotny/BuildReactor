@@ -5,6 +5,7 @@
 		<link rel="stylesheet" type="text/css" href="lib/twitter-bootstrap/css/bootstrap.css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="css/options.css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="components/font-awesome/css/font-awesome.min.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="lib/bootstrap-toggle-buttons/stylesheets/bootstrap-toggle-buttons.css" media="screen" />
 		<script type="text/javascript" data-main="src/options" src="components/requirejs/require.js"></script>
 	</head>
 	<body>
@@ -16,7 +17,7 @@
 				</a>
 				<ul class="nav">
 					<li class="divider-vertical"></li>
-					<li class="dropdown service-actions">
+					<li class="dropdown service-action">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<strong><span class="service-name"></span></strong>
 							<b class="caret"></b>
@@ -33,6 +34,13 @@
 								</a>
 							</li>
 						</ul>
+					</li>
+				</ul>
+				<ul class="nav pull-right">
+					<li>
+						<div class="toggle-button service-action">
+							<input id="service-enabled" type="checkbox" checked="checked">
+						</div>
 					</li>
 				</ul>
 			</div>

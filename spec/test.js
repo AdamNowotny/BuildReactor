@@ -32,13 +32,17 @@ require.config({
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore',
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
-		rx: '../lib/rx/rx.min'
+		rx: '../lib/rx/rx.min',
+		bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons'
 	},
 	shim: {
 		bootstrap: [ 'jquery' ],
 		bootbox: {
 			deps: [ 'bootstrap' ],
 			exports: 'bootbox'
+		},
+		bootstrapToggle: {
+			deps: [ 'jquery', 'bootstrap' ]
 		}
 	},
 	hbs: {

@@ -6,25 +6,48 @@ define([
 	'options/addService',
 	'options/serviceList',
 	'options/alert',
-	'bootbox'
-], function (signals, $, serviceSettings, serviceOptionsPage, addService, serviceList, alert, bootbox) {
+	'bootbox',
+	'rx',
+	'bootstrapToggle'
+], function (signals, $, serviceSettings, serviceOptionsPage, addService, serviceList, alert, bootbox, Rx) {
 
 	'use strict';
 	
-	var isSaveNeeded = false;
+	var isNewService = false;
 	var currentSettings;
 
-	function setSaveNeeded(isNeeded) {
-		isSaveNeeded = isNeeded;
-		$('#service-add-button').toggleClass('disabled', isSaveNeeded);
+	function setIsNewService(isNew) {
+		isNewService = isNew;
+		$('#service-add-button').toggleClass('disabled', isNewService);
 	}
 
 	function initialize(serviceTypes) {
+		$('.toggle-button').toggleButtons({
+			onChange: function ($el, checked, e) {
+				var disabled = !checked;
+				if (currentSettings.disabled !== disabled) {
+					currentSettings.disabled = disabled;
+					if (!isNewService) {
+						serviceSettingsChanged(currentSettings);
+					}
+				}
+			},
+			style: {
+				disabled: 'danger',
+				custom: {
+					enabled: {
+						background: "#e6e6e6",
+						gradient: "#fefefe",
+						color: "black"
+					}
+				}
+			}
+		});
 		$('#service-add-button').click(function () {
 			if (!$('#service-add-button').hasClass('disabled')) {
 				serviceOptionsPage.hide();
 				addService.show();
-				$('.service-actions').hide();
+				$('.service-action').hide();
 				serviceList.selectItem(null);
 				$('#service-add-button').addClass('btn-primary');
 			}
@@ -67,17 +90,18 @@ define([
 			);
 		});
 		addService.on.selected.add(function (serviceInfo) {
+			setIsNewService(true);
 			serviceSettings.add(serviceInfo);
 			serviceList.update(serviceSettings.getAll());
 			serviceList.selectLast();
-			setSaveNeeded(true);
+			$('.toggle-button').toggleButtons('setState', true);
 		});
 		serviceSettings.cleared.add(function () {
-			$('.service-actions').hide();
+			$('.service-action').hide();
 			serviceOptionsPage.hide();
 		});
 		serviceList.itemClicked.add(function (item) {
-			if (isSaveNeeded) {
+			if (isNewService) {
 				bootbox.dialog(serviceList.getSelectedName(), [
 					{
 						label: "Cancel",
@@ -108,7 +132,7 @@ define([
 		serviceList.itemSelected.add(function (item) {
 			var link = $(item);
 			$('.service-name').text(link.text().trim());
-			$('.service-actions').show();
+			$('.service-action').show();
 			var index = link.data('service-index');
 			var serviceInfo = serviceSettings.getByIndex(index);
 			showServicePage(serviceInfo);
@@ -116,12 +140,12 @@ define([
 		serviceOptionsPage.on.updated.add(serviceSettingsChanged);
 		addService.initialize('.service-add-container', serviceTypes);
 		serviceOptionsPage.initialize();
-		setSaveNeeded(false);
+		setIsNewService(false);
 		serviceSettings.clear();
 	}
 
 	function removeCurrentService() {
-		setSaveNeeded(false);
+		setIsNewService(false);
 		serviceSettings.remove(currentSettings);
 		serviceList.update(serviceSettings.getAll());
 		chrome.extension.sendMessage({name: "updateSettings", settings: serviceSettings.getAll()});
@@ -140,13 +164,15 @@ define([
 		$('#service-add-button').removeClass('btn-primary');
 		addService.hide();
 		serviceOptionsPage.show(serviceInfo);
+		$('.toggle-button').toggleButtons('setState', !serviceInfo.disabled);
 	}
 
 	function serviceSettingsChanged(updatedSettings) {
+		updatedSettings.disabled = !$('.toggle-button').toggleButtons('status');
 		serviceSettings.update(currentSettings, updatedSettings);
 		chrome.extension.sendMessage({name: "updateSettings", settings: serviceSettings.getAll()});
 		alert.show();
-		setSaveNeeded(false);
+		setIsNewService(false);
 		currentSettings = updatedSettings;
 		$('.service-name').text(currentSettings.name);
 	}
