@@ -1,14 +1,31 @@
-.service-list li a {
+.nav-pills li a {
 	height: 48px;
 }
 
-.service-list li .service-icon {
+.nav-pills li img.pill-icon {
 	margin-top: 0;
 	margin-bottom: 0;
 	float: left;
 }
 
-.service-list li .service-type-name {
+.nav-pills li i.pill-icon {
+	margin-top: 6px;
+	float: left;
+}
+
+.nav-pills li .pill-name {
 	padding-top: 18px;
 	float: right;
+}
+
+.nav-pills .active.muted span {
+	color: #CCC;
+}
+
+.nav-pills li.muted span {
+	color: #999;
+}
+
+.actions {
+	font-weight: bold;
 }
