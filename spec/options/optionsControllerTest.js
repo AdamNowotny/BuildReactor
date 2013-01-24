@@ -169,6 +169,14 @@ define([
 				expect(alert.show).toHaveBeenCalled();
 			});
 
+			it('should update service list when settings saved', function () {
+				var mockSettings = new MockSettingsBuilder().create();
+
+				serviceOptionsPage.on.updated.dispatch(mockSettings);
+
+				expect(spyServiceListUpdate).toHaveBeenCalled();
+			});
+
 			it('should not display name after services cleared', function () {
 				$('.service-action').show();
 

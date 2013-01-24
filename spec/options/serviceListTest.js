@@ -89,6 +89,14 @@ define([
 				expect(page.iconAt(1)).toBe('src/services/service2/icon.png');
 			});
 
+			it('should show disabled services', function () {
+				var mockSettings = new MockSettingsBuilder().isDisabled().create();
+
+				serviceList.load([mockSettings]);
+
+				expect(page.serviceAt(0)).toHaveClass('muted');
+			});
+
 			it('should select last item', function () {
 				initializeServiceList();
 				var mockSettings1 = createSettings('service 1');

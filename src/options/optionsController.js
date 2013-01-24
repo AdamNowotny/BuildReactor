@@ -175,6 +175,7 @@ define([
 		setIsNewService(false);
 		currentSettings = updatedSettings;
 		$('.service-name').text(currentSettings.name);
+		serviceList.update(serviceSettings.getAll());
 	}
 
 	return {

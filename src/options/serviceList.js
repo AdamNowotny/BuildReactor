@@ -26,7 +26,7 @@ define([
 	};
 
 	var getSelectedName = function () {
-		return $('.service-list li.active .service-type-name').text();
+		return $('.service-list li.active .pill-name').text();
 	};
 
 	var render = function (settings) {
@@ -45,7 +45,8 @@ define([
 			data[i] = {
 				index: i,
 				icon: resourceFinder.icon(settings[i].icon),
-				name: settings[i].name
+				name: settings[i].name,
+				disabled: settings[i].disabled
 			};
 		}
 		return {

@@ -6,10 +6,10 @@
 }
 }}
 {{#services}}
-<li data-service-index="{{index}}">
+<li data-service-index="{{index}}"{{#disabled}} class="muted"{{/disabled}}>
 	<a href="#">
-		<img class="service-icon" src="{{icon}}">
-		<span class="service-type-name">{{name}}</span>
+		<img class="pill-icon" src="{{icon}}">
+		<span class="pill-name">{{name}}</span>
 	</a>
 </li>		
 {{/services}}
