@@ -91,40 +91,10 @@ define([
 				expect($('.container')).toBeVisible();
 			});
 			
-			it('should show available views', function () {
+			it('should activate filter on show', function () {
 				projectView.show(json);
 
-				expect($('.view-selection')).toBeVisible();
-				expect($('.view-selection option').length).toBe(json.views.length);
-			});
-
-			it('should select primary view', function () {
-				projectView.show(json);
-
-				expect($('.view-selection select').val()).toBe(json.primaryView);
-			});
-
-			it('should show primary view', function () {
-				projectView.show(json);
-
-				expect($('.project-item').length).toBe(getViewByName(json.primaryView).items.length);
-			});
-
-			it('should switch to selected view', function () {
-				projectView.show(json);
-				
-				$('.view-selection select').val('Unstable').change();
-
-				expect($('.view-selection select').val()).toBe('Unstable');
-				expect($('.project-item:visible').length).toBe(2);
-			});
-
-			it('should not show view selection if no views defined', function () {
-				json.primaryView = undefined;
-				json.views = undefined;
-				projectView.show(json);
-
-				expect($('.view-selection')).not.toBeVisible();
+				expect($(document.activeElement)).toHaveClass('search-query');
 			});
 
 			it('should show groups', function () {
@@ -258,32 +228,103 @@ define([
 				expect(state.projects[1]).toBe(4);
 			});
 
-			it('should get selected keys from all views', function () {
-				projectView.show(json);
-				$('.view-selection select').val('Unstable').change();
-
-				var state = projectView.get();
-
-				expect(state.projects.length).toBe(2);
-				expect(state.projects[0]).toBe(0);
-				expect(state.projects[1]).toBe(4);
-				expect($('.project-item:visible input:checked').length).toBe(1);
-			});
-
-			it('should hide groups not in view', function () {
-				json.primaryView = 'Unstable';
-				
-				projectView.show(json);
-
-				expect($('.group:visible').length).toBe(2);
-				expect($('.group:visible .accordion-heading')).not.toHaveText('cc');
-			});
-
 			it('should show alert if no projects available', function () {
 				json.items = [];
 				projectView.show(json);
 
 				expect($('.container .alert').text()).toBe('No projects available');
+			});
+
+			describe('views', function () {
+
+				it('should show available views', function () {
+					projectView.show(json);
+
+					expect($('.view-selection')).toBeVisible();
+					expect($('.view-selection option').length).toBe(json.views.length);
+				});
+
+				it('should select primary view', function () {
+					projectView.show(json);
+
+					expect($('.view-selection select').val()).toBe(json.primaryView);
+				});
+
+				it('should show primary view', function () {
+					projectView.show(json);
+
+					expect($('.project-item').length).toBe(getViewByName(json.primaryView).items.length);
+				});
+
+				it('should switch to selected view', function () {
+					projectView.show(json);
+					
+					$('.view-selection select').val('Unstable').change();
+
+					expect($('.view-selection select').val()).toBe('Unstable');
+					expect($('.project-item:visible').length).toBe(2);
+				});
+
+				it('should not show view selection if no views defined', function () {
+					json.primaryView = undefined;
+					json.views = undefined;
+					projectView.show(json);
+
+					expect($('.view-selection')).not.toBeVisible();
+				});
+
+				it('should get selected keys from all views', function () {
+					projectView.show(json);
+					$('.view-selection select').val('Unstable').change();
+
+					var state = projectView.get();
+
+					expect(state.projects.length).toBe(2);
+					expect(state.projects[0]).toBe(0);
+					expect(state.projects[1]).toBe(4);
+					expect($('.project-item:visible input:checked').length).toBe(1);
+				});
+
+				it('should hide groups not in view', function () {
+					json.primaryView = 'Unstable';
+					
+					projectView.show(json);
+
+					expect($('.group:visible').length).toBe(2);
+					expect($('.group:visible .accordion-heading')).not.toHaveText('cc');
+				});
+
+			});
+
+			describe('filtering', function () {
+
+				it('should reset filter if icon clicked', function () {
+					projectView.show(json);
+					$('.filter input').val('something');
+
+					$('.filter i').click();
+
+					expect($('.filter input')).toHaveValue('');
+				});
+
+				it('should show projects matching filter', function () {
+					projectView.show(json);
+					
+					$('.filter input').val('cc').keyup();
+
+					expect($('.project-item[data-id=1]')).toBeVisible();
+					expect($('.project-item[data-id=2]')).toBeVisible();
+				});
+
+				it('should hide projects not matching filter', function () {
+					projectView.show(json);
+					
+					$('.filter input').val('cc').keyup();
+
+					expect($('.project-item[data-id=0]')).not.toBeVisible();
+					expect($('.project-item[data-id=3]')).not.toBeVisible();
+					expect($('.project-item[data-id=4]')).not.toBeVisible();
+				});
 			});
 
 		});

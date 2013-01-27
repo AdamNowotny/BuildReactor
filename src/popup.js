@@ -11,7 +11,7 @@ require.config({
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
 		rx: '../lib/rx/rx.min',
-		rxTime: '../lib/rx/rx.time.min'
+		'rx.time': '../lib/rx/rx.time.min'
 	},
 	hbs: {
 		templateExtension: 'html',
@@ -24,30 +24,12 @@ require.config({
 });
 require([
 	'jquery',
-	'popupController',
-	'rx',
+	'popup/popupController',
 	'bootstrap',
-	'rxTime'
-], function ($, popupController, Rx) {
+], function ($, popupController) {
 
 	'use strict';
 	
 	$('.navbar a').tooltip({ placement: 'bottom' });
-
-	function activeProjects() {
-		var subject = new Rx.AsyncSubject();
-		chrome.extension.sendMessage({ name: 'activeProjects' }, function (response) {
-			subject.onNext(response.serviceState);
-			subject.onCompleted();
-		});
-		return subject;
-	}
-
-	Rx.Observable.interval(10000)
-		.startWith(-1)
-		.selectMany(activeProjects)
-		.subscribe(function (services) {
-			popupController.show(services);
-		});
 
 });

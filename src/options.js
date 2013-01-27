@@ -1,6 +1,7 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
+		messages: 'options/messagesStatic',
 		bootbox: '../components/bootbox/bootbox.min',
 		mout: '../components/mout/src',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
@@ -11,7 +12,10 @@ require.config({
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore',
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
-		bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons'
+		bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons',
+		rx: '../lib/rx/rx.min',
+		'rx.jquery': '../lib/rx/rx.jquery',
+		'rx.time': '../lib/rx/rx.time.min'
 	},
 	hbs: {
 		templateExtension: 'html',
@@ -31,13 +35,14 @@ require.config({
 });
 require([
 	'options/optionsController',
-	'options/optionsLogger'
-], function (optionsController, optionsLogger) {
+	'options/optionsLogger',
+	'messages'
+], function (optionsController, optionsLogger, messages) {
 
 	'use strict';
 	
 	optionsLogger();
-	chrome.extension.sendMessage({ name: "initOptions" }, function (response) {
+	messages.send({ name: "initOptions" }, function (response) {
 		optionsController.initialize(response.serviceTypes);
 		optionsController.load(response.settings);
 	});

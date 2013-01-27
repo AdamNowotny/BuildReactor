@@ -3,11 +3,13 @@ define([
 	'hbs!templates/projectView',
 	'hbs!templates/projectViewSelection',
 	'common/sortBy',
-	'bootstrap'
-], function ($, projectViewTemplate, projectViewSelectionTemplate, sortBy) {
+	'rx',
+	'bootstrap',
+	'rx.jquery'
+], function ($, projectViewTemplate, projectViewSelectionTemplate, sortBy, Rx) {
 
 	'use strict';
-	
+
 	var rootElement;
 
 	var initialize = function (rootClassName) {
@@ -18,6 +20,63 @@ define([
 		refresh(json);
 		initializeViewSelection(json, json.primaryView);
 		updateView(json, json.primaryView);
+
+		var filterText = $('.filter .search-query').keyupAsObservable()
+			.doAction(resetFilterOnEsc)
+			.select(function (e) { return e.target.value;	})
+			.distinctUntilChanged()
+			.doAction(filterResetToggle)
+			.select(projectIdsForText)
+			.doAction(toggleProjectsVisibility)
+			.doAction(toggleGroupsVisibility)
+			.subscribe();
+		$('.filter i').clickAsObservable().subscribe(function (e) {
+			$('.filter input').val('').keyup().focus();
+		});
+		$('.filter input').focus();
+	};
+
+	var projectIdsForText = function (text) {
+		return Rx.Observable.fromArray($('#projects-accordion .project-item')).where(function (el) {
+			return filterMatch(el, text);
+		}).select(function (el) {
+			return $(el).data('id');
+		});
+	};
+
+	var toggleProjectsVisibility = function (projectIds) {
+		$('#projects-accordion .project-item').hide();
+		projectIds.doAction(function (id) {
+				$('#projects-accordion .project-item[data-id="' + id + '"]').show();
+			}).subscribe();
+	};
+
+	var toggleGroupsVisibility = function (_) {
+		rootElement.find('.group').each(function (i, group) {
+			var $group = $(this);
+			$group.show();
+			$group.find('.collapse').addClass('in');
+			var items = $group.find('.project-item:visible').length;
+			$(this).toggle(items !== 0);
+		});
+	};
+
+	var filterMatch = function (el, text) {
+		return $(el).text().toLowerCase().indexOf(text.toLowerCase()) >= 0;
+	};
+
+	var resetFilterOnEsc = function (e) {
+		if (e.keyCode === 27) {
+			$('.filter .search-query').val('').keyup();
+		}
+	};
+
+	var filterResetToggle = function (text) {
+		if (text === '') {
+			$('.filter i').fadeOut(500);
+		} else {
+			$('.filter i').fadeIn(500);
+		}
 	};
 
 	var updateView = function (json, viewName) {
@@ -133,7 +192,7 @@ define([
 			projects: projects
 		};
 	};
-	
+
 	return {
 		initialize: initialize,
 		show: show,

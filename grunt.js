@@ -103,9 +103,9 @@ module.exports = function (grunt) {
 			compress: {
 				files: {
 					'<%= vars.dist %>/css/options.css': [
+						'css/options.css',
 						'css/addService.css',
 						'css/alert.css',
-						'css/options.css',
 						'css/serviceList.css',
 						'css/serviceSettings.css'
 					],
@@ -142,6 +142,7 @@ module.exports = function (grunt) {
 						excludeAfterBuild: true
 					},
 					paths: {
+						messages: 'options/messages',
 						mout: '../components/mout/src',
 						bootbox: 'empty:',
 						bootstrap: 'empty:',
@@ -153,7 +154,8 @@ module.exports = function (grunt) {
 						i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 						json2: '../lib/require-handlebars-plugin/hbs/json2',
 						rx: '../lib/rx/rx',
-						rxTime: '../lib/rx/rx.time',
+						'rx.time': '../lib/rx/rx.time',
+						'rx.jquery': '../lib/rx/rx.jquery',
 						bootstrapToggle: 'empty:'
 					},
 					hbs: {

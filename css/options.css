@@ -1,4 +1,9 @@
-﻿body {
+﻿@import url("addService.css");
+@import url("alert.css");
+@import url("serviceList.css");
+@import url("serviceSettings.css");
+
+body {
 	padding-top: 50px;
 }
 
@@ -64,6 +69,30 @@
 	top: 40px;
 	width: 220px;
 }
+
+.filter {
+	box-sizing: border-box;
+	height: 30px;
+	margin: 0 20px 5px 0;
+	position: relative;
+	width: 100%;
+}
+
+	.filter input {
+		box-sizing: border-box;
+		height: 29px;
+		left: 0;
+		position: absolute;
+		width: 100%;
+	}
+
+	.filter i {
+		cursor: pointer;
+		display: none;
+		position: absolute;
+		right: 2px;
+		top: 1px;
+	}
 
 @media (max-width: 767px) {
 

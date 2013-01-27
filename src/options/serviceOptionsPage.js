@@ -2,8 +2,9 @@ define([
 	'signals',
 	'jquery',
 	'options/settingsFormView',
-	'options/projectView'
-], function (signals, $, settingsFormView, projectView) {
+	'options/projectView',
+	'messages'
+], function (signals, $, settingsFormView, projectView, messages) {
 
 	'use strict';
 	
@@ -47,7 +48,7 @@ define([
 			name: 'availableProjects',
 			serviceSettings: settings
 		};
-		chrome.extension.sendMessage(message, function (response) {
+		messages.send(message, function (response) {
 			if (response.error) {
 				renderError(response.error);
 			} else {

@@ -16,6 +16,7 @@ var chrome = {
 require.config({
 	baseUrl: '../src',
 	paths: {
+		messages: 'options/messagesStatic',
 		bootbox: '../components/bootbox/bootbox',
 		mout: '../components/mout/src',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap',
@@ -33,6 +34,8 @@ require.config({
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
 		rx: '../lib/rx/rx.min',
+		'rx.jquery': '../lib/rx/rx.jquery',
+		'rx.time': '../lib/rx/rx.time.min',
 		bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons'
 	},
 	shim: {

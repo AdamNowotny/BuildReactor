@@ -8,8 +8,9 @@ define([
 		'bootbox',
 		'options/alert',
 		'spec/mocks/mockSettingsBuilder',
+		'messages',
 		'jasmineSignals'
-	], function ($, controller, addService, serviceSettings, serviceOptionsPage, serviceList, bootbox, alert, MockSettingsBuilder, spyOnSignal) {
+	], function ($, controller, addService, serviceSettings, serviceOptionsPage, serviceList, bootbox, alert, MockSettingsBuilder, messages, spyOnSignal) {
 
 		'use strict';
 		
@@ -150,7 +151,7 @@ define([
 			it('should send message to main when settings updated', function () {
 				var newServiceSettings = new MockSettingsBuilder().create();
 				var settings = [createSettings('service 1'), newServiceSettings];
-				spyOn(chrome.extension, 'sendMessage').andCallFake(function (message) {
+				spyOn(messages, 'send').andCallFake(function (message) {
 					expect(message.name).toBe('updateSettings');
 					expect(message.settings).toBe(settings);
 				});
@@ -158,7 +159,7 @@ define([
 
 				serviceOptionsPage.on.updated.dispatch(newServiceSettings);
 
-				expect(chrome.extension.sendMessage).toHaveBeenCalled();
+				expect(messages.send).toHaveBeenCalled();
 			});
 
 			it('should show alert when settings saved', function () {
@@ -192,20 +193,20 @@ define([
 			});
 
 			it('should update services if service disabled', function () {
-				spyOn(chrome.extension, 'sendMessage');
+				spyOn(messages, 'send');
 				
 				$('.toggle-button .labelLeft').click();
 
-				expect(chrome.extension.sendMessage).toHaveBeenCalled();
+				expect(messages.send).toHaveBeenCalled();
 			});
 
 			it('should not send update if disabled service loaded', function () {
 				var settings = [new MockSettingsBuilder().isDisabled().create()];
-				spyOn(chrome.extension, 'sendMessage');
+				spyOn(messages, 'send');
 
 				controller.load(settings);
 
-				expect(chrome.extension.sendMessage).not.toHaveBeenCalled();
+				expect(messages.send).not.toHaveBeenCalled();
 			});
 
 			describe('Adding service', function () {
@@ -360,16 +361,16 @@ define([
 				});
 
 				it('should not send update if disabled new service', function () {
-					spyOn(chrome.extension, 'sendMessage');
+					spyOn(messages, 'send');
 
 					add('Server 2');
 					$('.toggle-button .labelLeft').click();
 
-					expect(chrome.extension.sendMessage).not.toHaveBeenCalled();
+					expect(messages.send).not.toHaveBeenCalled();
 				});
 
 				it('should save disabled status on save', function () {
-					spyOn(chrome.extension, 'sendMessage');
+					spyOn(messages, 'send');
 					spyServiceSettingsUpdate.andCallFake(function (oldSettings, newSettings) {
 						expect(newSettings.disabled).toBe(true);
 					});
@@ -379,7 +380,7 @@ define([
 					var newServiceSettings = new MockSettingsBuilder().isDisabled().create();
 					serviceOptionsPage.on.updated.dispatch(newServiceSettings);
 
-					expect(chrome.extension.sendMessage).toHaveBeenCalled();
+					expect(messages.send).toHaveBeenCalled();
 				});
 
 			});
@@ -406,7 +407,7 @@ define([
 				});
 
 				it('should dispatch settingsChanged after removing service', function () {
-					spyOn(chrome.extension, 'sendMessage').andCallFake(function (message) {
+					spyOn(messages, 'send').andCallFake(function (message) {
 						expect(message.name).toBe('updateSettings');
 					});
 
@@ -416,7 +417,7 @@ define([
 					
 					$('#service-remove-button').click();
 
-					expect(chrome.extension.sendMessage).toHaveBeenCalled();
+					expect(messages.send).toHaveBeenCalled();
 				});
 
 			});

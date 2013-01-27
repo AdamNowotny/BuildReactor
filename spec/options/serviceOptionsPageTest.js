@@ -6,8 +6,9 @@ define([
 	'jquery',
 	'signals',
 	'spec/mocks/buildService',
-	'spec/mocks/mockSettingsBuilder'
-], function (serviceOptions, settingsFormView, projectView, resourceFinder, $, signals, MockBuildService, MockSettingsBuilder) {
+	'spec/mocks/mockSettingsBuilder',
+	'messages'
+], function (serviceOptions, settingsFormView, projectView, resourceFinder, $, signals, MockBuildService, MockSettingsBuilder, messages) {
 
 	'use strict';
 
@@ -197,17 +198,17 @@ define([
 		describe('show projects', function () {
 
 			it('should send message to get available projects', function () {
-				spyOn(chrome.extension, 'sendMessage');
+				spyOn(messages, 'send');
 				serviceOptions.show(settings);
 
 				var formValues = { url: settings.url };
 				settingsFormView.on.clickedShow.dispatch(formValues);
 
-				expect(chrome.extension.sendMessage).toHaveBeenCalled();
+				expect(messages.send).toHaveBeenCalled();
 			});
 
 			it('should reset buttons after projects loaded', function () {
-				spyOn(chrome.extension, 'sendMessage').andCallFake(function (message, responseFunction) {
+				spyOn(messages, 'send').andCallFake(function (message, responseFunction) {
 					responseFunction({ projects: {} });
 				});
 				serviceOptions.show(settings);
@@ -219,7 +220,7 @@ define([
 
 			it('should show projects after projects loaded', function () {
 				var projects = {};
-				spyOn(chrome.extension, 'sendMessage').andCallFake(function (message, responseFunction) {
+				spyOn(messages, 'send').andCallFake(function (message, responseFunction) {
 					responseFunction({ projects: projects });
 				});
 				serviceOptions.show(settings);
@@ -230,7 +231,7 @@ define([
 			});
 
 			it('should reset buttons after request error', function () {
-				spyOn(chrome.extension, 'sendMessage').andCallFake(function (message, responseFunction) {
+				spyOn(messages, 'send').andCallFake(function (message, responseFunction) {
 					responseFunction({ error: { message: 'error message', url: settings.url } });
 				});
 				serviceOptions.show(settings);
@@ -241,7 +242,7 @@ define([
 			});
 
 			it('should display error if call failed when getting plans', function () {
-				spyOn(chrome.extension, 'sendMessage').andCallFake(function (message, responseFunction) {
+				spyOn(messages, 'send').andCallFake(function (message, responseFunction) {
 					responseFunction({ error: { message: 'error message', url: 'http://error.com/' } });
 				});
 				serviceOptions.show(settings);

@@ -1,5 +1,6 @@
 define([
 	'signals',
+	'messages',
 	'jquery',
 	'options/serviceSettings',
 	'options/serviceOptionsPage',
@@ -9,7 +10,7 @@ define([
 	'bootbox',
 	'rx',
 	'bootstrapToggle'
-], function (signals, $, serviceSettings, serviceOptionsPage, addService, serviceList, alert, bootbox, Rx) {
+], function (signals, messages, $, serviceSettings, serviceOptionsPage, addService, serviceList, alert, bootbox, Rx) {
 
 	'use strict';
 	
@@ -148,7 +149,7 @@ define([
 		setIsNewService(false);
 		serviceSettings.remove(currentSettings);
 		serviceList.update(serviceSettings.getAll());
-		chrome.extension.sendMessage({name: "updateSettings", settings: serviceSettings.getAll()});
+		messages.send({name: "updateSettings", settings: serviceSettings.getAll()});
 	}
 
 	function load(newSettings) {
@@ -170,7 +171,7 @@ define([
 	function serviceSettingsChanged(updatedSettings) {
 		updatedSettings.disabled = !$('.toggle-button').toggleButtons('status');
 		serviceSettings.update(currentSettings, updatedSettings);
-		chrome.extension.sendMessage({name: "updateSettings", settings: serviceSettings.getAll()});
+		messages.send({name: "updateSettings", settings: serviceSettings.getAll()});
 		alert.show();
 		setIsNewService(false);
 		currentSettings = updatedSettings;

@@ -1,11 +1,16 @@
 define([
 	'jquery',
 	'hbs!templates/popup',
+	'popup/messages',
 	'rx',
 	'common/sortBy'
-], function ($, popupTemplate, Rx, sortBy) {
+], function ($, popupTemplate, messages, Rx, sortBy) {
 
 	'use strict';
+	
+	messages.current.subscribe(function (services) {
+		show(services);
+	});
 	
 	function show(state) {
 		var model = createModel(state);
