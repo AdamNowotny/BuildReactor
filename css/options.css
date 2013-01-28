@@ -34,6 +34,19 @@ body {
 		width: 50%;
 	}
 
+		.project-selection-container .filter-count {
+			float: right;
+		}
+
+		.project-selection-container .check-all {
+			float: left;
+			margin: 11px 7px 0 15px;
+		}
+		
+		.project-selection-container .group-name {
+			font-weight: bold;
+		}
+
 	.content-container .alert-error {
 		clear: both;
 		margin: 10px;

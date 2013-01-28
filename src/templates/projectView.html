@@ -14,7 +14,11 @@
 	{{#groups}}
 	<div class="accordion-group group" data-id="{{id}}">
 		<div class="accordion-heading">
-			<a class="accordion-toggle" data-toggle="collapse" href="#project-group-{{id}}">{{#if name}}{{name}}{{else}}{{$ "projectView_noGroupName"}}{{/if}}</a>
+			<input type="checkbox" class="check-all" />
+			<a class="accordion-toggle" data-toggle="collapse" href="#project-group-{{id}}">
+				<span class="group-name">{{#if name}}{{name}}{{else}}{{$ "projectView_noGroupName"}}{{/if}}</span>
+				<span class="filter-count" title="Visible / All projects in group"></span>
+			</a>
 		</div>
 		<div class="accordion-body collapse" id="project-group-{{id}}">
 			<div class="accordion-inner">

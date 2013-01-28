@@ -21,48 +21,49 @@ define([
 		initializeViewSelection(json, json.primaryView);
 		updateView(json, json.primaryView);
 
-		var filterText = $('.filter .search-query').keyupAsObservable()
+		var filterText = rootElement.find('.filter .search-query').keyupAsObservable()
 			.doAction(resetFilterOnEsc)
 			.select(function (e) { return e.target.value;	})
 			.distinctUntilChanged()
 			.doAction(filterResetToggle)
 			.select(projectsForText)
-			.select(function (projects) { return projectsInCurrentView(projects, json.views); })
+			.select(function (projectsText) { return projectsInCurrentView(projectsText, json.views); })
 			.doAction(toggleProjectsVisibility)
 			.doAction(toggleGroupsVisibility)
+			.doAction(showFilterCount)
+			.doAction(toggleCheckAll)
+			.doAction(highlightFilterText)
 			.subscribe();
-		$('.filter i').clickAsObservable().subscribe(function (e) {
-			$('.filter input').val('').keyup().focus();
+
+		rootElement.find('.filter i').clickAsObservable().subscribe(function (e) {
+			rootElement.find('.filter input').val('').keyup().focus();
 		});
-		$('.filter input').focus();
+		rootElement.find('.check-all').clickAsObservable()
+			.select(function (e) { return $(e.target); })
+			.select(function (el) {
+				return {
+					checked: el.attr('checked') !== undefined,
+					projectItems: el.closest('.group').find('.project-item input:visible')
+				};
+			})
+			.subscribe(function (value) {
+				if (value.checked) {
+					value.projectItems.attr('checked', 'checked');
+				} else {
+					value.projectItems.removeAttr('checked');
+				}
+			});
+		rootElement.find('.filter input').focus();
 	};
 
-	var projectsForText = function (text) {
-		return Rx.Observable.fromArray($('#projects-accordion .project-item'))
-			.where(function (el) { return filterMatch(el, text); })
-			.select(function (el) { return $(el).data('id'); });
-	};
-
-	var projectsInCurrentView = function (projects, views) {
-		if (!views) { return projects; }
-		var viewName = $('.view-selection select').val();
-		var view = views.filter(function (view, i) {
-			return view.name === viewName;
-		});
-		var viewItems = view.length ? view[0].items : null;
-		return projects.where(function (id) {
-			return viewItems.indexOf(id) !== -1;
-		});
-	};
-
-	var toggleProjectsVisibility = function (projectIds) {
-		$('#projects-accordion .project-item').hide();
-		projectIds.doAction(function (id) {
-				$('#projects-accordion .project-item[data-id="' + id + '"]').show();
+	var toggleProjectsVisibility = function (value) {
+		rootElement.find('.project-item').hide();
+		value.projects.doAction(function (id) {
+				rootElement.find('.project-item[data-id="' + id + '"]').show();
 			}).subscribe();
 	};
 
-	var toggleGroupsVisibility = function (_) {
+	var toggleGroupsVisibility = function () {
 		rootElement.find('.group').each(function (i, group) {
 			var $group = $(this);
 			$group.show();
@@ -71,22 +72,87 @@ define([
 			$(this).toggle(items !== 0);
 		});
 	};
+	var showFilterCount = function () {
+		$('.group:visible').each(function (i, group) {
+			var all = $(this).find('.project-item').length;
+			var visible = $(this).find('.project-item:visible').length;
+			var text = visible === all ? '' : visible + '/' + all;
+			$(this).find('.filter-count').text(text);
+		});
+	};
+	var toggleCheckAll = function () {
+		Rx.Observable.fromArray(rootElement.find('.group:visible'))
+			.select(function (group) {
+				return {
+					checkAll: $(group).find('.check-all'),
+					checkedCount: $(group).find('.project-item:visible input:checked').length,
+					visibleCount: $(group).find('.project-item:visible').length
+				};
+			})
+			.doAction(function (groupInfo) {
+				if (groupInfo.checkedCount === groupInfo.visibleCount) {
+					groupInfo.checkAll.attr('checked', 'checked');
+				} else {
+					groupInfo.checkAll.removeAttr('checked');
+				}
+			})
+			.subscribe();
+	};
+	var highlightFilterText = function (projectsText) {
+		rootElement.find('.project-item:visible').each(function (i, item) {
+			var name = $(item).find('.project-item-name').text();
+			var html = name;
+			if (projectsText.text !== '') {
+				var startAt = name.toLowerCase().indexOf(projectsText.text.toLowerCase());
+				var endAt = startAt + projectsText.text.length;
+				var beforeSpan = name.substring(0, startAt);
+				var span = '<b>' + name.substring(startAt, endAt) + '</b>';
+				var afterSpan = name.substring(endAt, name.length);
+				html = beforeSpan + span + afterSpan;
+			}
+			$(item).find('.project-item-name').html(html);
+		});
+	};
 
-	var filterMatch = function (el, text) {
-		return $(el).text().toLowerCase().indexOf(text.toLowerCase()) >= 0;
+	var projectsForText = function (text) {
+		var filterMatch = function (el, text) {
+			return $(el).text().toLowerCase().indexOf(text.toLowerCase()) >= 0;
+		};
+
+		return {
+			text: text,
+			projects: Rx.Observable.fromArray(rootElement.find('.project-item'))
+				.where(function (el) { return filterMatch(el, text); })
+				.select(function (el) { return $(el).data('id'); })
+		};
+	};
+
+	var projectsInCurrentView = function (projectText, views) {
+		if (!views) { return projectText; }
+		var viewName = rootElement.find('.view-selection select').val();
+		var view = views.filter(function (view, i) {
+			return view.name === viewName;
+		});
+		var viewItems = view.length ? view[0].items : null;
+		return {
+			text: projectText.text,
+			projects: projectText.projects.where(function (id) {
+					return viewItems.indexOf(id) !== -1;
+				})
+		};
 	};
 
 	var resetFilterOnEsc = function (e) {
 		if (e.keyCode === 27) {
-			$('.filter .search-query').val('').keyup();
+			rootElement.find('.filter .search-query').val('').keyup();
 		}
 	};
 
 	var filterResetToggle = function (text) {
 		if (text === '') {
-			$('.filter i').fadeOut(500);
+			rootElement.find('.filter i').fadeOut(500);
 		} else {
-			$('.filter i').fadeIn(500);
+			rootElement.find('.filter i').fadeIn(500);
 		}
 	};
 
@@ -110,6 +176,7 @@ define([
 		rootElement.find('.view-selection select').change(function (event) {
 			var viewName = $(event.target).val();
 			updateView(json, viewName);
+			$('.filter input').val('').focus();
 		});
 	};
 
@@ -140,7 +207,7 @@ define([
 			return view.name === viewName;
 		});
 		var viewItems = view.length ? view[0].items : null;
-		$('.project-item').each(function (i, item) {
+		rootElement.find('.project-item').each(function (i, item) {
 			$(this).toggle(viewItems.indexOf($(this).data('id')) > -1);
 		});
 	};

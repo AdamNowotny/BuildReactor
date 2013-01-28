@@ -91,12 +91,6 @@ define([
 				expect($('.container')).toBeVisible();
 			});
 			
-			it('should activate filter on show', function () {
-				projectView.show(json);
-
-				expect($(document.activeElement)).toHaveClass('search-query');
-			});
-
 			it('should show groups', function () {
 				projectView.show(json);
 
@@ -265,6 +259,23 @@ define([
 					expect($('.project-item:visible').length).toBe(2);
 				});
 
+				it('should clear filter when view changed', function () {
+					projectView.show(json);
+					$('.filter input').val('cc');
+					
+					$('.view-selection select').val('Unstable').change();
+
+					expect($('.filter input')).toHaveValue('');
+				});
+
+				it('should focus on filter when view changed', function () {
+					projectView.show(json);
+					
+					$('.view-selection select').focus().val('Unstable').change();
+
+					expect($(document.activeElement)).toHaveClass('search-query');
+				});
+
 				it('should not show view selection if no views defined', function () {
 					json.primaryView = undefined;
 					json.views = undefined;
@@ -335,6 +346,14 @@ define([
 					expect($('.project-item[data-id=1]')).not.toBeVisible();
 					expect($('.project-item[data-id=2]')).not.toBeVisible();
 				});
+
+				it('should activate filter on show', function () {
+					projectView.show(json);
+
+					expect($(document.activeElement)).toHaveClass('search-query');
+				});
+
+
 			});
 
 		});
