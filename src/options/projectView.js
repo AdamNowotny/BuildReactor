@@ -26,7 +26,8 @@ define([
 			.select(function (e) { return e.target.value;	})
 			.distinctUntilChanged()
 			.doAction(filterResetToggle)
-			.select(projectIdsForText)
+			.select(projectsForText)
+			.select(function (projects) { return projectsInCurrentView(projects, json.views); })
 			.doAction(toggleProjectsVisibility)
 			.doAction(toggleGroupsVisibility)
 			.subscribe();
@@ -36,11 +37,21 @@ define([
 		$('.filter input').focus();
 	};
 
-	var projectIdsForText = function (text) {
-		return Rx.Observable.fromArray($('#projects-accordion .project-item')).where(function (el) {
-			return filterMatch(el, text);
-		}).select(function (el) {
-			return $(el).data('id');
+	var projectsForText = function (text) {
+		return Rx.Observable.fromArray($('#projects-accordion .project-item'))
+			.where(function (el) { return filterMatch(el, text); })
+			.select(function (el) { return $(el).data('id'); });
+	};
+
+	var projectsInCurrentView = function (projects, views) {
+		if (!views) { return projects; }
+		var viewName = $('.view-selection select').val();
+		var view = views.filter(function (view, i) {
+			return view.name === viewName;
+		});
+		var viewItems = view.length ? view[0].items : null;
+		return projects.where(function (id) {
+			return viewItems.indexOf(id) !== -1;
 		});
 	};
 

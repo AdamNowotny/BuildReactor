@@ -325,6 +325,16 @@ define([
 					expect($('.project-item[data-id=3]')).not.toBeVisible();
 					expect($('.project-item[data-id=4]')).not.toBeVisible();
 				});
+
+				it('should not show projects matching filter from other views', function () {
+					projectView.show(json);
+					$('.view-selection select').val('Unstable').change();
+					
+					$('.filter input').val('r').keyup();
+
+					expect($('.project-item[data-id=1]')).not.toBeVisible();
+					expect($('.project-item[data-id=2]')).not.toBeVisible();
+				});
 			});
 
 		});
