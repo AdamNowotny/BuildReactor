@@ -63,6 +63,11 @@ define([
 	};
 
 	var selectItem = function (linkElement) {
+		activateItem(linkElement);
+		itemSelected.dispatch(linkElement);
+	};
+
+	var activateItem = function (linkElement) {
 		if (!linkElement) {
 			unselect();
 			return;
@@ -73,7 +78,6 @@ define([
 		}
 		unselect();
 		serviceLink.addClass('active');
-		itemSelected.dispatch(linkElement);
 	};
 
 	var unselect = function () {
@@ -89,7 +93,7 @@ define([
 			index = lastIndex;
 		}
 		var menuItem = $('.service-list li').eq(index);
-		selectItem(menuItem);
+		activateItem(menuItem);
 	};
 
 	var isEmpty = function () {

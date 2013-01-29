@@ -127,6 +127,17 @@ define([
 				expect(page.getSelectedIndex()).toBe(2);
 			});
 
+			it('should not signal selected when updated', function () {
+				initializeServiceList();
+				var item = $('.service-list li').eq(2);
+				serviceList.selectItem(item);
+				itemSelectedSpy.reset();
+
+				serviceList.update(settings);
+
+				expect(itemSelectedSpy).not.toHaveBeenDispatched();
+			});
+
 			it('should update and select at new last index if last was selected', function () {
 				initializeServiceList();
 				var item = $('.service-list li').eq(2);

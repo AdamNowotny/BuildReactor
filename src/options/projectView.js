@@ -72,11 +72,11 @@ define([
 			$(this).toggle(items !== 0);
 		});
 	};
-	var showFilterCount = function () {
+	var showFilterCount = function (value) {
 		$('.group:visible').each(function (i, group) {
 			var all = $(this).find('.project-item').length;
 			var visible = $(this).find('.project-item:visible').length;
-			var text = visible === all ? '' : visible + '/' + all;
+			var text = (visible === all || value.text === '') ? '' : visible + '/' + all;
 			$(this).find('.filter-count').text(text);
 		});
 	};
@@ -99,16 +99,18 @@ define([
 			.subscribe();
 	};
 	var highlightFilterText = function (projectsText) {
-		rootElement.find('.project-item:visible').each(function (i, item) {
+		rootElement.find('.project-item').each(function (i, item) {
 			var name = $(item).find('.project-item-name').text();
 			var html = name;
 			if (projectsText.text !== '') {
 				var startAt = name.toLowerCase().indexOf(projectsText.text.toLowerCase());
-				var endAt = startAt + projectsText.text.length;
-				var beforeSpan = name.substring(0, startAt);
-				var span = '<b>' + name.substring(startAt, endAt) + '</b>';
-				var afterSpan = name.substring(endAt, name.length);
-				html = beforeSpan + span + afterSpan;
+				if (startAt !== -1) {
+					var endAt = startAt + projectsText.text.length;
+					var beforeSpan = name.substring(0, startAt);
+					var span = '<b>' + name.substring(startAt, endAt) + '</b>';
+					var afterSpan = name.substring(endAt, name.length);
+					html = beforeSpan + span + afterSpan;
+				}
 			}
 			$(item).find('.project-item-name').html(html);
 		});
@@ -156,6 +158,7 @@ define([
 		}
 	};
 
+
 	var updateView = function (json, viewName) {
 		expandGroups(json.items);
 		hideItemsNotInView(json.views, viewName);
@@ -176,7 +179,7 @@ define([
 		rootElement.find('.view-selection select').change(function (event) {
 			var viewName = $(event.target).val();
 			updateView(json, viewName);
-			$('.filter input').val('').focus();
+			$('.filter input').val('').keyup().focus();
 		});
 	};
 
