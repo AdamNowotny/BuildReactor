@@ -71,6 +71,13 @@ define([
 			expect($('.service-name').eq(1)).toHaveText('service 2');
 		});
 
+		it('should show how many builds failed', function () {
+			controller.show(state);
+
+			expect($('.failed-count').eq(0)).toHaveText('1');
+			expect($('.failed-count').length).toBe(1);
+		});
+
 		it('should show build names', function () {
 			controller.show(state);
 

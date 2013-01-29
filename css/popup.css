@@ -19,11 +19,15 @@ body {
 		padding-right: 10px;
 	}
 
-.service-name {
+.service-name-container {
 	color: #F90;
 	font-weight: bold;	
 	text-align: center;
 }
+
+	.service-name-container .badge-important {
+		background-color: #900;
+	}
 
 .no-services-message {
 	color: #F90;

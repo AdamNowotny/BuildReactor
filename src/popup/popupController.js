@@ -21,16 +21,20 @@ define([
 	function createModel(state) {
 		return state.map(function (serviceState) {
 			sortBy('group', serviceState.items);
+			var failedCount = serviceState.items.filter(function (item) {
+				return item.isBroken;
+			}).length;
 			return {
 				name: serviceState.name,
+				failedCount: failedCount,
 				groups: getGroups(serviceState.items)
 			};
 		});
 	}
 
-	function getGroups(items) {
+	function getGroups(rows) {
 		var model = [];
-		Rx.Observable.fromArray(items).groupBy(function (item) {
+		Rx.Observable.fromArray(rows).groupBy(function (item) {
 			return item.group || '';
 		}).subscribe(function (group) {
 			var groupModel = {
