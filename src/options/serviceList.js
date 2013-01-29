@@ -63,15 +63,15 @@ define([
 	};
 
 	var selectItem = function (linkElement) {
+		if (!linkElement) {
+			unselect();
+			return;
+		}
 		activateItem(linkElement);
 		itemSelected.dispatch(linkElement);
 	};
 
 	var activateItem = function (linkElement) {
-		if (!linkElement) {
-			unselect();
-			return;
-		}
 		var serviceLink = $(linkElement);
 		if (serviceLink.hasClass('active')) {
 			return;
