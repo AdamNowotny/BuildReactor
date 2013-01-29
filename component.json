@@ -1,7 +1,7 @@
 {
   "name": "BuildReactor",
-  "description": "Notifications for CI servers (CruiseControl, Bamboo, Jenkins, TeamCity, GO, Travis-CI)",
-  "version": "0.5.6",
+  "description": "Relevant, actionable notifications for CI servers (CruiseControl, Bamboo, Jenkins, TeamCity, GO, Travis-CI)",
+  "version": "0.6.0",
   "dependencies": {
     "jasmine-signals": "latest",
     "jquery": "~1.8.3",
