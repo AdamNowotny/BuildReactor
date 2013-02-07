@@ -123,6 +123,16 @@ define([
 				expect($('.service-action')).toBeVisible();
 			});
 
+			it('should show separator after service selected', function () {
+				$('.service-list-separator').hide();
+
+				spyServiceSettingsGetByIndex.andReturn(createSettings('Service name'));
+
+				serviceList.itemSelected.dispatch(createItem(2, 'Service name'));
+
+				expect($('.service-list-separator')).toBeVisible();
+			});
+
 			it('should update settings', function () {
 				var currentSettings = new MockSettingsBuilder().create();
 				var newServiceSettings = new MockSettingsBuilder().create();
@@ -186,10 +196,12 @@ define([
 				expect($('.service-action')).toBeHidden();
 			});
 
-			it('should display empty page after services cleared', function () {
+			it('should not display separator after services cleared', function () {
+				$('.service-list-separator').show();
+
 				serviceSettings.cleared.dispatch();
 
-				expect(serviceOptionsPage.hide).toHaveBeenCalled();
+				expect($('.service-list-separator')).toBeHidden();
 			});
 
 			it('should update services if service disabled', function () {
@@ -216,6 +228,12 @@ define([
 					addService.on.selected.dispatch(serviceInfo);
 					return serviceInfo;
 				}
+
+				it('should display add service page if no services added', function () {
+					serviceSettings.cleared.dispatch();
+
+					expect(addService.show).toHaveBeenCalled();
+				});
 
 				it('should hide service settings when adding service', function () {
 					$('#service-add-button').click();

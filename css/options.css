@@ -83,6 +83,10 @@ body {
 	width: 220px;
 }
 
+	.sidebar-nav .service-list-separator {
+		display: none;
+	}
+	
 .filter {
 	box-sizing: border-box;
 	height: 30px;

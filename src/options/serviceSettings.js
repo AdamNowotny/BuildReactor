@@ -18,6 +18,7 @@ define([
 
 	var clear = function () {
 		settingsList = [];
+		cleared.dispatch();
 	};
 
 	var add = function (serviceInfo) {
@@ -30,7 +31,9 @@ define([
 
 	var removeService = function (serviceInfo) {
 		remove(settingsList, serviceInfo);
-		cleared.dispatch();
+		if (settingsList.length === 0) {
+			cleared.dispatch();
+		}
 	};
 
 	var getByIndex = function (index) {

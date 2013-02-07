@@ -99,7 +99,8 @@ define([
 		});
 		serviceSettings.cleared.add(function () {
 			$('.service-action').hide();
-			serviceOptionsPage.hide();
+			$('.service-list-separator').hide();
+			$('#service-add-button').click();
 		});
 		serviceList.itemClicked.add(function (item) {
 			if (isNewService) {
@@ -137,6 +138,7 @@ define([
 			var index = link.data('service-index');
 			var serviceInfo = serviceSettings.getByIndex(index);
 			showServicePage(serviceInfo);
+			$('.service-list-separator').show();
 		});
 		serviceOptionsPage.on.updated.add(serviceSettingsChanged);
 		addService.initialize('.service-add-container', serviceTypes);
