@@ -14,10 +14,7 @@ var chrome = {
 		}
 	}
 };
-$.fx.off = true;
+window.webkitNotifications = window.webkitNotifications || {};
+window.webkitNotifications.createNotification = function () {};
+
 jasmine.getFixtures().fixturesPath = 'spec/fixtures';
-var x = 0;
-beforeEach(function () {
-	'use strict';
-	console.warn(x++, new Date().toUTCString(), this.suite.description, this.description);
-});

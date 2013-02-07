@@ -36,17 +36,15 @@ module.exports = function (grunt) {
 		},
 		jasmine: {
 			main: {
-				src: 'spec/**/*Test.js',
 				options: {
+					specs: 'spec/**/*Test.js',
 					host: 'http://localhost:8000/',
 					vendor: [
-						"components/jquery/jquery.js",
 						"components/jasmine-jquery/lib/jasmine-jquery.js"
 					],
 					helpers: [
 						"spec/test.js"
 					],
-					timeout : 2000,
 					template: require('grunt-template-jasmine-requirejs'),
 					templateOptions: {
 						requireConfig: {
