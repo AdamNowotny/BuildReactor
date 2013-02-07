@@ -65,9 +65,7 @@ Notifications
 
 Popup and chrome badge
 ----------------------
-The number in the badge shows how many builds are currently broken. 
-
-<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/popup.jpg" alt="BuildReactor action icon">
+<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/popup-640x400.jpg" alt="BuildReactor popup">
 
 Options page - adding new service
 ---------------------------------
@@ -76,6 +74,10 @@ Options page - adding new service
 Options page - service settings
 -------------------------------
 <img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/settings-1280x800.jpg" alt="BuildReactor options page">
+
+Dashboard page
+-------------------------------
+<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/dashboard-1280x800.jpg" alt="BuildReactor dashboard">
 
 Developer setup
 ===============
