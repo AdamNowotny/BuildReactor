@@ -27,6 +27,8 @@ define([
 					}
 					completed.dispatch(plan);
 				});
+			} else {
+				completed.dispatch(plan);
 			}
 		});
 		return completed;

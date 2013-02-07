@@ -79,6 +79,22 @@ define([
 					mockPlan.andCallFake(function () {
 						this.on.errorReceived.dispatch();
 					});
+
+					var isCompleted = false;
+					plan.update().addOnce(function (result) {
+						expect(result).toBe(plan);
+						isCompleted = true;
+					});
+
+					expect(isCompleted).toBe(true);
+				});
+
+				it('should signal completion if plan not active', function () {
+					planJson.enabled = false;
+					mockPlan.andCallFake(function () {
+						this.on.responseReceived.dispatch(planJson);
+					});
+
 					var isCompleted = false;
 					plan.update().addOnce(function (result) {
 						expect(result).toBe(plan);
