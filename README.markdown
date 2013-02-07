@@ -1,7 +1,7 @@
 BuildReactor [![Build Status](https://secure.travis-ci.org/AdamNowotny/BuildReactor.png)](http://travis-ci.org/AdamNowotny/BuildReactor)
 ============
 
-Relevant, actionable notifications for CI server events (Google Chrome extension)
+Developer notifications and dashboard (Google Chrome extension)
 
 Download from [Chrome Web Store](http://goo.gl/BX01T)
 
@@ -130,8 +130,6 @@ Legal
 This code is distributed under Apache License version 2.0
 
 Application icon based on https://commons.wikimedia.org/wiki/File:Radiation_warning_symbol_3.svg
-
-Tool icon taken from http://www.iconspedia.com/icon/metro-tools-black-18254.html
 
 What's new
 ============
