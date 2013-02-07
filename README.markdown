@@ -86,6 +86,7 @@ Developer setup
 
 ```
 npm install
+bower update
 ./node_modules/.bin/grunt
 ```
 
