@@ -152,8 +152,8 @@ define([
 			it('should indicate disabled plans', function () {
 				projectView.show(json);
 
-				expect($('.project-item input').eq(2)).toBeDisabled();
-				expect($('.project-item input').eq(0)).not.toBeDisabled();
+				expect($('.project-item-name').eq(2)).toHaveClass('muted');
+				expect($('.project-item-name').eq(0)).not.toHaveClass('muted');
 			});
 
 			it('should check selected projects', function () {
