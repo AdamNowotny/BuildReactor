@@ -1,7 +1,7 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
-		messages: 'options/messagesStatic',
+		'options/messages': 'options/messagesStatic',
 		bootbox: '../components/bootbox/bootbox.min',
 		mout: '../components/mout/src',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
@@ -36,7 +36,7 @@ require.config({
 require([
 	'options/optionsController',
 	'options/optionsLogger',
-	'messages'
+	'options/messages'
 ], function (optionsController, optionsLogger, messages) {
 
 	'use strict';

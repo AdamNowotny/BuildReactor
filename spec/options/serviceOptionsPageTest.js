@@ -7,7 +7,7 @@ define([
 	'signals',
 	'spec/mocks/buildService',
 	'spec/mocks/mockSettingsBuilder',
-	'messages'
+	'options/messages'
 ], function (serviceOptions, settingsFormView, projectView, resourceFinder, $, signals, MockBuildService, MockSettingsBuilder, messages) {
 
 	'use strict';

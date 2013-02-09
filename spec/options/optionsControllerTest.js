@@ -8,7 +8,7 @@ define([
 		'bootbox',
 		'options/alert',
 		'spec/mocks/mockSettingsBuilder',
-		'messages',
+		'options/messages',
 		'jasmineSignals'
 	], function ($, controller, addService, serviceSettings, serviceOptionsPage, serviceList, bootbox, alert, MockSettingsBuilder, messages, spyOnSignal) {
 

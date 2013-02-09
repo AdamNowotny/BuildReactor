@@ -1,6 +1,7 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
+		'popup/messages': 'popup/messagesStatic',
 		mout: '../components/mout/src',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
 		jquery: "../components/jquery/jquery",

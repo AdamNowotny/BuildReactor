@@ -3,7 +3,7 @@ define([
 	'jquery',
 	'options/settingsFormView',
 	'options/projectView',
-	'messages'
+	'options/messages'
 ], function (signals, $, settingsFormView, projectView, messages) {
 
 	'use strict';

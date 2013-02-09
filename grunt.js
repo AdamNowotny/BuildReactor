@@ -142,7 +142,8 @@ module.exports = function (grunt) {
 						excludeAfterBuild: true
 					},
 					paths: {
-						messages: 'options/messages',
+						'options/messages': 'options/messages',
+						'popup/messages': 'popup/messages',
 						mout: '../components/mout/src',
 						bootbox: 'empty:',
 						bootstrap: 'empty:',

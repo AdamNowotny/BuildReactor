@@ -1,6 +1,6 @@
 define([
 	'signals',
-	'messages',
+	'options/messages',
 	'jquery',
 	'options/serviceSettings',
 	'options/serviceOptionsPage',
