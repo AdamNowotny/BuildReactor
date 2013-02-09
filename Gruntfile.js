@@ -13,11 +13,13 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-mincss');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-plato');
 
 	grunt.registerTask('default', ['jshint', 'connect:test', 'jasmine', 'mincss', 'requirejs', 'copy', 'compress']);
 	grunt.registerTask('travis', ['clean', 'jshint', 'connect:test', 'jasmine']);
 	grunt.registerTask('server', ['connect:server']);
 	grunt.registerTask('dist', ['clean', 'mincss', 'requirejs', 'copy']);
+	grunt.registerTask('report', ['plato:src']);
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -248,6 +250,18 @@ module.exports = function (grunt) {
 						src: ['<%= vars.dist %>/**/*']
 					}
 				]
+			}
+		},
+		plato: {
+			all: {
+				files: {
+					'docs/report': ['src/**/*.js', 'spec/**/*.js']
+				}
+			},
+			src: {
+				files: {
+					'docs/report': ['src/**/*.js']
+				}
 			}
 		}
 	});
