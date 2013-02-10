@@ -16,10 +16,11 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-plato');
 
 	grunt.registerTask('default', ['jshint', 'connect:test', 'jasmine', 'mincss', 'requirejs', 'copy', 'compress']);
-	grunt.registerTask('travis', ['clean', 'jshint', 'connect:test', 'jasmine']);
+	grunt.registerTask('test', ['connect:test', 'jasmine']);
 	grunt.registerTask('server', ['connect:server']);
 	grunt.registerTask('dist', ['clean', 'mincss', 'requirejs', 'copy']);
 	grunt.registerTask('report', ['plato:src']);
+	grunt.registerTask('travis', ['clean', 'jshint', 'connect:test', 'jasmine']);
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
