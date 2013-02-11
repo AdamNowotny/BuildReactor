@@ -35,7 +35,7 @@ define([
 			return send(ajaxSettings);
 		}
 
-		var lastBuild = function (settings, id) {
+		var job = function (settings, id) {
 			if (!(settings && settings.url && settings.url !== '')) {
 				throw {
 					name: 'ArgumentInvalid',
@@ -43,7 +43,7 @@ define([
 				};
 			}
 			var ajaxSettings = {
-				url: joinUrl(settings.url, 'job/' + id + '/lastBuild/api/json'),
+				url: joinUrl(settings.url, 'job/' + id + '/api/json'),
 				username: settings.username,
 				password: settings.password
 			};
@@ -67,7 +67,7 @@ define([
 
 		return {
 			projects: projects,
-			lastBuild: lastBuild,
+			job: job,
 			lastCompletedBuild: lastCompletedBuild
 		};
 	});

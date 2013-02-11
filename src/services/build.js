@@ -12,6 +12,7 @@ define(['signals'], function (Signal) {
 		this.webUrl = null;
 		this.isBroken = false;
 		this.isRunning = false;
+		this.isDisabled = false;
 		this.on = {
 			errorThrown: new Signal(),
 			broken: new Signal(),

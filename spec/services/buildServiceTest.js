@@ -42,6 +42,14 @@ define([
 				expect(result.items.length).toBe(0);
 			});
 
+			it('should ignore disabled builds', function () {
+				service.builds['A'] = { name: 'Build name', isDisabled: true };
+
+				var result = service.activeProjects();
+
+				expect(result.items.length).toBe(0);
+			});
+
 			it('should return item name', function () {
 				service.builds['A'] = { name: 'Build name' };
 

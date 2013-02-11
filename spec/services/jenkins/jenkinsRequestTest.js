@@ -66,29 +66,19 @@ define([
 			
 		});
 
-		describe('lastBuild', function () {
+		describe('job', function () {
 
-			it('should get lastBuild from correct URL', function () {
+			it('should get job info', function () {
+				var jobResponse = {};
 				spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
-					expect(this.settings.url).toBe('http://example.com/job/build_id/lastBuild/api/json');
+					this.on.responseReceived.dispatch(jobResponse);
 				});
 
-				request.lastBuild(settings, 'build_id');
-
-				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
-			});
-
-			it('should pass response returned from Ajax call', function () {
-				spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
-					this.on.responseReceived.dispatch(viewsJson);
-				});
-
-				var result = request.lastBuild(settings, 'build_id');
+				var result = request.job(settings, 'build_id');
 				
 				result.addOnce(function (result) {
-					expect(result.response).toBe(viewsJson);
+					expect(result.response).toBe(jobResponse);
 				});
-
 				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
 			});
 

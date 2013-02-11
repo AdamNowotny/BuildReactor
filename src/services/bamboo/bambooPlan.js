@@ -20,15 +20,15 @@ define([
 			if (result.error) {
 				plan.on.errorThrown.dispatch(plan);
 				completed.dispatch(plan);
-			} else if (plan.isEnabled) {
+			} else if (plan.isDisabled) {
+				completed.dispatch(plan);
+			} else {
 				updateLastResult(plan).addOnce(function (result) {
 					if (result.error) {
 						plan.on.errorThrown.dispatch(plan);
 					}
 					completed.dispatch(plan);
 				});
-			} else {
-				completed.dispatch(plan);
 			}
 		});
 		return completed;
@@ -55,10 +55,10 @@ define([
 		function processResponse(response) {
 			try {
 				if (!response.key) { throw { name: 'ArgumentInvalid', message: 'response.key is undefined' }; }
-				activateEvents(plan, response.enabled);
 				plan.projectName = response.projectName;
 				plan.name = response.shortName;
-				plan.isEnabled = response.enabled;
+				plan.isDisabled = !response.enabled;
+				activateEvents(plan, !plan.isDisabled);
 				processEvents(plan, response);
 				plan.isRunning = response.isBuilding;
 				plan.isActive = response.isActive;

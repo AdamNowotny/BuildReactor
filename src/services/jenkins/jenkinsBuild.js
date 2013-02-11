@@ -14,26 +14,31 @@ define([
 
 	var failureStates = { 'FAILURE': 1, 'UNSTABLE': 1, 'ABORTED': 1, 'NOT_BUILT': 1 };
 
+	function activateEvents(build, active) {
+		build.on.broken.active = active;
+		build.on.fixed.active = active;
+		build.on.started.active = active;
+		build.on.finished.active = active;
+	}
+
 	JenkinsBuild.prototype.update = function () {
 
-		var lastBuildResponseHandler = function (result) {
-			that.webUrl = result.response.url;
-			if (!that.isRunning && result.response.building) {
+		var jobResponseHandler = function (result) {
+			that.webUrl = result.response.lastBuild.url;
+			that.isDisabled = !result.response.buildable;
+			activateEvents(that, !that.isDisabled);
+			var isBuilding = (result.response.lastBuild.number !== result.response.lastCompletedBuild.number);
+			if (!that.isRunning && isBuilding) {
 				that.isRunning = true;
 				that.on.started.dispatch(that);
-			} else if (that.isRunning && !result.response.building) {
+			} else if (that.isRunning && !isBuilding) {
 				that.isRunning = false;
 				that.on.finished.dispatch(that);
 			}
-			if (!result.response.result) {
-				request.lastCompletedBuild(that.settings, that.id).addOnce(function (result) {
-					updateResult(that, result.response.result);
-					completed.dispatch();
-				});
-			} else {
+			request.lastCompletedBuild(that.settings, that.id).addOnce(function (result) {
 				updateResult(that, result.response.result);
 				completed.dispatch();
-			}
+			});
 		};
 
 		var updateResult = function (build, result) {
@@ -62,12 +67,12 @@ define([
 		var completed = new Signal();
 		completed.memorize = true;
 		var that = this;
-		request.lastBuild(this.settings, this.id).addOnce(function (result) {
+		request.job(this.settings, this.id).addOnce(function (result) {
 			if (result.error) {
 				that.on.errorThrown.dispatch(that);
 				completed.dispatch();
 			} else {
-				lastBuildResponseHandler(result);
+				jobResponseHandler(result);
 			}
 		});
 		return completed;

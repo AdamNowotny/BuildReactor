@@ -22,7 +22,9 @@ define([
 	}
 
 	var activeProjects = function () {
-		var projectsInfo = values(this.builds).map(function (build) {
+		var projectsInfo = values(this.builds).filter(function (build) {
+			return !build.isDisabled;
+		}).map(function (build) {
 			return {
 				name: build.name,
 				group: build.projectName,

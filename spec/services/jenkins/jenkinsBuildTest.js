@@ -10,16 +10,16 @@ define([
 
 		var build;
 		var settings;
-		var buildJson;
+		var jobJson;
 		var buildCompletedJson;
-		var mockRequestBuild;
+		var mockRequestJob;
 		var mockRequestBuildCompleted;
 
 		beforeEach(function () {
 			settings = {};
-			buildJson = JSON.parse(readFixtures('jenkins/lastBuild.json'));
+			jobJson = JSON.parse(readFixtures('jenkins/job.json'));
 			buildCompletedJson = JSON.parse(readFixtures('jenkins/lastCompletedBuild.json'));
-			mockRequestBuild = spyOn(request, 'lastBuild').andReturn(createResult({ response: buildJson }));
+			mockRequestJob = spyOn(request, 'job').andReturn(createResult({ response: jobJson }));
 			mockRequestBuildCompleted = spyOn(request, 'lastCompletedBuild')
 				.andReturn(createResult({ response: buildCompletedJson }));
 			build = new Build('build_id', settings);
@@ -42,14 +42,14 @@ define([
 		it('should make request on update', function () {
 			build.update();
 
-			expect(request.lastBuild).toHaveBeenCalledWith(settings, 'build_id');
+			expect(request.job).toHaveBeenCalledWith(settings, 'build_id');
 		});
 
 		it('should signal when update completed', function () {
 			var completed = false;
-			mockRequestBuild.andCallFake(function () {
+			mockRequestJob.andCallFake(function () {
 				expect(completed).toBe(false);
-				return createResult({ response: buildJson });
+				return createResult({ response: jobJson });
 			});
 
 			build.update().addOnce(function () {
@@ -59,19 +59,30 @@ define([
 			expect(completed).toBe(true);
 		});
 
+		it('should know if build disabled', function () {
+			jobJson.buildable = false;
+			mockRequestJob.andCallFake(function () {
+				return createResult({ response: jobJson });
+			});
+
+			build.update();
+
+			expect(build.isDisabled).toBe(true);
+		});
+
 		it('should initialize on update', function () {
 			build.update();
 
 			expect(build.name).toBe('build_id');
 			expect(build.projectName).toBe(null);
-			expect(build.webUrl).toBe('http://ci.jenkins-ci.org/job/config-provider-model/1036/');
+			expect(build.webUrl).toBe('http://ci.jenkins-ci.org/job/config-provider-model/1354/');
 			expect(build.isBroken).toBe(false);
 		});
 
 		describe('broken', function () {
 
 			it('should signal on failure', function () {
-				buildJson.result = 'FAILURE';
+				buildCompletedJson.result = 'FAILURE';
 
 				build.update();
 
@@ -80,7 +91,7 @@ define([
 			});
 
 			it('should not signal if still broken', function () {
-				buildJson.result = 'FAILURE';
+				buildCompletedJson.result = 'FAILURE';
 				build.isBroken = true;
 
 				build.update();
@@ -90,7 +101,7 @@ define([
 			});
 
 			it('should signal if unstable', function () {
-				buildJson.result = 'UNSTABLE';
+				buildCompletedJson.result = 'UNSTABLE';
 
 				build.update();
 
@@ -99,7 +110,7 @@ define([
 			});
 
 			it('should signal if not build', function () {
-				buildJson.result = 'NOT_BUILT';
+				buildCompletedJson.result = 'NOT_BUILT';
 
 				build.update();
 
@@ -108,7 +119,7 @@ define([
 			});
 
 			it('should signal if aborted', function () {
-				buildJson.result = 'ABORTED';
+				buildCompletedJson.result = 'ABORTED';
 
 				build.update();
 
@@ -121,7 +132,7 @@ define([
 		describe('fixed', function () {
 
 			it('should signal when fixed', function () {
-				buildJson.result = 'SUCCESS';
+				buildCompletedJson.result = 'SUCCESS';
 				build.isBroken = true;
 
 				build.update();
@@ -131,7 +142,7 @@ define([
 			});
 
 			it('should not signal fixed if not broken', function () {
-				buildJson.result = 'SUCCESS';
+				buildCompletedJson.result = 'SUCCESS';
 				build.isBroken = false;
 
 				build.update();
@@ -145,13 +156,13 @@ define([
 		describe('running', function () {
 
 			beforeEach(function () {
-				buildJson.result = null;
-				mockRequestBuild.andReturn(createResult({ response: buildJson }));
-				mockRequestBuildCompleted.andReturn(createResult({ response: buildJson }));
+				mockRequestJob.andReturn(createResult({ response: jobJson }));
+				mockRequestBuildCompleted.andReturn(createResult({ response: buildCompletedJson }));
 			});
 
 			it('should signal when started', function () {
-				buildJson.building = true;
+				jobJson.lastBuild.number = 100;
+				jobJson.lastCompletedBuild.number = 99;
 				build.isRunning = false;
 
 				build.update();
@@ -160,8 +171,21 @@ define([
 				expect(build.on.started).toHaveBeenDispatchedWith(build);
 			});
 
+			it('should not signal started if disabled', function () {
+				jobJson.lastBuild.number = 100;
+				jobJson.lastCompletedBuild.number = 99;
+				jobJson.buildable = false;
+				build.isRunning = false;
+
+				build.update();
+
+				expect(build.isRunning).toBe(true);
+				expect(build.on.started).not.toHaveBeenDispatchedWith(build);
+			});
+
 			it('should signal when finished', function () {
-				buildJson.building = false;
+				jobJson.lastBuild.number = 100;
+				jobJson.lastCompletedBuild.number = 100;
 				build.isRunning = true;
 
 				build.update();
@@ -170,8 +194,21 @@ define([
 				expect(build.on.finished).toHaveBeenDispatchedWith(build);
 			});
 
+			it('should not signal finished when disabled', function () {
+				jobJson.lastBuild.number = 100;
+				jobJson.lastCompletedBuild.number = 100;
+				jobJson.buildable = false;
+				build.isRunning = true;
+
+				build.update();
+
+				expect(build.isRunning).toBe(false);
+				expect(build.on.finished).not.toHaveBeenDispatchedWith(build);
+			});
+
 			it('should not signal finished if still stopped', function () {
-				buildJson.building = false;
+				jobJson.lastBuild.number = 100;
+				jobJson.lastCompletedBuild.number = 100;
 				build.isRunning = false;
 
 				build.update();
@@ -182,21 +219,11 @@ define([
 
 		});
 
-		it('should get status from last completed build if null', function () {
-			buildJson.result = null;
-			buildCompletedJson.result = 'FAILURE';
-
-			build.update();
-
-			expect(request.lastCompletedBuild).toHaveBeenCalled();
-			expect(build.isBroken).toBe(true);
-		});
-
 		describe('error handling', function () {
 
 			it('should signal errorThrown on failure', function () {
 				var errorInfo = { httpStatus: 123 };
-				mockRequestBuild.andReturn(createResult({ error: errorInfo }));
+				mockRequestJob.andReturn(createResult({ error: errorInfo }));
 
 				build.update();
 
@@ -209,7 +236,7 @@ define([
 
 			it('should not make second call if first fails', function () {
 				var errorInfo = { httpStatus: 123 };
-				mockRequestBuild.andReturn(createResult({ error: errorInfo }));
+				mockRequestJob.andReturn(createResult({ error: errorInfo }));
 
 				build.update();
 

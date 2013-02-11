@@ -25,6 +25,7 @@ define([
 			expect(build.webUrl).toBe(null);
 			expect(build.isRunning).toBe(false);
 			expect(build.isBroken).toBe(false);
+			expect(build.isDisabled).toBe(false);
 		});
 	});
 });

@@ -49,7 +49,7 @@ define([
 
 					expect(plan.projectName).toBe('Nightly Builds');
 					expect(plan.name).toBe('Deploy Nightly Trunk');
-					expect(plan.isEnabled).toBe(true);
+					expect(plan.isDisabled).toBe(false);
 					expect(plan.isRunning).toBe(false);
 					expect(plan.isActive).toBe(false);
 				});
