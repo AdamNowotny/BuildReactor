@@ -73,7 +73,7 @@ li.service-item {
 		display: none !important;
 		position: absolute;
 		right: 5px;
-		top: 8px;
+		top: 6px;
 	}
 
 	.service-item.building i {
@@ -86,5 +86,5 @@ li.service-item {
 	font-size: 8pt;
 	margin-top: 5px;
 	margin-bottom: -5px;
-	text-align: right;
+	text-align: left;
 }
