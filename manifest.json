@@ -22,7 +22,8 @@
 	"permissions": [
 		"http://*/*",
 		"https://*/*",
-		"notifications"
+		"notifications",
+		"cookies"
 	],
 	"web_accessible_resources": [
 		"src/services/bamboo/icon.png",

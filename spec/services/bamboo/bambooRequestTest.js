@@ -1,8 +1,10 @@
 define([
 	'services/bamboo/bambooRequest',
-	'main/ajaxRequest'
+	'main/ajaxRequest',
+	'signals',
+	'jasmineSignals'
 ],
-	function (BambooRequest, AjaxRequest) {
+	function (BambooRequest, AjaxRequest, Signal, spyOnSignal) {
 
 		'use strict';
 		
@@ -18,60 +20,74 @@ define([
 					password: 'password1'
 				};
 				request = new BambooRequest(settings);
-			});
-
-			it('should pass credentials to remote service', function () {
-				spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
-					expect(this.settings.username).toBe(settings.username);
-					expect(this.settings.password).toBe(settings.password);
-				});
-
-				request.send('path/to/append');
-
-				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
+				spyOnSignal(request.on.errorReceived);
 			});
 
 			describe('credentials', function () {
 
-				it('should pass os_authType parameter to remote service', function () {
+				it('should pass credentials to remote service', function () {
 					spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
-						expect(this.settings.data.os_authType).toBe('basic');
+						expect(this.settings.username).toBe(settings.username);
+						expect(this.settings.password).toBe(settings.password);
 					});
 
-					request.send('path');
+					request.send('path/to/append');
 
 					expect(AjaxRequest.prototype.send).toHaveBeenCalled();
 				});
 
-
-				it('should not set authType if username not specified', function () {
-					var settings = { url: 'http://example.com' };
-					spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
-						expect(this.settings.data).not.toBeDefined();
-					});
-
-					var request = new BambooRequest(settings);
-					request.send('path');
-
-					expect(AjaxRequest.prototype.send).toHaveBeenCalled();
-				});
-
-				it('should not set authType if username is empty', function () {
+				it('should not pass credentials if username is empty', function () {
 					var settings = {
 						url: 'http://example.com',
 						username: '    ',
-						password: ''
+						password: 'any password'
 					};
 					spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
 						expect(this.settings.username).not.toBeDefined();
 						expect(this.settings.password).not.toBeDefined();
-						expect(this.settings.data).not.toBeDefined();
 					});
 
 					var request = new BambooRequest(settings);
 					request.send('path');
 
 					expect(AjaxRequest.prototype.send).toHaveBeenCalled();
+				});
+
+				it('should remove session cookie if 401 received', function () {
+					spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
+						this.on.errorReceived.dispatch({ httpStatus: 401 });
+					});
+					spyOn(chrome.cookies, 'remove').andCallFake(function (info) {
+						expect(info.url).toBe('http://example.com/rest/api/latest/path');
+						expect(info.name).toBe('JSESSIONID');
+					});
+
+					request.send('path');
+
+					expect(chrome.cookies.remove).toHaveBeenCalled();
+				});
+
+				it('should retry once if 401 received', function () {
+					spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
+						this.on.errorReceived.dispatch({ httpStatus: 401 });
+					});
+
+					request.send('path');
+
+					expect(AjaxRequest.prototype.send.callCount).toBe(2);
+				});
+
+				it('should signal error only after retry if 401 received', function () {
+					var callCount = 0;
+					spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
+						callCount++;
+						this.on.errorReceived.dispatch({ httpStatus: 401 });
+					});
+
+					request.send('path');
+
+					expect(callCount).toBe(2);
+					expect(request.on.errorReceived).toHaveBeenDispatched(1);
 				});
 
 			});

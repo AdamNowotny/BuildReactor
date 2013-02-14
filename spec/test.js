@@ -11,6 +11,9 @@ var chrome = {
 		onMessage: {
 			addListener: function () {}
 		}
+	},
+	cookies: {
+		remove: function () {}
 	}
 };
 require.config({
