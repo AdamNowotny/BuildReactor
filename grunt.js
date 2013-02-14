@@ -109,7 +109,8 @@ module.exports = function (grunt) {
 						'css/serviceList.css',
 						'css/serviceSettings.css'
 					],
-					'<%= vars.dist %>/css/popup.css': [ 'css/popup.css' ]
+					'<%= vars.dist %>/css/popup.css': [ 'css/popup.css' ],
+					'<%= vars.dist %>/css/dashboard.css': [ 'css/popup.css', 'css/dashboard.css' ]
 				}
 			}
 		},
