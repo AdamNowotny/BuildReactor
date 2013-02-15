@@ -60,9 +60,8 @@ li.service-item {
 	border-radius: 5px;
 	cursor: pointer;
 	margin-top: 5px;
-	padding: 5px 25px 5px 5px;
+	padding: 5px 30px 5px 5px;
 	position: relative;
-	white-space: nowrap;
 }
 
 	.service-item.build-broken {
