@@ -28,11 +28,11 @@ define([
 				mockAjax.andCallFake(function (onSuccessOptions) {
 					onSuccessOptions.success(result, null, null);
 				});
-				var responseReceivedSpy = spyOnSignal(request.on.responseReceived);
+				spyOnSignal(request.on.responseReceived);
 
 				request.send();
 
-				expect(responseReceivedSpy).toHaveBeenDispatched(1);
+				expect(request.on.responseReceived).toHaveBeenDispatched(1);
 			});
 
 			it('should set data if specified', function () {
@@ -149,11 +149,25 @@ define([
 					mockAjax.andCallFake(function (onErrorOptions) {
 						onErrorOptions.error(null, null, null);
 					});
-					var errorReceivedSpy = spyOnSignal(request.on.errorReceived);
+					spyOnSignal(request.on.errorReceived);
 
 					request.send();
 
-					expect(errorReceivedSpy).toHaveBeenDispatched(1);
+					expect(request.on.errorReceived).toHaveBeenDispatched(1);
+				});
+
+				it('should signal error when response parsing fails', function () {
+					mockAjax.andCallFake(function (onErrorOptions) {
+						onErrorOptions.error(null, 'parsererror', {});
+					});
+					spyOnSignal(request.on.errorReceived);
+
+					request.on.errorReceived.addOnce(function (errorInfo) {
+						expect(errorInfo.message).toBe('Unrecognized response');
+					});
+					request.send();
+
+					expect(request.on.errorReceived).toHaveBeenDispatched(1);
 				});
 
 				it('should fail if url not present', function () {

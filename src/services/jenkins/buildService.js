@@ -34,10 +34,14 @@ define([
 		};
 		jenkinsRequest.projects(requestSettings).addOnce(function (result) {
 			if (result.error) {
-				completed.dispatch(result);
+				completed.dispatch({ error: result.error });
 			} else {
-				var templateData = createTemplateData(result.response, selectedPlans);
-				completed.dispatch({ projects: templateData });
+				try {
+					var templateData = createTemplateData(result.response, selectedPlans);
+					completed.dispatch({ projects: templateData });
+				} catch (ex) {
+					completed.dispatch({ error: { name: 'ParseError', message: 'Unrecognized response'}});
+				}
 			}
 		});
 		return completed;

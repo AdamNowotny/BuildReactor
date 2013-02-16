@@ -22,10 +22,16 @@ define(['signals', 'jquery'], function (signals, $) {
 
 		function onAjaxError(jqXhr, ajaxStatus, ajaxError) {
 			var status = (jqXhr) ? jqXhr.status : null;
+			var message;
+			if (ajaxStatus === 'parsererror') {
+				message = 'Unrecognized response';
+			} else {
+				message = (ajaxError) ? ajaxError : 'Ajax connection error';
+			}
 			var error = {
 				httpStatus: status,
 				ajaxStatus: ajaxStatus,
-				message: (ajaxError) ? ajaxError : 'Ajax connection error',
+				message: message,
 				url: self.settings.url,
 				settings: ajaxOptions
 			};

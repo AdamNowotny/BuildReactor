@@ -77,8 +77,8 @@ define([
 	};
 
 	var projects = function (selectedPlans) {
-		var receivedProjects = new Signal();
-		receivedProjects.memorize = true;
+		var completed = new Signal();
+		completed.memorize = true;
 		var requestSettings = {
 			url: joinUrl(this.settings.url, this.cctrayLocation),
 			username: this.settings.username,
@@ -87,16 +87,12 @@ define([
 		var plansRequest = ccRequest.projects(requestSettings);
 		plansRequest.responseReceived.addOnce(function (response) {
 			var templateData = createTemplateData(response, selectedPlans);
-			receivedProjects.dispatch({
-				projects: templateData
-			});
+			completed.dispatch({ projects: templateData });
 		});
 		plansRequest.errorReceived.addOnce(function (ajaxError) {
-			receivedProjects.dispatch({
-				error: ajaxError
-			});
+			completed.dispatch({ error: ajaxError });
 		});
-		return receivedProjects;
+		return completed;
 	};
 
 	function createTemplateData(projectsXml, selectedProjects) {

@@ -27,18 +27,22 @@ define([
 	};
 
 	BambooBuildService.prototype.projects = function (selectedPlans) {
-		var receivedProjects = new Signal();
-		receivedProjects.memorize = true;
+		var completed = new Signal();
+		completed.memorize = true;
 		var plansRequest = new BambooRequest(this.settings);
 		plansRequest.on.responseReceived.addOnce(function (response) {
-			var templateData = createTemplateData(response, selectedPlans);
-			receivedProjects.dispatch({ projects: templateData });
+			try {
+				var templateData = createTemplateData(response, selectedPlans);
+				completed.dispatch({ projects: templateData });
+			} catch (ex) {
+				completed.dispatch({ error: { name: 'ParseError', message: 'Unrecognized response'}});
+			}
 		});
 		plansRequest.on.errorReceived.addOnce(function (ajaxError) {
-			receivedProjects.dispatch({ error: ajaxError });
+			completed.dispatch({ error: ajaxError });
 		});
 		plansRequest.projects();
-		return receivedProjects;
+		return completed;
 	};
 
 	var createTemplateData = function (response, selectedPlans) {

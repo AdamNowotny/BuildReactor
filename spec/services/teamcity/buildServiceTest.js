@@ -85,6 +85,21 @@ define([
 				expect(result.error).toBe(errorInfo);
 			});
 
+			it('should signal error if parsing the response fails', function () {
+				var service = new TeamCity(settings);
+				spyOn(request, 'buildTypes').andCallFake(function () {
+					return createResult({ response: { buildType: 'unknown response' } });
+				});
+
+				var response;
+				service.projects([]).addOnce(function (result) {
+					response = result;
+				});
+
+				expect(response.error).toBeDefined();
+				expect(response.error.name).toBe('ParseError');
+			});
+
 			it('should convert to build', function () {
 				spyOn(request, 'buildTypes').andCallFake(function () {
 					return createResult({ response: buildTypesJson });

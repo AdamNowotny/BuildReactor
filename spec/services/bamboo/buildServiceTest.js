@@ -112,6 +112,22 @@ define([
 					expect(response.error).toBeDefined();
 					expect(response.projects).not.toBeDefined();
 				});
+
+				it('should signal error if parsing the response fails', function () {
+					mockBambooRequestProjects.andCallFake(function () {
+						this.on.responseReceived.dispatch({ unknown: 'response' });
+					});
+
+					var response;
+					service.projects([]).addOnce(function (result) {
+						response = result;
+					});
+
+					expect(response.error).toBeDefined();
+					expect(response.error.name).toBe('ParseError');
+				});
+
+
 			});
 
 		});

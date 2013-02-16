@@ -22,9 +22,9 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Sign
 			responseReceived,
 			errorReceived,
 			projectsXml = $.parseXML(projectsXmlText),
-			initResponse = function () {
+			initResponse = function (response) {
 				mockRequest.andCallFake(function () {
-					responseReceived.dispatch(projectsXml);
+					responseReceived.dispatch(response);
 					return {
 						responseReceived: responseReceived,
 						errorReceived: errorReceived
@@ -58,7 +58,7 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Sign
 			spyOn(PoolingService.prototype, 'stop');
 			service = new BuildService(settings);
 			mockRequest = spyOn(ccRequest, 'projects');
-			initResponse();
+			initResponse(projectsXml);
 			mockTimer = spyOn(Timer.prototype, 'start');
 		});
 
@@ -156,7 +156,7 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Sign
 					return info.buildName === 'NetReflector' &&
 						info.group === 'CruiseControl.NET';
 				});
-				initResponse();
+				initResponse(projectsXml);
 				service.update();
 				failedProject = service.builds['NetReflector'];
 
@@ -171,7 +171,7 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Sign
 					return info.buildName === 'NetReflector' &&
 						info.group === 'CruiseControl.NET';
 				});
-				initResponse();
+				initResponse(projectsXml);
 				service.update();
 				fixedProject = service.builds['NetReflector'];
 
@@ -182,7 +182,7 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Sign
 
 			it('should signal startedBuild if project signaled', function () {
 				spyOnSignal(service.on.startedBuild);
-				initResponse();
+				initResponse(projectsXml);
 				service.update();
 				var startedProject = service.builds['NetReflector'];
 
@@ -193,7 +193,7 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Sign
 
 			it('should signal finishedBuild if project signaled', function () {
 				spyOnSignal(service.on.finishedBuild);
-				initResponse();
+				initResponse(projectsXml);
 				service.update();
 				var finishedProject = service.builds['NetReflector'];
 
@@ -253,6 +253,7 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Sign
 				expect(response.error).toBeDefined();
 				expect(response.projects).not.toBeDefined();
 			});
+
 		});
 		
 		describe('activeProjects', function () {

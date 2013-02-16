@@ -36,11 +36,11 @@ define([
 			var apiJson;
 			var completed;
 
-			var initResponse = function () {
+			var initResponse = function (response) {
 				mockRequest.andCallFake(function () {
 					completed = new Signal();
 					completed.memorize = true;
-					completed.dispatch({ response: apiJson });
+					completed.dispatch({ response: response });
 					return completed;
 				});
 			};
@@ -52,7 +52,7 @@ define([
 
 			it('should return projects', function () {
 				var service = new BuildService(settings);
-				initResponse();
+				initResponse(apiJson);
 
 				var response;
 				service.projects([]).addOnce(function (result) {
@@ -68,9 +68,22 @@ define([
 				expect(response.projects.items[0].selected).toBeDefined();
 			});
 
+			it('should signal error if parsing the reponse fails', function () {
+				var service = new BuildService(settings);
+				initResponse({ unknown: 'response'});
+
+				var response;
+				service.projects([]).addOnce(function (result) {
+					response = result;
+				});
+
+				expect(response.error).toBeDefined();
+				expect(response.error.name).toBe('ParseError');
+			});
+
 			it('should return views', function () {
 				var service = new BuildService(settings);
-				initResponse();
+				initResponse(apiJson);
 
 				var response;
 				service.projects([]).addOnce(function (result) {
