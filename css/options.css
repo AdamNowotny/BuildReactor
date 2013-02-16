@@ -7,6 +7,18 @@ body {
 	padding-top: 50px;
 }
 
+.scrollable {
+	overflow: auto;
+	height: 100%;
+	width: 100%;
+}
+
+.fixed-bottom {
+	position: absolute;
+	bottom: 0;
+	width: 100%
+}
+
 .content-container {
 	bottom: 0;
 	left: 241px;
@@ -75,18 +87,40 @@ body {
 	border-right: 1px solid #BBB;
 	bottom: 0;
 	left: 0;
-	overflow: auto;
-	padding: 10px;
+	padding-bottom: 40px;
 	position: fixed;
 	text-align: center;
 	top: 40px;
-	width: 220px;
+	width: 240px;
 }
 
 	.sidebar-nav .service-list-separator {
 		display: none;
 	}
-	
+
+	.sidebar-nav .scrollable {
+		padding: 10px;
+		box-sizing: border-box;
+	}
+
+	.sidebar-nav .feedback-link {
+		background-color: khaki;
+		border-bottom: -40px;
+		height: 40px;
+		line-height: 40px;
+	}
+
+		.sidebar-nav .feedback-link a {
+			text-decoration: none;
+			color: black;
+		}
+
+		.sidebar-nav .feedback-link a:hover {
+			text-decoration: none;
+			color: #0088cc;
+		}
+
+
 .filter {
 	box-sizing: border-box;
 	height: 30px;
@@ -136,6 +170,10 @@ body {
 		width: auto;
 	}
 
+		.sidebar-nav .feedback-link {
+			position: relative;
+		}
+		
 	.content-container {
 		width: auto;
 		right: auto;
