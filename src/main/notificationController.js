@@ -17,7 +17,7 @@ define([
 				message: interpolate('Build failed - {{0}}', [buildEvent.serviceName]),
 				details: buildEvent.buildName + (buildEvent.group ? ' (' + buildEvent.group + ')' : ''),
 				url: buildEvent.url,
-				sticky: startedAll,
+				sticky: !reloading,
 				icon: buildEvent.icon,
 				serviceName: buildEvent.serviceName,
 				group: buildEvent.group,
@@ -62,8 +62,12 @@ define([
 			});
 		}
 
+		function onReloading() {
+			reloading = true;
+		}
+
 		function onStartedAll() {
-			startedAll = true;
+			reloading = false;
 		}
 
 		function createNotification(notificationInfo) {
@@ -93,9 +97,10 @@ define([
 		}
 
 		var visibleNotifications = [];
-		var startedAll = false;
+		var reloading = false;
 		serviceController.on.brokenBuild.add(onBrokenBuild);
 		serviceController.on.fixedBuild.add(onFixedBuild);
+		serviceController.on.reloading.add(onReloading);
 		serviceController.on.startedAll.add(onStartedAll);
 	}
 	

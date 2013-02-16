@@ -6,7 +6,7 @@ define([
 		'use strict';
 
 		var on = {
-			reset: new signals.Signal(),
+			reloading: new signals.Signal(),
 			added: new signals.Signal(),
 			updating: new signals.Signal(),
 			updated: new signals.Signal(),
@@ -33,6 +33,7 @@ define([
 				});
 			}
 
+			on.reloading.dispatch();
 			var loadedAll = new signals.Signal();
 			loadedAll.memorize = true;
 			removeAllServices();
@@ -99,7 +100,6 @@ define([
 				unsubscribeFrom(s);
 			});
 			services = [];
-			on.reset.dispatch();
 		}
 
 		function subscribeTo(service) {

@@ -78,7 +78,7 @@ define([
 		var servicesStarted = false;
 		var failedBuildsCount = 0;
 		updateBadge(failedBuildsCount);
-		serviceController.on.reset.add(onReset);
+		serviceController.on.reloading.add(onReset);
 		serviceController.on.startedAll.add(onServicesStarted);
 		serviceController.on.brokenBuild.add(onBrokenBuild);
 		serviceController.on.fixedBuild.add(onFixedBuild);

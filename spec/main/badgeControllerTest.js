@@ -19,7 +19,7 @@ define([
 		});
 
 		afterEach(function () {
-			serviceController.on.reset.removeAll();
+			serviceController.on.reloading.removeAll();
 			serviceController.on.startedAll.removeAll();
 			serviceController.on.brokenBuild.removeAll();
 			serviceController.on.fixedBuild.removeAll();
@@ -28,7 +28,7 @@ define([
 		it('should show grey badge when services are reloaded', function () {
 			badgeController();
 
-			serviceController.on.reset.dispatch();
+			serviceController.on.reloading.dispatch();
 
 			expect(chrome.browserAction.setBadgeText).toHaveBeenCalledWith({ text: ' ' });
 			expect(chrome.browserAction.setBadgeBackgroundColor).toHaveBeenCalledWith({ color: colors.grey });
@@ -40,7 +40,7 @@ define([
 			serviceController.on.brokenBuild.dispatch(buildEvent);
 			serviceController.on.brokenBuild.dispatch(buildEvent);
 
-			serviceController.on.reset.dispatch();
+			serviceController.on.reloading.dispatch();
 			serviceController.on.brokenBuild.dispatch(buildEvent);
 
 			expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('1');

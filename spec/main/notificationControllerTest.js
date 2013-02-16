@@ -29,6 +29,7 @@ define([
 		});
 
 		afterEach(function () {
+			serviceController.on.reloading.removeAll();
 			serviceController.on.startedAll.removeAll();
 			serviceController.on.brokenBuild.removeAll();
 			serviceController.on.fixedBuild.removeAll();
@@ -67,6 +68,7 @@ define([
 		});
 
 		it('should not close notifications about failed builds', function () {
+			serviceController.on.reloading.dispatch();
 			serviceController.on.startedAll.dispatch();
 			serviceController.on.brokenBuild.dispatch(mockBuildEvent());
 
@@ -80,6 +82,7 @@ define([
 				this.on.elapsed.dispatch();
 			});
 
+			serviceController.on.reloading.dispatch();
 			serviceController.on.brokenBuild.dispatch(mockBuildEvent());
 
 			expect(Timer.prototype.start).toHaveBeenCalledWith(timeout);

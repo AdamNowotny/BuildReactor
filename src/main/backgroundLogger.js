@@ -8,8 +8,8 @@ define([
 	'use strict';
 
 	function logger() {
-		serviceController.on.reset.add(function () {
-			console.log('serviceController.reset:      ', settingsStore.getAll());
+		serviceController.on.reloading.add(function () {
+			console.log('serviceController.realoding:   ', settingsStore.getAll());
 		});
 		serviceController.on.added.add(function (settings) {
 			console.log('serviceController.added:       ' + settings.name, settings);

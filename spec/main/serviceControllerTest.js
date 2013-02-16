@@ -145,11 +145,11 @@ define([
 			});
 
 			it('should notifiy when services are reloaded', function () {
-				spyOnSignal(controller.on.reset);
+				spyOnSignal(controller.on.reloading);
 
 				controller.load([]);
 
-				expect(controller.on.reset).toHaveBeenDispatched(1);
+				expect(controller.on.reloading).toHaveBeenDispatched(1);
 			});
 
 			it('should not load disabled services', function () {
