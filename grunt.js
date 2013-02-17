@@ -11,10 +11,10 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-jsvalidate');
 	grunt.loadNpmTasks('grunt-jasmine-runner');
 
-	grunt.registerTask('default', 'clean jsvalidate lint jasmine mincss requirejs copy');
-	grunt.registerTask('travis', 'clean jsvalidate lint jasmine');
+	grunt.registerTask('default', 'clean:build jsvalidate lint jasmine mincss requirejs copy clean:buildSrc');
+	grunt.registerTask('travis', 'clean:build jsvalidate lint jasmine');
 	grunt.registerTask('test', 'lint jasmine');
-	grunt.registerTask('dist', 'clean mincss requirejs copy');
+	grunt.registerTask('dist', 'clean:build mincss requirejs copy clean:buildSrc');
 
 	grunt.initConfig({
 		vars: {
@@ -22,7 +22,14 @@ module.exports = function (grunt) {
 			dist: '_build/BuildReactor'
 		},
 		clean: {
-			src: [ '<%= vars.build %>' ]
+			build: [ '<%= vars.build %>' ],
+			buildSrc: [
+				'<%= vars.dist %>/src/mout',
+				'<%= vars.dist %>/src/options',
+				'<%= vars.dist %>/src/popup',
+				'<%= vars.dist %>/src/templates',
+				'<%= vars.dist %>/src/build.txt'
+			]
 		},
 		lint: {
 			files: ['src/**/*.js', 'spec/**/*.js']
