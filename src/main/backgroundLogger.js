@@ -9,35 +9,35 @@ define([
 
 	function logger() {
 		serviceController.on.reloading.add(function () {
-			console.log('serviceController.realoding:   ', settingsStore.getAll());
+			console.log(new Date().toJSON(), 'serviceController.reloading:   ', settingsStore.getAll());
 		});
 		serviceController.on.added.add(function (settings) {
-			console.log('serviceController.added:       ' + settings.name, settings);
+			console.log(new Date().toJSON(), 'serviceController.added:       ' + settings.name, settings);
 		});
 		serviceController.on.updating.add(function (settings) {
-			console.log('serviceController.updating:    ' + settings.name);
+			console.log(new Date().toJSON(), 'serviceController.updating:    ' + settings.name);
 		});
 		serviceController.on.updated.add(function (settings) {
-			console.log('serviceController.updated:     ' + settings.name);
+			console.log(new Date().toJSON(), 'serviceController.updated:     ' + settings.name);
 		});
 		serviceController.on.brokenBuild.add(function (buildEvent) {
-			console.log('serviceController.brokenBuild: ' + buildEvent.serviceName, buildEvent);
+			console.log(new Date().toJSON(), 'serviceController.brokenBuild: ' + buildEvent.serviceName, buildEvent);
 		});
 		serviceController.on.fixedBuild.add(function (buildEvent) {
-			console.log('serviceController.fixedBuild:  ' + buildEvent.serviceName, buildEvent);
+			console.log(new Date().toJSON(), 'serviceController.fixedBuild:  ' + buildEvent.serviceName, buildEvent);
 		});
 		serviceController.on.errorThrown.add(function (build) {
-			console.error('serviceController.errorThrown:  ' + build.id, build);
+			console.error(new Date().toJSON(), 'serviceController.errorThrown:  ' + build.id, build);
 		});
 		serviceController.on.started.add(function (serviceInfo) {
-			console.log('serviceController.started:     ' + serviceInfo.name);
+			console.log(new Date().toJSON(), 'serviceController.started:     ' + serviceInfo.name);
 		});
 		serviceController.on.startedAll.add(function () {
-			console.log('serviceController.startedAll');
+			console.log(new Date().toJSON(), 'serviceController.startedAll');
 		});
 
 		settingsStore.on.storedSettings.add(function (settings) {
-			console.log('settingsStore.storedSettings: ', settings);
+			console.log(new Date().toJSON(), 'settingsStore.storedSettings: ', settings);
 		});
 
 		window.onerror = function (message, url, line) {
