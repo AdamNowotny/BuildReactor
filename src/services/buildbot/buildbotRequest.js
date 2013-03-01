@@ -43,7 +43,7 @@ define([
 				};
 			}
 			var ajaxSettings = {
-				url: joinUrl(settings.url, 'json/builders/' + id + '/builds'),
+				url: joinUrl(settings.url, 'json/builders/' + id),
 				username: settings.username,
 				password: settings.password
 			};

@@ -40,6 +40,10 @@ define([
 		};
 
 		var updateResult = function (build, result) {
+			if (result.error) {
+				that.on.errorThrown.dispatch(that);
+                return;
+            }
 			if (build.isBroken && result.response.text.indexOf('successful') !== -1) {
 				build.isBroken = false;
 				build.on.fixed.dispatch(that);
