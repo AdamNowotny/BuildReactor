@@ -31,7 +31,8 @@ require([
 	'services/cruisecontrol.rb/buildService',
 	'services/go/buildService',
 	'services/jenkins/buildService',
-	'services/teamcity/buildService'
+	'services/teamcity/buildService',
+	'services/buildbot/buildService'
 ], function (
 	backgroundLogger,
 	badgeController,
@@ -47,7 +48,8 @@ require([
 	CruiseControlRBService,
 	GoService,
 	JenkinsService,
-	TeamCityService
+	TeamCityService,
+    BuildBotService
 ) {
 
 	'use strict';
@@ -64,6 +66,7 @@ require([
 	serviceRepository.registerType(JenkinsService);
 	serviceRepository.registerType(TeamCityService);
 	serviceRepository.registerType(CctrayService);
+	serviceRepository.registerType(BuildBotService);
 	var settings = settingsStore.getAll();
 	serviceController.load(settings).addOnce(function () {
 		serviceController.run();
