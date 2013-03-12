@@ -12,15 +12,19 @@ define([
 		$.extend(this, new BuildService(settings));
 		this.Build = BuildBotBuild;
 	};
-	
+
 	BuildBotBuildService.settings = function () {
 		return {
 			typeName: 'BuildBot',
 			baseUrl: 'buildbot',
-			icon: 'buildbot/logo.png',
-			logo: 'buildbot/logo.png',
+			icon: 'buildbot/icon.png',
+			logo: 'buildbot/icon.png',
 			projects: [],
-			urlHint: 'http://trac.buildbot.org/'
+			urlHint: 'http://buildbot.buildbot.net/',
+			url: '',
+			username: '',
+			password: '',
+			updateInterval: 60
 		};
 	};
 
@@ -48,15 +52,14 @@ define([
 	};
 
 	function createTemplateData(apiJson, selectedProjects) {
-
         var items = [];
-        var views = [];
         for (var builderName in apiJson) {
             if (apiJson.hasOwnProperty(builderName)) {
+				var builder = apiJson[builderName];
                 items.push({
                     id: builderName,
                     name: builderName,
-                    group: null,
+                    group: builder.category,
                     enabled: true,
                     selected: selectedProjects.indexOf(builderName) > -1
                 });

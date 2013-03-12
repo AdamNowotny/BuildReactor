@@ -42,6 +42,6 @@
 		"src/services/jenkins/logo.png",
 		"src/services/teamcity/icon.png",
 		"src/services/teamcity/logo.png",
-		"src/services/buildbot/logo.png"
+		"src/services/buildbot/icon.png"
 	]
 }

@@ -9,7 +9,6 @@ define([
 	var BuildBotBuild = function (id, settings) {
 		$.extend(this, new Build(id, settings));
 		this.name = id;
-		this.projectName = null;
 	};
 
 	function activateEvents(build, active) {
@@ -23,7 +22,7 @@ define([
 
 		var builderResponseHandler = function (result) {
             that.webUrl = that.settings.url + "builders/" + that.id;
-            that.isDisabled = false;
+			that.projectName = result.response.category;
 			activateEvents(that, !that.isDisabled);
 			var isBuilding = result.response.state === "building";
 			if (!that.isRunning && isBuilding) {

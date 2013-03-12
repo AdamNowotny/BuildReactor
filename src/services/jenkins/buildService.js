@@ -52,7 +52,6 @@ define([
 	};
 
 	function createTemplateData(apiJson, selectedProjects) {
-		
 		return {
 			items: apiJson.jobs.map(function (job, index) {
 				return {
