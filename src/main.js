@@ -61,6 +61,7 @@ require([
 	messageHandlers();
 	serviceRepository.clear();
 	serviceRepository.registerType(BambooService);
+	serviceRepository.registerType(BuildBotService);
 	serviceRepository.registerType(CctrayService);
 	serviceRepository.registerType(CruiseControlService);
 	serviceRepository.registerType(CruiseControlNetService);
@@ -69,7 +70,6 @@ require([
 	serviceRepository.registerType(JenkinsService);
 	serviceRepository.registerType(TeamCityService);
 	// serviceRepository.registerType(TravisService);
-	serviceRepository.registerType(BuildBotService);
 	var settings = settingsStore.getAll();
 	serviceController.load(settings).addOnce(function () {
 		serviceController.run();
