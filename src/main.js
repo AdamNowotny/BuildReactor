@@ -32,7 +32,8 @@ require([
 	'services/go/buildService',
 	'services/jenkins/buildService',
 	'services/teamcity/buildService',
-	'services/travis/buildService'
+	'services/travis/buildService',
+	'services/buildbot/buildService'
 ], function (
 	backgroundLogger,
 	badgeController,
@@ -49,7 +50,8 @@ require([
 	GoService,
 	JenkinsService,
 	TeamCityService,
-	TravisService
+	TravisService,
+	BuildBotService
 ) {
 
 	'use strict';
@@ -67,6 +69,7 @@ require([
 	serviceRepository.registerType(JenkinsService);
 	serviceRepository.registerType(TeamCityService);
 	// serviceRepository.registerType(TravisService);
+	serviceRepository.registerType(BuildBotService);
 	var settings = settingsStore.getAll();
 	serviceController.load(settings).addOnce(function () {
 		serviceController.run();

@@ -2,7 +2,7 @@
 	"name": "BuildReactor",
 	"version": "0.6.2",
 	"manifest_version": 2,
-	"description": "Developer notifications and dashboard (CruiseControl, Bamboo, Jenkins, TeamCity, GO, Travis)",
+	"description": "Developer notifications and dashboard (CruiseControl, Bamboo, Jenkins, TeamCity, GO, Travis, BuildBot)",
 	"icons": {
 		"16": "img/icon-16.png",
 		"48": "img/icon-48.png",
@@ -41,6 +41,7 @@
 		"src/services/jenkins/icon.png",
 		"src/services/jenkins/logo.png",
 		"src/services/teamcity/icon.png",
-		"src/services/teamcity/logo.png"
+		"src/services/teamcity/logo.png",
+		"src/services/buildbot/logo.png"
 	]
 }
