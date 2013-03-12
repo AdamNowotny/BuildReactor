@@ -26,12 +26,6 @@ define([
 		serviceController.on.fixedBuild.add(function (buildEvent) {
 			console.log(new Date().toJSON(), 'serviceController.fixedBuild:  ' + buildEvent.serviceName, buildEvent);
 		});
-		serviceController.on.startedBuild.add(function (buildEvent) {
-			console.log('serviceController.startedBuild: ' + buildEvent.serviceName, buildEvent);
-		});
-		serviceController.on.finishedBuild.add(function (buildEvent) {
-			console.log('serviceController.finishedBuild:  ' + buildEvent.serviceName, buildEvent);
-		});
 		serviceController.on.errorThrown.add(function (build) {
 			console.error(new Date().toJSON(), 'serviceController.errorThrown:  ' + build.id, build);
 		});

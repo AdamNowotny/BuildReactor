@@ -14,8 +14,6 @@ define([
 			fixedBuild: new signals.Signal(),
 			started: new signals.Signal(),
 			startedAll: new signals.Signal(),
-            startedBuild: new signals.Signal(),
-            finishedBuild: new signals.Signal(),
 			errorThrown: new signals.Signal()
 		};
 
@@ -120,12 +118,6 @@ define([
 			service.on.fixedBuild.add(function (buildEvent) {
 				on.fixedBuild.dispatch(buildEvent);
 			});
-			service.on.startedBuild.add(function (buildEvent) {
-				on.startedBuild.dispatch(buildEvent);
-			});
-			service.on.finishedBuild.add(function (buildEvent) {
-				on.finishedBuild.dispatch(buildEvent);
-			});
 		}
 
 		function unsubscribeFrom(service) {
@@ -134,8 +126,6 @@ define([
 			service.on.brokenBuild.removeAll();
 			service.on.fixedBuild.removeAll();
 			service.on.errorThrown.removeAll();
-			service.on.startedBuild.removeAll();
-			service.on.finishedBuild.removeAll();
 		}
 
 		return {
