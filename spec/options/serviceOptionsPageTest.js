@@ -22,15 +22,13 @@ define([
 
 		var receivedProjects;
 		var errorThrown;
-		
+
 		function setupProjectView() {
 			spyOn(projectView, 'show');
 			spyOn(projectView, 'hide');
 			spyOn(projectView, 'initialize');
-			spyProjectViewGet = spyOn(projectView, 'get').andCallFake(function () {
-				return {
-					projects: settings.projects
-				};
+			spyProjectViewGet = spyOn(projectView, 'get').andReturn({
+				projects: settings.projects
 			});
 		}
 
@@ -113,7 +111,7 @@ define([
 			serviceOptions.show(settings);
 			serviceOptions.hide();
 			spySettingsFormViewShow.reset();
-			
+
 			serviceOptions.show(settings);
 
 			expect(spySettingsFormViewShow).toHaveBeenCalled();
@@ -146,6 +144,7 @@ define([
 		});
 
 		it('should signal updated when settings changed', function () {
+			spyProjectViewGet.andReturn({ projects: ['BUILD1'] });
 			serviceOptions.show(settings);
 			var dispatched = false;
 			serviceOptions.on.updated.addOnce(function (values) {
@@ -157,7 +156,7 @@ define([
 				expect(values.updateInterval).toBe(50);
 				expect(values.username).toBe('user');
 				expect(values.password).toBe('pass');
-				expect(values.projects).toBe(settings.projects);
+				expect(values.projects).toEqual(['BUILD1']);
 			});
 
 			settingsFormView.on.changed.dispatch({

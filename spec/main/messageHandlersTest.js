@@ -75,7 +75,7 @@ define([
 
 				expect(responseSent).toBe(true);
 			});
-			
+
 			it('should send error back', function () {
 				var errorResponse = {
 					error: {}

@@ -12,14 +12,14 @@ define([
 	function (BuildService, BambooPlan, BambooRequest, Timer, PoolingService, $, signals, spyOnSignal, projectsJson) {
 
 		'use strict';
-		
+
 		describe('services/bamboo/BuildService', function () {
 
 			var service;
 			var settings;
 			var mockBambooRequestProjects;
 			var mockTimer;
-			
+
 			beforeEach(function () {
 				settings = {
 					name: 'My Bamboo CI',
@@ -46,6 +46,10 @@ define([
 				expect(settings.icon).toBe('bamboo/icon.png');
 				expect(settings.projects.length).toBe(0);
 				expect(settings.urlHint).toBe('https://ci.openmrs.org/');
+				expect(settings.url).toBeDefined();
+				expect(settings.username).toBeDefined();
+				expect(settings.password).toBeDefined();
+				expect(settings.updateInterval).toBe(60);
 			});
 
 			it('should expose service interface', function () {
@@ -68,7 +72,7 @@ define([
 						expect(this.settings.url).toBe(settings.url);
 						this.on.responseReceived.dispatch(projectsJson);
 					});
-					
+
 					service.projects([]);
 
 					expect(mockBambooRequestProjects).toHaveBeenCalled();

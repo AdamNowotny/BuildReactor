@@ -1,7 +1,7 @@
 define(['signals', 'jquery'], function (signals, $) {
 
 	'use strict';
-	
+
 	var AjaxRequest = function (settings) {
 		if (!(this instanceof AjaxRequest)) {
 			return new AjaxRequest(settings);
@@ -37,7 +37,7 @@ define(['signals', 'jquery'], function (signals, $) {
 			};
 			self.on.errorReceived.dispatch(error);
 		}
-		
+
 		function onSuccess(data, textStatus, jqXhr) {
 			self.retry = false;
 			self.on.responseReceived.dispatch(data);

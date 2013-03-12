@@ -20,7 +20,11 @@ define([
 			icon: 'jenkins/icon.png',
 			logo: 'jenkins/logo.png',
 			projects: [],
-			urlHint: 'http://ci.jenkins-ci.org/'
+			url: '',
+			urlHint: 'http://ci.jenkins-ci.org/',
+			username: '',
+			password: '',
+			updateInterval: 60
 		};
 	};
 

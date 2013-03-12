@@ -115,13 +115,6 @@ define([
 						callback: function () {
 							removeCurrentService();
 						}
-					//}, {
-					//	label: 'Save',
-					//	icon: 'icon-ok icon-white',
-					//	'class': 'btn-success',
-					//	callback: function () {
-					//		serviceList.selectItem(item);
-					//	}
 					}
 				], {
 					header: 'Service not saved yet',

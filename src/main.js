@@ -31,7 +31,8 @@ require([
 	'services/cruisecontrol.rb/buildService',
 	'services/go/buildService',
 	'services/jenkins/buildService',
-	'services/teamcity/buildService'
+	'services/teamcity/buildService',
+	'services/travis/buildService'
 ], function (
 	backgroundLogger,
 	badgeController,
@@ -47,7 +48,8 @@ require([
 	CruiseControlRBService,
 	GoService,
 	JenkinsService,
-	TeamCityService
+	TeamCityService,
+	TravisService
 ) {
 
 	'use strict';
@@ -57,13 +59,14 @@ require([
 	messageHandlers();
 	serviceRepository.clear();
 	serviceRepository.registerType(BambooService);
+	serviceRepository.registerType(CctrayService);
 	serviceRepository.registerType(CruiseControlService);
 	serviceRepository.registerType(CruiseControlNetService);
 	serviceRepository.registerType(CruiseControlRBService);
 	serviceRepository.registerType(GoService);
 	serviceRepository.registerType(JenkinsService);
 	serviceRepository.registerType(TeamCityService);
-	serviceRepository.registerType(CctrayService);
+	// serviceRepository.registerType(TravisService);
 	var settings = settingsStore.getAll();
 	serviceController.load(settings).addOnce(function () {
 		serviceController.run();

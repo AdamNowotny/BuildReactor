@@ -33,7 +33,11 @@ define([
 			expect(defaultSettings.baseUrl).toBe('go');
 			expect(defaultSettings.icon).toBe('go/icon.png');
 			expect(defaultSettings.logo).toBe('go/logo.png');
+			expect(defaultSettings.url).toBeDefined();
 			expect(defaultSettings.urlHint).toBe('http://example-go.thoughtworks.com/');
+			expect(defaultSettings.username).toBeDefined();
+			expect(defaultSettings.password).toBeDefined();
+			expect(defaultSettings.updateInterval).toBe(60);
 		});
 
 		it('should define cctray xml location', function () {

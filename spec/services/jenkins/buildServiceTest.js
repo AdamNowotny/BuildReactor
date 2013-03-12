@@ -27,7 +27,11 @@ define([
 			expect(defaultSettings.baseUrl).toBe('jenkins');
 			expect(defaultSettings.icon).toBe('jenkins/icon.png');
 			expect(defaultSettings.logo).toBe('jenkins/logo.png');
+			expect(defaultSettings.url).toBeDefined();
 			expect(defaultSettings.urlHint).toBe('http://ci.jenkins-ci.org/');
+			expect(defaultSettings.username).toBeDefined();
+			expect(defaultSettings.password).toBeDefined();
+			expect(defaultSettings.updateInterval).toBe(60);
 		});
 
 		describe('projects', function () {

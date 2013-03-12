@@ -1,13 +1,14 @@
 define([
 	'signals',
 	'jquery',
+	'mout/object/fillIn',
 	'options/settingsFormView',
 	'options/projectView',
 	'options/messages'
-], function (signals, $, settingsFormView, projectView, messages) {
+], function (signals, $, fillIn, settingsFormView, projectView, messages) {
 
 	'use strict';
-	
+
 	var on = {
 			updated: new signals.Signal()
 		},
@@ -30,23 +31,20 @@ define([
 		projectView.hide();
 		$('.alert-error').hide();
 		settingsFormView.show(serviceInfo);
-		settingsFormView.on.changed.add(settingsChanged);
+		settingsFormView.on.changed.add(function (currentValues) {
+			var newSettings = fillIn(currentValues, currentServiceInfo);
+			newSettings.projects = projectView.get().projects;
+			on.updated.dispatch(newSettings);
+		});
 		settingsFormView.on.clickedShow.add(showProjects);
 	};
-	
+
 	function showProjects(currentValues) {
 		projectView.hide();
 		$('.alert-error').hide();
-		var settings = {
-			baseUrl: currentServiceInfo.baseUrl,
-			url: currentValues.url,
-			username: currentValues.username,
-			password: currentValues.password,
-			projects: currentServiceInfo.projects
-		};
 		var message = {
 			name: 'availableProjects',
-			serviceSettings: settings
+			serviceSettings: fillIn(currentValues, currentServiceInfo)
 		};
 		messages.send(message, function (response) {
 			if (response.error) {
@@ -67,19 +65,6 @@ define([
 		$('.error-message').text(ajaxError.message);
 		$('.error-url').text(ajaxError.url);
 		$('.alert-error').show();
-	}
-
-	function settingsChanged(currentSettings) {
-		on.updated.dispatch({
-			name: currentServiceInfo.name,
-			baseUrl: currentServiceInfo.baseUrl,
-			url: currentSettings.url,
-			icon: currentServiceInfo.icon,
-			updateInterval: currentSettings.updateInterval,
-			username: currentSettings.username,
-			password: currentSettings.password,
-			projects: projectView.get().projects
-		});
 	}
 
 	var updateWithDefaults = function (serviceInfo) {

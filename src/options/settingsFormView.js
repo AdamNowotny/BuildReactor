@@ -7,7 +7,7 @@ define([
 	'use strict';
 
 	var container;
-	
+
 	function settingsFormView(selector) {
 		container = $(selector);
 		return settingsFormView;
@@ -25,12 +25,10 @@ define([
 		$('.settings-form', container).submit(function () {
 			return false;
 		});
-		$('.url-input', container).keypress(updateShowButtonState).change(updateShowButtonState);
 		$('.show-button', container).click(showClicked);
 		$('.save-button', container).click(saveClicked);
 		container.show();
-		updateShowButtonState();
-		$('.url-input', container).focus();
+		$('input:first', container).focus();
 	};
 
 	settingsFormView.hide = function () {
@@ -56,22 +54,18 @@ define([
 		settingsFormView.on.changed.dispatch(getCurrentValues());
 	}
 
-	function updateShowButtonState() {
-		var url = $('.url-input', container).val();
-		if (url) {
-			$('.show-button', container).removeAttr('disabled');
-		} else {
-			$('.show-button', container).attr('disabled', 'disabled');
-		}
-	}
-
 	function getCurrentValues() {
-		return {
-			url: $('.url-input', container).val(),
-			username: $('.username-input', container).val(),
-			password: $('.password-input', container).val(),
-			updateInterval: parseInt($('.update-interval-input', container).val(), 10)
-		};
+		var values = {};
+		$('.field').each(function (i, d) {
+			var name = $(d).data('name');
+			var input = $('input', d)[0];
+			if (input.type === 'number') {
+				values[name] = parseInt(input.value, 10);
+			} else {
+				values[name] = input.value;
+			}
+		});
+		return values;
 	}
 
 	return settingsFormView;

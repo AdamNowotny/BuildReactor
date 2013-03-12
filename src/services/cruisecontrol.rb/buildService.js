@@ -14,7 +14,11 @@ define(['services/cctray/buildService', 'jquery'], function (CCTrayBuildService,
 				icon: 'cruisecontrol.rb/icon.png',
 				logo: 'cruisecontrol.rb/logo.png',
 				projects: [],
-				urlHint: 'http://cruisecontrolrb.thoughtworks.com/'
+				url: '',
+				urlHint: 'http://cruisecontrolrb.thoughtworks.com/',
+				username: '',
+				password: '',
+				updateInterval: 60
 			};
 		};
 

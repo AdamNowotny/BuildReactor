@@ -69,7 +69,11 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Sign
 			expect(settings.baseUrl).toBe('cctray');
 			expect(settings.icon).toBe('cctray/icon.png');
 			expect(settings.projects.length).toBe(0);
+			expect(settings.url).toBeDefined();
 			expect(settings.urlHint).toBe('http://cruisecontrol.instance.com/cctray.xml');
+			expect(settings.username).toBeDefined();
+			expect(settings.password).toBeDefined();
+			expect(settings.updateInterval).toBe(60);
 		});
 
 		it('should expose service interface', function () {

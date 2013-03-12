@@ -31,7 +31,11 @@ define([
 			expect(defaultSettings.baseUrl).toBe('teamcity');
 			expect(defaultSettings.icon).toBe('teamcity/icon.png');
 			expect(defaultSettings.logo).toBe('teamcity/logo.png');
+			expect(defaultSettings.url).toBeDefined();
 			expect(defaultSettings.urlHint).toBe('http://teamcity.jetbrains.com/');
+			expect(defaultSettings.username).toBeDefined();
+			expect(defaultSettings.password).toBeDefined();
+			expect(defaultSettings.updateInterval).toBe(60);
 		});
 
 		function createResult(result) {
@@ -114,7 +118,6 @@ define([
 					expect(projects[0].group).toBe('Amazon API client');
 					expect(projects[0].enabled).toBe(true);
 					expect(projects[0].selected).toBe(true);
-					expect(projects[0].webUrl).toBe('http://teamcity.jetbrains.com/viewType.html?buildTypeId=bt297');
 				});
 
 				expect(projects).toBeDefined();

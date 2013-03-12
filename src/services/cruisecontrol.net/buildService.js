@@ -14,7 +14,11 @@ define(['services/cctray/buildService', 'jquery'], function (CCTrayBuildService,
 				icon: 'cruisecontrol.net/icon.png',
 				logo: 'cruisecontrol.net/logo.png',
 				projects: [],
-				urlHint: 'http://build.nauck-it.de/'
+				url: '',
+				urlHint: 'http://build.nauck-it.de/',
+				username: '',
+				password: '',
+				updateInterval: 60
 			};
 		};
 

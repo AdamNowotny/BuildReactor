@@ -22,7 +22,11 @@ define([
 			icon: 'bamboo/icon.png',
 			logo: 'bamboo/logo.png',
 			projects: [],
-			urlHint: 'https://ci.openmrs.org/'
+			url: '',
+			urlHint: 'https://ci.openmrs.org/',
+			username: '',
+			password: '',
+			updateInterval: 60
 		};
 	};
 

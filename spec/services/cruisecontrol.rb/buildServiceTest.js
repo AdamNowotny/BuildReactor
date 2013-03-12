@@ -33,7 +33,11 @@ define([
 			expect(defaultSettings.baseUrl).toBe('cruisecontrol.rb');
 			expect(defaultSettings.icon).toBe('cruisecontrol.rb/icon.png');
 			expect(defaultSettings.logo).toBe('cruisecontrol.rb/logo.png');
+			expect(defaultSettings.url).toBeDefined();
 			expect(defaultSettings.urlHint).toBe('http://cruisecontrolrb.thoughtworks.com/');
+			expect(defaultSettings.username).toBeDefined();
+			expect(defaultSettings.password).toBeDefined();
+			expect(defaultSettings.updateInterval).toBe(60);
 		});
 
 		it('should define cctray xml location', function () {

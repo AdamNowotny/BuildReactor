@@ -24,7 +24,11 @@ define([
 			icon: 'cctray/icon.png',
 			logo: 'cctray/logo.png',
 			projects: [],
-			urlHint: 'http://cruisecontrol.instance.com/cctray.xml'
+			url: '',
+			urlHint: 'http://cruisecontrol.instance.com/cctray.xml',
+			username: '',
+			password: '',
+			updateInterval: 60
 		};
 	};
 
