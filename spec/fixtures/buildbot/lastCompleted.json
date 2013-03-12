@@ -1,0 +1,515 @@
+{
+   "blame":[
+      "Dustin J. Mitchell <dustin@mozilla.com>",
+      "Elmir Jagudin <elmir@axis.com>"
+   ],
+   "builderName":"os-win7-cygwin",
+   "currentStep":null,
+   "eta":null,
+   "logs":[
+      [
+         "stdio",
+         "http://buildbot.buildbot.net/builders/os-win7-cygwin/builds/427/steps/git/logs/stdio"
+      ],
+      [
+         "stdio",
+         "http://buildbot.buildbot.net/builders/os-win7-cygwin/builds/427/steps/test%20slave/logs/stdio"
+      ],
+      [
+         "test.log",
+         "http://buildbot.buildbot.net/builders/os-win7-cygwin/builds/427/steps/test%20slave/logs/test.log"
+      ],
+      [
+         "problems",
+         "http://buildbot.buildbot.net/builders/os-win7-cygwin/builds/427/steps/test%20slave/logs/problems"
+      ],
+      [
+         "stdio",
+         "http://buildbot.buildbot.net/builders/os-win7-cygwin/builds/427/steps/test%20master/logs/stdio"
+      ],
+      [
+         "test.log",
+         "http://buildbot.buildbot.net/builders/os-win7-cygwin/builds/427/steps/test%20master/logs/test.log"
+      ],
+      [
+         "problems",
+         "http://buildbot.buildbot.net/builders/os-win7-cygwin/builds/427/steps/test%20master/logs/problems"
+      ]
+   ],
+   "number":427,
+   "properties":[
+      [
+         "branch",
+         "master",
+         "Build"
+      ],
+      [
+         "buildername",
+         "os-win7-cygwin",
+         "Builder"
+      ],
+      [
+         "buildnumber",
+         427,
+         "Build"
+      ],
+      [
+         "codebase",
+         "",
+         "Build"
+      ],
+      [
+         "got_revision",
+         "ede1de82c209e4b924f0a1d594371016a3879876",
+         "Git"
+      ],
+      [
+         "project",
+         "",
+         "Build"
+      ],
+      [
+         "repository",
+         "https://github.com/buildbot/buildbot",
+         "Build"
+      ],
+      [
+         "revision",
+         "ede1de82c209e4b924f0a1d594371016a3879876",
+         "Build"
+      ],
+      [
+         "scheduler",
+         "all",
+         "Scheduler"
+      ],
+      [
+         "slavename",
+         "win7-cygwin",
+         "BuildSlave"
+      ],
+      [
+         "workdir",
+         "/home/main/buildbot/slave/os-win7-cygwin",
+         "slave"
+      ]
+   ],
+   "reason":"scheduler",
+   "results":2,
+   "slave":"win7-cygwin",
+   "sourceStamps":[
+      {
+         "branch":"master",
+         "changes":[
+            {
+               "at":"Tue 05 Mar 2013 23:06:54",
+               "branch":"master",
+               "category":null,
+               "codebase":"",
+               "comments":"unit test config.ConfigErrors.__str__() method\n\nAdded unit test on config.ConfigErrors.__str__() method",
+               "files":[
+                  {
+                     "name":"master/buildbot/test/unit/test_config.py"
+                  }
+               ],
+               "number":6940,
+               "project":"",
+               "properties":[
+
+               ],
+               "repository":"https://github.com/buildbot/buildbot",
+               "rev":"c4a40d30240bdc9f1237ac9ba0083d69dc9ffdf1",
+               "revision":"c4a40d30240bdc9f1237ac9ba0083d69dc9ffdf1",
+               "revlink":"https://github.com/buildbot/buildbot/commit/c4a40d30240bdc9f1237ac9ba0083d69dc9ffdf1",
+               "when":1362521214,
+               "who":"Elmir Jagudin <elmir@axis.com>"
+            },
+            {
+               "at":"Tue 05 Mar 2013 23:06:54",
+               "branch":"master",
+               "category":null,
+               "codebase":"",
+               "comments":"unit test configure file open error in MasterConfig.loadConfig()\n\nAdded a unit test that simulates IOError when opening configure file in\nconfig.MasterConfig.loadConfig(). Check that the expected ConfigErrors\nexception is rised.",
+               "files":[
+                  {
+                     "name":"master/buildbot/test/unit/test_config.py"
+                  }
+               ],
+               "number":6941,
+               "project":"",
+               "properties":[
+
+               ],
+               "repository":"https://github.com/buildbot/buildbot",
+               "rev":"1beffde8ee4f703023529adbcba692fc08743818",
+               "revision":"1beffde8ee4f703023529adbcba692fc08743818",
+               "revlink":"https://github.com/buildbot/buildbot/commit/1beffde8ee4f703023529adbcba692fc08743818",
+               "when":1362521214,
+               "who":"Elmir Jagudin <elmir@axis.com>"
+            },
+            {
+               "at":"Tue 05 Mar 2013 23:06:54",
+               "branch":"master",
+               "category":null,
+               "codebase":"",
+               "comments":"removed unreachable code in config.MasterConfig.loadConfig()\n\nThe call to error() with global _errors set to None, will raise\nan exception. Thus following 'raise errors' is never reached.",
+               "files":[
+                  {
+                     "name":"master/buildbot/config.py"
+                  }
+               ],
+               "number":6942,
+               "project":"",
+               "properties":[
+
+               ],
+               "repository":"https://github.com/buildbot/buildbot",
+               "rev":"7cc54916bdfb792e83bb4884ed1271bdc7d9eea7",
+               "revision":"7cc54916bdfb792e83bb4884ed1271bdc7d9eea7",
+               "revlink":"https://github.com/buildbot/buildbot/commit/7cc54916bdfb792e83bb4884ed1271bdc7d9eea7",
+               "when":1362521214,
+               "who":"Elmir Jagudin <elmir@axis.com>"
+            },
+            {
+               "at":"Tue 05 Mar 2013 23:06:54",
+               "branch":"master",
+               "category":null,
+               "codebase":"",
+               "comments":"unit test on loading 'codebaseGenerator' master parameter\n\nAdded unit tests on code in buildbot.config.MasterConfig.load_global()\nthat loads 'codebaseGenerator' master configuration parameter. Test\nboth loading correct parameter and invalid.",
+               "files":[
+                  {
+                     "name":"master/buildbot/test/unit/test_config.py"
+                  }
+               ],
+               "number":6943,
+               "project":"",
+               "properties":[
+
+               ],
+               "repository":"https://github.com/buildbot/buildbot",
+               "rev":"31b3c1e39fa377e607a5f38ebeeb21bfc50811cc",
+               "revision":"31b3c1e39fa377e607a5f38ebeeb21bfc50811cc",
+               "revlink":"https://github.com/buildbot/buildbot/commit/31b3c1e39fa377e607a5f38ebeeb21bfc50811cc",
+               "when":1362521214,
+               "who":"Elmir Jagudin <elmir@axis.com>"
+            },
+            {
+               "at":"Tue 05 Mar 2013 23:06:54",
+               "branch":"master",
+               "category":null,
+               "codebase":"",
+               "comments":"unit test error paths in MasterConfig.load_status()\n\nTest that invalid 'status' option in master config file is\nhandled properly.",
+               "files":[
+                  {
+                     "name":"master/buildbot/test/unit/test_config.py"
+                  }
+               ],
+               "number":6944,
+               "project":"",
+               "properties":[
+
+               ],
+               "repository":"https://github.com/buildbot/buildbot",
+               "rev":"ba0529e179af616f6927189fba579b2476188280",
+               "revision":"ba0529e179af616f6927189fba579b2476188280",
+               "revlink":"https://github.com/buildbot/buildbot/commit/ba0529e179af616f6927189fba579b2476188280",
+               "when":1362521214,
+               "who":"Elmir Jagudin <elmir@axis.com>"
+            },
+            {
+               "at":"Tue 05 Mar 2013 23:06:54",
+               "branch":"master",
+               "category":null,
+               "codebase":"",
+               "comments":"unit test error paths in BuilderConfig.__init__()\n\nTest that invalid nextSlave, nextBuild, canStartBuild and\nenv arguments to BuilderConfig constructor are handled properly.",
+               "files":[
+                  {
+                     "name":"master/buildbot/test/unit/test_config.py"
+                  }
+               ],
+               "number":6945,
+               "project":"",
+               "properties":[
+
+               ],
+               "repository":"https://github.com/buildbot/buildbot",
+               "rev":"628eaee6c5cfc4ab83972e7fd59fb22c8acb586f",
+               "revision":"628eaee6c5cfc4ab83972e7fd59fb22c8acb586f",
+               "revlink":"https://github.com/buildbot/buildbot/commit/628eaee6c5cfc4ab83972e7fd59fb22c8acb586f",
+               "when":1362521214,
+               "who":"Elmir Jagudin <elmir@axis.com>"
+            },
+            {
+               "at":"Tue 05 Mar 2013 23:06:54",
+               "branch":"master",
+               "category":null,
+               "codebase":"",
+               "comments":"updated buildbot.config.MasterConfig.check_locks() unit tests\n\nUpdated unit tests of buildbot.config.MasterConfig.check_locks()\nmethod to use lock objects wrapped inside LockAccess objects.\nNowadays this is the recommended style of specifying locks in the\ndocumentation.\n\nAdd one new unit test to check that using 'bare' lock objects still\nworks.",
+               "files":[
+                  {
+                     "name":"master/buildbot/test/unit/test_config.py"
+                  }
+               ],
+               "number":6946,
+               "project":"",
+               "properties":[
+
+               ],
+               "repository":"https://github.com/buildbot/buildbot",
+               "rev":"d54df6145022389562ac85054fe2590f61c9f4ab",
+               "revision":"d54df6145022389562ac85054fe2590f61c9f4ab",
+               "revlink":"https://github.com/buildbot/buildbot/commit/d54df6145022389562ac85054fe2590f61c9f4ab",
+               "when":1362521214,
+               "who":"Elmir Jagudin <elmir@axis.com>"
+            },
+            {
+               "at":"Sat 09 Mar 2013 01:25:48",
+               "branch":"master",
+               "category":null,
+               "codebase":"",
+               "comments":"use self.patch() to override open() in unit test\n\nUsing TestCase.patch() method to override buildin open() in a unit test is\nmuch cleaner.",
+               "files":[
+                  {
+                     "name":"master/buildbot/test/unit/test_config.py"
+                  }
+               ],
+               "number":6947,
+               "project":"",
+               "properties":[
+
+               ],
+               "repository":"https://github.com/buildbot/buildbot",
+               "rev":"130bbad600dfcd65d9599bb8ab325b3a5381abaf",
+               "revision":"130bbad600dfcd65d9599bb8ab325b3a5381abaf",
+               "revlink":"https://github.com/buildbot/buildbot/commit/130bbad600dfcd65d9599bb8ab325b3a5381abaf",
+               "when":1362788748,
+               "who":"Elmir Jagudin <elmir@axis.com>"
+            },
+            {
+               "at":"Mon 11 Mar 2013 13:52:34",
+               "branch":"master",
+               "category":null,
+               "codebase":"",
+               "comments":"Merge branch 'config-unit-tests' of git://github.com/elmirjagudin/buildbot",
+               "files":[
+                  {
+                     "name":"master/buildbot/config.py"
+                  },
+                  {
+                     "name":"master/buildbot/test/unit/test_config.py"
+                  }
+               ],
+               "number":6948,
+               "project":"",
+               "properties":[
+
+               ],
+               "repository":"https://github.com/buildbot/buildbot",
+               "rev":"acfa823027400c8e5732242f6fc2d4d4778ce86b",
+               "revision":"acfa823027400c8e5732242f6fc2d4d4778ce86b",
+               "revlink":"https://github.com/buildbot/buildbot/commit/acfa823027400c8e5732242f6fc2d4d4778ce86b",
+               "when":1363006354,
+               "who":"Dustin J. Mitchell <dustin@mozilla.com>"
+            },
+            {
+               "at":"Mon 11 Mar 2013 14:15:37",
+               "branch":"master",
+               "category":null,
+               "codebase":"",
+               "comments":"fix typo",
+               "files":[
+                  {
+                     "name":"master/contrib/post_build_request.py"
+                  }
+               ],
+               "number":6949,
+               "project":"",
+               "properties":[
+
+               ],
+               "repository":"https://github.com/buildbot/buildbot",
+               "rev":"ede1de82c209e4b924f0a1d594371016a3879876",
+               "revision":"ede1de82c209e4b924f0a1d594371016a3879876",
+               "revlink":"https://github.com/buildbot/buildbot/commit/ede1de82c209e4b924f0a1d594371016a3879876",
+               "when":1363007737,
+               "who":"Dustin J. Mitchell <dustin@mozilla.com>"
+            }
+         ],
+         "codebase":"",
+         "hasPatch":false,
+         "project":"",
+         "repository":"https://github.com/buildbot/buildbot",
+         "revision":"ede1de82c209e4b924f0a1d594371016a3879876"
+      }
+   ],
+   "steps":[
+      {
+         "eta":null,
+         "expectations":[
+            [
+               "output",
+               38651,
+               null
+            ]
+         ],
+         "hidden":false,
+         "isFinished":true,
+         "isStarted":true,
+         "logs":[
+            [
+               "stdio",
+               "http://buildbot.buildbot.net/builders/os-win7-cygwin/builds/427/steps/git/logs/stdio"
+            ]
+         ],
+         "name":"git",
+         "results":[
+            0,
+            [
+
+            ]
+         ],
+         "statistics":{
+
+         },
+         "step_number":0,
+         "text":[
+            "update"
+         ],
+         "times":[
+            1363007783.5361071,
+            1363007810.7281849
+         ],
+         "urls":{
+
+         }
+      },
+      {
+         "eta":null,
+         "expectations":[
+            [
+               "output",
+               16474,
+               null
+            ],
+            [
+               "test.log",
+               134895,
+               null
+            ],
+            [
+               "tests",
+               164,
+               null
+            ]
+         ],
+         "hidden":false,
+         "isFinished":true,
+         "isStarted":true,
+         "logs":[
+            [
+               "stdio",
+               "http://buildbot.buildbot.net/builders/os-win7-cygwin/builds/427/steps/test%20slave/logs/stdio"
+            ],
+            [
+               "test.log",
+               "http://buildbot.buildbot.net/builders/os-win7-cygwin/builds/427/steps/test%20slave/logs/test.log"
+            ],
+            [
+               "problems",
+               "http://buildbot.buildbot.net/builders/os-win7-cygwin/builds/427/steps/test%20slave/logs/problems"
+            ]
+         ],
+         "name":"test slave",
+         "results":[
+            0,
+            [
+
+            ]
+         ],
+         "statistics":{
+
+         },
+         "step_number":1,
+         "text":[
+            "164 tests",
+            "passed",
+            "3 skips"
+         ],
+         "times":[
+            1363007810.7481201,
+            1363007829.1928079
+         ],
+         "urls":{
+
+         }
+      },
+      {
+         "eta":null,
+         "expectations":[
+            [
+               "output",
+               234271,
+               null
+            ],
+            [
+               "test.log",
+               1303309,
+               null
+            ],
+            [
+               "tests",
+               2363,
+               null
+            ]
+         ],
+         "hidden":false,
+         "isFinished":true,
+         "isStarted":true,
+         "logs":[
+            [
+               "stdio",
+               "http://buildbot.buildbot.net/builders/os-win7-cygwin/builds/427/steps/test%20master/logs/stdio"
+            ],
+            [
+               "test.log",
+               "http://buildbot.buildbot.net/builders/os-win7-cygwin/builds/427/steps/test%20master/logs/test.log"
+            ],
+            [
+               "problems",
+               "http://buildbot.buildbot.net/builders/os-win7-cygwin/builds/427/steps/test%20master/logs/problems"
+            ]
+         ],
+         "name":"test master",
+         "results":[
+            2,
+            [
+               "26 tests"
+            ]
+         ],
+         "statistics":{
+
+         },
+         "step_number":2,
+         "text":[
+            "tests",
+            "26 errors",
+            "3 skips"
+         ],
+         "times":[
+            1363007829.350009,
+            1363009675.2854309
+         ],
+         "urls":{
+
+         }
+      }
+   ],
+   "text":[
+      "failed",
+      "26 tests"
+   ],
+   "times":[
+      1363007783.534584,
+      1363009675.3896451
+   ]
+}
