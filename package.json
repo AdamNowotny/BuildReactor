@@ -1,6 +1,6 @@
 {
   "name": "BuildReactor",
-  "description": "Developer notifications and dashboard (CruiseControl, Bamboo, Jenkins, TeamCity, GO, Travis)",
+  "description": "Developer notifications and dashboard (CruiseControl, Bamboo, Jenkins, TeamCity, GO, Travis, BuildBot)",
   "version": "0.6.2",
   "homepage": "https://github.com/AdamNowotny/BuildReactor",
   "author": {
