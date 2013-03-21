@@ -18,7 +18,7 @@ define([
 			typeName: 'BuildBot',
 			baseUrl: 'buildbot',
 			icon: 'buildbot/icon.png',
-			logo: 'buildbot/icon.png',
+			logo: 'buildbot/logo.png',
 			projects: [],
 			urlHint: 'http://buildbot.buildbot.net/',
 			url: '',
