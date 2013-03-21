@@ -18,15 +18,16 @@ What does it do ?
 Supported services
 ==================
 
-Below are the supported CI servers and example urls for public instances if available.
+Below are the supported CI servers.
 
- * Atlassian Bamboo - https://ci.openmrs.org/
- * CruiseControl
- * CruiseControl.NET - http://build.nauck-it.de/
+ * Atlassian Bamboo - http://www.atlassian.com/software/bamboo/
+ * BuildBot - http://buildbot.net/
+ * CruiseControl - http://cruisecontrol.sourceforge.net/
+ * CruiseControl.NET - http://www.cruisecontrolnet.org/
  * CruiseControl.rb - http://cruisecontrolrb.thoughtworks.com/
- * Jenkins (Hudson) - http://ci.jenkins-ci.org/
- * ThoughtWorks GO
- * TeamCity 7+ - http://teamcity.jetbrains.com/
+ * Jenkins (Hudson) - http://jenkins-ci.org/
+ * ThoughtWorks GO - http://www.thoughtworks-studios.com/go-continuous-delivery
+ * TeamCity - http://www.jetbrains.com/teamcity/
  * Generic cctray XML (Travis-CI)
 
 CCtray
