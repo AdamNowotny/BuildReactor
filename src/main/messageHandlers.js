@@ -28,6 +28,9 @@ define([
 		case 'availableProjects':
 			serviceRepository.create(request.serviceSettings).addOnce(function (service) {
 				service.projects(request.serviceSettings.projects).addOnce(function (response) {
+					if (response.projects) {
+						response.projects.selected = request.serviceSettings.projects;
+					}
 					sendResponse(response);
 				});
 			});

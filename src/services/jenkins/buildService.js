@@ -28,7 +28,7 @@ define([
 		};
 	};
 
-	JenkinsBuildService.prototype.projects = function (selectedPlans) {
+	JenkinsBuildService.prototype.projects = function () {
 		var completed = new Signal();
 		completed.memorize = true;
 		var requestSettings = {
@@ -41,7 +41,7 @@ define([
 				completed.dispatch({ error: result.error });
 			} else {
 				try {
-					var templateData = createTemplateData(result.response, selectedPlans);
+					var templateData = createTemplateData(result.response);
 					completed.dispatch({ projects: templateData });
 				} catch (ex) {
 					completed.dispatch({ error: { name: 'ParseError', message: 'Unrecognized response'}});
@@ -51,15 +51,14 @@ define([
 		return completed;
 	};
 
-	function createTemplateData(apiJson, selectedProjects) {
+	function createTemplateData(apiJson) {
 		return {
 			items: apiJson.jobs.map(function (job, index) {
 				return {
 					id: job.name,
 					name: job.displayName,
 					group: null,
-					enabled: job.buildable,
-					selected: selectedProjects.indexOf(job.name) > -1
+					enabled: job.buildable
 				};
 			}),
 			primaryView: apiJson.primaryView.name,

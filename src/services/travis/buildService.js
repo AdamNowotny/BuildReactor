@@ -24,7 +24,7 @@ define([
 		};
 	};
 
-	TravisBuildService.prototype.projects = function (selectedBuilds) {
+	TravisBuildService.prototype.projects = function () {
 		var completed = new Signal();
 		completed.memorize = true;
 		this.availableBuilds().subscribe(function (projects) {

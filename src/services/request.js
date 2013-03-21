@@ -1,25 +1,28 @@
 define([
 	'rx',
 	'jquery',
+	'mout/queryString/encode',
 	'rx.jquery'
-], function (Rx, $) {
+], function (Rx, $, encode) {
 
 	'use strict';
 
 	function createAjaxError(error, ajaxOptions) {
+		var response = {};
 		var message;
-		if (error.ajaxStatus === 'parsererror') {
-			message = 'Unrecognized response';
+		if (error.textStatus === 'parsererror') {
+			response.name = 'ParseError';
+			response.message = (error.errorThrown && error.errorThrown.message) ?
+				error.errorThrown.message :
+				'Unrecognized response';
 		} else {
-			message = (error.ajaxError) ? error.ajaxError : 'Ajax connection error';
+			response.name = 'AjaxError';
+			response.message = (error.errorThrown) ? error.errorThrown : 'Ajax connection error';
 		}
-		return {
-			name: 'AjaxError',
-			httpStatus: (error.jqXhr) ? error.jqXhr.status : null,
-			ajaxStatus: error.ajaxStatus,
-			message: message,
-			ajaxOptions: ajaxOptions
-		};
+		response.httpStatus = (error.jqXHR && error.jqXHR.status > 0) ? error.jqXHR.status : null;
+		response.url = ajaxOptions.url + encode(ajaxOptions.data);
+		response.ajaxOptions = ajaxOptions;
+		return response;
 	}
 
 	function json(ajaxOptions) {

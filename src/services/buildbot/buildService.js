@@ -28,7 +28,7 @@ define([
 		};
 	};
 
-	BuildBotBuildService.prototype.projects = function (selectedPlans) {
+	BuildBotBuildService.prototype.projects = function () {
 		var completed = new Signal();
 		completed.memorize = true;
 		var requestSettings = {
@@ -41,7 +41,7 @@ define([
 				completed.dispatch({ error: result.error });
 			} else {
 				try {
-					var templateData = createTemplateData(result.response, selectedPlans);
+					var templateData = createTemplateData(result.response);
 					completed.dispatch({ projects: templateData });
 				} catch (ex) {
 					completed.dispatch({ error: { name: 'ParseError', message: 'Unrecognized response ' + result.response}});
@@ -51,7 +51,7 @@ define([
 		return completed;
 	};
 
-	function createTemplateData(apiJson, selectedProjects) {
+	function createTemplateData(apiJson) {
         var items = [];
         for (var builderName in apiJson) {
             if (apiJson.hasOwnProperty(builderName)) {
@@ -60,8 +60,7 @@ define([
                     id: builderName,
                     name: builderName,
                     group: builder.category,
-                    enabled: true,
-                    selected: selectedProjects.indexOf(builderName) > -1
+                    enabled: true
                 });
             }
         }

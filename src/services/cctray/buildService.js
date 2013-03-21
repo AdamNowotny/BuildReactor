@@ -80,7 +80,7 @@ define([
 		return completed;
 	};
 
-	var projects = function (selectedPlans) {
+	var projects = function () {
 		var completed = new Signal();
 		completed.memorize = true;
 		var requestSettings = {
@@ -90,7 +90,7 @@ define([
 		};
 		var plansRequest = ccRequest.projects(requestSettings);
 		plansRequest.responseReceived.addOnce(function (response) {
-			var templateData = createTemplateData(response, selectedPlans);
+			var templateData = createTemplateData(response);
 			completed.dispatch({ projects: templateData });
 		});
 		plansRequest.errorReceived.addOnce(function (ajaxError) {
@@ -99,8 +99,8 @@ define([
 		return completed;
 	};
 
-	function createTemplateData(projectsXml, selectedProjects) {
-		
+	function createTemplateData(projectsXml) {
+
 		function createItem(i, d) {
 			var item = $(d),
 				projectName = item.attr('name');
@@ -108,8 +108,7 @@ define([
 				id: projectName,
 				name: projectName,
 				group: item.attr('category'),
-				enabled: true,
-				selected: selectedProjects.indexOf(projectName) > -1
+				enabled: true
 			};
 		}
 

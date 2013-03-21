@@ -28,7 +28,7 @@ define([
 			};
 		};
 
-		TeamcityBuildService.prototype.projects = function (selectedPlans) {
+		TeamcityBuildService.prototype.projects = function () {
 			var completed = new Signal();
 			completed.memorize = true;
 			request.buildTypes(this.settings).addOnce(function (result) {
@@ -36,7 +36,7 @@ define([
 					completed.dispatch({ error: result.error });
 				} else {
 					try {
-						var templateData = createTemplateData(result.response, selectedPlans);
+						var templateData = createTemplateData(result.response);
 						completed.dispatch({ projects: templateData });
 					} catch (ex) {
 						completed.dispatch({ error: { name: 'ParseError', message: 'Unrecognized response'}});
@@ -46,7 +46,7 @@ define([
 			return completed;
 		};
 
-		function createTemplateData(buildTypesJson, selectedProjects) {
+		function createTemplateData(buildTypesJson) {
 			if (!buildTypesJson.buildType) {
 				return { items: [] };
 			} else {
@@ -56,8 +56,7 @@ define([
 							id: d.id,
 							name: d.name,
 							group: d.projectName,
-							enabled: true,
-							selected: selectedProjects.indexOf(d.id) > -1
+							enabled: true
 						};
 					})
 				};

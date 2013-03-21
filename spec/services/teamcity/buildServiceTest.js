@@ -117,7 +117,6 @@ define([
 					expect(projects[0].name).toBe('Build');
 					expect(projects[0].group).toBe('Amazon API client');
 					expect(projects[0].enabled).toBe(true);
-					expect(projects[0].selected).toBe(true);
 				});
 
 				expect(projects).toBeDefined();

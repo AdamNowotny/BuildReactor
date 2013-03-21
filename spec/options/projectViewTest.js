@@ -5,7 +5,7 @@ define([
 	function (projectView, $) {
 
 		'use strict';
-		
+
 		describe('common/projectView', function () {
 
 			var json;
@@ -32,38 +32,34 @@ define([
 							id: 0,
 							name: 'CruiseControl.NET',
 							group: 'cc',
-							enabled: true,
-							selected: true
+							enabled: true
 						},
 						{
 							id: 1,
 							name: 'ccTray',
 							group: 'cc',
-							enabled: true,
-							selected: false
+							enabled: true
 						},
 						{
 							id: 2,
 							name: 'old ccTray',
 							group: 'cc',
-							enabled: false,
-							selected: false
+							enabled: false
 						},
 						{
 							id: 3,
 							name: 'Project2-1',
 							group: 'group2',
-							enabled: true,
-							selected: false
+							enabled: true
 						},
 						{
 							id: 4,
 							name: 'Project3-1',
 							group: 'group3',
-							enabled: true,
-							selected: true
+							enabled: true
 						}
-					]
+					],
+					selected: [	0, 4 ]
 				};
 				jasmine.getFixtures().set('<div class="container" style="display: none">content</div>');
 				projectView.initialize('container');
@@ -85,18 +81,18 @@ define([
 
 			it('should show view', function () {
 				projectView.hide();
-				
+
 				projectView.show(json);
 
 				expect($('.container')).toBeVisible();
 			});
-			
+
 			it('should show groups', function () {
 				projectView.show(json);
 
 				expect($('.accordion-group').length).toBe(3);
 			});
-			
+
 			it('should sort groups', function () {
 				var unsortedJson = {
 					items: [
@@ -104,19 +100,18 @@ define([
 							id: 0,
 							name: 'CruiseControl.NET',
 							group: 'group 2',
-							enabled: true,
-							selected: true
+							enabled: true
 						},
 						{
 							id: 1,
 							name: 'ccTray',
 							group: 'group 1',
-							enabled: true,
-							selected: false
+							enabled: true
 						}
-					]
+					],
+					selected: [ 0 ]
 				};
-				
+
 				projectView.show(unsortedJson);
 
 				expect($('.accordion-group a').eq(0)).toHaveText('group 1');
@@ -130,19 +125,18 @@ define([
 							id: 0,
 							name: 'project 2',
 							group: 'some group',
-							enabled: true,
-							selected: true
+							enabled: true
 						},
 						{
 							id: 1,
 							name: 'project 1',
 							group: 'some group',
-							enabled: true,
-							selected: false
+							enabled: true
 						}
-					]
+					],
+					selected: [ 0 ]
 				};
-				
+
 				projectView.show(unsortedJson);
 
 				expect($('label span').eq(0)).toHaveText('project 1');
@@ -252,7 +246,7 @@ define([
 
 				it('should switch to selected view', function () {
 					projectView.show(json);
-					
+
 					$('.view-selection select').val('Unstable').change();
 
 					expect($('.view-selection select').val()).toBe('Unstable');
@@ -262,7 +256,7 @@ define([
 				it('should clear filter when view changed', function () {
 					projectView.show(json);
 					$('.filter input').val('cc');
-					
+
 					$('.view-selection select').val('Unstable').change();
 
 					expect($('.filter input')).toHaveValue('');
@@ -270,7 +264,7 @@ define([
 
 				it('should focus on filter when view changed', function () {
 					projectView.show(json);
-					
+
 					$('.view-selection select').focus().val('Unstable').change();
 
 					expect($(document.activeElement)).toHaveClass('search-query');
@@ -298,7 +292,7 @@ define([
 
 				it('should hide groups not in view', function () {
 					json.primaryView = 'Unstable';
-					
+
 					projectView.show(json);
 
 					expect($('.group:visible').length).toBe(2);
@@ -320,7 +314,7 @@ define([
 
 				it('should show projects matching filter', function () {
 					projectView.show(json);
-					
+
 					$('.filter input').val('cc').keyup();
 
 					expect($('.project-item[data-id=1]')).toBeVisible();
@@ -329,7 +323,7 @@ define([
 
 				it('should hide projects not matching filter', function () {
 					projectView.show(json);
-					
+
 					$('.filter input').val('cc').keyup();
 
 					expect($('.project-item[data-id=0]')).not.toBeVisible();
@@ -340,7 +334,7 @@ define([
 				it('should not show projects matching filter from other views', function () {
 					projectView.show(json);
 					$('.view-selection select').val('Unstable').change();
-					
+
 					$('.filter input').val('r').keyup();
 
 					expect($('.project-item[data-id=1]')).not.toBeVisible();

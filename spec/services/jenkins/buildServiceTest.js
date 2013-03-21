@@ -69,7 +69,6 @@ define([
 				expect(response.projects.items[0].name).toBeDefined();
 				expect(response.projects.items[0].group).toBeDefined();
 				expect(response.projects.items[0].enabled).toBeDefined();
-				expect(response.projects.items[0].selected).toBeDefined();
 			});
 
 			it('should signal error if parsing the reponse fails', function () {

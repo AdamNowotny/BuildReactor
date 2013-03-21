@@ -30,13 +30,13 @@ define([
 		};
 	};
 
-	BambooBuildService.prototype.projects = function (selectedPlans) {
+	BambooBuildService.prototype.projects = function () {
 		var completed = new Signal();
 		completed.memorize = true;
 		var plansRequest = new BambooRequest(this.settings);
 		plansRequest.on.responseReceived.addOnce(function (response) {
 			try {
-				var templateData = createTemplateData(response, selectedPlans);
+				var templateData = createTemplateData(response);
 				completed.dispatch({ projects: templateData });
 			} catch (ex) {
 				completed.dispatch({ error: { name: 'ParseError', message: 'Unrecognized response'}});
@@ -49,7 +49,7 @@ define([
 		return completed;
 	};
 
-	var createTemplateData = function (response, selectedPlans) {
+	var createTemplateData = function (response) {
 		var projects = response.projects.project;
 		var items = [];
 		for (var projectIndex = 0; projectIndex < projects.length; projectIndex++) {
@@ -60,8 +60,7 @@ define([
 					id: plan.key,
 					name: plan.shortName,
 					group: project.name,
-					enabled: plan.enabled,
-					selected: selectedPlans.indexOf(plan.key) > -1
+					enabled: plan.enabled
 				};
 				items.push(item);
 			}

@@ -100,7 +100,6 @@ define([
 					expect(response.projects.items[0].name).toBe('Plan 1');
 					expect(response.projects.items[0].group).toBe('Project 1');
 					expect(response.projects.items[0].enabled).toBe(true);
-					expect(response.projects.items[0].selected).toBe(false);
 				});
 
 				it('should return error', function () {

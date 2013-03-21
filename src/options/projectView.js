@@ -3,10 +3,11 @@ define([
 	'hbs!templates/projectView',
 	'hbs!templates/projectViewSelection',
 	'common/sortBy',
+	'mout/array/contains',
 	'rx',
 	'bootstrap',
 	'rx.jquery'
-], function ($, projectViewTemplate, projectViewSelectionTemplate, sortBy, Rx) {
+], function ($, projectViewTemplate, projectViewSelectionTemplate, sortBy, contains, Rx) {
 
 	'use strict';
 
@@ -216,6 +217,11 @@ define([
 	};
 
 	var createModel = function (json) {
+		if (json.selected) {
+			json.items.forEach(function (d) {
+				d.selected = contains(json.selected, d.id);
+			});
+		}
 		sortBy('group', json.items);
 		var groups = [];
 		var groupNames = getGroups(json.items);
