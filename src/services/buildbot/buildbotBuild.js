@@ -2,8 +2,9 @@ define([
 	'services/build',
 	'services/buildbot/buildbotRequest',
 	'signals',
-	'jquery'
-], function (Build, request, Signal, $) {
+	'jquery',
+	'common/joinUrl'
+], function (Build, request, Signal, $, joinUrl) {
 	'use strict';
 
 	var BuildBotBuild = function (id, settings) {
@@ -21,7 +22,7 @@ define([
 	BuildBotBuild.prototype.update = function () {
 
 		var builderResponseHandler = function (result) {
-            that.webUrl = that.settings.url + "builders/" + that.id;
+            that.webUrl = joinUrl(that.settings.url, "builders/" + that.id);
 			that.projectName = result.response.category;
 			activateEvents(that, !that.isDisabled);
 			var isBuilding = result.response.state === "building";
