@@ -62,6 +62,7 @@ li.service-item {
 	margin-top: 5px;
 	padding: 5px 30px 5px 5px;
 	position: relative;
+	white-space: nowrap;
 }
 
 	.service-item.build-broken {
