@@ -24,35 +24,18 @@ define([
 		};
 	};
 
-	TravisBuildService.prototype.projects = function () {
-		var completed = new Signal();
-		completed.memorize = true;
-		this.availableBuilds().subscribe(function (projects) {
-			completed.dispatch({ projects: projects });
-		}, function (error) {
-			completed.dispatch({ error: error });
-		});
-		return completed;
-	};
-
 	TravisBuildService.prototype.availableBuilds = function () {
-		var ajaxOptions = {
+		return request.json({
 			url: 'https://api.travis-ci.org/repos/',
 			data: {
 				'owner_name': this.settings.username
 			},
-		};
-		return request.json(ajaxOptions).select(function (response) {
-			try {
-				return createTemplateData(response);
-			} catch (ex) {
-				return Rx.Observable.throwException({ error: { name: 'ParseError', message: 'Unrecognized response'}});
-			}
+			parseHandler: parseAvailableBuilds
 		});
 	};
 
-	function createTemplateData(response) {
-		var items = response.data.map(function (repo) {
+	function parseAvailableBuilds(response) {
+		var items = response.map(function (repo) {
 			return {
 				id: repo.slug,
 				name: repo.slug,

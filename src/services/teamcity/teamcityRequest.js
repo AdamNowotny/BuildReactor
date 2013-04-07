@@ -1,26 +1,6 @@
 define(['main/ajaxRequest', 'common/joinUrl', 'signals'], function (AjaxRequest, joinUrl, Signal) {
 	'use strict';
 
-	var buildTypes = function (settings) {
-		var request = new AjaxRequest(buildTypesAjaxSettings(settings));
-		var finished = new Signal();
-		finished.memorize = true;
-		request.on.responseReceived.addOnce(function (response) {
-			finished.dispatch({ response: response });
-		});
-		request.on.errorReceived.addOnce(function (errorInfo) {
-			finished.dispatch({ error: errorInfo });
-		});
-		request.send();
-		return finished;
-	};
-
-	var buildTypesAjaxSettings = function (settings) {
-		var urlPath = ((settings.username) ? 'httpAuth' : 'guestAuth');
-		urlPath += '/app/rest/buildTypes';
-		return createAjaxSettings(settings, urlPath);
-	};
-
 	var build = function (settings, buildId) {
 		var completed = new Signal();
 		completed.memorize = true;
@@ -76,7 +56,6 @@ define(['main/ajaxRequest', 'common/joinUrl', 'signals'], function (AjaxRequest,
 	};
 
 	return {
-		buildTypes: buildTypes,
 		build: build,
 		buildRunning: buildRunning
 	};

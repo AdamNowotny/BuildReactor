@@ -25,13 +25,31 @@ define([
 		return response;
 	}
 
-	function json(ajaxOptions) {
-		$.extend(ajaxOptions, {
+	function json(options) {
+		var ajaxOptions = {
+			type: 'GET',
+			url: options.url,
+			data: options.data,
 			cache: false,
 			dataType: 'json'
-		});
+		};
+		if (options.username && options.username.trim() !== '') {
+			var credentials = options.username + ':' + options.password;
+			var base64 = btoa(credentials);
+			ajaxOptions.headers = { 'Authorization': 'Basic ' + base64 };
+		}
 		return $.ajaxAsObservable(ajaxOptions).catchException(function (ex) {
 			return Rx.Observable.throwException(createAjaxError(ex, ajaxOptions));
+		}).select(function (response) {
+			try {
+				if (options.parseHandler) {
+					return options.parseHandler(response.data);
+				} else {
+					return response.data;
+				}
+			} catch (ex) {
+				return Rx.Observable.throwException({ error: { name: 'ParseError', message: 'Unrecognized response'}});
+			}
 		});
 	}
 

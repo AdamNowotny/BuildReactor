@@ -1,8 +1,9 @@
 define([
 	'services/travis/buildService',
 	'services/request',
-	'rx'
-], function (BuildService, request, Rx) {
+	'rx',
+	'json!fixtures/travis/repositories.json'
+], function (BuildService, request, Rx, reposJson) {
 
 	'use strict';
 
@@ -32,30 +33,30 @@ define([
 			expect(settings.username).toBe('');
 		});
 
-		it('should return available projects', function () {
-			var repos = JSON.parse(readFixtures('travis/repositories.json'));
-			spyOn(request, 'json').andReturn(Rx.Observable.returnValue({ data: repos }));
-			var response;
+		describe('availableBuilds', function () {
 
-			service.projects([]).addOnce(function (result) {
-				response = result;
+			it('should return available builds', function () {
+				var builds = Rx.Observable.returnValue(reposJson);
+				spyOn(request, 'json').andReturn(builds);
+
+				expect(service.availableBuilds()).toBe(builds);
 			});
 
-			expect(response.error).not.toBeDefined();
-			expect(response.projects).toBeDefined();
-		});
+			it('should parse response', function () {
+				spyOn(request, 'json').andCallFake(function (options) {
+					var response = options.parseHandler(reposJson);
+					expect(response.items.length).toBe(2);
+					expect(response.items[1].id).toBe('AdamNowotny/BuildReactor');
+					expect(response.items[1].name).toBe('AdamNowotny/BuildReactor');
+					expect(response.items[1].group).toBe(null);
+					expect(response.items[1].enabled).toBe(true);
+				});
 
-		it('should return available builds', function () {
-			var repos = JSON.parse(readFixtures('travis/repositories.json'));
-			spyOn(request, 'json').andReturn(Rx.Observable.returnValue({ data: repos }));
+				service.availableBuilds();
 
-			service.availableBuilds().subscribe(function (d) {
-				expect(d.items.length).toBe(2);
-				expect(d.items[1].id).toBe('AdamNowotny/BuildReactor');
-				expect(d.items[1].name).toBe('AdamNowotny/BuildReactor');
-				expect(d.items[1].group).toBe(null);
-				expect(d.items[1].enabled).toBe(true);
+				expect(request.json).toHaveBeenCalled();
 			});
+
 		});
 
 	});

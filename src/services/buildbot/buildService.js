@@ -2,9 +2,9 @@ define([
 	'services/buildService',
     './buildbotBuild',
 	'jquery',
-	'signals',
-	'services/buildbot/buildbotRequest'
-], function (BuildService, BuildBotBuild, $, Signal, buildbotRequest) {
+	'services/request',
+	'common/joinUrl'
+], function (BuildService, BuildBotBuild, $, request, joinUrl) {
 
 	'use strict';
 
@@ -28,30 +28,16 @@ define([
 		};
 	};
 
-	BuildBotBuildService.prototype.projects = function () {
-		var completed = new Signal();
-		completed.memorize = true;
-		var requestSettings = {
-			url: this.settings.url,
+	BuildBotBuildService.prototype.availableBuilds = function () {
+		return request.json({
+			url: joinUrl(this.settings.url, 'json/builders'),
 			username: this.settings.username,
-			password: this.settings.password
-		};
-		buildbotRequest.projects(requestSettings).addOnce(function (result) {
-			if (result.error) {
-				completed.dispatch({ error: result.error });
-			} else {
-				try {
-					var templateData = createTemplateData(result.response);
-					completed.dispatch({ projects: templateData });
-				} catch (ex) {
-					completed.dispatch({ error: { name: 'ParseError', message: 'Unrecognized response ' + result.response}});
-				}
-			}
+			password: this.settings.password,
+			parseHandler: parseAvailableBuilds
 		});
-		return completed;
 	};
 
-	function createTemplateData(apiJson) {
+	function parseAvailableBuilds(apiJson) {
         var items = [];
         for (var builderName in apiJson) {
             if (apiJson.hasOwnProperty(builderName)) {

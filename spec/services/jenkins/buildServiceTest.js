@@ -1,8 +1,8 @@
 define([
 	'services/jenkins/buildService',
-	'services/jenkins/jenkinsRequest',
-	'signals'
-], function (BuildService, jenkinsRequest, Signal) {
+	'services/request',
+	'rx'
+], function (BuildService, request, Rx) {
 
 	'use strict';
 
@@ -34,70 +34,76 @@ define([
 			expect(defaultSettings.updateInterval).toBe(60);
 		});
 
-		describe('projects', function () {
+		describe('availableBuilds', function () {
 
-			var mockRequest;
 			var apiJson;
 			var completed;
-
-			var initResponse = function (response) {
-				mockRequest.andCallFake(function () {
-					completed = new Signal();
-					completed.memorize = true;
-					completed.dispatch({ response: response });
-					return completed;
-				});
-			};
+			var service;
 
 			beforeEach(function () {
 				apiJson = JSON.parse(readFixtures('jenkins/views.json'));
-				mockRequest = spyOn(jenkinsRequest, 'projects');
+				service = new BuildService(settings);
+			});
+
+			it('should return available builds', function () {
+				var builds = Rx.Observable.returnValue(apiJson);
+				spyOn(request, 'json').andReturn(builds);
+
+				expect(service.availableBuilds()).toBe(builds);
+			});
+
+			it('should use credentials', function () {
+				settings.username = 'USERNAME';
+				settings.password = 'PASSWORD';
+				spyOn(request, 'json').andCallFake(function (options) {
+					expect(options.username).toBe(settings.username);
+					expect(options.password).toBe(settings.password);
+				});
+
+				service.availableBuilds();
+
+				expect(request.json).toHaveBeenCalled();
+			});
+
+			it('should get available builds from correct URL', function () {
+				spyOn(request, 'json').andCallFake(function (options) {
+					expect(options.url).toBe('http://example.com/api/json?depth=1');
+				});
+
+				service.availableBuilds();
+
+				expect(request.json).toHaveBeenCalled();
 			});
 
 			it('should return projects', function () {
-				var service = new BuildService(settings);
-				initResponse(apiJson);
-
-				var response;
-				service.projects([]).addOnce(function (result) {
-					response = result;
+				spyOn(request, 'json').andCallFake(function (options) {
+					var response = options.parseHandler(apiJson);
+					expect(response.items).toBeDefined();
+					expect(response.items.length).toBe(63);
+					expect(response.items[0].id).toBeDefined();
+					expect(response.items[0].name).toBeDefined();
+					expect(response.items[0].group).toBeDefined();
+					expect(response.items[0].enabled).toBeDefined();
 				});
 
-				expect(response.projects.items).toBeDefined();
-				expect(response.projects.items.length).toBe(63);
-				expect(response.projects.items[0].id).toBeDefined();
-				expect(response.projects.items[0].name).toBeDefined();
-				expect(response.projects.items[0].group).toBeDefined();
-				expect(response.projects.items[0].enabled).toBeDefined();
-			});
+				service.availableBuilds();
 
-			it('should signal error if parsing the reponse fails', function () {
-				var service = new BuildService(settings);
-				initResponse({ unknown: 'response'});
-
-				var response;
-				service.projects([]).addOnce(function (result) {
-					response = result;
-				});
-
-				expect(response.error).toBeDefined();
-				expect(response.error.name).toBe('ParseError');
+				expect(request.json).toHaveBeenCalled();
 			});
 
 			it('should return views', function () {
-				var service = new BuildService(settings);
-				initResponse(apiJson);
-
-				var response;
-				service.projects([]).addOnce(function (result) {
-					response = result;
+				spyOn(request, 'json').andCallFake(function (options) {
+					var response = options.parseHandler(apiJson);
+					expect(response.views).toBeDefined();
+					expect(response.views[0].name).toBeDefined();
+					expect(response.views[0].items).toBeDefined();
+					expect(response.views[0].items[0]).toBeDefined();
+					expect(response.primaryView).toBeDefined();
 				});
 
-				expect(response.projects.views).toBeDefined();
-				expect(response.projects.views[0].name).toBeDefined();
-				expect(response.projects.views[0].items).toBeDefined();
-				expect(response.projects.views[0].items[0]).toBeDefined();
-				expect(response.projects.primaryView).toBeDefined();
+				service.availableBuilds();
+
+				expect(request.json).toHaveBeenCalled();
 			});
 
 		});

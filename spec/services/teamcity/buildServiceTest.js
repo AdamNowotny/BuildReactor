@@ -1,17 +1,16 @@
 define([
 	'services/teamcity/buildService',
-	'services/teamcity/teamcityRequest',
-	'services/teamcity/teamcityBuild',
-	'signals',
-	'json!fixtures/teamcity/buildTypes.json',
-	'json!fixtures/teamcity/build.json'
-], function (TeamCity, request, Build, Signal, buildTypesJson, buildJson) {
+	'services/request',
+	'rx',
+	'json!fixtures/teamcity/buildTypes.json'
+], function (TeamCity, request, Rx, buildTypesJson) {
 
 	'use strict';
 
 	describe('services/teamcity/buildService', function () {
 
 		var settings;
+		var service;
 
 		beforeEach(function () {
 			settings = {
@@ -22,6 +21,7 @@ define([
 				name: 'TeamCity instance',
 				projects: []
 			};
+			service = new TeamCity(settings);
 		});
 
 		it('should provide default settings', function () {
@@ -38,88 +38,54 @@ define([
 			expect(defaultSettings.updateInterval).toBe(60);
 		});
 
-		function createResult(result) {
-			var returned = new Signal();
-			returned.memorize = true;
-			if (result) {
-				returned.dispatch(result);
-			}
-			return returned;
-		}
+		describe('availableBuilds', function () {
 
-		describe('projects', function () {
-
-			it('should get build types', function () {
-				var service = new TeamCity(settings);
-				spyOn(request, 'buildTypes').andCallFake(function () {
-					return createResult({ response: {} });
+			it('should modify url for guest user', function () {
+				spyOn(request, 'json').andCallFake(function (options) {
+					expect(options.username).not.toBeDefined();
+					expect(options.password).not.toBeDefined();
+					expect(options.url).toBe('http://example.com/guestAuth/app/rest/buildTypes');
 				});
 
-				service.projects([ 'A', 'B' ]);
+				service.availableBuilds();
 
-				expect(request.buildTypes).toHaveBeenCalled();
+				expect(request.json).toHaveBeenCalled();
 			});
 
-			it('should return all build types', function () {
-				spyOn(request, 'buildTypes').andCallFake(function () {
-					return createResult({ response: buildTypesJson });
-				});
-				var service = new TeamCity(settings);
-				var projects;
-
-				service.projects([ 'A', 'B' ]).addOnce(function (result) {
-					projects = result.projects;
+			it('should modify url if username and password specified', function () {
+				settings.username = 'USERNAME';
+				settings.password = 'PASSWORD';
+				spyOn(request, 'json').andCallFake(function (options) {
+					expect(options.username).toBe('USERNAME');
+					expect(options.password).toBe('PASSWORD');
+					expect(options.url).toBe('http://example.com/httpAuth/app/rest/buildTypes');
 				});
 
-				expect(projects.items.length).toBe(207);
+				service.availableBuilds();
+
+				expect(request.json).toHaveBeenCalled();
 			});
 
-			it('should return errorInfo on failure', function () {
-				var errorInfo = {};
-				spyOn(request, 'buildTypes').andCallFake(function () {
-					return createResult({ error: errorInfo });
-				});
-				var service = new TeamCity(settings);
-				var result;
+			it('should return available builds', function () {
+				var builds = Rx.Observable.returnValue(buildTypesJson);
+				spyOn(request, 'json').andReturn(builds);
 
-				service.projects([ 'A', 'B' ]).addOnce(function (callbackResult) {
-					result = callbackResult;
-				});
-
-				expect(result.error).toBe(errorInfo);
+				expect(service.availableBuilds()).toBe(builds);
 			});
 
-			it('should signal error if parsing the response fails', function () {
-				var service = new TeamCity(settings);
-				spyOn(request, 'buildTypes').andCallFake(function () {
-					return createResult({ response: { buildType: 'unknown response' } });
-				});
-
-				var response;
-				service.projects([]).addOnce(function (result) {
-					response = result;
-				});
-
-				expect(response.error).toBeDefined();
-				expect(response.error.name).toBe('ParseError');
-			});
-
-			it('should convert to build', function () {
-				spyOn(request, 'buildTypes').andCallFake(function () {
-					return createResult({ response: buildTypesJson });
-				});
-				var service = new TeamCity(settings);
-				var projects;
-
-				service.projects([ 'bt297', 'B' ]).addOnce(function (result) {
-					projects = result.projects.items;
+			it('should parse response', function () {
+				spyOn(request, 'json').andCallFake(function (options) {
+					var response = options.parseHandler(buildTypesJson);
+					var projects = response.items;
 					expect(projects[0].id).toBe('bt297');
 					expect(projects[0].name).toBe('Build');
 					expect(projects[0].group).toBe('Amazon API client');
 					expect(projects[0].enabled).toBe(true);
 				});
 
-				expect(projects).toBeDefined();
+				service.availableBuilds();
+
+				expect(request.json).toHaveBeenCalled();
 			});
 
 		});

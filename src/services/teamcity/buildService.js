@@ -1,67 +1,60 @@
 define([
 	'services/buildService',
-	'services/teamcity/teamcityRequest',
+	'services/request',
 	'services/teamcity/teamcityBuild',
-	'signals',
-	'jquery'
-], function (BuildService, request, Build, Signal, $) {
+	'jquery',
+	'common/joinUrl'
+], function (BuildService, request, Build, $, joinUrl) {
 
-		'use strict';
+	'use strict';
 
-		var TeamcityBuildService = function (settings) {
-			$.extend(this, new BuildService(settings));
-			this.Build = Build;
+	var TeamcityBuildService = function (settings) {
+		$.extend(this, new BuildService(settings));
+		this.Build = Build;
+	};
+
+	TeamcityBuildService.settings = function () {
+		return {
+			typeName: 'TeamCity',
+			baseUrl: 'teamcity',
+			icon: 'teamcity/icon.png',
+			logo: 'teamcity/logo.png',
+			projects: [],
+			url: '',
+			urlHint: 'http://teamcity.jetbrains.com/',
+			username: '',
+			password: '',
+			updateInterval: 60
 		};
+	};
 
-		TeamcityBuildService.settings = function () {
+	TeamcityBuildService.prototype.availableBuilds = function () {
+		var urlPath = ((this.settings.username) ? 'httpAuth' : 'guestAuth');
+		urlPath += '/app/rest/buildTypes';
+		return request.json({
+			url: joinUrl(this.settings.url, urlPath),
+			username: this.settings.username,
+			password: this.settings.password,
+			parseHandler: parseAvailableBuilds
+		});
+	};
+
+	function parseAvailableBuilds(buildTypesJson) {
+		if (!buildTypesJson.buildType) {
+			return { items: [] };
+		} else {
 			return {
-				typeName: 'TeamCity',
-				baseUrl: 'teamcity',
-				icon: 'teamcity/icon.png',
-				logo: 'teamcity/logo.png',
-				projects: [],
-				url: '',
-				urlHint: 'http://teamcity.jetbrains.com/',
-				username: '',
-				password: '',
-				updateInterval: 60
+				items: buildTypesJson.buildType.map(function (d, i) {
+					return {
+						id: d.id,
+						name: d.name,
+						group: d.projectName,
+						enabled: true
+					};
+				})
 			};
-		};
-
-		TeamcityBuildService.prototype.projects = function () {
-			var completed = new Signal();
-			completed.memorize = true;
-			request.buildTypes(this.settings).addOnce(function (result) {
-				if (result.error) {
-					completed.dispatch({ error: result.error });
-				} else {
-					try {
-						var templateData = createTemplateData(result.response);
-						completed.dispatch({ projects: templateData });
-					} catch (ex) {
-						completed.dispatch({ error: { name: 'ParseError', message: 'Unrecognized response'}});
-					}
-				}
-			});
-			return completed;
-		};
-
-		function createTemplateData(buildTypesJson) {
-			if (!buildTypesJson.buildType) {
-				return { items: [] };
-			} else {
-				return {
-					items: buildTypesJson.buildType.map(function (d, i) {
-						return {
-							id: d.id,
-							name: d.name,
-							group: d.projectName,
-							enabled: true
-						};
-					})
-				};
-			}
 		}
+	}
 
-		return TeamcityBuildService;
-	});
+	return TeamcityBuildService;
+});

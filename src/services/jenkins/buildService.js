@@ -3,8 +3,10 @@ define([
 	'services/jenkins/jenkinsBuild',
 	'jquery',
 	'signals',
-	'services/jenkins/jenkinsRequest'
-], function (BuildService, JenkinsBuild, $, Signal, jenkinsRequest) {
+	'services/jenkins/jenkinsRequest',
+	'services/request',
+	'common/joinUrl'
+], function (BuildService, JenkinsBuild, $, Signal, jenkinsRequest, request, joinUrl) {
 
 	'use strict';
 
@@ -12,7 +14,7 @@ define([
 		$.extend(this, new BuildService(settings));
 		this.Build = JenkinsBuild;
 	};
-	
+
 	JenkinsBuildService.settings = function () {
 		return {
 			typeName: 'Jenkins',
@@ -28,30 +30,16 @@ define([
 		};
 	};
 
-	JenkinsBuildService.prototype.projects = function () {
-		var completed = new Signal();
-		completed.memorize = true;
-		var requestSettings = {
-			url: this.settings.url,
+	JenkinsBuildService.prototype.availableBuilds = function () {
+		return request.json({
+			url: joinUrl(this.settings.url, 'api/json?depth=1'),
 			username: this.settings.username,
-			password: this.settings.password
-		};
-		jenkinsRequest.projects(requestSettings).addOnce(function (result) {
-			if (result.error) {
-				completed.dispatch({ error: result.error });
-			} else {
-				try {
-					var templateData = createTemplateData(result.response);
-					completed.dispatch({ projects: templateData });
-				} catch (ex) {
-					completed.dispatch({ error: { name: 'ParseError', message: 'Unrecognized response'}});
-				}
-			}
+			password: this.settings.password,
+			parseHandler: parseAvailableBuilds
 		});
-		return completed;
 	};
 
-	function createTemplateData(apiJson) {
+	function parseAvailableBuilds(apiJson) {
 		return {
 			items: apiJson.jobs.map(function (job, index) {
 				return {

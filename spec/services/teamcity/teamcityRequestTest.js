@@ -18,61 +18,6 @@ define([
 			mockAjaxRequestSend = spyOn(AjaxRequest.prototype, 'send');
 		});
 
-		describe('buildTypes', function () {
-
-			it('should modify url for guest user', function () {
-				mockAjaxRequestSend.andCallFake(function () {
-					expect(this.settings.username).not.toBeDefined();
-					expect(this.settings.password).not.toBeDefined();
-					expect(this.settings.url).toBe('http://example.com/guestAuth/app/rest/buildTypes');
-				});
-
-				request.buildTypes(settings);
-
-				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
-			});
-
-			it('should send modify url if username and password specified', function () {
-				settings.username = 'USERNAME';
-				settings.password = 'PASSWORD';
-				mockAjaxRequestSend.andCallFake(function () {
-					expect(this.settings.username).toBe('USERNAME');
-					expect(this.settings.password).toBe('PASSWORD');
-					expect(this.settings.url).toBe('http://example.com/httpAuth/app/rest/buildTypes');
-				});
-
-				request.buildTypes(settings);
-
-				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
-			});
-
-			it('should signal request completed', function () {
-				mockAjaxRequestSend.andCallFake(function () {
-					this.on.responseReceived.dispatch(buildTypesJson);
-				});
-
-				request.buildTypes(settings).addOnce(function (result) {
-					expect(result.response).toBe(buildTypesJson);
-				});
-
-				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
-			});
-
-			it('should signal request failed', function () {
-				var errorInfo = { name: 'ajax error' };
-				mockAjaxRequestSend.andCallFake(function () {
-					this.on.errorReceived.dispatch(errorInfo);
-				});
-
-				request.buildTypes(settings).addOnce(function (result) {
-					expect(result.error).toBe(errorInfo);
-				});
-
-				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
-			});
-
-		});
-
 		describe('build', function () {
 
 			it('should modify url for guest user', function () {

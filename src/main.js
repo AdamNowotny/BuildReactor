@@ -69,7 +69,7 @@ require([
 	serviceRepository.registerType(GoService);
 	serviceRepository.registerType(JenkinsService);
 	serviceRepository.registerType(TeamCityService);
-	// serviceRepository.registerType(TravisService);
+	serviceRepository.registerType(TravisService);
 	var settings = settingsStore.getAll();
 	serviceController.load(settings).addOnce(function () {
 		serviceController.run();

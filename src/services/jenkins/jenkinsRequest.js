@@ -20,21 +20,6 @@ define([
 			return completed;
 		};
 
-		function projects(settings) {
-			if (!(settings && settings.url && settings.url !== '')) {
-				throw {
-					name: 'ArgumentInvalid',
-					message: 'settings.url not set'
-				};
-			}
-			var ajaxSettings = {
-				url: joinUrl(settings.url, 'api/json?depth=1'),
-				username: settings.username,
-				password: settings.password
-			};
-			return send(ajaxSettings);
-		}
-
 		var job = function (settings, id) {
 			if (!(settings && settings.url && settings.url !== '')) {
 				throw {
@@ -66,7 +51,6 @@ define([
 		};
 
 		return {
-			projects: projects,
 			job: job,
 			lastCompletedBuild: lastCompletedBuild
 		};

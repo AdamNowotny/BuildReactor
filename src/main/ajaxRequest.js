@@ -39,7 +39,6 @@ define(['signals', 'jquery'], function (signals, $) {
 		}
 
 		function onSuccess(data, textStatus, jqXhr) {
-			self.retry = false;
 			self.on.responseReceived.dispatch(data);
 		}
 
