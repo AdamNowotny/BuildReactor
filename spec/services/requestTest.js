@@ -13,51 +13,20 @@ define([
 		describe('json', function () {
 
 			it('should set ajax options', function () {
-				spyOn($, 'ajaxAsObservable').andCallFake(function (options) {
-					expect(options.type).toBe('GET');
-					expect(options.cache).toBe(false);
-					return Rx.Observable.returnValue(successResponse);
-				});
 				var settings = {
 					url: 'http://sample.com',
 					data: { param: 'value' }
 				};
-
-				request.json(settings).subscribe();
-
-				expect($.ajaxAsObservable).toHaveBeenCalled();
-			});
-
-			it('should set dataType to json', function () {
 				spyOn($, 'ajaxAsObservable').andCallFake(function (options) {
 					expect(options.dataType).toBe('json');
-					return Rx.Observable.returnValue(successResponse);
-				});
-
-				request.json({ url: 'http://sample.com'}).subscribe();
-
-				expect($.ajaxAsObservable).toHaveBeenCalled();
-			});
-
-			it('should set url', function () {
-				spyOn($, 'ajaxAsObservable').andCallFake(function (options) {
 					expect(options.url).toBe('http://sample.com');
+					expect(options.type).toBe('GET');
+					expect(options.cache).toBe(false);
+					expect(options.data).toBe(settings.data);
 					return Rx.Observable.returnValue(successResponse);
 				});
 
-				request.json({ url: 'http://sample.com'}).subscribe();
-
-				expect($.ajaxAsObservable).toHaveBeenCalled();
-			});
-
-			it('should set query data', function () {
-				var data = { key1: 'value1'};
-				spyOn($, 'ajaxAsObservable').andCallFake(function (options) {
-					expect(options.data).toBe(data);
-					return Rx.Observable.returnValue(successResponse);
-				});
-
-				request.json({ url: 'http://sample.com', data: data}).subscribe();
+				request.json(settings).subscribe();
 
 				expect($.ajaxAsObservable).toHaveBeenCalled();
 			});
@@ -83,7 +52,7 @@ define([
 				spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.returnValue(successResponse));
 				var settings = {
 					url: 'http://example.com',
-					parseHandler: parser
+					parser: parser
 				};
 
 				request.json(settings).subscribe();
@@ -198,7 +167,7 @@ define([
 					spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.returnValue(successResponse));
 					var settings = {
 						url: 'http://example.com',
-						parseHandler: parser
+						parser: parser
 					};
 
 					var errorResponse;
@@ -215,6 +184,28 @@ define([
 			});
 		});
 
+		describe('xml', function () {
+
+			it('should set ajax options', function () {
+				var settings = {
+					url: 'http://sample.com',
+					data: { param: 'value' }
+				};
+				spyOn($, 'ajaxAsObservable').andCallFake(function (options) {
+					expect(options.dataType).toBe('xml');
+					expect(options.url).toBe('http://sample.com');
+					expect(options.type).toBe('GET');
+					expect(options.cache).toBe(false);
+					expect(options.data).toBe(settings.data);
+					return Rx.Observable.returnValue(successResponse);
+				});
+
+				request.xml(settings).subscribe();
+
+				expect($.ajaxAsObservable).toHaveBeenCalled();
+			});
+
+		});
 	});
 
 });

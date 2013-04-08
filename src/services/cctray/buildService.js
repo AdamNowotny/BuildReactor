@@ -5,8 +5,9 @@ define([
 	'./cctrayProject',
 	'mout/array/contains',
 	'common/joinUrl',
-	'services/buildService'
-], function ($, Signal, ccRequest, CCTrayProject, contains, joinUrl, BuildService) {
+	'services/buildService',
+	'services/request'
+], function ($, Signal, ccRequest, CCTrayProject, contains, joinUrl, BuildService, request) {
 
 	'use strict';
 
@@ -16,7 +17,7 @@ define([
 		this.updateAll = updateAll;
 		this.cctrayLocation = '';
 	};
-		
+
 	CCBuildService.settings = function () {
 		return {
 			typeName: 'CCTray Generic',
@@ -80,26 +81,16 @@ define([
 		return completed;
 	};
 
-	var projects = function () {
-		var completed = new Signal();
-		completed.memorize = true;
-		var requestSettings = {
+	var availableBuilds = function () {
+		return request.xml({
 			url: joinUrl(this.settings.url, this.cctrayLocation),
 			username: this.settings.username,
-			password: this.settings.password
-		};
-		var plansRequest = ccRequest.projects(requestSettings);
-		plansRequest.responseReceived.addOnce(function (response) {
-			var templateData = createTemplateData(response);
-			completed.dispatch({ projects: templateData });
+			password: this.settings.password,
+			parser: parseAvailableBuilds
 		});
-		plansRequest.errorReceived.addOnce(function (ajaxError) {
-			completed.dispatch({ error: ajaxError });
-		});
-		return completed;
 	};
 
-	function createTemplateData(projectsXml) {
+	function parseAvailableBuilds(projectsXml) {
 
 		function createItem(i, d) {
 			var item = $(d),
@@ -121,7 +112,7 @@ define([
 	}
 
 	CCBuildService.prototype = {
-		projects: projects
+		availableBuilds: availableBuilds
 	};
 
 	return CCBuildService;

@@ -40,7 +40,7 @@ define([
 	};
 
 	var updateAll = function () {
-		
+
 		function buildUpdateCompleted() {
 			remaining--;
 			if (remaining === 0) {

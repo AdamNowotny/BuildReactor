@@ -26,12 +26,16 @@ define([
 	}
 
 	function json(options) {
+		return send(options, 'json');
+	}
+
+	function send(options, dataType) {
 		var ajaxOptions = {
 			type: 'GET',
 			url: options.url,
 			data: options.data,
 			cache: false,
-			dataType: 'json'
+			dataType: dataType
 		};
 		if (options.username && options.username.trim() !== '') {
 			var credentials = options.username + ':' + options.password;
@@ -42,8 +46,8 @@ define([
 			return Rx.Observable.throwException(createAjaxError(ex, ajaxOptions));
 		}).select(function (response) {
 			try {
-				if (options.parseHandler) {
-					return options.parseHandler(response.data);
+				if (options.parser) {
+					return options.parser(response.data);
 				} else {
 					return response.data;
 				}
@@ -53,7 +57,12 @@ define([
 		});
 	}
 
+	function xml(options) {
+		return send(options, 'xml');
+	}
+
 	return {
-		json: json
+		json: json,
+		xml: xml
 	};
 });

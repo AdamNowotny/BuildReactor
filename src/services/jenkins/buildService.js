@@ -35,7 +35,7 @@ define([
 			url: joinUrl(this.settings.url, 'api/json?depth=1'),
 			username: this.settings.username,
 			password: this.settings.password,
-			parseHandler: parseAvailableBuilds
+			parser: parseAvailableBuilds
 		});
 	};
 

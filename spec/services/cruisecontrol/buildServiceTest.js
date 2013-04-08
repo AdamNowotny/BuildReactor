@@ -7,7 +7,6 @@ define([
 	describe('services/cruisecontrol/buildService', function () {
 
 		var settings;
-		var ccBuildInfo;
 
 		beforeEach(function () {
 			settings = {
@@ -16,13 +15,6 @@ define([
 				icon: 'cruisecontrol/icon.png',
 				url: 'http://example.com/',
 				name: 'CC instance'
-			};
-			ccBuildInfo = {
-				serviceName: 'service name',
-				buildName: 'build name',
-				group: 'group name',
-				url: 'http://example.com/link',
-				icon: 'ci/icon.png'
 			};
 		});
 

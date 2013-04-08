@@ -30,7 +30,7 @@ define([
 			data: {
 				'owner_name': this.settings.username
 			},
-			parseHandler: parseAvailableBuilds
+			parser: parseAvailableBuilds
 		});
 	};
 

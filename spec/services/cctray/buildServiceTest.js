@@ -3,13 +3,14 @@ define([
 	'services/cctray/ccRequest',
 	'services/cctray/cctrayProject',
 	'services/poolingService',
-	'common/timer',
 	'jquery',
 	'signals',
 	'jasmineSignals',
+	'services/request',
+	'rx',
 	'text!spec/fixtures/cctray/cruisecontrolnet.xml'
 ],
-function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Signal, spyOnSignal, projectsXmlText) {
+function (BuildService, ccRequest, CCTrayProject, PoolingService, $, Signal, spyOnSignal, request, Rx, projectsXmlText) {
 
 	'use strict';
 
@@ -18,7 +19,6 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Sign
 		var service,
 			settings,
 			mockRequest,
-			mockTimer,
 			responseReceived,
 			errorReceived,
 			projectsXml = $.parseXML(projectsXmlText),
@@ -59,7 +59,6 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Sign
 			service = new BuildService(settings);
 			mockRequest = spyOn(ccRequest, 'projects');
 			initResponse(projectsXml);
-			mockTimer = spyOn(Timer.prototype, 'start');
 		});
 
 		it('should provide default settings', function () {
@@ -214,52 +213,56 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, Timer, $, Sign
 
 		});
 
-		describe('projects', function () {
+		describe('availableBuilds', function () {
 
+			it('should return available builds', function () {
+				var builds = Rx.Observable.returnValue(projectsXml);
+				spyOn(request, 'xml').andReturn(builds);
 
-			it('should use url and credentials when getting plans', function () {
-				mockRequest.andCallFake(function (requestSettings) {
-					expect(requestSettings.username).toBe(settings.username);
-					expect(requestSettings.password).toBe(settings.password);
-					expect(requestSettings.url).toBe('http://example.com/cc.xml');
-					responseReceived.dispatch(projectsXml);
-					return {
-						responseReceived: responseReceived,
-						errorReceived: errorReceived
-					};
+				expect(service.availableBuilds()).toBe(builds);
+			});
+
+			it('should use credentials', function () {
+				settings.username = 'USERNAME';
+				settings.password = 'PASSWORD';
+				spyOn(request, 'xml').andCallFake(function (options) {
+					expect(options.username).toBe(settings.username);
+					expect(options.password).toBe(settings.password);
+				});
+
+				service.availableBuilds();
+
+				expect(request.xml).toHaveBeenCalled();
+			});
+
+			it('should get available builds from correct URL', function () {
+				spyOn(request, 'xml').andCallFake(function (options) {
+					expect(options.url).toBe('http://example.com/cc.xml');
 				});
 
 				service.cctrayLocation = 'cc.xml';
-				service.projects([]);
+				service.availableBuilds();
 
-				expect(mockRequest).toHaveBeenCalled();
+				expect(request.xml).toHaveBeenCalled();
 			});
 
-			it('should return available projects', function () {
-				var response;
-
-				service.projects([]).addOnce(function (result) {
-					response = result;
+			it('should parse response', function () {
+				spyOn(request, 'xml').andCallFake(function (options) {
+					var response = options.parser(projectsXml);
+					expect(response.items.length).toBe(9);
+					expect(response.items[0].id).toBe('CruiseControl.NET');
+					expect(response.items[0].name).toBe('CruiseControl.NET');
+					expect(response.items[0].group).toBe('CruiseControl.NET');
+					expect(response.items[0].enabled).toBe(true);
 				});
 
-				expect(response.error).not.toBeDefined();
-				expect(response.projects).toBeDefined();
-			});
+				service.availableBuilds();
 
-			it('should return error', function () {
-				initErrorResponse();
-				var response;
-
-				service.projects([]).addOnce(function (result) {
-					response = result;
-				});
-
-				expect(response.error).toBeDefined();
-				expect(response.projects).not.toBeDefined();
+				expect(request.xml).toHaveBeenCalled();
 			});
 
 		});
-		
+
 		describe('activeProjects', function () {
 
 			it('should return service name', function () {

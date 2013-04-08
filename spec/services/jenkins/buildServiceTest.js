@@ -76,7 +76,7 @@ define([
 
 			it('should return projects', function () {
 				spyOn(request, 'json').andCallFake(function (options) {
-					var response = options.parseHandler(apiJson);
+					var response = options.parser(apiJson);
 					expect(response.items).toBeDefined();
 					expect(response.items.length).toBe(63);
 					expect(response.items[0].id).toBeDefined();
@@ -92,7 +92,7 @@ define([
 
 			it('should return views', function () {
 				spyOn(request, 'json').andCallFake(function (options) {
-					var response = options.parseHandler(apiJson);
+					var response = options.parser(apiJson);
 					expect(response.views).toBeDefined();
 					expect(response.views[0].name).toBeDefined();
 					expect(response.views[0].items).toBeDefined();

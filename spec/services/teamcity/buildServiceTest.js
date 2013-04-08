@@ -75,7 +75,7 @@ define([
 
 			it('should parse response', function () {
 				spyOn(request, 'json').andCallFake(function (options) {
-					var response = options.parseHandler(buildTypesJson);
+					var response = options.parser(buildTypesJson);
 					var projects = response.items;
 					expect(projects[0].id).toBe('bt297');
 					expect(projects[0].name).toBe('Build');

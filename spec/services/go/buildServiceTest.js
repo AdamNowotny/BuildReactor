@@ -7,7 +7,6 @@ define([
 	describe('services/cruisecontrol.rb/buildService', function () {
 
 		var settings;
-		var ccBuildInfo;
 
 		beforeEach(function () {
 			settings = {
@@ -16,13 +15,6 @@ define([
 				icon: 'go/icon.png',
 				url: 'http://example.com/',
 				name: 'GO instance'
-			};
-			ccBuildInfo = {
-				serviceName: 'service name',
-				buildName: 'build name',
-				group: 'group name',
-				url: 'http://example.com/link',
-				icon: 'ci/icon.png'
 			};
 		});
 

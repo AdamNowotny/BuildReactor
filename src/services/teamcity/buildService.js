@@ -35,7 +35,7 @@ define([
 			url: joinUrl(this.settings.url, urlPath),
 			username: this.settings.username,
 			password: this.settings.password,
-			parseHandler: parseAvailableBuilds
+			parser: parseAvailableBuilds
 		});
 	};
 

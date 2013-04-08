@@ -37,7 +37,7 @@ define([
 
 			it('should parse response', function () {
 				spyOn(request, 'json').andCallFake(function (options) {
-					var response = options.parseHandler(reposJson);
+					var response = options.parser(reposJson);
 					expect(response.items.length).toBe(2);
 					expect(response.items[1].id).toBe('AdamNowotny/BuildReactor');
 					expect(response.items[1].name).toBe('AdamNowotny/BuildReactor');
