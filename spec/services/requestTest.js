@@ -12,6 +12,22 @@ define([
 
 		describe('json', function () {
 
+			it('should set ajax options', function () {
+				spyOn($, 'ajaxAsObservable').andCallFake(function (options) {
+					expect(options.type).toBe('GET');
+					expect(options.cache).toBe(false);
+					return Rx.Observable.returnValue(successResponse);
+				});
+				var settings = {
+					url: 'http://sample.com',
+					data: { param: 'value' }
+				};
+
+				request.json(settings).subscribe();
+
+				expect($.ajaxAsObservable).toHaveBeenCalled();
+			});
+
 			it('should set dataType to json', function () {
 				spyOn($, 'ajaxAsObservable').andCallFake(function (options) {
 					expect(options.dataType).toBe('json');
@@ -47,9 +63,32 @@ define([
 			});
 
 			it('should set basic authentication', function () {
+				spyOn($, 'ajaxAsObservable').andCallFake(function (options) {
+					expect(options.headers.Authorization).toBe('Basic dXNlcm5hbWUxOnBhc3N3b3JkMTIz');
+					return Rx.Observable.returnValue(successResponse);
+				});
+				var settings = {
+					url: 'http://example.com',
+					username: 'username1',
+					password: 'password123'
+				};
+
+				request.json(settings).subscribe();
+
+				expect($.ajaxAsObservable).toHaveBeenCalled();
 			});
 
 			it('should call custom parser if specified', function () {
+				var parser = jasmine.createSpy();
+				spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.returnValue(successResponse));
+				var settings = {
+					url: 'http://example.com',
+					parseHandler: parser
+				};
+
+				request.json(settings).subscribe();
+
+				expect(parser).toHaveBeenCalledWith(successResponse.data);
 			});
 
 			it('should return json response', function () {
@@ -153,6 +192,24 @@ define([
 				});
 
 				it('should throw exception on custom parse error', function () {
+					var parser = function (response) {
+						return response.unknown.unknown;
+					};
+					spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.returnValue(successResponse));
+					var settings = {
+						url: 'http://example.com',
+						parseHandler: parser
+					};
+
+					var errorResponse;
+					var a = request.json(settings);
+					a.subscribe(null, function (ex) {
+						errorResponse = ex;
+					});
+
+					expect(errorResponse.name).toBe('ParseError');
+					expect(errorResponse.message).toBe('Unrecognized response');
+					expect(errorResponse.httpResponse).toBe(successResponse);
 				});
 
 			});

@@ -48,7 +48,7 @@ define([
 					return response.data;
 				}
 			} catch (ex) {
-				return Rx.Observable.throwException({ error: { name: 'ParseError', message: 'Unrecognized response'}});
+				throw { name: 'ParseError', message: 'Unrecognized response', httpResponse: response};
 			}
 		});
 	}

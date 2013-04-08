@@ -37,7 +37,6 @@ define([
 		describe('availableBuilds', function () {
 
 			var apiJson;
-			var completed;
 			var service;
 
 			beforeEach(function () {

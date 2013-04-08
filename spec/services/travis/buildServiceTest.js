@@ -35,13 +35,6 @@ define([
 
 		describe('availableBuilds', function () {
 
-			it('should return available builds', function () {
-				var builds = Rx.Observable.returnValue(reposJson);
-				spyOn(request, 'json').andReturn(builds);
-
-				expect(service.availableBuilds()).toBe(builds);
-			});
-
 			it('should parse response', function () {
 				spyOn(request, 'json').andCallFake(function (options) {
 					var response = options.parseHandler(reposJson);
