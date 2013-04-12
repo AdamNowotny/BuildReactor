@@ -1,7 +1,7 @@
 BuildReactor [![Build Status](https://secure.travis-ci.org/AdamNowotny/BuildReactor.png)](http://travis-ci.org/AdamNowotny/BuildReactor)
 ============
 
-Relevant, actionable notifications for CI server events (Google Chrome extension)
+Developer notifications and dashboard (Google Chrome extension)
 
 Download from [Chrome Web Store](http://goo.gl/BX01T)
 
@@ -88,7 +88,7 @@ Developer setup
 ```
 npm install
 bower update
-./node_modules/.bin/grunt
+grunt
 ```
 
 Open Chrome Extension manager and "Load unpacked extension.." from `_build/BuildReactor` folder.
@@ -108,6 +108,7 @@ The packaged version uses:
  * [jQuery](http://jquery.com/)
  * [mout](http://moutjs.com/)
  * [RxJS](http://reactive-extensions.github.com/RxJS/)
+ * [RxJS-jquery](https://github.com/Reactive-Extensions/rxjs-jquery)
  * [Require-JS](http://requirejs.org/)
  * [Twitter bootstrap](http://twitter.github.com/bootstrap/)
 
@@ -116,12 +117,9 @@ The build and tests use:
  * [grunt](http://gruntjs.com/)
  * [grunt-contrib](https://github.com/gruntjs/grunt-contrib)
  * [grunt-jasmine-runner](https://github.com/jasmine-contrib/grunt-jasmine-runner)
- * [grunt-jsvalidate](https://github.com/ariya/grunt-jsvalidate)
  * [jasmine](http://pivotal.github.com/jasmine/)
  * [jasmine-jquery](https://github.com/velesin/jasmine-jquery/)
  * [jasmine-signals](https://github.com/AdamNowotny/jasmine-signals)
- * [node.js](http://nodejs.org/)
- * [PhantomJS](http://phantomjs.org/)
  * [RequireJS plugins](https://github.com/millermedeiros/requirejs-plugins)
  * [Travis-CI](http://travis-ci.org/)
 
