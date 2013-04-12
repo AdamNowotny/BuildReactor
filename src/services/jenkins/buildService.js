@@ -2,11 +2,9 @@ define([
 	'services/buildService',
 	'services/jenkins/jenkinsBuild',
 	'jquery',
-	'signals',
-	'services/jenkins/jenkinsRequest',
 	'services/request',
 	'common/joinUrl'
-], function (BuildService, JenkinsBuild, $, Signal, jenkinsRequest, request, joinUrl) {
+], function (BuildService, JenkinsBuild, $, request, joinUrl) {
 
 	'use strict';
 

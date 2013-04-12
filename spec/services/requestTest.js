@@ -74,28 +74,11 @@ define([
 
 			describe('errors', function () {
 
-				it('should throw exception on connection error', function () {
+				it('should throw exception on unknown connection error', function () {
 					var response = {
 						textStatus: 'error',
 						jqXHR: { status: 0 }
 					};
-					var actualResponse;
-					var ajaxOptions = { url: 'http://sample.com' };
-					spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.throwException(response));
-
-					request.json(ajaxOptions).subscribe(null, function (d) {
-						actualResponse = d;
-					});
-
-					expect(actualResponse.name).toBe('AjaxError');
-					expect(actualResponse.message).toBe('Ajax connection error');
-					expect(actualResponse.httpStatus).toBe(null);
-					expect(actualResponse.url).toBe('http://sample.com');
-					expect(actualResponse.ajaxOptions).toBeDefined();
-				});
-
-				it('should throw exception with full url', function () {
-					var response = { textStatus: 'error' };
 					var actualResponse;
 					var ajaxOptions = {
 						url: 'http://sample.com/',
@@ -110,7 +93,11 @@ define([
 						actualResponse = d;
 					});
 
+					expect(actualResponse.name).toBe('AjaxError');
+					expect(actualResponse.message).toBe('Ajax connection error');
+					expect(actualResponse.httpStatus).toBe(null);
 					expect(actualResponse.url).toBe('http://sample.com/?param1=value1&param_2=value2');
+					expect(actualResponse.ajaxOptions).toBeDefined();
 				});
 
 				it('should throw exception on connection error with message', function () {
@@ -127,11 +114,49 @@ define([
 						actualResponse = d;
 					});
 
-					expect(actualResponse.name).toBe('AjaxError');
 					expect(actualResponse.message).toBe('Not found');
 					expect(actualResponse.httpStatus).toBe(404);
-					expect(actualResponse.url).toBe('http://sample.com');
-					expect(actualResponse.ajaxOptions).toBeDefined();
+				});
+
+				it('should remove session cookie if 401 received', function () {
+					var response = {
+						textStatus: 'error',
+						jqXHR: { status: 401 }
+					};
+					var ajaxOptions = {
+						url: 'http://sample.com',
+						authCookie: 'JSESSIONID'
+					};
+					spyOn($, 'ajaxAsObservable').andCallFake(function (options) {
+						return Rx.Observable.throwException(response);
+					});
+					spyOn(chrome.cookies, 'remove').andCallFake(function (url, authCookie) {
+						expect(url).toBe(ajaxOptions.url);
+						expect(authCookie).toBe(ajaxOptions.authCookie);
+					});
+
+					request.json(ajaxOptions).subscribe(null, function (d) {});
+
+					expect(chrome.cookies.remove).toHaveBeenCalled();
+				});
+
+				it('should retry once if 401 received', function () {
+					var response = {
+						textStatus: 'error',
+						jqXHR: { status: 401 }
+					};
+					var ajaxOptions = {
+						url: 'http://sample.com',
+						authCookie: 'JSESSIONID'
+					};
+					spyOn($, 'ajaxAsObservable').andCallFake(function (options) {
+						return Rx.Observable.throwException(response);
+					});
+					spyOn(chrome.cookies, 'remove');
+
+					request.json(ajaxOptions).subscribe(null, function (d) {});
+
+					expect(chrome.cookies.remove.callCount).toBe(2);
 				});
 
 				it('should throw exception on jQuery parse error', function () {

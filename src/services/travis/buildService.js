@@ -2,9 +2,8 @@ define([
 	'services/buildService',
 	'services/request',
 	'rx',
-	'jquery',
-	'signals'
-], function (BuildService, request, Rx, $, Signal) {
+	'jquery'
+], function (BuildService, request, Rx, $) {
 
 	'use strict';
 

@@ -1,4 +1,4 @@
-define(['signals'], function (signals) {
+define(['signals', 'rx'], function (signals, Rx) {
 
 	'use strict';
 	
@@ -21,10 +21,8 @@ define(['signals'], function (signals) {
 		};
 	};
 
-	MockBuildService.prototype.projects = function () {
-		var receivedProjects = new signals.Signal();
-		receivedProjects.memorize = true;
-		return receivedProjects;
+	MockBuildService.prototype.availableBuilds = function () {
+		return Rx.observable.never();
 	};
 
 	MockBuildService.prototype.activeProjects = function () {

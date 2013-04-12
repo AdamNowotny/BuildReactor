@@ -38,19 +38,6 @@ define([
 			spyOn(settingsFormView, 'resetButtons');
 		}
 
-		function setupBuildService() {
-			receivedProjects = new signals.Signal();
-			errorThrown = new signals.Signal();
-			receivedProjects.memorize = true;
-			errorThrown.memorize = true;
-			spyOn(MockBuildService.prototype, 'projects').andCallFake(function () {
-				return {
-					receivedProjects: receivedProjects,
-					errorThrown: errorThrown
-				};
-			});
-		}
-
 		beforeEach(function () {
 			jasmine.getFixtures().load('settings/serviceOptionsFixture.html');
 			settings = {
@@ -67,7 +54,6 @@ define([
 			});
 			setupProjectView();
 			setupSettingsFormView();
-			setupBuildService();
 			settingsFormContainer = $('.settings-form-container');
 			projectViewContainer = $('.project-selection-container');
 			serviceOptions.initialize();

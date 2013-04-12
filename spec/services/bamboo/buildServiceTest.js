@@ -2,14 +2,12 @@ define([
 		'services/bamboo/buildService',
 		'services/bamboo/bambooPlan',
 		'services/bamboo/bambooRequest',
-		'common/timer',
-		'services/poolingService',
 		'jquery',
-		'signals',
-		'jasmineSignals',
+		'rx',
+		'services/request',
 		'json!spec/fixtures/bamboo/projects.json'
 	],
-	function (BuildService, BambooPlan, BambooRequest, Timer, PoolingService, $, signals, spyOnSignal, projectsJson) {
+	function (BuildService, BambooPlan, BambooRequest, $, Rx, request, projectsJson) {
 
 		'use strict';
 
@@ -17,8 +15,6 @@ define([
 
 			var service;
 			var settings;
-			var mockBambooRequestProjects;
-			var mockTimer;
 
 			beforeEach(function () {
 				settings = {
@@ -30,12 +26,6 @@ define([
 					projects: ['PROJECT1-PLAN1', 'PROJECT2-PLAN2']
 				};
 				service = new BuildService(settings);
-				mockBambooRequestProjects = spyOn(BambooRequest.prototype, 'projects').andCallFake(function () {
-					this.on.responseReceived.dispatch(projectsJson);
-				});
-				mockTimer = spyOn(Timer.prototype, 'start');
-				spyOn(PoolingService.prototype, 'start');
-				spyOn(PoolingService.prototype, 'stop');
 			});
 
 			it('should provide default settings', function () {
@@ -52,84 +42,44 @@ define([
 				expect(settings.updateInterval).toBe(60);
 			});
 
-			it('should expose service interface', function () {
-				expect(service.settings).toBe(settings);
-				expect(service.on.brokenBuild).toBeDefined();
-				expect(service.on.fixedBuild).toBeDefined();
-				expect(service.on.errorThrown).toBeDefined();
-				expect(service.on.updating).toBeDefined();
-				expect(service.on.updated).toBeDefined();
-				expect(service.on.startedBuild).toBeDefined();
-				expect(service.on.finishedBuild).toBeDefined();
-			});
-
-			describe('projects', function () {
-
-				it('should use url and credentials when getting available projects', function () {
-					mockBambooRequestProjects.andCallFake(function () {
-						expect(this.settings.username).toBe(settings.username);
-						expect(this.settings.password).toBe(settings.password);
-						expect(this.settings.url).toBe(settings.url);
-						this.on.responseReceived.dispatch(projectsJson);
-					});
-
-					service.projects([]);
-
-					expect(mockBambooRequestProjects).toHaveBeenCalled();
-				});
+			describe('availableBuilds', function () {
 
 				it('should return available projects', function () {
-					var response;
+					var rxJson = Rx.Observable.never();
+					spyOn(request, 'json').andReturn(rxJson);
 
-					service.projects([]).addOnce(function (result) {
-						response = result;
-					});
+					var response = service.availableBuilds();
 
-					expect(response.error).not.toBeDefined();
-					expect(response.projects).toBeDefined();
+					expect(response).toBe(rxJson);
 				});
 
-				it('should return project', function () {
-					var response;
-
-					service.projects([]).addOnce(function (result) {
-						response = result;
+				it('should pass options to request', function () {
+					spyOn(request, 'json').andCallFake(function (options) {
+						expect(options.username).toBe(settings.username);
+						expect(options.password).toBe(settings.password);
+						expect(options.url).toBe('http://example.com/rest/api/latest/project?expand=projects.project.plans.plan');
+						expect(options.authCookie).toBe('JSESSIONID');
 					});
 
-					expect(response.projects.items[0].id).toBe('PROJECT1-PLAN1');
-					expect(response.projects.items[0].name).toBe('Plan 1');
-					expect(response.projects.items[0].group).toBe('Project 1');
-					expect(response.projects.items[0].enabled).toBe(true);
+					service.availableBuilds();
+
+					expect(request.json).toHaveBeenCalled();
 				});
 
-				it('should return error', function () {
-					mockBambooRequestProjects.andCallFake(function () {
-						this.on.errorReceived.dispatch({ message: 'error message' });
+				it('should parse response', function () {
+					spyOn(request, 'json').andCallFake(function (options) {
+						var response = options.parser(projectsJson);
+						expect(response.items.length).toBe(5);
+						expect(response.items[0].id).toBe('PROJECT1-PLAN1');
+						expect(response.items[0].name).toBe('Plan 1');
+						expect(response.items[0].group).toBe('Project 1');
+						expect(response.items[0].enabled).toBe(true);
 					});
-					var response;
 
-					service.projects([]).addOnce(function (result) {
-						response = result;
-					});
+					service.availableBuilds();
 
-					expect(response.error).toBeDefined();
-					expect(response.projects).not.toBeDefined();
+					expect(request.json).toHaveBeenCalled();
 				});
-
-				it('should signal error if parsing the response fails', function () {
-					mockBambooRequestProjects.andCallFake(function () {
-						this.on.responseReceived.dispatch({ unknown: 'response' });
-					});
-
-					var response;
-					service.projects([]).addOnce(function (result) {
-						response = result;
-					});
-
-					expect(response.error).toBeDefined();
-					expect(response.error.name).toBe('ParseError');
-				});
-
 
 			});
 

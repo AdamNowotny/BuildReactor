@@ -35,6 +35,26 @@ define([
 
 		describe('availableBuilds', function () {
 
+			it('should return available projects', function () {
+				var rxJson = Rx.Observable.never();
+				spyOn(request, 'json').andReturn(rxJson);
+
+				var response = service.availableBuilds();
+
+				expect(response).toBe(rxJson);
+			});
+
+			it('should pass options to request', function () {
+				spyOn(request, 'json').andCallFake(function (options) {
+					expect(options.data['owner_name']).toBe(settings.username);
+					expect(options.url).toBe('https://api.travis-ci.org/repos/');
+				});
+
+				service.availableBuilds();
+
+				expect(request.json).toHaveBeenCalled();
+			});
+
 			it('should parse response', function () {
 				spyOn(request, 'json').andCallFake(function (options) {
 					var response = options.parser(reposJson);

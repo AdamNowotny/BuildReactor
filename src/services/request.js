@@ -7,6 +7,8 @@ define([
 
 	'use strict';
 
+	var unauthorizedStatusCode = 401;
+
 	function createAjaxError(error, ajaxOptions) {
 		var response = {};
 		var message;
@@ -25,36 +27,48 @@ define([
 		return response;
 	}
 
-	function json(options) {
-		return send(options, 'json');
-	}
-
-	function send(options, dataType) {
-		var ajaxOptions = {
+	function createAjaxOptions(options, dataType) {
+		return {
 			type: 'GET',
 			url: options.url,
 			data: options.data,
 			cache: false,
 			dataType: dataType
 		};
-		if (options.username && options.username.trim() !== '') {
-			var credentials = options.username + ':' + options.password;
-			var base64 = btoa(credentials);
-			ajaxOptions.headers = { 'Authorization': 'Basic ' + base64 };
-		}
-		return $.ajaxAsObservable(ajaxOptions).catchException(function (ex) {
-			return Rx.Observable.throwException(createAjaxError(ex, ajaxOptions));
-		}).select(function (response) {
+	}
+
+	function createParser(parser) {
+		return function (response) {
 			try {
-				if (options.parser) {
-					return options.parser(response.data);
+				if (parser) {
+					return parser(response.data);
 				} else {
 					return response.data;
 				}
 			} catch (ex) {
 				throw { name: 'ParseError', message: 'Unrecognized response', httpResponse: response};
 			}
-		});
+		};
+	}
+
+	function send(options, dataType) {
+		var ajaxOptions = createAjaxOptions(options, dataType);
+		if (options.username && options.username.trim() !== '') {
+			var credentials = options.username + ':' + options.password;
+			var base64 = btoa(credentials);
+			ajaxOptions.headers = { 'Authorization': 'Basic ' + base64 };
+		}
+		return $.ajaxAsObservable(ajaxOptions).catchException(function (ex) {
+			var ajaxError = createAjaxError(ex, ajaxOptions);
+			if (options.authCookie && ajaxError.httpStatus === unauthorizedStatusCode) {
+				chrome.cookies.remove(options.url, options.authCookie);
+			}
+			throw ajaxError;
+		}).retry(2).select(createParser(options.parser));
+	}
+
+	function json(options) {
+		return send(options, 'json');
 	}
 
 	function xml(options) {

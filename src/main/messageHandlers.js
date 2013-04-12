@@ -27,21 +27,12 @@ define([
 			break;
 		case 'availableProjects':
 			serviceRepository.create(request.serviceSettings).addOnce(function (service) {
-				if (service.availableBuilds) {
-					service.availableBuilds().subscribe(function (projects) {
-						projects.selected = request.serviceSettings.projects;
-						sendResponse({ projects: projects });
-					}, function (error) {
-						sendResponse({ error: error });
-					});
-				} else {
-					service.projects(request.serviceSettings.projects).addOnce(function (response) {
-						if (response.projects) {
-							response.projects.selected = request.serviceSettings.projects;
-						}
-						sendResponse(response);
-					});
-				}
+				service.availableBuilds().subscribe(function (projects) {
+					projects.selected = request.serviceSettings.projects;
+					sendResponse({ projects: projects });
+				}, function (error) {
+					sendResponse({ error: error });
+				});
 			});
 			return true;
 		}

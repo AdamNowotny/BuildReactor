@@ -2,8 +2,9 @@ define([
 	'main/messageHandlers',
 	'main/serviceRepository',
 	'signals',
+	'rx',
 	'spec/mocks/buildService'
-], function (messageHandlers, serviceRepository, Signal, MockBuildService) {
+], function (messageHandlers, serviceRepository, Signal, Rx, MockBuildService) {
 	'use strict';
 
 	describe('messageHandlers', function () {
@@ -23,8 +24,7 @@ define([
 			var service;
 			var sendResponse;
 			var request;
-			var projectsSignal;
-			var errorThrown;
+			var mockAvailableBuilds;
 
 			beforeEach(function () {
 				serviceLoaded = new Signal();
@@ -40,10 +40,8 @@ define([
 					serviceSettings: {}
 				};
 
-				projectsSignal = new Signal();
-				errorThrown = new Signal();
-				spyOn(service, 'projects').andCallFake(function () {
-					return projectsSignal;
+				mockAvailableBuilds = spyOn(service, 'availableBuilds').andCallFake(function () {
+					return Rx.Observable.never();
 				});
 
 			});
@@ -54,42 +52,36 @@ define([
 				expect(serviceRepository.create).toHaveBeenCalled();
 			});
 
-			it('should get projects', function () {
+			it('should call service', function () {
 				handler(request, null, sendResponse);
 
-				expect(service.projects).toHaveBeenCalled();
+				expect(service.availableBuilds).toHaveBeenCalled();
 			});
 
-			it('should send projects back', function () {
-				var projectsResponse = {
-					projects: {}
-				};
-				var responseSent = false;
+			it('should send response back', function () {
+				var serviceResponse = {};
+				var actualResponse;
 				var sendResponse = function (response) {
-					responseSent = true;
-					expect(response).toBe(projectsResponse);
+					actualResponse = response;
 				};
+				mockAvailableBuilds.andReturn(Rx.Observable.returnValue(serviceResponse));
 
 				handler(request, null, sendResponse);
-				projectsSignal.dispatch(projectsResponse);
 
-				expect(responseSent).toBe(true);
+				expect(actualResponse.projects).toBe(serviceResponse);
 			});
 
 			it('should send error back', function () {
-				var errorResponse = {
-					error: {}
-				};
-				var responseSent = false;
+				var serviceError = {};
+				var actualResponse;
 				var sendResponse = function (response) {
-					responseSent = true;
-					expect(response).toBe(errorResponse);
+					actualResponse = response;
 				};
+				mockAvailableBuilds.andReturn(Rx.Observable.throwException(serviceError));
 
 				handler(request, null, sendResponse);
-				projectsSignal.dispatch(errorResponse);
 
-				expect(responseSent).toBe(true);
+				expect(actualResponse.error).toBe(serviceError);
 			});
 
 		});

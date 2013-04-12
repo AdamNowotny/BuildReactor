@@ -21,7 +21,6 @@ define([
 				responseReceived: new signals.Signal(),
 				errorReceived: new signals.Signal()
 			};
-			
 		};
 
 		function createAjaxRequestSettings(settings, urlPath) {
@@ -52,10 +51,6 @@ define([
 			}, this);
 			callCount++;
 			request.send();
-		};
-
-		BambooRequest.prototype.projects = function () {
-			this.send('project?expand=projects.project.plans.plan');
 		};
 
 		BambooRequest.prototype.latestPlanResult = function (planKey) {

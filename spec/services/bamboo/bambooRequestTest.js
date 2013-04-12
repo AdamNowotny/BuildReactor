@@ -111,16 +111,6 @@ define([
 				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
 			});
 
-			it('should get projects', function () {
-				spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
-					expect(this.settings.url).toBe('http://example.com/rest/api/latest/project?expand=projects.project.plans.plan');
-				});
-
-				request.projects();
-
-				expect(AjaxRequest.prototype.send).toHaveBeenCalled();
-			});
-
 			it('should get latest plan results', function () {
 				spyOn(AjaxRequest.prototype, 'send').andCallFake(function () {
 					expect(this.settings.url).toBe('http://example.com/rest/api/latest/result/SOME-PLAN-KEY/latest?expand=changes');

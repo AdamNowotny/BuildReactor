@@ -1,12 +1,10 @@
 define([
 	'jquery',
-	'signals',
-	'./bambooRequest',
 	'./bambooPlan',
-	'mout/string/interpolate',
-	'mout/object/values',
-	'services/buildService'
-], function ($, Signal, BambooRequest, BambooPlan, interpolate, values, BuildService) {
+	'services/request',
+	'services/buildService',
+	'common/joinUrl'
+], function ($, BambooPlan, request, BuildService, joinUrl) {
 
 	'use strict';
 
@@ -30,26 +28,17 @@ define([
 		};
 	};
 
-	BambooBuildService.prototype.projects = function () {
-		var completed = new Signal();
-		completed.memorize = true;
-		var plansRequest = new BambooRequest(this.settings);
-		plansRequest.on.responseReceived.addOnce(function (response) {
-			try {
-				var templateData = createTemplateData(response);
-				completed.dispatch({ projects: templateData });
-			} catch (ex) {
-				completed.dispatch({ error: { name: 'ParseError', message: 'Unrecognized response'}});
-			}
+	BambooBuildService.prototype.availableBuilds = function () {
+		return request.json({
+			url: joinUrl(this.settings.url, 'rest/api/latest/project?expand=projects.project.plans.plan'),
+			username: this.settings.username,
+			password: this.settings.password,
+			authCookie: 'JSESSIONID',
+			parser: parseAvailableBuilds
 		});
-		plansRequest.on.errorReceived.addOnce(function (ajaxError) {
-			completed.dispatch({ error: ajaxError });
-		});
-		plansRequest.projects();
-		return completed;
 	};
 
-	var createTemplateData = function (response) {
+	var parseAvailableBuilds = function (response) {
 		var projects = response.projects.project;
 		var items = [];
 		for (var projectIndex = 0; projectIndex < projects.length; projectIndex++) {
