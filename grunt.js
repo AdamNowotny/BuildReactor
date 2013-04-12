@@ -8,11 +8,10 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-mincss');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
 	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-jsvalidate');
 	grunt.loadNpmTasks('grunt-jasmine-runner');
 
-	grunt.registerTask('default', 'clean:build jsvalidate lint jasmine mincss requirejs copy clean:buildSrc');
-	grunt.registerTask('travis', 'clean:build jsvalidate lint jasmine');
+	grunt.registerTask('default', 'clean:build lint jasmine mincss requirejs copy clean:buildSrc');
+	grunt.registerTask('travis', 'clean:build lint jasmine');
 	grunt.registerTask('test', 'lint jasmine');
 	grunt.registerTask('dist', 'clean:build mincss requirejs copy clean:buildSrc');
 
@@ -32,9 +31,6 @@ module.exports = function (grunt) {
 			]
 		},
 		lint: {
-			files: ['src/**/*.js', 'spec/**/*.js']
-		},
-		jsvalidate: {
 			files: ['src/**/*.js', 'spec/**/*.js']
 		},
 		jshint: {
