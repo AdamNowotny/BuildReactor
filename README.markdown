@@ -127,7 +127,7 @@ Contributors
 ============
 [Adam Nowotny](https://github.com/AdamNowotny)
 
-[James Rhodes](https://github.com/hach-que)
+[James Rhodes](https://github.com/hach-que) - BuildBot support
 
 Legal
 =====
