@@ -1,3 +1,4 @@
+/*global $:false, jasmine:true */
 var chrome = {
 	browserAction: {
 		setBadgeText: function () {},
@@ -16,6 +17,12 @@ var chrome = {
 		remove: function () {}
 	}
 };
+
+window.webkitNotifications = window.webkitNotifications || {};
+window.webkitNotifications.createNotification = function () {};
+
+jasmine.getFixtures().fixturesPath = 'spec/fixtures';
+
 require.config({
 	baseUrl: '../src',
 	paths: {

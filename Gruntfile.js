@@ -5,102 +5,118 @@ module.exports = function (grunt) {
 
 	grunt.loadNpmTasks('grunt-clear');
 	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-connect');
+	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-compress');
+	grunt.loadNpmTasks('grunt-contrib-jasmine');
+	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-mincss');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
-	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-jasmine-runner');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-plato');
 
-	grunt.registerTask('default', 'clean:build lint jasmine mincss requirejs copy clean:buildSrc');
-	grunt.registerTask('travis', 'clean:build lint jasmine');
-	grunt.registerTask('test', 'lint jasmine');
-	grunt.registerTask('dist', 'clean:build mincss requirejs copy clean:buildSrc');
+	grunt.registerTask('default', ['jshint', 'connect:test', 'jasmine', 'mincss', 'requirejs', 'copy', 'compress']);
+	grunt.registerTask('test', ['connect:test', 'jasmine']);
+	grunt.registerTask('server', ['connect:server']);
+	grunt.registerTask('dist', ['clean', 'mincss', 'requirejs', 'copy']);
+	grunt.registerTask('report', ['plato:src']);
+	grunt.registerTask('travis', ['clean', 'jshint', 'connect:test', 'jasmine']);
 
 	grunt.initConfig({
+		pkg: grunt.file.readJSON('package.json'),
 		vars: {
 			build: '_build',
-			dist: '_build/BuildReactor'
+			dist: '_build/<%= pkg.name %>'
 		},
 		clean: {
-			build: [ '<%= vars.build %>' ],
-			buildSrc: [
-				'<%= vars.dist %>/src/mout',
-				'<%= vars.dist %>/src/options',
-				'<%= vars.dist %>/src/popup',
-				'<%= vars.dist %>/src/templates',
-				'<%= vars.dist %>/src/build.txt'
-			]
-		},
-		lint: {
-			files: ['src/**/*.js', 'spec/**/*.js']
+			src: '<%= vars.build %>'
 		},
 		jshint: {
+			files: ['src/**/*.js', 'spec/**/*.js'],
 			options: {
-				bitwise: true,
-				curly: true,
-				eqeqeq: true,
-				forin: true,
-				immed: true,
-				latedef: true,
-				newcap: true,
-				noarg: true,
-				noempty: true,
-				nonew: true,
-				plusplus: false,
-				regexp: true,
-				undef: true,
-				strict: true,
-				trailing: true,
-
-				es5: true,
-				sub: true,
-
-				browser: true,
-				devel: true,
-
-				white: true
-			},
-			globals: {
-				afterEach: true,
-				beforeEach: true,
-				chrome: true,
-				define: true,
-				describe: true,
-				expect: true,
-				it: true,
-				jasmine: true,
-				loadFixtures: true,
-				readFixtures: true,
-				require: true,
-				runs: true,
-				spyOn: true,
-				waitsFor: true,
-				xit: true
+				jshintrc: '.jshintrc',
 			}
 		},
 		jasmine: {
-			specs: 'spec/**/*Test.js',
-			amd: true,
-			helpers: [
-				"components/jasmine-jquery/lib/jasmine-jquery.js",
-				"components/requirejs/require.js",
-				"spec/test.js"
-			],
-			template: {
-				src: 'spec/SpecRunner.tmpl',
-				opts: {}
+			main: {
+				options: {
+					specs: 'spec/**/*Test.js',
+					host: 'http://localhost:8000/',
+					vendor: [
+						"components/jasmine-jquery/lib/jasmine-jquery.js"
+					],
+					helpers: [
+						"spec/test.js"
+					],
+					template: require('grunt-template-jasmine-requirejs'),
+					templateOptions: {
+						requireConfig: {
+							baseUrl: './src',
+							paths: {
+								messages: 'options/messagesStatic',
+								bootbox: '../components/bootbox/bootbox',
+								mout: '../components/mout/src',
+								bootstrap: '../lib/twitter-bootstrap/js/bootstrap',
+								fixtures: '../spec/fixtures',
+								jasmineSignals: '../components/jasmine-signals/jasmine-signals',
+								jquery: '../components/jquery/jquery',
+								json: '../components/requirejs-plugins/src/json',
+								mocks: '../spec/mocks',
+								spec: '../spec',
+								signals: '../components/js-signals/dist/signals',
+								text: '../components/requirejs-text/text',
+								hbs: '../lib/require-handlebars-plugin/hbs-plugin',
+								handlebars: '../lib/require-handlebars-plugin/Handlebars',
+								underscore: '../lib/require-handlebars-plugin/hbs/underscore',
+								i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
+								json2: '../lib/require-handlebars-plugin/hbs/json2',
+								rx: '../lib/rx/rx.min',
+								'rx.jquery': '../lib/rx/rx.jquery',
+								'rx.time': '../lib/rx/rx.time.min',
+								bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons'
+							},
+							shim: {
+								jquery: {
+									exports: 'jquery'
+								},
+								bootstrap: [ 'jquery' ],
+								bootbox: {
+									deps: [ 'bootstrap' ],
+									exports: 'bootbox'
+								},
+								bootstrapToggle: {
+									deps: [ 'jquery', 'bootstrap' ]
+								}
+							},
+							hbs: {
+								templateExtension: 'html',
+								helperDirectory: 'templates/helpers/',
+								i18nDirectory:   'templates/i18n/'
+							},
+							waitSeconds: 2
+						}
+					}
+				}
+			}
+		},
+		connect: {
+			test: {
+				options: {
+					keepalive: false
+				}
 			},
-			timeout: 3000,
-			phantomjs: {
-				"ignore-ssl-errors": true
+			server: {
+				options: {
+					keepalive: true
+				}
 			}
 		},
 		watch: {
-			clear: {
+			options: {
 				files: [ 'src/**/*', 'spec/**/*' ],
-				tasks: ["clear"]
-			},
-			files: [ 'src/**/*', 'spec/**/*' ],
-			tasks: 'jasmine'
+				tasks: ['clear', 'jasmine'],
+				interrupt: true
+			}
 		},
 		mincss: {
 			compress: {
@@ -229,6 +245,30 @@ module.exports = function (grunt) {
 						'lib/twitter-bootstrap/img/*',
 						'lib/twitter-bootstrap/js/bootstrap.min.js'
 					]
+				}
+			}
+		},
+		compress: {
+			main: {
+				options: {
+					archive: '<%= vars.build %>/<%= pkg.name %>.zip'
+				},
+				files: [
+					{
+						src: ['<%= vars.dist %>/**/*']
+					}
+				]
+			}
+		},
+		plato: {
+			all: {
+				files: {
+					'docs/report': ['src/**/*.js', 'spec/**/*.js']
+				}
+			},
+			src: {
+				files: {
+					'docs/report': ['src/**/*.js']
 				}
 			}
 		}
