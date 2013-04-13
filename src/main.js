@@ -10,6 +10,11 @@ require.config({
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 		json2: '../lib/require-handlebars-plugin/hbs/json2'
 	},
+	map: {
+		'rx.jquery': {
+			'jQuery': 'jquery'
+		}
+	},
 	hbs: {
 		templateExtension: 'html',
 		helperDirectory: 'templates/helpers/',

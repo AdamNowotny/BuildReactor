@@ -89,7 +89,7 @@ define([
 					};
 					spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.throwException(response));
 
-					request.json(ajaxOptions).subscribe(null, function (d) {
+					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {
 						actualResponse = d;
 					});
 
@@ -110,7 +110,7 @@ define([
 					var ajaxOptions = { url: 'http://sample.com' };
 					spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.throwException(response));
 
-					request.json(ajaxOptions).subscribe(null, function (d) {
+					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {
 						actualResponse = d;
 					});
 
@@ -135,7 +135,7 @@ define([
 						expect(authCookie).toBe(ajaxOptions.authCookie);
 					});
 
-					request.json(ajaxOptions).subscribe(null, function (d) {});
+					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {});
 
 					expect(chrome.cookies.remove).toHaveBeenCalled();
 				});
@@ -154,7 +154,7 @@ define([
 					});
 					spyOn(chrome.cookies, 'remove');
 
-					request.json(ajaxOptions).subscribe(null, function (d) {});
+					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {});
 
 					expect(chrome.cookies.remove.callCount).toBe(2);
 				});
@@ -174,7 +174,7 @@ define([
 					var ajaxOptions = { url: 'http://sample.com' };
 					spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.throwException(response));
 
-					request.json(ajaxOptions).subscribe(null, function (d) {
+					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {
 						actualResponse = d;
 					});
 
@@ -197,7 +197,7 @@ define([
 
 					var errorResponse;
 					var a = request.json(settings);
-					a.subscribe(null, function (ex) {
+					a.subscribe(function (d) {}, function (ex) {
 						errorResponse = ex;
 					});
 

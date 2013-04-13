@@ -11,8 +11,13 @@ require.config({
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore',
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
-		rx: '../lib/rx/rx.min',
-		'rx.time': '../lib/rx/rx.time.min'
+		rx: '../components/rxjs/rx.min',
+		'rx.time': '../components/rxjs/rx.time.min'
+	},
+	map: {
+		'rx.jquery': {
+			'jQuery': 'jquery'
+		}
 	},
 	hbs: {
 		templateExtension: 'html',

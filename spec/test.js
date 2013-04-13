@@ -36,10 +36,15 @@ require.config({
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore',
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
-		rx: '../lib/rx/rx.min',
-		'rx.jquery': '../lib/rx/rx.jquery',
-		'rx.time': '../lib/rx/rx.time.min',
+		rx: '../components/rxjs/rx',
+		'rx.jquery': '../components/rxjs-jquery/rx.jquery',
+		'rx.time': '../components/rxjs/rx.time',
 		bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons'
+	},
+	map: {
+		'rx.jquery': {
+			'jQuery': 'jquery'
+		}
 	},
 	shim: {
 		bootstrap: [ 'jquery' ],

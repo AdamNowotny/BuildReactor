@@ -158,10 +158,15 @@ module.exports = function (grunt) {
 						underscore: '../lib/require-handlebars-plugin/hbs/underscore',
 						i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 						json2: '../lib/require-handlebars-plugin/hbs/json2',
-						rx: '../lib/rx/rx',
-						'rx.time': '../lib/rx/rx.time',
-						'rx.jquery': '../lib/rx/rx.jquery',
+						rx: '../components/rxjs/rx',
+						'rx.time': '../components/rxjs/rx.time',
+						'rx.jquery': '../components/rxjs-jquery/rx.jquery',
 						bootstrapToggle: 'empty:'
+					},
+					map: {
+						'rx.jquery': {
+							'jQuery': 'jquery'
+						}
 					},
 					hbs: {
 						templateExtension: 'html',
