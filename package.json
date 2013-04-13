@@ -22,7 +22,7 @@
     }
   ],
   "engines": {
-    "node": ">= 0.8.0"
+    "node": ">= 0.11.0"
   },
   "scripts": {
     "test": "bower update; grunt travis --verbose"
@@ -31,7 +31,6 @@
     "bower": "~0.8.6",
     "grunt": "~0.4.1",
     "grunt-clear": "~0.2.1",
-    "grunt-cli": "~0.1.7",
     "grunt-contrib-clean": "~0.4.0",
     "grunt-contrib-connect": "~0.3.0",
     "grunt-contrib-compress": "~0.4.9",
