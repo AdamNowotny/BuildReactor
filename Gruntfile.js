@@ -10,15 +10,15 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-compress');
 	grunt.loadNpmTasks('grunt-contrib-jasmine');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-mincss');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-plato');
 
-	grunt.registerTask('default', ['clean:build', 'jshint', 'connect:test', 'jasmine', 'mincss', 'requirejs', 'copy', 'clean:buildSrc', 'compress']);
-	grunt.registerTask('test', ['connect:test', 'jasmine']);
+	grunt.registerTask('default', ['clean:build', 'jshint', 'connect:test', 'jasmine', 'cssmin', 'requirejs', 'copy', 'clean:buildSrc', 'compress']);
+	grunt.registerTask('test', ['jshint', 'connect:test', 'jasmine']);
 	grunt.registerTask('server', ['jasmine:main:build', 'connect:server']);
-	grunt.registerTask('dist', ['clean:build', 'mincss', 'requirejs', 'copy', 'clean:buildSrc']);
+	grunt.registerTask('dist', ['clean:build', 'cssmin', 'requirejs', 'copy', 'clean:buildSrc']);
 	grunt.registerTask('report', ['plato:src']);
 	grunt.registerTask('travis', ['clean:build', 'jshint', 'connect:test', 'jasmine']);
 
@@ -79,8 +79,8 @@ module.exports = function (grunt) {
 								spec: '../spec',
 								text: '../components/requirejs-text/text',
 								rx: '../components/rxjs/rx',
-								'rx.time': '../components/rxjs/rx.time',
 								'rx.jquery': '../components/rxjs-jquery/rx.jquery',
+								'rx.time': '../components/rxjs/rx.time',
 								underscore: '../lib/require-handlebars-plugin/hbs/underscore'
 							},
 							map: {
@@ -131,7 +131,7 @@ module.exports = function (grunt) {
 				interrupt: true
 			}
 		},
-		mincss: {
+		cssmin: {
 			compress: {
 				files: {
 					'<%= vars.dist %>/css/options.css': [
