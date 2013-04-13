@@ -25,7 +25,7 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "bower update; grunt travis --verbose"
+    "test": "npm update; bower update; grunt travis --verbose"
   },
   "dependencies": {
     "bower": "~0.8.6",
