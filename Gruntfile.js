@@ -15,12 +15,12 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-plato');
 
-	grunt.registerTask('default', ['jshint', 'connect:test', 'jasmine', 'mincss', 'requirejs', 'copy', 'compress']);
+	grunt.registerTask('default', ['clean:build', 'jshint', 'connect:test', 'jasmine', 'mincss', 'requirejs', 'copy', 'clean:buildSrc', 'compress']);
 	grunt.registerTask('test', ['connect:test', 'jasmine']);
-	grunt.registerTask('server', ['connect:server']);
-	grunt.registerTask('dist', ['clean', 'mincss', 'requirejs', 'copy']);
+	grunt.registerTask('server', ['jasmine:main:build', 'connect:server']);
+	grunt.registerTask('dist', ['clean:build', 'mincss', 'requirejs', 'copy', 'clean:buildSrc']);
 	grunt.registerTask('report', ['plato:src']);
-	grunt.registerTask('travis', ['clean', 'jshint', 'connect:test', 'jasmine']);
+	grunt.registerTask('travis', ['clean:build', 'jshint', 'connect:test', 'jasmine']);
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -29,7 +29,14 @@ module.exports = function (grunt) {
 			dist: '_build/<%= pkg.name %>'
 		},
 		clean: {
-			src: '<%= vars.build %>'
+			build: [ '<%= vars.build %>' ],
+			buildSrc: [
+				'<%= vars.dist %>/src/mout',
+				'<%= vars.dist %>/src/options',
+				'<%= vars.dist %>/src/popup',
+				'<%= vars.dist %>/src/templates',
+				'<%= vars.dist %>/src/build.txt'
+			]
 		},
 		jshint: {
 			files: ['src/**/*.js', 'spec/**/*.js'],
@@ -53,27 +60,33 @@ module.exports = function (grunt) {
 						requireConfig: {
 							baseUrl: './src',
 							paths: {
-								messages: 'options/messagesStatic',
+								'options/messages': 'options/messages',
+								'popup/messages': 'popup/messages',
 								bootbox: '../components/bootbox/bootbox',
-								mout: '../components/mout/src',
 								bootstrap: '../lib/twitter-bootstrap/js/bootstrap',
+								bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons',
 								fixtures: '../spec/fixtures',
+								handlebars: '../lib/require-handlebars-plugin/Handlebars',
+								hbs: '../lib/require-handlebars-plugin/hbs-plugin',
+								i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 								jasmineSignals: '../components/jasmine-signals/jasmine-signals',
 								jquery: '../components/jquery/jquery',
 								json: '../components/requirejs-plugins/src/json',
-								mocks: '../spec/mocks',
-								spec: '../spec',
-								signals: '../components/js-signals/dist/signals',
-								text: '../components/requirejs-text/text',
-								hbs: '../lib/require-handlebars-plugin/hbs-plugin',
-								handlebars: '../lib/require-handlebars-plugin/Handlebars',
-								underscore: '../lib/require-handlebars-plugin/hbs/underscore',
-								i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 								json2: '../lib/require-handlebars-plugin/hbs/json2',
-								rx: '../lib/rx/rx.min',
-								'rx.jquery': '../lib/rx/rx.jquery',
-								'rx.time': '../lib/rx/rx.time.min',
-								bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons'
+								mocks: '../spec/mocks',
+								mout: '../components/mout/src',
+								signals: '../components/js-signals/dist/signals',
+								spec: '../spec',
+								text: '../components/requirejs-text/text',
+								rx: '../components/rxjs/rx',
+								'rx.time': '../components/rxjs/rx.time',
+								'rx.jquery': '../components/rxjs-jquery/rx.jquery',
+								underscore: '../lib/require-handlebars-plugin/hbs/underscore'
+							},
+							map: {
+								'rx.jquery': {
+									'jQuery': 'jquery'
+								}
 							},
 							shim: {
 								jquery: {
