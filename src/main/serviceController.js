@@ -53,19 +53,30 @@ define([
 		}
 
 		function run() {
+
+			function serviceStarted(service) {
+				on.started.dispatch(service.settings);
+				toInitializeCount--;
+				if (toInitializeCount === 0) {
+					on.startedAll.dispatch();
+				}
+			}
+
 			if (services.length === 0) {
 				on.startedAll.dispatch();
 			}
 			var toInitializeCount = services.length;
 			services.forEach(function (s) {
-				s.start();
-				s.on.updated.addOnce(function () {
-					on.started.dispatch(s.settings);
-					toInitializeCount--;
-					if (toInitializeCount === 0) {
-						on.startedAll.dispatch();
-					}
-				});
+				if (s.rx) {
+					s.start().subscribe(function (_) {
+						serviceStarted(s);
+					});
+				} else {
+					s.start();
+					s.on.updated.addOnce(function () {
+						serviceStarted(s);
+					});
+				}
 			});
 		}
 
@@ -80,7 +91,11 @@ define([
 			if (!service.settings) {
 				throw { name: 'ArgumentInvalid', message: 'service.settings not defined' };
 			}
-			subscribeTo(service);
+			if (service.rx) {
+				rxSubscribeTo(service);
+			} else {
+				subscribeTo(service);
+			}
 			services.push(service);
 			on.added.dispatch(service.settings);
 		}
@@ -92,14 +107,28 @@ define([
 			}
 			services.splice(index, 1);
 			service.stop();
-			unsubscribeFrom(service);
+			if (!service.rx) {
+				unsubscribeFrom(service);
+			}
 		}
 
 		function removeAllServices() {
 			services.forEach(function (s) {
-				unsubscribeFrom(s);
+				if (s.rx) {
+					rxUnsubscribeFrom(s);
+				} else {
+					unsubscribeFrom(s);
+				}
 			});
 			services = [];
+		}
+
+		function rxSubscribeTo(service) {
+
+		}
+
+		function rxUnsubscribeFrom(service) {
+
 		}
 
 		function subscribeTo(service) {

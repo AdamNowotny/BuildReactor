@@ -79,6 +79,8 @@ module.exports = function (grunt) {
 								spec: '../spec',
 								text: '../components/requirejs-text/text',
 								rx: '../components/rxjs/rx',
+								'rx.aggregates': '../components/rxjs/rx.aggregates',
+								'rx.experimental': '../components/rxjs/rx.experimental',
 								'rx.jquery': '../components/rxjs-jquery/rx.jquery',
 								'rx.time': '../components/rxjs/rx.time',
 								underscore: '../lib/require-handlebars-plugin/hbs/underscore'
@@ -188,6 +190,8 @@ module.exports = function (grunt) {
 						i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 						json2: '../lib/require-handlebars-plugin/hbs/json2',
 						rx: '../components/rxjs/rx',
+						'rx.aggregates': '../components/rxjs/rx.aggregates',
+						'rx.experimental': '../components/rxjs/rx.experimental',
 						'rx.time': '../components/rxjs/rx.time',
 						'rx.jquery': '../components/rxjs-jquery/rx.jquery',
 						bootstrapToggle: 'empty:'

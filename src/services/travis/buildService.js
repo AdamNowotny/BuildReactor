@@ -1,15 +1,16 @@
 define([
-	'services/buildService',
+	'services/rxBuildService',
+	'services/travis/travisBuild',
 	'services/request',
-	'rx',
 	'jquery'
-], function (BuildService, request, Rx, $) {
+], function (BuildService, TravisBuild, request, $) {
 
 	'use strict';
 
 	var TravisBuildService = function (settings) {
 		$.extend(this, new BuildService(settings));
-		//this.Build = Build;
+		this.Build = TravisBuild;
+		this.availableBuilds = availableBuilds;
 	};
 
 	TravisBuildService.settings = function () {
@@ -23,29 +24,29 @@ define([
 		};
 	};
 
-	TravisBuildService.prototype.availableBuilds = function () {
+	var availableBuilds = function () {
+		function parse(response) {
+			var items = response.map(function (repo) {
+				return {
+					id: repo.slug,
+					name: repo.slug,
+					group: null,
+					enabled: true
+				};
+			});
+			return {
+				items: items
+			};
+		}
+
 		return request.json({
 			url: 'https://api.travis-ci.org/repos/',
 			data: {
 				'owner_name': this.settings.username
 			},
-			parser: parseAvailableBuilds
+			parser: parse
 		});
 	};
-
-	function parseAvailableBuilds(response) {
-		var items = response.map(function (repo) {
-			return {
-				id: repo.slug,
-				name: repo.slug,
-				group: null,
-				enabled: true
-			};
-		});
-		return {
-			items: items
-		};
-	}
 
 	return TravisBuildService;
 });

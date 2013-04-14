@@ -1,9 +1,10 @@
 define([
 	'services/travis/buildService',
+	'services/travis/travisBuild',
 	'services/request',
 	'rx',
 	'json!fixtures/travis/repositories.json'
-], function (BuildService, request, Rx, reposJson) {
+], function (BuildService, TravisBuild, request, Rx, reposJson) {
 
 	'use strict';
 
@@ -31,6 +32,20 @@ define([
 			expect(settings.logo).toBe('travis/logo.png');
 			expect(settings.projects.length).toBe(0);
 			expect(settings.username).toBe('');
+		});
+
+		it('should set Build factory method', function () {
+			expect(service.Build).toBe(TravisBuild);
+		});
+
+		it('should expose interface', function () {
+			expect(service.settings).toBe(settings);
+			expect(service.builds).toBeDefined();
+			expect(service.updateAll).toBeDefined();
+			expect(service.start).toBeDefined();
+			expect(service.stop).toBeDefined();
+			expect(service.activeProjects).toBeDefined();
+			expect(service.availableBuilds).toBeDefined();
 		});
 
 		describe('availableBuilds', function () {
