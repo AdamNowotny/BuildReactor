@@ -60,18 +60,20 @@ define([
 		}
 
 		function eventPushed(eventName) {
-			return events.filter(function (event) {
-				return event.eventName === eventName;
-			}).length > 0;
+			return getEvents(eventName).length > 0;
 		}
 
 		function getLastEvent(eventName) {
-			var eventsByName = events.filter(function (event) {
-				return event.eventName === eventName;
-			});
+			var eventsByName = getEvents(eventName);
 			return eventsByName.length ?
 				eventsByName[eventsByName.length - 1] :
 				null;
+		}
+
+		function getEvents(eventName) {
+			return events.filter(function (event) {
+				return event.eventName === eventName;
+			});
 		}
 
 		describe('activeProjects', function () {
@@ -333,6 +335,12 @@ define([
 				expect(getLastEvent('serviceStarted').details.length).toEqual(2);
 			});
 
+			it('should start once until stopped', function () {
+				service.start().subscribe();
+				service.start().subscribe();
+
+				expect(getEvents('serviceStarted').length).toBe(1);
+			});
 		});
 		
 	});

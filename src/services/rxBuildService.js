@@ -19,6 +19,7 @@ define([
 		this.events = new Rx.Subject();
 		this.builds = {};
 		this.latestBuildStates = getInitialStates(settings);
+		this.poolingSubscription = null;
 	}
 
 	var getInitialStates = function (settings) {
@@ -95,15 +96,13 @@ define([
 			.defaultIfEmpty([]);
 	};
 
-	var poolingSubscription = null;
-
 	var start = function () {
-		if (poolingSubscription !== null) { 
+		if (this.poolingSubscription !== null) { 
 			return Rx.Observable.empty();
 		}
 		var self = this;
 		var updateInterval = this.settings.updateInterval * 1000;
-		poolingSubscription = Rx.Observable.interval(updateInterval)
+		this.poolingSubscription = Rx.Observable.interval(updateInterval)
 			.selectMany(function () { return self.updateAll(); })
 			.subscribe();
 		return self.updateAll()
@@ -114,9 +113,9 @@ define([
 	};
 
 	var stop = function () {
-		if (poolingSubscription && !poolingSubscription.isStopped) {
-			poolingSubscription.dispose();
-			poolingSubscription = null;
+		if (this.poolingSubscription && !this.poolingSubscription.isStopped) {
+			this.poolingSubscription.dispose();
+			this.poolingSubscription = null;
 			this.events.onNext({ eventName: 'serviceStopped' });
 		}
 	};
