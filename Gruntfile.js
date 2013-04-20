@@ -189,7 +189,7 @@ module.exports = function (grunt) {
 						underscore: '../lib/require-handlebars-plugin/hbs/underscore',
 						i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 						json2: '../lib/require-handlebars-plugin/hbs/json2',
-						rx: '../components/rxjs/rx',
+						rx: '../components/rxjs/rx.modern',
 						'rx.aggregates': '../components/rxjs/rx.aggregates',
 						'rx.experimental': '../components/rxjs/rx.experimental',
 						'rx.time': '../components/rxjs/rx.time',

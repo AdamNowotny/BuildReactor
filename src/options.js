@@ -13,7 +13,7 @@ require.config({
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
 		bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons',
-		rx: '../components/rxjs/rx',
+		rx: '../components/rxjs/rx.modern',
 		'rx.jquery': '../components/rxjs-jquery/rx.jquery',
 		'rx.time': '../components/rxjs/rx.time'
 	},
