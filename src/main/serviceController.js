@@ -1,7 +1,8 @@
 define([
 		'main/serviceRepository',
+		'rx',
 		'signals'
-	], function (serviceRepository, signals) {
+	], function (serviceRepository, Rx, signals) {
 
 		'use strict';
 
@@ -18,7 +19,7 @@ define([
 		};
 
 		var services = [];
-		
+		var serviceSubscriptions = {};
 		var servicesToLoadCount = 0;
 
 		function load(settings) {
@@ -68,7 +69,10 @@ define([
 			var toInitializeCount = services.length;
 			services.forEach(function (s) {
 				if (s.rx) {
-					s.start().subscribe(function (_) {
+					s.start().subscribe(function () {}, function () {
+						// handle error
+						serviceStarted(s);
+					}, function () {
 						serviceStarted(s);
 					});
 				} else {
@@ -81,10 +85,25 @@ define([
 		}
 
 		function activeProjects() {
-			var projects = services.map(function (s) {
-				return s.activeProjects();
+			return services.map(function (s) {
+				if (s.rx) {
+					var active = s.activeProjects();
+					return {
+						name: active.name,
+						items: active.items.map(function (buildInfo) {
+							return {
+								name: buildInfo.name,
+								group: buildInfo.group,
+								isBroken: buildInfo.isBroken,
+								url: buildInfo.webUrl,
+								isBuilding: buildInfo.isRunning
+							};
+						})
+					};
+				} else {
+					return s.activeProjects();
+				}
 			});
-			return projects;
 		}
 
 		function addService(service) {
@@ -107,28 +126,60 @@ define([
 			}
 			services.splice(index, 1);
 			service.stop();
-			if (!service.rx) {
+			if (service.rx) {
+				rxUnsubscribeFrom(service);
+			} else {
 				unsubscribeFrom(service);
 			}
 		}
 
 		function removeAllServices() {
-			services.forEach(function (s) {
-				if (s.rx) {
-					rxUnsubscribeFrom(s);
+			services.forEach(function (service) {
+				if (service.rx) {
+					rxUnsubscribeFrom(service);
 				} else {
-					unsubscribeFrom(s);
+					service.stop();
+					unsubscribeFrom(service);
 				}
 			});
 			services = [];
+			serviceSubscriptions = {};
 		}
 
 		function rxSubscribeTo(service) {
-
+			// service.on.updating.add(function () {
+			// on.updating.dispatch(service.settings);
+			// });
+			// service.on.updated.add(function () {
+			// on.updated.dispatch(service.settings);
+			// });
+			// service.on.errorThrown.add(function (build) {
+			// on.errorThrown.dispatch(build);
+			// });
+			serviceSubscriptions[service.settings.name] = service.events.subscribe(function (event) {
+				console.log(event.details ? event.details.serviceName : '', event);
+				switch (event.eventName) {
+				case 'brokenBuild':
+					on.brokenBuild.dispatch(event.details);
+					break;
+				case 'buildFixed':
+					on.brokenBuild.dispatch(event.details);
+					break;
+				case 'buildStarted':
+					break;
+				case 'buildFinished':
+					break;
+				case 'serviceStarted':
+					break;
+				case 'serviceStopped':
+					break;
+				}
+			});
 		}
 
 		function rxUnsubscribeFrom(service) {
-
+			serviceSubscriptions[service.settings.name].dispose();
+			delete serviceSubscriptions[service.settings.name];
 		}
 
 		function subscribeTo(service) {

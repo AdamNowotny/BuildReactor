@@ -25,26 +25,21 @@ define([
 	};
 
 	var availableBuilds = function () {
-		function parse(response) {
-			var items = response.map(function (repo) {
-				return {
-					id: repo.slug,
-					name: repo.slug,
-					group: null,
-					enabled: true
-				};
-			});
-			return {
-				items: items
-			};
-		}
-
 		return request.json({
 			url: 'https://api.travis-ci.org/repos/',
-			data: {
-				'owner_name': this.settings.username
-			},
-			parser: parse
+			data: { 'owner_name': this.settings.username },
+			parser: function parse(response) {
+				return {
+					items: response.map(function (repo) {
+						return {
+							id: repo.slug,
+							name: repo.slug,
+							group: null,
+							enabled: true
+						};
+					})
+				};
+			}
 		});
 	};
 

@@ -10,7 +10,6 @@ define([
 		this.name = nameAndGroup[1];
 		this.group = nameAndGroup[0];
 		this.update = update;
-		this.state = null;
 	};
 
 	var update = function () {
@@ -19,12 +18,13 @@ define([
 			url: 'https://api.travis-ci.org/' + this.id
 		}).selectMany(function (response) {
 			if (response.last_build_result === null) {
-				return getBuildInfoByNumber(response.last_build_number - 1, self);
+				return updateResponseWithLastKnownBuildResult(response, self);
 			} else {
 				return Rx.Observable.returnValue(response);
 			}
-		}).select(function (response) { return createBuildInfo(self, response); })
-		.doAction(function (buildInfo) { self.state = buildInfo; });
+		}).select(function (response) {
+			return createBuildInfo(self, response);
+		});
 	};
 
 	var createBuildInfo = function (build, buildResponse) {
@@ -34,18 +34,17 @@ define([
 			group: build.group,
 			webUrl: 'https://travis-ci.org/' + build.id + '/builds/' + buildResponse.last_build_id,
 			isBroken: buildResponse.last_build_result !== 0,
-			isRunning: buildResponse.last_build_finished_at === null && !!buildResponse.last_build_started_at,
-			isDisabled: false
+			isRunning: buildResponse.last_build_finished_at === null && !!buildResponse.last_build_started_at
 		};
 	};
 
-	var getBuildInfoByNumber = function (number, build) {
+	var updateResponseWithLastKnownBuildResult = function (response, build) {
 		return request.json({
 			url: 'http://api.travis-ci.org/' + build.id + '/builds',
-			data: { number: number }
-		}).select(function (response) {
-			build.isBroken = response[0].last_build_result !== 0;
-			return build;
+			data: { number: response.last_build_number - 1 }
+		}).select(function (buildResult) {
+			response.last_build_result = buildResult[0].result;
+			return response;
 		});
 	};
 

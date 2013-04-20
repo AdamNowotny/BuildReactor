@@ -17,7 +17,7 @@ define([
 			settings = {
 				name: 'My Travis CI',
 				username: 'AdamNowotny',
-				updateInterval: 10000,
+				updateInterval: 1,
 				projects: ['BuildReactor']
 			};
 			service = new BuildService(settings);
@@ -40,12 +40,12 @@ define([
 
 		it('should expose interface', function () {
 			expect(service.settings).toBe(settings);
-			expect(service.builds).toBeDefined();
 			expect(service.updateAll).toBeDefined();
 			expect(service.start).toBeDefined();
 			expect(service.stop).toBeDefined();
 			expect(service.activeProjects).toBeDefined();
 			expect(service.availableBuilds).toBeDefined();
+			expect(service.events).toBeDefined();
 		});
 
 		describe('availableBuilds', function () {

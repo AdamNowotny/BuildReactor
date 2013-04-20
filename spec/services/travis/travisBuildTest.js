@@ -15,6 +15,7 @@ define([
 		beforeEach(function () {
 			settings = {
 				name: 'My Travis CI',
+				icon: 'travis/icon.png',
 				username: 'AdamNowotny',
 				updateInterval: 10000,
 				projects: ['AdamNowotny/BuildReactor']
@@ -46,7 +47,19 @@ define([
 				expect(state.webUrl).toBe('https://travis-ci.org/AdamNowotny/BuildReactor/builds/6305554');
 				expect(state.isBroken).toBe(false);
 				expect(state.isRunning).toBe(false);
-				expect(state.isDisabled).toBe(false);
+			});
+
+			expect(request.json).toHaveBeenCalled();
+		});
+
+		it('should set isBroken', function () {
+			repoJson.last_build_result = 1;
+			spyOn(request, 'json').andReturn(Rx.Observable.returnValue(repoJson));
+			var build = new TravisBuild('AdamNowotny/BuildReactor', settings);
+
+			build.update().subscribe(function (state) {
+				expect(state.isBroken).toBe(true);
+				expect(state.isRunning).toBe(false);
 			});
 
 			expect(request.json).toHaveBeenCalled();
@@ -59,19 +72,6 @@ define([
 
 			build.update().subscribe(function (state) {
 				expect(state.isBroken).toBe(false);
-				expect(state.isRunning).toBe(false);
-			});
-
-			expect(request.json).toHaveBeenCalled();
-		});
-
-		it('should set isBroken on broken build', function () {
-			repoJson.last_build_result = 1;
-			spyOn(request, 'json').andReturn(Rx.Observable.returnValue(repoJson));
-			var build = new TravisBuild('AdamNowotny/BuildReactor', settings);
-
-			build.update().subscribe(function (state) {
-				expect(state.isBroken).toBe(true);
 				expect(state.isRunning).toBe(false);
 			});
 
@@ -92,23 +92,6 @@ define([
 			expect(request.json).toHaveBeenCalled();
 		});
 
-		it('should save current state', function () {
-			spyOn(request, 'json').andReturn(Rx.Observable.returnValue(repoJson));
-			var build = new TravisBuild('AdamNowotny/BuildReactor', settings);
-
-			build.update().subscribe(function (state) {
-				expect(build.state.id).toBe('AdamNowotny/BuildReactor');
-				expect(build.state.name).toBe('BuildReactor');
-				expect(build.state.group).toBe('AdamNowotny');
-				expect(build.state.webUrl).toBe('https://travis-ci.org/AdamNowotny/BuildReactor/builds/6305554');
-				expect(build.state.isBroken).toBe(false);
-				expect(build.state.isRunning).toBe(false);
-				expect(build.state.isDisabled).toBe(false);
-			});
-
-			expect(request.json).toHaveBeenCalled();
-		});
-
 		it('should get result from previous build if null', function () {
 			repoJson.last_build_result = null;
 			var callCount = 0;
@@ -117,7 +100,8 @@ define([
 				if (callCount === 1) {
 					return Rx.Observable.returnValue(repoJson);
 				} else {
-					buildJson.result = 1;
+					expect(options.data.number).toBe(repoJson.last_build_number - 1);
+					buildJson[0].result = 1;
 					return Rx.Observable.returnValue(buildJson);
 				}
 			});
