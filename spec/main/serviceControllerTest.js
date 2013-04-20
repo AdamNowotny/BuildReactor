@@ -23,35 +23,35 @@ define([
 
 				it('should require settings', function () {
 					var service = new MockBuildService();
-					service.settings = undefined;
+					delete service.settings;
 					
 					expect(function () { controller.addService(service); }).toThrow();
 				});
 
 				it('should require brokenBuild signal', function () {
 					var service = new MockBuildService();
-					service.on.brokenBuild = undefined;
+					delete service.on.brokenBuild;
 					
 					expect(function () { controller.addService(service); }).toThrow();
 				});
 
 				it('should require fixedBuild signal', function () {
 					var service = new MockBuildService();
-					service.on.fixedBuild = undefined;
+					delete service.on.fixedBuild;
 					
 					expect(function () { controller.addService(service); }).toThrow();
 				});
 
 				it('should require updating signal', function () {
 					var service = new MockBuildService();
-					service.on.updating = undefined;
+					delete service.on.updating;
 					
 					expect(function () { controller.addService(service); }).toThrow();
 				});
 
 				it('should require updated signal', function () {
 					var service = new MockBuildService();
-					service.on.updated = undefined;
+					delete service.on.updated;
 					
 					expect(function () { controller.addService(service); }).toThrow();
 				});

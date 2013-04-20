@@ -107,7 +107,7 @@ define([
 			spySettingsFormViewShow.andCallFake(function (formValues) {
 				expect(formValues.updateInterval).toBe(60);
 			});
-			settings.updateInterval = undefined;
+			delete settings.updateInterval;
 
 			serviceOptions.show(settings);
 
@@ -243,7 +243,7 @@ define([
 				spySettingsFormViewShow.andCallFake(function (settings) {
 					expect(settings.projects.length).toBe(0);
 				});
-				settings.projects = undefined;
+				delete settings.projects;
 
 				serviceOptions.show(settings);
 

@@ -271,8 +271,8 @@ define([
 				});
 
 				it('should not show view selection if no views defined', function () {
-					json.primaryView = undefined;
-					json.views = undefined;
+					delete json.primaryView;
+					delete json.views;
 					projectView.show(json);
 
 					expect($('.view-selection')).not.toBeVisible();

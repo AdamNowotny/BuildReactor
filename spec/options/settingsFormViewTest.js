@@ -100,7 +100,7 @@ define([
 		});
 
 		it('should signal clickedShow with current values', function () {
-			settings.url = undefined;
+			delete settings.url;
 			form.show(settings);
 			var dispatched = false;
 			form.on.clickedShow.addOnce(function (currentValues) {
@@ -163,7 +163,7 @@ define([
 		});
 
 		it('should signal changed with current values', function () {
-			settings.updateInterval = undefined;
+			delete settings.updateInterval;
 			form.show(settings);
 			var dispatched = false;
 			form.on.changed.addOnce(function (currentValues) {

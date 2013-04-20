@@ -161,7 +161,7 @@ define([
 			});
 			
 			it('should not update if no selected builds', function () {
-				settings.projects = undefined;
+				delete settings.projects;
 
 				service.updateAll();
 
