@@ -59,7 +59,7 @@ define([
 			return self.builds[buildId];
 		};
 
-		var fillInState = function (state) {
+		var mixInMissingState = function (state) {
 			var defaults = {
 				isDisabled: false,
 				serviceName: self.settings.name,
@@ -69,17 +69,20 @@ define([
 		};
 
 		var processBuildUpdate = function (newState) {
-			var oldState = self.latestBuildStates[newState.id];
-			if (!oldState.isBroken && newState.isBroken) {
+			if (newState.error) {
+				self.events.onNext({ eventName: 'updateError', details: newState });
+			}
+			var lastState = self.latestBuildStates[newState.id];
+			if (!lastState.isBroken && newState.isBroken) {
 				self.events.onNext({ eventName: 'buildBroken', details: newState });
 			}
-			if (oldState.isBroken && !newState.isBroken) {
+			if (lastState.isBroken && !newState.isBroken) {
 				self.events.onNext({ eventName: 'buildFixed', details: newState });
 			}
-			if (!oldState.isRunning && newState.isRunning) {
+			if (!lastState.isRunning && newState.isRunning) {
 				self.events.onNext({ eventName: 'buildStarted', details: newState });
 			}
-			if (oldState.isRunning && !newState.isRunning) {
+			if (lastState.isRunning && !newState.isRunning) {
 				self.events.onNext({ eventName: 'buildFinished', details: newState });
 			}
 			self.latestBuildStates[newState.id] = newState;
@@ -90,8 +93,14 @@ define([
 		return Rx.Observable.fromArray(this.settings.projects)
 			.select(getBuildById)
 			.selectMany(function (build) {
-				return build.update();
-			}).select(fillInState)
+				return build.update()
+					.catchException(function (ex) { 
+						return Rx.Observable.returnValue({
+							id: build.id,
+							error: ex
+						});
+					});
+			}).select(mixInMissingState)
 			.doAction(processBuildUpdate)
 			.defaultIfEmpty([]);
 	};

@@ -38,7 +38,10 @@ define([
 			this.Build = GenericBuild;
 		}
 
-		function GenericBuild(id, settings) {}
+		function GenericBuild(id, settings) {
+			this.id = id;
+			this.settings = settings;
+		}
 		GenericBuild.prototype.update = function () {};
 
 		function createStateForId(id) {
@@ -200,6 +203,24 @@ define([
 				expect(completed).toBe(true);
 			});
 
+			it('should not fail if build update failed', function () {
+				var state1 = createStateForId('Build1');
+				var stateError = "Error";
+				update1Response = Rx.Observable.returnValue(state1);
+				update2Response = Rx.Observable.throwException(stateError);
+
+				var sequenceFailed = false;
+				var response;
+				service.updateAll().subscribe(function (state) {
+					response = state;
+				}, function () {
+					sequenceFailed = true;
+				});
+
+				expect(sequenceFailed).toBe(false);
+				expect(response.error).toEqual(stateError);
+			});
+
 			describe('build events', function () {
 
 				var oldState;
@@ -217,6 +238,16 @@ define([
 
 				afterEach(function () {
 					eventsSubscription.dispose();
+				});
+
+				it('should push updateError if build update failed', function () {
+					var stateError = "Error";
+					update1Response = Rx.Observable.throwException(stateError);
+
+					service.updateAll().subscribe();
+
+					expect(eventPushed('updateError')).toBe(true);
+					expect(getLastEvent('updateError').details.error).toEqual(stateError);
 				});
 
 				it('should push buildBroken if build broken', function () {
@@ -341,6 +372,15 @@ define([
 
 				expect(getEvents('serviceStarted').length).toBe(1);
 			});
+
+			it('should push serviceStarted on first finished update', function () {
+				service.start().subscribe();
+
+				expect(eventPushed('serviceStarted')).toBe(true);
+				expect(getLastEvent('serviceStarted').details.length).toEqual(2);
+			});
+
+
 		});
 		
 	});
