@@ -1,6 +1,6 @@
 {
 	"name": "BuildReactor",
-	"version": "0.6.4.1",
+	"version": "0.6.5",
 	"manifest_version": 2,
 	"description": "Developer notifications and dashboard",
 	"icons": {
@@ -43,6 +43,8 @@
 		"src/services/jenkins/icon.png",
 		"src/services/jenkins/logo.png",
 		"src/services/teamcity/icon.png",
-		"src/services/teamcity/logo.png"
+		"src/services/teamcity/logo.png",
+		"src/services/travis/icon.png",
+		"src/services/travis/logo.png"
 	]
 }

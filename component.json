@@ -1,7 +1,7 @@
 {
   "name": "BuildReactor",
-  "description": "Developer notifications and dashboard (CruiseControl, Bamboo, Jenkins, TeamCity, GO, Travis-CI)",
-  "version": "0.6.4.1",
+  "description": "Developer notifications and dashboard",
+  "version": "0.6.5",
   "dependencies": {
     "bootbox": "git://github.com/makeusabrew/bootbox.git#~3.0.0",
     "font-awesome": "git://github.com/FortAwesome/Font-Awesome.git#3.0.2",
