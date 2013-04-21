@@ -129,11 +129,6 @@ define([
 		}
 	};
 
-// var a = Rx.Observable.range(0, 3)
-//.doAction(function (a) { if(a === 1) throw {}})
-//.onErrorResumeNext(Rx.Observable.returnValue(1000))
-//.subscribe(function (a) { console.log(a)}, function (a) { console.error( a) }, function (a) { console.warn('completed', a)})
-	
 	var activeProjects = function () {
 		var self = this;
 		return {

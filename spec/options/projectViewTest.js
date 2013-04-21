@@ -32,31 +32,31 @@ define([
 							id: 0,
 							name: 'CruiseControl.NET',
 							group: 'cc',
-							enabled: true
+							isDisabled: false
 						},
 						{
 							id: 1,
 							name: 'ccTray',
 							group: 'cc',
-							enabled: true
+							isDisabled: false
 						},
 						{
 							id: 2,
 							name: 'old ccTray',
 							group: 'cc',
-							enabled: false
+							isDisabled: true
 						},
 						{
 							id: 3,
 							name: 'Project2-1',
 							group: 'group2',
-							enabled: true
+							isDisabled: false
 						},
 						{
 							id: 4,
 							name: 'Project3-1',
 							group: 'group3',
-							enabled: true
+							isDisabled: false
 						}
 					],
 					selected: [	0, 4 ]
@@ -100,13 +100,13 @@ define([
 							id: 0,
 							name: 'CruiseControl.NET',
 							group: 'group 2',
-							enabled: true
+							isDisabled: false
 						},
 						{
 							id: 1,
 							name: 'ccTray',
 							group: 'group 1',
-							enabled: true
+							isDisabled: false
 						}
 					],
 					selected: [ 0 ]
@@ -125,13 +125,13 @@ define([
 							id: 0,
 							name: 'project 2',
 							group: 'some group',
-							enabled: true
+							isDisabled: false
 						},
 						{
 							id: 1,
 							name: 'project 1',
 							group: 'some group',
-							enabled: true
+							isDisabled: false
 						}
 					],
 					selected: [ 0 ]

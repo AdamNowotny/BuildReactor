@@ -99,7 +99,7 @@ define([
 				id: projectName,
 				name: projectName,
 				group: item.attr('category'),
-				enabled: true
+				isDisabled: false
 			};
 		}
 

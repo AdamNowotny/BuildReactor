@@ -46,7 +46,7 @@ define([
                     id: builderName,
                     name: builderName,
                     group: builder.category,
-                    enabled: true
+                    isDisabled: false
                 });
             }
         }

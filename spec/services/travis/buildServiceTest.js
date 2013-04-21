@@ -77,7 +77,7 @@ define([
 					expect(response.items[1].id).toBe('AdamNowotny/BuildReactor');
 					expect(response.items[1].name).toBe('AdamNowotny/BuildReactor');
 					expect(response.items[1].group).toBe(null);
-					expect(response.items[1].enabled).toBe(true);
+					expect(response.items[1].isDisabled).toBe(false);
 				});
 
 				service.availableBuilds();

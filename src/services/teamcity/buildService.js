@@ -49,7 +49,7 @@ define([
 						id: d.id,
 						name: d.name,
 						group: d.projectName,
-						enabled: true
+						isDisabled: false
 					};
 				})
 			};

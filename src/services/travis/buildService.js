@@ -35,7 +35,7 @@ define([
 							id: repo.slug,
 							name: repo.slug,
 							group: null,
-							enabled: true
+							isDisabled: false
 						};
 					})
 				};

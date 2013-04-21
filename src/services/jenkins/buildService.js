@@ -44,7 +44,7 @@ define([
 					id: job.name,
 					name: job.displayName,
 					group: null,
-					enabled: job.buildable
+					isDisabled: !job.buildable
 				};
 			}),
 			primaryView: apiJson.primaryView.name,

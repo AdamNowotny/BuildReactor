@@ -80,7 +80,7 @@ define([
 					expect(projects[0].id).toBe('bt297');
 					expect(projects[0].name).toBe('Build');
 					expect(projects[0].group).toBe('Amazon API client');
-					expect(projects[0].enabled).toBe(true);
+					expect(projects[0].isDisabled).toBe(false);
 				});
 
 				service.availableBuilds();

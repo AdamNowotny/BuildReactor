@@ -253,7 +253,7 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, $, Signal, spy
 					expect(response.items[0].id).toBe('CruiseControl.NET');
 					expect(response.items[0].name).toBe('CruiseControl.NET');
 					expect(response.items[0].group).toBe('CruiseControl.NET');
-					expect(response.items[0].enabled).toBe(true);
+					expect(response.items[0].isDisabled).toBe(false);
 				});
 
 				service.availableBuilds();

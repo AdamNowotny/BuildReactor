@@ -49,7 +49,7 @@ define([
 					id: plan.key,
 					name: plan.shortName,
 					group: project.name,
-					enabled: plan.enabled
+					isDisabled: !plan.enabled
 				};
 				items.push(item);
 			}

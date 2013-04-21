@@ -73,7 +73,7 @@ define([
 						expect(response.items[0].id).toBe('PROJECT1-PLAN1');
 						expect(response.items[0].name).toBe('Plan 1');
 						expect(response.items[0].group).toBe('Project 1');
-						expect(response.items[0].enabled).toBe(true);
+						expect(response.items[0].isDisabled).toBe(false);
 					});
 
 					service.availableBuilds();

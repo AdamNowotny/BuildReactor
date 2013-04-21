@@ -19,9 +19,8 @@ define([
 		}).selectMany(function (response) {
 			if (response.last_build_result === null) {
 				return updateResponseWithLastKnownBuildResult(response, self);
-			} else {
-				return Rx.Observable.returnValue(response);
 			}
+			return Rx.Observable.returnValue(response);
 		}).select(function (response) {
 			return createBuildInfo(self, response);
 		});

@@ -82,7 +82,7 @@ define([
 					expect(response.items[0].id).toBeDefined();
 					expect(response.items[0].name).toBeDefined();
 					expect(response.items[0].group).toBeDefined();
-					expect(response.items[0].enabled).toBeDefined();
+					expect(response.items[0].isDisabled).toBeDefined();
 				});
 
 				service.availableBuilds();
