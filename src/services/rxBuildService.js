@@ -3,8 +3,7 @@ define([
 	'jquery',
 	'mout/object/values',
 	'mout/object/mixIn',
-	'rx.time',
-	'rx.experimental'
+	'rx.time'
 ], function (Rx, $, values, mixIn) {
 	'use strict';
 

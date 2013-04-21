@@ -1,8 +1,7 @@
 define([
 	'services/rxBuildService',
 	'jquery',
-	'rx',
-	'rx.aggregates'
+	'rx'
 ], function (BuildService, $, Rx) {
 	'use strict';
 

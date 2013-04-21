@@ -1,26 +1,21 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
-		'options/messages': 'options/messagesStatic',
 		bootbox: '../components/bootbox/bootbox.min',
-		mout: '../components/mout/src',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
-		jquery: "../components/jquery/jquery",
-		signals: '../components/js-signals/dist/signals',
-		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
+		bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons',
 		handlebars: '../lib/require-handlebars-plugin/Handlebars',
-		underscore: '../lib/require-handlebars-plugin/hbs/underscore',
+		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
-		bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons',
-		rx: '../components/rxjs/rx.modern',
-		'rx.jquery': '../components/rxjs-jquery/rx.jquery',
-		'rx.time': '../components/rxjs/rx.time'
-	},
-	map: {
-		'rx.jquery': {
-			'jQuery': 'jquery'
-		}
+		jquery: "../components/jquery/jquery.min",
+		mout: '../components/mout/src',
+		'options/messages': 'options/messagesStatic',
+		rx: 'rxjs',
+		'rx.jquery': 'rxjs',
+		'rx.time': 'rxjs',
+		signals: '../components/js-signals/dist/signals',
+		underscore: '../lib/require-handlebars-plugin/hbs/underscore'
 	},
 	hbs: {
 		templateExtension: 'html',
@@ -39,10 +34,11 @@ require.config({
 	}
 });
 require([
+	'rxjs',
 	'options/optionsController',
 	'options/optionsLogger',
 	'options/messages'
-], function (optionsController, optionsLogger, messages) {
+], function (rxjs, optionsController, optionsLogger, messages) {
 
 	'use strict';
 	

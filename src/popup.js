@@ -1,23 +1,19 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
-		'popup/messages': 'popup/messagesStatic',
-		mout: '../components/mout/src',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
-		jquery: "../components/jquery/jquery",
-		signals: '../components/js-signals/dist/signals',
-		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
 		handlebars: '../lib/require-handlebars-plugin/Handlebars',
-		underscore: '../lib/require-handlebars-plugin/hbs/underscore',
+		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
-		rx: '../components/rxjs/rx.min',
-		'rx.time': '../components/rxjs/rx.time.min'
-	},
-	map: {
-		'rx.jquery': {
-			'jQuery': 'jquery'
-		}
+		jquery: "../components/jquery/jquery.min",
+		mout: '../components/mout/src',
+		'popup/messages': 'popup/messagesStatic',
+		signals: '../components/js-signals/dist/signals',
+		rx: 'rxjs',
+		'rx.jquery': 'rxjs',
+		'rx.time': 'rxjs',
+		underscore: '../lib/require-handlebars-plugin/hbs/underscore'
 	},
 	hbs: {
 		templateExtension: 'html',
@@ -29,10 +25,11 @@ require.config({
 	}
 });
 require([
+	'rxjs',
 	'jquery',
 	'popup/popupController',
 	'bootstrap',
-], function ($, popupController) {
+], function (rxjs, $, popupController) {
 
 	'use strict';
 	

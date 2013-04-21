@@ -79,7 +79,6 @@ module.exports = function (grunt) {
 								spec: '../spec',
 								text: '../components/requirejs-text/text',
 								rx: '../components/rxjs/rx',
-								'rx.aggregates': '../components/rxjs/rx.aggregates',
 								'rx.experimental': '../components/rxjs/rx.experimental',
 								'rx.jquery': '../components/rxjs-jquery/rx.jquery',
 								'rx.time': '../components/rxjs/rx.time',
@@ -157,7 +156,7 @@ module.exports = function (grunt) {
 					inlineText: true,
 					useStrict: true,
 					preserveLicenseComments: true,
-					optimize: 'none',
+					// optimize: 'none',
 					// optimizeCss: 'standard',
 					uglify: {
 						toplevel: true,
@@ -177,29 +176,22 @@ module.exports = function (grunt) {
 						excludeAfterBuild: true
 					},
 					paths: {
-						'options/messages': 'options/messages',
-						'popup/messages': 'popup/messages',
-						mout: '../components/mout/src',
 						bootbox: 'empty:',
 						bootstrap: 'empty:',
-						jquery: 'empty:',
-						signals: '../components/js-signals/dist/signals',
-						hbs: '../lib/require-handlebars-plugin/hbs-plugin',
+						bootstrapToggle: 'empty:',
 						handlebars: '../lib/require-handlebars-plugin/Handlebars',
-						underscore: '../lib/require-handlebars-plugin/hbs/underscore',
+						hbs: '../lib/require-handlebars-plugin/hbs-plugin',
 						i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
+						jquery: 'empty:',
 						json2: '../lib/require-handlebars-plugin/hbs/json2',
+						mout: '../components/mout/src',
+						'options/messages': 'options/messages',
+						'popup/messages': 'popup/messages',
 						rx: '../components/rxjs/rx.modern',
-						'rx.aggregates': '../components/rxjs/rx.aggregates',
-						'rx.experimental': '../components/rxjs/rx.experimental',
-						'rx.time': '../components/rxjs/rx.time',
 						'rx.jquery': '../components/rxjs-jquery/rx.jquery',
-						bootstrapToggle: 'empty:'
-					},
-					map: {
-						'rx.jquery': {
-							'jQuery': 'jquery'
-						}
+						'rx.time': '../components/rxjs/rx.time',
+						signals: '../components/js-signals/dist/signals',
+						underscore: '../lib/require-handlebars-plugin/hbs/underscore'
 					},
 					hbs: {
 						templateExtension: 'html',
@@ -217,23 +209,37 @@ module.exports = function (grunt) {
 					},
 					modules: [
 						{
-							name: 'main',
+							name: 'rxjs',
 							include: [
-								'services/bamboo/buildService',
-								'services/cctray/buildService',
-								'services/cruisecontrol/buildService',
-								'services/cruisecontrol.net/buildService',
-								'services/cruisecontrol.rb/buildService',
-								'services/jenkins/buildService',
-								'services/go/buildService',
-								'services/teamcity/buildService'
+								'rx',
+								'rx.jquery',
+								'rx.time'
+							],
+							override: {
+								map: {
+									'rx.jquery': {
+										'jQuery': 'jquery'
+									}
+								}
+							}
+						},
+						{
+							name: 'main',
+							exclude: [
+								'rxjs'
 							]
 						},
 						{
-							name: 'options'
+							name: 'options',
+							exclude: [
+								'rxjs'
+							]
 						},
 						{
-							name: 'popup'
+							name: 'popup',
+							exclude: [
+								'rxjs'
+							]
 						}
 					]
 				}
@@ -254,7 +260,7 @@ module.exports = function (grunt) {
 						'components/bootbox/bootbox.min.js',
 						'lib/bootstrap-toggle-buttons/stylesheets/bootstrap-toggle-buttons.css',
 						'lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons.js',
-						'components/jquery/jquery.js',
+						'components/jquery/jquery.min.js',
 						'components/requirejs/require.js',
 						'components/font-awesome/css/font-awesome.min.css',
 						'components/font-awesome/font/*',

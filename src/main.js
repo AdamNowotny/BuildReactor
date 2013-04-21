@@ -1,19 +1,17 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
-		mout: '../components/mout/src',
-		jquery: "../components/jquery/jquery",
-		signals: '../components/js-signals/dist/signals',
-		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
 		handlebars: '../lib/require-handlebars-plugin/Handlebars',
-		underscore: '../lib/require-handlebars-plugin/hbs/underscore',
+		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
-		json2: '../lib/require-handlebars-plugin/hbs/json2'
-	},
-	map: {
-		'rx.jquery': {
-			'jQuery': 'jquery'
-		}
+		jquery: "../components/jquery/jquery.min",
+		json2: '../lib/require-handlebars-plugin/hbs/json2',
+		mout: '../components/mout/src',
+		rx: 'rxjs',
+		'rx.jquery': 'rxjs',
+		'rx.time': 'rxjs',
+		signals: '../components/js-signals/dist/signals',
+		underscore: '../lib/require-handlebars-plugin/hbs/underscore'
 	},
 	hbs: {
 		templateExtension: 'html',
@@ -22,6 +20,7 @@ require.config({
 	}
 });
 require([
+	'rxjs',
 	'main/backgroundLogger',
 	'main/badgeController',
 	'main/messageHandlers',
@@ -30,6 +29,7 @@ require([
 	'main/serviceRepository',
 	'main/settingsStore',
 	'services/bamboo/buildService',
+	'services/buildbot/buildService',
 	'services/cctray/buildService',
 	'services/cruisecontrol/buildService',
 	'services/cruisecontrol.net/buildService',
@@ -37,9 +37,9 @@ require([
 	'services/go/buildService',
 	'services/jenkins/buildService',
 	'services/teamcity/buildService',
-	'services/travis/buildService',
-	'services/buildbot/buildService'
+	'services/travis/buildService'
 ], function (
+	rxjs,
 	backgroundLogger,
 	badgeController,
 	messageHandlers,
@@ -48,6 +48,7 @@ require([
 	serviceRepository,
 	settingsStore,
 	BambooService,
+	BuildBotService,
 	CctrayService,
 	CruiseControlService,
 	CruiseControlNetService,
@@ -55,11 +56,10 @@ require([
 	GoService,
 	JenkinsService,
 	TeamCityService,
-	TravisService,
-	BuildBotService
+	TravisService
 ) {
-
 	'use strict';
+
 	backgroundLogger();
 	badgeController();
 	notificationController();
