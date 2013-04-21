@@ -2,13 +2,13 @@ define([
 	'services/rxBuildService',
 	'services/travis/travisBuild',
 	'services/request',
-	'jquery'
-], function (BuildService, TravisBuild, request, $) {
+	'mout/object/mixIn'
+], function (BuildService, TravisBuild, request, mixIn) {
 
 	'use strict';
 
 	var TravisBuildService = function (settings) {
-		$.extend(this, new BuildService(settings));
+		mixIn(this, new BuildService(settings));
 		this.Build = TravisBuild;
 		this.availableBuilds = availableBuilds;
 	};
@@ -20,7 +20,8 @@ define([
 			icon: 'travis/icon.png',
 			logo: 'travis/logo.png',
 			projects: [],
-			username: ''
+			username: '',
+			updateInterval: 60
 		};
 	};
 
@@ -28,7 +29,7 @@ define([
 		return request.json({
 			url: 'https://api.travis-ci.org/repos/',
 			data: { 'owner_name': this.settings.username },
-			parser: function parse(response) {
+			parser: function (response) {
 				return {
 					items: response.map(function (repo) {
 						return {

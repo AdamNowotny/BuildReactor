@@ -32,6 +32,7 @@ define([
 			expect(settings.logo).toBe('travis/logo.png');
 			expect(settings.projects.length).toBe(0);
 			expect(settings.username).toBe('');
+			expect(settings.updateInterval).toBe(60);
 		});
 
 		it('should set Build factory method', function () {
@@ -50,7 +51,7 @@ define([
 
 		describe('availableBuilds', function () {
 
-			it('should return available projects', function () {
+			it('should return available builds', function () {
 				var rxJson = Rx.Observable.never();
 				spyOn(request, 'json').andReturn(rxJson);
 

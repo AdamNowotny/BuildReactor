@@ -1,9 +1,10 @@
 define([
 	'services/teamcity/buildService',
+	'services/teamcity/teamcityBuild',
 	'services/request',
 	'rx',
 	'json!fixtures/teamcity/buildTypes.json'
-], function (TeamCity, request, Rx, buildTypesJson) {
+], function (TeamCity, TeamcityBuild, request, Rx, buildTypesJson) {
 
 	'use strict';
 
@@ -36,6 +37,20 @@ define([
 			expect(defaultSettings.username).toBeDefined();
 			expect(defaultSettings.password).toBeDefined();
 			expect(defaultSettings.updateInterval).toBe(60);
+		});
+
+		it('should set Build factory method', function () {
+			expect(service.Build).toBe(TeamcityBuild);
+		});
+
+		it('should expose interface', function () {
+			expect(service.settings).toBe(settings);
+			expect(service.updateAll).toBeDefined();
+			expect(service.start).toBeDefined();
+			expect(service.stop).toBeDefined();
+			expect(service.activeProjects).toBeDefined();
+			expect(service.availableBuilds).toBeDefined();
+			expect(service.events).toBeDefined();
 		});
 
 		describe('availableBuilds', function () {
