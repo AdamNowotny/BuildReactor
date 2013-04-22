@@ -151,6 +151,25 @@ define([
 				eventsSubscription.dispose();
 			});
 
+			it('should set default last build status', function () {
+				var getDefaultState = function (id) {
+					return {
+						id: id,
+						name: id,
+						group: null,
+						webUrl: null,
+						isBroken: false,
+						isRunning: false,
+						isDisabled: false,
+						serviceName: settings.name,
+						serviceIcon: settings.icon
+					};
+				}; 
+
+				expect(service.latestBuildStates['Build1']).toEqual(getDefaultState('Build1'));
+				expect(service.latestBuildStates['Build2']).toEqual(getDefaultState('Build2'));
+			});
+
 			it('should update builds', function () {
 				var completed = false;
 				service.updateAll().subscribe(function () {

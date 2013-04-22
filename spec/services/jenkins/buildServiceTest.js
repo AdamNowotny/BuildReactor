@@ -1,14 +1,16 @@
 define([
 	'services/jenkins/buildService',
+	'services/jenkins/jenkinsBuild',
 	'services/request',
 	'rx'
-], function (BuildService, request, Rx) {
+], function (BuildService, JenkinsBuild, request, Rx) {
 
 	'use strict';
 
 	describe('services/jenkins/buildService', function () {
 
 		var settings;
+		var service;
 
 		beforeEach(function () {
 			settings = {
@@ -16,8 +18,10 @@ define([
 				baseUrl: 'jenkins',
 				icon: 'jenkins/icon.png',
 				url: 'http://example.com/',
-				name: 'Jenkins instance'
+				name: 'Jenkins instance',
+				projects: ['BuildReactor']
 			};
+			service = new BuildService(settings);
 		});
 
 		it('should provide default settings', function () {
@@ -32,6 +36,20 @@ define([
 			expect(defaultSettings.username).toBeDefined();
 			expect(defaultSettings.password).toBeDefined();
 			expect(defaultSettings.updateInterval).toBe(60);
+		});
+
+		it('should set Build factory method', function () {
+			expect(service.Build).toBe(JenkinsBuild);
+		});
+
+		it('should expose interface', function () {
+			expect(service.settings).toBe(settings);
+			expect(service.updateAll).toBeDefined();
+			expect(service.start).toBeDefined();
+			expect(service.stop).toBeDefined();
+			expect(service.activeProjects).toBeDefined();
+			expect(service.availableBuilds).toBeDefined();
+			expect(service.events).toBeDefined();
 		});
 
 		describe('availableBuilds', function () {

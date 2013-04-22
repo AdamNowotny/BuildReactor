@@ -1,16 +1,17 @@
 define([
-	'services/buildService',
-	'services/jenkins/jenkinsBuild',
-	'jquery',
+	'services/rxBuildService',
 	'services/request',
+	'services/jenkins/jenkinsBuild',
+	'mout/object/mixIn',
 	'common/joinUrl'
-], function (BuildService, JenkinsBuild, $, request, joinUrl) {
+], function (BuildService, request, JenkinsBuild, mixIn, joinUrl) {
 
 	'use strict';
 
 	var JenkinsBuildService = function (settings) {
-		$.extend(this, new BuildService(settings));
+		mixIn(this, new BuildService(settings));
 		this.Build = JenkinsBuild;
+		this.availableBuilds = availableBuilds;
 	};
 
 	JenkinsBuildService.settings = function () {
@@ -28,7 +29,7 @@ define([
 		};
 	};
 
-	JenkinsBuildService.prototype.availableBuilds = function () {
+	var availableBuilds = function () {
 		return request.json({
 			url: joinUrl(this.settings.url, 'api/json?depth=1'),
 			username: this.settings.username,

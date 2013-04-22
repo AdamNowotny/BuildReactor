@@ -33,7 +33,7 @@ define([
 	var createDefaultState = function (id, settings) {
 		return {
 			id: id,
-			name: null,
+			name: id,
 			group: null,
 			webUrl: null,
 			isBroken: false,
