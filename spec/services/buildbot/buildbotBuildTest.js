@@ -1,29 +1,29 @@
 define([
-	'services/jenkins/jenkinsBuild',
+	'services/buildbot/buildbotBuild',
 	'services/request',
 	'rx'
 ], function (Build, request, Rx) {
 	'use strict';
 
-	describe('services/jenkins/jenkinsBuild', function () {
+	describe('services/buildbot/buildbotBuild', function () {
 
 		var build;
 		var settings;
-		var jobJson;
+		var builderJson;
 		var lastCompletedBuildJson;
 
 		beforeEach(function () {
 			settings = {
 				url: 'http://example.com'
 			};
-			jobJson = JSON.parse(readFixtures('jenkins/job.json'));
-			lastCompletedBuildJson = JSON.parse(readFixtures('jenkins/lastCompletedBuild.json'));
+			builderJson = JSON.parse(readFixtures('buildbot/builder.json'));
+			lastCompletedBuildJson = JSON.parse(readFixtures('buildbot/lastCompleted.json'));
 			var callCount = 0;
 			spyOn(request, 'json').andCallFake(function () {
 				callCount++;
 				switch (callCount) {
 				case 1:
-					return Rx.Observable.returnValue(jobJson);
+					return Rx.Observable.returnValue(builderJson);
 				case 2:
 					return Rx.Observable.returnValue(lastCompletedBuildJson);
 				}
@@ -35,16 +35,16 @@ define([
 			build.update();
 
 			expect(request.json).toHaveBeenCalled();
-			expect(request.json.calls[0].args[0].url).toBe('http://example.com/job/build_id/api/json');
-			expect(request.json.calls[1].args[0].url).toBe('http://example.com/job/build_id/lastCompletedBuild/api/json');
+			expect(request.json.calls[0].args[0].url).toBe('http://example.com/json/builders/build_id');
+			expect(request.json.calls[1].args[0].url).toBe('http://example.com/json/builders/build_id/builds/-1');
 		});
 
 		it('should parse response and return current state', function () {
 			build.update().subscribe(function (state) {
 				expect(state.id).toBe('build_id');
 				expect(state.name).toBe('build_id');
-				expect(state.webUrl).toBe('http://ci.jenkins-ci.org/job/config-provider-model/1354/');
-				expect(state.isBroken).toBe(false);
+				expect(state.webUrl).toBe('http://example.com/builders/build_id');
+				expect(state.isBroken).toBe(true);
 				expect(state.isRunning).toBe(false);
 				expect(state.isDisabled).toBe(false);
 			});
@@ -53,7 +53,7 @@ define([
 		});
 
 		it('should set isBroken', function () {
-			lastCompletedBuildJson.result = 'FAILURE';
+			lastCompletedBuildJson.text.push = 'failed';
 
 			build.update().subscribe(function (state) {
 				expect(state.isBroken).toBe(true);
@@ -63,7 +63,7 @@ define([
 		});
 
 		it('should not set isBroken on successful build', function () {
-			lastCompletedBuildJson.result = 'SUCCESS';
+			lastCompletedBuildJson.text = [];
 
 			build.update().subscribe(function (state) {
 				expect(state.isBroken).toBe(false);
@@ -73,8 +73,7 @@ define([
 		});
 
 		it('should set isRunning', function () {
-			jobJson.lastBuild.number = 100;
-			jobJson.lastCompletedBuild.number = 99;
+			builderJson.state = 'building';
 
 			build.update().subscribe(function (state) {
 				expect(state.isRunning).toBe(true);
@@ -84,8 +83,7 @@ define([
 		});
 
 		it('should not set isRunning if it is not', function () {
-			jobJson.lastBuild.number = 100;
-			jobJson.lastCompletedBuild.number = 100;
+			builderJson.state = 'idle';
 
 			build.update().subscribe(function (state) {
 				expect(state.isRunning).toBe(false);
@@ -95,7 +93,7 @@ define([
 		});
 
 		it('should set isDisabled if build disabled', function () {
-			jobJson.buildable = false;
+			builderJson.state = 'offline';
 
 			build.update().subscribe(function (state) {
 				expect(state.isDisabled).toBe(true);

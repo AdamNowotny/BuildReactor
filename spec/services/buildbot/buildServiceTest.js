@@ -1,24 +1,24 @@
 define([
-	'services/jenkins/buildService',
-	'services/jenkins/jenkinsBuild',
+	'services/buildbot/buildService',
+	'services/buildbot/buildbotBuild',
 	'services/request',
 	'rx'
-], function (BuildService, JenkinsBuild, request, Rx) {
+], function (BuildService, BuildbotBuild, request, Rx) {
 
 	'use strict';
 
-	describe('services/jenkins/buildService', function () {
+	describe('services/buildbot/buildService', function () {
 
 		var settings;
 		var service;
 
 		beforeEach(function () {
 			settings = {
-				typeName: 'Jenkins',
-				baseUrl: 'jenkins',
-				icon: 'jenkins/icon.png',
+				typeName: 'BuildBot',
+				baseUrl: 'buildbot',
+				icon: 'buildbot/icon.png',
 				url: 'http://example.com/',
-				name: 'Jenkins instance',
+				name: 'Buildbot instance',
 				projects: ['BuildReactor']
 			};
 			service = new BuildService(settings);
@@ -27,19 +27,19 @@ define([
 		it('should provide default settings', function () {
 			var defaultSettings = BuildService.settings();
 
-			expect(defaultSettings.typeName).toBe('Jenkins');
-			expect(defaultSettings.baseUrl).toBe('jenkins');
-			expect(defaultSettings.icon).toBe('jenkins/icon.png');
-			expect(defaultSettings.logo).toBe('jenkins/logo.png');
+			expect(defaultSettings.typeName).toBe('BuildBot');
+			expect(defaultSettings.baseUrl).toBe('buildbot');
+			expect(defaultSettings.icon).toBe('buildbot/icon.png');
+			expect(defaultSettings.logo).toBe('buildbot/logo.png');
 			expect(defaultSettings.url).toBeDefined();
-			expect(defaultSettings.urlHint).toBe('http://ci.jenkins-ci.org/');
+			expect(defaultSettings.urlHint).toBe('http://buildbot.buildbot.net/');
 			expect(defaultSettings.username).toBeDefined();
 			expect(defaultSettings.password).toBeDefined();
 			expect(defaultSettings.updateInterval).toBe(60);
 		});
 
 		it('should set Build factory method', function () {
-			expect(service.Build).toBe(JenkinsBuild);
+			expect(service.Build).toBe(BuildbotBuild);
 		});
 
 		it('should expose interface', function () {
@@ -58,7 +58,7 @@ define([
 			var service;
 
 			beforeEach(function () {
-				apiJson = JSON.parse(readFixtures('jenkins/views.json'));
+				apiJson = JSON.parse(readFixtures('buildbot/builders_all.json'));
 				service = new BuildService(settings);
 			});
 
@@ -84,7 +84,7 @@ define([
 
 			it('should get available builds from correct URL', function () {
 				spyOn(request, 'json').andCallFake(function (options) {
-					expect(options.url).toBe('http://example.com/api/json?depth=1');
+					expect(options.url).toBe('http://example.com/json/builders');
 				});
 
 				service.availableBuilds();
@@ -96,26 +96,11 @@ define([
 				spyOn(request, 'json').andCallFake(function (options) {
 					var response = options.parser(apiJson);
 					expect(response.items).toBeDefined();
-					expect(response.items.length).toBe(63);
-					expect(response.items[0].id).toBe('config-provider-model');
-					expect(response.items[0].name).toBe('config-provider-model');
-					expect(response.items[0].group).toBe(null);
+					expect(response.items.length).toBe(35);
+					expect(response.items[0].id).toBe('coverage');
+					expect(response.items[0].name).toBe('coverage');
+					expect(response.items[0].group).toBe('docs');
 					expect(response.items[0].isDisabled).toBe(false);
-				});
-
-				service.availableBuilds();
-
-				expect(request.json).toHaveBeenCalled();
-			});
-
-			it('should return views', function () {
-				spyOn(request, 'json').andCallFake(function (options) {
-					var response = options.parser(apiJson);
-					expect(response.views).toBeDefined();
-					expect(response.views[0].name).toBeDefined();
-					expect(response.views[0].items).toBeDefined();
-					expect(response.views[0].items[0]).toBeDefined();
-					expect(response.primaryView).toBeDefined();
 				});
 
 				service.availableBuilds();

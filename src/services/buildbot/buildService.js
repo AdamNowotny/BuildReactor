@@ -1,16 +1,17 @@
 define([
-	'services/buildService',
-    './buildbotBuild',
-	'jquery',
+	'services/rxBuildService',
 	'services/request',
+	'services/buildbot/buildbotBuild',
+	'mout/object/mixIn',
 	'common/joinUrl'
-], function (BuildService, BuildBotBuild, $, request, joinUrl) {
+], function (BuildService, request, BuildBotBuild, mixIn, joinUrl) {
 
 	'use strict';
 
 	var BuildBotBuildService = function (settings) {
-		$.extend(this, new BuildService(settings));
+		mixIn(this, new BuildService(settings));
 		this.Build = BuildBotBuild;
+		this.availableBuilds = availableBuilds;
 	};
 
 	BuildBotBuildService.settings = function () {
@@ -20,15 +21,15 @@ define([
 			icon: 'buildbot/icon.png',
 			logo: 'buildbot/logo.png',
 			projects: [],
-			urlHint: 'http://buildbot.buildbot.net/',
 			url: '',
+			urlHint: 'http://buildbot.buildbot.net/',
 			username: '',
 			password: '',
 			updateInterval: 60
 		};
 	};
 
-	BuildBotBuildService.prototype.availableBuilds = function () {
+	var availableBuilds = function () {
 		return request.json({
 			url: joinUrl(this.settings.url, 'json/builders'),
 			username: this.settings.username,
@@ -50,7 +51,6 @@ define([
                 });
             }
         }
-
 		return {
 			items: items
 		};
