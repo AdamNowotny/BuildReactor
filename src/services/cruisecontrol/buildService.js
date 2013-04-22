@@ -1,9 +1,9 @@
-define(['services/cctray/buildService', 'jquery'], function (CCTrayBuildService, $) {
+define(['services/cctray/buildService', 'mout/object/mixIn'], function (CCTrayBuildService, mixIn) {
 
 	'use strict';
 
 	var CCBuildService = function (settings) {
-		$.extend(this, new CCTrayBuildService(settings));
+		mixIn(this, new CCTrayBuildService(settings));
 		this.cctrayLocation = 'cctray.xml';
 	};
 	
