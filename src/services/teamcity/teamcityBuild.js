@@ -14,14 +14,18 @@ define([
 	var update = function () {
 		var self = this;
 		return buildRequest(self).zip(buildRunningRequest(self), function (buildResponse, buildRunningResponse) {
-			return {
+			var state = {
 				id: self.id,
 				name: buildResponse.buildType.name,
 				group: buildResponse.buildType.projectName,
 				webUrl: buildResponse.webUrl,
-				isBroken: buildResponse.status !== 'SUCCESS',
+				isBroken: buildResponse.status in { 'FAILURE': 1, 'ERROR': 1 },
 				isRunning: buildRunningResponse.running
 			};
+			if (!(buildResponse.status in { 'SUCCESS': 1, 'FAILURE': 1, 'ERROR': 1 })) {
+				state.error = 'Status [' + buildResponse.status + '] is unknown';
+			}
+			return state;
 		});
 	};
 

@@ -14,14 +14,20 @@ define([
 	var update = function () {
 		var self = this;
 		return job(self).zip(lastCompletedBuild(self), function (jobResponse, lastCompletedResponse) {
-			return {
+			var state = {
 				id: self.id,
 				name: self.id,
 				webUrl: jobResponse.lastBuild.url,
-				isBroken: lastCompletedResponse.result !== 'SUCCESS',
+				isBroken: lastCompletedResponse.result in
+					{ 'FAILURE': 1, 'UNSTABLE': 1, 'ABORTED': 1, 'NOT_BUILT': 1 },
 				isRunning: jobResponse.lastBuild.number !== jobResponse.lastCompletedBuild.number,
 				isDisabled: !jobResponse.buildable
 			};
+			if (!(lastCompletedResponse.result in
+					{ 'SUCCESS': 1, 'FAILURE': 1, 'UNSTABLE': 1, 'ABORTED': 1, 'NOT_BUILT': 1 })) {
+				state.error = 'Result [' + lastCompletedResponse.result + '] is unknown';
+			}
+			return state;
 		});
 	};
 

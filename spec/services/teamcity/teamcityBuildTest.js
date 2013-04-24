@@ -69,7 +69,7 @@ define([
 			expect(request.json).toHaveBeenCalled();
 		});
 
-		it('should set isBroken', function () {
+		it('should set isBroken on FAILURE', function () {
 			buildJson.status = 'FAILURE';
 
 			build.update().subscribe(function (state) {
@@ -79,11 +79,31 @@ define([
 			expect(request.json).toHaveBeenCalled();
 		});
 
-		it('should not set isBroken on successful build', function () {
+		it('should set isBroken on ERROR', function () {
+			buildJson.status = 'ERROR';
+
+			build.update().subscribe(function (state) {
+				expect(state.isBroken).toBe(true);
+			});
+
+			expect(request.json).toHaveBeenCalled();
+		});
+
+		it('should set isBroken to false on successful build', function () {
 			buildJson.status = 'SUCCESS';
 
 			build.update().subscribe(function (state) {
 				expect(state.isBroken).toBe(false);
+			});
+
+			expect(request.json).toHaveBeenCalled();
+		});
+
+		it('should set error if status unknown', function () {
+			buildJson.status = 'unknown_status';
+
+			build.update().subscribe(function (state) {
+				expect(state.error).toBe('Status [unknown_status] is unknown');
 			});
 
 			expect(request.json).toHaveBeenCalled();

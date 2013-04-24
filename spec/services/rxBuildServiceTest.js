@@ -209,6 +209,19 @@ define([
 				expect(storedState.serviceIcon).toBe(settings.icon);
 			});
 
+			it('should extend received build state from previous build if response unknown', function () {
+				service.latestBuildStates['Build1'].isBroken = true;
+				var state = createStateForId('Build1');
+				delete state.isBroken;
+
+				update1Response = Rx.Observable.returnValue(state);
+
+				service.updateAll().subscribe();
+
+				var storedState = service.latestBuildStates['Build1'];
+				expect(storedState.isBroken).toBe(true);
+			});
+
 			it('should push update when no builds selected', function () {
 				settings.projects = [];
 				service = new CustomBuildService(settings);

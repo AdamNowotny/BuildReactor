@@ -14,7 +14,8 @@ define([
 				baseUrl: 'cruisecontrol.net',
 				icon: 'cruisecontrol.net/icon.png',
 				url: 'http://example.com/',
-				name: 'CC.NET instance'
+				name: 'CC.NET instance',
+				projects : []
 			};
 		});
 

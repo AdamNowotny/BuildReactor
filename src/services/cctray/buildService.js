@@ -1,19 +1,18 @@
 define([
+	'services/rxBuildService',
+	'services/request',
 	'jquery',
-	'signals',
-	'./ccRequest',
-	'./cctrayProject',
-	'mout/array/contains',
+	'rx',
+	'mout/object/mixIn',
 	'common/joinUrl',
-	'services/buildService',
-	'services/request'
-], function ($, Signal, ccRequest, CCTrayProject, contains, joinUrl, BuildService, request) {
+	'mout/array/contains'
+], function (BuildService, request, $, Rx, mixIn, joinUrl, contains) {
 
 	'use strict';
 
 	var CCBuildService = function (settings) {
-		$.extend(this, new BuildService(settings));
-		this.Build = CCTrayProject;
+		mixIn(this, new BuildService(settings));
+		this.availableBuilds = availableBuilds;
 		this.updateAll = updateAll;
 		this.cctrayLocation = '';
 	};
@@ -34,51 +33,56 @@ define([
 	};
 
 	var updateAll = function () {
-		function processResponse(projects) {
-			$(projects)
-				.find('Project')
-				.filter(function selectedProjects(i, d) {
-					return contains(self.settings.projects, $(d).attr('name'));
-				})
-				.map(function projectInfo(i, d) {
-					var name = $(d).attr('name');
-					return {
-						name: name,
-						category: $(d).attr('category'),
-						status: $(d).attr('lastBuildStatus'),
-						url: $(d).attr('webUrl'),
-						activity: $(d).attr('activity')
-					};
-				})
-				.each(function createOrUpdate(index, projectInfo) {
-					var project = self.builds[projectInfo.name];
-					if (!project) {
-						project = new CCTrayProject(projectInfo.name, self.settings);
-						self.observeBuild(project);
-						self.builds[projectInfo.name] = project;
-					}
-					project.update(projectInfo);
-				});
-		}
-
-		var completed = new Signal();
-		completed.memorize = true;
 		var self = this;
-		var requestSettings = {
+		return request.xml({
 			url: joinUrl(this.settings.url, this.cctrayLocation),
 			username: this.settings.username,
-			password: this.settings.password
-		};
-		var request = ccRequest.projects(requestSettings);
-		request.responseReceived.addOnce(function (projectsResponse) {
-			processResponse(projectsResponse);
-			completed.dispatch();
-		}, this);
-		request.errorReceived.addOnce(function (errorInfo) {
-			self.on.errorThrown.dispatch(errorInfo);
-			completed.dispatch();
-		}, this);
-		return completed;
+			password: this.settings.password,
+			parser: parseProjects
+		}).catchException(function (ex) {
+			return Rx.Observable.fromArray(self.settings.projects)
+				.select(function (buildId) {
+					return {
+						id: buildId,
+						error: ex
+					};
+				}).toArray();
+		}).selectMany(function (projects) {
+			return Rx.Observable.fromArray(projects);
+		}).where(function (build) {
+			return contains(self.settings.projects, build.id);
+		}).select(function (state) {
+			return self.mixInMissingState(state);
+		}).doAction(function (state) {
+			return self.processBuildUpdate(state);
+		}).defaultIfEmpty([]);
+	};
+
+	var parseProjects = function (projectsXml) {
+		return $(projectsXml)
+			.find('Project')
+			.map(function (i, d) {
+				return {
+					id: $(d).attr('name'),
+					name: $(d).attr('name'),
+					group: $(d).attr('category'),
+					webUrl: $(d).attr('webUrl'),
+					status: $(d).attr('lastBuildStatus'),
+					activity: $(d).attr('activity'),
+				};
+			}).map(function (i, d) {
+				var state = {
+					id: d.id,
+					name: d.name,
+					group: d.group,
+					webUrl: d.webUrl,
+					isRunning: d.activity === 'Building',
+				};
+				if (d.status in { 'Success': 1, 'Failure': 1, 'Exception': 1 }) {
+					state.isBroken = d.status in { 'Failure': 1, 'Exception': 1 };
+				}
+				return state;
+			}).toArray();
 	};
 
 	var availableBuilds = function () {
@@ -91,29 +95,20 @@ define([
 	};
 
 	function parseAvailableBuilds(projectsXml) {
-
-		function createItem(i, d) {
-			var item = $(d),
-				projectName = item.attr('name');
-			return {
-				id: projectName,
-				name: projectName,
-				group: item.attr('category'),
-				isDisabled: false
-			};
-		}
-
 		return {
 			items: $(projectsXml)
 				.find('Project')
-				.map(createItem)
+				.map(function (i, project) {
+					return {
+						id: $(project).attr('name'),
+						name: $(project).attr('name'),
+						group: $(project).attr('category'),
+						isDisabled: false
+					};
+				})
 				.toArray()
 		};
 	}
-
-	CCBuildService.prototype = {
-		availableBuilds: availableBuilds
-	};
 
 	return CCBuildService;
 });

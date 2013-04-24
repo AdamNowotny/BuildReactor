@@ -14,7 +14,8 @@ define([
 				baseUrl: 'cruisecontrol.rb',
 				icon: 'cruisecontrol.rb/icon.png',
 				url: 'http://example.com/',
-				name: 'CC.rb instance'
+				name: 'CC.rb instance',
+				projects : []
 			};
 		});
 

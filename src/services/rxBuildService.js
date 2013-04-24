@@ -19,6 +19,8 @@ define([
 		this.builds = {};
 		this.latestBuildStates = getInitialStates(settings);
 		this.poolingSubscription = null;
+		this.mixInMissingState = mixInMissingState;
+		this.processBuildUpdate = processBuildUpdate;
 	}
 
 	var getInitialStates = function (settings) {
@@ -58,35 +60,6 @@ define([
 			return self.builds[buildId];
 		};
 
-		var mixInMissingState = function (state) {
-			var defaults = {
-				isDisabled: false,
-				serviceName: self.settings.name,
-				serviceIcon: self.settings.icon
-			};
-			return mixIn(defaults, state);
-		};
-
-		var processBuildUpdate = function (newState) {
-			if (newState.error) {
-				self.events.onNext({ eventName: 'updateError', details: newState });
-			}
-			var lastState = self.latestBuildStates[newState.id];
-			if (!lastState.isBroken && newState.isBroken) {
-				self.events.onNext({ eventName: 'buildBroken', details: newState });
-			}
-			if (lastState.isBroken && !newState.isBroken) {
-				self.events.onNext({ eventName: 'buildFixed', details: newState });
-			}
-			if (!lastState.isRunning && newState.isRunning) {
-				self.events.onNext({ eventName: 'buildStarted', details: newState });
-			}
-			if (lastState.isRunning && !newState.isRunning) {
-				self.events.onNext({ eventName: 'buildFinished', details: newState });
-			}
-			self.latestBuildStates[newState.id] = newState;
-		};
-
 		var self = this;
 		initializeBuilds();
 		return Rx.Observable.fromArray(this.settings.projects)
@@ -99,10 +72,41 @@ define([
 							error: ex
 						});
 					});
-			}).select(mixInMissingState)
-			.doAction(processBuildUpdate)
+			}).select(function (state) { return self.mixInMissingState(state); })
+			.doAction(function (state) { return self.processBuildUpdate(state); })
 			.defaultIfEmpty([]);
 	};
+
+	var mixInMissingState = function (state) {
+		var defaults = {
+			isBroken: this.latestBuildStates[state.id].isBroken,
+			isDisabled: false,
+			serviceName: this.settings.name,
+			serviceIcon: this.settings.icon
+		};
+		return mixIn(defaults, state);
+	};
+
+	var processBuildUpdate = function (newState) {
+		if (newState.error) {
+			this.events.onNext({ eventName: 'updateError', details: newState });
+		}
+		var lastState = this.latestBuildStates[newState.id];
+		if (!lastState.isBroken && newState.isBroken) {
+			this.events.onNext({ eventName: 'buildBroken', details: newState });
+		}
+		if (lastState.isBroken && !newState.isBroken) {
+			this.events.onNext({ eventName: 'buildFixed', details: newState });
+		}
+		if (!lastState.isRunning && newState.isRunning) {
+			this.events.onNext({ eventName: 'buildStarted', details: newState });
+		}
+		if (lastState.isRunning && !newState.isRunning) {
+			this.events.onNext({ eventName: 'buildFinished', details: newState });
+		}
+		this.latestBuildStates[newState.id] = newState;
+	};
+
 
 	var start = function () {
 		if (this.poolingSubscription !== null) { 

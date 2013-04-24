@@ -1,65 +1,90 @@
 define([
 	'services/cctray/buildService',
-	'services/cctray/ccRequest',
-	'services/cctray/cctrayProject',
-	'services/poolingService',
-	'jquery',
-	'signals',
-	'jasmineSignals',
 	'services/request',
 	'rx',
+	'jquery',
+	'mout/object/mixIn',
 	'text!spec/fixtures/cctray/cruisecontrolnet.xml'
 ],
-function (BuildService, ccRequest, CCTrayProject, PoolingService, $, Signal, spyOnSignal, request, Rx, projectsXmlText) {
+function (BuildService, request, Rx, $, mixIn, projectsXmlText) {
 
 	'use strict';
 
 	describe('services/cctray/buildService', function () {
 
-		var service,
-			settings,
-			mockRequest,
-			responseReceived,
-			errorReceived,
-			projectsXml = $.parseXML(projectsXmlText),
-			initResponse = function (response) {
-				mockRequest.andCallFake(function () {
-					responseReceived.dispatch(response);
-					return {
-						responseReceived: responseReceived,
-						errorReceived: errorReceived
-					};
-				});
-			},
-			initErrorResponse = function () {
-				mockRequest.andCallFake(function () {
-					errorReceived.dispatch({ message: 'ajax error' });
-					return {
-						responseReceived: responseReceived,
-						errorReceived: errorReceived
-					};
-				});
-			};
+		var service;
+		var	settings;
+		var events;
+		var states;
 
 		beforeEach(function () {
-			responseReceived = new Signal();
-			responseReceived.memorize = true;
-			errorReceived = new Signal();
-			errorReceived.memorize = true;
 			settings = {
-				name: 'My Bamboo CI',
+				name: 'Build Server',
 				username: null,
 				password: null,
 				url: 'http://example.com/',
 				updateInterval: 10000,
-				projects: ['CruiseControl.NET', 'NetReflector']
+				icon: 'cctray/icon.png',
+				projects: ['CruiseControl.NET', 'Build-Server-Config']
 			};
-			spyOn(PoolingService.prototype, 'start');
-			spyOn(PoolingService.prototype, 'stop');
+			states = [createState1(), createState2()];
+			spyOn(request, 'xml').andCallFake(function (options) {
+				return Rx.Observable.returnValue(states);
+			});
 			service = new BuildService(settings);
-			mockRequest = spyOn(ccRequest, 'projects');
-			initResponse(projectsXml);
+			events = [];
 		});
+
+		function createState1() {
+			return {
+				id: 'CruiseControl.NET',
+				name: 'CruiseControl.NET',
+				group: 'CruiseControl.NET',
+				webUrl: 'http://build.nauck-it.de/server/build.nauck-it.de/project/CruiseControl.NET/ViewProjectReport.aspx',
+				isBroken: false,
+				isRunning: false
+			};
+		}
+
+		function createState2() {
+			return {
+				id: 'Build-Server-Config',
+				name: 'Build-Server-Config',
+				group: 'Build Server Configuration',
+				webUrl: 'http://build.nauck-it.de/server/build.nauck-it.de/project/Build-Server-Config/ViewProjectReport.aspx',
+				isBroken: false,
+				isRunning: false
+			};
+		}
+
+		function extendState(state) {
+			return mixIn(state, {
+				isDisabled: false,
+				serviceName: 'Build Server',
+				serviceIcon: 'cctray/icon.png'
+			});
+		}
+
+		function rememberEvent(event) {
+			events.push(event);
+		}
+
+		function eventPushed(eventName) {
+			return getEvents(eventName).length > 0;
+		}
+
+		function getLastEvent(eventName) {
+			var eventsByName = getEvents(eventName);
+			return eventsByName.length ?
+				eventsByName[eventsByName.length - 1] :
+				null;
+		}
+
+		function getEvents(eventName) {
+			return events.filter(function (event) {
+				return event.eventName === eventName;
+			});
+		}
 
 		it('should provide default settings', function () {
 			var settings = BuildService.settings();
@@ -75,149 +100,285 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, $, Signal, spy
 			expect(settings.updateInterval).toBe(60);
 		});
 
-		it('should expose service interface', function () {
+		it('should expose interface', function () {
 			expect(service.settings).toBe(settings);
-			expect(service.on.brokenBuild).toBeDefined();
-			expect(service.on.fixedBuild).toBeDefined();
-			expect(service.on.startedBuild).toBeDefined();
-			expect(service.on.finishedBuild).toBeDefined();
-			expect(service.on.errorThrown).toBeDefined();
-			expect(service.on.updating).toBeDefined();
-			expect(service.on.updated).toBeDefined();
+			expect(service.updateAll).toBeDefined();
+			expect(service.start).toBeDefined();
+			expect(service.stop).toBeDefined();
+			expect(service.activeProjects).toBeDefined();
+			expect(service.availableBuilds).toBeDefined();
+			expect(service.events).toBeDefined();
 		});
 
 		describe('updateAll', function () {
 
-			it('should modify url', function () {
-				mockRequest.andCallFake(function (settings) {
-					expect(settings.url).toBe('http://example.com/cc.xml');
-					responseReceived.dispatch(projectsXml);
+			var eventsSubscription;
+
+			beforeEach(function () {
+				service = new BuildService(settings);
+				events = [];
+				eventsSubscription = service.events.subscribe(rememberEvent);
+			});
+
+			afterEach(function () {
+				eventsSubscription.dispose();
+			});
+
+			it('should set default last build status', function () {
+				var getDefaultState = function (id) {
 					return {
-						responseReceived: responseReceived,
-						errorReceived: errorReceived
+						id: id,
+						name: id,
+						group: null,
+						webUrl: null,
+						isBroken: false,
+						isRunning: false,
+						isDisabled: false,
+						serviceName: settings.name,
+						serviceIcon: settings.icon
 					};
+				}; 
+
+				expect(service.latestBuildStates['CruiseControl.NET']).toEqual(getDefaultState('CruiseControl.NET'));
+			});
+
+			it('should set request options', function () {
+				request.xml.andCallFake(function (options) {
+					expect(options.username).toBe(settings.username);
+					expect(options.password).toBe(settings.password);
+					expect(options.url).toBe('http://example.com/cc.xml');
+					return Rx.Observable.returnValue(states);
 				});
 
 				service.cctrayLocation = 'cc.xml';
 				service.updateAll();
 
-				expect(mockRequest).toHaveBeenCalled();
+				expect(request.xml).toHaveBeenCalled();
 			});
 
-			it('should signal when update finished', function () {
-				var completed = false;
+			describe('response parsing', function () {
 
-				service.updateAll().addOnce(function () {
+				var projectsXml;
+				var parsedResponse;
+
+				beforeEach(function () {
+					projectsXml = $(projectsXmlText);
+					request.xml.andCallFake(function (options) {
+						parsedResponse = options.parser(projectsXml);
+						return Rx.Observable.returnValue(parsedResponse);
+					});
+				});
+
+				it('should parse xml into project array', function () {
+					service.updateAll();
+
+					expect(request.xml).toHaveBeenCalled();
+					expect(parsedResponse.length).toBe(9);
+					expect(parsedResponse[0]).toEqual(createState1());
+				});
+
+				it('should parse xml is build broken with failure', function () {
+					projectsXml.find('Project').attr('lastBuildStatus', 'Failure');
+
+					service.updateAll();
+
+					expect(request.xml).toHaveBeenCalled();
+					expect(parsedResponse[0].isBroken).toBe(true);
+				});
+
+				it('should parse xml is build broken with exception', function () {
+					projectsXml.find('Project').attr('lastBuildStatus', 'Exception');
+
+					service.updateAll();
+
+					expect(request.xml).toHaveBeenCalled();
+					expect(parsedResponse[0].isBroken).toBe(true);
+				});
+
+				it('should parse xml is build running', function () {
+					projectsXml.find('Project').attr('activity', 'Building');
+
+					service.updateAll();
+
+					expect(request.xml).toHaveBeenCalled();
+					expect(parsedResponse[0].isRunning).toBe(true);
+				});
+
+				it('should ignore if status unknown and broken previously', function () {
+					service.latestBuildStates['CruiseControl.NET'].isBroken = true;
+					projectsXml.find('Project').attr('lastBuildStatus', 'Unknown');
+
+					service.updateAll();
+
+					expect(request.xml).toHaveBeenCalled();
+					expect(parsedResponse[0].isBroken).not.toBeDefined();
+				});
+
+			});
+
+			it('should remember new build state', function () {
+				service.updateAll().subscribe();
+
+				var states = service.latestBuildStates;
+				expect(states['CruiseControl.NET']).toEqual(extendState(createState1()));
+				expect(states['Build-Server-Config']).toEqual(extendState(createState2()));
+			});
+
+			it('should push update when no builds selected', function () {
+				settings.projects = [];
+
+				var completed = false;
+				service.updateAll().subscribe(function () {
 					completed = true;
 				});
 
 				expect(completed).toBe(true);
 			});
 
-			it('should signal if finished with error', function () {
-				initErrorResponse();
-				var completed = false;
+			it('should not fail if build update failed', function () {
+				var stateError = "Error";
 
-				service.updateAll().addOnce(function () {
-					completed = true;
+				request.xml.andCallFake(function (options) {
+					return Rx.Observable.throwException(stateError);
 				});
 
-				expect(completed).toBe(true);
+				var sequenceFailed = false;
+				var response;
+				service.updateAll().subscribe(function (state) {
+					response = state;
+				}, function () {
+					sequenceFailed = true;
+				});
+
+				expect(sequenceFailed).toBe(false);
+				expect(response.error).toEqual(stateError);
 			});
+
 		});
 
-		it('should signal errorThrown when update failed', function () {
-			spyOnSignal(service.on.errorThrown);
-			initErrorResponse();
+		describe('build events', function () {
 
-			service.update();
+			var oldState;
+			var newState;
+			var eventsSubscription;
 
-			expect(service.on.errorThrown).toHaveBeenDispatched();
-		});
+			beforeEach(function () {
+				service = new BuildService(settings);
+				events = [];
+				eventsSubscription = service.events.subscribe(rememberEvent);
+				oldState = service.latestBuildStates['CruiseControl.NET'];
+				newState = mixIn({
+					id: 'CruiseControl.NET',
+					isBroken: false,
+					isRunning: false,
+					isDisabled: false
+				}, oldState);
+				request.xml.andCallFake(function (options) {
+					return Rx.Observable.returnValue([newState]);
+				});
+			});
 
-		describe('monitoring', function () {
+			afterEach(function () {
+				eventsSubscription.dispose();
+			});
 
-			it('should update project', function () {
-				service.update();
-				var updateProject = service.builds['NetReflector'];
-				spyOn(updateProject, 'update').andCallFake(function (info) {
-					expect(info.name).toBeDefined();
-					expect(info.category).toBeDefined();
-					expect(info.status).toBeDefined();
-					expect(info.url).toBeDefined();
-					expect(info.activity).toBeDefined();
+			it('should push updateError if build update failed', function () {
+				var stateError = "Error";
+				request.xml.andCallFake(function (options) {
+					return Rx.Observable.throwException(stateError);
 				});
 
-				service.update();
+				service.updateAll().subscribe();
 
-				expect(updateProject.update).toHaveBeenCalled();
+				expect(eventPushed('updateError')).toBe(true);
+				expect(getLastEvent('updateError').details.error).toEqual(stateError);
 			});
 
-			it('should signal brokenBuild if project signaled', function () {
-				var failedProject;
-				spyOnSignal(service.on.brokenBuild).matching(function (info) {
-					return info.buildName === 'NetReflector' &&
-						info.group === 'CruiseControl.NET';
-				});
-				initResponse(projectsXml);
-				service.update();
-				failedProject = service.builds['NetReflector'];
+			it('should push buildBroken if build broken', function () {
+				oldState.isBroken = false;
+				newState.isBroken = true;
 
-				failedProject.on.broken.dispatch(failedProject);
+				service.updateAll().subscribe();
 
-				expect(service.on.brokenBuild).toHaveBeenDispatched(1);
+				expect(eventPushed('buildBroken')).toBe(true);
+				expect(getLastEvent('buildBroken').details).toEqual(newState);
 			});
 
-			it('should signal fixedBuild if project signaled', function () {
-				var fixedProject;
-				spyOnSignal(service.on.fixedBuild).matching(function (info) {
-					return info.buildName === 'NetReflector' &&
-						info.group === 'CruiseControl.NET';
-				});
-				initResponse(projectsXml);
-				service.update();
-				fixedProject = service.builds['NetReflector'];
+			it('should not push buildBroken if build already broken', function () {
+				oldState.isBroken = true;
+				newState.isBroken = true;
 
-				fixedProject.on.fixed.dispatch(fixedProject);
+				service.updateAll().subscribe();
 
-				expect(service.on.fixedBuild).toHaveBeenDispatched(1);
+				expect(eventPushed('buildBroken')).toBe(false);
 			});
 
-			it('should signal startedBuild if project signaled', function () {
-				spyOnSignal(service.on.startedBuild);
-				initResponse(projectsXml);
-				service.update();
-				var startedProject = service.builds['NetReflector'];
+			it('should push buildFixed if build was fixed', function () {
+				oldState.isBroken = true;
+				newState.isBroken = false;
 
-				startedProject.on.started.dispatch(startedProject);
 
-				expect(service.on.startedBuild).toHaveBeenDispatched();
+				service.updateAll().subscribe();
+
+				expect(eventPushed('buildFixed')).toBe(true);
+				expect(getLastEvent('buildFixed').details).toEqual(newState);
 			});
 
-			it('should signal finishedBuild if project signaled', function () {
-				spyOnSignal(service.on.finishedBuild);
-				initResponse(projectsXml);
-				service.update();
-				var finishedProject = service.builds['NetReflector'];
+			it('should not push buildFixed if build was not broken', function () {
+				oldState.isBroken = false;
+				newState.isBroken = false;
 
-				finishedProject.on.finished.dispatch(finishedProject);
+				service.updateAll().subscribe();
 
-				expect(service.on.finishedBuild).toHaveBeenDispatched();
+				expect(eventPushed('buildFixed')).toBe(false);
 			});
 
-			it('should ignore plans that are not monitored', function () {
-				service.update();
+			it('should push buildStarted if build started', function () {
+				oldState.isRunning = false;
+				newState.isRunning = true;
 
-				expect(service.builds['FastForward.NET']).not.toBeDefined();
+				service.updateAll().subscribe();
+
+				expect(eventPushed('buildStarted')).toBe(true);
+				expect(getLastEvent('buildStarted').details).toEqual(newState);
 			});
 
+			it('should not push buildStarted if build already running', function () {
+				oldState.isRunning = true;
+				newState.isRunning = true;
+
+				service.updateAll().subscribe();
+
+				expect(eventPushed('buildStarted')).toBe(false);
+			});
+
+			it('should push buildFinished if build finished', function () {
+				oldState.isRunning = true;
+				newState.isRunning = false;
+
+				service.updateAll().subscribe();
+
+				expect(eventPushed('buildFinished')).toBe(true);
+				expect(getLastEvent('buildFinished').details).toEqual(newState);
+			});
+
+			it('should not push buildFinished if build was not running', function () {
+				oldState.isRunning = false;
+				newState.isRunning = false;
+
+				service.updateAll().subscribe();
+
+				expect(eventPushed('buildFinished')).toBe(false);
+			});
 		});
 
 		describe('availableBuilds', function () {
 
+			var projectsXml = $(projectsXmlText);
+
 			it('should return available builds', function () {
 				var builds = Rx.Observable.returnValue(projectsXml);
-				spyOn(request, 'xml').andReturn(builds);
+				request.xml.andReturn(builds);
 
 				expect(service.availableBuilds()).toBe(builds);
 			});
@@ -225,7 +386,7 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, $, Signal, spy
 			it('should use credentials', function () {
 				settings.username = 'USERNAME';
 				settings.password = 'PASSWORD';
-				spyOn(request, 'xml').andCallFake(function (options) {
+				request.xml.andCallFake(function (options) {
 					expect(options.username).toBe(settings.username);
 					expect(options.password).toBe(settings.password);
 				});
@@ -236,7 +397,7 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, $, Signal, spy
 			});
 
 			it('should get available builds from correct URL', function () {
-				spyOn(request, 'xml').andCallFake(function (options) {
+				request.xml.andCallFake(function (options) {
 					expect(options.url).toBe('http://example.com/cc.xml');
 				});
 
@@ -247,7 +408,7 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, $, Signal, spy
 			});
 
 			it('should parse response', function () {
-				spyOn(request, 'xml').andCallFake(function (options) {
+				request.xml.andCallFake(function (options) {
 					var response = options.parser(projectsXml);
 					expect(response.items.length).toBe(9);
 					expect(response.items[0].id).toBe('CruiseControl.NET');
@@ -265,6 +426,17 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, $, Signal, spy
 
 		describe('activeProjects', function () {
 
+			var buildState1;
+			var buildState2;
+
+			beforeEach(function () {
+				settings.projects = ['Build1', 'Build2'];
+				buildState1 = createState1();
+				buildState2 = createState2();
+				service.latestBuildStates['Build1'] = buildState1;
+				service.latestBuildStates['Build2'] = buildState2;
+			});
+
 			it('should return service name', function () {
 				var result = service.activeProjects();
 
@@ -272,68 +444,27 @@ function (BuildService, ccRequest, CCTrayProject, PoolingService, $, Signal, spy
 			});
 
 			it('should return empty if no projects monitored', function () {
+				settings.projects = [];
+
 				var result = service.activeProjects();
 
 				expect(result.items.length).toBe(0);
 			});
 
-			it('should return item name', function () {
-				service.update();
+			it('should ignore disabled builds', function () {
+				buildState1.isDisabled = true;
 
 				var result = service.activeProjects();
 
-				expect(result.items[0].name).toBe('CruiseControl.NET');
-				expect(result.items[1].name).toBe('NetReflector');
+				expect(result.items.length).toBe(1);
 			});
 
-			it('should return group name', function () {
-				service.update();
-
+			it('should return build info', function () {
 				var result = service.activeProjects();
 
-				expect(result.items[0].group).toBe('CruiseControl.NET');
-				expect(result.items[1].group).toBe('CruiseControl.NET');
-			});
-
-			it('should indicate if broken', function () {
-				service.update();
-				var buildingProject = new CCTrayProject('CruiseControl.NET');
-				buildingProject.update({
-					status: 'Success',
-					activity: 'Building'
-				});
-				service.builds['CruiseControl.NET'] = buildingProject;
-
-				var result = service.activeProjects();
-
-				expect(result.items[0].isBuilding).toBeTruthy();
-			});
-
-			it('should indicate if building', function () {
-				service.update();
-				var failedProject = new CCTrayProject('CruiseControl.NET');
-				failedProject.update({
-					status: 'Failure'
-				});
-				service.builds['CruiseControl.NET'] = failedProject;
-
-				var result = service.activeProjects();
-
-				expect(result.items[0].isBroken).toBeTruthy();
-			});
-
-			it('should render link', function () {
-				service.update();
-				var failedProject = new CCTrayProject('CruiseControl.NET');
-				failedProject.update({
-					status: 'Failure',
-					url: 'http://example.com/project'
-				});
-				service.builds['CruiseControl.NET'] = failedProject;
-
-				var result = service.activeProjects();
-
-				expect(result.items[0].url).toBe('http://example.com/project');
+				expect(result.items.length).toBe(2);
+				expect(result.items[0]).toBe(buildState1);
+				expect(result.items[1]).toBe(buildState2);
 			});
 
 		});

@@ -14,7 +14,8 @@ define([
 				baseUrl: 'go',
 				icon: 'go/icon.png',
 				url: 'http://example.com/',
-				name: 'GO instance'
+				name: 'GO instance',
+				projects : []
 			};
 		});
 
