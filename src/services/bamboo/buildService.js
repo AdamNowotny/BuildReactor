@@ -1,16 +1,17 @@
 define([
-	'jquery',
-	'./bambooPlan',
+	'services/rxBuildService',
 	'services/request',
-	'services/buildService',
+	'services/bamboo/bambooPlan',
+	'mout/object/mixIn',
 	'common/joinUrl'
-], function ($, BambooPlan, request, BuildService, joinUrl) {
+], function (BuildService, request, BambooPlan, mixIn, joinUrl) {
 
 	'use strict';
 
 	var BambooBuildService = function (settings) {
-		$.extend(this, new BuildService(settings));
+		mixIn(this, new BuildService(settings));
 		this.Build = BambooPlan;
+		this.availableBuilds = availableBuilds;
 	};
 
 	BambooBuildService.settings = function () {
@@ -28,7 +29,7 @@ define([
 		};
 	};
 
-	BambooBuildService.prototype.availableBuilds = function () {
+	var availableBuilds = function () {
 		return request.json({
 			url: joinUrl(this.settings.url, 'rest/api/latest/project?expand=projects.project.plans.plan'),
 			username: this.settings.username,

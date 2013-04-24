@@ -1,13 +1,11 @@
 define([
 		'services/bamboo/buildService',
 		'services/bamboo/bambooPlan',
-		'services/bamboo/bambooRequest',
-		'jquery',
 		'rx',
 		'services/request',
 		'json!spec/fixtures/bamboo/projects.json'
 	],
-	function (BuildService, BambooPlan, BambooRequest, $, Rx, request, projectsJson) {
+	function (BuildService, BambooPlan, Rx, request, projectsJson) {
 
 		'use strict';
 

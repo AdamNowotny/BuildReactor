@@ -1,119 +1,54 @@
 define([
-	'signals',
-	'./bambooRequest',
-	'common/joinUrl',
-	'jquery',
-	'services/build'
-], function (Signal, BambooRequest, joinUrl, $, Build) {
+	'services/request',
+	'rx',
+	'common/joinUrl'
+], function (request, Rx, joinUrl) {
 
 	'use strict';
 
 	var BambooPlan = function (id, settings) {
-		$.extend(this, new Build(id, settings));
+		this.id = id;
+		this.settings = settings;
+		this.update = update;
 	};
 
-	BambooPlan.prototype.update = function () {
-		var plan = this;
-		var completed = new Signal();
-		completed.memorize = true;
-		updatePlanDetails(plan).addOnce(function (result) {
-			if (result.error) {
-				plan.on.errorThrown.dispatch(plan);
-				completed.dispatch(plan);
-			} else if (plan.isDisabled) {
-				completed.dispatch(plan);
-			} else {
-				updateLastResult(plan).addOnce(function (result) {
-					if (result.error) {
-						plan.on.errorThrown.dispatch(plan);
-					}
-					completed.dispatch(plan);
-				});
+	var update = function () {
+		var self = this;
+		return plan(self).zip(result(self), function (planResponse, resultResponse) {
+			var state = {
+				id: self.id,
+				name: planResponse.shortName,
+				group: planResponse.projectName,
+				webUrl: joinUrl(self.settings.url, 'browse/' + resultResponse.key),
+				isBroken: resultResponse.state === 'Failed',
+				isRunning: planResponse.isBuilding,
+				isWaiting: planResponse.isActive,
+				isDisabled: !planResponse.enabled
+			};
+			if (!(resultResponse.state in { 'Successful': 1, 'Failed': 1})) {
+				state.error = 'State [' + resultResponse.state + '] is unknown';
 			}
+			return state;
 		});
-		return completed;
 	};
 
-	function processEvents(plan, response) {
-		if (!plan.isRunning && response.isBuilding) {
-			plan.on.started.dispatch(plan);
-		}
-		if (plan.isRunning && !response.isBuilding) {
-			plan.on.finished.dispatch(plan);
-		}
-	}
+	var plan = function (self) {
+		return request.json({
+			url: joinUrl(self.settings.url, 'rest/api/latest/plan/' + self.id),
+			username: self.settings.username,
+			password: self.settings.password,
+			authCookie: 'JSESSIONID',
+		});
+	};
 
-	function activateEvents(plan, active) {
-		plan.on.broken.active = active;
-		plan.on.fixed.active = active;
-		plan.on.started.active = active;
-		plan.on.finished.active = active;
-	}
-
-	function updatePlanDetails(plan) {
-
-		function processResponse(response) {
-			try {
-				if (!response.key) { throw { name: 'ArgumentInvalid', message: 'response.key is undefined' }; }
-				plan.projectName = response.projectName;
-				plan.name = response.shortName;
-				plan.isDisabled = !response.enabled;
-				activateEvents(plan, !plan.isDisabled);
-				processEvents(plan, response);
-				plan.isRunning = response.isBuilding;
-				plan.isActive = response.isActive;
-				completed.dispatch({ result: response });
-			} catch (e) {
-				completed.dispatch({ error: e });
-			}
-		}
-
-		function processError(ajaxError) {
-			completed.dispatch({ error: ajaxError || {} });
-		}
-
-		var completed = new Signal();
-		completed.memorize = true;
-		var request = new BambooRequest(plan.settings);
-		request.on.responseReceived.addOnce(processResponse, plan);
-		request.on.errorReceived.addOnce(processError, plan);
-		request.plan(plan.id);
-		return completed;
-	}
-
-	function updateLastResult(plan) {
-		
-		function processResponse(response) {
-			try {
-				plan.buildNumber = response.number;
-				plan.webUrl = joinUrl(plan.settings.url, 'browse/' + response.key);
-				if (!plan.isBroken && response.state === 'Failed') {
-					plan.isBroken = true;
-					plan.on.broken.dispatch(plan);
-				}
-				if (plan.isBroken && response.state === 'Successful') {
-					plan.isBroken = false;
-					plan.on.fixed.dispatch(plan);
-				}
-				completed.dispatch({ result: response });
-			} catch (e) {
-				completed.dispatch({ error: e });
-			}
-		}
-
-		function processError(ajaxError) {
-			completed.dispatch({ error: ajaxError || {} });
-		}
-		
-
-		var completed = new Signal();
-		completed.memorize = true;
-		var request = new BambooRequest(plan.settings);
-		request.on.responseReceived.addOnce(processResponse, plan);
-		request.on.errorReceived.addOnce(processError, plan);
-		request.latestPlanResult(plan.id);
-		return completed;
-	}
+	var result = function (self) {
+		return request.json({
+			url: joinUrl(self.settings.url, 'rest/api/latest/result/' + self.id + '/latest?expand=changes'),
+			username: self.settings.username,
+			password: self.settings.password,
+			authCookie: 'JSESSIONID',
+		});
+	};
 
 	return BambooPlan;
 });
