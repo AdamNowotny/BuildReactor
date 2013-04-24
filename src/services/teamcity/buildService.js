@@ -1,15 +1,15 @@
 define([
-	'services/rxBuildService',
+	'services/buildServiceBase',
 	'services/request',
 	'services/teamcity/teamcityBuild',
 	'mout/object/mixIn',
 	'common/joinUrl'
-], function (BuildService, request, TravisBuild, mixIn, joinUrl) {
+], function (BuildServiceBase, request, TravisBuild, mixIn, joinUrl) {
 
 	'use strict';
 
 	var TeamcityBuildService = function (settings) {
-		mixIn(this, new BuildService(settings));
+		mixIn(this, new BuildServiceBase(settings));
 		this.Build = TravisBuild;
 		this.availableBuilds = availableBuilds;
 	};

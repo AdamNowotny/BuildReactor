@@ -1,9 +1,8 @@
 define([
-	'main/ajaxRequest',
 	'main/serviceController',
 	'main/settingsStore',
 	'mout/string/interpolate'
-], function (AjaxRequest, serviceController, settingsStore, interpolate) {
+], function (serviceController, settingsStore, interpolate) {
 
 	'use strict';
 

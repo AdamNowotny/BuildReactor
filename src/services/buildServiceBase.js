@@ -7,7 +7,7 @@ define([
 ], function (Rx, $, values, mixIn) {
 	'use strict';
 
-	function BuildService(settings) {
+	function BuildServiceBase(settings) {
 		this.rx = true;
 		this.Build = null;
 		this.settings = settings;
@@ -144,5 +144,5 @@ define([
 		};
 	};
 
-	return BuildService;
+	return BuildServiceBase;
 });

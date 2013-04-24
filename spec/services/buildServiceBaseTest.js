@@ -1,11 +1,11 @@
 define([
-	'services/rxBuildService',
+	'services/buildServiceBase',
 	'jquery',
 	'rx'
-], function (BuildService, $, Rx) {
+], function (BuildServiceBase, $, Rx) {
 	'use strict';
 
-	describe('services/buildService', function () {
+	describe('services/buildServiceBase', function () {
 
 		var settings;
 		var service;
@@ -33,7 +33,7 @@ define([
 		});
 
 		function CustomBuildService() {
-			$.extend(this, new BuildService(settings));
+			$.extend(this, new BuildServiceBase(settings));
 			this.Build = GenericBuild;
 		}
 

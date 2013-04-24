@@ -1,15 +1,15 @@
 define([
-	'services/rxBuildService',
+	'services/buildServiceBase',
 	'services/request',
 	'services/jenkins/jenkinsBuild',
 	'mout/object/mixIn',
 	'common/joinUrl'
-], function (BuildService, request, JenkinsBuild, mixIn, joinUrl) {
+], function (BuildServiceBase, request, JenkinsBuild, mixIn, joinUrl) {
 
 	'use strict';
 
 	var JenkinsBuildService = function (settings) {
-		mixIn(this, new BuildService(settings));
+		mixIn(this, new BuildServiceBase(settings));
 		this.Build = JenkinsBuild;
 		this.availableBuilds = availableBuilds;
 	};

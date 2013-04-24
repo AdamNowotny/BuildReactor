@@ -1,15 +1,15 @@
 define([
-	'services/rxBuildService',
+	'services/buildServiceBase',
 	'services/request',
 	'services/buildbot/buildbotBuild',
 	'mout/object/mixIn',
 	'common/joinUrl'
-], function (BuildService, request, BuildBotBuild, mixIn, joinUrl) {
+], function (BuildServiceBase, request, BuildBotBuild, mixIn, joinUrl) {
 
 	'use strict';
 
 	var BuildBotBuildService = function (settings) {
-		mixIn(this, new BuildService(settings));
+		mixIn(this, new BuildServiceBase(settings));
 		this.Build = BuildBotBuild;
 		this.availableBuilds = availableBuilds;
 	};

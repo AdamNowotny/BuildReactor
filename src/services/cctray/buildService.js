@@ -1,17 +1,17 @@
 define([
-	'services/rxBuildService',
+	'services/buildServiceBase',
 	'services/request',
 	'jquery',
 	'rx',
 	'mout/object/mixIn',
 	'common/joinUrl',
 	'mout/array/contains'
-], function (BuildService, request, $, Rx, mixIn, joinUrl, contains) {
+], function (BuildServiceBase, request, $, Rx, mixIn, joinUrl, contains) {
 
 	'use strict';
 
 	var CCBuildService = function (settings) {
-		mixIn(this, new BuildService(settings));
+		mixIn(this, new BuildServiceBase(settings));
 		this.availableBuilds = availableBuilds;
 		this.updateAll = updateAll;
 		this.cctrayLocation = '';

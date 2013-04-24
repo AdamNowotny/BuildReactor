@@ -1,15 +1,15 @@
 define([
-	'services/rxBuildService',
+	'services/buildServiceBase',
 	'services/request',
 	'services/bamboo/bambooPlan',
 	'mout/object/mixIn',
 	'common/joinUrl'
-], function (BuildService, request, BambooPlan, mixIn, joinUrl) {
+], function (BuildServiceBase, request, BambooPlan, mixIn, joinUrl) {
 
 	'use strict';
 
 	var BambooBuildService = function (settings) {
-		mixIn(this, new BuildService(settings));
+		mixIn(this, new BuildServiceBase(settings));
 		this.Build = BambooPlan;
 		this.availableBuilds = availableBuilds;
 	};
