@@ -107,7 +107,7 @@ module.exports = function (grunt) {
 								helperDirectory: 'templates/helpers/',
 								i18nDirectory:   'templates/i18n/'
 							},
-							waitSeconds: 2
+							waitSeconds: 10
 						}
 					}
 				}
