@@ -1,10 +1,9 @@
 define([
-	'common/resourceFinder',
 	'signals',
 	'jquery',
 	'hbs!templates/addServiceItem',
 	'bootstrap'
-], function (resourceFinder, signals, $, addServiceItemTemplate) {
+], function (signals, $, addServiceItemTemplate) {
 
 	'use strict';
 
@@ -41,7 +40,7 @@ define([
 		serviceTypes.forEach(function (d) {
 			input.push({
 				typeName: d.typeName,
-				logo: resourceFinder.logo(d.logo)
+				logo: 'src/services/' + d.logo
 			});
 		});
 		return { services: input };

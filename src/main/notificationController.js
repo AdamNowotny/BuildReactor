@@ -1,47 +1,43 @@
 define([
 	'main/serviceController',
-	'common/resourceFinder',
 	'common/timer',
 	'mout/string/interpolate',
 	'mout/array/remove'
-], function (serviceController, resourceFinder, Timer, interpolate, remove) {
+], function (serviceController, Timer, interpolate, remove) {
 
 	'use strict';
 	
 	var notificationTimeoutInSec = 5;
+	var eventsSubscription;
 
 	function notificationController() {
 
-		function onBrokenBuild(buildEvent) {
+		function onBrokenBuild(event) {
 			var notificationInfo = {
-				message: interpolate('Build failed - {{0}}', [buildEvent.serviceName]),
-				details: buildEvent.buildName + (buildEvent.group ? ' (' + buildEvent.group + ')' : ''),
-				url: buildEvent.url,
-				sticky: !reloading,
-				icon: buildEvent.icon,
-				serviceName: buildEvent.serviceName,
-				group: buildEvent.group,
-				buildName: buildEvent.buildName
+				id: event.details.serviceName + event.details.group + event.details.name,
+				message: 'Build failed - ' + event.details.serviceName,
+				details: event.details.name + (event.details.group ? ' (' + event.details.group + ')' : ''),
+				url: event.details.webUrl,
+				icon: 'src/services/' + event.details.serviceIcon,
+				sticky: !reloading
 			};
 			showNotification(notificationInfo);
 		}
 
-		function onFixedBuild(buildEvent) {
+		function onFixedBuild(event) {
 			var notificationInfo = {
-				message: interpolate('Build fixed - {{0}}', [buildEvent.serviceName]),
-				details: buildEvent.buildName + (buildEvent.group ? ' (' + buildEvent.group + ')' : ''),
-				url: buildEvent.url,
-				sticky: false,
-				icon: buildEvent.icon,
-				serviceName: buildEvent.serviceName,
-				group: buildEvent.group,
-				buildName: buildEvent.buildName
+				id: event.details.serviceName + event.details.group + event.details.name,
+				message: 'Build fixed - ' + event.details.serviceName,
+				details: event.details.name + (event.details.group ? ' (' + event.details.group + ')' : ''),
+				url: event.details.webUrl,
+				icon: 'src/services/' + event.details.serviceIcon,
+				sticky: false
 			};
 			showNotification(notificationInfo);
 		}
 
 		function showNotification(notificationInfo) {
-			hideOutdated(notificationInfo);
+			hideOutdated(notificationInfo.id);
 			var notification = createNotification(notificationInfo);
 			notification.show();
 			visibleNotifications.push({ notification: notification, notificationInfo: notificationInfo });
@@ -52,22 +48,12 @@ define([
 			}
 		}
 
-		function hideOutdated(notificationInfo) {
+		function hideOutdated(id) {
 			visibleNotifications.filter(function (d) {
-				return d.notificationInfo.serviceName === notificationInfo.serviceName &&
-					d.notificationInfo.buildName === notificationInfo.buildName &&
-					d.notificationInfo.group === notificationInfo.group;
+				return d.notificationInfo.id === id;
 			}).forEach(function (d) {
 				d.notification.cancel();
 			});
-		}
-
-		function onReloading() {
-			reloading = true;
-		}
-
-		function onStartedAll() {
-			reloading = false;
 		}
 
 		function createNotification(notificationInfo) {
@@ -87,7 +73,7 @@ define([
 			}
 
 			var notification = window.webkitNotifications.createNotification(
-				resourceFinder.icon(notificationInfo.icon),
+				notificationInfo.icon,
 				notificationInfo.message,
 				notificationInfo.details
 			);
@@ -96,12 +82,28 @@ define([
 			return notification;
 		}
 
+		var eventHandlers = {
+			'servicesInitializing': function () {
+				reloading = true;
+			},
+			'servicesInitialized': function () {
+				reloading = false;
+			},
+			'buildBroken': onBrokenBuild,
+			'buildFixed': onFixedBuild
+		};
+		if (eventsSubscription && !eventsSubscription.isStopped) {
+			eventsSubscription.dispose();
+		}
+		serviceController.events.doAction(function (event) {
+			var handler = eventHandlers[event.eventName];
+			if (handler) {
+				handler(event);
+			}
+		}).subscribe();
+
 		var visibleNotifications = [];
 		var reloading = false;
-		serviceController.on.brokenBuild.add(onBrokenBuild);
-		serviceController.on.fixedBuild.add(onFixedBuild);
-		serviceController.on.reloading.add(onReloading);
-		serviceController.on.startedAll.add(onStartedAll);
 	}
 	
 	notificationController.notificationTimeoutInSec = function (value) {

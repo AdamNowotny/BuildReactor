@@ -1,8 +1,8 @@
 define([
 	'main/settingsStore',
-	'main/serviceRepository',
+	'main/serviceLoader',
 	'main/serviceController'
-], function (settingsStore, serviceRepository, serviceController) {
+], function (settingsStore, serviceLoader, serviceController) {
 
 	'use strict';
 
@@ -11,14 +11,12 @@ define([
 		case 'initOptions':
 			sendResponse({
 				settings: settingsStore.getAll(),
-				serviceTypes: serviceRepository.getAllTypes()
+				serviceTypes: serviceController.getAllTypes()
 			});
 			break;
 		case 'updateSettings':
 			settingsStore.store(request.settings);
-			serviceController.load(request.settings).addOnce(function () {
-				serviceController.run();
-			});
+			serviceController.start(request.settings).subscribe();
 			break;
 		case 'activeProjects':
 			sendResponse({
@@ -26,7 +24,7 @@ define([
 			});
 			break;
 		case 'availableProjects':
-			serviceRepository.create(request.serviceSettings).addOnce(function (service) {
+			serviceLoader.load(request.serviceSettings).subscribe(function (service) {
 				service.availableBuilds().subscribe(function (projects) {
 					projects.selected = request.serviceSettings.projects;
 					sendResponse({ projects: projects });

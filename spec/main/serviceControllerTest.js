@@ -1,277 +1,191 @@
 define([
-		'jquery',
-		'main/serviceController',
-		'main/serviceRepository',
-		'spec/mocks/buildService',
-		'spec/mocks/mockBuildEvent',
-		'spec/mocks/mockSettingsBuilder',
-		'mout/string/endsWith',
-		'signals',
-		'jasmineSignals'
-	],
-	function ($, controller, serviceRepository, MockBuildService, mockBuildEvent, MockSettingsBuilder, endsWith, Signal, spyOnSignal) {
+	'main/serviceController',
+	'rx',
+	'main/serviceLoader'
+],
+function (controller, Rx, serviceLoader) {
 
-		'use strict';
-		
-		describe('ServiceController', function () {
+	'use strict';
+	
+	describe('serviceController', function () {
 
-			beforeEach(function () {
-				controller.load([]);
+		function CustomBuildService(settings) {
+			this.events = new Rx.Subject();
+		}
+		CustomBuildService.settings = function () {
+			return {
+				typeName: 'test'
+			};
+		};
+		CustomBuildService.prototype.start = function () {};
+		CustomBuildService.prototype.stop = function () {};
+		CustomBuildService.prototype.activeProjects = function () {};
+
+		var settings;
+		var service;
+		var serviceStartResponse;
+		var events = [];
+		var eventsSubscription;
+
+		function rememberEvent(event) {
+			events.push(event);
+		}
+
+		function eventPushed(eventName) {
+			return getEvents(eventName).length > 0;
+		}
+
+		function getLastEvent(eventName) {
+			var eventsByName = getEvents(eventName);
+			return eventsByName.length ?
+				eventsByName[eventsByName.length - 1] :
+				null;
+		}
+
+		function getEvents(eventName) {
+			return events.filter(function (event) {
+				return event.eventName === eventName;
+			});
+		}
+
+
+		beforeEach(function () {
+			events = [];
+			settings = {
+				baseUrl: 'test',
+				url: 'http://www.example.com/',
+				name: 'service name',
+				icon: 'mocks/icon.png',
+				logo: 'mocks/icon.png',
+				projects: [],
+				disabled: false
+			};
+			eventsSubscription = controller.events.subscribe(rememberEvent);
+			serviceStartResponse = Rx.Observable.returnValue([]);
+			spyOn(CustomBuildService.prototype, 'start').andCallFake(function () {
+				this.events.onNext({ eventName: 'serviceStarted' });
+				return serviceStartResponse;
+			});
+			spyOn(CustomBuildService.prototype, 'stop');
+			service = new CustomBuildService(settings);
+			spyOn(serviceLoader, 'load').andCallFake(function (settings) {
+				return Rx.Observable.returnValue(service);
+			});
+		});
+
+		afterEach(function () {
+			eventsSubscription.dispose();
+		});
+
+		it('should start services', function () {
+			controller.start([settings]).subscribe();
+
+			expect(CustomBuildService.prototype.start).toHaveBeenCalled();
+		});
+
+		it('should not start disabled services', function () {
+			settings.disabled = true;
+			
+			controller.start([settings]).subscribe();
+
+			expect(CustomBuildService.prototype.start).not.toHaveBeenCalled();
+		});
+
+		it('should subscribe to service events', function () {
+			controller.start([settings]).subscribe();
+			service.events.onNext({ eventName: 'someEvent'});
+
+			expect(eventPushed('someEvent')).toBe(true);
+		});
+
+		it('should push servicesInitializing when configuration is reset', function () {
+			controller.start([settings]).subscribe();
+
+			expect(eventPushed('servicesInitializing')).toBe(true);
+		});
+
+		it('should push servicesInitialized when all services started', function () {
+			CustomBuildService.prototype.start.andCallFake(function () {
+				expect(eventPushed('servicesInitialized')).toBe(false);
+				this.events.onNext({ eventName: 'serviceStarted' });
+				return serviceStartResponse;
+			});
+			controller.start([settings, settings]).subscribe();
+
+			expect(getEvents('servicesInitialized').length).toBe(1);
+		});
+
+		it('should push servicesInitialized when no services configured', function () {
+			controller.start([]).subscribe();
+
+			expect(eventPushed('servicesInitialized')).toBe(true);
+		});
+
+		it('should unsubscribe from events and stop old services', function () {
+			controller.start([settings]).subscribe();
+
+			controller.start([settings]).subscribe();
+			service.events.onNext({ eventName: 'someEvent'});
+
+			expect(CustomBuildService.prototype.stop).toHaveBeenCalled();
+			expect(getEvents('someEvent').length).toBe(1);
+		});
+
+		it('should unsubscribe from events and stop old services if empty settings passed', function () {
+			controller.start([settings]).subscribe();
+
+			controller.start([]).subscribe();
+			service.events.onNext({ eventName: 'someEvent'});
+
+			expect(getEvents('someEvent').length).toBe(0);
+		});
+
+		it('should get project state from all services', function () {
+			var activeProjects = { name: 'service 1' };
+			spyOn(CustomBuildService.prototype, 'activeProjects').andReturn(activeProjects);
+			controller.start([settings, settings]).subscribe();
+
+			var projects = controller.activeProjects();
+
+			expect(projects.length).toBe(2);
+		});
+
+		describe('serviceLoader', function () {
+
+			afterEach(function () {
+				controller.clear();
 			});
 
-			describe('service interface', function () {
+			it('should return empty array if no services registered', function () {
+				var types = controller.getAllTypes();
 
-				it('should require settings', function () {
-					var service = new MockBuildService();
-					delete service.settings;
-					
-					expect(function () { controller.addService(service); }).toThrow();
-				});
-
-				it('should require brokenBuild signal', function () {
-					var service = new MockBuildService();
-					delete service.on.brokenBuild;
-					
-					expect(function () { controller.addService(service); }).toThrow();
-				});
-
-				it('should require fixedBuild signal', function () {
-					var service = new MockBuildService();
-					delete service.on.fixedBuild;
-					
-					expect(function () { controller.addService(service); }).toThrow();
-				});
-
-				it('should require updating signal', function () {
-					var service = new MockBuildService();
-					delete service.on.updating;
-					
-					expect(function () { controller.addService(service); }).toThrow();
-				});
-
-				it('should require updated signal', function () {
-					var service = new MockBuildService();
-					delete service.on.updated;
-					
-					expect(function () { controller.addService(service); }).toThrow();
-				});
-
+				expect(types.length).toBe(0);
 			});
 
-			it('should throw exception if removing service that has not been added', function () {
-				var mockService = new MockBuildService();
+			it('should register service', function () {
+				spyOn(CustomBuildService, 'settings');
 
-				expect(function () { controller.removeService(mockService); }).toThrow();
+				controller.registerType(CustomBuildService);
+
+				expect(CustomBuildService.settings).toHaveBeenCalled();
 			});
 
-			it('should stop on service removed', function () {
-				var mockService = new MockBuildService();
-				spyOn(mockService, 'stop');
+			it('should return registered services settings', function () {
+				controller.registerType(CustomBuildService);
+				var types = controller.getAllTypes();
 
-				controller.addService(mockService);
-				controller.removeService(mockService);
-
-				expect(mockService.stop).toHaveBeenCalled();
+				expect(types.length).toBe(1);
+				expect(types[0].typeName).toBe(CustomBuildService.settings().typeName);
 			});
 
-			it('should unsubscribe from signals on service removed', function () {
-				var mockService = new MockBuildService();
+			it('should clear registrations', function () {
+				controller.registerType(CustomBuildService);
 
-				controller.addService(mockService);
-				controller.removeService(mockService);
+				controller.clear();
 
-				expect(mockService.on.brokenBuild.getNumListeners()).toBe(0);
-				expect(mockService.on.fixedBuild.getNumListeners()).toBe(0);
-				expect(mockService.on.updating.getNumListeners()).toBe(0);
-				expect(mockService.on.updated.getNumListeners()).toBe(0);
-				expect(mockService.on.errorThrown.getNumListeners()).toBe(0);
+				expect(controller.getAllTypes().length).toBe(0);
 			});
-
-			it('should remove all services when empty settings passed', function () {
-				var mockService1 = new MockBuildService();
-				var mockService2 = new MockBuildService();
-				controller.addService(mockService1);
-				controller.addService(mockService2);
-
-				controller.load([]);
-
-				expect(controller.services.length).toBe(0);
-			});
-
-			it('should signal brokenBuild on build failure', function () {
-				var buildFailedSpy = spyOnSignal(controller.on.brokenBuild);
-				var mockService = new MockBuildService();
-				controller.addService(mockService);
-
-				mockService.on.brokenBuild.dispatch(mockBuildEvent());
-
-				expect(buildFailedSpy).toHaveBeenDispatched(1);
-			});
-
-			it('should signal fixedBuild on build fixed event', function () {
-				var buildFixedSpy = spyOnSignal(controller.on.fixedBuild);
-				var mockService = new MockBuildService();
-				controller.addService(mockService);
-
-				mockService.on.fixedBuild.dispatch(mockBuildEvent());
-
-				expect(buildFixedSpy).toHaveBeenDispatched(1);
-			});
-
-			it('should signal when all services are loaded', function () {
-				var settings1 = new MockSettingsBuilder().create();
-				var settings2 = new MockSettingsBuilder().create();
-				var createdSignal = new Signal();
-				createdSignal.memorize = true;
-				createdSignal.dispatch(new MockBuildService());
-				spyOn(serviceRepository, 'create').andReturn(createdSignal);
-				var loaded = false;
-
-				controller.load([settings1, settings2]).addOnce(function () {
-					loaded = true;
-				});
-
-				expect(loaded).toBeTruthy();
-			});
-
-			it('should signal loaded when no services configured', function () {
-				var loaded = false;
-
-				controller.load([]).addOnce(function () {
-					loaded = true;
-				});
-
-				expect(loaded).toBeTruthy();
-			});
-
-			it('should notifiy when services are reloaded', function () {
-				spyOnSignal(controller.on.reloading);
-
-				controller.load([]);
-
-				expect(controller.on.reloading).toHaveBeenDispatched(1);
-			});
-
-			it('should not load disabled services', function () {
-				spyOn(serviceRepository, 'create');
-				var settings = new MockSettingsBuilder().isDisabled().create();
-
-				controller.load([settings]);
-
-				expect(serviceRepository.create).not.toHaveBeenCalled();
-			});
-
-			it('should signal loaded if services disabled', function () {
-				var settings = new MockSettingsBuilder().isDisabled().create();
-				var loaded = false;
-
-				controller.load([settings]).addOnce(function () {
-					loaded = true;
-				});
-
-				expect(loaded).toBe(true);
-			});
-
-			describe('run', function () {
-
-				it('should start all services', function () {
-					var mockService1 = new MockBuildService();
-					var mockService2 = new MockBuildService();
-					spyOn(mockService1, 'start');
-					spyOn(mockService2, 'start');
-					controller.addService(mockService1);
-					controller.addService(mockService2);
-
-					controller.run();
-
-					expect(mockService1.start).toHaveBeenCalled();
-					expect(mockService2.start).toHaveBeenCalled();
-				});
-
-				it('should dispatch started when service finishes update', function () {
-					var startedSpy = spyOnSignal(controller.on.started);
-					var mockService = new MockBuildService();
-
-					controller.addService(mockService);
-					controller.run();
-					mockService.on.updated.dispatch();
-
-					expect(startedSpy).toHaveBeenDispatched();
-				});
-
-				it('should not dispatch started before service finishes update', function () {
-					var startedSpy = spyOnSignal(controller.on.started);
-					var mockService = new MockBuildService();
-
-					controller.addService(mockService);
-					controller.run();
-
-					expect(startedSpy).not.toHaveBeenDispatched();
-				});
-
-				it('should dispatch startedAll when all services finish update', function () {
-					var startedAllSpy = spyOnSignal(controller.on.startedAll);
-					var mockService1 = new MockBuildService();
-					var mockService2 = new MockBuildService();
-
-					controller.addService(mockService1);
-					controller.addService(mockService2);
-					controller.run();
-					mockService1.on.updated.dispatch();
-					mockService2.on.updated.dispatch();
-
-					expect(startedAllSpy).toHaveBeenDispatched();
-				});
-
-				it('should not dispatch startedAll before all services finish update', function () {
-					spyOnSignal(controller.on.startedAll);
-					var mockService1 = new MockBuildService();
-					var mockService2 = new MockBuildService();
-
-					controller.addService(mockService1);
-					controller.addService(mockService2);
-					controller.run();
-					mockService1.on.updated.dispatch();
-
-					expect(controller.on.startedAll).not.toHaveBeenDispatched();
-				});
-
-				it('should signal startedAll if no services configured', function () {
-					spyOnSignal(controller.on.startedAll);
-
-					controller.run();
-
-					expect(controller.on.startedAll).toHaveBeenDispatched();
-				});
-
-				it('should signal startedAll even if services disabled', function () {
-					spyOnSignal(controller.on.startedAll);
-					var settings = new MockSettingsBuilder().isDisabled().create();
-
-					controller.load([settings]);
-					controller.run();
-
-					expect(controller.on.startedAll).toHaveBeenDispatched();
-				});
-
-			});
-
-			it('should get project state from all services', function () {
-				var mockService1 = new MockBuildService();
-				var mockService2 = new MockBuildService();
-				var projects1 = { name: 'service 1' };
-				var projects2 = { name: 'service 2' };
-				spyOn(mockService1, 'activeProjects').andReturn(projects1);
-				spyOn(mockService2, 'activeProjects').andReturn(projects2);
-				controller.addService(mockService1);
-				controller.addService(mockService2);
-
-				var projects = controller.activeProjects();
-
-				expect(projects.length).toBe(2);
-				expect(projects[0]).toBe(projects1);
-				expect(projects[1]).toBe(projects2);
-			});
-
 		});
 	});
+
+});

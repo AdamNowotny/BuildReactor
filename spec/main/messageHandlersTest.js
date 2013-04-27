@@ -1,10 +1,8 @@
 define([
 	'main/messageHandlers',
-	'main/serviceRepository',
-	'signals',
-	'rx',
-	'spec/mocks/buildService'
-], function (messageHandlers, serviceRepository, Signal, Rx, MockBuildService) {
+	'main/serviceLoader',
+	'rx'
+], function (messageHandlers, serviceLoader, Rx) {
 	'use strict';
 
 	describe('messageHandlers', function () {
@@ -20,6 +18,9 @@ define([
 
 		describe('availableProjects', function () {
 
+			var CustomBuildService = function () {};
+			CustomBuildService.prototype.availableBuilds = function () {};
+
 			var serviceLoaded;
 			var service;
 			var sendResponse;
@@ -27,20 +28,16 @@ define([
 			var mockAvailableBuilds;
 
 			beforeEach(function () {
-				serviceLoaded = new Signal();
-				serviceLoaded.memorize = true;
-				service = new MockBuildService();
-				serviceLoaded.dispatch(service);
-				spyOn(serviceRepository, 'create').andReturn(serviceLoaded);
-
+				service = new CustomBuildService();
+				spyOn(serviceLoader, 'load').andCallFake(function () {
+					return Rx.Observable.returnValue(new CustomBuildService());
+				});
 				sendResponse = jasmine.createSpy();
-
 				request = {
 					name: 'availableProjects',
 					serviceSettings: {}
 				};
-
-				mockAvailableBuilds = spyOn(service, 'availableBuilds').andCallFake(function () {
+				mockAvailableBuilds = spyOn(CustomBuildService.prototype, 'availableBuilds').andCallFake(function () {
 					return Rx.Observable.never();
 				});
 
@@ -49,7 +46,7 @@ define([
 			it('should create service', function () {
 				handler(request, null, sendResponse);
 
-				expect(serviceRepository.create).toHaveBeenCalled();
+				expect(serviceLoader.load).toHaveBeenCalled();
 			});
 
 			it('should call service', function () {

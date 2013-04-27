@@ -1,8 +1,8 @@
 define([
 	'services/buildServiceBase',
-	'jquery',
+	'mout/object/mixIn',
 	'rx'
-], function (BuildServiceBase, $, Rx) {
+], function (BuildServiceBase, mixIn, Rx) {
 	'use strict';
 
 	describe('services/buildServiceBase', function () {
@@ -33,7 +33,7 @@ define([
 		});
 
 		function CustomBuildService() {
-			$.extend(this, new BuildServiceBase(settings));
+			mixIn(this, new BuildServiceBase(settings));
 			this.Build = GenericBuild;
 		}
 

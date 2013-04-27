@@ -1,9 +1,8 @@
 define([
-	'common/resourceFinder',
 	'signals',
 	'jquery',
 	'hbs!templates/serviceListItem'
-], function (resourceFinder, signals, $, serviceListItemTemplate) {
+], function (signals, $, serviceListItemTemplate) {
 
 	'use strict';
 	
@@ -44,7 +43,7 @@ define([
 		for (var i = 0; i < settings.length; i++) {
 			data[i] = {
 				index: i,
-				icon: resourceFinder.icon(settings[i].icon),
+				icon: 'src/services/' + settings[i].icon,
 				name: settings[i].name,
 				disabled: settings[i].disabled
 			};

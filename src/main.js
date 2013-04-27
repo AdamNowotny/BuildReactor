@@ -26,7 +26,6 @@ require([
 	'main/messageHandlers',
 	'main/notificationController',
 	'main/serviceController',
-	'main/serviceRepository',
 	'main/settingsStore',
 	'services/bamboo/buildService',
 	'services/buildbot/buildService',
@@ -45,7 +44,6 @@ require([
 	messageHandlers,
 	notificationController,
 	serviceController,
-	serviceRepository,
 	settingsStore,
 	BambooService,
 	BuildBotService,
@@ -64,19 +62,17 @@ require([
 	badgeController();
 	notificationController();
 	messageHandlers();
-	serviceRepository.clear();
-	serviceRepository.registerType(BambooService);
-	serviceRepository.registerType(BuildBotService);
-	serviceRepository.registerType(CctrayService);
-	serviceRepository.registerType(CruiseControlService);
-	serviceRepository.registerType(CruiseControlNetService);
-	serviceRepository.registerType(CruiseControlRBService);
-	serviceRepository.registerType(GoService);
-	serviceRepository.registerType(JenkinsService);
-	serviceRepository.registerType(TeamCityService);
-	serviceRepository.registerType(TravisService);
+	serviceController.clear();
+	serviceController.registerType(BambooService);
+	serviceController.registerType(BuildBotService);
+	serviceController.registerType(CctrayService);
+	serviceController.registerType(CruiseControlService);
+	serviceController.registerType(CruiseControlNetService);
+	serviceController.registerType(CruiseControlRBService);
+	serviceController.registerType(GoService);
+	serviceController.registerType(JenkinsService);
+	serviceController.registerType(TeamCityService);
+	serviceController.registerType(TravisService);
 	var settings = settingsStore.getAll();
-	serviceController.load(settings).addOnce(function () {
-		serviceController.run();
-	});
+	serviceController.start(settings).subscribe();
 });

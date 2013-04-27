@@ -10,81 +10,92 @@ define([
 		green: [0, 255, 0, 200]
 	};
 
+	var eventsSubscription;
+
 	function badgeController() {
 
-		function onBrokenBuild(buildEvent) {
+		function onBrokenBuild() {
 			failedBuildsCount++;
-			updateBadge();
+			updateBadge(failedBuildsCount, servicesStarted);
 		}
 
-		function onFixedBuild(buildEvent) {
+		function onFixedBuild() {
 			failedBuildsCount--;
-			updateBadge();
+			updateBadge(failedBuildsCount, servicesStarted);
 		}
 
 		function onServicesStarted() {
 			servicesStarted = true;
-			updateBadge();
+			updateBadge(failedBuildsCount, servicesStarted);
 		}
 		
 		function onReset() {
 			servicesStarted = false;
 			failedBuildsCount = 0;
-			updateBadge();
-		}
-
-		function updateBadge() {
-		
-			function showBuildFailedBadge() {
-				var badgeInfo = {
-					text: failedBuildsCount.toString(),
-					color: colors.red
-				};
-				setBadge(badgeInfo);
-			}
-
-			function showBuildFixedBadge() {
-				var badgeInfo = {
-					text: '',
-					color: colors.green
-				};
-				setBadge(badgeInfo);
-			}
-
-			function showStateUnknownBadge() {
-				var badgeInfo = {
-					text: ' ',
-					color: colors.grey
-				};
-				setBadge(badgeInfo);
-			}
-
-			function setBadge(badgeInfo) {
-				chrome.browserAction.setBadgeText({ text: badgeInfo.text });
-				chrome.browserAction.setBadgeBackgroundColor({ color: badgeInfo.color });
-			}
-
-			if (failedBuildsCount !== 0) {
-				showBuildFailedBadge();
-			} else {
-				if (servicesStarted) {
-					showBuildFixedBadge();
-				} else {
-					showStateUnknownBadge();
-				}
-			}
+			updateBadge(failedBuildsCount, servicesStarted);
 		}
 
 		var servicesStarted = false;
 		var failedBuildsCount = 0;
-		updateBadge(failedBuildsCount);
-		serviceController.on.reloading.add(onReset);
-		serviceController.on.startedAll.add(onServicesStarted);
-		serviceController.on.brokenBuild.add(onBrokenBuild);
-		serviceController.on.fixedBuild.add(onFixedBuild);
+		var eventHandlers = {
+			'servicesInitializing': onReset,
+			'servicesInitialized': onServicesStarted,
+			'buildBroken': onBrokenBuild,
+			'buildFixed': onFixedBuild
+		};
+		updateBadge(failedBuildsCount, servicesStarted);
+		if (eventsSubscription && !eventsSubscription.isStopped) { 
+			eventsSubscription.dispose();
+		}
+		eventsSubscription = serviceController.events.doAction(function (event) {
+			var handler = eventHandlers[event.eventName];
+			if (handler) {
+				handler(event);
+			}
+		}).subscribe();
 	}
 
+	function updateBadge(failedBuildsCount, initialized) {
 	
+		function showBuildFailedBadge() {
+			var badgeInfo = {
+				text: failedBuildsCount.toString(),
+				color: colors.red
+			};
+			setBadge(badgeInfo);
+		}
+
+		function showBuildFixedBadge() {
+			var badgeInfo = {
+				text: '',
+				color: colors.green
+			};
+			setBadge(badgeInfo);
+		}
+
+		function showStateUnknownBadge() {
+			var badgeInfo = {
+				text: ' ',
+				color: colors.grey
+			};
+			setBadge(badgeInfo);
+		}
+
+		function setBadge(badgeInfo) {
+			chrome.browserAction.setBadgeText({ text: badgeInfo.text });
+			chrome.browserAction.setBadgeBackgroundColor({ color: badgeInfo.color });
+		}
+
+		if (failedBuildsCount !== 0) {
+			showBuildFailedBadge();
+		} else {
+			if (initialized) {
+				showBuildFixedBadge();
+			} else {
+				showStateUnknownBadge();
+			}
+		}
+	}
 
 	return badgeController;
 });

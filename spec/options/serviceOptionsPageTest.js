@@ -2,13 +2,10 @@ define([
 	'options/serviceOptionsPage',
 	'options/settingsFormView',
 	'options/projectView',
-	'common/resourceFinder',
 	'jquery',
 	'signals',
-	'spec/mocks/buildService',
-	'spec/mocks/mockSettingsBuilder',
 	'options/messages'
-], function (serviceOptions, settingsFormView, projectView, resourceFinder, $, signals, MockBuildService, MockSettingsBuilder, messages) {
+], function (serviceOptions, settingsFormView, projectView, $, signals, messages) {
 
 	'use strict';
 
@@ -49,9 +46,6 @@ define([
 				password: 'password1',
 				projects: ['PROJECT1-PLAN1', 'PROJECT1-PLAN2']
 			};
-			spyOn(resourceFinder, 'service').andCallFake(function (settings) {
-				return settings.baseUrl + '/buildService';
-			});
 			setupProjectView();
 			setupSettingsFormView();
 			settingsFormContainer = $('.settings-form-container');

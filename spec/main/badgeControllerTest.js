@@ -1,8 +1,8 @@
 define([
 	'main/badgeController',
 	'main/serviceController',
-	'spec/mocks/mockBuildEvent'
-], function (badgeController, serviceController, mockBuildEvent) {
+	'rx'
+], function (badgeController, serviceController, Rx) {
 
 	'use strict';
 	
@@ -18,30 +18,22 @@ define([
 			spyOn(chrome.browserAction, 'setBadgeBackgroundColor');
 		});
 
-		afterEach(function () {
-			serviceController.on.reloading.removeAll();
-			serviceController.on.startedAll.removeAll();
-			serviceController.on.brokenBuild.removeAll();
-			serviceController.on.fixedBuild.removeAll();
-		});
-
 		it('should show grey badge when services are reloaded', function () {
 			badgeController();
 
-			serviceController.on.reloading.dispatch();
+			serviceController.events.onNext({ eventName: 'servicesInitializing' });
 
-			expect(chrome.browserAction.setBadgeText).toHaveBeenCalledWith({ text: ' ' });
-			expect(chrome.browserAction.setBadgeBackgroundColor).toHaveBeenCalledWith({ color: colors.grey });
+			expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe(' ');
+			expect(chrome.browserAction.setBadgeBackgroundColor.mostRecentCall.args[0].color).toEqual(colors.grey);
 		});
 
 		it('should reset count when services are reloaded', function () {
 			badgeController();
-			var buildEvent = mockBuildEvent();
-			serviceController.on.brokenBuild.dispatch(buildEvent);
-			serviceController.on.brokenBuild.dispatch(buildEvent);
+			serviceController.events.onNext({ eventName: 'buildBroken' });
+			serviceController.events.onNext({ eventName: 'buildBroken' });
 
-			serviceController.on.reloading.dispatch();
-			serviceController.on.brokenBuild.dispatch(buildEvent);
+			serviceController.events.onNext({ eventName: 'servicesInitializing' });
+			serviceController.events.onNext({ eventName: 'buildBroken' });
 
 			expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('1');
 		});
@@ -49,57 +41,58 @@ define([
 		it('should not show badge when services are initialized and builds are fine', function () {
 			badgeController();
 
-			serviceController.on.startedAll.dispatch();
+			serviceController.events.onNext({ eventName: 'servicesInitialized' });
 
-			expect(chrome.browserAction.setBadgeText).toHaveBeenCalledWith({ text: '' });
+			expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('');
 		});
 
 		it('should show red badge if build failed before all services started', function () {
 			badgeController();
 
-			serviceController.on.brokenBuild.dispatch(mockBuildEvent());
-			serviceController.on.startedAll.dispatch();
+			serviceController.events.onNext({ eventName: 'buildBroken' });
+			serviceController.events.onNext({ eventName: 'servicesInitialized' });
 
-			expect(chrome.browserAction.setBadgeBackgroundColor).toHaveBeenCalledWith({ color: colors.red });
-			expect(chrome.browserAction.setBadgeText).toHaveBeenCalledWith({ text: '1' });
+			expect(chrome.browserAction.setBadgeBackgroundColor.mostRecentCall.args[0].color).toEqual(colors.red);
+			expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('1');
 			expect(chrome.browserAction.setBadgeText).not.toHaveBeenCalledWith({ text: '' });
 		});
 
 		it('should show red badge when a build is broken', function () {
 			badgeController();
 
-			serviceController.on.brokenBuild.dispatch(mockBuildEvent());
+			serviceController.events.onNext({ eventName: 'buildBroken' });
 
-			expect(chrome.browserAction.setBadgeBackgroundColor).toHaveBeenCalledWith({ color: colors.red });
+
+			expect(chrome.browserAction.setBadgeBackgroundColor.mostRecentCall.args[0].color).toEqual(colors.red);
 		});
 
 		it('should increase amount of failed builds when builds fail', function () {
 			badgeController();
 
-			serviceController.on.brokenBuild.dispatch(mockBuildEvent());
-			serviceController.on.brokenBuild.dispatch(mockBuildEvent());
+			serviceController.events.onNext({ eventName: 'buildBroken' });
+			serviceController.events.onNext({ eventName: 'buildBroken' });
 
-			expect(chrome.browserAction.setBadgeText).toHaveBeenCalledWith({ text: '2' });
-			expect(chrome.browserAction.setBadgeBackgroundColor).toHaveBeenCalledWith({ color: colors.red });
+			expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('2');
+			expect(chrome.browserAction.setBadgeBackgroundColor.mostRecentCall.args[0].color).toEqual(colors.red);
 		});
 
 		it('should decrease amount of failed builds when builds are fixed', function () {
 			badgeController();
 
-			serviceController.on.brokenBuild.dispatch(mockBuildEvent());
-			serviceController.on.brokenBuild.dispatch(mockBuildEvent());
-			serviceController.on.fixedBuild.dispatch(mockBuildEvent());
+			serviceController.events.onNext({ eventName: 'buildBroken' });
+			serviceController.events.onNext({ eventName: 'buildBroken' });
+			serviceController.events.onNext({ eventName: 'buildFixed' });
 
-			expect(chrome.browserAction.setBadgeText).toHaveBeenCalledWith({ text: '1' });
-			expect(chrome.browserAction.setBadgeBackgroundColor).toHaveBeenCalledWith({ color: colors.red });
+			expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('1');
+			expect(chrome.browserAction.setBadgeBackgroundColor.mostRecentCall.args[0].color).toEqual(colors.red);
 		});
 
 		it('should not show badge when all builds are fixed', function () {
 			badgeController();
-			serviceController.on.startedAll.dispatch();
+			serviceController.events.onNext({ eventName: 'servicesInitialized' });
 
-			serviceController.on.brokenBuild.dispatch(mockBuildEvent());
-			serviceController.on.fixedBuild.dispatch(mockBuildEvent());
+			serviceController.events.onNext({ eventName: 'buildBroken' });
+			serviceController.events.onNext({ eventName: 'buildFixed' });
 
 			expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('');
 		});

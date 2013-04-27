@@ -1,9 +1,8 @@
 define([
 		'options/addService',
-		'common/resourceFinder',
 		'jquery',
 		'jasmineSignals'
-	], function (addService, resourceFinder, $, spyOnSignal) {
+	], function (addService, $, spyOnSignal) {
 
 		'use strict';
 
@@ -72,9 +71,6 @@ define([
 				jasmine.getFixtures().load('settings/addServiceFixture.html');
 				addService.initialize('.service-add-container', serviceTypes);
 				spySelected = spyOnSignal(addService.on.selected);
-				spyOn(resourceFinder, 'logo').andCallFake(function (settings) {
-					return 'src/services/' + settings.logo;
-				});
 				container.show();
 			});
 
