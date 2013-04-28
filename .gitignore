@@ -1,4 +1,5 @@
 _build
+.grunt
 node_modules
 .DS_Store
 components
