@@ -48,6 +48,7 @@ define([
 			};
 			setupProjectView();
 			setupSettingsFormView();
+			spyOn(messages, 'availableProjects');
 			settingsFormContainer = $('.settings-form-container');
 			projectViewContainer = $('.project-selection-container');
 			serviceOptions.initialize();
@@ -177,17 +178,16 @@ define([
 		describe('show projects', function () {
 
 			it('should send message to get available projects', function () {
-				spyOn(messages, 'send');
 				serviceOptions.show(settings);
 
 				var formValues = { url: settings.url };
 				settingsFormView.on.clickedShow.dispatch(formValues);
 
-				expect(messages.send).toHaveBeenCalled();
+				expect(messages.availableProjects).toHaveBeenCalled();
 			});
 
 			it('should reset buttons after projects loaded', function () {
-				spyOn(messages, 'send').andCallFake(function (message, responseFunction) {
+				messages.availableProjects.andCallFake(function (settings, responseFunction) {
 					responseFunction({ projects: {} });
 				});
 				serviceOptions.show(settings);
@@ -199,7 +199,7 @@ define([
 
 			it('should show projects after projects loaded', function () {
 				var projects = {};
-				spyOn(messages, 'send').andCallFake(function (message, responseFunction) {
+				messages.availableProjects.andCallFake(function (settings, responseFunction) {
 					responseFunction({ projects: projects });
 				});
 				serviceOptions.show(settings);
@@ -210,7 +210,7 @@ define([
 			});
 
 			it('should reset buttons after request error', function () {
-				spyOn(messages, 'send').andCallFake(function (message, responseFunction) {
+				messages.availableProjects.andCallFake(function (serviceSettings, responseFunction) {
 					responseFunction({ error: { message: 'error message', url: settings.url } });
 				});
 				serviceOptions.show(settings);
@@ -221,7 +221,7 @@ define([
 			});
 
 			it('should display error if call failed when getting plans', function () {
-				spyOn(messages, 'send').andCallFake(function (message, responseFunction) {
+				messages.availableProjects.andCallFake(function (settings, responseFunction) {
 					responseFunction({ error: { message: 'error message', url: 'http://error.com/' } });
 				});
 				serviceOptions.show(settings);

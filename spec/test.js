@@ -7,7 +7,7 @@ var chrome = {
 	tabs : {
 		create: function () {}
 	},
-	extension: {
+	runtime: {
 		sendMessage: function () {},
 		onMessage: {
 			addListener: function () {}

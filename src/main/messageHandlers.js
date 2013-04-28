@@ -37,6 +37,6 @@ define([
 	}
 
 	return function () {
-		chrome.extension.onMessage.addListener(onMessage);
+		chrome.runtime.onMessage.addListener(onMessage);
 	};
 });

@@ -10,7 +10,7 @@ define([
 		var handler;
 
 		beforeEach(function () {
-			spyOn(chrome.extension.onMessage, 'addListener').andCallFake(function (handlerFunction) {
+			spyOn(chrome.runtime.onMessage, 'addListener').andCallFake(function (handlerFunction) {
 				handler = handlerFunction;
 			});
 			messageHandlers();

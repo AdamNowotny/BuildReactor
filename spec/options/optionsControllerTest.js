@@ -54,6 +54,7 @@ define([
 				spyOn(serviceSettings, 'remove');
 				spyServiceSettingsUpdate = spyOn(serviceSettings, 'update');
 
+				spyOn(messages, 'updateSettings');
 				controller.initialize();
 			});
 
@@ -161,15 +162,14 @@ define([
 			it('should send message to main when settings updated', function () {
 				var newServiceSettings = new MockSettingsBuilder().create();
 				var settings = [createSettings('service 1'), newServiceSettings];
-				spyOn(messages, 'send').andCallFake(function (message) {
-					expect(message.name).toBe('updateSettings');
-					expect(message.settings).toBe(settings);
+				messages.updateSettings.andCallFake(function (settingsList) {
+					expect(settingsList).toBe(settings);
 				});
 				spyServiceSettingsGetAll.andReturn(settings);
 
 				serviceOptionsPage.on.updated.dispatch(newServiceSettings);
 
-				expect(messages.send).toHaveBeenCalled();
+				expect(messages.updateSettings).toHaveBeenCalled();
 			});
 
 			it('should show alert when settings saved', function () {
@@ -205,20 +205,17 @@ define([
 			});
 
 			it('should update services if service disabled', function () {
-				spyOn(messages, 'send');
-				
 				$('.toggle-button .labelLeft').click();
 
-				expect(messages.send).toHaveBeenCalled();
+				expect(messages.updateSettings).toHaveBeenCalled();
 			});
 
 			it('should not send update if disabled service loaded', function () {
 				var settings = [new MockSettingsBuilder().isDisabled().create()];
-				spyOn(messages, 'send');
 
 				controller.load(settings);
 
-				expect(messages.send).not.toHaveBeenCalled();
+				expect(messages.updateSettings).not.toHaveBeenCalled();
 			});
 
 			describe('Adding service', function () {
@@ -379,16 +376,13 @@ define([
 				});
 
 				it('should not send update if disabled new service', function () {
-					spyOn(messages, 'send');
-
 					add('Server 2');
 					$('.toggle-button .labelLeft').click();
 
-					expect(messages.send).not.toHaveBeenCalled();
+					expect(messages.updateSettings).not.toHaveBeenCalled();
 				});
 
 				it('should save disabled status on save', function () {
-					spyOn(messages, 'send');
 					spyServiceSettingsUpdate.andCallFake(function (oldSettings, newSettings) {
 						expect(newSettings.disabled).toBe(true);
 					});
@@ -398,7 +392,7 @@ define([
 					var newServiceSettings = new MockSettingsBuilder().isDisabled().create();
 					serviceOptionsPage.on.updated.dispatch(newServiceSettings);
 
-					expect(messages.send).toHaveBeenCalled();
+					expect(messages.updateSettings).toHaveBeenCalled();
 				});
 
 			});
@@ -425,17 +419,13 @@ define([
 				});
 
 				it('should dispatch settingsChanged after removing service', function () {
-					spyOn(messages, 'send').andCallFake(function (message) {
-						expect(message.name).toBe('updateSettings');
-					});
-
 					spyBootboxDialog.andCallFake(function (message, buttons, options) {
 						buttons[1].callback();
 					});
 					
 					$('#service-remove-button').click();
 
-					expect(messages.send).toHaveBeenCalled();
+					expect(messages.updateSettings).toHaveBeenCalled();
 				});
 
 			});

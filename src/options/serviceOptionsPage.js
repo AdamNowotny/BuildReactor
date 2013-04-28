@@ -42,11 +42,7 @@ define([
 	function showProjects(currentValues) {
 		projectView.hide();
 		$('.alert-error').hide();
-		var message = {
-			name: 'availableProjects',
-			serviceSettings: fillIn(currentValues, currentServiceInfo)
-		};
-		messages.send(message, function (response) {
+		messages.availableProjects(fillIn(currentValues, currentServiceInfo), function (response) {
 			if (response.error) {
 				renderError(response.error);
 			} else {

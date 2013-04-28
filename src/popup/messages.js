@@ -4,7 +4,7 @@ define(['rx', 'rx.time'], function (Rx) {
 
 	function activeProjects() {
 		var subject = new Rx.AsyncSubject();
-		chrome.extension.sendMessage({ name: 'activeProjects' }, function (response) {
+		chrome.runtime.sendMessage({ name: 'activeProjects' }, function (response) {
 			subject.onNext(response.serviceState);
 			subject.onCompleted();
 		});
@@ -16,6 +16,6 @@ define(['rx', 'rx.time'], function (Rx) {
 		.selectMany(activeProjects);
 
 	return {
-		current: current
+		activeProjects: current
 	};
 });

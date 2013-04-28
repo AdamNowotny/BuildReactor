@@ -8,7 +8,7 @@ define([
 
 	'use strict';
 	
-	messages.current.subscribe(function (services) {
+	messages.activeProjects.subscribe(function (services) {
 		show(services);
 	});
 	

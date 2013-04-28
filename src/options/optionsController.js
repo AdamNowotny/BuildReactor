@@ -144,7 +144,7 @@ define([
 		setIsNewService(false);
 		serviceSettings.remove(currentSettings);
 		serviceList.update(serviceSettings.getAll());
-		messages.send({name: "updateSettings", settings: serviceSettings.getAll()});
+		messages.updateSettings(serviceSettings.getAll());
 	}
 
 	function load(newSettings) {
@@ -166,7 +166,7 @@ define([
 	function serviceSettingsChanged(updatedSettings) {
 		updatedSettings.disabled = !$('.toggle-button').toggleButtons('status');
 		serviceSettings.update(currentSettings, updatedSettings);
-		messages.send({name: "updateSettings", settings: serviceSettings.getAll()});
+		messages.updateSettings(serviceSettings.getAll());
 		alert.show();
 		setIsNewService(false);
 		currentSettings = updatedSettings;

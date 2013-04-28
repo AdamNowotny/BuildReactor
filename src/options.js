@@ -43,7 +43,7 @@ require([
 	'use strict';
 	
 	optionsLogger();
-	messages.send({ name: "initOptions" }, function (response) {
+	messages.initOptions(function (response) {
 		optionsController.initialize(response.serviceTypes);
 		optionsController.load(response.settings);
 	});
