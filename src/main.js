@@ -62,6 +62,7 @@ require([
 	badgeController();
 	notificationController();
 	messageHandlers();
+
 	serviceController.clear();
 	serviceController.registerType(BambooService);
 	serviceController.registerType(BuildBotService);
@@ -73,6 +74,7 @@ require([
 	serviceController.registerType(JenkinsService);
 	serviceController.registerType(TeamCityService);
 	serviceController.registerType(TravisService);
+
 	var settings = settingsStore.getAll();
 	serviceController.start(settings).subscribe();
 });

@@ -19,8 +19,8 @@
 			{{#if name}}<div class="service-group">{{name}}</div>{{/if}}
 			<ul class="service-item-list">
 				{{#items}}
-				<li class="service-item{{#if isBroken}} build-broken{{/if}}{{#if isBuilding}} building{{/if}}">
-					<a href="{{url}}" target="_blank">
+				<li class="service-item{{#if isBroken}} build-broken{{/if}}{{#if isRunning}} building{{/if}}">
+					<a href="{{webUrl}}" target="_blank">
 						<span class="service-item-name">{{name}}</span>
 						<i class="icon-spinner icon-spin icon-large pull-right"></i>
 					</a>

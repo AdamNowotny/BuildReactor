@@ -56,15 +56,12 @@ define([
 			});
 		};
 
-		var getBuildById = function (buildId) {
-			return self.builds[buildId];
-		};
-
 		var self = this;
 		initializeBuilds();
 		return Rx.Observable.fromArray(this.settings.projects)
-			.select(getBuildById)
-			.selectMany(function (build) {
+			.select(function getBuildById(buildId) {
+				return self.builds[buildId];
+			}).selectMany(function updateBuild(build) {
 				return build.update()
 					.catchException(function (ex) { 
 						return Rx.Observable.returnValue({

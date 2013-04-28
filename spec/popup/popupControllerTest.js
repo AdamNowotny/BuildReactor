@@ -15,28 +15,28 @@ define([
 						name: 'build name 1',
 						group: 'build group 1',
 						isBroken: false,
-						url: 'http://example1.com/',
-						isBuilding: true
+						webUrl: 'http://example1.com/',
+						isRunning: true
 					},
 					{
 						name: 'build name 2',
 						group: 'build group 2',
 						isBroken: true,
-						url: 'http://example2.com/',
-						isBuilding: false
+						webUrl: 'http://example2.com/',
+						isRunning: false
 					},
 					{
 						name: 'build with no group',
 						group: '',
 						isBroken: false,
-						url: 'http://example3.com/',
-						isBuilding: false
+						webUrl: 'http://example3.com/',
+						isRunning: false
 					},
 					{
 						name: 'build name 4',
 						group: 'build group 2',
-						url: '',
-						isBuilding: true
+						webUrl: '',
+						isRunning: true
 					}
 				]
 			},
@@ -117,6 +117,7 @@ define([
 			controller.show(state);
 
 			expect($('.service-item a').length).toBe(4);
+			expect($('.service-item a').eq(0).attr('href')).toBe('http://example3.com/');
 		});
 	});
 

@@ -62,24 +62,8 @@ define([
 	};
 
 	function activeProjects() {
-		return services.map(function (s) {
-			if (s.rx) {
-				var active = s.activeProjects();
-				return {
-					name: active.name,
-					items: active.items.map(function (buildInfo) {
-						return {
-							name: buildInfo.name,
-							group: buildInfo.group,
-							isBroken: buildInfo.isBroken,
-							url: buildInfo.webUrl,
-							isBuilding: buildInfo.isRunning
-						};
-					})
-				};
-			} else {
-				return s.activeProjects();
-			}
+		return services.map(function (service) {
+			return service.activeProjects();
 		});
 	}
 
