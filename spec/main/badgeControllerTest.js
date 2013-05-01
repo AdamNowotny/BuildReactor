@@ -13,14 +13,19 @@ define([
 
 	describe('badgeController', function () {
 
+		var subscription;
+
 		beforeEach(function () {
 			spyOn(chrome.browserAction, 'setBadgeText');
 			spyOn(chrome.browserAction, 'setBadgeBackgroundColor');
+			subscription = badgeController();
+		});
+
+		afterEach(function () {
+			subscription.dispose();
 		});
 
 		it('should show grey badge when services are reloaded', function () {
-			badgeController();
-
 			serviceController.events.onNext({ eventName: 'servicesInitializing' });
 
 			expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe(' ');
@@ -28,7 +33,6 @@ define([
 		});
 
 		it('should reset count when services are reloaded', function () {
-			badgeController();
 			serviceController.events.onNext({ eventName: 'buildBroken' });
 			serviceController.events.onNext({ eventName: 'buildBroken' });
 
@@ -39,16 +43,12 @@ define([
 		});
 
 		it('should not show badge when services are initialized and builds are fine', function () {
-			badgeController();
-
 			serviceController.events.onNext({ eventName: 'servicesInitialized' });
 
 			expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('');
 		});
 
 		it('should show red badge if build failed before all services started', function () {
-			badgeController();
-
 			serviceController.events.onNext({ eventName: 'buildBroken' });
 			serviceController.events.onNext({ eventName: 'servicesInitialized' });
 
@@ -58,8 +58,6 @@ define([
 		});
 
 		it('should show red badge when a build is broken', function () {
-			badgeController();
-
 			serviceController.events.onNext({ eventName: 'buildBroken' });
 
 
@@ -67,8 +65,6 @@ define([
 		});
 
 		it('should increase amount of failed builds when builds fail', function () {
-			badgeController();
-
 			serviceController.events.onNext({ eventName: 'buildBroken' });
 			serviceController.events.onNext({ eventName: 'buildBroken' });
 
@@ -77,8 +73,6 @@ define([
 		});
 
 		it('should decrease amount of failed builds when builds are fixed', function () {
-			badgeController();
-
 			serviceController.events.onNext({ eventName: 'buildBroken' });
 			serviceController.events.onNext({ eventName: 'buildBroken' });
 			serviceController.events.onNext({ eventName: 'buildFixed' });
@@ -88,7 +82,6 @@ define([
 		});
 
 		it('should not show badge when all builds are fixed', function () {
-			badgeController();
 			serviceController.events.onNext({ eventName: 'servicesInitialized' });
 
 			serviceController.events.onNext({ eventName: 'buildBroken' });

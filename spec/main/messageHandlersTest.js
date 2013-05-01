@@ -1,19 +1,63 @@
 define([
 	'main/messageHandlers',
 	'main/serviceLoader',
+	'main/serviceController',
 	'rx'
-], function (messageHandlers, serviceLoader, Rx) {
+], function (messageHandlers, serviceLoader, serviceController, Rx) {
 	'use strict';
 
 	describe('messageHandlers', function () {
 
 		var handler;
+		var connectHandler;
+		var disconnectHandler;
+		var stateChangesPort = {
+			name: 'stateChanges',
+			postMessage: function () {},
+			onDisconnect: {
+				addListener: function () {}
+			}
+		};
 
 		beforeEach(function () {
 			spyOn(chrome.runtime.onMessage, 'addListener').andCallFake(function (handlerFunction) {
 				handler = handlerFunction;
 			});
+			spyOn(chrome.runtime.onConnect, 'addListener').andCallFake(function (onConnect) {
+				connectHandler = onConnect;
+			});
+			spyOn(stateChangesPort.onDisconnect, 'addListener').andCallFake(function (onDisconnect) {
+				disconnectHandler = onDisconnect;
+			});
+			spyOn(stateChangesPort, 'postMessage');
+			spyOn(serviceController, 'activeProjects');
 			messageHandlers();
+		});
+
+		afterEach(function () {
+			disconnectHandler(stateChangesPort);
+		});
+
+		describe('state', function () {
+
+			it('should subscribe to state sequence on connect', function () {
+				connectHandler(stateChangesPort);
+
+				serviceController.events.onNext({ eventName: 'buildBroken' });
+
+				expect(stateChangesPort.postMessage).toHaveBeenCalled();
+			});
+
+			it('should unsubscribe from events on disconnect', function () {
+				connectHandler(stateChangesPort);
+				disconnectHandler(stateChangesPort);
+
+				serviceController.events.onNext('test');
+				serviceController.events.onNext('test');
+				serviceController.events.onNext('test');
+
+				expect(stateChangesPort.postMessage.callCount).toBe(1);
+			});
 		});
 
 		describe('availableProjects', function () {
@@ -21,7 +65,6 @@ define([
 			var CustomBuildService = function () {};
 			CustomBuildService.prototype.availableBuilds = function () {};
 
-			var serviceLoaded;
 			var service;
 			var sendResponse;
 			var request;

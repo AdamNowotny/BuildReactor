@@ -16,13 +16,18 @@ define([
 			onclick: function () { }
 		};
 		var timeout = notificationController.notificationTimeoutInSec();
+		var subscription;
 
 		beforeEach(function () {
 			spyOn(window.webkitNotifications, 'createNotification').andReturn(mockNotification);
 			spyOn(mockNotification, 'cancel');
 			spyOn(mockNotification, 'show');
 			spyOn(mockNotification, 'onclick');
-			notificationController();
+			subscription = notificationController();
+		});
+
+		afterEach(function () {
+			subscription.dispose();
 		});
 
 		it('should show message when build fails', function () {

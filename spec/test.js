@@ -11,6 +11,17 @@ var chrome = {
 		sendMessage: function () {},
 		onMessage: {
 			addListener: function () {}
+		},
+		connect: function () {
+			'use strict';
+			return {
+				onMessage: {
+					addListener: function () {}
+				}
+			};
+		},
+		onConnect: {
+			addListener: function () {}
 		}
 	},
 	cookies: {

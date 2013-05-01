@@ -1,21 +1,18 @@
-define(['rx', 'rx.time'], function (Rx) {
-	
+define(['rx', 'rx.binding'], function (Rx) {
+
 	'use strict';
 
-	function activeProjects() {
-		var subject = new Rx.AsyncSubject();
-		chrome.runtime.sendMessage({ name: 'activeProjects' }, function (response) {
-			subject.onNext(response.serviceState);
-			subject.onCompleted();
+	var init = function () {
+		var port = chrome.runtime.connect({ name: 'state' });
+		port.onMessage.addListener(function (message) {
+			currentState.onNext(message);
 		});
-		return subject;
-	}
+	};
 
-	var current = Rx.Observable.interval(10000)
-		.startWith(-1)
-		.selectMany(activeProjects);
+	var currentState = new Rx.BehaviorSubject();
 
 	return {
-		activeProjects: current
+		init: init,
+		currentState: currentState
 	};
 });

@@ -79,7 +79,7 @@ module.exports = function (grunt) {
 								spec: '../spec',
 								text: '../components/requirejs-text/text',
 								rx: '../components/rxjs/rx',
-								'rx.experimental': '../components/rxjs/rx.experimental',
+								'rx.binding': '../components/rxjs/rx.binding',
 								'rx.jquery': '../components/rxjs-jquery/rx.jquery',
 								'rx.time': '../components/rxjs/rx.time',
 								underscore: '../lib/require-handlebars-plugin/hbs/underscore'
@@ -156,7 +156,7 @@ module.exports = function (grunt) {
 					inlineText: true,
 					useStrict: true,
 					preserveLicenseComments: true,
-					// optimize: 'none',
+					optimize: 'none',
 					// optimizeCss: 'standard',
 					uglify: {
 						toplevel: true,
@@ -188,6 +188,7 @@ module.exports = function (grunt) {
 						'options/messages': 'options/messages',
 						'popup/messages': 'popup/messages',
 						rx: '../components/rxjs/rx.modern',
+						'rx.binding': '../components/rxjs/rx.binding',
 						'rx.jquery': '../components/rxjs-jquery/rx.jquery',
 						'rx.time': '../components/rxjs/rx.time',
 						signals: '../components/js-signals/dist/signals',

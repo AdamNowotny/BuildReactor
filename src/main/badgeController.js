@@ -10,8 +10,6 @@ define([
 		green: [0, 255, 0, 200]
 	};
 
-	var eventsSubscription;
-
 	function badgeController() {
 
 		function onBrokenBuild() {
@@ -44,10 +42,7 @@ define([
 			'buildFixed': onFixedBuild
 		};
 		updateBadge(failedBuildsCount, servicesStarted);
-		if (eventsSubscription && !eventsSubscription.isStopped) { 
-			eventsSubscription.dispose();
-		}
-		eventsSubscription = serviceController.events.doAction(function (event) {
+		return serviceController.events.doAction(function (event) {
 			var handler = eventHandlers[event.eventName];
 			if (handler) {
 				handler(event);

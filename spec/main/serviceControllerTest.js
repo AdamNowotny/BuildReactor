@@ -140,17 +140,54 @@ function (controller, Rx, serviceLoader) {
 			expect(getEvents('someEvent').length).toBe(0);
 		});
 
-		it('should get project state from all services', function () {
-			var activeProjects = { name: 'service 1' };
-			spyOn(CustomBuildService.prototype, 'activeProjects').andReturn(activeProjects);
-			controller.start([settings, settings]).subscribe();
+		describe('state', function () {
 
-			var projects = controller.activeProjects();
+			it('should get project state from all services', function () {
+				var activeProjects = { name: 'service 1' };
+				spyOn(CustomBuildService.prototype, 'activeProjects').andReturn(activeProjects);
+				controller.start([settings, settings]).subscribe();
 
-			expect(projects.length).toBe(2);
+				var projects = controller.activeProjects();
+
+				expect(projects.length).toBe(2);
+			});
+
+			it('should push state on subscribe', function () {
+				var activeProjects = { name: 'service 1' };
+				spyOn(CustomBuildService.prototype, 'activeProjects').andReturn(activeProjects);
+				controller.start([settings]).subscribe();
+
+				var lastState;
+				controller.currentState.subscribe(function (state) {
+					lastState = state;
+				});
+
+				expect(lastState).toEqual([activeProjects]);
+			});
+
+			it('should push state on events that modify state', function () {
+				var activeProjects = { name: 'service 1' };
+				spyOn(CustomBuildService.prototype, 'activeProjects').andReturn(activeProjects);
+				controller.start([settings]).subscribe();
+
+				var states = [];
+				controller.currentState.subscribe(function (state) {
+					states.push(state);
+				});
+				service.events.onNext({ eventName: 'someEvent'});
+				service.events.onNext({ eventName: 'someEvent'});
+				service.events.onNext({ eventName: 'someEvent'});
+				service.events.onNext({ eventName: 'servicesInitialized'});
+				service.events.onNext({ eventName: 'buildBroken'});
+				service.events.onNext({ eventName: 'buildFixed'});
+
+				expect(states.length).toBe(4);
+				expect(states[0]).toEqual([activeProjects]);
+			});
+
 		});
 
-		describe('serviceLoader', function () {
+		describe('registrations', function () {
 
 			afterEach(function () {
 				controller.clear();

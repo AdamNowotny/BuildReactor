@@ -1,15 +1,22 @@
 define([
 	'main/serviceLoader',
 	'rx',
-	'signals'
-], function (serviceLoader, Rx, signals) {
+	'mout/array/contains'
+], function (serviceLoader, Rx, contains) {
 
 	'use strict';
 
-	var events = new Rx.Subject();
 	var services = [];
 	var subscriptions = [];
 	var types = [];
+	var events = new Rx.Subject();
+	var currentState = Rx.Observable.defer(function () {
+			return Rx.Observable.returnValue(activeProjects());
+		}).merge(events.where(function (event) {
+			return contains(['servicesInitialized', 'buildBroken', 'buildFixed'], event.eventName);
+		}).select(function () {
+			return activeProjects();
+		}));
 
 	var getAllTypes = function () {
 		return types;
@@ -25,12 +32,12 @@ define([
 	};
 
 	var start = function (settingsList) {
-		removeAll();
 		events.onNext({
 			eventName: 'servicesInitializing',
 			source: 'serviceController',
 			details: settingsList
 		});
+		removeAll();
 		return Rx.Observable.fromArray(settingsList)
 			.where(function (settings) {
 				return settings.disabled !== true;
@@ -68,8 +75,9 @@ define([
 	}
 
 	return {
-		start: start,
 		events: events,
+		currentState: currentState,
+		start: start,
 		activeProjects: activeProjects,
 		getAllTypes: getAllTypes,
 		registerType: registerType,

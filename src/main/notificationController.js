@@ -92,18 +92,14 @@ define([
 			'buildBroken': onBrokenBuild,
 			'buildFixed': onFixedBuild
 		};
-		if (eventsSubscription && !eventsSubscription.isStopped) {
-			eventsSubscription.dispose();
-		}
-		serviceController.events.doAction(function (event) {
+		var visibleNotifications = [];
+		var reloading = false;
+		return serviceController.events.doAction(function (event) {
 			var handler = eventHandlers[event.eventName];
 			if (handler) {
 				handler(event);
 			}
 		}).subscribe();
-
-		var visibleNotifications = [];
-		var reloading = false;
 	}
 	
 	notificationController.notificationTimeoutInSec = function (value) {

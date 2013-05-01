@@ -9,8 +9,8 @@ require.config({
 		jquery: "../components/jquery/jquery.min",
 		mout: '../components/mout/src',
 		'popup/messages': 'popup/messagesStatic',
-		signals: '../components/js-signals/dist/signals',
 		rx: 'rxjs',
+		'rx.binding': 'rxjs',
 		'rx.jquery': 'rxjs',
 		'rx.time': 'rxjs',
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore'
@@ -34,5 +34,5 @@ require([
 	'use strict';
 	
 	$('.navbar a').tooltip({ placement: 'bottom' });
-
+	popupController();
 });

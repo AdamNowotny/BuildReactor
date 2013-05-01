@@ -41,7 +41,7 @@ require([
 ], function (rxjs, optionsController, optionsLogger, messages) {
 
 	'use strict';
-	
+
 	optionsLogger();
 	messages.initOptions(function (response) {
 		optionsController.initialize(response.serviceTypes);
