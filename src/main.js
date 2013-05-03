@@ -61,7 +61,7 @@ require([
 	backgroundLogger();
 	badgeController();
 	notificationController();
-	messageHandlers();
+	messageHandlers.init();
 
 	serviceController.clear();
 	serviceController.registerType(BambooService);

@@ -1,8 +1,9 @@
 define([
 	'main/serviceController',
 	'main/settingsStore',
-	'mout/string/interpolate'
-], function (serviceController, settingsStore, interpolate) {
+	'mout/string/interpolate',
+	'main/messageHandlers'
+], function (serviceController, settingsStore, interpolate, messageHandlers) {
 
 	'use strict';
 
@@ -13,6 +14,14 @@ define([
 			console.error(new Date().toJSON(), 'Event stream error', arguments);
 		}, function () {
 			console.warn(new Date().toJSON(), 'Event stream completed', arguments);
+		});
+
+		messageHandlers.messages.subscribe(function (message) {
+			console.log(new Date().toJSON(), 'messageHandlers', message);
+		}, function () {
+			console.error(new Date().toJSON(), 'messageHandlers stream error', arguments);
+		}, function () {
+			console.warn(new Date().toJSON(), 'messageHandlers stream completed', arguments);
 		});
 
 		settingsStore.on.storedSettings.add(function (settings) {

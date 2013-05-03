@@ -1,8 +1,9 @@
 define([
 	'main/settingsStore',
 	'main/serviceLoader',
-	'main/serviceController'
-], function (settingsStore, serviceLoader, serviceController) {
+	'main/serviceController',
+	'rx'
+], function (settingsStore, serviceLoader, serviceController, Rx) {
 
 	'use strict';
 
@@ -32,10 +33,12 @@ define([
 	}
 
 	var stateSubscription;
+	var messages = new Rx.Subject();
 
 	var onConnect = function (port) {
 		stateSubscription = serviceController.currentState.subscribe(function (servicesState) {
 			port.postMessage(servicesState);
+			messages.onNext(servicesState);
 		});
 		port.onDisconnect.addListener(onDisconnect);
 	};
@@ -44,8 +47,11 @@ define([
 		stateSubscription.dispose();
 	};
 
-	return function () {
-		chrome.runtime.onConnect.addListener(onConnect);
-		chrome.runtime.onMessage.addListener(onMessage);
+	return {
+		init: function () {
+			chrome.runtime.onConnect.addListener(onConnect);
+			chrome.runtime.onMessage.addListener(onMessage);
+		},
+		messages: messages
 	};
 });

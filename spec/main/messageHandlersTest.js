@@ -31,7 +31,7 @@ define([
 			});
 			spyOn(stateChangesPort, 'postMessage');
 			spyOn(serviceController, 'activeProjects');
-			messageHandlers();
+			messageHandlers.init();
 		});
 
 		afterEach(function () {
@@ -57,6 +57,18 @@ define([
 				serviceController.events.onNext('test');
 
 				expect(stateChangesPort.postMessage.callCount).toBe(1);
+			});
+
+			it('should push message on event', function () {
+				connectHandler(stateChangesPort);
+				var lastMessage;
+				messageHandlers.messages.subscribe(function (message) {
+					lastMessage = message;
+				});
+
+				serviceController.events.onNext({ eventName: 'buildBroken' });
+
+				expect(lastMessage).toBeDefined();
 			});
 		});
 
