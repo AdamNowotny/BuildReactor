@@ -263,14 +263,14 @@ define([
 					eventsSubscription.dispose();
 				});
 
-				it('should push updateError if build update failed', function () {
+				it('should push updateFailed if build update failed', function () {
 					var stateError = "Error";
 					update1Response = Rx.Observable.throwException(stateError);
 
 					service.updateAll().subscribe();
 
-					expect(eventPushed('updateError')).toBe(true);
-					expect(getLastEvent('updateError').details.error).toEqual(stateError);
+					expect(eventPushed('updateFailed')).toBe(true);
+					expect(getLastEvent('updateFailed').details.error).toEqual(stateError);
 				});
 
 				it('should push buildBroken if build broken', function () {

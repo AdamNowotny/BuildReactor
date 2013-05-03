@@ -13,7 +13,14 @@ define([
 	var currentState = Rx.Observable.defer(function () {
 			return Rx.Observable.returnValue(activeProjects());
 		}).merge(events.where(function (event) {
-			return contains(['servicesInitialized', 'buildBroken', 'buildFixed'], event.eventName);
+			return contains([
+				'servicesInitialized',
+				'updateFailed',
+				'buildBroken',
+				'buildFixed',
+				'buildStarted',
+				'buildFinished'
+			], event.eventName);
 		}).select(function () {
 			return activeProjects();
 		}));

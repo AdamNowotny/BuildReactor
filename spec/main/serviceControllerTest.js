@@ -179,9 +179,12 @@ function (controller, Rx, serviceLoader) {
 				service.events.onNext({ eventName: 'someEvent'});
 				service.events.onNext({ eventName: 'servicesInitialized'});
 				service.events.onNext({ eventName: 'buildBroken'});
+				service.events.onNext({ eventName: 'buildStarted'});
+				service.events.onNext({ eventName: 'buildFinished'});
+				service.events.onNext({ eventName: 'updateFailed'});
 				service.events.onNext({ eventName: 'buildFixed'});
 
-				expect(states.length).toBe(4);
+				expect(states.length).toBe(7);
 				expect(states[0]).toEqual([activeProjects]);
 			});
 
