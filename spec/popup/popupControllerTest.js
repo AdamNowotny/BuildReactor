@@ -124,6 +124,21 @@ define([
 			expect($('.failed-count')).toHaveText('1 broken');
 		});
 
+		it('should not show failed count for disabled builds', function () {
+			var state = [{
+				name: 'service 1',
+				items: [{
+						name: 'build name 1',
+						isBroken: true,
+						isDisabled: true
+					}]
+				}];
+			messages.currentState.onNext(state);
+
+			expect($('.service-item.build-broken').length).toBe(1);
+			expect($('.failed-count')).not.toBeVisible();
+		});
+
 		it('should show if building', function () {
 			messages.currentState.onNext(state);
 
