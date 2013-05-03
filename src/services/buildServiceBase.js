@@ -8,7 +8,6 @@ define([
 	'use strict';
 
 	function BuildServiceBase(settings) {
-		this.rx = true;
 		this.Build = null;
 		this.settings = settings;
 		this.updateAll = updateAll;
@@ -135,8 +134,6 @@ define([
 			name: this.settings.name,
 			items: this.settings.projects.map(function (buildId) {
 					return self.latestBuildStates[buildId];
-				}).filter(function (state) {
-					return !state.isDisabled;
 				})
 		};
 	};

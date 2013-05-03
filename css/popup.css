@@ -65,6 +65,18 @@ li.service-item {
 	white-space: nowrap;
 }
 
+	.service-item.disabled {
+		background-color: #454;
+	}
+
+		.service-item.disabled .label {
+			margin-top: 1px;
+		}
+
+		.service-item.disabled.build-broken {
+			background-color: #644;
+		}
+
 	.service-item.build-broken {
 		background-color: #900;
 	}

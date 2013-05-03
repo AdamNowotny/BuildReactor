@@ -13,6 +13,9 @@ define([
 	function notificationController() {
 
 		function onBrokenBuild(event) {
+			if (event.details.isDisabled) {
+				return;
+			}
 			var notificationInfo = {
 				id: event.details.serviceName + event.details.group + event.details.name,
 				message: 'Build failed - ' + event.details.serviceName,
@@ -25,6 +28,9 @@ define([
 		}
 
 		function onFixedBuild(event) {
+			if (event.details.isDisabled) {
+				return;
+			}
 			var notificationInfo = {
 				id: event.details.serviceName + event.details.group + event.details.name,
 				message: 'Build fixed - ' + event.details.serviceName,

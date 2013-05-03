@@ -38,7 +38,15 @@ define([
 						group: 'build group 2',
 						webUrl: '',
 						isRunning: true
-					}
+					},
+					{
+						name: 'disabled build',
+						group: 'other group',
+						isBroken: false,
+						isDisabled: true,
+						webUrl: 'http://example3.com/',
+						isRunning: false
+					},
 				]
 			},
 			{
@@ -106,12 +114,14 @@ define([
 			expect($('.service-item-name').eq(1)).toHaveText('build name 1');
 			expect($('.service-item-name').eq(2)).toHaveText('build name 2');
 			expect($('.service-item-name').eq(3)).toHaveText('build name 4');
+			expect($('.service-item-name').eq(4)).toHaveText('disabled build');
 		});
 
 		it('should indicate broken build', function () {
 			messages.currentState.onNext(state);
 
 			expect($('.service-item.build-broken').length).toBe(1);
+			expect($('.failed-count')).toHaveText('1 broken');
 		});
 
 		it('should show if building', function () {
@@ -123,8 +133,9 @@ define([
 		it('should add link for each build', function () {
 			messages.currentState.onNext(state);
 
-			expect($('.service-item a').length).toBe(4);
+			expect($('.service-item a').length).toBe(5);
 			expect($('.service-item a').eq(0).attr('href')).toBe('http://example3.com/');
+			expect($('.service-item a').attr('href')).toBeDefined();
 		});
 	});
 

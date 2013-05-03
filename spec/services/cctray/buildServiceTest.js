@@ -451,14 +451,6 @@ function (BuildService, request, Rx, $, mixIn, projectsXmlText) {
 				expect(result.items.length).toBe(0);
 			});
 
-			it('should ignore disabled builds', function () {
-				buildState1.isDisabled = true;
-
-				var result = service.activeProjects();
-
-				expect(result.items.length).toBe(1);
-			});
-
 			it('should return build info', function () {
 				var result = service.activeProjects();
 

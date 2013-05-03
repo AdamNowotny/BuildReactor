@@ -43,6 +43,18 @@ define([
 			);
 		});
 
+		it('should not show message when build fails but is disabled', function () {
+			serviceController.events.onNext({ eventName: 'buildBroken', details: {
+				serviceName: 'service',
+				group: 'group',
+				name: 'build',
+				serviceIcon: 'icon.png',
+				isDisabled: true
+			}});
+
+			expect(window.webkitNotifications.createNotification).not.toHaveBeenCalled();
+		});
+
 		it('should show message if build fixed', function () {
 			serviceController.events.onNext({ eventName: 'buildFixed', details: {
 				serviceName: 'service',
@@ -54,6 +66,18 @@ define([
 			expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
 				'src/services/icon.png', 'Build fixed - service', 'build (group)'
 			);
+		});
+
+		it('should not show message if build fixed but is disabled', function () {
+			serviceController.events.onNext({ eventName: 'buildFixed', details: {
+				serviceName: 'service',
+				group: 'group',
+				name: 'build',
+				serviceIcon: 'icon.png',
+				isDisabled: true
+			}});
+
+			expect(window.webkitNotifications.createNotification).not.toHaveBeenCalled();
 		});
 
 		it('should close notifications about fixed builds after 5 seconds', function () {
