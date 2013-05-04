@@ -11,20 +11,19 @@ define([
 
 		var mockBadgeText;
 		var mockBadgeColor;
-		var mockNotification = {
-			show: function () { },
-			cancel: function () { },
-			onclick: function () { }
-		};
+		var mockNotification;
 		var subscription;
 		var scheduler;
 
 		beforeEach(function () {
 			scheduler = new Rx.TestScheduler();
+			mockNotification = {
+				show: jasmine.createSpy(),
+				cancel: jasmine.createSpy().andCallFake(function () {
+					this.onclose();
+				})
+			};
 			spyOn(window.webkitNotifications, 'createNotification').andReturn(mockNotification);
-			spyOn(mockNotification, 'cancel');
-			spyOn(mockNotification, 'show');
-			spyOn(mockNotification, 'onclick');
 			subscription = notificationController.init({ timeout: 5000, scheduler: scheduler });
 		});
 

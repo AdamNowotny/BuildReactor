@@ -37,7 +37,7 @@ define([
 			if (visibleNotifications[info.id]) {
 				visibleNotifications[info.id].dispose();
 			}
-			visibleNotifications[info.id] = createNotification(info).subscribe(null, null, function () {
+			visibleNotifications[info.id] = createNotification(info).subscribe(undefined, undefined, function () {
 				delete visibleNotifications[info.id];
 			});
 		}
@@ -51,7 +51,7 @@ define([
 					});
 				};
 				notification.onclose = function () {
-					observer.OnComplete();
+					observer.onCompleted();
 				};
 				notification.show();
 				if (info.timeout) {
