@@ -60,7 +60,7 @@ require([
 
 	backgroundLogger();
 	badgeController();
-	notificationController();
+	notificationController.init({ timeout: 5000 });
 	messageHandlers.init();
 
 	serviceController.clear();

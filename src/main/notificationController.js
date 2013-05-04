@@ -1,93 +1,71 @@
 define([
 	'main/serviceController',
-	'common/timer',
-	'mout/string/interpolate',
-	'mout/array/remove'
-], function (serviceController, Timer, interpolate, remove) {
+	'rx',
+	'rx.time'
+], function (serviceController, Rx) {
 
 	'use strict';
 	
-	var notificationTimeoutInSec = 5;
-	var eventsSubscription;
+	function init(options) {
 
-	function notificationController() {
-
-		function onBrokenBuild(event) {
-			if (event.details.isDisabled) {
-				return;
-			}
-			var notificationInfo = {
+		function createNotificationInfo(event) {
+			return {
 				id: event.details.serviceName + event.details.group + event.details.name,
-				message: 'Build failed - ' + event.details.serviceName,
-				details: event.details.name + (event.details.group ? ' (' + event.details.group + ')' : ''),
+				title: event.details.name + (event.details.group ? ' (' + event.details.group + ')' : ''),
 				url: event.details.webUrl,
 				icon: 'src/services/' + event.details.serviceIcon,
-				sticky: !reloading
+				timeout: options.timeout
 			};
-			showNotification(notificationInfo);
+		}
+
+		function onBrokenBuild(event) {
+			var info = createNotificationInfo(event);
+			info.text = 'Broken';
+			if (!reloading) {
+				delete info.timeout;
+			}
+			showNotification(info);
 		}
 
 		function onFixedBuild(event) {
-			if (event.details.isDisabled) {
-				return;
-			}
-			var notificationInfo = {
-				id: event.details.serviceName + event.details.group + event.details.name,
-				message: 'Build fixed - ' + event.details.serviceName,
-				details: event.details.name + (event.details.group ? ' (' + event.details.group + ')' : ''),
-				url: event.details.webUrl,
-				icon: 'src/services/' + event.details.serviceIcon,
-				sticky: false
-			};
-			showNotification(notificationInfo);
+			var info = createNotificationInfo(event);
+			info.text = 'Fixed';
+			showNotification(info);
 		}
 
-		function showNotification(notificationInfo) {
-			hideOutdated(notificationInfo.id);
-			var notification = createNotification(notificationInfo);
-			notification.show();
-			visibleNotifications.push({ notification: notification, notificationInfo: notificationInfo });
-			if (!notificationInfo.sticky) {
-				var timer = new Timer();
-				timer.on.elapsed.addOnce(function () { notification.cancel(); });
-				timer.start(notificationTimeoutInSec);
+		function showNotification(info) {
+			if (visibleNotifications[info.id]) {
+				visibleNotifications[info.id].dispose();
 			}
-		}
-
-		function hideOutdated(id) {
-			visibleNotifications.filter(function (d) {
-				return d.notificationInfo.id === id;
-			}).forEach(function (d) {
-				d.notification.cancel();
+			visibleNotifications[info.id] = createNotification(info).subscribe(null, null, function () {
+				delete visibleNotifications[info.id];
 			});
 		}
 
-		function createNotification(notificationInfo) {
-
-			function onNotificationClick() {
-				chrome.tabs.create({'url': notificationInfo.url}, function (tab) {
+		function createNotification(info) {
+			return Rx.Observable.create(function (observer) {
+				var notification = window.webkitNotifications.createNotification(info.icon, info.title, info.text);
+				notification.onclick = function () {
+					chrome.tabs.create({'url': info.url}, function (tab) {
+						notification.cancel();
+					});
+				};
+				notification.onclose = function () {
+					observer.OnComplete();
+				};
+				notification.show();
+				if (info.timeout) {
+					Rx.Observable.timer(info.timeout, scheduler).subscribe(function () {
+						notification.cancel();
+					});
+				}
+				return function () {
 					notification.cancel();
-				});
-			}
-
-			function onNotificationClose() {
-				visibleNotifications.filter(function (d) {
-					return d.notification === this;
-				}).forEach(function (d) {
-					remove(visibleNotifications, d);
-				});
-			}
-
-			var notification = window.webkitNotifications.createNotification(
-				notificationInfo.icon,
-				notificationInfo.message,
-				notificationInfo.details
-			);
-			notification.onclick = onNotificationClick;
-			notification.onclose = onNotificationClose;
-			return notification;
+				};
+			});
 		}
 
+		var scheduler = options.scheduler || Rx.Scheduler.currentThread;
 		var eventHandlers = {
 			'servicesInitializing': function () {
 				reloading = true;
@@ -98,9 +76,14 @@ define([
 			'buildBroken': onBrokenBuild,
 			'buildFixed': onFixedBuild
 		};
-		var visibleNotifications = [];
+		var eventsSubscription;
+		var visibleNotifications = {};
 		var reloading = false;
+
 		return serviceController.events.doAction(function (event) {
+			if (event.details && event.details.isDisabled) { 
+				return;
+			}
 			var handler = eventHandlers[event.eventName];
 			if (handler) {
 				handler(event);
@@ -108,11 +91,7 @@ define([
 		}).subscribe();
 	}
 	
-	notificationController.notificationTimeoutInSec = function (value) {
-		if (!arguments.count) { return notificationTimeoutInSec; }
-		notificationTimeoutInSec = value;
-		return notificationController;
+	return {
+		init: init
 	};
-
-	return notificationController;
 });

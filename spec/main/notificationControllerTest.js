@@ -1,12 +1,13 @@
 define([
 	'main/notificationController',
 	'main/serviceController',
-	'common/timer'
-], function (notificationController, serviceController, Timer) {
+	'rx',
+	'rx.testing'
+], function (notificationController, serviceController, Rx) {
 
 	'use strict';
 	
-	describe('NotificationController', function () {
+	describe('notificationController', function () {
 
 		var mockBadgeText;
 		var mockBadgeColor;
@@ -15,15 +16,16 @@ define([
 			cancel: function () { },
 			onclick: function () { }
 		};
-		var timeout = notificationController.notificationTimeoutInSec();
 		var subscription;
+		var scheduler;
 
 		beforeEach(function () {
+			scheduler = new Rx.TestScheduler();
 			spyOn(window.webkitNotifications, 'createNotification').andReturn(mockNotification);
 			spyOn(mockNotification, 'cancel');
 			spyOn(mockNotification, 'show');
 			spyOn(mockNotification, 'onclick');
-			subscription = notificationController();
+			subscription = notificationController.init({ timeout: 5000, scheduler: scheduler });
 		});
 
 		afterEach(function () {
@@ -39,7 +41,7 @@ define([
 			}});
 
 			expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-				'src/services/icon.png', 'Build failed - service',  'build (group)'
+				'src/services/icon.png', 'build (group)', 'Broken'
 			);
 		});
 
@@ -64,7 +66,7 @@ define([
 			}});
 
 			expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-				'src/services/icon.png', 'Build fixed - service', 'build (group)'
+				'src/services/icon.png', 'build (group)', 'Fixed'
 			);
 		});
 
@@ -81,14 +83,10 @@ define([
 		});
 
 		it('should close notifications about fixed builds after 5 seconds', function () {
-			spyOn(Timer.prototype, 'start').andCallFake(function (value) {
-				expect(value).toBe(timeout);
-				this.on.elapsed.dispatch();
-			});
-
 			serviceController.events.onNext({ eventName: 'buildFixed', details: {} });
 
-			expect(Timer.prototype.start).toHaveBeenCalledWith(timeout);
+			scheduler.advanceBy(5000);
+			
 			expect(mockNotification.cancel).toHaveBeenCalled();
 		});
 
@@ -99,17 +97,12 @@ define([
 			expect(mockNotification.cancel).not.toHaveBeenCalled();
 		});
 
-		it('should close notifications about failed builds if initializing', function () {
-			var timeout = notificationController.notificationTimeoutInSec();
-			spyOn(Timer.prototype, 'start').andCallFake(function (value) {
-				expect(value).toBe(timeout);
-				this.on.elapsed.dispatch();
-			});
-
+		it('should close notifications about failed builds after 5 seconds if initializing', function () {
 			serviceController.events.onNext({ eventName: 'servicesInitializing' });
 			serviceController.events.onNext({ eventName: 'buildBroken', details: {} });
 
-			expect(Timer.prototype.start).toHaveBeenCalledWith(timeout);
+			scheduler.advanceBy(5000);
+
 			expect(mockNotification.cancel).toHaveBeenCalled();
 		});
 

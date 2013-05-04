@@ -81,6 +81,7 @@ module.exports = function (grunt) {
 								rx: '../components/rxjs/rx',
 								'rx.binding': '../components/rxjs/rx.binding',
 								'rx.jquery': '../components/rxjs-jquery/rx.jquery',
+								'rx.testing': '../components/rxjs/rx.testing',
 								'rx.time': '../components/rxjs/rx.time',
 								underscore: '../lib/require-handlebars-plugin/hbs/underscore'
 							},
