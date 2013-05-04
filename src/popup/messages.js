@@ -5,14 +5,14 @@ define(['rx', 'rx.binding'], function (Rx) {
 	var init = function () {
 		var port = chrome.runtime.connect({ name: 'state' });
 		port.onMessage.addListener(function (message) {
-			currentState.onNext(message);
+			activeProjects.onNext(message);
 		});
 	};
 
-	var currentState = new Rx.BehaviorSubject([]);
+	var activeProjects = new Rx.BehaviorSubject([]);
 
 	return {
 		init: init,
-		currentState: currentState
+		activeProjects: activeProjects
 	};
 });

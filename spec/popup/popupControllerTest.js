@@ -66,20 +66,20 @@ define([
 		});
 
 		it('should show message if no services configured', function () {
-			messages.currentState.onNext([]);
+			messages.activeProjects.onNext([]);
 
 			expect($('.no-services-message')).toHaveText('No services configured');
 			expect($('.no-services-message')).toBeVisible();
 		});
 
 		it('should not show message if at least 1 service configured', function () {
-			messages.currentState.onNext(state);
+			messages.activeProjects.onNext(state);
 
 			expect($('.no-services-message')).not.toBeVisible();
 		});
 
 		it('should show service names', function () {
-			messages.currentState.onNext(state);
+			messages.activeProjects.onNext(state);
 
 			expect($('.service-name').length).toBeGreaterThan(1);
 			expect($('.service-name').eq(0)).toHaveText('service 1');
@@ -87,14 +87,14 @@ define([
 		});
 
 		it('should show build names', function () {
-			messages.currentState.onNext(state);
+			messages.activeProjects.onNext(state);
 
 			expect($('.service-item-name').length).toBeGreaterThan(1);
 			expect($('.service-item-name').text().length).not.toBe(0);
 		});
 
 		it('should show group names', function () {
-			messages.currentState.onNext(state);
+			messages.activeProjects.onNext(state);
 
 			expect($('.service-group').length).toBeGreaterThan(1);
 			expect($('.service-group').eq(0)).toHaveText('build group 1');
@@ -102,13 +102,13 @@ define([
 		});
 
 		it('should not show group name if none', function () {
-			messages.currentState.onNext(state);
+			messages.activeProjects.onNext(state);
 
 			expect($('.service-item').eq(0)).toHaveText('build with no group');
 		});
 
 		it('should sort by group name', function () {
-			messages.currentState.onNext(state);
+			messages.activeProjects.onNext(state);
 
 			expect($('.service-item-name').eq(0)).toHaveText('build with no group');
 			expect($('.service-item-name').eq(1)).toHaveText('build name 1');
@@ -118,14 +118,14 @@ define([
 		});
 
 		it('should indicate broken build', function () {
-			messages.currentState.onNext(state);
+			messages.activeProjects.onNext(state);
 
 			expect($('.service-item.broken').length).toBe(1);
 			expect($('.failed-count')).toHaveText('1 broken');
 		});
 
 		it('should indicate disabled build', function () {
-			messages.currentState.onNext(state);
+			messages.activeProjects.onNext(state);
 
 			expect($('.service-item.disabled').length).toBe(1);
 			expect($('.service-item.disabled .label')).toBeVisible();
@@ -140,20 +140,20 @@ define([
 						isDisabled: true
 					}]
 				}];
-			messages.currentState.onNext(state);
+			messages.activeProjects.onNext(state);
 
 			expect($('.service-item.broken').length).toBe(1);
 			expect($('.failed-count')).not.toBeVisible();
 		});
 
 		it('should show if building', function () {
-			messages.currentState.onNext(state);
+			messages.activeProjects.onNext(state);
 
 			expect($('.service-item.building').length).toBe(2);
 		});
 
 		it('should add link for each build', function () {
-			messages.currentState.onNext(state);
+			messages.activeProjects.onNext(state);
 
 			expect($('.service-item a').length).toBe(5);
 			expect($('.service-item a').eq(0).attr('href')).toBe('http://example3.com/');

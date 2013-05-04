@@ -147,7 +147,10 @@ function (controller, Rx, serviceLoader) {
 				spyOn(CustomBuildService.prototype, 'activeProjects').andReturn(activeProjects);
 				controller.start([settings, settings]).subscribe();
 
-				var projects = controller.activeProjects();
+				var projects;
+				controller.activeProjects.subscribe(function (state) {
+					projects = state;
+				});
 
 				expect(projects.length).toBe(2);
 			});
@@ -158,7 +161,7 @@ function (controller, Rx, serviceLoader) {
 				controller.start([settings]).subscribe();
 
 				var lastState;
-				controller.currentState.subscribe(function (state) {
+				controller.activeProjects.subscribe(function (state) {
 					lastState = state;
 				});
 
@@ -171,7 +174,7 @@ function (controller, Rx, serviceLoader) {
 				controller.start([settings]).subscribe();
 
 				var states = [];
-				controller.currentState.subscribe(function (state) {
+				controller.activeProjects.subscribe(function (state) {
 					states.push(state);
 				});
 				service.events.onNext({ eventName: 'someEvent'});
@@ -184,7 +187,7 @@ function (controller, Rx, serviceLoader) {
 				service.events.onNext({ eventName: 'updateFailed'});
 				service.events.onNext({ eventName: 'buildFixed'});
 
-				expect(states.length).toBe(7);
+				expect(states.length).toBe(6);
 				expect(states[0]).toEqual([activeProjects]);
 			});
 

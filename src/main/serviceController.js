@@ -10,11 +10,13 @@ define([
 	var subscriptions = [];
 	var types = [];
 	var events = new Rx.Subject();
-	var currentState = Rx.Observable.defer(function () {
-			return Rx.Observable.returnValue(activeProjects());
+	var activeProjects = Rx.Observable.defer(function () {
+			var active = services.map(function (service) {
+				return service.activeProjects();
+			});
+			return Rx.Observable.returnValue(active);
 		}).merge(events.where(function (event) {
 			return contains([
-				'servicesInitialized',
 				'updateFailed',
 				'buildBroken',
 				'buildFixed',
@@ -22,7 +24,9 @@ define([
 				'buildFinished'
 			], event.eventName);
 		}).select(function () {
-			return activeProjects();
+			return services.map(function (service) {
+				return service.activeProjects();
+			});
 		}));
 
 	var getAllTypes = function () {
@@ -75,17 +79,10 @@ define([
 		subscriptions = [];
 	};
 
-	function activeProjects() {
-		return services.map(function (service) {
-			return service.activeProjects();
-		});
-	}
-
 	return {
 		events: events,
-		currentState: currentState,
-		start: start,
 		activeProjects: activeProjects,
+		start: start,
 		getAllTypes: getAllTypes,
 		registerType: registerType,
 		clear: clear

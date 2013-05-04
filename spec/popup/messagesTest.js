@@ -29,7 +29,7 @@ define(['popup/messages'], function (messages) {
 		it('should subscribe on init', function () {
 			var message;
 			var settings = [];
-			var subscription = messages.currentState.subscribe(function (state) {
+			var subscription = messages.activeProjects.subscribe(function (state) {
 				message = state;
 			});
 

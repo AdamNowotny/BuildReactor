@@ -30,7 +30,6 @@ define([
 				disconnectHandler = onDisconnect;
 			});
 			spyOn(stateChangesPort, 'postMessage');
-			spyOn(serviceController, 'activeProjects');
 			messageHandlers.init();
 		});
 

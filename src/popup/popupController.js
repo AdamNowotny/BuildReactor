@@ -47,7 +47,7 @@ define([
 			return model;
 		}
 
-		return messages.currentState.subscribe(function (services) {
+		return messages.activeProjects.subscribe(function (services) {
 			if (services) {
 				show(services);
 			}

@@ -36,7 +36,7 @@ define([
 	var messages = new Rx.Subject();
 
 	var onConnect = function (port) {
-		stateSubscription = serviceController.currentState.subscribe(function (servicesState) {
+		stateSubscription = serviceController.activeProjects.subscribe(function (servicesState) {
 			port.postMessage(servicesState);
 			messages.onNext(servicesState);
 		});
