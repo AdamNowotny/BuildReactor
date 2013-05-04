@@ -59,6 +59,7 @@ li.service-item {
 	background-color: #360;
 	border-radius: 5px;
 	cursor: pointer;
+	height: 20px;
 	margin-top: 5px;
 	padding: 5px 30px 5px 5px;
 	position: relative;
@@ -73,23 +74,27 @@ li.service-item {
 			margin-top: 1px;
 		}
 
-		.service-item.disabled.build-broken {
+		.service-item.disabled.broken {
 			background-color: #644;
 		}
 
-	.service-item.build-broken {
+	.service-item.broken {
 		background-color: #900;
 	}
 
-	.service-item i {
-		display: none !important;
+	.service-item-name {
+		margin-right: 10px;
+	}
+
+	.service-item i.icon-spinner {
+		display: none;
 		position: absolute;
 		right: 5px;
 		top: 6px;
 	}
 
-	.service-item.building i {
-		display: inline-block !important;
+	.service-item.building i.icon-spinner {
+		display: inline-block;
 	}
 
 .service-group {

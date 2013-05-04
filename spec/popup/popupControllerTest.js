@@ -120,8 +120,15 @@ define([
 		it('should indicate broken build', function () {
 			messages.currentState.onNext(state);
 
-			expect($('.service-item.build-broken').length).toBe(1);
+			expect($('.service-item.broken').length).toBe(1);
 			expect($('.failed-count')).toHaveText('1 broken');
+		});
+
+		it('should indicate disabled build', function () {
+			messages.currentState.onNext(state);
+
+			expect($('.service-item.disabled').length).toBe(1);
+			expect($('.service-item.disabled .label')).toBeVisible();
 		});
 
 		it('should not show failed count for disabled builds', function () {
@@ -135,7 +142,7 @@ define([
 				}];
 			messages.currentState.onNext(state);
 
-			expect($('.service-item.build-broken').length).toBe(1);
+			expect($('.service-item.broken').length).toBe(1);
 			expect($('.failed-count')).not.toBeVisible();
 		});
 
