@@ -9,7 +9,7 @@ define(['rx', 'rx.binding'], function (Rx) {
 		});
 	};
 
-	var currentState = new Rx.BehaviorSubject();
+	var currentState = new Rx.BehaviorSubject([]);
 
 	return {
 		init: init,
