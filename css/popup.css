@@ -67,15 +67,11 @@ li.service-item {
 }
 
 	.service-item.disabled {
-		background-color: #454;
+		background-color: grey;
 	}
 
 		.service-item.disabled .label {
 			margin-top: 1px;
-		}
-
-		.service-item.disabled.broken {
-			background-color: #644;
 		}
 
 	.service-item.broken {
