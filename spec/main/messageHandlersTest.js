@@ -42,7 +42,7 @@ define([
 			it('should subscribe to state sequence on connect', function () {
 				connectHandler(stateChangesPort);
 
-				serviceController.events.onNext({ eventName: 'buildBroken' });
+				serviceController.activeProjects.onNext([{ name: 'service 1', items: [] }]);
 
 				expect(stateChangesPort.postMessage).toHaveBeenCalled();
 			});
@@ -65,7 +65,7 @@ define([
 					lastMessage = message;
 				});
 
-				serviceController.events.onNext({ eventName: 'buildBroken' });
+				serviceController.activeProjects.onNext([{ name: 'service 1', items: [] }]);
 
 				expect(lastMessage).toBeDefined();
 			});

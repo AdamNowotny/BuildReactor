@@ -8,6 +8,7 @@ require.config({
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
 		mout: '../components/mout/src',
 		rx: 'rxjs',
+		'rx.binding': '../components/rxjs/rx.binding',
 		'rx.jquery': 'rxjs',
 		'rx.time': 'rxjs',
 		signals: '../components/js-signals/dist/signals',
@@ -76,5 +77,5 @@ require([
 	serviceController.registerType(TravisService);
 
 	var settings = settingsStore.getAll();
-	serviceController.start(settings).subscribe();
+	serviceController.start(settings);
 });

@@ -9,7 +9,7 @@ define([
 
 	return function () {
 		serviceController.events.subscribe(function (event) {
-			console.log(new Date().toJSON(), event.source, event.eventName, event.details, arguments);
+			console.log(new Date().toJSON(), event.source, event.eventName, event.details);
 		}, function () {
 			console.error(new Date().toJSON(), 'Event stream error', arguments);
 		}, function () {

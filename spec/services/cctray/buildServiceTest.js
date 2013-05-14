@@ -424,42 +424,5 @@ function (BuildService, request, Rx, $, mixIn, projectsXmlText) {
 
 		});
 
-		describe('activeProjects', function () {
-
-			var buildState1;
-			var buildState2;
-
-			beforeEach(function () {
-				settings.projects = ['Build1', 'Build2'];
-				buildState1 = createState1();
-				buildState2 = createState2();
-				service.latestBuildStates['Build1'] = buildState1;
-				service.latestBuildStates['Build2'] = buildState2;
-			});
-
-			it('should return service name', function () {
-				var result = service.activeProjects();
-
-				expect(result.name).toBe(settings.name);
-			});
-
-			it('should return empty if no projects monitored', function () {
-				settings.projects = [];
-
-				var result = service.activeProjects();
-
-				expect(result.items.length).toBe(0);
-			});
-
-			it('should return build info', function () {
-				var result = service.activeProjects();
-
-				expect(result.items.length).toBe(2);
-				expect(result.items[0]).toBe(buildState1);
-				expect(result.items[1]).toBe(buildState2);
-			});
-
-		});
-
 	});
 });

@@ -79,6 +79,8 @@ module.exports = function (grunt) {
 								spec: '../spec',
 								text: '../components/requirejs-text/text',
 								rx: '../components/rxjs/rx',
+								rxHelpers: '../spec/rxHelpers',
+								'rx.aggregates': '../components/rxjs/rx.aggregates',
 								'rx.binding': '../components/rxjs/rx.binding',
 								'rx.jquery': '../components/rxjs-jquery/rx.jquery',
 								'rx.testing': '../components/rxjs/rx.testing',

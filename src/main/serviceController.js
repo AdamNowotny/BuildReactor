@@ -1,33 +1,14 @@
 define([
 	'main/serviceLoader',
 	'rx',
-	'mout/array/contains'
-], function (serviceLoader, Rx, contains) {
+	'mout/array/contains',
+	'mout/object/values',
+	'rx.binding'
+], function (serviceLoader, Rx, contains, values) {
 
 	'use strict';
 
-	var services = [];
-	var subscriptions = [];
 	var types = [];
-	var events = new Rx.Subject();
-	var activeProjects = Rx.Observable.defer(function () {
-			var active = services.map(function (service) {
-				return service.activeProjects();
-			});
-			return Rx.Observable.returnValue(active);
-		}).merge(events.where(function (event) {
-			return contains([
-				'updateFailed',
-				'buildBroken',
-				'buildFixed',
-				'buildStarted',
-				'buildFinished'
-			], event.eventName);
-		}).select(function () {
-			return services.map(function (service) {
-				return service.activeProjects();
-			});
-		}));
 
 	var getAllTypes = function () {
 		return types;
@@ -42,46 +23,95 @@ define([
 		types = [];
 	};
 
-	var start = function (settingsList) {
+	var services = [];
+	var eventsSubscriptions = [];
+	var events = new Rx.Subject();
+
+	var settingsSubject = new Rx.BehaviorSubject([]);
+	var servicesSubject = new Rx.BehaviorSubject();
+	var activeProjectsSubject = new Rx.BehaviorSubject();
+	var publishServicesSubscription;
+	var activeProjectsSubscription;
+	var startSubscription;
+
+	settingsSubject.subscribe(function (settingsList) {
 		events.onNext({
 			eventName: 'servicesInitializing',
 			source: 'serviceController',
 			details: settingsList
 		});
+		if (publishServicesSubscription) {
+			publishServicesSubscription.dispose();
+		}
 		removeAll();
+		publishServicesSubscription = publishServices(settingsList).subscribe(function (services) {
+			events.onNext({
+				eventName: 'servicesInitialized',
+				source: 'serviceController'
+			});
+		});
+	});
+
+	function publishServices(settingsList) {
 		return Rx.Observable.fromArray(settingsList)
 			.where(function (settings) {
 				return settings.disabled !== true;
-			})
-			.selectMany(serviceLoader.load)
-			.doAction(function (service) {
+			}).selectMany(function (settings) {
+				return serviceLoader.load(settings);
+			}).doAction(function (service) {
 				services.push(service);
-				subscriptions.push(service.events.subscribe(events));
+				eventsSubscriptions.push(service.events.subscribe(events));
 			}).selectMany(function (service) {
-				return service.start();
+				return Rx.Observable.returnValue(service)
+						.selectMany(function (service) {
+							return service.start();
+						}).select(function (startSubscription) { return service; });
 			}).toArray()
-			.doAction(function (buildStates) {
-				events.onNext({
-					eventName: 'servicesInitialized',
-					source: 'serviceController'
-				});
+			.doAction(function (services) {
+				servicesSubject.onNext(services);
 			});
-	};
+	}
 
-	var removeAll = function () {
-		services.forEach(function (service) { 
+	function removeAll() {
+		services.forEach(function (service) {
 			service.stop();
 		});
-		subscriptions.forEach(function (subscription) { 
+		eventsSubscriptions.forEach(function (subscription) { 
 			subscription.dispose();
 		});
 		services = [];
-		subscriptions = [];
+		eventsSubscriptions = [];
+	}
+
+	servicesSubject.subscribe(function (services) {
+		if (activeProjectsSubscription) {
+			activeProjectsSubscription.dispose();
+		}
+		if (services.length === 0) {
+			return;
+		}
+		activeProjectsSubscription = Rx.Observable
+			.combineLatest(services.map(function (service) {
+				return service.activeProjects;
+			}), function () {
+				var states = Array.prototype.slice.call(arguments, 0);
+				console.log("reduced", states);
+				return states;
+			}).subscribe(activeProjectsSubject);
+	});
+
+	var start = function (settingsList) {
+		if (startSubscription) {
+			startSubscription.dispose();
+		}
+		settingsSubject.onNext(settingsList);
+		startSubscription = servicesSubject.subscribe(function (services) {
+		});
 	};
 
 	return {
 		events: events,
-		activeProjects: activeProjects,
+		activeProjects: activeProjectsSubject,
 		start: start,
 		getAllTypes: getAllTypes,
 		registerType: registerType,

@@ -3,7 +3,8 @@ define([
 	'jquery',
 	'mout/object/values',
 	'mout/object/mixIn',
-	'rx.time'
+	'rx.time',
+	'rx.binding'
 ], function (Rx, $, values, mixIn) {
 	'use strict';
 
@@ -13,17 +14,31 @@ define([
 		this.updateAll = updateAll;
 		this.start = start;
 		this.stop = stop;
-		this.activeProjects = activeProjects;
 		this.events = new Rx.Subject();
 		this.builds = {};
 		this.latestBuildStates = getInitialStates(settings);
 		this.poolingSubscription = null;
 		this.mixInMissingState = mixInMissingState;
 		this.processBuildUpdate = processBuildUpdate;
+		this.activeProjects = new Rx.BehaviorSubject(createState(this));
 	}
 
 	var getInitialStates = function (settings) {
-		var self = this;
+
+		var createDefaultState = function (id, settings) {
+			return {
+				id: id,
+				name: id,
+				group: null,
+				webUrl: null,
+				isBroken: false,
+				isRunning: false,
+				isDisabled: false,
+				serviceName: settings.name,
+				serviceIcon: settings.icon
+			};
+		};
+
 		var states = {};
 		settings.projects.forEach(function (buildId) {
 			states[buildId] = createDefaultState(buildId, settings);
@@ -31,19 +46,6 @@ define([
 		return states;
 	};
 
-	var createDefaultState = function (id, settings) {
-		return {
-			id: id,
-			name: id,
-			group: null,
-			webUrl: null,
-			isBroken: false,
-			isRunning: false,
-			isDisabled: false,
-			serviceName: settings.name,
-			serviceIcon: settings.icon
-		};
-	};
 
 	var updateAll = function () {
 
@@ -110,13 +112,21 @@ define([
 		}
 		var self = this;
 		var updateInterval = this.settings.updateInterval * 1000;
+		this.eventsSubscription = this.events.subscribe(function (event) {
+			var state = createState(self);
+			self.activeProjects.onNext(state);
+		});
 		this.poolingSubscription = Rx.Observable.interval(updateInterval)
 			.selectMany(function () { return self.updateAll(); })
 			.subscribe();
 		return self.updateAll()
 			.toArray()
 			.doAction(function (states) {
-				self.events.onNext({ eventName: 'serviceStarted', details: states });
+				self.events.onNext({
+					eventName: 'serviceStarted',
+					source: self.settings.name,
+					details: states
+				});
 			});
 	};
 
@@ -126,17 +136,20 @@ define([
 			this.poolingSubscription = null;
 			this.events.onNext({ eventName: 'serviceStopped' });
 		}
+		if (this.eventsSubscription) {
+			this.eventsSubscription.dispose();
+			this.eventsSubscription = null;
+		}
 	};
 
-	var activeProjects = function () {
-		var self = this;
+	var createState = function (self) {
 		return {
-			name: this.settings.name,
-			items: this.settings.projects.map(function (buildId) {
+			name: self.settings.name,
+			items: self.settings.projects.map(function (buildId) {
 					return self.latestBuildStates[buildId];
 				})
 		};
 	};
-
+	
 	return BuildServiceBase;
 });

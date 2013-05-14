@@ -17,7 +17,7 @@ define([
 			break;
 		case 'updateSettings':
 			settingsStore.store(request.settings);
-			serviceController.start(request.settings).subscribe();
+			serviceController.start(request.settings);
 			break;
 		case 'availableProjects':
 			serviceLoader.load(request.serviceSettings).subscribe(function (service) {

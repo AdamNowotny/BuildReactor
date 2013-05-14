@@ -1,9 +1,15 @@
 define([
 	'services/buildServiceBase',
 	'mout/object/mixIn',
-	'rx'
+	'rx',
+	'rx.testing',
+	'rxHelpers'
 ], function (BuildServiceBase, mixIn, Rx) {
 	'use strict';
+
+	var onNext = Rx.ReactiveTest.onNext;
+	var onCompleted = Rx.ReactiveTest.onCompleted;
+	var onError = Rx.ReactiveTest.onError;
 
 	describe('services/buildServiceBase', function () {
 
@@ -11,9 +17,10 @@ define([
 		var service;
 		var events = [];
 		var eventsSubscription;
-		var mockBuildUpdate;
+		var scheduler;
 
 		beforeEach(function () {
+			scheduler = new Rx.TestScheduler();
 			settings = {
 				typeName: 'custom',
 				baseUrl: 'prefix',
@@ -22,7 +29,7 @@ define([
 				name: 'Service name',
 				projects: [ 'Build1', 'Build2']
 			};
-			mockBuildUpdate = spyOn(GenericBuild.prototype, 'update');
+			spyOn(GenericBuild.prototype, 'update');
 			service = new CustomBuildService(settings);
 			events = [];
 			eventsSubscription = service.events.subscribe(rememberEvent);
@@ -80,38 +87,94 @@ define([
 
 		describe('activeProjects', function () {
 
-			var buildState1;
-			var buildState2;
+			var update1Response;
+			var update2Response;
+			var buildState1, buildState2;
 
 			beforeEach(function () {
-				settings.projects = ['Build1', 'Build2'];
-				service = new CustomBuildService(settings);
 				buildState1 = createStateForId('Build1');
 				buildState2 = createStateForId('Build2');
-				service.latestBuildStates['Build1'] = buildState1;
-				service.latestBuildStates['Build2'] = buildState2;
+				service = new CustomBuildService(settings);
+				update1Response = Rx.Observable.returnValue(buildState1);
+				update2Response = Rx.Observable.returnValue(buildState2);
+				var callCount = 0;
+				GenericBuild.prototype.update.andCallFake(function () {
+					callCount++;
+					switch (callCount) {
+					case 1:
+						return update1Response;
+					case 2:
+						return update2Response;
+					}
+				});
 			});
 
-			it('should return service name', function () {
-				var result = service.activeProjects();
+			it('should push lastest state even before subscription to activeProjects', function () {
+				buildState1.isBroken = true;
+				var startSubscription = service.start().subscribe();
 
-				expect(result.name).toBe(settings.name);
+				var result = scheduler.startWithCreate(function () {
+					return service.activeProjects;
+				});
+
+				expect(result.messages[0].value.value.items[0]).toEqual(buildState1);
+				startSubscription.dispose();
+			});
+
+			it('should not push new state if service stopped', function () {
+				var startSubscription = service.start().subscribe();
+				service.stop();
+
+				scheduler.scheduleAbsolute(300, function () {
+					service.events.onNext({ eventName: 'someEvent triggering state update'});
+				});
+				var result = scheduler.startWithCreate(function () {
+					return service.activeProjects;
+				});
+
+				expect(result.messages).not.toHaveElementsAtTimes(300);
+			});
+
+			it('should return default build info before update', function () {
+				var result = scheduler.startWithCreate(function () {
+					return service.activeProjects;
+				});
+
+				expect(result.messages.length).toBe(1);
+				expect(result.messages[0].value.value.name).toBe(settings.name);
+				expect(result.messages[0].value.value.items.length).toBe(2);
+			});
+
+			it('should return build info', function () {
+				service.latestBuildStates['Build1'] = buildState1;
+				service.latestBuildStates['Build2'] = buildState2;
+				var startSubscription = service.start().subscribe();
+
+				scheduler.scheduleAbsolute(300, function () {
+					service.events.onNext({ eventName: 'someEvent'});
+				});
+				var result = scheduler.startWithCreate(function () {
+					return service.activeProjects;
+				});
+
+				var state = {
+					name: settings.name,
+					items: [buildState1, buildState2]
+				};
+				expect(result.messages.length).toBe(2);
+				expect(result.messages[1].value.value).toEqual(state);
+				startSubscription.dispose();
 			});
 
 			it('should return empty if no projects monitored', function () {
 				settings.projects = [];
+				service = new CustomBuildService(settings);
 
-				var result = service.activeProjects();
+				var result = scheduler.startWithCreate(function () {
+					return service.activeProjects;
+				});
 
-				expect(result.items.length).toBe(0);
-			});
-
-			it('should return build info', function () {
-				var result = service.activeProjects();
-
-				expect(result.items.length).toBe(2);
-				expect(result.items[0]).toBe(buildState1);
-				expect(result.items[1]).toBe(buildState2);
+				expect(result.messages[0].value.value.items.length).toBe(0);
 			});
 
 		});
@@ -121,14 +184,17 @@ define([
 			var update1Response;
 			var update2Response;
 			var eventsSubscription;
+			var state1, state2;
 
 			beforeEach(function () {
+				state1 = createStateForId('Build1');
+				state2 = createStateForId('Build2');
 				service = new CustomBuildService(settings);
 				eventsSubscription = service.events.subscribe(rememberEvent);
-				update1Response = Rx.Observable.returnValue(createStateForId('Build1'));
-				update2Response = Rx.Observable.returnValue(createStateForId('Build2'));
+				update1Response = Rx.Observable.returnValue(state1);
+				update2Response = Rx.Observable.returnValue(state2);
 				var callCount = 0;
-				mockBuildUpdate.andCallFake(function () {
+				GenericBuild.prototype.update.andCallFake(function () {
 					callCount++;
 					switch (callCount) {
 					case 1:
@@ -163,22 +229,19 @@ define([
 			});
 
 			it('should update builds', function () {
-				var completed = false;
-				service.updateAll().subscribe(function () {
-					completed = true;
+				var result = scheduler.startWithCreate(function () {
+					return service.updateAll();
 				});
 
-				expect(completed).toBe(true);
-				expect(mockBuildUpdate).toHaveBeenCalled();
-				expect(mockBuildUpdate.callCount).toBe(settings.projects.length);
+				expect(result.messages).toHaveEqualElements(
+					onNext(200, state1),
+					onNext(200, state2),
+					onCompleted(200)
+				);
+				expect(GenericBuild.prototype.update.callCount).toBe(settings.projects.length);
 			});
 
 			it('should remember new build state', function () {
-				var state1 = createStateForId('Build1');
-				var state2 = createStateForId('Build2');
-				update1Response = Rx.Observable.returnValue(state1);
-				update2Response = Rx.Observable.returnValue(state2);
-
 				service.updateAll().subscribe();
 
 				expect(service.latestBuildStates['Build1']).toEqual(state1);
@@ -386,6 +449,7 @@ define([
 				service.start().subscribe();
 
 				expect(eventPushed('serviceStarted')).toBe(true);
+				expect(getLastEvent('serviceStarted').source).toEqual(settings.name);
 				expect(getLastEvent('serviceStarted').details.length).toEqual(2);
 			});
 
@@ -395,14 +459,6 @@ define([
 
 				expect(getEvents('serviceStarted').length).toBe(1);
 			});
-
-			it('should push serviceStarted on first finished update', function () {
-				service.start().subscribe();
-
-				expect(eventPushed('serviceStarted')).toBe(true);
-				expect(getLastEvent('serviceStarted').details.length).toEqual(2);
-			});
-
 
 		});
 		
