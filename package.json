@@ -31,7 +31,7 @@
     "bower": "~0.8.6",
     "grunt": "~0.4.1",
     "grunt-clear": "~0.2.1",
-    "grunt-cli": "~0.1.7",
+    "grunt-cli": "~0.1.8",
     "grunt-contrib-clean": "~0.4.1",
     "grunt-contrib-connect": "~0.3.0",
     "grunt-contrib-compress": "~0.4.10",
@@ -39,9 +39,9 @@
     "grunt-contrib-cssmin": "~0.6.0",
     "grunt-contrib-jasmine": "~0.4.2",
     "grunt-contrib-jshint": "~0.4.3",
-    "grunt-contrib-requirejs": "~0.4.0",
+    "grunt-contrib-requirejs": "~0.4.1",
     "grunt-contrib-watch": "~0.3.1",
     "grunt-plato": "~0.2.0",
-    "grunt-template-jasmine-requirejs": "~0.1.1"
+    "grunt-template-jasmine-requirejs": "~0.1.2"
   }
 }
