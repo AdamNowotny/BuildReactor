@@ -1,21 +1,22 @@
-define(['mout/array/remove'], function (remove) {
+define([
+	'mout/array/remove',
+	'mout/object/deepMatches'
+], function (remove, deepMatches) {
 
 	'use strict';
+
 
 	beforeEach(function () {
 		this.addMatchers({
 			toHaveEqualElements: function () {
-				var obs = this.actual;
 				var expected = Array.prototype.slice.call(arguments);
-				return areElementsEqual(expected, obs);
+				return areAllElementsEqual(expected, this.actual);
 			},
 			toHaveElements: function () {
-				var obs = this.actual;
 				var expected = Array.prototype.slice.call(arguments);
-				return hasElements(expected, obs);
+				return hasElements(expected, this.actual);
 			},
 			toHaveElementsAtTimes: function () {
-				var obs = this.actual;
 				var expectedTimes = Array.prototype.slice.call(arguments);
 				var i;
 				for (i = 0; i < this.actual.length; i++) {
@@ -25,14 +26,14 @@ define(['mout/array/remove'], function (remove) {
 				}
 				return expectedTimes.length === 0;
 			},
-			toHaveEvent: function (eventName, expectedTimes) {
+			toHaveEvent: function (eventName, expectedCount) {
 				var i, times = 0;
 				for (i = 0; i < this.actual.length; i++) {
 					if (this.actual[i].value.value.eventName === eventName) {
 						times++;
 					}
 				}
-				return expectedTimes ? times === expectedTimes : times > 0;
+				return expectedCount ? times === expectedCount : times > 0;
 			},
 			toHaveEventBefore: function (time, eventName) {
 				var i;
@@ -47,37 +48,28 @@ define(['mout/array/remove'], function (remove) {
 		});
 	});
 
-	function defaultComparer(x, y) {
-		if (!y.equals) {
-			return x === y;
-		}
-		return x.equals(y);
+	function elementsEqual(x, y) {
+		return x.equals(y) && deepMatches(x.value.value, y.value.value);
 	}
 
-	function areElementsEqual(expected, actual, comparer) {
+	function areAllElementsEqual(expected, actual) {
 		var i;
-		if (!comparer) {
-			comparer = defaultComparer;
-		}
 		if (expected.length !== actual.length) {
 			return false;
 		}
 		for (i = 0; i < expected.length; i++) {
-			if (!comparer(expected[i], actual[i])) {
+			if (!elementsEqual(expected[i], actual[i])) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	function hasElements(expected, actual, comparer) {
+	function hasElements(expected, actual) {
 		var i, j, found = 0;
-		if (!comparer) {
-			comparer = defaultComparer;
-		}
 		for (i = 0; i < expected.length; i++) {
 			for (j = 0; j < actual.length; j++) {
-				if (comparer(expected[i], actual[j])) {
+				if (elementsEqual(expected[i], actual[j])) {
 					found++;
 				}
 			}

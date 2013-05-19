@@ -13,34 +13,45 @@ define([
 
 	describe('services/buildServiceBase', function () {
 
-		var settings;
-		var service;
-		var events = [];
-		var eventsSubscription;
 		var scheduler;
+		var settings, service;
+		var update1Response, update2Response;
+		var buildState1, buildState2;
 
 		beforeEach(function () {
 			scheduler = new Rx.TestScheduler();
+			scheduler.scheduleAbsolute(2000, function () {
+				scheduler.stop();
+			});
 			settings = {
 				typeName: 'custom',
 				baseUrl: 'prefix',
 				icon: 'base/icon.png',
 				url: 'http://example.com/',
 				name: 'Service name',
-				projects: [ 'Build1', 'Build2']
+				projects: [ 'Build1', 'Build2'],
+				updateInterval: 1
 			};
 			spyOn(GenericBuild.prototype, 'update');
+			buildState1 = createStateForId('Build1');
+			buildState2 = createStateForId('Build2');
+			update1Response = Rx.Observable.returnValue(buildState1);
+			update2Response = Rx.Observable.returnValue(buildState2);
+			var callCount = 0;
+			GenericBuild.prototype.update.andCallFake(function () {
+				callCount++;
+				switch (callCount) {
+				case 1:
+					return update1Response;
+				case 2:
+					return update2Response;
+				}
+			});
 			service = new CustomBuildService(settings);
-			events = [];
-			eventsSubscription = service.events.subscribe(rememberEvent);
-		});
-
-		afterEach(function () {
-			eventsSubscription.dispose();
 		});
 
 		function CustomBuildService() {
-			mixIn(this, new BuildServiceBase(settings));
+			mixIn(this, new BuildServiceBase(settings, scheduler));
 			this.Build = GenericBuild;
 		}
 
@@ -59,70 +70,55 @@ define([
 				isBroken: false,
 				isRunning: false,
 				isDisabled: false,
-				serviceName: 'Build Server',
-				serviceIcon: 'base/icon.png'
+				serviceName: settings.name,
+				serviceIcon: settings.icon
 			};
 		}
 
-		function rememberEvent(event) {
-			events.push(event);
-		}
-
-		function eventPushed(eventName) {
-			return getEvents(eventName).length > 0;
-		}
-
-		function getLastEvent(eventName) {
-			var eventsByName = getEvents(eventName);
-			return eventsByName.length ?
-				eventsByName[eventsByName.length - 1] :
-				null;
-		}
-
-		function getEvents(eventName) {
-			return events.filter(function (event) {
-				return event.eventName === eventName;
-			});
-		}
+		var createDefaultState = function (id) {
+			return {
+				id: id,
+				name: id,
+				group: null,
+				webUrl: null,
+				isBroken: false,
+				isRunning: false,
+				isDisabled: false,
+				serviceName: settings.name,
+				serviceIcon: settings.icon
+			};
+		}; 
 
 		describe('activeProjects', function () {
 
-			var update1Response;
-			var update2Response;
-			var buildState1, buildState2;
-
-			beforeEach(function () {
-				buildState1 = createStateForId('Build1');
-				buildState2 = createStateForId('Build2');
-				service = new CustomBuildService(settings);
-				update1Response = Rx.Observable.returnValue(buildState1);
-				update2Response = Rx.Observable.returnValue(buildState2);
-				var callCount = 0;
-				GenericBuild.prototype.update.andCallFake(function () {
-					callCount++;
-					switch (callCount) {
-					case 1:
-						return update1Response;
-					case 2:
-						return update2Response;
-					}
+			it('should push default build state before start', function () {
+				var result = scheduler.startWithCreate(function () {
+					return service.activeProjects;
 				});
+
+				expect(result.messages).toHaveEqualElements(onNext(200, {
+					name: settings.name,
+					items: [createDefaultState('Build1'), createDefaultState('Build2')]
+				}));
+
+				expect(GenericBuild.prototype.update).not.toHaveBeenCalled();
 			});
 
-			it('should push lastest state even before subscription to activeProjects', function () {
-				buildState1.isBroken = true;
-				var startSubscription = service.start().subscribe();
+			it('should push lastest state on activeProjects subscription', function () {
+				service.start().subscribe();
 
 				var result = scheduler.startWithCreate(function () {
 					return service.activeProjects;
 				});
 
-				expect(result.messages[0].value.value.items[0]).toEqual(buildState1);
-				startSubscription.dispose();
+				expect(result.messages).toHaveEqualElements(onNext(200, {
+					name: settings.name,
+					items: [buildState1, buildState2]
+				}));
 			});
 
 			it('should not push new state if service stopped', function () {
-				var startSubscription = service.start().subscribe();
+				service.start().subscribe();
 				service.stop();
 
 				scheduler.scheduleAbsolute(300, function () {
@@ -135,20 +131,8 @@ define([
 				expect(result.messages).not.toHaveElementsAtTimes(300);
 			});
 
-			it('should return default build info before update', function () {
-				var result = scheduler.startWithCreate(function () {
-					return service.activeProjects;
-				});
-
-				expect(result.messages.length).toBe(1);
-				expect(result.messages[0].value.value.name).toBe(settings.name);
-				expect(result.messages[0].value.value.items.length).toBe(2);
-			});
-
-			it('should return build info', function () {
-				service.latestBuildStates['Build1'] = buildState1;
-				service.latestBuildStates['Build2'] = buildState2;
-				var startSubscription = service.start().subscribe();
+			it('should push updated build states every time an event is published', function () {
+				service.start().subscribe();
 
 				scheduler.scheduleAbsolute(300, function () {
 					service.events.onNext({ eventName: 'someEvent'});
@@ -157,76 +141,31 @@ define([
 					return service.activeProjects;
 				});
 
-				var state = {
+				expect(result.messages).toHaveElements(onNext(300, {
 					name: settings.name,
 					items: [buildState1, buildState2]
-				};
-				expect(result.messages.length).toBe(2);
-				expect(result.messages[1].value.value).toEqual(state);
-				startSubscription.dispose();
+				}));
 			});
 
 			it('should return empty if no projects monitored', function () {
 				settings.projects = [];
 				service = new CustomBuildService(settings);
+				service.start().subscribe();
 
 				var result = scheduler.startWithCreate(function () {
 					return service.activeProjects;
 				});
 
-				expect(result.messages[0].value.value.items.length).toBe(0);
+				expect(result.messages).toHaveEqualElements(onNext(200, {
+					name: settings.name,
+					items: []
+				}));
+				expect(GenericBuild.prototype.update).not.toHaveBeenCalled();
 			});
 
 		});
 
 		describe('updateAll', function () {
-
-			var update1Response;
-			var update2Response;
-			var eventsSubscription;
-			var state1, state2;
-
-			beforeEach(function () {
-				state1 = createStateForId('Build1');
-				state2 = createStateForId('Build2');
-				service = new CustomBuildService(settings);
-				eventsSubscription = service.events.subscribe(rememberEvent);
-				update1Response = Rx.Observable.returnValue(state1);
-				update2Response = Rx.Observable.returnValue(state2);
-				var callCount = 0;
-				GenericBuild.prototype.update.andCallFake(function () {
-					callCount++;
-					switch (callCount) {
-					case 1:
-						return update1Response;
-					case 2:
-						return update2Response;
-					}
-				});
-			});
-
-			afterEach(function () {
-				eventsSubscription.dispose();
-			});
-
-			it('should set default last build status', function () {
-				var getDefaultState = function (id) {
-					return {
-						id: id,
-						name: id,
-						group: null,
-						webUrl: null,
-						isBroken: false,
-						isRunning: false,
-						isDisabled: false,
-						serviceName: settings.name,
-						serviceIcon: settings.icon
-					};
-				}; 
-
-				expect(service.latestBuildStates['Build1']).toEqual(getDefaultState('Build1'));
-				expect(service.latestBuildStates['Build2']).toEqual(getDefaultState('Build2'));
-			});
 
 			it('should update builds', function () {
 				var result = scheduler.startWithCreate(function () {
@@ -234,230 +173,272 @@ define([
 				});
 
 				expect(result.messages).toHaveEqualElements(
-					onNext(200, state1),
-					onNext(200, state2),
+					onNext(200, buildState1),
+					onNext(200, buildState2),
 					onCompleted(200)
 				);
 				expect(GenericBuild.prototype.update.callCount).toBe(settings.projects.length);
 			});
 
-			it('should remember new build state', function () {
-				service.updateAll().subscribe();
+			it('should extend received build state with last known values as default', function () {
+				delete buildState1.isDisabled;
+				delete buildState1.serviceName;
+				delete buildState1.serviceIcon;
 
-				expect(service.latestBuildStates['Build1']).toEqual(state1);
-				expect(service.latestBuildStates['Build2']).toEqual(state2);
-			});
+				var result = scheduler.startWithCreate(function () {
+					return service.updateAll();
+				});
 
-			it('should extend received build state', function () {
 				var state = createStateForId('Build1');
-				delete state.isDisabled;
-				delete state.serviceName;
-				delete state.serviceIcon;
-
-				update1Response = Rx.Observable.returnValue(state);
-
-				service.updateAll().subscribe();
-
-				var storedState = service.latestBuildStates['Build1'];
-				expect(storedState.isDisabled).toBe(false);
-				expect(storedState.serviceName).toBe(settings.name);
-				expect(storedState.serviceIcon).toBe(settings.icon);
+				var defaultState = createDefaultState('Build1');
+				state.isDisabled = defaultState.isDisabled;
+				state.serviceName = defaultState.serviceName;
+				state.serviceIcon = defaultState.serviceIcon;
+				expect(result.messages).toHaveEqualElements(
+					onNext(200, state),
+					onNext(200, buildState2),
+					onCompleted(200)
+				);
 			});
 
-			it('should extend received build state from previous build if response unknown', function () {
-				service.latestBuildStates['Build1'].isBroken = true;
-				var state = createStateForId('Build1');
-				delete state.isBroken;
 
-				update1Response = Rx.Observable.returnValue(state);
-
-				service.updateAll().subscribe();
-
-				var storedState = service.latestBuildStates['Build1'];
-				expect(storedState.isBroken).toBe(true);
-			});
-
-			it('should push update when no builds selected', function () {
+			it('should complete when no builds selected', function () {
 				settings.projects = [];
 				service = new CustomBuildService(settings);
 
-				var completed = false;
-				service.updateAll().subscribe(function () {
-					completed = true;
+				var result = scheduler.startWithCreate(function () {
+					return service.updateAll();
 				});
 
-				expect(completed).toBe(true);
+				expect(result.messages).toHaveEqualElements(onCompleted(200));
 			});
 
 			it('should not fail if build update failed', function () {
-				var state1 = createStateForId('Build1');
-				var stateError = "Error";
-				update1Response = Rx.Observable.returnValue(state1);
-				update2Response = Rx.Observable.throwException(stateError);
+				update2Response = new Rx.Subject();
 
-				var sequenceFailed = false;
-				var response;
-				service.updateAll().subscribe(function (state) {
-					response = state;
-				}, function () {
-					sequenceFailed = true;
+				scheduler.scheduleAbsolute(300, function () {
+					update2Response.onError("error");
+				});
+				var result = scheduler.startWithCreate(function () {
+					return service.updateAll();
 				});
 
-				expect(sequenceFailed).toBe(false);
-				expect(response.error).toEqual(stateError);
+				expect(result.messages).toHaveEqualElements(
+					onNext(200, buildState1),
+					onNext(300, mixIn(createDefaultState('Build2'), { error : 'error' })),
+					onCompleted(300)
+				);
 			});
 
 			describe('build events', function () {
 
-				var oldState;
-				var newState;
-				var eventsSubscription;
+				var oldState, newState;
 
 				beforeEach(function () {
-					settings.projects = ['Build1'];
-					service = new CustomBuildService(settings);
-					events = [];
-					eventsSubscription = service.events.subscribe(rememberEvent);
-					oldState = service.latestBuildStates['Build1'];
+					update1Response = new Rx.Subject();
+					oldState = createStateForId('Build1');
 					newState = createStateForId('Build1');
-				});
-
-				afterEach(function () {
-					eventsSubscription.dispose();
+					scheduler.scheduleAbsolute(200, function () {
+						service.latestBuildStates['Build1'] = oldState;
+						service.updateAll().subscribe();
+					});
+					scheduler.scheduleAbsolute(500, function () {
+						update1Response.onNext(newState);
+					});
 				});
 
 				it('should push updateFailed if build update failed', function () {
-					var stateError = "Error";
-					update1Response = Rx.Observable.throwException(stateError);
+					scheduler.scheduleAbsolute(500, function () {
+						update1Response.onError("error");
+					});
+					var result = scheduler.startWithCreate(function () {
+						return service.events;
+					});
 
-					service.updateAll().subscribe();
-
-					expect(eventPushed('updateFailed')).toBe(true);
-					expect(getLastEvent('updateFailed').details.error).toEqual(stateError);
+					expect(result.messages).toHaveElements(
+						onNext(500, { eventName: 'updateFailed', details: mixIn(buildState1, { error: 'error'}) })
+					);
 				});
 
 				it('should push buildBroken if build broken', function () {
 					oldState.isBroken = false;
 					newState.isBroken = true;
-					update1Response = Rx.Observable.returnValue(newState);
 
-					service.updateAll().subscribe();
+					var result = scheduler.startWithCreate(function () {
+						return service.events;
+					});
 
-					expect(eventPushed('buildBroken')).toBe(true);
-					expect(getLastEvent('buildBroken').details).toEqual(newState);
+					expect(result.messages).toHaveElements(
+						onNext(500, { eventName: 'buildBroken', details: newState })
+					);
 				});
 
 				it('should not push buildBroken if build already broken', function () {
 					oldState.isBroken = true;
 					newState.isBroken = true;
-					update1Response = Rx.Observable.returnValue(newState);
 
-					service.updateAll().subscribe();
+					var result = scheduler.startWithCreate(function () {
+						return service.events;
+					});
 
-					expect(eventPushed('buildBroken')).toBe(false);
+					expect(result.messages).not.toHaveEvent('buildBroken');
 				});
 
 				it('should push buildFixed if build was fixed', function () {
 					oldState.isBroken = true;
 					newState.isBroken = false;
-					update1Response = Rx.Observable.returnValue(newState);
 
+					var result = scheduler.startWithCreate(function () {
+						return service.events;
+					});
 
-					service.updateAll().subscribe();
-
-					expect(eventPushed('buildFixed')).toBe(true);
-					expect(getLastEvent('buildFixed').details).toEqual(newState);
+					expect(result.messages).toHaveElements(
+						onNext(500, { eventName: 'buildFixed', details: newState })
+					);
 				});
 
 				it('should not push buildFixed if build was not broken', function () {
 					oldState.isBroken = false;
 					newState.isBroken = false;
-					update1Response = Rx.Observable.returnValue(newState);
 
-					service.updateAll().subscribe();
+					var result = scheduler.startWithCreate(function () {
+						return service.events;
+					});
 
-					expect(eventPushed('buildFixed')).toBe(false);
+					expect(result.messages).not.toHaveEvent('buildFixed');
 				});
 
 				it('should push buildStarted if build started', function () {
 					oldState.isRunning = false;
 					newState.isRunning = true;
-					update1Response = Rx.Observable.returnValue(newState);
 
-					service.updateAll().subscribe();
+					var result = scheduler.startWithCreate(function () {
+						return service.events;
+					});
 
-					expect(eventPushed('buildStarted')).toBe(true);
-					expect(getLastEvent('buildStarted').details).toEqual(newState);
+					expect(result.messages).toHaveElements(
+						onNext(500, { eventName: 'buildStarted', details: newState })
+					);
 				});
 
 				it('should not push buildStarted if build already running', function () {
 					oldState.isRunning = true;
 					newState.isRunning = true;
-					update1Response = Rx.Observable.returnValue(newState);
 
-					service.updateAll().subscribe();
+					var result = scheduler.startWithCreate(function () {
+						return service.events;
+					});
 
-					expect(eventPushed('buildStarted')).toBe(false);
+					expect(result.messages).not.toHaveEvent('buildStarted');
 				});
 
 				it('should push buildFinished if build finished', function () {
 					oldState.isRunning = true;
 					newState.isRunning = false;
-					update1Response = Rx.Observable.returnValue(newState);
 
-					service.updateAll().subscribe();
+					var result = scheduler.startWithCreate(function () {
+						return service.events;
+					});
 
-					expect(eventPushed('buildFinished')).toBe(true);
-					expect(getLastEvent('buildFinished').details).toEqual(newState);
+					expect(result.messages).toHaveElements(
+						onNext(500, { eventName: 'buildFinished', details: newState })
+					);
 				});
 
 				it('should not push buildFinished if build was not running', function () {
 					oldState.isRunning = false;
 					newState.isRunning = false;
-					update1Response = Rx.Observable.returnValue(newState);
 
-					service.updateAll().subscribe();
+					var result = scheduler.startWithCreate(function () {
+						return service.events;
+					});
 
-					expect(eventPushed('buildFinished')).toBe(false);
+					expect(result.messages).not.toHaveEvent('buildFinished');
 				});
 			});
 		});
 
 		describe('start/stop', function () {
 
-			var eventsSubscription;
-
-			beforeEach(function () {
-				service = new CustomBuildService(settings);
-				eventsSubscription = service.events.subscribe(rememberEvent);
-				var states = [createStateForId('Build1'), createStateForId('Build2')];
-				spyOn(service, 'updateAll').andReturn(Rx.Observable.fromArray(states));
-			});
-
 			afterEach(function () {
-				eventsSubscription.dispose();
 				service.stop();
 			});
 
-			it('should not push serviceStopped if not started', function () {
-				service.stop();
+			it('should fail if updateInterval not defined', function () {
+				delete settings.updateInterval;
 
-				expect(eventPushed('serviceStopped')).toBe(false);
+				expect(function () {
+					service.start();
+				}).toThrow({name: 'ArgumentInvalid', message: 'updateInterval not defined'});
 			});
 
 			it('should push serviceStarted on first finished update', function () {
-				service.start().subscribe();
+				scheduler.scheduleAbsolute(500, function () {
+					service.start().subscribe();
+				});
+				var result = scheduler.startWithCreate(function () {
+					return service.events;
+				});
 
-				expect(eventPushed('serviceStarted')).toBe(true);
-				expect(getLastEvent('serviceStarted').source).toEqual(settings.name);
-				expect(getLastEvent('serviceStarted').details.length).toEqual(2);
+				expect(result.messages).toHaveEqualElements(
+					onNext(501, {
+						eventName: 'serviceStarted',
+						source: settings.name,
+						details: [buildState1, buildState2]
+					}
+				));
 			});
 
-			it('should start once until stopped', function () {
-				service.start().subscribe();
-				service.start().subscribe();
+			it('should start only once', function () {
+				scheduler.scheduleAbsolute(300, function () {
+					service.start().subscribe();
+				});
+				scheduler.scheduleAbsolute(500, function () {
+					service.start().subscribe();
+				});
+				var result = scheduler.startWithCreate(function () {
+					return service.events;
+				});
 
-				expect(getEvents('serviceStarted').length).toBe(1);
+				expect(result.messages).toHaveEqualElements(
+					onNext(301, {
+						eventName: 'serviceStarted',
+						source: settings.name,
+						details: [buildState1, buildState2]
+					})
+				);
+			});
+
+			it('should push serviceStopped on stop', function () {
+				scheduler.scheduleAbsolute(300, function () {
+					service.start().subscribe();
+				});
+				scheduler.scheduleAbsolute(500, function () {
+					service.stop();
+				});
+				var result = scheduler.startWithCreate(function () {
+					return service.events;
+				});
+
+				expect(result.messages).toHaveEqualElements(
+					onNext(301, {
+						eventName: 'serviceStarted',
+						source: settings.name,
+						details: [buildState1, buildState2]
+					}),
+					onNext(500, { eventName: 'serviceStopped', source: settings.name })
+				);
+			});
+
+			it('should not push serviceStopped if not started', function () {
+				scheduler.scheduleAbsolute(500, function () {
+					service.stop();
+				});
+				var result = scheduler.startWithCreate(function () {
+					return service.events;
+				});
+
+				expect(result.messages).not.toHaveEvent('serviceStopped');
 			});
 
 		});

@@ -3,10 +3,12 @@ define([
 	'rx',
 	'main/serviceLoader',
 	'mout/object/mixIn',
+	'mout/object/equals',
+	'mout/object/deepMatches',
 	'rxHelpers',
 	'rx.binding'
 ],
-function (controller, Rx, serviceLoader, mixIn) {
+function (controller, Rx, serviceLoader, mixIn, equals, deepMatches) {
 
 	'use strict';
 	
@@ -199,10 +201,10 @@ function (controller, Rx, serviceLoader, mixIn) {
 					controller.start([settings1, settings2]);
 				});
 				scheduler.scheduleAbsolute(300, function () {
-					service2.activeProjects.onNext({ name: 'service 2', items: [{ id: 'id1'}] });
+					service1.activeProjects.onNext({ name: 'service 1', items: [{ id: 'id1'}] });
 				});
 				scheduler.scheduleAbsolute(400, function () {
-					service1.activeProjects.onNext({ name: 'service 1', items: [{ id: 'id2'}] });
+					service2.activeProjects.onNext({ name: 'service 2', items: [{ id: 'id2'}] });
 				});
 				var result = scheduler.startWithCreate(function () {
 					return controller.activeProjects;
@@ -211,7 +213,7 @@ function (controller, Rx, serviceLoader, mixIn) {
 				expect(result.messages).toHaveEqualElements(
 					onNext(200, [{ name: 'service 1', items: [] }, { name: 'service 2', items: [] }]),
 					onNext(300, [{ name: 'service 1', items: [{ id: 'id1'}] }, { name: 'service 2', items: [] }]),
-					onNext(400, [{ name: 'service 1', items: [{ id: 'id1'}] }, { name: 'service 2', items: [{ id: 'id1'}] }])
+					onNext(400, [{ name: 'service 1', items: [{ id: 'id1'}] }, { name: 'service 2', items: [{ id: 'id2'}] }])
 				);
 			});
 

@@ -8,7 +8,8 @@ define([
 ], function (Rx, $, values, mixIn) {
 	'use strict';
 
-	function BuildServiceBase(settings) {
+	function BuildServiceBase(settings, scheduler) {
+		this.scheduler = scheduler || Rx.Scheduler.timeout;
 		this.Build = null;
 		this.settings = settings;
 		this.updateAll = updateAll;
@@ -24,7 +25,6 @@ define([
 	}
 
 	var getInitialStates = function (settings) {
-
 		var createDefaultState = function (id, settings) {
 			return {
 				id: id,
@@ -46,9 +46,7 @@ define([
 		return states;
 	};
 
-
 	var updateAll = function () {
-
 		var initializeBuilds = function () {
 			self.settings.projects.forEach(function (buildId) {
 				if (!self.builds[buildId]) {
@@ -71,18 +69,11 @@ define([
 						});
 					});
 			}).select(function (state) { return self.mixInMissingState(state); })
-			.doAction(function (state) { return self.processBuildUpdate(state); })
-			.defaultIfEmpty([]);
+			.doAction(function (state) { return self.processBuildUpdate(state); });
 	};
 
 	var mixInMissingState = function (state) {
-		var defaults = {
-			isBroken: this.latestBuildStates[state.id].isBroken,
-			isDisabled: false,
-			serviceName: this.settings.name,
-			serviceIcon: this.settings.icon
-		};
-		return mixIn(defaults, state);
+		return mixIn({}, this.latestBuildStates[state.id], state);
 	};
 
 	var processBuildUpdate = function (newState) {
@@ -107,20 +98,20 @@ define([
 
 
 	var start = function () {
+		if (!this.settings.updateInterval) {
+			throw { name: 'ArgumentInvalid', message: 'updateInterval not defined'};
+		}
 		if (this.poolingSubscription !== null) { 
 			return Rx.Observable.empty();
 		}
 		var self = this;
 		var updateInterval = this.settings.updateInterval * 1000;
 		this.eventsSubscription = this.events.subscribe(function (event) {
-			var state = createState(self);
-			self.activeProjects.onNext(state);
+			self.activeProjects.onNext(createState(self));
 		});
-		this.poolingSubscription = Rx.Observable.interval(updateInterval)
-			.selectMany(function () { return self.updateAll(); })
-			.subscribe();
-		return self.updateAll()
-			.toArray()
+		var updates = new Rx.Subject();
+		var initialize = updates
+			.take(1)
 			.doAction(function (states) {
 				self.events.onNext({
 					eventName: 'serviceStarted',
@@ -128,13 +119,19 @@ define([
 					details: states
 				});
 			});
+		this.poolingSubscription = Rx.Observable.timer(0, updateInterval, this.scheduler)
+			.selectMany(function () {
+				return self.updateAll().toArray();
+			})
+			.subscribe(updates);
+		return initialize;
 	};
 
 	var stop = function () {
 		if (this.poolingSubscription && !this.poolingSubscription.isStopped) {
 			this.poolingSubscription.dispose();
 			this.poolingSubscription = null;
-			this.events.onNext({ eventName: 'serviceStopped' });
+			this.events.onNext({ eventName: 'serviceStopped', source: this.settings.name });
 		}
 		if (this.eventsSubscription) {
 			this.eventsSubscription.dispose();

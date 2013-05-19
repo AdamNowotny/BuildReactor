@@ -95,7 +95,6 @@ define([
 				return service.activeProjects;
 			}), function () {
 				var states = Array.prototype.slice.call(arguments, 0);
-				console.log("reduced", states);
 				return states;
 			}).subscribe(activeProjectsSubject);
 	});
@@ -105,8 +104,7 @@ define([
 			startSubscription.dispose();
 		}
 		settingsSubject.onNext(settingsList);
-		startSubscription = servicesSubject.subscribe(function (services) {
-		});
+		startSubscription = servicesSubject.subscribe();
 	};
 
 	return {
