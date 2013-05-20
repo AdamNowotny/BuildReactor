@@ -1,3 +1,9 @@
+@import url("popup.css");
+
 .service-group {
 	text-align: left !important;
+}
+
+.label .error-message {
+	display: inline;
 }

@@ -67,11 +67,19 @@ li.service-item {
 }
 
 	.service-item.disabled {
-		background-color: grey;
+		background-color: #888;
 	}
 
-		.service-item.disabled .label {
-			margin-top: 1px;
+		.service-item.disabled.broken {
+			background-color: #888;
+		}
+
+	.service-item.offline {
+		background-color: #565;
+	}
+
+		.service-item.offline.broken {
+			background-color: #844;
 		}
 
 	.service-item.broken {
@@ -80,6 +88,10 @@ li.service-item {
 
 	.service-item-name {
 		margin-right: 10px;
+	}
+
+	.service-item .label {
+		margin-top: 1px;
 	}
 
 	.service-item i.icon-spinner {
@@ -100,4 +112,8 @@ li.service-item {
 	margin-top: 5px;
 	margin-bottom: -5px;
 	text-align: right;
+}
+
+.label .error-message {
+	display: none;
 }

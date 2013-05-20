@@ -50,6 +50,7 @@ define([
 		return messages.activeProjects.subscribe(function (services) {
 			if (services) {
 				show(services);
+				$('.label').tooltip();
 			}
 		});
 	}

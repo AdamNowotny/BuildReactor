@@ -8,55 +8,56 @@ define([
 
 	describe('popupController', function () {
 
-		var state = [
-			{
-				name: 'service 1',
-				items: [
-					{
-						name: 'build name 1',
-						group: 'build group 1',
-						isBroken: false,
-						webUrl: 'http://example1.com/',
-						isRunning: true
-					},
-					{
-						name: 'build name 2',
-						group: 'build group 2',
-						isBroken: true,
-						webUrl: 'http://example2.com/',
-						isRunning: false
-					},
-					{
-						name: 'build with no group',
-						group: '',
-						isBroken: false,
-						webUrl: 'http://example3.com/',
-						isRunning: false
-					},
-					{
-						name: 'build name 4',
-						group: 'build group 2',
-						webUrl: '',
-						isRunning: true
-					},
-					{
-						name: 'disabled build',
-						group: 'other group',
-						isBroken: false,
-						isDisabled: true,
-						webUrl: 'http://example3.com/',
-						isRunning: false
-					},
-				]
-			},
-			{
-				name: 'service 2',
-				items: []
-			}
-		];
 		var subscription;
+		var state;
 
 		beforeEach(function () {
+			state = [
+				{
+					name: 'service 1',
+					items: [
+						{
+							name: 'build name 1',
+							group: 'build group 1',
+							isBroken: false,
+							webUrl: 'http://example1.com/',
+							isRunning: true
+						},
+						{
+							name: 'build name 2',
+							group: 'build group 2',
+							isBroken: true,
+							webUrl: 'http://example2.com/',
+							isRunning: false
+						},
+						{
+							name: 'build with no group',
+							group: '',
+							isBroken: false,
+							webUrl: 'http://example3.com/',
+							isRunning: false
+						},
+						{
+							name: 'build name 4',
+							group: 'build group 2',
+							webUrl: '',
+							isRunning: true
+						},
+						{
+							name: 'disabled build',
+							group: 'other group',
+							isBroken: false,
+							isDisabled: true,
+							webUrl: 'http://example3.com/',
+							isRunning: false
+						},
+					]
+				},
+				{
+					name: 'service 2',
+					items: []
+				}
+			];
 			jasmine.getFixtures().set('<div class="service-info-container">content</div>');
 			subscription = controller();
 		});
@@ -129,6 +130,24 @@ define([
 
 			expect($('.service-item.disabled').length).toBe(1);
 			expect($('.service-item.disabled .label')).toBeVisible();
+		});
+
+		it('should indicate offline builds', function () {
+			state[0].items[0].error = { message: 'Ajax error', httpStatus: 500 };
+
+			messages.activeProjects.onNext(state);
+
+			expect($('.service-item.offline').length).toBe(1);
+			expect($('.service-item.offline .label')).toBeVisible();
+			expect($('.service-item.offline .label')).toHaveAttr('data-original-title', 'Ajax error (500)');
+		});
+
+		it('should have tooltip for offline builds with no http status', function () {
+			state[0].items[0].error = { message: 'Ajax error' };
+
+			messages.activeProjects.onNext(state);
+
+			expect($('.service-item.offline .label')).toHaveAttr('data-original-title', 'Ajax error');
 		});
 
 		it('should not show failed count for disabled builds', function () {

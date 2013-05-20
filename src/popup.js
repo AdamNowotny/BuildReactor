@@ -34,7 +34,7 @@ require([
 
 	'use strict';
 	
+	popupController();
 	messages.init();
 	$('.navbar a').tooltip({ placement: 'bottom' });
-	popupController();
 });

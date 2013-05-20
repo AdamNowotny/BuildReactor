@@ -19,10 +19,13 @@
 			{{#if name}}<div class="service-group">{{name}}</div>{{/if}}
 			<ul class="service-item-list">
 				{{#items}}
-				<li class="service-item{{#if isBroken}} broken{{/if}}{{#if isRunning}} building{{/if}}{{#if isDisabled}} disabled{{/if}}">
+				<li class="service-item{{#if isBroken}} broken{{/if}}{{#if isRunning}} building{{/if}}{{#if isDisabled}} disabled{{/if}}{{#if error}} offline{{/if}}">
 					<a href="{{webUrl}}" target="_blank">
 						<span class="service-item-name pull-left">{{name}}</span>
 						{{#if isDisabled}}<span class="label label-inverse pull-right">Disabled</span>{{/if}}
+						{{#if error}}
+							<span class="label label-inverse pull-right" title="{{ error.message }}{{#if error.httpStatus}} ({{ error.httpStatus }}){{/if}}">Offline <span class="error-message">({{ error.message }})</span></span>
+						{{/if}}
 						<i class="icon-spinner icon-spin icon-large pull-right"></i>
 					</a>
 				</li>
