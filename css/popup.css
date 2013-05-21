@@ -91,7 +91,7 @@ li.service-item {
 	}
 
 	.service-item .label {
-		margin-top: 1px;
+		margin: 1px;
 	}
 
 	.service-item i.icon-spinner {
