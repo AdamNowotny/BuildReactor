@@ -73,7 +73,18 @@ define([
 	};
 
 	var mixInMissingState = function (state) {
-		return mixIn({}, this.latestBuildStates[state.id], state);
+		var previous = this.latestBuildStates[state.id];
+		var defaults = {
+			name: previous.name,
+			group: previous.group,
+			webUrl: previous.webUrl,
+			isBroken: previous.isBroken,
+			isRunning: previous.isRunning,
+			isDisabled: previous.isDisabled,
+			serviceName: this.settings.name,
+			serviceIcon: this.settings.icon
+		};
+		return mixIn(defaults, state);
 	};
 
 	var processBuildUpdate = function (newState) {
@@ -81,6 +92,9 @@ define([
 			this.events.onNext({ eventName: 'updateFailed', details: newState });
 		}
 		var lastState = this.latestBuildStates[newState.id];
+		if (lastState.error && !newState.error) {
+			this.events.onNext({ eventName: 'buildOnline', details: newState });
+		}
 		if (!lastState.isBroken && newState.isBroken) {
 			this.events.onNext({ eventName: 'buildBroken', details: newState });
 		}

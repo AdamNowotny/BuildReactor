@@ -117,20 +117,6 @@ define([
 				}));
 			});
 
-			it('should not push new state if service stopped', function () {
-				service.start().subscribe();
-				service.stop();
-
-				scheduler.scheduleAbsolute(300, function () {
-					service.events.onNext({ eventName: 'someEvent triggering state update'});
-				});
-				var result = scheduler.startWithCreate(function () {
-					return service.activeProjects;
-				});
-
-				expect(result.messages).not.toHaveElementsAtTimes(300);
-			});
-
 			it('should push updated build states every time an event is published', function () {
 				service.start().subscribe();
 
@@ -145,6 +131,20 @@ define([
 					name: settings.name,
 					items: [buildState1, buildState2]
 				}));
+			});
+
+			it('should not push new state if service stopped', function () {
+				service.start().subscribe();
+				service.stop();
+
+				scheduler.scheduleAbsolute(300, function () {
+					service.events.onNext({ eventName: 'someEvent triggering state update'});
+				});
+				var result = scheduler.startWithCreate(function () {
+					return service.activeProjects;
+				});
+
+				expect(result.messages).not.toHaveElementsAtTimes(300);
 			});
 
 			it('should return empty if no projects monitored', function () {
@@ -257,6 +257,18 @@ define([
 
 					expect(result.messages).toHaveElements(
 						onNext(500, { eventName: 'updateFailed', details: mixIn(buildState1, { error: 'error'}) })
+					);
+				});
+
+				it('should push buildOnline if build update succeeds after failure', function () {
+					oldState.error = { message: 'Ajax error', httpStatus: 500 };
+
+					var result = scheduler.startWithCreate(function () {
+						return service.events;
+					});
+
+					expect(result.messages).toHaveElements(
+						onNext(500, { eventName: 'buildOnline', details: newState })
 					);
 				});
 
