@@ -247,7 +247,7 @@ define([
 					});
 				});
 
-				it('should push updateFailed if build update failed', function () {
+				it('should push buildOffline if build update failed', function () {
 					scheduler.scheduleAbsolute(500, function () {
 						update1Response.onError("error");
 					});
@@ -256,7 +256,7 @@ define([
 					});
 
 					expect(result.messages).toHaveElements(
-						onNext(500, { eventName: 'updateFailed', details: mixIn(buildState1, { error: 'error'}) })
+						onNext(500, { eventName: 'buildOffline', details: mixIn(buildState1, { error: 'error'}) })
 					);
 				});
 

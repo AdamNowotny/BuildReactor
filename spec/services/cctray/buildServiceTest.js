@@ -282,7 +282,7 @@ function (BuildService, request, Rx, $, mixIn, projectsXmlText) {
 				eventsSubscription.dispose();
 			});
 
-			it('should push updateFailed if build update failed', function () {
+			it('should push buildOffline if build update failed', function () {
 				var stateError = "Error";
 				request.xml.andCallFake(function (options) {
 					return Rx.Observable.throwException(stateError);
@@ -290,8 +290,8 @@ function (BuildService, request, Rx, $, mixIn, projectsXmlText) {
 
 				service.updateAll().subscribe();
 
-				expect(eventPushed('updateFailed')).toBe(true);
-				expect(getLastEvent('updateFailed').details.error).toEqual(stateError);
+				expect(eventPushed('buildOffline')).toBe(true);
+				expect(getLastEvent('buildOffline').details.error).toEqual(stateError);
 			});
 
 			it('should push buildBroken if build broken', function () {

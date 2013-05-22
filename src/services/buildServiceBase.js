@@ -89,7 +89,7 @@ define([
 
 	var processBuildUpdate = function (newState) {
 		if (newState.error) {
-			this.events.onNext({ eventName: 'updateFailed', details: newState });
+			this.events.onNext({ eventName: 'buildOffline', details: newState });
 		}
 		var lastState = this.latestBuildStates[newState.id];
 		if (lastState.error && !newState.error) {
