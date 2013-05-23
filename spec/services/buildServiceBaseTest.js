@@ -32,13 +32,12 @@ define([
 				projects: [ 'Build1', 'Build2'],
 				updateInterval: 1
 			};
-			spyOn(GenericBuild.prototype, 'update');
 			buildState1 = createStateForId('Build1');
 			buildState2 = createStateForId('Build2');
 			update1Response = Rx.Observable.returnValue(buildState1);
 			update2Response = Rx.Observable.returnValue(buildState2);
 			var callCount = 0;
-			GenericBuild.prototype.update.andCallFake(function () {
+			spyOn(GenericBuild.prototype, 'update').andCallFake(function () {
 				callCount++;
 				switch (callCount) {
 				case 1:
@@ -163,6 +162,30 @@ define([
 				expect(GenericBuild.prototype.update).not.toHaveBeenCalled();
 			});
 
+			it('should push latest state on update', function () {
+				update1Response = new Rx.Subject();
+				update2Response = new Rx.Subject();
+				buildState1.isRunning = true;
+				service.start().subscribe();
+
+				scheduler.scheduleAbsolute(300, function () {
+					update1Response.onNext(buildState1);
+					update1Response.onCompleted();
+				});
+				scheduler.scheduleAbsolute(400, function () {
+					update2Response.onNext(buildState2);
+					update2Response.onCompleted();
+				});
+				var result = scheduler.startWithCreate(function () {
+					return service.activeProjects;
+				});
+
+				expect(result.messages).toHaveElements(
+					onNext(300, { name: settings.name, items: [buildState1, createDefaultState('Build2')] }),
+					onNext(400, { name: settings.name, items: [buildState1, buildState2] })
+				);
+			});
+
 		});
 
 		describe('updateAll', function () {
@@ -200,7 +223,6 @@ define([
 					onCompleted(200)
 				);
 			});
-
 
 			it('should complete when no builds selected', function () {
 				settings.projects = [];

@@ -47,19 +47,10 @@ define([
 	};
 
 	var updateAll = function () {
-		var initializeBuilds = function () {
-			self.settings.projects.forEach(function (buildId) {
-				if (!self.builds[buildId]) {
-					self.builds[buildId] = new self.Build(buildId, self.settings);
-				}
-			});
-		};
-
 		var self = this;
-		initializeBuilds();
 		return Rx.Observable.fromArray(this.settings.projects)
 			.select(function getBuildById(buildId) {
-				return self.builds[buildId];
+				return new self.Build(buildId, self.settings);
 			}).selectMany(function updateBuild(build) {
 				return build.update()
 					.catchException(function (ex) { 
@@ -88,10 +79,11 @@ define([
 	};
 
 	var processBuildUpdate = function (newState) {
+		var lastState = this.latestBuildStates[newState.id];
+		this.latestBuildStates[newState.id] = newState;
 		if (newState.error) {
 			this.events.onNext({ eventName: 'buildOffline', details: newState });
 		}
-		var lastState = this.latestBuildStates[newState.id];
 		if (lastState.error && !newState.error) {
 			this.events.onNext({ eventName: 'buildOnline', details: newState });
 		}
@@ -107,7 +99,6 @@ define([
 		if (lastState.isRunning && !newState.isRunning) {
 			this.events.onNext({ eventName: 'buildFinished', details: newState });
 		}
-		this.latestBuildStates[newState.id] = newState;
 	};
 
 
