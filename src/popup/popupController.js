@@ -20,7 +20,7 @@ define([
 			return state.map(function (serviceState) {
 				sortBy('group', serviceState.items);
 				var failedCount = serviceState.items.filter(function (item) {
-					return item.isBroken && !item.isDisabled;
+					return item.isBroken && !item.isDisabled && !item.error;
 				}).length;
 				return {
 					name: serviceState.name,

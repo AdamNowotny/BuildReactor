@@ -165,6 +165,21 @@ define([
 			expect($('.failed-count')).not.toBeVisible();
 		});
 
+		it('should not show failed count for offline builds', function () {
+			var state = [{
+				name: 'service 1',
+				items: [{
+						name: 'build name 1',
+						isBroken: true,
+						error: {}
+					}]
+				}];
+			messages.activeProjects.onNext(state);
+
+			expect($('.service-item.broken').length).toBe(1);
+			expect($('.failed-count')).not.toBeVisible();
+		});
+
 		it('should show if building', function () {
 			messages.activeProjects.onNext(state);
 
