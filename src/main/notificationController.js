@@ -65,7 +65,7 @@ define([
 			});
 		}
 
-		var scheduler = options.scheduler || Rx.Scheduler.currentThread;
+		var scheduler = options.scheduler || Rx.Scheduler.timeout;
 		var eventHandlers = {
 			'servicesInitializing': function () {
 				reloading = true;
