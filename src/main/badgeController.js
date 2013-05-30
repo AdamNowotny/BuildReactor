@@ -11,37 +11,38 @@ define([
 	};
 
 	function badgeController() {
-
-		function onBrokenBuild() {
-			failedBuildsCount++;
-			updateBadge(failedBuildsCount, servicesStarted);
-		}
-
-		function onFixedBuild() {
-			failedBuildsCount--;
-			updateBadge(failedBuildsCount, servicesStarted);
-		}
-
-		function onServicesStarted() {
-			servicesStarted = true;
-			updateBadge(failedBuildsCount, servicesStarted);
-		}
-		
-		function onReset() {
-			servicesStarted = false;
-			failedBuildsCount = 0;
-			updateBadge(failedBuildsCount, servicesStarted);
-		}
-
 		var servicesStarted = false;
 		var failedBuildsCount = 0;
+		var offlineBuildsCount = 0;
 		var eventHandlers = {
-			'servicesInitializing': onReset,
-			'servicesInitialized': onServicesStarted,
-			'buildBroken': onBrokenBuild,
-			'buildFixed': onFixedBuild
+			'servicesInitializing': function () {
+				servicesStarted = false;
+				failedBuildsCount = 0;
+				offlineBuildsCount = 0;
+				updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
+			},
+			'servicesInitialized': function () {
+				servicesStarted = true;
+				updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
+			},
+			'buildBroken': function () {
+				failedBuildsCount++;
+				updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
+			},
+			'buildFixed': function () {
+				failedBuildsCount--;
+				updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
+			},
+			'buildOffline': function () {
+				offlineBuildsCount++;
+				updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
+			},
+			'buildOnline': function () {
+				offlineBuildsCount--;
+				updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
+			}
 		};
-		updateBadge(failedBuildsCount, servicesStarted);
+		updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
 		return serviceController.events.doAction(function (event) {
 			var handler = eventHandlers[event.eventName];
 			if (handler) {
@@ -50,46 +51,23 @@ define([
 		}).subscribe();
 	}
 
-	function updateBadge(failedBuildsCount, initialized) {
+	function updateBadge(failedBuildsCount, initialized, offlineBuildsCount) {
 	
-		function showBuildFailedBadge() {
-			var badgeInfo = {
-				text: failedBuildsCount.toString(),
-				color: colors.red
-			};
-			setBadge(badgeInfo);
+		function setBadge(text, color) {
+			chrome.browserAction.setBadgeText({ text: text });
+			chrome.browserAction.setBadgeBackgroundColor({ color: color });
 		}
 
-		function showBuildFixedBadge() {
-			var badgeInfo = {
-				text: '',
-				color: colors.green
-			};
-			setBadge(badgeInfo);
+		var color = colors.green;
+		var text = '';
+		if (!initialized || offlineBuildsCount) {
+			color = colors.grey;
+			text = failedBuildsCount ? failedBuildsCount.toString() : ' ';			
+		} else if (failedBuildsCount) {
+			color = colors.red;
+			text = failedBuildsCount.toString();
 		}
-
-		function showStateUnknownBadge() {
-			var badgeInfo = {
-				text: ' ',
-				color: colors.grey
-			};
-			setBadge(badgeInfo);
-		}
-
-		function setBadge(badgeInfo) {
-			chrome.browserAction.setBadgeText({ text: badgeInfo.text });
-			chrome.browserAction.setBadgeBackgroundColor({ color: badgeInfo.color });
-		}
-
-		if (failedBuildsCount !== 0) {
-			showBuildFailedBadge();
-		} else {
-			if (initialized) {
-				showBuildFixedBadge();
-			} else {
-				showStateUnknownBadge();
-			}
-		}
+		setBadge(text, color);
 	}
 
 	return badgeController;
