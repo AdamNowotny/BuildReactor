@@ -29,12 +29,14 @@ require([
 	'jquery',
 	'popup/messages',
 	'popup/popupController',
+	'popup/popupLogger',
 	'bootstrap',
-], function (rxjs, $, messages, popupController) {
+], function (rxjs, $, messages, popupController, popupLogger) {
 
 	'use strict';
 	
 	popupController();
+	popupLogger();
 	messages.init();
 	$('.navbar a').tooltip({ placement: 'bottom' });
 });
