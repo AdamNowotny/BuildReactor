@@ -42,7 +42,8 @@ function (BuildService, request, Rx, $, mixIn, projectsXmlText) {
 				group: 'CruiseControl.NET',
 				webUrl: 'http://build.nauck-it.de/server/build.nauck-it.de/project/CruiseControl.NET/ViewProjectReport.aspx',
 				isBroken: false,
-				isRunning: false
+				isRunning: false,
+				tags: []
 			};
 		}
 
@@ -371,6 +372,7 @@ function (BuildService, request, Rx, $, mixIn, projectsXmlText) {
 
 				expect(eventPushed('buildFinished')).toBe(false);
 			});
+
 		});
 
 		describe('availableBuilds', function () {

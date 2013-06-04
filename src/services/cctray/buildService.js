@@ -77,10 +77,15 @@ define([
 					group: d.group,
 					webUrl: d.webUrl,
 					isRunning: d.activity === 'Building',
+					tags: []
 				};
 				if (d.status in { 'Success': 1, 'Failure': 1, 'Exception': 1 }) {
 					state.isBroken = d.status in { 'Failure': 1, 'Exception': 1 };
+				} else {
+					state.tags.push({ name : 'Unknown', description : 'Status [' + d.status + '] is unknown'});
+					delete state.isBroken;
 				}
+
 				return state;
 			}).toArray();
 	};

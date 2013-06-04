@@ -30,6 +30,7 @@ define([
 			if (!(lastCompletedResponse.result in
 					{ 'SUCCESS': 1, 'FAILURE': 1, 'UNSTABLE': 1, 'ABORTED': 1, 'NOT_BUILT': 1 })) {
 				state.tags.push({ name : 'Unknown', description : 'Result [' + lastCompletedResponse.result + '] is unknown'});
+				delete state.isBroken;
 			}
 			return state;
 		});

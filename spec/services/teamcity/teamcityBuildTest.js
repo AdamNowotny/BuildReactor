@@ -99,11 +99,12 @@ define([
 			expect(request.json).toHaveBeenCalled();
 		});
 
-		it('should set error if status unknown', function () {
+		it('should tag Unknown if status unknown', function () {
 			buildJson.status = 'unknown_status';
 
 			build.update().subscribe(function (state) {
-				expect(state.error).toBe('Status [unknown_status] is unknown');
+				expect(state.tags).toContain({name: 'Unknown', description: 'Status [unknown_status] is unknown'});
+				expect(state.isBroken).not.toBeDefined();
 			});
 
 			expect(request.json).toHaveBeenCalled();

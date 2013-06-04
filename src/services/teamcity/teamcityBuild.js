@@ -20,10 +20,12 @@ define([
 				group: buildResponse.buildType.projectName,
 				webUrl: buildResponse.webUrl,
 				isBroken: buildResponse.status in { 'FAILURE': 1, 'ERROR': 1 },
-				isRunning: buildRunningResponse.running
+				isRunning: buildRunningResponse.running,
+				tags: []
 			};
 			if (!(buildResponse.status in { 'SUCCESS': 1, 'FAILURE': 1, 'ERROR': 1 })) {
-				state.error = 'Status [' + buildResponse.status + '] is unknown';
+				state.tags.push({ name : 'Unknown', description : 'Status [' + buildResponse.status + '] is unknown'});
+				delete state.isBroken;
 			}
 			return state;
 		});

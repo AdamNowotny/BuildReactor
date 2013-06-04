@@ -23,10 +23,12 @@ define([
 				isBroken: resultResponse.state === 'Failed',
 				isRunning: planResponse.isBuilding,
 				isWaiting: planResponse.isActive,
-				isDisabled: !planResponse.enabled
+				isDisabled: !planResponse.enabled,
+				tags: []
 			};
 			if (!(resultResponse.state in { 'Successful': 1, 'Failed': 1})) {
-				state.error = 'State [' + resultResponse.state + '] is unknown';
+				state.tags.push({ name : 'Unknown', description : 'State [' + resultResponse.state + '] is unknown'});
+				delete state.isBroken;
 			}
 			return state;
 		});
