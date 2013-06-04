@@ -104,11 +104,12 @@ define([
 			expect(request.json).toHaveBeenCalled();
 		});
 
-		it('should set error if status unknown', function () {
+		it('should set isBroken and Unknown tag if status unknown', function () {
 			lastCompletedBuildJson.result = 'unknown_status';
 
 			build.update().subscribe(function (state) {
-				expect(state.error).toBe('Result [unknown_status] is unknown');
+				expect(state.tags).toContain({name: 'Unknown', description: 'Result [unknown_status] is unknown'});
+				expect(state.isBroken).toBe(false);
 			});
 
 			expect(request.json).toHaveBeenCalled();
@@ -141,6 +142,16 @@ define([
 
 			build.update().subscribe(function (state) {
 				expect(state.isDisabled).toBe(true);
+			});
+
+			expect(request.json).toHaveBeenCalled();
+		});
+
+		it('should set Unstable tag if build unstable', function () {
+			lastCompletedBuildJson.result = 'UNSTABLE';
+
+			build.update().subscribe(function (state) {
+				expect(state.tags).toContain({ name: 'Unstable', type: 'warning' });
 			});
 
 			expect(request.json).toHaveBeenCalled();

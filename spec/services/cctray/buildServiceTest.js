@@ -135,7 +135,8 @@ function (BuildService, request, Rx, $, mixIn, projectsXmlText) {
 						isRunning: false,
 						isDisabled: false,
 						serviceName: settings.name,
-						serviceIcon: settings.icon
+						serviceIcon: settings.icon,
+						tags: []
 					};
 				}; 
 

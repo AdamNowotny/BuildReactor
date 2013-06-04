@@ -84,7 +84,8 @@ define([
 				isRunning: false,
 				isDisabled: false,
 				serviceName: settings.name,
-				serviceIcon: settings.icon
+				serviceIcon: settings.icon,
+				tags: []
 			};
 		}; 
 

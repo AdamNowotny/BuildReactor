@@ -21,14 +21,16 @@ define([
 							group: 'build group 1',
 							isBroken: false,
 							webUrl: 'http://example1.com/',
-							isRunning: true
+							isRunning: true,
+							tags: [{ name: 'Offline', description: 'Ajax error (500)' }]
 						},
 						{
 							name: 'build name 2',
 							group: 'build group 2',
 							isBroken: true,
 							webUrl: 'http://example2.com/',
-							isRunning: false
+							isRunning: false,
+							tags: [{ name: 'Unstable', type: 'warning' }]
 						},
 						{
 							name: 'build with no group',
@@ -147,7 +149,51 @@ define([
 
 			messages.activeProjects.onNext(state);
 
-			expect($('.service-item.offline .label')).toHaveAttr('data-original-title', 'Ajax error');
+			expect($('.service-item.offline .label')).toHaveAttr('data-original-title', 'Ajax error (500)');
+		});
+
+		describe('tags', function () {
+
+			it('should mark item with tags', function () {
+				state[0].items[0].tags = [{ name: 'unstable' }, { name: 'broken' }];
+
+				messages.activeProjects.onNext(state);
+
+				expect($('.service-item.unstable.broken').length).toBe(1);
+			});
+
+			it('should show label for each tag', function () {
+				state[0].items[0].tags = [{ name: 'unstable' }, { name: 'broken' }];
+
+				messages.activeProjects.onNext(state);
+
+				expect($('.service-item.unstable.broken .label').length).toBe(2);
+			});
+
+			it('should show grey label by default', function () {
+				state[0].items[0].tags = [{ name: 'unstable' }];
+
+				messages.activeProjects.onNext(state);
+
+				expect($('.service-item.unstable .label')).not.toHaveClass('label-warning');
+				expect($('.service-item.unstable .label')).toHaveClass('label-inverse');
+			});
+
+			it('should show warning label', function () {
+				state[0].items[0].tags = [{ name: 'unstable', type: 'warning' }];
+
+				messages.activeProjects.onNext(state);
+
+				expect($('.service-item.unstable .label')).toHaveClass('label-warning');
+			});
+
+			it('should show label description in tooltip', function () {
+				state[0].items[0].tags = [{ name: 'offline', description: 'Ajax error (500)' }];
+
+				messages.activeProjects.onNext(state);
+
+				expect($('.service-item.offline .label')).toHaveAttr('data-original-title', 'Ajax error (500)');
+			});
 		});
 
 		it('should not show failed count for disabled builds', function () {

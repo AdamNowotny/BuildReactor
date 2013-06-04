@@ -21,11 +21,15 @@ define([
 				isBroken: lastCompletedResponse.result in
 					{ 'FAILURE': 1, 'UNSTABLE': 1, 'ABORTED': 1, 'NOT_BUILT': 1 },
 				isRunning: jobResponse.lastBuild.number !== jobResponse.lastCompletedBuild.number,
-				isDisabled: !jobResponse.buildable
+				isDisabled: !jobResponse.buildable,
+				tags: []
 			};
+			if (lastCompletedResponse.result === 'UNSTABLE') {
+				state.tags.push({ name: 'Unstable', type: 'warning' });
+			}
 			if (!(lastCompletedResponse.result in
 					{ 'SUCCESS': 1, 'FAILURE': 1, 'UNSTABLE': 1, 'ABORTED': 1, 'NOT_BUILT': 1 })) {
-				state.error = 'Result [' + lastCompletedResponse.result + '] is unknown';
+				state.tags.push({ name : 'Unknown', description : 'Result [' + lastCompletedResponse.result + '] is unknown'});
 			}
 			return state;
 		});

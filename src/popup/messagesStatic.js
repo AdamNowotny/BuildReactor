@@ -31,13 +31,15 @@ define(['rx', 'rx.time'], function (Rx) {
 					group: "Normal",
 					isBroken: false,
 					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
-					isBuilding: true
+					isBuilding: true,
+					tags: [{ name: 'Offline', description: 'Ajax error (500)' }]
 				}, {
 					name: "Failed",
 					group: "Normal",
 					isBroken: true,
 					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
-					isBuilding: true
+					isBuilding: true,
+					tags: [{ name: 'Unstable', type: 'warning' }]
 				}, {
 					name: "Success",
 					group: "Disabled",
