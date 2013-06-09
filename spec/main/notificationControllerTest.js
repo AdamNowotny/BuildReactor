@@ -44,7 +44,7 @@ define([
 			);
 		});
 
-		it('should show who broke build when build fails', function () {
+		it('should show who broke the build when changes available', function () {
 			serviceController.events.onNext({ eventName: 'buildBroken', details: {
 				serviceName: 'service',
 				group: 'group',
@@ -80,6 +80,20 @@ define([
 
 			expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
 				'src/services/icon.png', 'build (group)', 'Fixed'
+			);
+		});
+
+		it('should show who fixed the build when changes available', function () {
+			serviceController.events.onNext({ eventName: 'buildFixed', details: {
+				serviceName: 'service',
+				group: 'group',
+				name: 'build',
+				serviceIcon: 'icon.png',
+				changes: [{ name: 'Adam' }, { name: 'Some User' }]
+			}});
+
+			expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
+				'src/services/icon.png', 'build (group)', 'Fixed by Adam, Some User'
 			);
 		});
 

@@ -8,24 +8,27 @@ define([
 	
 	function init(options) {
 
-		function createNotificationInfo(event) {
-			return {
+		function createNotificationInfo(event, message) {
+
+			function createChangesMessage(changes) {
+				return !changes ? message : message + changes.reduce(function (agg, change) {
+						return agg ? agg + ', ' + change.name : ' by ' + change.name;
+					}, '');
+			}
+
+			var info = {
 				id: event.details.serviceName + event.details.group + event.details.name,
 				title: event.details.name + (event.details.group ? ' (' + event.details.group + ')' : ''),
 				url: event.details.webUrl,
 				icon: 'src/services/' + event.details.serviceIcon,
-				timeout: options.timeout
+				timeout: options.timeout,
+				text:  createChangesMessage(event.details.changes)
 			};
+			return info;
 		}
 
 		function onBrokenBuild(event) {
-			var info = createNotificationInfo(event);
-			info.text = 'Broken';
-			if (event.details.changes) {
-				info.text += event.details.changes.reduce(function (changes, change) {
-					return changes ? changes + ', ' + change.name : ' by ' + change.name;
-				}, '');
-			}
+			var info = createNotificationInfo(event, 'Broken');
 			if (!reloading) {
 				delete info.timeout;
 			}
@@ -33,8 +36,7 @@ define([
 		}
 
 		function onFixedBuild(event) {
-			var info = createNotificationInfo(event);
-			info.text = 'Fixed';
+			var info = createNotificationInfo(event, 'Fixed');
 			showNotification(info);
 		}
 
