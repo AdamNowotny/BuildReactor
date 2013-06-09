@@ -22,7 +22,10 @@ define([
 				webUrl: joinUrl(self.settings.url, "builders/" + self.id),
 				isBroken: contains(lastCompletedResponse.text, 'failed'),
 				isRunning: builderResponse.state === "building",
-				isDisabled: builderResponse.state === "offline"
+				isDisabled: builderResponse.state === "offline",
+				changes: lastCompletedResponse.blame.map(function (item) { 
+					return { name: /^(.*) <.*>/g.exec(item)[1] };
+				})
 			};
 		});
 	};

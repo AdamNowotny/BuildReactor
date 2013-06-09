@@ -63,7 +63,7 @@ define([
 
 			expect(request.json).toHaveBeenCalled();
 		});
-
+		
 		it('should not set isBroken on successful build', function () {
 			lastCompletedBuildJson.text = [];
 
@@ -99,6 +99,14 @@ define([
 
 			build.update().subscribe(function (state) {
 				expect(state.isDisabled).toBe(true);
+			});
+
+			expect(request.json).toHaveBeenCalled();
+		});
+
+		it('should set changes', function () {
+			build.update().subscribe(function (state) {
+				expect(state.changes).toEqual([{ name: 'Dustin J. Mitchell' }, { name: 'Elmir Jagudin' }]);
 			});
 
 			expect(request.json).toHaveBeenCalled();
