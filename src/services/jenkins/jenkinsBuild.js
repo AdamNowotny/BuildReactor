@@ -22,7 +22,10 @@ define([
 					{ 'FAILURE': 1, 'UNSTABLE': 1, 'ABORTED': 1, 'NOT_BUILT': 1 },
 				isRunning: jobResponse.lastBuild.number !== jobResponse.lastCompletedBuild.number,
 				isDisabled: !jobResponse.buildable,
-				tags: []
+				tags: [],
+				changes: lastCompletedResponse.culprits.map(function (item) { 
+					return { name: item.fullName };
+				})
 			};
 			if (lastCompletedResponse.result === 'UNSTABLE') {
 				state.tags.push({ name: 'Unstable', type: 'warning' });

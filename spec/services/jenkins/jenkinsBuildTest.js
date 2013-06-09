@@ -157,6 +157,18 @@ define([
 			expect(request.json).toHaveBeenCalled();
 		});
 
+		it('should set changes', function () {
+			build.update().subscribe(function (state) {
+				expect(state.changes).toEqual([
+					{ name : 'Christoph Kutzinski' },
+					{ name : 'Seiji Sogabe' },
+					{ name : 'Kohsuke Kawaguchi' }
+				]);
+			});
+
+			expect(request.json).toHaveBeenCalled();
+		});
+
 	});
 
 });
