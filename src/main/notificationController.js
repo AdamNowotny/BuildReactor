@@ -21,6 +21,11 @@ define([
 		function onBrokenBuild(event) {
 			var info = createNotificationInfo(event);
 			info.text = 'Broken';
+			if (event.details.changes) {
+				info.text += event.details.changes.reduce(function (changes, change) {
+					return changes ? changes + ', ' + change.name : ' by ' + change.name;
+				}, '');
+			}
 			if (!reloading) {
 				delete info.timeout;
 			}

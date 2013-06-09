@@ -24,7 +24,8 @@ define([
 				isRunning: planResponse.isBuilding,
 				isWaiting: planResponse.isActive,
 				isDisabled: !planResponse.enabled,
-				tags: []
+				tags: [],
+				changes: resultResponse.changes.change.map(function (change) { return { name: change.fullName }; })
 			};
 			if (!(resultResponse.state in { 'Successful': 1, 'Failed': 1})) {
 				state.tags.push({ name : 'Unknown', description : 'State [' + resultResponse.state + '] is unknown'});

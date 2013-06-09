@@ -44,6 +44,20 @@ define([
 			);
 		});
 
+		it('should show who broke build when build fails', function () {
+			serviceController.events.onNext({ eventName: 'buildBroken', details: {
+				serviceName: 'service',
+				group: 'group',
+				name: 'build',
+				serviceIcon: 'icon.png',
+				changes: [{ name: 'Adam' }, { name: 'Some User' }]
+			}});
+
+			expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
+				'src/services/icon.png', 'build (group)', 'Broken by Adam, Some User'
+			);
+		});
+
 		it('should not show message when build fails but is disabled', function () {
 			serviceController.events.onNext({ eventName: 'buildBroken', details: {
 				serviceName: 'service',

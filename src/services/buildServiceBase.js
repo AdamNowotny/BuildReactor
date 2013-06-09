@@ -74,7 +74,8 @@ define([
 			isRunning: previous.isRunning,
 			isDisabled: previous.isDisabled,
 			serviceName: this.settings.name,
-			serviceIcon: this.settings.icon
+			serviceIcon: this.settings.icon,
+			tags: []
 		};
 		return mixIn(defaults, state);
 	};

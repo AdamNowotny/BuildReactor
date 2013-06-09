@@ -62,7 +62,8 @@ function (BuildService, request, Rx, $, mixIn, projectsXmlText) {
 			return mixIn(state, {
 				isDisabled: false,
 				serviceName: 'Build Server',
-				serviceIcon: 'cctray/icon.png'
+				serviceIcon: 'cctray/icon.png',
+				tags: []
 			});
 		}
 
