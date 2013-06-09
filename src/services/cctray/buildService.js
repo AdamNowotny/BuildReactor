@@ -62,27 +62,21 @@ define([
 		return $(projectsXml)
 			.find('Project')
 			.map(function (i, d) {
-				return {
+				var status = $(d).attr('lastBuildStatus');
+				var breakers = $(d).find('message[kind=Breakers]').attr('text');
+				var state = {
 					id: $(d).attr('name'),
 					name: $(d).attr('name'),
 					group: $(d).attr('category'),
 					webUrl: $(d).attr('webUrl'),
-					status: $(d).attr('lastBuildStatus'),
-					activity: $(d).attr('activity'),
+					isRunning: $(d).attr('activity') === 'Building',
+					tags: [],
+					changes: !breakers ? [] : [{ name: breakers }]
 				};
-			}).map(function (i, d) {
-				var state = {
-					id: d.id,
-					name: d.name,
-					group: d.group,
-					webUrl: d.webUrl,
-					isRunning: d.activity === 'Building',
-					tags: []
-				};
-				if (d.status in { 'Success': 1, 'Failure': 1, 'Exception': 1 }) {
-					state.isBroken = d.status in { 'Failure': 1, 'Exception': 1 };
+				if (status in { 'Success': 1, 'Failure': 1, 'Exception': 1 }) {
+					state.isBroken = status in { 'Failure': 1, 'Exception': 1 };
 				} else {
-					state.tags.push({ name : 'Unknown', description : 'Status [' + d.status + '] is unknown'});
+					state.tags.push({ name : 'Unknown', description : 'Status [' + status + '] is unknown'});
 					delete state.isBroken;
 				}
 

@@ -3,10 +3,9 @@ define([
 	'services/request',
 	'rx',
 	'jquery',
-	'mout/object/mixIn',
-	'text!spec/fixtures/cctray/cruisecontrolnet.xml'
+	'mout/object/mixIn'
 ],
-function (BuildService, request, Rx, $, mixIn, projectsXmlText) {
+function (BuildService, request, Rx, $, mixIn) {
 
 	'use strict';
 
@@ -43,7 +42,8 @@ function (BuildService, request, Rx, $, mixIn, projectsXmlText) {
 				webUrl: 'http://build.nauck-it.de/server/build.nauck-it.de/project/CruiseControl.NET/ViewProjectReport.aspx',
 				isBroken: false,
 				isRunning: false,
-				tags: []
+				tags: [],
+				changes: []
 			};
 		}
 
@@ -165,7 +165,7 @@ function (BuildService, request, Rx, $, mixIn, projectsXmlText) {
 				var parsedResponse;
 
 				beforeEach(function () {
-					projectsXml = $(projectsXmlText);
+					projectsXml = $(readFixtures('cctray/cruisecontrolnet.xml'));
 					request.xml.andCallFake(function (options) {
 						parsedResponse = options.parser(projectsXml);
 						return Rx.Observable.returnValue(parsedResponse);
@@ -180,7 +180,7 @@ function (BuildService, request, Rx, $, mixIn, projectsXmlText) {
 					expect(parsedResponse[0]).toEqual(createState1());
 				});
 
-				it('should parse xml is build broken with failure', function () {
+				it('should parse xml if build broken with failure', function () {
 					projectsXml.find('Project').attr('lastBuildStatus', 'Failure');
 
 					service.updateAll();
@@ -189,8 +189,26 @@ function (BuildService, request, Rx, $, mixIn, projectsXmlText) {
 					expect(parsedResponse[0].isBroken).toBe(true);
 				});
 
-				it('should parse xml is build broken with exception', function () {
-					projectsXml.find('Project').attr('lastBuildStatus', 'Exception');
+				it('should parse changes', function () {
+					projectsXml = $(readFixtures('cctray/go.xml'));
+
+					service.updateAll();
+
+					expect(request.xml).toHaveBeenCalled();
+					expect(parsedResponse[3].changes).toEqual([{ name: 'DOMAIN\\Adam.Nowotny' }]);
+				});
+
+				it('should parse changes if breakers message empty', function () {
+					projectsXml = $(readFixtures('cctray/breakers_empty.xml'));
+
+					service.updateAll();
+
+					expect(request.xml).toHaveBeenCalled();
+					expect(parsedResponse[10].changes).toEqual([]);
+				});
+
+				it('should parse xml if build broken with failure', function () {
+					projectsXml.find('Project').attr('lastBuildStatus', 'Failure');
 
 					service.updateAll();
 
@@ -198,7 +216,7 @@ function (BuildService, request, Rx, $, mixIn, projectsXmlText) {
 					expect(parsedResponse[0].isBroken).toBe(true);
 				});
 
-				it('should parse xml is build running', function () {
+				it('should parse xml if build running', function () {
 					projectsXml.find('Project').attr('activity', 'Building');
 
 					service.updateAll();
@@ -378,7 +396,7 @@ function (BuildService, request, Rx, $, mixIn, projectsXmlText) {
 
 		describe('availableBuilds', function () {
 
-			var projectsXml = $(projectsXmlText);
+			var projectsXml = $(readFixtures('cctray/cruisecontrolnet.xml'));
 
 			it('should return available builds', function () {
 				var builds = Rx.Observable.returnValue(projectsXml);
