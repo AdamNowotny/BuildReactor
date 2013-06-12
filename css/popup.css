@@ -59,6 +59,7 @@ li.service-item {
 	background-color: #360;
 	border-radius: 5px;
 	cursor: pointer;
+	font-weight: bold;
 	height: 20px;
 	margin-top: 5px;
 	padding: 5px 30px 5px 5px;
@@ -66,25 +67,45 @@ li.service-item {
 	white-space: nowrap;
 }
 
-	.service-item.disabled {
+	li.service-item.disabled {
 		background-color: #888;
 	}
 
-		.service-item.disabled.broken {
+		li.service-item.disabled.broken {
 			background-color: #888;
 		}
 
-	.service-item.offline {
+	li.service-item.offline {
 		background-color: #565;
 	}
 
-		.service-item.offline.broken {
+		li.service-item.offline.broken {
 			background-color: #844;
 		}
 
-	.service-item.broken {
+	li.service-item.building {
+		background-color: #f89406;
+	}
+
+		li.service-item.building .service-item-name,
+		li.service-item.building .label,
+		li.service-item.building .icon-spinner {
+			color: #360;
+		}
+
+	li.service-item.broken {
 		background-color: #900;
 	}
+
+		li.service-item.broken.building {
+			background-color: #f89406;
+		}
+	
+		li.service-item.broken.building .service-item-name,
+		li.service-item.broken.building .label,
+		li.service-item.broken.building .icon-spinner {
+			color: #900;
+		}
 
 	.service-item-name {
 		margin-right: 10px;

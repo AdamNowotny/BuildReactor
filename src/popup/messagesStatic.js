@@ -11,7 +11,7 @@ define(['rx', 'rx.time'], function (Rx) {
 					group: "Offline",
 					isBroken: true,
 					url: null,
-					isBuilding: true,
+					isRunning: false,
 					error: {
 						message: "Ajax error",
 						httpStatus: 500
@@ -21,7 +21,7 @@ define(['rx', 'rx.time'], function (Rx) {
 					group: "Offline",
 					isBroken: false,
 					url: null,
-					isBuilding: true,
+					isRunning: false,
 					error: {
 						message: "Ajax error",
 						httpStatus: 500
@@ -31,14 +31,38 @@ define(['rx', 'rx.time'], function (Rx) {
 					group: "Normal",
 					isBroken: false,
 					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
-					isBuilding: true,
-					tags: [{ name: 'Offline', description: 'Ajax error (500)' }]
+					isRunning: false
 				}, {
 					name: "Failed",
 					group: "Normal",
 					isBroken: true,
 					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
-					isBuilding: true,
+					isRunning: false
+				}, {
+					name: "Unstable",
+					group: "Normal",
+					isBroken: true,
+					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
+					isRunning: false,
+					tags: [{ name: 'Unstable', type: 'warning' }]
+				}, {
+					name: "Success",
+					group: "Building",
+					isBroken: false,
+					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
+					isRunning: true
+				}, {
+					name: "Failed",
+					group: "Building",
+					isBroken: true,
+					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
+					isRunning: true
+				}, {
+					name: "Unstable",
+					group: "Building",
+					isBroken: true,
+					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
+					isRunning: true,
 					tags: [{ name: 'Unstable', type: 'warning' }]
 				}, {
 					name: "Success",
@@ -46,14 +70,14 @@ define(['rx', 'rx.time'], function (Rx) {
 					isBroken: false,
 					isDisabled: true,
 					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
-					isBuilding: true
+					isRunning: false
 				}, {
 					name: "Failed",
 					group: "Disabled",
 					isBroken: true,
 					isDisabled: true,
 					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
-					isBuilding: true
+					isRunning: false
 				}
 			]
 		}
