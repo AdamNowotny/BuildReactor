@@ -22,5 +22,11 @@ define(['common/joinUrl'], function (joinUrl) {
 			expect(url).toBe("http://example.com/rest/api");
 		});
 
+		it('should only use 1 / if exists in urls', function () {
+			var url = joinUrl("http://example.com/", "/somePath");
+
+			expect(url).toBe("http://example.com/somePath");
+		});
+
 	});
 });

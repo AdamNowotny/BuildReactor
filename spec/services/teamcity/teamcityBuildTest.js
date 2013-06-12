@@ -9,8 +9,7 @@ define([
 
 		var build;
 		var settings;
-		var buildJson;
-		var buildRunningJson;
+		var buildJson, buildRunningJson, changesJson, changeJson;
 
 		beforeEach(function () {
 			settings = {
@@ -18,14 +17,28 @@ define([
 			};
 			buildJson = JSON.parse(readFixtures('teamcity/build.json'));
 			buildRunningJson = JSON.parse(readFixtures('teamcity/buildRunning.json'));
+			changesJson = JSON.parse(readFixtures('teamcity/changes.json'));
+			changeJson = JSON.parse(readFixtures('teamcity/changes_id.json'));
 			var callCount = 0;
-			spyOn(request, 'json').andCallFake(function () {
+			spyOn(request, 'json').andCallFake(function (options) {
 				callCount++;
-				switch (callCount) {
-				case 1:
+				switch (options.url) {
+				case 'http://example.com/guestAuth/app/rest/buildTypes/id:build_id/builds/count:1':
 					return Rx.Observable.returnValue(buildJson);
-				case 2:
+				case 'http://example.com/guestAuth/app/rest/buildTypes/id:build_id/builds/running:any':
 					return Rx.Observable.returnValue(buildRunningJson);
+				case 'http://example.com/httpAuth/app/rest/buildTypes/id:build_id/builds/running:any':
+					return Rx.Observable.returnValue(buildRunningJson);
+				case 'http://example.com/httpAuth/app/rest/buildTypes/id:build_id/builds/count:1':
+					return Rx.Observable.returnValue(buildJson);
+				case 'http://example.com/guestAuth/app/rest/changes?build=id:63887':
+					return Rx.Observable.returnValue(changesJson);
+				case 'http://example.com/guestAuth/app/rest/changes/id:68396':
+					return Rx.Observable.returnValue(changeJson);
+				case 'http://example.com/guestAuth/app/rest/changes/id:43196':
+					return Rx.Observable.returnValue(changeJson);
+				default:
+					throw 'Unknown URL ' + options.url;
 				}
 			});
 
@@ -40,7 +53,7 @@ define([
 			expect(request.json.calls[1].args[0].url).toBe('http://example.com/guestAuth/app/rest/buildTypes/id:build_id/builds/running:any');
 		});
 
-		it('should make call on update for user', function () {
+		it('should make call on update for registered user', function () {
 			settings.username = 'username';
 			settings.password = 'password';
 
@@ -125,6 +138,24 @@ define([
 
 			build.update().subscribe(function (state) {
 				expect(state.isRunning).toBe(false);
+			});
+
+			expect(request.json).toHaveBeenCalled();
+		});
+
+		it('should set changes', function () {
+			build.update().subscribe(function (state) {
+				expect(state.changes).toEqual([{ name: 'dkavanagh' }, { name: 'dkavanagh' }]);
+			});
+
+			expect(request.json).toHaveBeenCalled();
+		});
+
+		it('should set empty changes', function () {
+			buildJson.changes.count = 0;
+
+			build.update().subscribe(function (state) {
+				expect(state.changes).toEqual([]);
 			});
 
 			expect(request.json).toHaveBeenCalled();
