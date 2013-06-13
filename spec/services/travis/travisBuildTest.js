@@ -9,8 +9,10 @@ define([
 	describe('services/travis/travisBuild', function () {
 
 		var settings;
-		var repoJson;
-		var buildJson;
+		var build;
+		var buildsResponse;
+		var buildsJson, buildsRunningJson;
+		var buildDetailsJson, buildDetailsRunningJson;
 
 		beforeEach(function () {
 			settings = {
@@ -20,98 +22,85 @@ define([
 				updateInterval: 10000,
 				projects: ['AdamNowotny/BuildReactor']
 			};
-			repoJson = JSON.parse(readFixtures('travis/repository.json'));
-			buildJson = JSON.parse(readFixtures('travis/builds_by_number.json'));
-		});
-
-		it('should make call on update', function () {
+			buildsJson = JSON.parse(readFixtures('travis/builds.json'));
+			buildsRunningJson = JSON.parse(readFixtures('travis/builds_running.json'));
+			buildDetailsJson = JSON.parse(readFixtures('travis/build_by_id.json'));
+			buildDetailsRunningJson = JSON.parse(readFixtures('travis/build_by_id_running.json'));
+			buildsResponse = buildsJson;
 			spyOn(request, 'json').andCallFake(function (options) {
-				expect(options.url).toBe('https://api.travis-ci.org/AdamNowotny/BuildReactor');
-				return Rx.Observable.never();
+				switch (options.url) {
+				case 'https://api.travis-ci.org/AdamNowotny/BuildReactor/builds':
+					return Rx.Observable.returnValue(buildsResponse);
+				case 'https://api.travis-ci.org/builds/6305554':
+					return Rx.Observable.returnValue(buildDetailsRunningJson);
+				case 'https://api.travis-ci.org/builds/6305490':
+					return Rx.Observable.returnValue(buildDetailsJson);
+				default:
+					throw 'Unknown URL ' + options.url;
+				}
 			});
-			var build = new TravisBuild('AdamNowotny/BuildReactor', settings);
-
-			build.update();
-
-			expect(request.json).toHaveBeenCalled();
+			build = new TravisBuild('AdamNowotny/BuildReactor', settings);
 		});
 
 		it('should parse response and return current state', function () {
-			spyOn(request, 'json').andReturn(Rx.Observable.returnValue(repoJson));
-			var build = new TravisBuild('AdamNowotny/BuildReactor', settings);
-
 			build.update().subscribe(function (state) {
 				expect(state.id).toBe('AdamNowotny/BuildReactor');
 				expect(state.name).toBe('BuildReactor');
 				expect(state.group).toBe('AdamNowotny');
-				expect(state.webUrl).toBe('https://travis-ci.org/AdamNowotny/BuildReactor/builds/6305554');
+				expect(state.webUrl).toBe('https://travis-ci.org/AdamNowotny/BuildReactor/builds/6305490');
 				expect(state.isBroken).toBe(false);
 				expect(state.isRunning).toBe(false);
 			});
-
-			expect(request.json).toHaveBeenCalled();
 		});
 
 		it('should set isBroken', function () {
-			repoJson.last_build_result = 1;
-			spyOn(request, 'json').andReturn(Rx.Observable.returnValue(repoJson));
-			var build = new TravisBuild('AdamNowotny/BuildReactor', settings);
+			buildDetailsJson.result = 1;
 
 			build.update().subscribe(function (state) {
 				expect(state.isBroken).toBe(true);
 				expect(state.isRunning).toBe(false);
 			});
-
-			expect(request.json).toHaveBeenCalled();
 		});
 
 		it('should not set isBroken on successful build', function () {
-			repoJson.last_build_result = 0;
-			spyOn(request, 'json').andReturn(Rx.Observable.returnValue(repoJson));
-			var build = new TravisBuild('AdamNowotny/BuildReactor', settings);
+			buildDetailsJson.result = 0;
 
 			build.update().subscribe(function (state) {
 				expect(state.isBroken).toBe(false);
 				expect(state.isRunning).toBe(false);
 			});
-
-			expect(request.json).toHaveBeenCalled();
 		});
 
 		it('should set isRunning', function () {
-			repoJson.last_build_started_at = '"2013-04-14T06:04:15Z"';
-			repoJson.last_build_finished_at = null;
-			spyOn(request, 'json').andReturn(Rx.Observable.returnValue(repoJson));
-			var build = new TravisBuild('AdamNowotny/BuildReactor', settings);
+			buildsResponse = buildsRunningJson;
 
 			build.update().subscribe(function (state) {
 				expect(state.isBroken).toBe(false);
 				expect(state.isRunning).toBe(true);
 			});
-
-			expect(request.json).toHaveBeenCalled();
 		});
 
 		it('should get result from previous build if null', function () {
-			repoJson.last_build_result = null;
-			var callCount = 0;
-			spyOn(request, 'json').andCallFake(function (options) {
-				callCount++;
-				if (callCount === 1) {
-					return Rx.Observable.returnValue(repoJson);
-				} else {
-					expect(options.data.number).toBe(repoJson.last_build_number - 1);
-					buildJson[0].result = 1;
-					return Rx.Observable.returnValue(buildJson);
-				}
-			});
-			var build = new TravisBuild('AdamNowotny/BuildReactor', settings);
+			buildsResponse = buildsRunningJson;
+			buildDetailsJson.result = 1;
 
 			build.update().subscribe(function (state) {
 				expect(state.isBroken).toBe(true);
 			});
+		});
 
-			expect(request.json).toHaveBeenCalled();
+		it('should set changes', function () {
+			build.update().subscribe(function (state) {
+				expect(state.changes).toEqual([{ name: 'Adam Nowotny' }]);
+			});
+		});
+
+		it('should set previous changes if building', function () {
+			buildsResponse = buildsRunningJson;
+
+			build.update().subscribe(function (state) {
+				expect(state.changes).toEqual([{ name: 'Adam Nowotny' }]);
+			});
 		});
 
 	});

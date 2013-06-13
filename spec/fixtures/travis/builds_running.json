@@ -1,20 +1,20 @@
 [
     {
-        "id": 6305490,
+        "id": 6305554,
         "repository_id": 177547,
         "number": "135",
-        "state": "finished",
-        "result": 0,
+        "state": "started",
+        "result": null,
         "started_at": "2013-04-14T06:04:15Z",
-        "finished_at": "2013-04-14T06:05:15Z",
-        "duration": 60,
+        "finished_at": null,
+        "duration": null,
         "commit": "986fd2598f54463b2db1f386fb681232b6c7aed9",
         "branch": "master",
         "message": "build: use node 0.10",
         "event_type": "push"
     },
     {
-        "id": 6305491,
+        "id": 6305490,
         "repository_id": 177547,
         "number": "134",
         "state": "finished",

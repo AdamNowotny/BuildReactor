@@ -1,0 +1,98 @@
+{
+    "id": 6305554,
+    "repository_id": 290710,
+    "number": "2796",
+    "config": {
+        "language": "php",
+        "php": [
+            "5.5",
+            "5.4",
+            "5.3"
+        ],
+        "before_install": [
+            "sudo apt-get update -qq",
+            "sudo apt-get install -qq ant"
+        ],
+        "before_script": "./scripts/generate-mo --quiet",
+        "script": "ant phpunit-nocoverage lint",
+        ".result": "configured"
+    },
+    "state": "started",
+    "result": null,
+    "status": null,
+    "started_at": "2013-06-12T14:27:11Z",
+    "finished_at": null,
+    "duration": null,
+    "commit": "c71acf746a0c277223557379c11b73b6782db6fa",
+    "branch": "master",
+    "message": "code for displaying confirm page removed.",
+    "committed_at": "2013-06-12T14:24:44Z",
+    "author_name": "Spun Nakandala",
+    "author_email": "supun.nakandala@gmail.com",
+    "committer_name": "Spun Nakandala",
+    "committer_email": "supun.nakandala@gmail.com",
+    "compare_url": "https://github.com/phpmyadmin/phpmyadmin/pull/415",
+    "event_type": "pull_request",
+    "matrix": [
+        {
+            "id": 8018322,
+            "repository_id": 290710,
+            "number": "2796.1",
+            "config": {
+                "language": "php",
+                "php": "5.5",
+                "before_install": [
+                    "sudo apt-get update -qq",
+                    "sudo apt-get install -qq ant"
+                ],
+                "before_script": "./scripts/generate-mo --quiet",
+                "script": "ant phpunit-nocoverage lint",
+                ".result": "configured"
+            },
+            "result": null,
+            "started_at": "2013-06-12T14:27:11Z",
+            "finished_at": null,
+            "allow_failure": false
+        },
+        {
+            "id": 8018323,
+            "repository_id": 290710,
+            "number": "2796.2",
+            "config": {
+                "language": "php",
+                "php": "5.4",
+                "before_install": [
+                    "sudo apt-get update -qq",
+                    "sudo apt-get install -qq ant"
+                ],
+                "before_script": "./scripts/generate-mo --quiet",
+                "script": "ant phpunit-nocoverage lint",
+                ".result": "configured"
+            },
+            "result": null,
+            "started_at": "2013-06-12T14:27:39Z",
+            "finished_at": null,
+            "allow_failure": false
+        },
+        {
+            "id": 8018324,
+            "repository_id": 290710,
+            "number": "2796.3",
+            "config": {
+                "language": "php",
+                "php": "5.3",
+                "before_install": [
+                    "sudo apt-get update -qq",
+                    "sudo apt-get install -qq ant"
+                ],
+                "before_script": "./scripts/generate-mo --quiet",
+                "script": "ant phpunit-nocoverage lint",
+                ".result": "configured"
+            },
+            "result": null,
+            "started_at": "2013-06-12T14:27:20Z",
+            "finished_at": null,
+            "allow_failure": false
+        }
+    ]
+}

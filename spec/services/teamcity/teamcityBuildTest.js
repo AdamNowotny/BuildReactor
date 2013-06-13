@@ -19,9 +19,7 @@ define([
 			buildRunningJson = JSON.parse(readFixtures('teamcity/buildRunning.json'));
 			changesJson = JSON.parse(readFixtures('teamcity/changes.json'));
 			changeJson = JSON.parse(readFixtures('teamcity/changes_id.json'));
-			var callCount = 0;
 			spyOn(request, 'json').andCallFake(function (options) {
-				callCount++;
 				switch (options.url) {
 				case 'http://example.com/guestAuth/app/rest/buildTypes/id:build_id/builds/count:1':
 					return Rx.Observable.returnValue(buildJson);
