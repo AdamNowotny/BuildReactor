@@ -62,9 +62,11 @@ define([
 				};
 				notification.show();
 				if (info.timeout) {
-					Rx.Observable.timer(info.timeout, scheduler).subscribe(function () {
-						notification.cancel();
-					});
+					notification.ondisplay = function () {
+						Rx.Observable.timer(info.timeout, scheduler).subscribe(function () {
+							notification.cancel();
+						});
+					};
 				}
 				return function () {
 					notification.cancel();

@@ -112,8 +112,12 @@ define([
 		it('should close notifications about fixed builds after 5 seconds', function () {
 			serviceController.events.onNext({ eventName: 'buildFixed', details: {} });
 
-			scheduler.advanceBy(5000);
+			scheduler.advanceBy(3000);
+			mockNotification.ondisplay();
 			
+			scheduler.advanceBy(3000);
+			expect(mockNotification.cancel).not.toHaveBeenCalled();
+			scheduler.advanceBy(5000);
 			expect(mockNotification.cancel).toHaveBeenCalled();
 		});
 
@@ -128,6 +132,7 @@ define([
 			serviceController.events.onNext({ eventName: 'servicesInitializing' });
 			serviceController.events.onNext({ eventName: 'buildBroken', details: {} });
 
+			mockNotification.ondisplay();
 			scheduler.advanceBy(5000);
 
 			expect(mockNotification.cancel).toHaveBeenCalled();
