@@ -106,10 +106,7 @@ define([
 	};
 
 	var getUniqueChanges = function (allChanges) {
-		if (!allChanges) {
-			return [];
-		}
-		return allChanges.reduce(function (changes, value) {
+		return !allChanges ? [] : allChanges.reduce(function (changes, value) {
 			var alreadyAdded = changes.filter(function (change) {
 				return change.name === value.name;
 			}).length > 0;

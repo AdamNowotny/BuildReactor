@@ -58,6 +58,22 @@ define([
 			);
 		});
 
+		it('should show max 4 users who broke the build', function () {
+			serviceController.events.onNext({ eventName: 'buildBroken', details: {
+				serviceName: 'service',
+				group: 'group',
+				name: 'build',
+				serviceIcon: 'icon.png',
+				changes: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (d) {
+					return { name: 'User' + d };
+				})
+			}});
+
+			expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
+				'src/services/icon.png', 'build (group)', 'Broken by User1, User2, User3, User4, ...'
+			);
+		});
+
 		it('should not show message when build fails but is disabled', function () {
 			serviceController.events.onNext({ eventName: 'buildBroken', details: {
 				serviceName: 'service',

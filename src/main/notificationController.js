@@ -11,9 +11,15 @@ define([
 		function createNotificationInfo(event, message) {
 
 			function createChangesMessage(changes) {
-				return !changes ? message : message + changes.reduce(function (agg, change) {
-						return agg ? agg + ', ' + change.name : ' by ' + change.name;
-					}, '');
+				return !changes ? message : message + changes.reduce(function (agg, change, i) {
+					if (i === 4) {
+						return agg + ', ...';
+					}
+					if (i > 4) {
+						return agg;
+					}
+					return agg ? agg + ', ' + change.name : ' by ' + change.name;
+				}, '');
 			}
 
 			var info = {
