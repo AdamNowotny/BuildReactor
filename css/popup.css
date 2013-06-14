@@ -66,6 +66,10 @@ li.service-item {
 	white-space: nowrap;
 }
 
+	li.service-item a {
+		height: 20px;
+	}
+	
 	li.service-item.disabled {
 		background-color: #888;
 	}
