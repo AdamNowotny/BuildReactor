@@ -85,7 +85,7 @@ define([
 		newState.changes = getUniqueChanges(newState.changes);
 		var lastState = this.latestBuildStates[newState.id];
 		this.latestBuildStates[newState.id] = newState;
-		if (newState.error) {
+		if (!lastState.error && newState.error) {
 			this.events.onNext({ eventName: 'buildOffline', details: newState });
 		}
 		if (lastState.error && !newState.error) {
@@ -142,8 +142,7 @@ define([
 		this.poolingSubscription = Rx.Observable.timer(0, updateInterval, this.scheduler)
 			.selectMany(function () {
 				return self.updateAll().toArray();
-			})
-			.subscribe(updates);
+			}).subscribe(updates);
 		return initialize;
 	};
 

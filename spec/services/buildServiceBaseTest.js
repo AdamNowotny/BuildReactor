@@ -274,14 +274,26 @@ define([
 				});
 
 				it('should push buildOffline if build update failed', function () {
-					scheduler.scheduleAbsolute(500, function () {
-						update1Response.onError("error");
-					});
+					newState.error = 'error';
+
 					var result = scheduler.startWithCreate(function () {
 						return service.events;
 					});
 
 					expect(result.messages).toHaveElements(
+						onNext(500, { eventName: 'buildOffline', details: mixIn(buildState1, { error: 'error'}) })
+					);
+				});
+
+				it('should push not push buildOffline if build already has errors', function () {
+					oldState.error = 'error';
+					newState.error = 'error';
+
+					var result = scheduler.startWithCreate(function () {
+						return service.events;
+					});
+
+					expect(result.messages).not.toHaveElements(
 						onNext(500, { eventName: 'buildOffline', details: mixIn(buildState1, { error: 'error'}) })
 					);
 				});
