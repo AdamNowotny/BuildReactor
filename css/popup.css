@@ -69,7 +69,7 @@ li.service-item {
 	li.service-item a {
 		height: 20px;
 	}
-	
+
 	li.service-item.disabled {
 		background-color: #888;
 	}
@@ -79,11 +79,21 @@ li.service-item {
 		}
 
 	li.service-item.offline {
-		background-color: #565;
+		background-color: #888;
 	}
 
 		li.service-item.offline.broken {
-			background-color: #844;
+			background-color: #888;
+		}
+
+		li.service-item.offline .service-item-name,
+		li.service-item.offline .icon-spinner {
+			color: #360;
+		}
+
+		li.service-item.offline.broken .service-item-name,
+		li.service-item.offline.broken .icon-spinner {
+			color: #900;
 		}
 
 	li.service-item.building {
