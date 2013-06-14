@@ -393,6 +393,20 @@ define([
 
 					expect(result.messages).not.toHaveEvent('buildFinished');
 				});
+
+				it('should push buildBroken with changes and remove duplicate entries', function () {
+					oldState.isBroken = false;
+					newState.isBroken = true;
+					newState.changes = [{ name: 'name1' }, { name: 'name2' }, { name: 'name1' }];
+
+					var result = scheduler.startWithCreate(function () {
+						return service.events;
+					});
+
+					expect(result.messages[0].value.value.details.changes).toEqual([{ name: 'name1' }, { name: 'name2' }]);
+				});
+
+
 			});
 		});
 

@@ -3,9 +3,10 @@ define([
 	'jquery',
 	'mout/object/values',
 	'mout/object/mixIn',
+	'mout/array/unique',
 	'rx.time',
 	'rx.binding'
-], function (Rx, $, values, mixIn) {
+], function (Rx, $, values, mixIn, unique) {
 	'use strict';
 
 	function BuildServiceBase(settings, scheduler) {
@@ -81,6 +82,7 @@ define([
 	};
 
 	var processBuildUpdate = function (newState) {
+		newState.changes = getUniqueChanges(newState.changes);
 		var lastState = this.latestBuildStates[newState.id];
 		this.latestBuildStates[newState.id] = newState;
 		if (newState.error) {
@@ -103,6 +105,20 @@ define([
 		}
 	};
 
+	var getUniqueChanges = function (allChanges) {
+		if (!allChanges) {
+			return [];
+		}
+		return allChanges.reduce(function (changes, value) {
+			var alreadyAdded = changes.filter(function (change) {
+				return change.name === value.name;
+			}).length > 0;
+			if (!alreadyAdded) {
+				changes.push(value);
+			}
+			return changes;
+		}, []);
+	};
 
 	var start = function () {
 		if (!this.settings.updateInterval) {

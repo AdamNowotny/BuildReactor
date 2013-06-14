@@ -54,7 +54,8 @@ function (BuildService, request, Rx, $, mixIn) {
 				group: 'Build Server Configuration',
 				webUrl: 'http://build.nauck-it.de/server/build.nauck-it.de/project/Build-Server-Config/ViewProjectReport.aspx',
 				isBroken: false,
-				isRunning: false
+				isRunning: false,
+				changes: []
 			};
 		}
 
@@ -292,7 +293,8 @@ function (BuildService, request, Rx, $, mixIn) {
 					id: 'CruiseControl.NET',
 					isBroken: false,
 					isRunning: false,
-					isDisabled: false
+					isDisabled: false,
+					changes: []
 				}, oldState);
 				request.xml.andCallFake(function (options) {
 					return Rx.Observable.returnValue([newState]);
