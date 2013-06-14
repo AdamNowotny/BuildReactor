@@ -192,5 +192,37 @@ define([
 			expect(mockNotification.cancel).not.toHaveBeenCalled();
 		});
 
+		describe('unstable', function () {
+
+			it('should show message when unstable build fails', function () {
+				serviceController.events.onNext({ eventName: 'buildBroken', details: {
+					serviceName: 'service',
+					group: 'group',
+					name: 'build',
+					serviceIcon: 'icon.png',
+					tags: [{ name: 'Unstable' }]
+				}});
+
+				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
+					'src/services/icon.png', 'build (group)', 'Unstable, broken'
+				);
+			});
+
+			it('should close notifications about unstable builds after 5 seconds', function () {
+				serviceController.events.onNext({
+					eventName: 'buildBroken',
+					details: {
+						tags: [{ name: 'Unstable' }]
+					}
+				});
+
+				mockNotification.ondisplay();
+				
+				scheduler.advanceBy(5000);
+				expect(mockNotification.cancel).toHaveBeenCalled();
+			});
+
+		});
+		
 	});
 });

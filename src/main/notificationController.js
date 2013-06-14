@@ -1,14 +1,15 @@
 define([
 	'main/serviceController',
 	'rx',
+	'common/tags',
 	'rx.time'
-], function (serviceController, Rx) {
+], function (serviceController, Rx, tags) {
 
 	'use strict';
 	
 	function init(options) {
 
-		function createNotificationInfo(event, message) {
+		function createNotificationInfo(event, message, timeout) {
 
 			function createChangesMessage(changes) {
 				return !changes ? message : message + changes.reduce(function (agg, change, i) {
@@ -27,22 +28,22 @@ define([
 				title: event.details.name + (event.details.group ? ' (' + event.details.group + ')' : ''),
 				url: event.details.webUrl,
 				icon: 'src/services/' + event.details.serviceIcon,
-				timeout: options.timeout,
+				timeout: timeout ? timeout : undefined,
 				text:  createChangesMessage(event.details.changes)
 			};
 			return info;
 		}
 
 		function onBrokenBuild(event) {
-			var info = createNotificationInfo(event, 'Broken');
-			if (!reloading) {
-				delete info.timeout;
-			}
+			var isUnstable = tags.contains(event.details.tags, 'Unstable');
+			var message = isUnstable ? 'Unstable, broken' : 'Broken';
+			var timeout = reloading || isUnstable ? options.timeout : null;
+			var info = createNotificationInfo(event, message, timeout);
 			showNotification(info);
 		}
 
 		function onFixedBuild(event) {
-			var info = createNotificationInfo(event, 'Fixed');
+			var info = createNotificationInfo(event, 'Fixed', options.timeout);
 			showNotification(info);
 		}
 
