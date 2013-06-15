@@ -66,6 +66,10 @@ li.service-item {
 	white-space: nowrap;
 }
 
+	li.service-item .tooltip {
+		white-space: normal;
+	}
+	
 	li.service-item a {
 		height: 20px;
 	}
