@@ -25,11 +25,17 @@ define([
 				servicesStarted = true;
 				updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
 			},
-			'buildBroken': function () {
+			'buildBroken': function (event) {
+				if (event.details && event.details.isDisabled) {
+					return;
+				}
 				failedBuildsCount++;
 				updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
 			},
-			'buildFixed': function () {
+			'buildFixed': function (event) {
+				if (event.details && event.details.isDisabled) {
+					return;
+				}
 				failedBuildsCount--;
 				updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
 			},

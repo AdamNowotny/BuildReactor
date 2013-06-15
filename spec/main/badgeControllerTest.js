@@ -75,6 +75,25 @@ define([
 				expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('1');
 			});
 
+			it('should ignore broken builds if build disabled', function () {
+				serviceController.events.onNext({ eventName: 'servicesInitialized' });
+
+				serviceController.events.onNext({ eventName: 'buildBroken', details: { isDisabled: true } });
+
+				expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('');
+				expect(chrome.browserAction.setBadgeBackgroundColor.mostRecentCall.args[0].color).not.toEqual(colors.red);
+			});
+
+			it('should ignore fixed builds if build disabled', function () {
+				serviceController.events.onNext({ eventName: 'servicesInitialized' });
+
+				serviceController.events.onNext({ eventName: 'buildBroken' });
+				serviceController.events.onNext({ eventName: 'buildBroken' });
+				serviceController.events.onNext({ eventName: 'buildFixed', details: { isDisabled: true } });
+
+				expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('2');
+			});
+
 		});
 
 		describe('grey badge', function () {
