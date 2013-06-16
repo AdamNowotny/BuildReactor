@@ -131,9 +131,9 @@ define([
 					spyOn($, 'ajaxAsObservable').andCallFake(function (options) {
 						return Rx.Observable.throwException(response);
 					});
-					spyOn(chrome.cookies, 'remove').andCallFake(function (url, authCookie) {
-						expect(url).toBe(ajaxOptions.url);
-						expect(authCookie).toBe(ajaxOptions.authCookie);
+					spyOn(chrome.cookies, 'remove').andCallFake(function (details, callback) {
+						expect(details.url).toBe(ajaxOptions.url);
+						expect(details.name).toBe(ajaxOptions.authCookie);
 					});
 
 					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {});

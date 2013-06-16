@@ -8,15 +8,15 @@ define(['rx', 'rx.time'], function (Rx) {
 			items: [
 				{
 					name: "Failed offline",
-					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
 					group: "Offline",
+					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
 					isBroken: true,
 					url: null,
 					isRunning: false
 				}, {
 					name: "Success offline",
-					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
 					group: "Offline",
+					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
 					isBroken: false,
 					url: null,
 					isRunning: false

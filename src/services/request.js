@@ -66,8 +66,7 @@ define([
 		return $.ajaxAsObservable(ajaxOptions).catchException(function (ex) {
 			var ajaxError = createAjaxError(ex, ajaxOptions);
 			if (options.authCookie && ajaxError.details.httpStatus === unauthorizedStatusCode) {
-				chrome.cookies.remove(options.url, options.authCookie);
-				// chrome.cookies.remove({ url: options.url, name: options.authCookie });
+				chrome.cookies.remove({ url: options.url, name: options.authCookie });
 			}
 			throw ajaxError;
 		}).retry(2).select(createParser(options.parser));
