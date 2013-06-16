@@ -4,28 +4,38 @@ define(['rx', 'rx.time'], function (Rx) {
 
 	var activeProjects = [
 		{
-			name: "OpenMRS",
+			name: "BuildReactor",
 			items: [
 				{
 					name: "Failed offline",
+					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
 					group: "Offline",
 					isBroken: true,
 					url: null,
-					isRunning: false,
-					error: {
-						message: "Ajax error",
-						httpStatus: 500
-					}
+					isRunning: false
 				}, {
 					name: "Success offline",
+					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
 					group: "Offline",
 					isBroken: false,
 					url: null,
+					isRunning: false
+				}, {
+					name: "Success disabled offline",
+					group: "Offline",
+					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
+					isBroken: false,
+					url: null,
 					isRunning: false,
-					error: {
-						message: "Ajax error",
-						httpStatus: 500
-					}
+					isDisabled: true
+				}, {
+					name: "Broken disabled offline",
+					group: "Offline",
+					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
+					isBroken: true,
+					url: null,
+					isRunning: false,
+					isDisabled: true
 				}, {
 					name: "Success",
 					group: "Normal",

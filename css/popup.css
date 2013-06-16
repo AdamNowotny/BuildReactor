@@ -78,6 +78,10 @@ li.service-item {
 		background-color: #888;
 	}
 
+		li.service-item.disabled .service-item-name {
+			color: black;
+		}
+
 		li.service-item.disabled.broken {
 			background-color: #888;
 		}
@@ -88,6 +92,11 @@ li.service-item {
 
 		li.service-item.offline.broken {
 			background-color: #888;
+		}
+
+		li.service-item.offline.disabled .service-item-name,
+		li.service-item.offline.disabled.broken .service-item-name {
+			color: black;
 		}
 
 		li.service-item.offline .service-item-name,
