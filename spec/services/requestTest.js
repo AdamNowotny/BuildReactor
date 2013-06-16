@@ -95,9 +95,9 @@ define([
 
 					expect(actualResponse.name).toBe('AjaxError');
 					expect(actualResponse.message).toBe('Ajax connection error');
-					expect(actualResponse.httpStatus).toBe(null);
-					expect(actualResponse.url).toBe('http://sample.com/?param1=value1&param_2=value2');
-					expect(actualResponse.ajaxOptions).toBeDefined();
+					expect(actualResponse.description).not.toBeDefined();
+					expect(actualResponse.details.url).toBe('http://sample.com/?param1=value1&param_2=value2');
+					expect(actualResponse.details.ajaxOptions).toBeDefined();
 				});
 
 				it('should throw exception on connection error with message', function () {
@@ -115,7 +115,8 @@ define([
 					});
 
 					expect(actualResponse.message).toBe('Not found');
-					expect(actualResponse.httpStatus).toBe(404);
+					expect(actualResponse.description).toBe('Not found (404)');
+					expect(actualResponse.details.httpStatus).toBe(404);
 				});
 
 				it('should remove session cookie if 401 received', function () {
@@ -180,9 +181,10 @@ define([
 
 					expect(actualResponse.name).toBe('ParseError');
 					expect(actualResponse.message).toBe('Unexpected token <');
-					expect(actualResponse.httpStatus).toBe(200);
-					expect(actualResponse.url).toBe('http://sample.com');
-					expect(actualResponse.ajaxOptions).toBeDefined();
+					expect(actualResponse.description).not.toBeDefined();
+					expect(actualResponse.details.httpStatus).toBe(200);
+					expect(actualResponse.details.url).toBe('http://sample.com');
+					expect(actualResponse.details.ajaxOptions).toBeDefined();
 				});
 
 				it('should throw exception on custom parse error', function () {

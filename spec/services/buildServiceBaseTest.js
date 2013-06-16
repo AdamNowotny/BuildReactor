@@ -38,11 +38,10 @@ define([
 			update2Response = Rx.Observable.returnValue(buildState2);
 			var callCount = 0;
 			spyOn(GenericBuild.prototype, 'update').andCallFake(function () {
-				callCount++;
-				switch (callCount) {
-				case 1:
+				switch (this.id) {
+				case 'Build1':
 					return update1Response;
-				case 2:
+				case 'Build2':
 					return update2Response;
 				}
 			});
@@ -239,21 +238,71 @@ define([
 				expect(result.messages).toHaveEqualElements(onCompleted(200));
 			});
 
-			it('should not fail if build update failed', function () {
-				update2Response = new Rx.Subject();
+			describe('error handling', function () {
 
-				scheduler.scheduleAbsolute(300, function () {
-					update2Response.onError("error");
-				});
-				var result = scheduler.startWithCreate(function () {
-					return service.updateAll();
+				it('should push state if build update failed with AjaxError', function () {
+					update2Response = new Rx.Subject();
+					var error = {
+						name: 'AjaxError',
+						message: 'Ajax call failed',
+						description: 'Ajax connection failed (500)',
+						details: { url: 'http://example.com/'}
+					};
+
+					scheduler.scheduleAbsolute(300, function () {
+						update2Response.onError(error);
+					});
+					var result = scheduler.startWithCreate(function () {
+						return service.updateAll();
+					});
+
+					expect(result.messages).toHaveElementsMatchingAt(300, function (details) {
+						return details.error.name === 'AjaxError' &&
+							details.error.message === 'Ajax call failed' &&
+							details.error.description === 'Ajax connection failed (500)' &&
+							details.error.details.url === 'http://example.com/';
+					});
 				});
 
-				expect(result.messages).toHaveEqualElements(
-					onNext(200, buildState1),
-					onNext(300, mixIn(createDefaultState('Build2'), { error : 'error' })),
-					onCompleted(300)
-				);
+				it('should push state if build update failed with JS error', function () {
+					update2Response = new Rx.Subject();
+					var error = new Error('Function call failed');
+
+					scheduler.scheduleAbsolute(300, function () {
+						update2Response.onError(error);
+					});
+					var result = scheduler.startWithCreate(function () {
+						return service.updateAll();
+					});
+
+					expect(result.messages).toHaveElementsMatchingAt(300, function (details) {
+						return details.error.name === 'Error' &&
+							details.error.message === 'Function call failed' &&
+							details.error.description === 'Function call failed';
+					});
+				});
+
+				it('should push state if build update failed with string error', function () {
+					update2Response = new Rx.Subject();
+					var error = 'error';
+
+					scheduler.scheduleAbsolute(300, function () {
+						update2Response.onError(error);
+					});
+					var result = scheduler.startWithCreate(function () {
+						return service.updateAll();
+					});
+
+					expect(result.messages).toHaveEqualElements(
+						onNext(200, buildState1),
+						onNext(300, mixIn(createDefaultState('Build2'), { error : {
+							name : 'UnknownError',
+							message : 'error'
+						} })),
+						onCompleted(300)
+					);
+				});
+
 			});
 
 			describe('build events', function () {

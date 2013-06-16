@@ -21,8 +21,7 @@ define([
 							group: 'build group 1',
 							isBroken: false,
 							webUrl: 'http://example1.com/',
-							isRunning: true,
-							tags: [{ name: 'Offline', description: 'Ajax error (500)' }]
+							isRunning: true
 						},
 						{
 							name: 'build name 2',
@@ -135,7 +134,7 @@ define([
 		});
 
 		it('should indicate offline builds', function () {
-			state[0].items[0].error = { message: 'Ajax error', httpStatus: 500 };
+			state[0].items[0].error = { message: 'Ajax error', description: 'Ajax error (500)' };
 
 			messages.activeProjects.onNext(state);
 
@@ -145,7 +144,7 @@ define([
 		});
 
 		it('should have tooltip for offline builds with no http status', function () {
-			state[0].items[0].error = { message: 'Ajax error' };
+			state[0].items[0].error = { message: 'Ajax error', description: 'Ajax error (500)' };
 
 			messages.activeProjects.onNext(state);
 

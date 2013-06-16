@@ -11,7 +11,6 @@ define([
 
 	function createAjaxError(error, ajaxOptions) {
 		var response = {};
-		var message;
 		if (error.textStatus === 'parsererror') {
 			response.name = 'ParseError';
 			response.message = (error.errorThrown && error.errorThrown.message) ?
@@ -21,9 +20,15 @@ define([
 			response.name = 'AjaxError';
 			response.message = (error.errorThrown) ? error.errorThrown : 'Ajax connection error';
 		}
-		response.httpStatus = (error.jqXHR && error.jqXHR.status > 0) ? error.jqXHR.status : null;
-		response.url = ajaxOptions.url + encode(ajaxOptions.data);
-		response.ajaxOptions = ajaxOptions;
+		var httpStatus = (error.jqXHR && error.jqXHR.status > 0) ? error.jqXHR.status : null;
+		if (httpStatus && httpStatus !== 200) {
+			response.description = response.message + ' (' + httpStatus + ')';
+		}
+		response.details = {
+			ajaxOptions: ajaxOptions,
+			url: ajaxOptions.url + encode(ajaxOptions.data),
+			httpStatus: httpStatus
+		};
 		return response;
 	}
 
@@ -60,8 +65,9 @@ define([
 		}
 		return $.ajaxAsObservable(ajaxOptions).catchException(function (ex) {
 			var ajaxError = createAjaxError(ex, ajaxOptions);
-			if (options.authCookie && ajaxError.httpStatus === unauthorizedStatusCode) {
+			if (options.authCookie && ajaxError.details.httpStatus === unauthorizedStatusCode) {
 				chrome.cookies.remove(options.url, options.authCookie);
+				// chrome.cookies.remove({ url: options.url, name: options.authCookie });
 			}
 			throw ajaxError;
 		}).retry(2).select(createParser(options.parser));

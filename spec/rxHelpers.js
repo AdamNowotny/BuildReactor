@@ -16,6 +16,19 @@ define([
 				var expected = Array.prototype.slice.call(arguments);
 				return hasElements(expected, this.actual);
 			},
+			toHaveElementsMatchingAt: function (time, matcher) {
+				var i, found = 0;
+				for (i = 0; i < this.actual.length; i++) {
+					try {
+						if (this.actual[i].time === time && matcher(this.actual[i].value.value)) {
+							found++;
+						}
+					} catch (ex) {
+						// ignore and check next
+					}
+				}
+				return found > 0;
+			},
 			toHaveElementsAtTimes: function () {
 				var expectedTimes = Array.prototype.slice.call(arguments);
 				var i;
@@ -75,6 +88,16 @@ define([
 			}
 		}
 		return found === expected.length;
+	}
+
+	function hasElementsMatching(actual, matcher) {
+		var i, found = 0;
+		for (i = 0; i < actual.length; i++) {
+			if (matcher(actual[i].value.value)) {
+				found++;
+			}
+		}
+		return found > 0;
 	}
 
 });

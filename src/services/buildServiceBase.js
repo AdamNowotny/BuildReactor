@@ -54,15 +54,29 @@ define([
 			.select(function getBuildById(buildId) {
 				return new self.Build(buildId, self.settings);
 			}).selectMany(function updateBuild(build) {
-				return build.update()
-					.catchException(function (ex) { 
+				return build.update().catchException(function (ex) {
 						return Rx.Observable.returnValue({
 							id: build.id,
-							error: ex
+							error: createError(ex)
 						});
 					});
 			}).select(function (state) { return self.mixInMissingState(state); })
 			.doAction(function (state) { return self.processBuildUpdate(state); });
+	};
+
+	var createError = function (ex) {
+		var error;
+		if (ex && ex.message) {
+			error = {
+				name: ex.name,
+				message: ex.message.toString(),
+				description: ex.description ? ex.description : ex.message,
+				details: ex.details ? ex.details : ex.stack
+			};
+		} else {
+			error = { name: 'UnknownError', message: ex.toString() };
+		}
+		return error;
 	};
 
 	var mixInMissingState = function (state) {
@@ -142,7 +156,17 @@ define([
 		this.poolingSubscription = Rx.Observable.timer(0, updateInterval, this.scheduler)
 			.selectMany(function () {
 				return self.updateAll().toArray();
-			}).subscribe(updates);
+			})
+			.catchException(function (ex) {
+				console.error('*** Pooling subscription error ***', ex);
+				this.events.onNext({
+					eventName: 'UnknownError',
+					details: { message: ex.message, error: ex },
+					source: self.settings.name
+				});
+				return Rx.Observable.empty();
+			})
+			.subscribe(updates);
 		return initialize;
 	};
 

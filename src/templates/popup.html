@@ -25,7 +25,7 @@
 						{{#tags}}<span class="label {{#if type}}label-{{type}}{{else}}label-inverse{{/if}} pull-right" {{#if description}}title="{{ description }}"{{/if}}>{{name}}</span>{{/tags}}
 						{{#if isDisabled}}<span class="label label-inverse pull-right">Disabled</span>{{/if}}
 						{{#if error}}
-							<span class="label label-inverse pull-right" title="{{ error.message }}{{#if error.httpStatus}} ({{ error.httpStatus }}){{/if}}">Offline <span class="error-message">({{ error.message }})</span></span>
+							<span class="label label-inverse pull-right" title="{{ error.description }}">Offline <span class="error-message">({{ error.message }})</span></span>
 						{{/if}}
 						<i class="icon-spinner icon-spin icon-large pull-right"></i>
 					</a>
