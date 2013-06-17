@@ -35,16 +35,13 @@ define([
 		}
 
 		function onBrokenBuild(event) {
-			var isUnstable = tags.contains(event.details.tags, 'Unstable');
-			var message = isUnstable ? 'Unstable, broken' : 'Broken';
-			var timeout = reloading || isUnstable ? options.timeout : null;
-			var info = createNotificationInfo(event, message, timeout);
-			showNotification(info);
+			return tags.contains('Unstable', event.details.tags) ?
+				showNotification(createNotificationInfo(event, 'Unstable, broken', options.timeout)) :
+				showNotification(createNotificationInfo(event, 'Broken'));
 		}
 
 		function onFixedBuild(event) {
-			var info = createNotificationInfo(event, 'Fixed', options.timeout);
-			showNotification(info);
+			showNotification(createNotificationInfo(event, 'Fixed', options.timeout));
 		}
 
 		function showNotification(info) {
@@ -101,7 +98,7 @@ define([
 				return;
 			}
 			var handler = eventHandlers[event.eventName];
-			if (handler) {
+			if (handler && !reloading) {
 				handler(event);
 			}
 		}).subscribe();

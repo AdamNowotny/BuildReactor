@@ -9,7 +9,7 @@ define(['common/tags'], function (tags) {
 			it('should return true if tag exists', function () {
 				var tagList = [{ name: 'tag1' }, { name: 'tag2' }];
 				
-				expect(tags.contains(tagList, 'tag1')).toBe(true);
+				expect(tags.contains('tag1', tagList)).toBe(true);
 			});
 
 		});
