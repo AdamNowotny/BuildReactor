@@ -9,6 +9,33 @@ define([
 
 	var unauthorizedStatusCode = 401;
 
+	function send(options, dataType) {
+		var timeout = options.timeout || 30000;
+		var scheduler = options.scheduler || Rx.Scheduler.timeout;
+		var ajaxOptions = createAjaxOptions(options, dataType);
+		return $.ajaxAsObservable(ajaxOptions)
+			.catchException(function (ex) {
+				var ajaxError = createAjaxError(ex, ajaxOptions);
+				if (options.authCookie && ajaxError.details.httpStatus === unauthorizedStatusCode) {
+					chrome.cookies.remove({ url: options.url, name: options.authCookie });
+				}
+				return Rx.Observable.throwException(ajaxError);
+			}).retry(2)
+			.timeout(timeout, Rx.Observable.throwException(createTimeoutError(timeout, ajaxOptions)), scheduler)
+			.select(createParser(options.parser));
+	}
+
+	function createTimeoutError(timeout, ajaxOptions) {
+		return {
+			name: 'TimeoutError',
+			message: 'Timeout',
+			description: 'Connection timed out after ' + timeout / 1000 + ' seconds',
+			details: {
+				ajaxOptions: ajaxOptions
+			}
+		};
+	}
+
 	function createAjaxError(error, ajaxOptions) {
 		var response = {};
 		if (error.textStatus === 'parsererror') {
@@ -33,13 +60,19 @@ define([
 	}
 
 	function createAjaxOptions(options, dataType) {
-		return {
+		var ajaxOptions = {
 			type: 'GET',
 			url: options.url,
 			data: options.data,
 			cache: false,
 			dataType: dataType
 		};
+		if (options.username && options.username.trim() !== '') {
+			var credentials = options.username + ':' + options.password;
+			var base64 = btoa(credentials);
+			ajaxOptions.headers = { 'Authorization': 'Basic ' + base64 };
+		}
+		return ajaxOptions;
 	}
 
 	function createParser(parser) {
@@ -56,32 +89,12 @@ define([
 		};
 	}
 
-	function send(options, dataType) {
-		var ajaxOptions = createAjaxOptions(options, dataType);
-		if (options.username && options.username.trim() !== '') {
-			var credentials = options.username + ':' + options.password;
-			var base64 = btoa(credentials);
-			ajaxOptions.headers = { 'Authorization': 'Basic ' + base64 };
-		}
-		return $.ajaxAsObservable(ajaxOptions).catchException(function (ex) {
-			var ajaxError = createAjaxError(ex, ajaxOptions);
-			if (options.authCookie && ajaxError.details.httpStatus === unauthorizedStatusCode) {
-				chrome.cookies.remove({ url: options.url, name: options.authCookie });
-			}
-			throw ajaxError;
-		}).retry(2).select(createParser(options.parser));
-	}
-
-	function json(options) {
-		return send(options, 'json');
-	}
-
-	function xml(options) {
-		return send(options, 'xml');
-	}
-
 	return {
-		json: json,
-		xml: xml
+		json: function (options) {
+			return send(options, 'json');
+		},
+		xml: function (options) {
+			return send(options, 'xml');
+		}
 	};
 });

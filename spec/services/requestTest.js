@@ -1,12 +1,15 @@
 define([
 	'services/request',
 	'rx',
-	'jquery'
+	'jquery',
+	'rx.testing'
 ], function (request, Rx, $) {
 
 	'use strict';
 
 	var successResponse = { data: {}, textStatus: 'success' };
+	var onNext = Rx.ReactiveTest.onNext;
+	var onError = Rx.ReactiveTest.onError;
 
 	describe('services/request', function () {
 
@@ -79,7 +82,7 @@ define([
 						textStatus: 'error',
 						jqXHR: { status: 0 }
 					};
-					var actualResponse;
+					var actualError;
 					var ajaxOptions = {
 						url: 'http://sample.com/',
 						data: {
@@ -90,14 +93,32 @@ define([
 					spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.throwException(response));
 
 					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {
-						actualResponse = d;
+						actualError = d;
 					});
 
-					expect(actualResponse.name).toBe('AjaxError');
-					expect(actualResponse.message).toBe('Ajax connection error');
-					expect(actualResponse.description).not.toBeDefined();
-					expect(actualResponse.details.url).toBe('http://sample.com/?param1=value1&param_2=value2');
-					expect(actualResponse.details.ajaxOptions).toBeDefined();
+					expect(actualError.name).toBe('AjaxError');
+					expect(actualError.message).toBe('Ajax connection error');
+					expect(actualError.description).not.toBeDefined();
+					expect(actualError.details.url).toBe('http://sample.com/?param1=value1&param_2=value2');
+					expect(actualError.details.ajaxOptions).toBeDefined();
+				});
+
+				it('should throw exception on timeout', function () {
+					var scheduler = new Rx.TestScheduler();
+					var ajaxOptions = { url: 'http://sample.com/', scheduler: scheduler, timeout: 300 };
+					spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.never());
+
+					var result = scheduler.startWithCreate(function () {
+						return request.json(ajaxOptions);
+					});
+
+					expect(result.messages).toHaveElements(
+						onError(500, {
+							name: 'TimeoutError',
+							message: 'Timeout',
+							description: 'Connection timed out after 0.3 seconds'
+						})
+					);
 				});
 
 				it('should throw exception on connection error with message', function () {
@@ -106,17 +127,17 @@ define([
 						textStatus: 'error',
 						jqXHR: { status: 404 }
 					};
-					var actualResponse;
+					var actualError;
 					var ajaxOptions = { url: 'http://sample.com' };
 					spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.throwException(response));
 
 					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {
-						actualResponse = d;
+						actualError = d;
 					});
 
-					expect(actualResponse.message).toBe('Not found');
-					expect(actualResponse.description).toBe('Not found (404)');
-					expect(actualResponse.details.httpStatus).toBe(404);
+					expect(actualError.message).toBe('Not found');
+					expect(actualError.description).toBe('Not found (404)');
+					expect(actualError.details.httpStatus).toBe(404);
 				});
 
 				it('should remove session cookie if 401 received', function () {
