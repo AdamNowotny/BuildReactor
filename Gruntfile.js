@@ -18,7 +18,7 @@ module.exports = function (grunt) {
 	grunt.registerTask('default', ['clean:build', 'jshint', 'connect:test', 'jasmine', 'cssmin', 'requirejs', 'copy', 'clean:buildSrc', 'compress']);
 	grunt.registerTask('test', ['jshint', 'connect:test', 'jasmine']);
 	grunt.registerTask('server', ['jasmine:main:build', 'connect:server']);
-	grunt.registerTask('dist', ['clean:build', 'cssmin', 'requirejs', 'copy', 'clean:buildSrc']);
+	grunt.registerTask('dist', ['clean:build', 'cssmin', 'requirejs', 'copy', 'clean:buildSrc', 'compress']);
 	grunt.registerTask('report', ['plato:src']);
 	grunt.registerTask('travis', ['clean:build', 'jshint', 'connect:test', 'jasmine']);
 
@@ -278,7 +278,7 @@ module.exports = function (grunt) {
 		compress: {
 			main: {
 				options: {
-					archive: '<%= vars.build %>/<%= pkg.name %>.zip'
+					archive: '<%= vars.dist %>.zip'
 				},
 				files: [
 					{
