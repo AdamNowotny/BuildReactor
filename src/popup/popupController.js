@@ -19,12 +19,8 @@ define([
 		function createModel(state) {
 			return state.map(function (serviceState) {
 				sortBy('group', serviceState.items);
-				var hasBrokenBuilds = serviceState.items.filter(function (item) {
-					return item.isBroken && !item.isDisabled && !item.error;
-				}).length > 0;
 				return {
 					name: serviceState.name,
-					hasBrokenBuilds: hasBrokenBuilds,
 					groups: getGroups(serviceState.items)
 				};
 			});

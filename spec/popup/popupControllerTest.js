@@ -123,7 +123,6 @@ define([
 			messages.activeProjects.onNext(state);
 
 			expect($('.service-item.broken').length).toBe(1);
-			expect($('.has-broken-builds')).toHaveText('!');
 		});
 
 		it('should indicate disabled build', function () {
@@ -193,36 +192,6 @@ define([
 
 				expect($('.service-item.offline .label')).toHaveAttr('data-original-title', 'Ajax error (500)');
 			});
-		});
-
-		it('should not show label for disabled broken builds', function () {
-			var state = [{
-				name: 'service 1',
-				items: [{
-						name: 'build name 1',
-						isBroken: true,
-						isDisabled: true
-					}]
-				}];
-			messages.activeProjects.onNext(state);
-
-			expect($('.service-item.broken').length).toBe(1);
-			expect($('.has-broken-builds')).not.toBeVisible();
-		});
-
-		it('should not show label for offline broken builds', function () {
-			var state = [{
-				name: 'service 1',
-				items: [{
-						name: 'build name 1',
-						isBroken: true,
-						error: {}
-					}]
-				}];
-			messages.activeProjects.onNext(state);
-
-			expect($('.service-item.broken').length).toBe(1);
-			expect($('.has-broken-builds')).not.toBeVisible();
 		});
 
 		it('should show if building', function () {
