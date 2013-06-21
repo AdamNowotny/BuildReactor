@@ -28,11 +28,9 @@ define([
 	var events = new Rx.Subject();
 
 	var settingsSubject = new Rx.BehaviorSubject([]);
-	var servicesSubject = new Rx.BehaviorSubject();
-	var activeProjectsSubject = new Rx.BehaviorSubject();
-	var publishServicesSubscription;
+	var servicesSubject = new Rx.BehaviorSubject([]);
+	var activeProjectsSubject = new Rx.BehaviorSubject([]);
 	var activeProjectsSubscription;
-	var startSubscription;
 
 	settingsSubject.subscribe(function (settingsList) {
 		events.onNext({
@@ -40,11 +38,8 @@ define([
 			source: 'serviceController',
 			details: settingsList
 		});
-		if (publishServicesSubscription) {
-			publishServicesSubscription.dispose();
-		}
 		removeAll();
-		publishServicesSubscription = publishServices(settingsList).subscribe(function (services) {
+		startServices(settingsList).subscribe(function () {
 			events.onNext({
 				eventName: 'servicesInitialized',
 				source: 'serviceController'
@@ -52,7 +47,7 @@ define([
 		});
 	});
 
-	function publishServices(settingsList) {
+	function loadServices(settingsList) {
 		return Rx.Observable.fromArray(settingsList)
 			.where(function (settings) {
 				return settings.disabled !== true;
@@ -61,15 +56,18 @@ define([
 			}).doAction(function (service) {
 				services.push(service);
 				eventsSubscriptions.push(service.events.subscribe(events));
-			}).selectMany(function (service) {
-				return Rx.Observable.returnValue(service)
-						.selectMany(function (service) {
-							return service.start();
-						}).select(function (startSubscription) { return service; });
-			}).toArray()
-			.doAction(function (services) {
+			}).toArray();
+	}
+
+	function startServices(settingsList) {
+		return loadServices(settingsList).doAction(function (services) {
 				servicesSubject.onNext(services);
-			});
+			}).selectMany(function (services) {
+				return Rx.Observable.fromArray(services)
+					.selectMany(function (service) {
+						return service.start();
+					});
+			}).toArray();
 	}
 
 	function removeAll() {
@@ -100,11 +98,7 @@ define([
 	});
 
 	var start = function (settingsList) {
-		if (startSubscription) {
-			startSubscription.dispose();
-		}
 		settingsSubject.onNext(settingsList);
-		startSubscription = servicesSubject.subscribe();
 	};
 
 	return {

@@ -31,7 +31,8 @@ define([
 			message: 'Timeout',
 			description: 'Connection timed out after ' + timeout / 1000 + ' seconds',
 			details: {
-				ajaxOptions: ajaxOptions
+				ajaxOptions: ajaxOptions,
+				url: ajaxOptions.url + encode(ajaxOptions.data)
 			}
 		};
 	}
