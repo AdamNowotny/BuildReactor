@@ -123,7 +123,7 @@ define([
 			messages.activeProjects.onNext(state);
 
 			expect($('.service-item.broken').length).toBe(1);
-			expect($('.failed-count')).toHaveText('1 broken');
+			expect($('.has-broken-builds')).toHaveText('!');
 		});
 
 		it('should indicate disabled build', function () {
@@ -195,7 +195,7 @@ define([
 			});
 		});
 
-		it('should not show failed count for disabled builds', function () {
+		it('should not show label for disabled broken builds', function () {
 			var state = [{
 				name: 'service 1',
 				items: [{
@@ -207,10 +207,10 @@ define([
 			messages.activeProjects.onNext(state);
 
 			expect($('.service-item.broken').length).toBe(1);
-			expect($('.failed-count')).not.toBeVisible();
+			expect($('.has-broken-builds')).not.toBeVisible();
 		});
 
-		it('should not show failed count for offline builds', function () {
+		it('should not show label for offline broken builds', function () {
 			var state = [{
 				name: 'service 1',
 				items: [{
@@ -222,7 +222,7 @@ define([
 			messages.activeProjects.onNext(state);
 
 			expect($('.service-item.broken').length).toBe(1);
-			expect($('.failed-count')).not.toBeVisible();
+			expect($('.has-broken-builds')).not.toBeVisible();
 		});
 
 		it('should show if building', function () {
