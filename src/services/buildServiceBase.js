@@ -100,22 +100,22 @@ define([
 		var lastState = this.latestBuildStates[newState.id];
 		this.latestBuildStates[newState.id] = newState;
 		if (!lastState.error && newState.error) {
-			this.events.onNext({ eventName: 'buildOffline', details: newState });
+			this.events.onNext({ eventName: 'buildOffline', details: newState, source: newState.serviceName });
 		}
 		if (lastState.error && !newState.error) {
-			this.events.onNext({ eventName: 'buildOnline', details: newState });
+			this.events.onNext({ eventName: 'buildOnline', details: newState, source: newState.serviceName });
 		}
 		if (!lastState.isBroken && newState.isBroken) {
-			this.events.onNext({ eventName: 'buildBroken', details: newState });
+			this.events.onNext({ eventName: 'buildBroken', details: newState, source: newState.serviceName });
 		}
 		if (lastState.isBroken && !newState.isBroken) {
-			this.events.onNext({ eventName: 'buildFixed', details: newState });
+			this.events.onNext({ eventName: 'buildFixed', details: newState, source: newState.serviceName });
 		}
 		if (!lastState.isRunning && newState.isRunning) {
-			this.events.onNext({ eventName: 'buildStarted', details: newState });
+			this.events.onNext({ eventName: 'buildStarted', details: newState, source: newState.serviceName });
 		}
 		if (lastState.isRunning && !newState.isRunning) {
-			this.events.onNext({ eventName: 'buildFinished', details: newState });
+			this.events.onNext({ eventName: 'buildFinished', details: newState, source: newState.serviceName });
 		}
 	};
 
@@ -164,7 +164,7 @@ define([
 					details: { message: ex.message, error: ex },
 					source: self.settings.name
 				});
-				return Rx.Observable.empty();
+				return Rx.Observable.throwException(ex);
 			})
 			.subscribe(updates);
 		return initialize;

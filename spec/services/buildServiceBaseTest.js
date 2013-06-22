@@ -330,7 +330,7 @@ define([
 					});
 
 					expect(result.messages).toHaveElements(
-						onNext(500, { eventName: 'buildOffline', details: mixIn(buildState1, { error: 'error'}) })
+						onNext(500, { eventName: 'buildOffline', details: mixIn(buildState1, { error: 'error'}), source: buildState1.serviceName })
 					);
 				});
 
@@ -342,9 +342,7 @@ define([
 						return service.events;
 					});
 
-					expect(result.messages).not.toHaveElements(
-						onNext(500, { eventName: 'buildOffline', details: mixIn(buildState1, { error: 'error'}) })
-					);
+					expect(result.messages).not.toHaveEvent('buildOffline');
 				});
 
 				it('should push buildOnline if build update succeeds after failure', function () {
@@ -355,7 +353,7 @@ define([
 					});
 
 					expect(result.messages).toHaveElements(
-						onNext(500, { eventName: 'buildOnline', details: newState })
+						onNext(500, { eventName: 'buildOnline', details: newState, source: newState.serviceName })
 					);
 				});
 
@@ -368,7 +366,7 @@ define([
 					});
 
 					expect(result.messages).toHaveElements(
-						onNext(500, { eventName: 'buildBroken', details: newState })
+						onNext(500, { eventName: 'buildBroken', details: newState, source: newState.serviceName })
 					);
 				});
 
@@ -392,7 +390,7 @@ define([
 					});
 
 					expect(result.messages).toHaveElements(
-						onNext(500, { eventName: 'buildFixed', details: newState })
+						onNext(500, { eventName: 'buildFixed', details: newState, source: newState.serviceName })
 					);
 				});
 
@@ -416,7 +414,7 @@ define([
 					});
 
 					expect(result.messages).toHaveElements(
-						onNext(500, { eventName: 'buildStarted', details: newState })
+						onNext(500, { eventName: 'buildStarted', details: newState, source: newState.serviceName })
 					);
 				});
 
@@ -440,7 +438,7 @@ define([
 					});
 
 					expect(result.messages).toHaveElements(
-						onNext(500, { eventName: 'buildFinished', details: newState })
+						onNext(500, { eventName: 'buildFinished', details: newState, source: newState.serviceName })
 					);
 				});
 
