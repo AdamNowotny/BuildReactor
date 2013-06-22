@@ -42,7 +42,8 @@ define([
 		startServices(settingsList).subscribe(function () {
 			events.onNext({
 				eventName: 'servicesInitialized',
-				source: 'serviceController'
+				source: 'serviceController',
+				details: settingsList
 			});
 		});
 	});

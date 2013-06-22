@@ -41,7 +41,7 @@ module.exports = function (grunt) {
 		jshint: {
 			files: ['src/**/*.js', 'spec/**/*.js'],
 			options: {
-				jshintrc: '.jshintrc',
+				jshintrc: '.jshintrc'
 			}
 		},
 		jasmine: {
@@ -138,15 +138,9 @@ module.exports = function (grunt) {
 		cssmin: {
 			compress: {
 				files: {
-					'<%= vars.dist %>/css/options.css': [
-						'css/options.css',
-						'css/addService.css',
-						'css/alert.css',
-						'css/serviceList.css',
-						'css/serviceSettings.css'
-					],
+					'<%= vars.dist %>/css/options.css': [ 'css/options.css'	],
 					'<%= vars.dist %>/css/popup.css': [ 'css/popup.css' ],
-					'<%= vars.dist %>/css/dashboard.css': [ 'css/popup.css', 'css/dashboard.css' ]
+					'<%= vars.dist %>/css/dashboard.css': [ 'css/dashboard.css' ]
 				}
 			}
 		},
