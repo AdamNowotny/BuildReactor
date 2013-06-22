@@ -32,19 +32,17 @@ define([
 		}
 	}
 
-	var stateSubscription;
 	var messages = new Rx.Subject();
 
 	var onConnect = function (port) {
-		stateSubscription = serviceController.activeProjects.subscribe(function (servicesState) {
+		var onDisconnect = function (port) {
+			stateSubscription.dispose();
+		};
+		var stateSubscription = serviceController.activeProjects.subscribe(function (servicesState) {
 			port.postMessage(servicesState);
 			messages.onNext(servicesState);
 		});
 		port.onDisconnect.addListener(onDisconnect);
-	};
-
-	var onDisconnect = function (port) {
-		stateSubscription.dispose();
 	};
 
 	return {

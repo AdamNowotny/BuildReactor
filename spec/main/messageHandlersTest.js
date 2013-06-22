@@ -8,16 +8,9 @@ define([
 
 	describe('messageHandlers', function () {
 
+		var port;
 		var handler;
 		var connectHandler;
-		var disconnectHandler;
-		var stateChangesPort = {
-			name: 'stateChanges',
-			postMessage: function () {},
-			onDisconnect: {
-				addListener: function () {}
-			}
-		};
 
 		beforeEach(function () {
 			spyOn(chrome.runtime.onMessage, 'addListener').andCallFake(function (handlerFunction) {
@@ -26,40 +19,69 @@ define([
 			spyOn(chrome.runtime.onConnect, 'addListener').andCallFake(function (onConnect) {
 				connectHandler = onConnect;
 			});
-			spyOn(stateChangesPort.onDisconnect, 'addListener').andCallFake(function (onDisconnect) {
-				disconnectHandler = onDisconnect;
-			});
-			spyOn(stateChangesPort, 'postMessage');
+			port = openPort('popup');
 			messageHandlers.init();
 		});
 
 		afterEach(function () {
-			disconnectHandler(stateChangesPort);
+			if (port.disconnectHandler) {
+				port.disconnectHandler(port);
+			}
 		});
+
+		function openPort(portName) {
+			var port = {
+				name: portName,
+				postMessage: function () {},
+				onDisconnect: {
+					addListener: function () {}
+				}
+			};
+			spyOn(port.onDisconnect, 'addListener').andCallFake(function (onDisconnect) {
+				port.disconnectHandler = onDisconnect;
+			});
+			spyOn(port, 'postMessage');
+			return port;
+		}
 
 		describe('state', function () {
 
 			it('should subscribe to state sequence on connect', function () {
-				connectHandler(stateChangesPort);
+				connectHandler(port);
 
 				serviceController.activeProjects.onNext([{ name: 'service 1', items: [] }]);
 
-				expect(stateChangesPort.postMessage).toHaveBeenCalled();
+				expect(port.postMessage).toHaveBeenCalled();
 			});
 
-			it('should unsubscribe from events on disconnect', function () {
-				connectHandler(stateChangesPort);
-				disconnectHandler(stateChangesPort);
+			it('should unsubscribe from state changes on disconnect', function () {
+				connectHandler(port);
+				port.disconnectHandler(port);
 
-				serviceController.events.onNext('test');
-				serviceController.events.onNext('test');
-				serviceController.events.onNext('test');
+				serviceController.activeProjects.onNext('test');
+				serviceController.activeProjects.onNext('test');
+				serviceController.activeProjects.onNext('test');
 
-				expect(stateChangesPort.postMessage.callCount).toBe(1);
+				expect(port.postMessage.callCount).toBe(1);
+			});
+
+			it('should unsubscribe from right channel', function () {
+				var popupPort = openPort('popup');
+				var dashboardPort = openPort('dashboard');
+
+				connectHandler(popupPort);
+				connectHandler(dashboardPort);
+				popupPort.disconnectHandler(popupPort);
+				serviceController.activeProjects.onNext('test');
+				serviceController.activeProjects.onNext('test');
+				serviceController.activeProjects.onNext('test');
+
+				expect(popupPort.postMessage.callCount).toBe(1);
+				expect(dashboardPort.postMessage.callCount).toBe(4);
 			});
 
 			it('should push message on event', function () {
-				connectHandler(stateChangesPort);
+				connectHandler(port);
 				var lastMessage;
 				messageHandlers.messages.subscribe(function (message) {
 					lastMessage = message;
