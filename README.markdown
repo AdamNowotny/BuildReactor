@@ -3,7 +3,7 @@ BuildReactor [![Build Status](https://secure.travis-ci.org/AdamNowotny/BuildReac
 
 Developer notifications and dashboard (Google Chrome extension)
 
-Download from [Chrome Web Store](http://goo.gl/BX01T)
+Install from [Chrome Web Store](http://goo.gl/BX01T)
 
 Get updates on Twitter [@BuildReactor](https://twitter.com/BuildReactor) or look at [version history](https://github.com/AdamNowotny/BuildReactor/wiki/What's-new)
 
