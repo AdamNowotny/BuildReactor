@@ -82,13 +82,12 @@ li.service-item {
 			background-color: #888;
 		}
 
-	li.service-item.offline {
+	li.service-item.offline,
+	li.service-item.offline.broken,
+	li.service-item.offline.building,
+	li.service-item.offline.broken.building {
 		background-color: #888;
 	}
-
-		li.service-item.offline.broken {
-			background-color: #888;
-		}
 
 		li.service-item.offline.disabled .service-item-name,
 		li.service-item.offline.disabled.broken .service-item-name {
@@ -110,7 +109,7 @@ li.service-item {
 	}
 
 		li.service-item.building .service-item-name,
-		li.service-item.building .label,
+		li.service-item.building .label-warning,
 		li.service-item.building .icon-spinner {
 			color: #360;
 		}
@@ -124,7 +123,7 @@ li.service-item {
 		}
 	
 		li.service-item.broken.building .service-item-name,
-		li.service-item.broken.building .label,
+		li.service-item.broken.building .label-warning,
 		li.service-item.broken.building .icon-spinner {
 			color: #900;
 		}

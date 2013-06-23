@@ -8,7 +8,7 @@ require.config({
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
 		jquery: "../components/jquery/jquery.min",
 		mout: '../components/mout/src',
-		'popup/messages': 'popup/messagesStatic',
+		'popup/messages': 'popup/messagesStaticDashboard',
 		rx: 'rxjs',
 		'rx.binding': 'rxjs',
 		'rx.jquery': 'rxjs',

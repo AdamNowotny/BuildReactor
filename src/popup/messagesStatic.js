@@ -4,88 +4,45 @@ define(['rx', 'rx.time'], function (Rx) {
 
 	var activeProjects = [
 		{
-			name: "BuildReactor",
+			name: "OpenMRS",
 			items: [
 				{
-					name: "Failed offline",
-					group: "Offline",
-					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
-					isBroken: true,
+					name: "Reset Latest Demo DB",
+					group: "Demo Sites",
+					isBroken: false,
 					url: null,
-					isRunning: false
+					isRunning: true
 				}, {
-					name: "Success offline",
-					group: "Offline",
-					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
+					name: "OpenMRS Core",
+					group: "JUnit",
 					isBroken: false,
 					url: null,
 					isRunning: false
-				}, {
-					name: "Success disabled offline",
-					group: "Offline",
-					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
-					isBroken: false,
-					url: null,
-					isRunning: false,
-					isDisabled: true
-				}, {
-					name: "Broken disabled offline",
-					group: "Offline",
-					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
-					isBroken: true,
-					url: null,
-					isRunning: false,
-					isDisabled: true
-				}, {
-					name: "Success",
-					group: "Normal",
+				}
+			]
+		}, {
+			name: 'Jenkins',
+			items: [
+				{
+					name: "infra_main_svn_to_git",
 					isBroken: false,
 					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
-					isRunning: false
+					isRunning: false,
+					isDisabled: true
 				}, {
-					name: "Failed",
-					group: "Normal",
+					name: "infra_plugin-compat-tester",
 					isBroken: true,
 					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
 					isRunning: false
 				}, {
-					name: "Unstable",
-					group: "Normal",
+					name: "jenkins_lts_branch",
 					isBroken: true,
 					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
 					isRunning: false,
 					tags: [{ name: 'Unstable', type: 'warning' }]
 				}, {
-					name: "Success",
-					group: "Building",
+					name: "model-ruby-project",
 					isBroken: false,
-					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
-					isRunning: true
-				}, {
-					name: "Failed",
-					group: "Building",
-					isBroken: true,
-					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
-					isRunning: true
-				}, {
-					name: "Unstable",
-					group: "Building",
-					isBroken: true,
-					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
-					isRunning: true,
-					tags: [{ name: 'Unstable', type: 'warning' }]
-				}, {
-					name: "Success",
-					group: "Disabled",
-					isBroken: false,
-					isDisabled: true,
-					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
-					isRunning: false
-				}, {
-					name: "Failed",
-					group: "Disabled",
-					isBroken: true,
-					isDisabled: true,
 					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
 					isRunning: false
 				}
