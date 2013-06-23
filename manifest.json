@@ -23,8 +23,7 @@
 		"http://*/*",
 		"https://*/*",
 		"notifications",
-		"cookies",
-		"tabs"
+		"cookies"
 	],
 	"web_accessible_resources": [
 		"src/services/bamboo/icon.png",
