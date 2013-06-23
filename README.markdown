@@ -93,10 +93,7 @@ grunt
 
 Open Chrome Extension manager and "Load unpacked extension.." from `_build/BuildReactor` folder.
 
-Running `grunt` and refreshing the extension in Chrome is required every time you make a change. If the build fails and you just want to deploy:
-```
-grunt dist
-```
+Running `grunt` (or just `grunt dist`) and refreshing the extension in Chrome is required every time you make a change.
 
 Technical overview
 ==================
