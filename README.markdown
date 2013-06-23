@@ -7,12 +7,15 @@ Download from [Chrome Web Store](http://goo.gl/BX01T)
 
 Get updates on Twitter [@BuildReactor](https://twitter.com/BuildReactor)
 
-What does it do ?
-=================
+Version history can be found [here](https://github.com/AdamNowotny/BuildReactor/wiki/What's-new)
 
- * Monitors multiple continuous integration servers
+What is it ?
+============
+
  * Gives you overview of all your builds in one place
- * Shows notifications only about the important events to minimise distractions
+ * Supports all continuous integration servers
+ * Shows only relevant notifications to minimise distractions
+ * Let's you setup information radiator for your team within minutes, not hours or days
  * Works on Windows, Mac and Linux
 
 Supported services
@@ -20,42 +23,13 @@ Supported services
 
 Below are the supported CI servers.
 
- * Atlassian Bamboo - http://www.atlassian.com/software/bamboo/
- * BuildBot - http://buildbot.net/
- * CruiseControl - http://cruisecontrol.sourceforge.net/
- * CruiseControl.NET - http://www.cruisecontrolnet.org/
- * CruiseControl.rb - http://cruisecontrolrb.thoughtworks.com/
- * Jenkins (Hudson) - http://jenkins-ci.org/
- * ThoughtWorks GO - http://www.thoughtworks-studios.com/go-continuous-delivery
- * TeamCity - http://www.jetbrains.com/teamcity/
- * Generic cctray XML (Travis-CI)
-
-CCtray
-------
-
-Most CI servers report the status of the builds using cctray [XML reporting format](http://confluence.public.thoughtworks.org/display/CI/Multiple+Project+Summary+Reporting+Standard), you just need to add the location of the XML to the address of your server.
-
-For example if you want to monitor a Travis-CI build, use this format:
-
-http://travis-ci.org/AdamNowotny/BuildReactor/cc.xml
-
-Why do I need it ?
-==================
-
- * The team you just joined uses a different server for continuous integration. `cctray` or similar might work for you or might not depending what server you want to connect to.
- * Do you like being spammed about every single commit to the repository or that the server is "building"...again ? On teams using continous delivery this happens all the time.
- * Some servers send you notifications about broken builds on your email. Try going away on vacation or even for lunch and tell me how useful all these messages were when you came back.
- * Your team uses an information radiator or a build light, but you might not see it all the time or would like to have more information before interrupting your work.
- * If you work remotely, how do you know it's safe to get latest changes from the repository or push your changes ? Refreshing the page and looking for relevant information until your build passes seems like a boring way to spend your time.
-
-How does it work ?
-==================
-
- * See the state of all builds by clicking BuildReactor icon in chrome
- * Click on notification opens page that gives you more details about this event
- * Notifications about events that require some action (f.e. build broken) stay on screen
- * Notifications about fixed builds show up briefly to let you know the build is reliable again and it's safe to get latest sources or commit your changes
- * Outdated notifications are hidden, f.e. build failure if someone already fixed the build. That way you don't end up with crazy amount of notifications after being away. You only see how things changed since the last time you looked at the screen.
+ * [Atlassian Bamboo](http://www.atlassian.com/software/bamboo/)
+ * [BuildBot](http://buildbot.net/)
+ * Servers using [XML cctray format](http://confluence.public.thoughtworks.org/display/CI/Multiple+Project+Summary+Reporting+Standard) like [CruiseControl](http://cruisecontrol.sourceforge.net/), [CruiseControl.NET](http://www.cruisecontrolnet.org/), [CruiseControl.rb](http://cruisecontrolrb.thoughtworks.com/)
+ * [Jenkins](http://jenkins-ci.org/) (Hudson)
+ * [ThoughtWorks GO](http://www.thoughtworks-studios.com/go-continuous-delivery)
+ * [TeamCity](http://www.jetbrains.com/teamcity/)
+ * [Travis-CI](http://travis-ci.org/)
 
 Screenshots
 ===========
@@ -91,7 +65,7 @@ bower update
 grunt
 ```
 
-Open Chrome Extension manager and "Load unpacked extension.." from `_build/BuildReactor` folder.
+Open Chrome Extension manager and `Load unpacked extension..` from `_build/BuildReactor` folder.
 
 Running `grunt` (or just `grunt dist`) and refreshing the extension in Chrome is required every time you make a change.
 
@@ -132,9 +106,3 @@ Legal
 This code is distributed under Apache License version 2.0
 
 Application icon based on https://commons.wikimedia.org/wiki/File:Radiation_warning_symbol_3.svg
-
-What's new
-============
-Version history can be found [here](https://github.com/AdamNowotny/BuildReactor/wiki/What's-new)
-
-Follow [@BuildReactor](https://twitter.com/BuildReactor) on Twitter to find out what's in new releases.
