@@ -26,17 +26,8 @@ require.config({
 });
 require([
 	'rxjs',
-	'jquery',
-	'popup/messages',
-	'popup/popupController',
-	'popup/popupLogger',
-	'bootstrap'
-], function (rxjs, $, messages, popupController, popupLogger) {
+	'popup'
+], function (rxjs, popup) {
 
 	'use strict';
-	
-	popupController();
-	popupLogger();
-	messages.init();
-	$('.navbar a').tooltip({ placement: 'bottom' });
 });
