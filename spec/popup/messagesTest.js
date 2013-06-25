@@ -1,4 +1,4 @@
-define(['popup/messages'], function (messages) {
+define(['popup/messages', 'common/chromeApi'], function (messages, chromeApi) {
 
 	'use strict';
 
@@ -13,8 +13,7 @@ define(['popup/messages'], function (messages) {
 					addListener: function () {}
 				}
 			};
-			spyOn(chrome.runtime, 'connect').andReturn(port);
-			spyOn(chrome.runtime, 'sendMessage');
+			spyOn(chromeApi, 'connect').andReturn(port);
 			spyOn(port.onMessage, 'addListener').andCallFake(function (listener) {
 				publishMessage = listener;
 			});
@@ -23,7 +22,7 @@ define(['popup/messages'], function (messages) {
 		it('should connect on init', function () {
 			messages.init();
 
-			expect(chrome.runtime.connect).toHaveBeenCalledWith({ name: 'state' });
+			expect(chromeApi.connect).toHaveBeenCalledWith({ name: 'state' });
 		});
 
 		it('should subscribe on init', function () {

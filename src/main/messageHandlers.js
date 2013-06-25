@@ -2,8 +2,9 @@ define([
 	'main/settingsStore',
 	'main/serviceLoader',
 	'main/serviceController',
+	'common/chromeApi',
 	'rx'
-], function (settingsStore, serviceLoader, serviceController, Rx) {
+], function (settingsStore, serviceLoader, serviceController, chromeApi, Rx) {
 
 	'use strict';
 
@@ -47,8 +48,8 @@ define([
 
 	return {
 		init: function () {
-			chrome.runtime.onConnect.addListener(onConnect);
-			chrome.runtime.onMessage.addListener(onMessage);
+			chromeApi.addConnectListener(onConnect);
+			chromeApi.addMessageListener(onMessage);
 		},
 		messages: messages
 	};

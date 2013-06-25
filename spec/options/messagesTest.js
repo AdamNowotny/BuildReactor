@@ -1,11 +1,11 @@
-define(['options/messages'], function (messages) {
+define(['options/messages', 'common/chromeApi'], function (messages, chromeApi) {
 
 	'use strict';
 
 	describe('options/messages', function () {
 
 		beforeEach(function () {
-			spyOn(chrome.runtime, 'sendMessage');
+			spyOn(chromeApi, 'sendMessage');
 		});
 
 		it('should send initOptions message', function () {
@@ -13,7 +13,7 @@ define(['options/messages'], function (messages) {
 
 			messages.initOptions(callback);
 
-			expect(chrome.runtime.sendMessage).toHaveBeenCalledWith({name: "initOptions"}, callback);
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "initOptions"}, callback);
 		});
 
 		it('should send updateSettings message', function () {
@@ -21,7 +21,7 @@ define(['options/messages'], function (messages) {
 
 			messages.updateSettings(settings);
 
-			expect(chrome.runtime.sendMessage).toHaveBeenCalledWith({name: "updateSettings", settings: settings});
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "updateSettings", settings: settings});
 		});
 
 		it('should send availableProjects message', function () {
@@ -30,7 +30,7 @@ define(['options/messages'], function (messages) {
 
 			messages.availableProjects(settings, callback);
 
-			expect(chrome.runtime.sendMessage).toHaveBeenCalledWith({name: "availableProjects", serviceSettings: settings}, callback);
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "availableProjects", serviceSettings: settings}, callback);
 		});
 	});
 

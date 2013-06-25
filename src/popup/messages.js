@@ -1,9 +1,9 @@
-define(['rx', 'rx.binding'], function (Rx) {
+define(['common/chromeApi', 'rx', 'rx.binding'], function (chromeApi, Rx) {
 
 	'use strict';
 
 	var init = function () {
-		var port = chrome.runtime.connect({ name: 'state' });
+		var port = chromeApi.connect({ name: 'state' });
 		port.onMessage.addListener(function (message) {
 			activeProjects.onNext(message);
 		});

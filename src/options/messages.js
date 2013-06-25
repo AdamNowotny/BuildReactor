@@ -1,17 +1,17 @@
-define(function () {
+define(['common/chromeApi'], function (chromeApi) {
 	
 	'use strict';
 
 	var updateSettings = function (settingsList) {
-		chrome.runtime.sendMessage({name: "updateSettings", settings: settingsList});
+		chromeApi.sendMessage({name: "updateSettings", settings: settingsList});
 	};
 
 	var initOptions = function (callback) {
-		chrome.runtime.sendMessage({name: "initOptions"}, callback);
+		chromeApi.sendMessage({name: "initOptions"}, callback);
 	};
 
 	var availableProjects = function (settings, callback) {
-		chrome.runtime.sendMessage({name: "availableProjects", serviceSettings: settings}, callback);
+		chromeApi.sendMessage({name: "availableProjects", serviceSettings: settings}, callback);
 	};
 
 	return {

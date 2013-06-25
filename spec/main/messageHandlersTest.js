@@ -2,8 +2,9 @@ define([
 	'main/messageHandlers',
 	'main/serviceLoader',
 	'main/serviceController',
-	'rx'
-], function (messageHandlers, serviceLoader, serviceController, Rx) {
+	'rx',
+	'common/chromeApi'
+], function (messageHandlers, serviceLoader, serviceController, Rx, chromeApi) {
 	'use strict';
 
 	describe('messageHandlers', function () {
@@ -13,10 +14,10 @@ define([
 		var connectHandler;
 
 		beforeEach(function () {
-			spyOn(chrome.runtime.onMessage, 'addListener').andCallFake(function (handlerFunction) {
+			spyOn(chromeApi, 'addMessageListener').andCallFake(function (handlerFunction) {
 				handler = handlerFunction;
 			});
-			spyOn(chrome.runtime.onConnect, 'addListener').andCallFake(function (onConnect) {
+			spyOn(chromeApi, 'addConnectListener').andCallFake(function (onConnect) {
 				connectHandler = onConnect;
 			});
 			port = openPort('popup');

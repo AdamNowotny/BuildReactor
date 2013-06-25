@@ -24,6 +24,16 @@ var chrome = {
 			addListener: function () {}
 		}
 	},
+	extension: {
+		sendMessage: function () {},
+		onMessage: {
+			addListener: function () {}
+		},
+		onConnect: {
+			addListener: function () {}
+		},
+		connect: function () {}
+	},
 	cookies: {
 		remove: function () {}
 	}
