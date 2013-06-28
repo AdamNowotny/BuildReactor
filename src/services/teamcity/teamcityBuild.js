@@ -24,7 +24,7 @@ define([
 					return state;
 				});
 		}).zip(buildRunningRequest(self), function (state, buildRunningResponse) {
-			state.isRunning = buildRunningResponse.running;
+			state.isRunning = !!buildRunningResponse.running;
 			return state;
 		});
 	};

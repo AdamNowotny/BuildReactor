@@ -132,7 +132,7 @@ define([
 		});
 
 		it('should not set isRunning if it is not', function () {
-			buildRunningJson.running = false;
+			buildRunningJson.running = undefined;
 
 			build.update().subscribe(function (state) {
 				expect(state.isRunning).toBe(false);
