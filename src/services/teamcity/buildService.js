@@ -25,7 +25,8 @@ define([
 			urlHint: 'http://teamcity.jetbrains.com/',
 			username: '',
 			password: '',
-			updateInterval: 60
+			updateInterval: 60,
+			branch: ''
 		};
 	};
 

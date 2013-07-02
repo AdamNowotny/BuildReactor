@@ -25,6 +25,12 @@
 			<input type="password" name="password" class="password-input" placeholder="{{$ 'settings_password'}}" value="{{ password }}" />
 		</div>
 		{{/isDefined}}
+		{{#isDefined branch}}
+		<div class="input-prepend field" data-name="branch">
+			<span class="add-on"><i class="icon-code-fork"></i></span>
+			<input type="text" name="branch" class="branch-input" placeholder="{{$ 'settings_branch'}}" value="{{ branch }}" />
+		</div>
+		{{/isDefined}}
 		{{#isDefined updateInterval}}
 		<label for="update-interval">{{$ 'settings_interval' }}</label>
 		<div class="input-append input-prepend field" data-name="updateInterval">

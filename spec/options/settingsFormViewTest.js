@@ -82,6 +82,19 @@ define([
 				expect($('.password-input')).not.toBeVisible();
 			});
 
+			it('should show branch', function () {
+				form.show({ branch: 'ref/heads/release' });
+
+				expect($('.branch-input')).toHaveValue('ref/heads/release');
+				expect($('.branch-input')).toHaveAttr('placeholder', 'Default branch');
+			});
+
+			it('should hide branch if not present', function () {
+				form.show({});
+
+				expect($('.branch-input')).not.toBeVisible();
+			});
+
 		});
 
 		it('should focus on first input on load', function () {

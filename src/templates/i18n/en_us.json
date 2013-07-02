@@ -6,5 +6,6 @@
 	"settings_password": "Password",
 	"settings_interval": "Update interval",
 	"settings_interval_unit": "sec",
-	"settings_showProjects": "Show"
+	"settings_showProjects": "Show",
+	"settings_branch": "Default branch"
 }

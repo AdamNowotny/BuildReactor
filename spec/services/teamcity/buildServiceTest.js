@@ -37,6 +37,7 @@ define([
 			expect(defaultSettings.username).toBeDefined();
 			expect(defaultSettings.password).toBeDefined();
 			expect(defaultSettings.updateInterval).toBe(60);
+			expect(defaultSettings.branch).toBe('');
 		});
 
 		it('should set Build factory method', function () {
