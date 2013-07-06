@@ -1,7 +1,7 @@
 {
   "name": "BuildReactor",
   "description": "Developer notifications and dashboard",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "homepage": "https://github.com/AdamNowotny/BuildReactor",
   "author": {
     "name": "Adam Nowotny",
@@ -42,6 +42,7 @@
     "grunt-contrib-requirejs": "~0.4.1",
     "grunt-contrib-watch": "~0.4.4",
     "grunt-plato": "~0.2.0",
-    "grunt-template-jasmine-requirejs": "~0.1.2"
+    "grunt-template-jasmine-requirejs": "~0.1.2",
+    "grunt-version": "~0.2.2"
   }
 }

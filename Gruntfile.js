@@ -14,6 +14,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-plato');
+	grunt.loadNpmTasks('grunt-version');
 
 	grunt.registerTask('default', ['clean:build', 'jshint', 'connect:test', 'jasmine', 'cssmin', 'requirejs', 'copy', 'clean:buildSrc', 'compress']);
 	grunt.registerTask('test', ['jshint', 'connect:test', 'jasmine']);
@@ -42,6 +43,11 @@ module.exports = function (grunt) {
 			files: ['src/**/*.js', 'spec/**/*.js'],
 			options: {
 				jshintrc: '.jshintrc'
+			}
+		},
+		version: {
+			patch: {
+				src: ['manifest.json', 'bower.json']
 			}
 		},
 		jasmine: {
