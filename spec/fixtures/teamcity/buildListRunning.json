@@ -1,0 +1,95 @@
+{
+    "count": 8,
+    "build": [
+        {
+            "id": 22,
+            "number": "22",
+            "running": true,
+            "percentageComplete": 0,
+            "status": "SUCCESS",
+            "buildTypeId": "BuildReactor_Build",
+            "branchName": "refs/heads/master",
+            "defaultBranch": true,
+            "startDate": "20130704T235148+1000",
+            "href": "/guestAuth/app/rest/builds/id:22",
+            "webUrl": "http://localhost:8085/viewLog.html?buildId=22&buildTypeId=BuildReactor_Build"
+        },
+        {
+            "id": 18,
+            "number": "18",
+            "status": "FAILURE",
+            "buildTypeId": "BuildReactor_Build",
+            "branchName": "refs/heads/master",
+            "defaultBranch": true,
+            "startDate": "20130701T231421+1000",
+            "href": "/guestAuth/app/rest/builds/id:18",
+            "webUrl": "http://localhost:8085/viewLog.html?buildId=18&buildTypeId=BuildReactor_Build"
+        },
+        {
+            "id": 16,
+            "number": "16",
+            "status": "FAILURE",
+            "buildTypeId": "BuildReactor_Build",
+            "branchName": "refs/heads/master",
+            "defaultBranch": true,
+            "startDate": "20130701T214416+1000",
+            "href": "/guestAuth/app/rest/builds/id:16",
+            "webUrl": "http://localhost:8085/viewLog.html?buildId=16&buildTypeId=BuildReactor_Build"
+        },
+        {
+            "id": 15,
+            "number": "15",
+            "status": "FAILURE",
+            "buildTypeId": "BuildReactor_Build",
+            "branchName": "refs/heads/master",
+            "defaultBranch": true,
+            "startDate": "20130701T214403+1000",
+            "href": "/guestAuth/app/rest/builds/id:15",
+            "webUrl": "http://localhost:8085/viewLog.html?buildId=15&buildTypeId=BuildReactor_Build"
+        },
+        {
+            "id": 13,
+            "number": "13",
+            "status": "FAILURE",
+            "buildTypeId": "BuildReactor_Build",
+            "branchName": "refs/heads/master",
+            "defaultBranch": true,
+            "startDate": "20130701T182724+1000",
+            "href": "/guestAuth/app/rest/builds/id:13",
+            "webUrl": "http://localhost:8085/viewLog.html?buildId=13&buildTypeId=BuildReactor_Build"
+        },
+        {
+            "id": 12,
+            "number": "12",
+            "status": "FAILURE",
+            "buildTypeId": "BuildReactor_Build",
+            "branchName": "refs/heads/master",
+            "defaultBranch": true,
+            "startDate": "20130701T182443+1000",
+            "href": "/guestAuth/app/rest/builds/id:12",
+            "webUrl": "http://localhost:8085/viewLog.html?buildId=12&buildTypeId=BuildReactor_Build"
+        },
+        {
+            "id": 11,
+            "number": "11",
+            "status": "FAILURE",
+            "buildTypeId": "BuildReactor_Build",
+            "branchName": "refs/heads/master",
+            "defaultBranch": true,
+            "startDate": "20130701T181926+1000",
+            "href": "/guestAuth/app/rest/builds/id:11",
+            "webUrl": "http://localhost:8085/viewLog.html?buildId=11&buildTypeId=BuildReactor_Build"
+        },
+        {
+            "id": 10,
+            "number": "10",
+            "status": "FAILURE",
+            "buildTypeId": "BuildReactor_Build",
+            "branchName": "refs/heads/master",
+            "defaultBranch": true,
+            "startDate": "20130701T181757+1000",
+            "href": "/guestAuth/app/rest/builds/id:10",
+            "webUrl": "http://localhost:8085/viewLog.html?buildId=10&buildTypeId=BuildReactor_Build"
+        }
+    ]
+}

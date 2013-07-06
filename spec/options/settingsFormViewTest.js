@@ -86,7 +86,7 @@ define([
 				form.show({ branch: 'ref/heads/release' });
 
 				expect($('.branch-input')).toHaveValue('ref/heads/release');
-				expect($('.branch-input')).toHaveAttr('placeholder', 'Default branch');
+				expect($('.branch-input')).toHaveAttr('placeholder', 'Branch, f.e. refs/heads/release');
 			});
 
 			it('should hide branch if not present', function () {
