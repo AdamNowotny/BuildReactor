@@ -246,7 +246,7 @@ define([
 						name: 'AjaxError',
 						message: 'Ajax call failed',
 						description: 'Ajax connection failed (500)',
-						details: { url: 'http://example.com/'}
+						url: 'http://example.com/'
 					};
 
 					scheduler.scheduleAbsolute(300, function () {
@@ -260,7 +260,7 @@ define([
 						return details.error.name === 'AjaxError' &&
 							details.error.message === 'Ajax call failed' &&
 							details.error.description === 'Ajax connection failed (500)' &&
-							details.error.details.url === 'http://example.com/';
+							details.error.url === 'http://example.com/';
 					});
 				});
 

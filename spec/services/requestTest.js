@@ -99,8 +99,8 @@ define([
 					expect(actualError.name).toBe('AjaxError');
 					expect(actualError.message).toBe('Ajax connection error');
 					expect(actualError.description).not.toBeDefined();
-					expect(actualError.details.url).toBe('http://sample.com/?param1=value1&param_2=value2');
-					expect(actualError.details.ajaxOptions).toBeDefined();
+					expect(actualError.url).toBe('http://sample.com/?param1=value1&param_2=value2');
+					expect(actualError.ajaxOptions).toBeDefined();
 				});
 
 				it('should throw exception on timeout', function () {
@@ -137,7 +137,7 @@ define([
 
 					expect(actualError.message).toBe('Not found');
 					expect(actualError.description).toBe('Not found (404)');
-					expect(actualError.details.httpStatus).toBe(404);
+					expect(actualError.httpStatus).toBe(404);
 				});
 
 				it('should remove session cookie if 401 received', function () {
@@ -203,9 +203,9 @@ define([
 					expect(actualResponse.name).toBe('ParseError');
 					expect(actualResponse.message).toBe('Unexpected token <');
 					expect(actualResponse.description).not.toBeDefined();
-					expect(actualResponse.details.httpStatus).toBe(200);
-					expect(actualResponse.details.url).toBe('http://sample.com');
-					expect(actualResponse.details.ajaxOptions).toBeDefined();
+					expect(actualResponse.httpStatus).toBe(200);
+					expect(actualResponse.url).toBe('http://sample.com');
+					expect(actualResponse.ajaxOptions).toBeDefined();
 				});
 
 				it('should throw exception on custom parse error', function () {
@@ -226,7 +226,9 @@ define([
 
 					expect(errorResponse.name).toBe('ParseError');
 					expect(errorResponse.message).toBe('Unrecognized response');
-					expect(errorResponse.httpResponse).toBe(successResponse);
+					expect(errorResponse.description).toBe('Unrecognized response received');
+					expect(errorResponse.url).toBe('http://example.com');
+					expect(errorResponse.ajaxOptions).toBeDefined();
 				});
 
 			});

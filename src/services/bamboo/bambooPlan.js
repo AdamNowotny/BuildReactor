@@ -40,7 +40,7 @@ define([
 			url: joinUrl(self.settings.url, 'rest/api/latest/plan/' + self.id),
 			username: self.settings.username,
 			password: self.settings.password,
-			authCookie: 'JSESSIONID',
+			authCookie: 'JSESSIONID'
 		});
 	};
 
@@ -49,7 +49,7 @@ define([
 			url: joinUrl(self.settings.url, 'rest/api/latest/result/' + self.id + '/latest?expand=changes'),
 			username: self.settings.username,
 			password: self.settings.password,
-			authCookie: 'JSESSIONID',
+			authCookie: 'JSESSIONID'
 		});
 	};
 

@@ -16,13 +16,13 @@ define([
 		return $.ajaxAsObservable(ajaxOptions)
 			.catchException(function (ex) {
 				var ajaxError = createAjaxError(ex, ajaxOptions);
-				if (options.authCookie && ajaxError.details.httpStatus === unauthorizedStatusCode) {
+				if (options.authCookie && ajaxError.httpStatus === unauthorizedStatusCode) {
 					chrome.cookies.remove({ url: options.url, name: options.authCookie });
 				}
 				return Rx.Observable.throwException(ajaxError);
 			}).retry(2)
 			.timeout(timeout, Rx.Observable.throwException(createTimeoutError(timeout, ajaxOptions)), scheduler)
-			.select(createParser(options.parser));
+			.select(createParser(options.parser, ajaxOptions));
 	}
 
 	function createTimeoutError(timeout, ajaxOptions) {
@@ -30,15 +30,26 @@ define([
 			name: 'TimeoutError',
 			message: 'Timeout',
 			description: 'Connection timed out after ' + timeout / 1000 + ' seconds',
-			details: {
-				ajaxOptions: ajaxOptions,
-				url: ajaxOptions.url + encode(ajaxOptions.data)
-			}
+			ajaxOptions: ajaxOptions,
+			url: ajaxOptions.url + encode(ajaxOptions.data)
+		};
+	}
+	
+	function createParseError(ajaxOptions) {
+		return {
+			name: 'ParseError',
+			message: 'Unrecognized response',
+			description: 'Unrecognized response received',
+			ajaxOptions: ajaxOptions,
+			url: ajaxOptions.url + encode(ajaxOptions.data)
 		};
 	}
 
 	function createAjaxError(error, ajaxOptions) {
-		var response = {};
+		var response = {
+			ajaxOptions: ajaxOptions,
+			url: ajaxOptions.url + encode(ajaxOptions.data)
+		};
 		if (error.textStatus === 'parsererror') {
 			response.name = 'ParseError';
 			response.message = (error.errorThrown && error.errorThrown.message) ?
@@ -49,14 +60,10 @@ define([
 			response.message = (error.errorThrown) ? error.errorThrown : 'Ajax connection error';
 		}
 		var httpStatus = (error.jqXHR && error.jqXHR.status > 0) ? error.jqXHR.status : null;
+		response.httpStatus = httpStatus;
 		if (httpStatus && httpStatus !== 200) {
 			response.description = response.message + ' (' + httpStatus + ')';
 		}
-		response.details = {
-			ajaxOptions: ajaxOptions,
-			url: ajaxOptions.url + encode(ajaxOptions.data),
-			httpStatus: httpStatus
-		};
 		return response;
 	}
 
@@ -76,7 +83,7 @@ define([
 		return ajaxOptions;
 	}
 
-	function createParser(parser) {
+	function createParser(parser, ajaxOptions) {
 		return function (response) {
 			try {
 				if (parser) {
@@ -85,7 +92,7 @@ define([
 					return response.data;
 				}
 			} catch (ex) {
-				throw { name: 'ParseError', message: 'Unrecognized response', httpResponse: response};
+				throw createParseError(ajaxOptions);
 			}
 		};
 	}

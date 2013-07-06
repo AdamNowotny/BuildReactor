@@ -71,7 +71,9 @@ define([
 				name: ex.name,
 				message: ex.message.toString(),
 				description: ex.description ? ex.description : ex.message,
-				details: ex.details ? ex.details : ex.stack
+				url: ex.url,
+				httpStatus: ex.httpStatus,
+				stack: ex.stack
 			};
 		} else {
 			error = { name: 'UnknownError', message: ex.toString() };
