@@ -25,11 +25,16 @@ body {
 	text-align: center;
 }
 
+.labels {
+	position: absolute;
+	right: 30px;
+}
+
 .no-services-message {
 	color: #F90;
 	font-weight: bold;
 	margin-top: 60px;
-	margin-bottom: 1em;	
+	margin-bottom: 1em;
 	text-align: center;
 }
 
