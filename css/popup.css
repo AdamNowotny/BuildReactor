@@ -21,7 +21,7 @@ body {
 
 .service-name-container {
 	color: #F90;
-	font-weight: bold;	
+	font-weight: bold;
 	text-align: center;
 }
 
@@ -36,6 +36,16 @@ body {
 	margin-top: 60px;
 	margin-bottom: 1em;
 	text-align: center;
+}
+
+.build-changes {
+    font-size: 7pt;
+    overflow: hidden;
+    position: absolute;
+    right: 100px;
+    text-align: center;
+    text-overflow: ellipsis;
+    top: 20px;
 }
 
 ul {
