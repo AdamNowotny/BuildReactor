@@ -226,7 +226,7 @@ define([
 
 					expect(errorResponse.name).toBe('ParseError');
 					expect(errorResponse.message).toBe('Unrecognized response');
-					expect(errorResponse.description).toBe('Unrecognized response received');
+					expect(errorResponse.description).toBe('Unrecognized response received from [http://example.com]');
 					expect(errorResponse.url).toBe('http://example.com');
 					expect(errorResponse.ajaxOptions).toBeDefined();
 				});

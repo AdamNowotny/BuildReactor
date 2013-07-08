@@ -36,12 +36,13 @@ define([
 	}
 	
 	function createParseError(ajaxOptions) {
+		var url = ajaxOptions.url + encode(ajaxOptions.data);
 		return {
 			name: 'ParseError',
 			message: 'Unrecognized response',
-			description: 'Unrecognized response received',
+			description: 'Unrecognized response received from [' + url + ']',
 			ajaxOptions: ajaxOptions,
-			url: ajaxOptions.url + encode(ajaxOptions.data)
+			url: url
 		};
 	}
 
