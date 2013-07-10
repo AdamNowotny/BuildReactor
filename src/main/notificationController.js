@@ -35,12 +35,20 @@ define([
 		}
 
 		function onBrokenBuild(event) {
-			return tags.contains('Unstable', event.details.tags) ?
-				showNotification(createNotificationInfo(event, 'Unstable, broken', options.timeout)) :
+			if (reloading) {
+				return;
+			}
+			if (tags.contains('Unstable', event.details.tags)) {
+				showNotification(createNotificationInfo(event, 'Unstable, broken', options.timeout));
+			} else {
 				showNotification(createNotificationInfo(event, 'Broken'));
+			}
 		}
 
 		function onFixedBuild(event) {
+			if (reloading) {
+				return;
+			}
 			showNotification(createNotificationInfo(event, 'Fixed', options.timeout));
 		}
 
@@ -94,11 +102,9 @@ define([
 		var reloading = false;
 
 		return serviceController.events.doAction(function (event) {
-			if (event.details && event.details.isDisabled) { 
-				return;
-			}
 			var handler = eventHandlers[event.eventName];
-			if (handler && !reloading) {
+			var isDisabled = event.details && event.details.isDisabled;
+			if (!isDisabled && handler) { 
 				handler(event);
 			}
 		}).subscribe();

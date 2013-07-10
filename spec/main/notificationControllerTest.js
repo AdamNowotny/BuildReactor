@@ -184,14 +184,26 @@ define([
 
 		});
 
-		it('should not show notifications when initializing', function () {
+		it('should not show buildBroken notifications when initializing', function () {
 			serviceController.events.onNext({ eventName: 'servicesInitializing' });
+			serviceController.events.onNext({ eventName: 'buildBroken', details: {} });
+
+			scheduler.advanceBy(5000);
+
+			expect(mockNotification.show).not.toHaveBeenCalled();
+		});
+
+		it('should show notifications after initialized', function () {
+			serviceController.events.onNext({ eventName: 'servicesInitializing' });
+			serviceController.events.onNext({ eventName: 'buildBroken', details: {} });
+			serviceController.events.onNext({ eventName: 'buildFixed', details: {} });
+			serviceController.events.onNext({ eventName: 'servicesInitialized', details: {} });
 			serviceController.events.onNext({ eventName: 'buildBroken', details: {} });
 			serviceController.events.onNext({ eventName: 'buildFixed', details: {} });
 
 			scheduler.advanceBy(5000);
 
-			expect(mockNotification.show).not.toHaveBeenCalled();
+			expect(mockNotification.show.callCount).toBe(2);
 		});
 
 		it('should show url when notification clicked', function () {
