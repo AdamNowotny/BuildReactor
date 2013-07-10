@@ -1,9 +1,10 @@
 define([
 	'main/notificationController',
 	'main/serviceController',
+	'common/chromeApi',
 	'rx',
 	'rx.testing'
-], function (notificationController, serviceController, Rx) {
+], function (notificationController, serviceController, chromeApi, Rx) {
 
 	'use strict';
 	
@@ -24,6 +25,7 @@ define([
 				})
 			};
 			spyOn(window.webkitNotifications, 'createNotification').andReturn(mockNotification);
+			spyOn(chromeApi, 'isDashboardActive').andReturn(Rx.Observable.returnValue(false));
 			subscription = notificationController.init({ timeout: 5000, scheduler: scheduler });
 		});
 
@@ -204,6 +206,16 @@ define([
 			scheduler.advanceBy(5000);
 
 			expect(mockNotification.show.callCount).toBe(2);
+		});
+
+		it('should not show any notifications when dashboard active', function () {
+			chromeApi.isDashboardActive.andReturn(Rx.Observable.returnValue(true));
+			serviceController.events.onNext({ eventName: 'buildBroken', details: {} });
+			serviceController.events.onNext({ eventName: 'buildFixed', details: {} });
+
+			scheduler.advanceBy(5000);
+
+			expect(mockNotification.show).not.toHaveBeenCalled();
 		});
 
 		it('should show url when notification clicked', function () {

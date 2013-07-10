@@ -5,7 +5,8 @@ var chrome = {
 		setBadgeBackgroundColor: function () {}
 	},
 	tabs : {
-		create: function () {}
+		create: function () {},
+		query: function (queryInfo, callback) {}
 	},
 	runtime: {
 		sendMessage: function () {},
@@ -32,7 +33,8 @@ var chrome = {
 		onConnect: {
 			addListener: function () {}
 		},
-		connect: function () {}
+		connect: function () {},
+		getURL: function (path) {}
 	},
 	cookies: {
 		remove: function () {}

@@ -57,6 +57,44 @@ define(['common/chromeApi'], function (chromeApi) {
 			});
 
 		});
+
+		describe('isDashboardActive', function () {
+
+			beforeEach(function () {
+				spyOn(chrome.extension, 'getURL').andCallFake(function (path) {
+					return 'chrome-extension://extension_id/' + path;
+				});
+			});
+
+			it('should return true if dashboard tab open', function () {
+				spyOn(chrome.tabs, 'query').andCallFake(function (queryInfo, callback) {
+					expect(queryInfo.url).toBe('chrome-extension://extension_id/dashboard.html');
+					callback([{}]);
+				});
+
+				var isActive = false;
+				chromeApi.isDashboardActive().subscribe(function (result) {
+					isActive = result;
+				});
+
+				expect(isActive).toBe(true);
+			});
+			
+			it('should return false if dashboard tab closed', function () {
+				spyOn(chrome.tabs, 'query').andCallFake(function (queryInfo, callback) {
+					expect(queryInfo.url).toBe('chrome-extension://extension_id/dashboard.html');
+					callback([]);
+				});
+
+				var isActive = false;
+				chromeApi.isDashboardActive().subscribe(function (result) {
+					isActive = result;
+				});
+
+				expect(isActive).toBe(false);
+			});
+
+		});
 	});
 
 });

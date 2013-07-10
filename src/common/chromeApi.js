@@ -1,4 +1,4 @@
-define(function () {
+define(['rx'], function (Rx) {
 	
 	'use strict';
 
@@ -24,10 +24,23 @@ define(function () {
 		return chrome[runtimeOrExtension()].connect(connectInfo);
 	}
 
+	function isDashboardActive() {
+		var queryInfo = {
+			url: chrome.extension.getURL('dashboard.html')
+		};
+		var subject = new Rx.AsyncSubject();
+		chrome.tabs.query(queryInfo, function (tabs) {
+			subject.onNext(tabs.length > 0);
+			subject.onCompleted();
+		});
+		return subject;
+	}
+
 	return {
 		sendMessage: sendMessage,
 		addMessageListener: addMessageListener,
 		addConnectListener: addConnectListener,
-		connect: connect
+		connect: connect,
+		isDashboardActive: isDashboardActive
 	};
 });

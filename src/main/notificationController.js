@@ -2,8 +2,9 @@ define([
 	'main/serviceController',
 	'rx',
 	'common/tags',
+	'common/chromeApi',
 	'rx.time'
-], function (serviceController, Rx, tags) {
+], function (serviceController, Rx, tags, chromeApi) {
 
 	'use strict';
 	
@@ -101,12 +102,22 @@ define([
 		var visibleNotifications = {};
 		var reloading = false;
 
-		return serviceController.events.doAction(function (event) {
-			var handler = eventHandlers[event.eventName];
-			var isDisabled = event.details && event.details.isDisabled;
-			if (!isDisabled && handler) { 
-				handler(event);
-			}
+		return serviceController.events.select(function (event) {
+			return {
+				event: event,
+				handler: eventHandlers[event.eventName]
+			};
+		}).where(function (d) {
+			var isDisabled = d.event.details && d.event.details.isDisabled;
+			return !isDisabled && d.handler;
+		}).selectMany(function (d) {
+			return chromeApi.isDashboardActive().where(function (active) {
+				return !active;
+			}).select(function (active) {
+				return d;
+			});
+		}).doAction(function (d) {
+			d.handler(d.event);
 		}).subscribe();
 	}
 	
