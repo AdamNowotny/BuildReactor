@@ -1,7 +1,7 @@
 {
   "name": "BuildReactor",
   "description": "Developer notifications and dashboard",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "dependencies": {
     "bootbox": "~3.0.0",
     "font-awesome": "~3.2.1",
