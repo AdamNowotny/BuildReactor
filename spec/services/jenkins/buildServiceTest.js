@@ -91,6 +91,16 @@ define([
 
 				expect(request.json).toHaveBeenCalled();
 			});
+			
+			it('should increase timeout', function () {
+				spyOn(request, 'json').andCallFake(function (options) {
+					expect(options.timeout).toBe(200000);
+				});
+
+				service.availableBuilds();
+
+				expect(request.json).toHaveBeenCalled();
+			});
 
 			it('should return projects', function () {
 				spyOn(request, 'json').andCallFake(function (options) {

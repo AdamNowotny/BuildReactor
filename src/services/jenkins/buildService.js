@@ -34,7 +34,8 @@ define([
 			url: joinUrl(this.settings.url, 'api/json?depth=1'),
 			username: this.settings.username,
 			password: this.settings.password,
-			parser: parseAvailableBuilds
+			parser: parseAvailableBuilds,
+			timeout: 200000
 		});
 	};
 

@@ -105,18 +105,18 @@ define([
 
 				it('should throw exception on timeout', function () {
 					var scheduler = new Rx.TestScheduler();
-					var ajaxOptions = { url: 'http://sample.com/', scheduler: scheduler, timeout: 300 };
+					var ajaxOptions = { url: 'http://sample.com/', scheduler: scheduler, timeout: 20000 };
 					spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.never());
 
-					var result = scheduler.startWithCreate(function () {
+					var result = scheduler.startWithTiming(function () {
 						return request.json(ajaxOptions);
-					});
+					}, 100, 200, 21000);
 
 					expect(result.messages).toHaveElements(
-						onError(500, {
+						onError(20200, {
 							name: 'TimeoutError',
 							message: 'Timeout',
-							description: 'Connection timed out after 0.3 seconds'
+							description: 'Connection timed out after 20 seconds'
 						})
 					);
 				});
