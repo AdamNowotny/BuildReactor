@@ -4,14 +4,14 @@ require.config({
 		handlebars: '../lib/require-handlebars-plugin/Handlebars',
 		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
-		jquery: "../components/jquery/jquery.min",
+		jquery: "../bower_components/jquery/jquery.min",
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
-		mout: '../components/mout/src',
+		mout: '../bower_components/mout/src',
 		rx: 'rxjs',
-		'rx.binding': '../components/rxjs/rx.binding',
+		'rx.binding': '../bower_components/rxjs/rx.binding',
 		'rx.jquery': 'rxjs',
 		'rx.time': 'rxjs',
-		signals: '../components/js-signals/dist/signals',
+		signals: '../bower_components/js-signals/dist/signals',
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore'
 	},
 	hbs: {

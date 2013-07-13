@@ -1,20 +1,20 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
-		bootbox: '../components/bootbox/bootbox.min',
+		bootbox: '../bower_components/bootbox/bootbox.min',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
 		bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons',
 		handlebars: '../lib/require-handlebars-plugin/Handlebars',
 		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
-		jquery: "../components/jquery/jquery.min",
-		mout: '../components/mout/src',
+		jquery: "../bower_components/jquery/jquery.min",
+		mout: '../bower_components/mout/src',
 		'options/messages': 'options/messagesStatic',
 		rx: 'rxjs',
 		'rx.jquery': 'rxjs',
 		'rx.time': 'rxjs',
-		signals: '../components/js-signals/dist/signals',
+		signals: '../bower_components/js-signals/dist/signals',
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore'
 	},
 	hbs: {
