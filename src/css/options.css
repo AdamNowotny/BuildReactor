@@ -1,7 +1,7 @@
-﻿@import url("addService.css");
-@import url("alert.css");
-@import url("serviceList.css");
-@import url("serviceSettings.css");
+﻿@import url("partial/addService.css");
+@import url("partial/alert.css");
+@import url("partial/serviceList.css");
+@import url("partial/serviceSettings.css");
 
 body {
 	padding-top: 50px;

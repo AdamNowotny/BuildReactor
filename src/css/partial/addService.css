@@ -1,0 +1,45 @@
+.service-add-container {
+	display: none;
+}
+
+	.service-add-list {
+		padding: 10px;
+		overflow: auto;
+		position: absolute;
+		top: 0;
+		bottom: 70px;
+	}
+
+		.service-add-list .thumbnail {
+			height: 140px;
+			text-align: center;
+		}
+
+		.service-add-list .thumbnail.active {
+			background-color: #D1D5E4;
+		}
+		
+			.service-add-list .thumbnail-image {
+				height: 110px;
+				line-height: 130px;
+			}
+
+			.service-add-list .thumbnail:hover {
+				text-decoration: none;
+			}
+
+			.service-add-list .caption {
+				padding: 0;
+				text-align: center;
+			}
+
+.panel-footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+	.panel-footer .form-actions, .panel-footer form {
+		margin-bottom: 0;
+		margin-top: 0;
+	}

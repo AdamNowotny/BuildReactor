@@ -64,7 +64,7 @@ module.exports = function (grunt) {
 					template: require('grunt-template-jasmine-requirejs'),
 					templateOptions: {
 						requireConfig: {
-							baseUrl: './src',
+							baseUrl: 'src',
 							paths: {
 								'options/messages': 'options/messages',
 								'popup/messages': 'popup/messages',
@@ -144,9 +144,9 @@ module.exports = function (grunt) {
 		cssmin: {
 			compress: {
 				files: {
-					'<%= vars.dist %>/css/options.css': [ 'css/options.css'	],
-					'<%= vars.dist %>/css/popup.css': [ 'css/popup.css' ],
-					'<%= vars.dist %>/css/dashboard.css': [ 'css/dashboard.css' ]
+					'<%= vars.dist %>/src/css/options.css': [ 'src/css/options.css'	],
+					'<%= vars.dist %>/src/css/popup.css': [ 'src/css/popup.css' ],
+					'<%= vars.dist %>/src/css/dashboard.css': [ 'src/css/dashboard.css' ]
 				}
 			}
 		},
@@ -160,7 +160,7 @@ module.exports = function (grunt) {
 					useStrict: true,
 					preserveLicenseComments: true,
 					optimize: 'none',
-					// optimizeCss: 'standard',
+					optimizeCss: 'standard',
 					uglify: {
 						toplevel: true,
 						max_line_length: 100
@@ -260,7 +260,7 @@ module.exports = function (grunt) {
 						'popup.html',
 						'dashboard.html',
 						'manifest.json',
-						'img/*',
+						'src/img/*',
 						'bower_components/bootbox/bootbox.min.js',
 						'lib/bootstrap-toggle-buttons/stylesheets/bootstrap-toggle-buttons.css',
 						'lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons.js',
