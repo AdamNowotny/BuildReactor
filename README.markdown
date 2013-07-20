@@ -92,12 +92,6 @@ The build and tests use:
  * [RequireJS plugins](https://github.com/millermedeiros/requirejs-plugins)
  * [Travis-CI](http://travis-ci.org/)
 
-Contributors
-============
-[Adam Nowotny](https://github.com/AdamNowotny)
-
-[James Rhodes](https://github.com/hach-que) - BuildBot support
-
 Legal
 =====
 
