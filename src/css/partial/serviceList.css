@@ -16,6 +16,8 @@
 .nav-pills li .pill-name {
 	padding-top: 18px;
 	float: right;
+	text-align: right;
+	width: 125px;
 }
 
 .nav-pills .active.muted span {
