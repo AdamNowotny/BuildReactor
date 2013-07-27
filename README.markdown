@@ -2,19 +2,19 @@ BuildReactor [![Build Status](https://secure.travis-ci.org/AdamNowotny/BuildReac
 ============
 
 Developer notifications and dashboard (Google Chrome extension)
-
-Install from [Chrome Web Store](http://goo.gl/BX01T)
-
-Get updates on Twitter [@BuildReactor](https://twitter.com/BuildReactor) or look at [version history](https://github.com/AdamNowotny/BuildReactor/wiki/What's-new)
-
-What is it ?
-============
-
  * Gives you overview of all your builds in one place
  * Supports all continuous integration servers
  * Shows only relevant notifications to minimise distractions
  * Let's you setup information radiator for your team within minutes, not hours or days
  * Works on Windows, Mac and Linux
+
+Links
+-----
+Install from [Chrome Web Store](http://goo.gl/BX01T)
+
+Updates on [Twitter](https://twitter.com/BuildReactor) and [Google Plus](https://plus.google.com/110744393630490320507/)
+
+[Version history](https://github.com/AdamNowotny/BuildReactor/wiki/What's-new)
 
 Supported services
 ==================
