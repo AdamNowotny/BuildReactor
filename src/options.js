@@ -1,6 +1,7 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
+		angular: '../bower_components/angular/angular.min',
 		bootbox: '../bower_components/bootbox/bootbox.min',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
 		bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons',
@@ -30,7 +31,11 @@ require.config({
 		},
 		bootstrapToggle: {
 			deps: [ 'jquery', 'bootstrap' ]
-		}
+		},
+		angular: {
+			deps: ['jquery'],
+			exports: 'angular'
+		}		
 	}
 });
 require([

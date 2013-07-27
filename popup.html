@@ -2,12 +2,13 @@
 <html lang="en">
 	<head>
 		<title>BuildReactor popup</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="lib/twitter-bootstrap/css/bootstrap.css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="src/css/popup.css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css" media="screen" />
-		<script type="text/javascript" data-main="src/popup" src="bower_components/requirejs/require.js"></script>
 	</head>
 	<body>
+		<div data-ng-view></div>
 		<div class="navbar navbar-fixed-top navbar-inverse">
 			<div class="navbar-inner">
 				<ul class="nav pull-right">
@@ -31,5 +32,7 @@
 		</div>
 		<div class="service-info-container">
 		</div>
+		<!-- scripts -->
+		<script type="text/javascript" data-main="src/popup" src="bower_components/requirejs/require.js"></script>
 	</body>
 </html>

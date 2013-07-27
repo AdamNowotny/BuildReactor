@@ -66,6 +66,8 @@ module.exports = function (grunt) {
 						requireConfig: {
 							baseUrl: 'src',
 							paths: {
+								angular: '../bower_components/angular/angular',
+								angularMocks: '../bower_components/angular-mocks/angular-mocks',
 								'options/messages': 'options/messages',
 								'popup/messages': 'popup/messages',
 								bootbox: '../bower_components/bootbox/bootbox',
@@ -99,8 +101,9 @@ module.exports = function (grunt) {
 								}
 							},
 							shim: {
-								jquery: {
-									exports: 'jquery'
+								angular: {
+									deps: ['jquery'],
+									exports: 'angular'
 								},
 								bootstrap: [ 'jquery' ],
 								bootbox: {
@@ -109,6 +112,9 @@ module.exports = function (grunt) {
 								},
 								bootstrapToggle: {
 									deps: [ 'jquery', 'bootstrap' ]
+								},
+								jquery: {
+									exports: 'jquery'
 								}
 							},
 							hbs: {
@@ -179,6 +185,7 @@ module.exports = function (grunt) {
 						excludeAfterBuild: true
 					},
 					paths: {
+						angular: 'empty:',
 						bootbox: 'empty:',
 						bootstrap: 'empty:',
 						bootstrapToggle: 'empty:',
@@ -203,6 +210,10 @@ module.exports = function (grunt) {
 						i18nDirectory:   'templates/i18n/'
 					},
 					shim: {
+						angular: {
+							deps: ['jquery'],
+							exports: 'angular'
+						},
 						bootbox: {
 							deps: [ 'jquery', 'bootstrap' ],
 							exports: 'bootbox'
@@ -261,6 +272,7 @@ module.exports = function (grunt) {
 						'dashboard.html',
 						'manifest.json',
 						'src/img/*',
+						'bower_components/angular/angular.min.js',
 						'bower_components/bootbox/bootbox.min.js',
 						'lib/bootstrap-toggle-buttons/stylesheets/bootstrap-toggle-buttons.css',
 						'lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons.js',

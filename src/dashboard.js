@@ -1,6 +1,7 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
+		angular: '../bower_components/angular/angular.min',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
 		handlebars: '../lib/require-handlebars-plugin/Handlebars',
 		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
@@ -21,13 +22,19 @@ require.config({
 		i18nDirectory:   'templates/i18n/'
 	},
 	shim: {
+		angular: {
+			deps: ['jquery'],
+			exports: 'angular'
+		},
 		bootstrap: [ 'jquery' ]
 	}
 });
 require([
+	'angular',
 	'rxjs',
 	'popup'
-], function (rxjs, popup) {
+], function (angular, rxjs, popup) {
 
 	'use strict';
+
 });

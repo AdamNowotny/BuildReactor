@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app>
 	<head>
 		<title>BuildReactor dashboard</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="lib/twitter-bootstrap/css/bootstrap.css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="src/css/dashboard.css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css" media="screen" />
-		<script type="text/javascript" data-main="src/dashboard" src="bower_components/requirejs/require.js"></script>
 	</head>
 	<body>
 		<div class="navbar navbar-fixed-top navbar-inverse">
@@ -28,7 +28,10 @@
 				</ul>
 			</div>
 		</div>
+		<div ng-view></div>
 		<div class="service-info-container">
 		</div>
+		<!-- scripts -->
+		<script type="text/javascript" data-main="src/dashboard" src="bower_components/requirejs/require.js"></script>
 	</body>
 </html>
