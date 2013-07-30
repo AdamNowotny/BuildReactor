@@ -83,11 +83,15 @@ body {
 		margin-right: 10px;
 	}
 
+	.navbar li.help-menu i.icon-lightbulb {
+		margin-left: 3px;
+		padding-right: 2px;
+	}
+
 .sidebar-nav {
 	border-right: 1px solid #BBB;
 	bottom: 0;
 	left: 0;
-	padding-bottom: 40px;
 	position: fixed;
 	text-align: center;
 	top: 40px;
@@ -102,24 +106,6 @@ body {
 		padding: 10px;
 		box-sizing: border-box;
 	}
-
-	.sidebar-nav .feedback-link {
-		background-color: khaki;
-		border-bottom: -40px;
-		height: 40px;
-		line-height: 40px;
-	}
-
-		.sidebar-nav .feedback-link a {
-			text-decoration: none;
-			color: black;
-		}
-
-		.sidebar-nav .feedback-link a:hover {
-			text-decoration: none;
-			color: #0088cc;
-		}
-
 
 .filter {
 	box-sizing: border-box;
