@@ -15,7 +15,7 @@ define(['services/cctray/buildService', 'mout/object/mixIn'], function (CCTrayBu
 			logo: 'go/logo.png',
 			projects: [],
 			url: '',
-			urlHint: 'http://example-go.thoughtworks.com/',
+			urlHint: 'URL, e.g. http://example-go.thoughtworks.com/',
 			username: '',
 			password: '',
 			updateInterval: 60

@@ -33,7 +33,7 @@ define([
 				expect(settings.baseUrl).toBe('bamboo');
 				expect(settings.icon).toBe('bamboo/icon.png');
 				expect(settings.projects.length).toBe(0);
-				expect(settings.urlHint).toBe('https://ci.openmrs.org/');
+				expect(settings.urlHint).toBe('URL, e.g. https://ci.openmrs.org/');
 				expect(settings.url).toBeDefined();
 				expect(settings.username).toBeDefined();
 				expect(settings.password).toBeDefined();

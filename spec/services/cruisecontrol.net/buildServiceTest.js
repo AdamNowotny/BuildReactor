@@ -27,7 +27,7 @@ define([
 			expect(defaultSettings.icon).toBe('cruisecontrol.net/icon.png');
 			expect(defaultSettings.logo).toBe('cruisecontrol.net/logo.png');
 			expect(defaultSettings.url).toBeDefined();
-			expect(defaultSettings.urlHint).toBe('http://build.nauck-it.de/');
+			expect(defaultSettings.urlHint).toBe('URL, e.g. http://build.nauck-it.de/');
 			expect(defaultSettings.username).toBeDefined();
 			expect(defaultSettings.password).toBeDefined();
 			expect(defaultSettings.updateInterval).toBe(60);

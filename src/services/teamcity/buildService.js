@@ -22,7 +22,7 @@ define([
 			logo: 'teamcity/logo.png',
 			projects: [],
 			url: '',
-			urlHint: 'http://teamcity.jetbrains.com/',
+			urlHint: 'URL, e.g. http://teamcity.jetbrains.com/',
 			username: '',
 			password: '',
 			updateInterval: 60,

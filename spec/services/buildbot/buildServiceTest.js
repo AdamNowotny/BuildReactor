@@ -32,7 +32,7 @@ define([
 			expect(defaultSettings.icon).toBe('buildbot/icon.png');
 			expect(defaultSettings.logo).toBe('buildbot/logo.png');
 			expect(defaultSettings.url).toBeDefined();
-			expect(defaultSettings.urlHint).toBe('http://buildbot.buildbot.net/');
+			expect(defaultSettings.urlHint).toBe('URL, e.g. http://buildbot.buildbot.net/');
 			expect(defaultSettings.username).toBeDefined();
 			expect(defaultSettings.password).toBeDefined();
 			expect(defaultSettings.updateInterval).toBe(60);

@@ -22,7 +22,7 @@ define([
 			logo: 'jenkins/logo.png',
 			projects: [],
 			url: '',
-			urlHint: 'http://ci.jenkins-ci.org/',
+			urlHint: 'URL, e.g. http://ci.jenkins-ci.org/',
 			username: '',
 			password: '',
 			updateInterval: 60

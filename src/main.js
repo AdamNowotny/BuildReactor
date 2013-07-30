@@ -36,6 +36,7 @@ require([
 	'services/cruisecontrol.rb/buildService',
 	'services/go/buildService',
 	'services/jenkins/buildService',
+	'services/snap/buildService',
 	'services/teamcity/buildService',
 	'services/travis/buildService'
 ], function (
@@ -54,6 +55,7 @@ require([
 	CruiseControlRBService,
 	GoService,
 	JenkinsService,
+	SnapService,
 	TeamCityService,
 	TravisService
 ) {
@@ -73,6 +75,7 @@ require([
 	serviceController.registerType(CruiseControlRBService);
 	serviceController.registerType(GoService);
 	serviceController.registerType(JenkinsService);
+	serviceController.registerType(SnapService);
 	serviceController.registerType(TeamCityService);
 	serviceController.registerType(TravisService);
 

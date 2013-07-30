@@ -15,7 +15,7 @@ define(['services/cctray/buildService', 'mout/object/mixIn'], function (CCTrayBu
 			logo: 'cruisecontrol/logo.png',
 			projects: [],
 			url: '',
-			urlHint: 'http://cruisecontrol.instance.com/',
+			urlHint: 'URL, e.g. http://cruisecontrol.instance.com/',
 			username: '',
 			password: '',
 			updateInterval: 60

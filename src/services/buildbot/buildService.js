@@ -22,7 +22,7 @@ define([
 			logo: 'buildbot/logo.png',
 			projects: [],
 			url: '',
-			urlHint: 'http://buildbot.buildbot.net/',
+			urlHint: 'URL, e.g. http://buildbot.buildbot.net/',
 			username: '',
 			password: '',
 			updateInterval: 60

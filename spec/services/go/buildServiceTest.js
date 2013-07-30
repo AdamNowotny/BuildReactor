@@ -27,7 +27,7 @@ define([
 			expect(defaultSettings.icon).toBe('go/icon.png');
 			expect(defaultSettings.logo).toBe('go/logo.png');
 			expect(defaultSettings.url).toBeDefined();
-			expect(defaultSettings.urlHint).toBe('http://example-go.thoughtworks.com/');
+			expect(defaultSettings.urlHint).toBe('URL, e.g. http://example-go.thoughtworks.com/');
 			expect(defaultSettings.username).toBeDefined();
 			expect(defaultSettings.password).toBeDefined();
 			expect(defaultSettings.updateInterval).toBe(60);

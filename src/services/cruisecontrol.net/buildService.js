@@ -15,7 +15,7 @@ define(['services/cctray/buildService', 'mout/object/mixIn'], function (CCTrayBu
 			logo: 'cruisecontrol.net/logo.png',
 			projects: [],
 			url: '',
-			urlHint: 'http://build.nauck-it.de/',
+			urlHint: 'URL, e.g. http://build.nauck-it.de/',
 			username: '',
 			password: '',
 			updateInterval: 60

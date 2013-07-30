@@ -41,7 +41,7 @@ define([
 			});
 
 			it('should show url placeholder', function () {
-				form.show({ url: '', urlHint: 'http://example.com/' });
+				form.show({ url: '', urlHint: 'URL, e.g. http://example.com/' });
 
 				expect($('.url-input')).toHaveAttr('placeholder', 'URL, e.g. http://example.com/');
 			});

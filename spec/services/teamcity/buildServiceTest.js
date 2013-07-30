@@ -33,7 +33,7 @@ define([
 			expect(defaultSettings.icon).toBe('teamcity/icon.png');
 			expect(defaultSettings.logo).toBe('teamcity/logo.png');
 			expect(defaultSettings.url).toBeDefined();
-			expect(defaultSettings.urlHint).toBe('http://teamcity.jetbrains.com/');
+			expect(defaultSettings.urlHint).toBe('URL, e.g. http://teamcity.jetbrains.com/');
 			expect(defaultSettings.username).toBeDefined();
 			expect(defaultSettings.password).toBeDefined();
 			expect(defaultSettings.updateInterval).toBe(60);

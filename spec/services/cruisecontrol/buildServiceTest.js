@@ -27,7 +27,7 @@ define([
 			expect(defaultSettings.icon).toBe('cruisecontrol/icon.png');
 			expect(defaultSettings.logo).toBe('cruisecontrol/logo.png');
 			expect(defaultSettings.url).toBeDefined();
-			expect(defaultSettings.urlHint).toBe('http://cruisecontrol.instance.com/');
+			expect(defaultSettings.urlHint).toBe('URL, e.g. http://cruisecontrol.instance.com/');
 			expect(defaultSettings.username).toBeDefined();
 			expect(defaultSettings.password).toBeDefined();
 			expect(defaultSettings.updateInterval).toBe(60);
