@@ -24,8 +24,9 @@ Below are the supported CI servers.
  * [Atlassian Bamboo](http://www.atlassian.com/software/bamboo/)
  * [BuildBot](http://buildbot.net/)
  * Servers using [XML cctray format](http://confluence.public.thoughtworks.org/display/CI/Multiple+Project+Summary+Reporting+Standard) like [CruiseControl](http://cruisecontrol.sourceforge.net/), [CruiseControl.NET](http://www.cruisecontrolnet.org/), [CruiseControl.rb](http://cruisecontrolrb.thoughtworks.com/)
- * [Jenkins](http://jenkins-ci.org/) (Hudson)
  * [ThoughtWorks GO](http://www.thoughtworks-studios.com/go-continuous-delivery)
+ * [Jenkins](http://jenkins-ci.org/) (Hudson)
+ * [Snap](http://snap-ci.com/)
  * [TeamCity](http://www.jetbrains.com/teamcity/)
  * [Travis-CI](http://travis-ci.org/)
 
