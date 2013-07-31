@@ -1,7 +1,7 @@
 {
   "name": "BuildReactor",
   "description": "Developer notifications and dashboard",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "homepage": "https://github.com/AdamNowotny/BuildReactor",
   "author": {
     "name": "Adam Nowotny",
