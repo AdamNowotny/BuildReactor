@@ -24,7 +24,7 @@ define([
 				isRunning: builderResponse.state === "building",
 				isDisabled: builderResponse.state === "offline",
 				changes: lastCompletedResponse.blame.map(function (item) { 
-					return { name: /^(.*) <.*>/g.exec(item)[1] };
+					return { name: item };
 				})
 			};
 		});

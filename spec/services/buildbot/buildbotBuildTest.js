@@ -106,7 +106,7 @@ define([
 
 		it('should set changes', function () {
 			build.update().subscribe(function (state) {
-				expect(state.changes).toEqual([{ name: 'Dustin J. Mitchell' }, { name: 'Elmir Jagudin' }]);
+				expect(state.changes).toEqual([{ name: 'Dustin J. Mitchell <dustin@mozilla.com>' }, { name: 'Elmir Jagudin <elmir@axis.com>' }]);
 			});
 
 			expect(request.json).toHaveBeenCalled();
