@@ -1,7 +1,7 @@
 {
   "name": "BuildReactor",
   "description": "Developer notifications and dashboard",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "dependencies": {
     "angular": "~1.0.7",
     "bootbox": "~3.0.0",
