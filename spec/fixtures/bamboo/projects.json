@@ -6,8 +6,8 @@
    },
    "projects":{
       "start-index":0,
-      "max-result":25,
-      "size":26,
+      "max-result":1,
+      "size":2,
       "expand":"project",
       "project":[
          {

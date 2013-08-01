@@ -3,8 +3,10 @@ define([
 	'services/request',
 	'services/bamboo/bambooPlan',
 	'mout/object/mixIn',
-	'common/joinUrl'
-], function (BuildServiceBase, request, BambooPlan, mixIn, joinUrl) {
+	'mout/array/flatten',
+	'common/joinUrl',
+	'rx'
+], function (BuildServiceBase, request, BambooPlan, mixIn, flatten, joinUrl, Rx) {
 
 	'use strict';
 
@@ -30,34 +32,47 @@ define([
 	};
 
 	var availableBuilds = function () {
-		return request.json({
-			url: joinUrl(this.settings.url, 'rest/api/latest/project?expand=projects.project.plans.plan'),
-			username: this.settings.username,
-			password: this.settings.password,
-			authCookie: 'JSESSIONID',
-			parser: parseAvailableBuilds
+		var self = this;
+		return plansFromIndex(self, 0).selectMany(function (response) {
+			var pageSize = response.projects['max-result'];
+			var totalSize = response.projects['size'];
+			var index = pageSize;
+			var result = Rx.Observable.returnValue(response);
+			while (index < totalSize) {
+				result = result.concat(plansFromIndex(self, index));
+				index += pageSize;
+			}
+			return result;
+		}).select(parsePlans)
+		.toArray()
+		.select(function (plans) {
+			return {
+				items: flatten(plans)
+			};
 		});
 	};
 
-	var parseAvailableBuilds = function (response) {
-		var projects = response.projects.project;
-		var items = [];
-		for (var projectIndex = 0; projectIndex < projects.length; projectIndex++) {
-			var project = projects[projectIndex];
-			for (var planIndex = 0; planIndex < project.plans.plan.length; planIndex++) {
-				var plan = project.plans.plan[planIndex];
-				var item = {
+	var plansFromIndex = function (self, startIndex) {
+		return request.json({
+			url: joinUrl(self.settings.url, 'rest/api/latest/project?expand=projects.project.plans.plan&start-index=' + startIndex),
+			username: self.settings.username,
+			password: self.settings.password,
+			authCookie: 'JSESSIONID'
+		});
+	};
+
+	var parsePlans = function (response) {
+		var plansByProject = response.projects.project.map(function (project) {
+			return project.plans.plan.map(function (plan) {
+				return {
 					id: plan.key,
 					name: plan.shortName,
-					group: project.name,
+					group: plan.projectName,
 					isDisabled: !plan.enabled
 				};
-				items.push(item);
-			}
-		}
-		return {
-			items: items
-		};
+			});
+		});
+		return flatten(plansByProject);
 	};
 
 	return BambooBuildService;
