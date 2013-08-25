@@ -30,11 +30,21 @@ require.config({
 	}
 });
 require([
+	'popup/messages',
+	'popup/popupLogger',
 	'angular',
-	'rxjs',
-	'popup'
-], function (angular, rxjs, popup) {
+	'dashboard/main',
+	'rxjs'
+], function (messages, logger, angular, main, rxjs) {
 
 	'use strict';
 
+	messages.init();
+	logger();
+	
+	angular.module('buildReactor', ['buildReactor.dashboard']);
+
+	angular.element(document).ready(function () {
+		angular.bootstrap(document, ['buildReactor']);
+	});
 });

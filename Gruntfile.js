@@ -255,6 +255,12 @@ module.exports = function (grunt) {
 							exclude: [
 								'rxjs'
 							]
+						},
+						{
+							name: 'dashboard',
+							exclude: [
+								'rxjs'
+							]
 						}
 					]
 				}
