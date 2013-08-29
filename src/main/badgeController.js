@@ -1,3 +1,4 @@
+/* global chrome: false */
 define([
 	'main/serviceController'
 ], function (serviceController) {

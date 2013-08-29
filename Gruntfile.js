@@ -5,23 +5,20 @@ module.exports = function (grunt) {
 
 	grunt.loadNpmTasks('grunt-clear');
 	grunt.loadNpmTasks('grunt-contrib-clean');
-	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-compress');
-	grunt.loadNpmTasks('grunt-contrib-jasmine');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
-	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-plato');
 	grunt.loadNpmTasks('grunt-version');
 
-	grunt.registerTask('default', ['clean:build', 'jshint', 'connect:test', 'jasmine', 'cssmin', 'requirejs', 'copy', 'clean:buildSrc', 'compress']);
-	grunt.registerTask('test', ['jshint', 'connect:test', 'jasmine']);
-	grunt.registerTask('server', ['jasmine:main:build', 'connect:server']);
+	grunt.registerTask('default', ['clean:build', 'jshint', 'karma:continuous', 'cssmin', 'requirejs', 'copy', 'clean:buildSrc', 'compress']);
+	grunt.registerTask('test', ['karma:watch']);
 	grunt.registerTask('dist', ['clean:build', 'cssmin', 'requirejs', 'copy', 'clean:buildSrc', 'compress']);
 	grunt.registerTask('report', ['plato:src']);
-	grunt.registerTask('travis', ['clean:build', 'jshint', 'connect:test', 'jasmine']);
+	grunt.registerTask('travis', ['clean:build', 'jshint', 'karma:continuous']);
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -32,10 +29,16 @@ module.exports = function (grunt) {
 		clean: {
 			build: [ '<%= vars.build %>' ],
 			buildSrc: [
+				'<%= vars.dist %>/src/**/*.spec.js',
+				'<%= vars.dist %>/src/**/*.fixture.*',
+				'<%= vars.dist %>/src/common',
+				'<%= vars.dist %>/src/main',
 				'<%= vars.dist %>/src/mout',
 				'<%= vars.dist %>/src/options',
 				'<%= vars.dist %>/src/popup',
 				'<%= vars.dist %>/src/templates',
+				'<%= vars.dist %>/src/test',
+				'<%= vars.dist %>/src/test-karma.js',
 				'<%= vars.dist %>/src/build.txt'
 			]
 		},
@@ -50,101 +53,22 @@ module.exports = function (grunt) {
 				src: ['manifest.json', 'bower.json']
 			}
 		},
-		jasmine: {
-			main: {
-				options: {
-					specs: 'spec/**/*Test.js',
-					host: 'http://localhost:8000/',
-					vendor: [
-						"bower_components/jasmine-jquery/lib/jasmine-jquery.js"
-					],
-					helpers: [
-						"spec/test.js"
-					],
-					template: require('grunt-template-jasmine-requirejs'),
-					templateOptions: {
-						requireConfig: {
-							baseUrl: 'src',
-							paths: {
-								angular: '../bower_components/angular/angular',
-								angularMocks: '../bower_components/angular-mocks/angular-mocks',
-								'options/messages': 'options/messages',
-								'popup/messages': 'popup/messages',
-								bootbox: '../bower_components/bootbox/bootbox',
-								bootstrap: '../lib/twitter-bootstrap/js/bootstrap',
-								bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons',
-								fixtures: '../spec/fixtures',
-								handlebars: '../lib/require-handlebars-plugin/Handlebars',
-								hbs: '../lib/require-handlebars-plugin/hbs-plugin',
-								i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
-								jasmineSignals: '../bower_components/jasmine-signals/jasmine-signals',
-								jquery: '../bower_components/jquery/jquery',
-								json: '../bower_components/requirejs-plugins/src/json',
-								json2: '../lib/require-handlebars-plugin/hbs/json2',
-								mocks: '../spec/mocks',
-								mout: '../bower_components/mout/src',
-								signals: '../bower_components/js-signals/dist/signals',
-								spec: '../spec',
-								text: '../bower_components/requirejs-text/text',
-								rx: '../bower_components/rxjs/rx',
-								rxHelpers: '../spec/rxHelpers',
-								'rx.aggregates': '../bower_components/rxjs/rx.aggregates',
-								'rx.binding': '../bower_components/rxjs/rx.binding',
-								'rx.jquery': '../bower_components/rxjs-jquery/rx.jquery',
-								'rx.testing': '../bower_components/rxjs/rx.testing',
-								'rx.time': '../bower_components/rxjs/rx.time',
-								underscore: '../lib/require-handlebars-plugin/hbs/underscore'
-							},
-							map: {
-								'rx.jquery': {
-									'jQuery': 'jquery'
-								}
-							},
-							shim: {
-								angular: {
-									deps: ['jquery'],
-									exports: 'angular'
-								},
-								bootstrap: [ 'jquery' ],
-								bootbox: {
-									deps: [ 'bootstrap' ],
-									exports: 'bootbox'
-								},
-								bootstrapToggle: {
-									deps: [ 'jquery', 'bootstrap' ]
-								},
-								jquery: {
-									exports: 'jquery'
-								}
-							},
-							hbs: {
-								templateExtension: 'html',
-								helperDirectory: 'templates/helpers/',
-								i18nDirectory:   'templates/i18n/'
-							},
-							waitSeconds: 10
-						}
-					}
-				}
-			}
-		},
-		connect: {
-			test: {
-				options: {
-					keepalive: false
-				}
-			},
-			server: {
-				options: {
-					keepalive: true
-				}
-			}
-		},
-		watch: {
+		/**
+		 * The Karma configurations.
+		 */
+		karma: {
 			options: {
-				files: [ 'src/**/*', 'spec/**/*' ],
-				tasks: ['clear', 'jasmine'],
-				interrupt: true
+				configFile: 'karma.conf.js'
+			},
+			unit: {
+				runnerPort: 9101,
+				background: true
+			},
+			continuous: {
+				singleRun: true
+			},
+			watch: {
+				singleRun: false
 			}
 		},
 		cssmin: {

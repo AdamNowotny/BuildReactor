@@ -3,7 +3,8 @@ define([
 	'hbs!templates/popup',
 	'popup/messages',
 	'rx',
-	'common/sortBy'
+	'common/sortBy',
+	'bootstrap'
 ], function ($, popupTemplate, messages, Rx, sortBy) {
 
 	'use strict';

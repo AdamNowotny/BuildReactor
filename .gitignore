@@ -1,8 +1,6 @@
 _build
-.grunt
 node_modules
 .DS_Store
 components
 bower_components
-_SpecRunner.html
 web.config

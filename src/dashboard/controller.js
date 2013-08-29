@@ -39,9 +39,11 @@ define(['dashboard/app', 'popup/messages', 'rx', 'common/sortBy'], function (app
 				disabled: item.isDisabled,
 				offline: item.error
 			};
-			item.tags && item.tags.forEach(function (tag) {
-				classes[tag] = true;
-			});
+			if (item.tags) {
+				item.tags.forEach(function (tag) {
+					classes[tag] = true;
+				});
+			}
 			return classes;
 		};
 		$scope.getLabelClasses = function (tag) {

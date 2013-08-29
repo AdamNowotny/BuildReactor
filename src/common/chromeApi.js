@@ -1,3 +1,4 @@
+/* global chrome: false */
 define(['rx'], function (Rx) {
 	
 	'use strict';
