@@ -14,11 +14,11 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-plato');
 	grunt.loadNpmTasks('grunt-version');
 
-	grunt.registerTask('default', ['clean:build', 'jshint', 'karma:continuous', 'cssmin', 'requirejs', 'copy', 'clean:buildSrc', 'compress']);
+	grunt.registerTask('default', ['clean:build', 'jshint', 'karma:once', 'cssmin', 'requirejs', 'copy', 'clean:buildSrc', 'compress']);
 	grunt.registerTask('test', ['karma:watch']);
 	grunt.registerTask('dist', ['clean:build', 'cssmin', 'requirejs', 'copy', 'clean:buildSrc', 'compress']);
 	grunt.registerTask('report', ['plato:src']);
-	grunt.registerTask('travis', ['clean:build', 'jshint', 'karma:continuous']);
+	grunt.registerTask('travis', ['clean:build', 'jshint', 'karma:once']);
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -60,11 +60,7 @@ module.exports = function (grunt) {
 			options: {
 				configFile: 'karma.conf.js'
 			},
-			unit: {
-				runnerPort: 9101,
-				background: true
-			},
-			continuous: {
+			once: {
 				singleRun: true
 			},
 			watch: {
