@@ -21,7 +21,7 @@
             "plans":{
                "start-index":0,
                "max-result":1,
-               "size":2,
+               "size":1,
                "expand":"plan",
                "plan":[
                   {

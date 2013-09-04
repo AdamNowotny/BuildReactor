@@ -42,17 +42,20 @@ define([
 
 			describe('availableBuilds', function () {
 
-				var projectsJson, projectsJson2;
+				var projectsJson, projectsJson2, projectsJson3;
 
 				beforeEach(function () {
 					projectsJson = JSON.parse(readFixtures('src/services/bamboo/projects.fixture.json'));
 					projectsJson2 = JSON.parse(readFixtures('src/services/bamboo/projects_page2.fixture.json'));
+					projectsJson3 = JSON.parse(readFixtures('src/services/bamboo/projects_plans_page2.fixture.json'));
 					spyOn(request, 'json').andCallFake(function (options) {
 						switch (options.url) {
 						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=0':
 							return Rx.Observable.returnValue(projectsJson);
 						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=1':
 							return Rx.Observable.returnValue(projectsJson2);
+						case 'http://example.com/rest/api/latest/project/PROJECT1?expand=plans.plan&start-index=3':
+							return Rx.Observable.returnValue(projectsJson3);
 						default:
 							throw new Error('Unknown URL: ' + options.url);
 						}
@@ -89,7 +92,7 @@ define([
 					expect(plans.items[0].isDisabled).toBe(false);
 				});
 
-				it('should parse plans when multiple requests required', function () {
+				it('should parse plans when multiple requests for projects required', function () {
 					projectsJson.projects.size = 2;
 					projectsJson.projects['max-result'] = 1;
 
@@ -103,6 +106,22 @@ define([
 					expect(plans.items[5].name).toBe('Plan 1');
 					expect(plans.items[5].group).toBe('Project 3');
 					expect(plans.items[5].isDisabled).toBe(false);
+				});
+
+				it('should parse plans when multiple requests for plans within a project required', function () {
+					projectsJson.projects.project[0].plans.size = 4;
+					projectsJson.projects.project[0].plans['max-result'] = 3;
+
+					var plans;
+					service.availableBuilds().subscribe(function (d) {
+						plans = d;
+					});
+
+					expect(plans.items.length).toBe(6);
+					expect(plans.items[0].id).toBe('PROJECT1-BRANCH18X');
+					expect(plans.items[0].name).toBe('Deploy Nightly 1.8.x');
+					expect(plans.items[0].group).toBe('Nightly Builds');
+					expect(plans.items[0].isDisabled).toBe(false);
 				});
 
 			});

@@ -6,7 +6,7 @@
    },
    "projects":{
       "start-index":0,
-      "max-result":1,
+      "max-result":2,
       "size":2,
       "expand":"project",
       "project":[
@@ -124,8 +124,8 @@
             },
             "plans":{
                "start-index":0,
-               "max-result":3,
-               "size":3,
+               "max-result":2,
+               "size":2,
                "expand":"plan",
                "plan":[
                   {

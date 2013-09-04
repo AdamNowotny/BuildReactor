@@ -30,12 +30,12 @@ require.config({
 	}
 });
 require([
+	'rxjs',
 	'popup/messages',
 	'popup/popupLogger',
 	'angular',
-	'dashboard/main',
-	'rxjs'
-], function (messages, logger, angular, main, rxjs) {
+	'dashboard/main'	
+], function (rxjs, messages, logger, angular, main) {
 
 	'use strict';
 
