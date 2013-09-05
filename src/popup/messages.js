@@ -1,4 +1,8 @@
-define(['common/chromeApi', 'rx', 'rx.binding'], function (chromeApi, Rx) {
+define([
+	'common/chromeApi',
+	'rx',
+	'rx.binding'
+], function (chromeApi, Rx) {
 
 	'use strict';
 

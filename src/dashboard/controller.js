@@ -1,8 +1,14 @@
-define(['dashboard/app', 'popup/messages', 'rx', 'common/sortBy'], function (app, messages, Rx, sortBy) {
+define([
+	'dashboard/app',
+	'popup/messages',
+	'rx',
+	'common/sortBy',
+	'angular'
+], function (app, messages, Rx, sortBy, angular) {
 
 	'use strict';
 
-	app.controller("DashboardCtrl", function ($scope) {
+	app.controller('DashboardCtrl', function ($scope) {
 
 		function createModel(state) {
 			return state.map(function (serviceState) {
@@ -53,7 +59,7 @@ define(['dashboard/app', 'popup/messages', 'rx', 'common/sortBy'], function (app
 
 		messages.activeProjects.subscribe(function (services) {
 			$scope.services = services ? createModel(services) : [];
-			$scope.activeProjects = services;
+			$scope.$$phase || $scope.$apply();
 		});
 	});
 });
