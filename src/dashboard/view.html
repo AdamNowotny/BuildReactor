@@ -7,7 +7,7 @@
 			<div class="service-group">{{ group.name }}</div>
 			<ul class="service-item-list" ng-repeat="item in group.items">
 				<li class="service-item" ng-class="getItemClasses(item)">
-					<a href="{{webUrl}}" target="_blank">
+					<a href="{{item.webUrl}}" target="_blank">
 						<span class="service-item-name pull-left">{{ item.name }}</span>
 						<span class="labels">
 							<span ng-show="item.error" class="label label-inverse pull-right" title="{{ item.error.description }}">
