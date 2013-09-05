@@ -6,14 +6,14 @@ define([
 
 	return app.config(function ($routeProvider, $locationProvider) {
 			$routeProvider
-			.when('/dashboard.html', {
+			.when('/', {
 				templateUrl: 'src/dashboard/view.html',
 				controller: 'DashboardCtrl'
 			})
 			.otherwise({
-				redirectTo: '/dashboard.html'
+				redirectTo: '/'
 			});
 
-			$locationProvider.html5Mode(true);
+			$locationProvider.html5Mode(false);
 		}); 
 });
