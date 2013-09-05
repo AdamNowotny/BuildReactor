@@ -26,15 +26,17 @@ module.exports = function (config) {
 			{pattern: 'src/**/*', watched: true, served: true, included: false},
 			{pattern: 'lib/**/*', watched: true, served: true, included: false},
 			{pattern: 'bower_components/**/*.js', watched: false, served: true, included: false},
-		],
 
-		// list of files to exclude
-		exclude: [
-			'src/dashboard.js',
-			'src/main.js',
-			'src/options.js',
-			'src/popup.js',
-			'src/rxjs.js'
+			// only for http server
+			{pattern: '*.html', watched: false, served: true, included: false},
+			{pattern: 'src/dashboard.js', watched: false, served: true, included: false},
+			{pattern: 'src/options.js', watched: false, served: true, included: false},
+			{pattern: 'src/main.js', watched: false, served: true, included: false},
+			{pattern: 'src/popup.js', watched: false, served: true, included: false},
+			{pattern: 'src/rxjs.js', watched: false, served: true, included: false},
+			{pattern: 'src/**/*.html', watched: false, served: true, included: false},
+			{pattern: 'bower_components/font-awesome/css/font-awesome.min.css', watched: false, served: true, included: false},
+			{pattern: 'bower_components/font-awesome/font/fontawesome-webfont.*', watched: false, served: true, included: false},
 		],
 
 		// test results reporter to use
