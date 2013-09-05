@@ -77,27 +77,28 @@ define([
 			var result = Rx.Observable.returnValue(response);
 			var pageSize = response.projects['max-result'];
 			var totalSize = response.projects['size'];
-			var index = pageSize;
-			while (index < totalSize) {
-				result = result.concat(projectsFromIndex(self, index));
-				index += pageSize;
-			}
-			return result;
+			var pageIndexes = getPageIndexes(pageSize, totalSize);
+			var moreProjects = Rx.Observable.fromArray(pageIndexes).selectMany(function (index) {
+				return projectsFromIndex(self, index);
+			});
+			return Rx.Observable.returnValue(response).concat(moreProjects);
 		}).selectMany(function (projectResponse) {
 			return Rx.Observable.fromArray(projectResponse.projects.project);
 		});
 	};
 
+	var getPageIndexes = function (pageSize, totalSize) { 
+		var pageIndexes = [];
+		for (var index = pageSize; index < totalSize; index += pageSize) {
+			pageIndexes.push(index);
+		}
+		return pageIndexes;
+	};
+
 	var allProjectPlans = function (self, project) {
-		var result = Rx.Observable.fromArray(project.plans.plan);
 		var pageSize = project.plans['max-result'];
 		var totalSize = project.plans['size'];
-		var index = pageSize;
-		var pageIndexes = [];
-		while (index < totalSize) {
-			pageIndexes.push(index);
-			index += pageSize;
-		}
+		var pageIndexes = getPageIndexes(pageSize, totalSize);
 		var morePlans = Rx.Observable.fromArray(pageIndexes).selectMany(function (index) {
 			return projectPlansFromIndex(self, project.key, index);
 		}).selectMany(function (response) {
