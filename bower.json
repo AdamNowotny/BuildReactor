@@ -3,22 +3,22 @@
   "description": "Developer notifications and dashboard",
   "version": "0.7.6",
   "dependencies": {
-    "angular": "~1.0.7",
+    "angular": "~1.0.8",
     "bootbox": "~3.0.0",
     "font-awesome": "~3.2.1",
     "js-signals": "~1.0.0",
     "jquery": "~1.8.3",
-    "mout": "~0.5.0",
-    "requirejs": "~2.1.6",
-    "rxjs": "~2.1.2",
-    "rxjs-jquery": "git://github.com/Reactive-Extensions/rxjs-jquery"
+    "mout": "~0.7.0",
+    "requirejs": "~2.1.8",
+    "rxjs": "~2.1.14",
+    "rxjs-jquery": "git://github.com/Reactive-Extensions/rxjs-jquery#1.0.1"
   },
   "devDependencies": {
-    "angular-mocks": "~1.0.7",
+    "angular-mocks": "~1.0.8",
     "jasmine": "~1.3.1",
     "jasmine-jquery": "~1.4.2",
     "jasmine-signals": "git://github.com/AdamNowotny/jasmine-signals.git",
     "requirejs-plugins": "~1.0.2",
-    "requirejs-text": "~2.0.7"
+    "requirejs-text": "~2.0.10"
   }
 }
