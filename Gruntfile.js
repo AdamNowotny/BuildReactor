@@ -3,7 +3,6 @@ module.exports = function (grunt) {
 
 	'use strict';
 
-	grunt.loadNpmTasks('grunt-clear');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-compress');
@@ -117,10 +116,10 @@ module.exports = function (grunt) {
 						mout: '../bower_components/mout/src',
 						'options/messages': 'options/messages',
 						'popup/messages': 'popup/messages',
-						rx: '../bower_components/rxjs/rx.modern',
-						'rx.binding': '../bower_components/rxjs/rx.binding',
+						rx: '../bower_components/Rx/rx.modern',
+						'rx.binding': '../bower_components/Rx/rx.binding',
 						'rx.jquery': '../bower_components/rxjs-jquery/rx.jquery',
-						'rx.time': '../bower_components/rxjs/rx.time',
+						'rx.time': '../bower_components/Rx/rx.time',
 						signals: '../bower_components/js-signals/dist/signals',
 						underscore: '../lib/require-handlebars-plugin/hbs/underscore'
 					},
