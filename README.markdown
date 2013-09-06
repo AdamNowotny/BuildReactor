@@ -56,6 +56,9 @@ Dashboard page
 Developer setup
 ===============
 
+Installation
+------------
+
 [Node.js](http://nodejs.org/) is required to build the extension. After it's installed go to project directory and run:
 
 ```
@@ -66,30 +69,44 @@ grunt
 
 Open Chrome Extension manager and `Load unpacked extension..` from `_build/BuildReactor` folder.
 
-Running `grunt` (or just `grunt dist`) and refreshing the extension in Chrome is required every time you make a change.
+`grunt` - full build
+
+`grunt dist` - create distribution package without running tests
+
+Reloading the extension in Chrome is required every time you make a change.
+
+Testing
+-------
+
+`grunt test` - run Karma using Chrome (edit `karma.conf.js` to change) and watch for changes
+
+Once running you can also open `localhost:9876/base/options.html` or any other HTML file in the browser to test using sample data. This does not require you to load as Chrome Extension.
 
 Technical overview
 ==================
 
 The packaged version uses:
+ * [AngularJS](angularjs.org)
+ * [Bootbox](http://bootboxjs.com/)
  * [Font Awesome](http://fortawesome.github.com/Font-Awesome/)
  * [Handlebars](http://handlebarsjs.com/) templates using [require-handlebars-plugin](https://github.com/SlexAxton/require-handlebars-plugin)
  * [JS-Signals](http://millermedeiros.github.com/js-signals/)
  * [jQuery](http://jquery.com/)
- * [mout](http://moutjs.com/)
+ * [Mout](http://moutjs.com/)
+ * [Require-JS](http://requirejs.org/)
  * [RxJS](http://reactive-extensions.github.com/RxJS/)
  * [RxJS-jquery](https://github.com/Reactive-Extensions/rxjs-jquery)
- * [Require-JS](http://requirejs.org/)
  * [Twitter bootstrap](http://twitter.github.com/bootstrap/)
 
 The build and tests use:
  * [Bower](http://twitter.github.com/bower/)
- * [grunt](http://gruntjs.com/)
- * [grunt-contrib](https://github.com/gruntjs/grunt-contrib)
- * [grunt-jasmine-runner](https://github.com/jasmine-contrib/grunt-jasmine-runner)
- * [jasmine](http://pivotal.github.com/jasmine/)
- * [jasmine-jquery](https://github.com/velesin/jasmine-jquery/)
- * [jasmine-signals](https://github.com/AdamNowotny/jasmine-signals)
+ * [Grunt](http://gruntjs.com/)
+ * [Grunt-karma](https://github.com/gruntjs/grunt-contrib)
+ * [Plato](https://github.com/jsoverson/plato)
+ * [Jasmine](http://pivotal.github.com/jasmine/)
+ * [Jasmine-jquery](https://github.com/velesin/jasmine-jquery/)
+ * [Jasmine-signals](https://github.com/AdamNowotny/jasmine-signals)
+ * [Karma](http://karma-runner.github.io/)
  * [RequireJS plugins](https://github.com/millermedeiros/requirejs-plugins)
  * [Travis-CI](http://travis-ci.org/)
 
