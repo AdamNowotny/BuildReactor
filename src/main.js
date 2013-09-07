@@ -8,7 +8,7 @@ require.config({
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
 		mout: '../bower_components/mout/src',
 		rx: 'rxjs',
-		'rx.binding': '../bower_components/rxjs/rx.binding',
+		'rx.binding': 'rxjs',
 		'rx.jquery': 'rxjs',
 		'rx.time': 'rxjs',
 		signals: '../bower_components/js-signals/dist/signals',

@@ -10,7 +10,7 @@
     "jquery": "~1.8.3",
     "mout": "~0.7.0",
     "requirejs": "~2.1.8",
-    "Rx": "~2.1.14",
+    "rx": "~2.1.14",
     "rxjs-jquery": "~1.1.1"
   },
   "devDependencies": {
