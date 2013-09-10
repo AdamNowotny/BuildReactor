@@ -1,10 +1,10 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
-		rx: '../bower_components/rx/rx.modern',
-		'rx.binding': '../bower_components/rx/rx.binding',
-		'rx.jquery': '../bower_components/rxjs-jquery/rx.jquery',
-		'rx.time': '../bower_components/rx/rx.time'
+		rx: '../bower_components/Rx/rx.modern',
+		'rx.binding': '../bower_components/Rx/rx.binding',
+		'rx.jquery': '../bower_components/Rx-jQuery/rx.jquery',
+		'rx.time': '../bower_components/Rx/rx.time'
 	},
 	map: {
 		'rx.jquery': {
