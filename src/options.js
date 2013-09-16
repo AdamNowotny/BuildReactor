@@ -41,13 +41,13 @@ require.config({
 require([
 	'rxjs',
 	'options/optionsController',
-	'options/optionsLogger',
-	'common/core'
-], function (rxjs, optionsController, optionsLogger, core) {
+	'common/core',
+	'common/coreLogger'
+], function (rxjs, optionsController, core, logger) {
 
 	'use strict';
 
-	optionsLogger();
+	logger();
 	core.initOptions(function (response) {
 		optionsController.initialize(response.serviceTypes);
 		optionsController.load(response.settings);
