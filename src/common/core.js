@@ -1,7 +1,20 @@
-define(['common/chromeApi'], function (chromeApi) {
+define([
+	'common/chromeApi',
+	'rx',
+	'rx.binding'
+], function (chromeApi, Rx) {
 	
 	'use strict';
 
+	var init = function () {
+		var port = chromeApi.connect({ name: 'state' });
+		port.onMessage.addListener(function (message) {
+			activeProjects.onNext(message);
+		});
+	};
+
+	var activeProjects = new Rx.BehaviorSubject([]);
+	
 	var updateSettings = function (settingsList) {
 		chromeApi.sendMessage({name: "updateSettings", settings: settingsList});
 	};
@@ -15,6 +28,8 @@ define(['common/chromeApi'], function (chromeApi) {
 	};
 
 	return {
+		init: init,
+		activeProjects: activeProjects,
 		initOptions: initOptions,
 		updateSettings: updateSettings,
 		availableProjects: availableProjects

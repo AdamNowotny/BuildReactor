@@ -1,13 +1,13 @@
 define([
-	'popup/messages',
+	'common/core',
 	'mout/string/interpolate'
-], function (messages, interpolate) {
+], function (core, interpolate) {
 
 	'use strict';
 
 	return function () {
-		messages.activeProjects.subscribe(function (state) {
-			console.log(new Date().toJSON(), 'messages', state);
+		core.activeProjects.subscribe(function (state) {
+			console.log(new Date().toJSON(), 'core', state);
 		}, function () {
 			console.error(new Date().toJSON(), 'ActiveProjects stream error', arguments);
 		}, function () {

@@ -1,10 +1,10 @@
 define([
 	'dashboard/app',
-	'popup/messages',
+	'common/core',
 	'rx',
 	'common/sortBy',
 	'angular'
-], function (app, messages, Rx, sortBy, angular) {
+], function (app, core, Rx, sortBy, angular) {
 
 	'use strict';
 
@@ -57,7 +57,7 @@ define([
 			return classes;
 		};
 
-		messages.activeProjects.subscribe(function (services) {
+		core.activeProjects.subscribe(function (services) {
 			$scope.services = services ? createModel(services) : [];
 			$scope.$$phase || $scope.$apply();
 		});

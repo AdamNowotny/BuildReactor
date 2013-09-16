@@ -4,8 +4,40 @@ define(['common/core', 'common/chromeApi'], function (core, chromeApi) {
 
 	describe('common/core', function () {
 
+		var port;
+		var publishMessage;
+
 		beforeEach(function () {
+			port = {
+				onMessage: {
+					addListener: function () {}
+				}
+			};
+			spyOn(chromeApi, 'connect').andReturn(port);
 			spyOn(chromeApi, 'sendMessage');
+			spyOn(port.onMessage, 'addListener').andCallFake(function (listener) {
+				publishMessage = listener;
+			});
+		});
+
+		it('should connect on init', function () {
+			core.init();
+
+			expect(chromeApi.connect).toHaveBeenCalledWith({ name: 'state' });
+		});
+
+		it('should subscribe on init', function () {
+			var message;
+			var settings = [];
+			var subscription = core.activeProjects.subscribe(function (state) {
+				message = state;
+			});
+
+			core.init();
+			publishMessage(settings);
+
+			subscription.dispose();
+			expect(message).toBe(settings);
 		});
 
 		it('should send initOptions message', function () {

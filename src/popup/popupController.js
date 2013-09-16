@@ -1,11 +1,11 @@
 define([
 	'jquery',
 	'hbs!templates/popup',
-	'popup/messages',
+	'common/core',
 	'rx',
 	'common/sortBy',
 	'bootstrap'
-], function ($, popupTemplate, messages, Rx, sortBy) {
+], function ($, popupTemplate, core, Rx, sortBy) {
 
 	'use strict';
 	
@@ -44,7 +44,7 @@ define([
 			return model;
 		}
 
-		return messages.activeProjects.subscribe(function (services) {
+		return core.activeProjects.subscribe(function (services) {
 			if (services) {
 				show(services);
 				$('.label').tooltip();

@@ -3,9 +3,9 @@ require.config({
 	paths: {
 		angular: '../bower_components/angular/angular.min',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
+		'common/core': 'common/core.mock',
 		jquery: "../bower_components/jquery/jquery.min",
 		mout: '../bower_components/mout/src',
-		'popup/messages': 'popup/messagesStatic',
 		rx: 'rxjs',
 		'rx.binding': 'rxjs',
 		'rx.jquery': 'rxjs',
@@ -21,15 +21,15 @@ require.config({
 });
 require([
 	'rxjs',
-	'popup/messages',
-	'popup/popupLogger',
+	'common/core',
+	'common/coreLogger',
 	'angular',
 	'popup/main'	
-], function (rxjs, messages, logger, angular, main) {
+], function (rxjs, core, logger, angular, main) {
 
 	'use strict';
 
-	messages.init();
+	core.init();
 	logger();
 	
 	angular.module('buildReactor', ['buildReactor.popup']);
