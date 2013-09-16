@@ -113,7 +113,7 @@ module.exports = function (grunt) {
 						jquery: 'empty:',
 						json2: '../lib/require-handlebars-plugin/hbs/json2',
 						mout: '../bower_components/mout/src',
-						'options/messages': 'options/messages',
+						'common/core': 'common/core',
 						'popup/messages': 'popup/messages',
 						rx: '../bower_components/Rx/rx.modern',
 						'rx.binding': '../bower_components/Rx/rx.binding',

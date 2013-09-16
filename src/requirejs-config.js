@@ -3,7 +3,7 @@ require.config({
 	paths: {
 		angular: '../bower_components/angular/angular',
 		angularMocks: '../bower_components/angular-mocks/angular-mocks',
-		'options/messages': 'options/messages',
+		'common/core': 'common/core',
 		'popup/messages': 'popup/messages',
 		bootbox: '../bower_components/bootbox/bootbox',
 		bootstrap: '../lib/twitter-bootstrap/js/bootstrap',

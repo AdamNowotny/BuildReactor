@@ -1,8 +1,8 @@
-define(['options/messages', 'common/chromeApi'], function (messages, chromeApi) {
+define(['common/core', 'common/chromeApi'], function (core, chromeApi) {
 
 	'use strict';
 
-	describe('options/messages', function () {
+	describe('common/core', function () {
 
 		beforeEach(function () {
 			spyOn(chromeApi, 'sendMessage');
@@ -11,7 +11,7 @@ define(['options/messages', 'common/chromeApi'], function (messages, chromeApi) 
 		it('should send initOptions message', function () {
 			var callback = function () {};
 
-			messages.initOptions(callback);
+			core.initOptions(callback);
 
 			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "initOptions"}, callback);
 		});
@@ -19,7 +19,7 @@ define(['options/messages', 'common/chromeApi'], function (messages, chromeApi) 
 		it('should send updateSettings message', function () {
 			var settings = [];
 
-			messages.updateSettings(settings);
+			core.updateSettings(settings);
 
 			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "updateSettings", settings: settings});
 		});
@@ -28,7 +28,7 @@ define(['options/messages', 'common/chromeApi'], function (messages, chromeApi) 
 			var settings = [];
 			var callback = function () {};
 
-			messages.availableProjects(settings, callback);
+			core.availableProjects(settings, callback);
 
 			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "availableProjects", serviceSettings: settings}, callback);
 		});

@@ -4,8 +4,8 @@ define([
 	'mout/object/fillIn',
 	'options/settingsFormView',
 	'options/projectView',
-	'options/messages'
-], function (signals, $, fillIn, settingsFormView, projectView, messages) {
+	'common/core'
+], function (signals, $, fillIn, settingsFormView, projectView, core) {
 
 	'use strict';
 
@@ -42,7 +42,7 @@ define([
 	function showProjects(currentValues) {
 		projectView.hide();
 		$('.alert-error').hide();
-		messages.availableProjects(fillIn(currentValues, currentServiceInfo), function (response) {
+		core.availableProjects(fillIn(currentValues, currentServiceInfo), function (response) {
 			if (response.error) {
 				renderError(response.error);
 			} else {

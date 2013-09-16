@@ -4,8 +4,8 @@ define([
 	'options/projectView',
 	'jquery',
 	'signals',
-	'options/messages'
-], function (serviceOptions, settingsFormView, projectView, $, signals, messages) {
+	'common/core'
+], function (serviceOptions, settingsFormView, projectView, $, signals, core) {
 
 	'use strict';
 
@@ -48,7 +48,7 @@ define([
 			};
 			setupProjectView();
 			setupSettingsFormView();
-			spyOn(messages, 'availableProjects');
+			spyOn(core, 'availableProjects');
 			settingsFormContainer = $('.settings-form-container');
 			projectViewContainer = $('.project-selection-container');
 			serviceOptions.initialize();
@@ -183,11 +183,11 @@ define([
 				var formValues = { url: settings.url };
 				settingsFormView.on.clickedShow.dispatch(formValues);
 
-				expect(messages.availableProjects).toHaveBeenCalled();
+				expect(core.availableProjects).toHaveBeenCalled();
 			});
 
 			it('should reset buttons after projects loaded', function () {
-				messages.availableProjects.andCallFake(function (settings, responseFunction) {
+				core.availableProjects.andCallFake(function (settings, responseFunction) {
 					responseFunction({ projects: {} });
 				});
 				serviceOptions.show(settings);
@@ -199,7 +199,7 @@ define([
 
 			it('should show projects after projects loaded', function () {
 				var projects = {};
-				messages.availableProjects.andCallFake(function (settings, responseFunction) {
+				core.availableProjects.andCallFake(function (settings, responseFunction) {
 					responseFunction({ projects: projects });
 				});
 				serviceOptions.show(settings);
@@ -210,7 +210,7 @@ define([
 			});
 
 			it('should reset buttons after request error', function () {
-				messages.availableProjects.andCallFake(function (serviceSettings, responseFunction) {
+				core.availableProjects.andCallFake(function (serviceSettings, responseFunction) {
 					responseFunction({ error: { message: 'error message', url: settings.url } });
 				});
 				serviceOptions.show(settings);
@@ -221,7 +221,7 @@ define([
 			});
 
 			it('should display error if call failed when getting plans', function () {
-				messages.availableProjects.andCallFake(function (settings, responseFunction) {
+				core.availableProjects.andCallFake(function (settings, responseFunction) {
 					responseFunction({ error: { message: 'error message', url: 'http://error.com/' } });
 				});
 				serviceOptions.show(settings);

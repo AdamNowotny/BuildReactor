@@ -1,6 +1,6 @@
 define([
 	'signals',
-	'options/messages',
+	'common/core',
 	'jquery',
 	'options/serviceSettings',
 	'options/serviceOptionsPage',
@@ -10,7 +10,7 @@ define([
 	'bootbox',
 	'rx',
 	'bootstrapToggle'
-], function (signals, messages, $, serviceSettings, serviceOptionsPage, addService, serviceList, alert, bootbox, Rx) {
+], function (signals, core, $, serviceSettings, serviceOptionsPage, addService, serviceList, alert, bootbox, Rx) {
 
 	'use strict';
 	
@@ -144,7 +144,7 @@ define([
 		setIsNewService(false);
 		serviceSettings.remove(currentSettings);
 		serviceList.update(serviceSettings.getAll());
-		messages.updateSettings(serviceSettings.getAll());
+		core.updateSettings(serviceSettings.getAll());
 	}
 
 	function load(newSettings) {
@@ -166,7 +166,7 @@ define([
 	function serviceSettingsChanged(updatedSettings) {
 		updatedSettings.disabled = !$('.toggle-button').toggleButtons('status');
 		serviceSettings.update(currentSettings, updatedSettings);
-		messages.updateSettings(serviceSettings.getAll());
+		core.updateSettings(serviceSettings.getAll());
 		alert.show();
 		setIsNewService(false);
 		currentSettings = updatedSettings;

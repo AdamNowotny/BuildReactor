@@ -11,7 +11,7 @@ require.config({
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
 		jquery: "../bower_components/jquery/jquery.min",
 		mout: '../bower_components/mout/src',
-		'options/messages': 'options/messagesStatic',
+		'common/core': 'common/core.mock',
 		rx: 'rxjs',
 		'rx.jquery': 'rxjs',
 		'rx.time': 'rxjs',
@@ -42,13 +42,13 @@ require([
 	'rxjs',
 	'options/optionsController',
 	'options/optionsLogger',
-	'options/messages'
-], function (rxjs, optionsController, optionsLogger, messages) {
+	'common/core'
+], function (rxjs, optionsController, optionsLogger, core) {
 
 	'use strict';
 
 	optionsLogger();
-	messages.initOptions(function (response) {
+	core.initOptions(function (response) {
 		optionsController.initialize(response.serviceTypes);
 		optionsController.load(response.settings);
 	});
