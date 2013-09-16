@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-csp>
 	<head>
 		<title>BuildReactor popup</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +8,6 @@
 		<link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css" media="screen" />
 	</head>
 	<body>
-		<div data-ng-view></div>
 		<div class="navbar navbar-fixed-top navbar-inverse">
 			<div class="navbar-inner">
 				<ul class="nav pull-right">
@@ -30,8 +29,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="service-info-container">
-		</div>
+		<div data-ng-view></div>
 		<!-- scripts -->
 		<script type="text/javascript" data-main="src/popup" src="bower_components/requirejs/require.js"></script>
 	</body>

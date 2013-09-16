@@ -34,7 +34,6 @@ module.exports = function (grunt) {
 				'<%= vars.dist %>/src/main',
 				'<%= vars.dist %>/src/mout',
 				'<%= vars.dist %>/src/options',
-				'<%= vars.dist %>/src/popup',
 				'<%= vars.dist %>/src/templates',
 				'<%= vars.dist %>/src/test',
 				'<%= vars.dist %>/src/test-karma.js',
