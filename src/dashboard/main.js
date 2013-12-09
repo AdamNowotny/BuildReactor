@@ -1,6 +1,7 @@
 define([
 	'dashboard/app',
-	'dashboard/controller'
+	'dashboard/controller',
+	'directives/builds'
 ], function (app, controller) {
 	'use strict';
 
@@ -15,9 +16,5 @@ define([
 		});
 
 		$locationProvider.html5Mode(false);
-	}).config([
-		'$compileProvider', function ($compileProvider)	{
-			$compileProvider.urlSanitizationWhitelist(/^\s*(https?|chrome-extension):/);
-		}
-	]);
+	});
 });

@@ -1,0 +1,29 @@
+<ul class="info-list" ng-show="services">
+	<li class="info" ng-repeat="service in services">
+		<div class="service-name-container">
+			<span class="service-name">{{ service.name }}</span>
+		</div>
+		<div ng-repeat="group in service.groups">
+			<div class="service-group">{{ group.name }}</div>
+			<ul class="service-item-list">
+				<li class="service-item" ng-class="getItemClasses(item)" ng-repeat="item in group.items">
+					<a href="{{item.webUrl}}" target="_blank">
+						<span class="service-item-name pull-left">{{ item.name }}</span>
+						<span class="labels">
+							<span ng-show="item.error" class="label label-inverse pull-right" title="{{ item.error.description }}">
+								Offline
+								<span class="error-message">({{ item.error.message }})</span>
+							</span>
+							<span ng-repeat="tag in item.tags">
+								<span class="label pull-right" ng-class="getLabelClasses(tag)" title="{{ item.description }}">{{ tag.name }}</span>
+							</span>
+							<span ng-show="item.isDisabled" class="label label-inverse pull-right">Disabled</span>
+						</span>
+						<i class="icon-spinner icon-spin icon-large pull-right"></i>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</li>
+</ul>
+<div class="no-services-message" ng-hide="services">No services configured</div>

@@ -24,7 +24,7 @@ require([
 	'common/core',
 	'common/coreLogger',
 	'angular',
-	'dashboard/main'	
+	'dashboard/main'
 ], function (rxjs, core, logger, angular, main) {
 
 	'use strict';
@@ -32,8 +32,12 @@ require([
 	core.init();
 	logger();
 	
-	angular.module('buildReactor', ['buildReactor.dashboard']);
-
+	var app = angular.module('buildReactor', ['buildReactor.dashboard']);
+	app.config([
+		'$compileProvider', function ($compileProvider)	{
+			$compileProvider.urlSanitizationWhitelist(/^\s*(https?|chrome-extension):/);
+		}
+	]);
 	angular.element(document).ready(function () {
 		angular.bootstrap(document, ['buildReactor']);
 	});

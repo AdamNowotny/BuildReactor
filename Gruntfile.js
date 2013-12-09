@@ -41,7 +41,7 @@ module.exports = function (grunt) {
 			]
 		},
 		jshint: {
-			files: ['src/**/*.js', 'spec/**/*.js'],
+			files: ['src/**/*.js'],
 			options: {
 				jshintrc: '.jshintrc'
 			}
@@ -114,7 +114,6 @@ module.exports = function (grunt) {
 						json2: '../lib/require-handlebars-plugin/hbs/json2',
 						mout: '../bower_components/mout/src',
 						'common/core': 'common/core',
-						'popup/messages': 'popup/messages',
 						rx: '../bower_components/Rx/rx.modern',
 						'rx.binding': '../bower_components/Rx/rx.binding',
 						'rx.jquery': '../bower_components/Rx-jQuery/rx.jquery',
@@ -226,7 +225,7 @@ module.exports = function (grunt) {
 		plato: {
 			all: {
 				files: {
-					'docs/report': ['src/**/*.js', 'spec/**/*.js']
+					'docs/report': ['src/**/*.js']
 				}
 			},
 			src: {

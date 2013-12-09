@@ -1,29 +1,22 @@
-<ul class="info-list" ng-show="services">
-	<li class="info" ng-repeat="service in services">
-		<div class="service-name-container">
-			<span class="service-name">{{ service.name }}</span>
-		</div>
-		<div ng-repeat="group in service.groups">
-			<div class="service-group">{{ group.name }}</div>
-			<ul class="service-item-list" ng-repeat="item in group.items">
-				<li class="service-item" ng-class="getItemClasses(item)">
-					<a href="{{item.webUrl}}" target="_blank">
-						<span class="service-item-name pull-left">{{ item.name }}</span>
-						<span class="labels">
-							<span ng-show="item.error" class="label label-inverse pull-right" title="{{ item.error.description }}">
-								Offline
-								<span class="error-message">({{ item.error.message }})</span>
-							</span>
-							<span ng-repeat="tag in item.tags">
-								<span class="label pull-right" ng-class="getLabelClasses(tag)" title="{{ item.description }}">{{ tag.name }}</span>
-							</span>
-							<span ng-show="item.isDisabled" class="label label-inverse pull-right">Disabled</span>
-						</span>
-						<i class="icon-spinner icon-spin icon-large pull-right"></i>
-					</a>
-				</li>
-			</ul>
-		</div>
-	</li>
-</ul>
-<div class="no-services-message" ng-hide="services">No services configured</div>
+<div class="navbar navbar-fixed-top navbar-inverse">
+	<div class="navbar-inner">
+		<ul class="nav pull-right">
+			<li>
+				<a href="dashboard.html" target="_blank" title="Fullscreen">
+					<i class="icon-fullscreen icon-white icon-2x"></i>
+				</a>
+			</li>
+			<li>
+				<a href="http://buildreactor.uservoice.com/forums/176979-general" target="_blank" title="Feedback" rel="tooltip">
+					<i class="icon-comments-alt icon-white icon-2x"></i>
+				</a>
+			</li>
+			<li>
+				<a href="options.html" target="_blank" title="Configuration" rel="tooltip">
+					<i class="icon-wrench icon-white icon-2x"></i>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<builds services="services" />
