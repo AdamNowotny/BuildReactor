@@ -8,7 +8,6 @@ require.config({
 		mout: '../bower_components/mout/src',
 		rx: 'rxjs',
 		'rx.binding': 'rxjs',
-		'rx.jquery': 'rxjs',
 		'rx.time': 'rxjs'
 	},
 	shim: {

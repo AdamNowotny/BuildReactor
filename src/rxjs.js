@@ -1,14 +1,9 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
-		rx: '../bower_components/Rx/rx.modern',
-		'rx.binding': '../bower_components/Rx/rx.binding',
-		'rx.jquery': '../bower_components/Rx-jQuery/rx.jquery',
-		'rx.time': '../bower_components/Rx/rx.time'
-	},
-	map: {
-		'rx.jquery': {
-			'jQuery': 'jquery'
-		}
+		rx: '../bower_components/rxjs/rx',
+		'rx.async': '../bower_components/rxjs/rx.async',
+		'rx.binding': '../bower_components/rxjs/rx.binding',
+		'rx.time': '../bower_components/rxjs/rx.time'
 	}
 });

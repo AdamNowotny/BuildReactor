@@ -1,8 +1,9 @@
 define([
 	'options/projectView',
-	'jquery'
+	'jquery',
+	'rx'
 ],
-	function (projectView, $) {
+	function (projectView, $, Rx) {
 
 		'use strict';
 
@@ -303,6 +304,13 @@ define([
 
 			describe('filtering', function () {
 
+				var keyups;
+
+				beforeEach(function () {
+					keyups = new Rx.Subject();	
+					projectView.initialize('container', { filterKeyups : keyups });
+				});
+
 				it('should reset filter if icon clicked', function () {
 					projectView.show(json);
 					$('.filter input').val('something');
@@ -314,8 +322,9 @@ define([
 
 				it('should show projects matching filter', function () {
 					projectView.show(json);
+					$('.project-item').hide();
 
-					$('.filter input').val('cc').keyup();
+					keyups.onNext({ target: { value: 'cc' } });
 
 					expect($('.project-item[data-id=1]')).toBeVisible();
 					expect($('.project-item[data-id=2]')).toBeVisible();
@@ -324,7 +333,7 @@ define([
 				it('should hide projects not matching filter', function () {
 					projectView.show(json);
 
-					$('.filter input').val('cc').keyup();
+					keyups.onNext({ target: { value: 'cc' } });
 
 					expect($('.project-item[data-id=0]')).not.toBeVisible();
 					expect($('.project-item[data-id=3]')).not.toBeVisible();
@@ -335,10 +344,12 @@ define([
 					projectView.show(json);
 					$('.view-selection select').val('Unstable').change();
 
-					$('.filter input').val('r').keyup();
+					keyups.onNext({ target: { value: '3-1' } });
 
 					expect($('.project-item[data-id=1]')).not.toBeVisible();
 					expect($('.project-item[data-id=2]')).not.toBeVisible();
+					expect($('.project-item[data-id=3]')).not.toBeVisible();
+					expect($('.project-item[data-id=4]')).toBeVisible();
 				});
 
 				it('should activate filter on show', function () {

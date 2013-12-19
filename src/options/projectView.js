@@ -6,25 +6,39 @@ define([
 	'mout/array/contains',
 	'rx',
 	'bootstrap',
-	'rx.jquery'
+	'rx.binding',
+	'rx.async'
 ], function ($, projectViewTemplate, projectViewSelectionTemplate, sortBy, contains, Rx) {
 
 	'use strict';
 
 	var rootElement;
+	var mockEvents;
+	var resetClicks, groupCheckAllClicks, filterKeyups;
 
-	var initialize = function (rootClassName) {
+	var initialize = function (rootClassName, modelEvents) {
 		rootElement = $('.' + rootClassName);
+		mockEvents = modelEvents || {};
+	};
+
+	var updateModelEvents = function () {
+		resetClicks = mockEvents.resetClicks ||
+			Rx.Observable.fromEvent(rootElement.find('.filter i'), 'click');
+		groupCheckAllClicks = mockEvents.groupCheckAllClicks ||
+			Rx.Observable.fromEvent(rootElement.find('.check-all'), 'click');
+		filterKeyups = mockEvents.filterKeyups ||
+			Rx.Observable.fromEvent(rootElement.find('.filter .search-query'), 'keyup');
 	};
 
 	var show = function (json) {
 		refresh(json);
 		initializeViewSelection(json, json.primaryView);
 		updateView(json, json.primaryView);
+		updateModelEvents();
 
-		var filterText = rootElement.find('.filter .search-query').keyupAsObservable()
+		filterKeyups
 			.doAction(resetFilterOnEsc)
-			.select(function (e) { return e.target.value;	})
+			.select(function (e) { return e.target.value; })
 			.distinctUntilChanged()
 			.doAction(filterResetToggle)
 			.select(projectsForText)
@@ -36,10 +50,11 @@ define([
 			.doAction(highlightFilterText)
 			.subscribe();
 
-		rootElement.find('.filter i').clickAsObservable().subscribe(function (e) {
+		resetClicks.subscribe(function (e) {
 			rootElement.find('.filter input').val('').keyup().focus();
 		});
-		rootElement.find('.check-all').clickAsObservable()
+
+		groupCheckAllClicks
 			.select(function (e) { return $(e.target); })
 			.select(function (el) {
 				return {

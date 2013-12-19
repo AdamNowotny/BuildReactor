@@ -3,7 +3,7 @@ define([
 	'rx',
 	'jquery',
 	'mout/queryString/encode',
-	'rx.jquery'
+	'rx.async'
 ], function (Rx, $, encode) {
 
 	'use strict';
@@ -14,7 +14,8 @@ define([
 		var timeout = options.timeout || 30000;
 		var scheduler = options.scheduler || Rx.Scheduler.timeout;
 		var ajaxOptions = createAjaxOptions(options, dataType);
-		return $.ajaxAsObservable(ajaxOptions)
+		var promise = $.ajax(ajaxOptions).promise();
+		return Rx.Observable.fromPromise(promise)
 			.catchException(function (ex) {
 				var ajaxError = createAjaxError(ex, ajaxOptions);
 				if (options.authCookie && ajaxError.httpStatus === unauthorizedStatusCode) {
@@ -89,9 +90,9 @@ define([
 		return function (response) {
 			try {
 				if (parser) {
-					return parser(response.data);
+					return parser(response);
 				} else {
-					return response.data;
+					return response;
 				}
 			} catch (ex) {
 				throw createParseError(ajaxOptions);

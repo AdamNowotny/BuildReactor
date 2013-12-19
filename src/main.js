@@ -9,7 +9,6 @@ require.config({
 		mout: '../bower_components/mout/src',
 		rx: 'rxjs',
 		'rx.binding': 'rxjs',
-		'rx.jquery': 'rxjs',
 		'rx.time': 'rxjs',
 		signals: '../bower_components/js-signals/dist/signals',
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore'

@@ -11,8 +11,25 @@ define([
 	var successResponse = { data: {}, textStatus: 'success' };
 	var onNext = Rx.ReactiveTest.onNext;
 	var onError = Rx.ReactiveTest.onError;
+	var successDeferred;
+
+	function createSuccessDeferred(result) {
+		var d = $.Deferred();
+		d.resolve(result);
+		return d;
+	}
+
+	function createFailureDeferred(result) {
+		var d = $.Deferred();
+		d.reject(result);
+		return d;
+	}
 
 	describe('services/request', function () {
+
+		beforeEach(function () {
+			successDeferred = createSuccessDeferred(successResponse);
+		});
 
 		describe('json', function () {
 
@@ -21,24 +38,24 @@ define([
 					url: 'http://sample.com',
 					data: { param: 'value' }
 				};
-				spyOn($, 'ajaxAsObservable').andCallFake(function (options) {
+				spyOn($, 'ajax').andCallFake(function (options) {
 					expect(options.dataType).toBe('json');
 					expect(options.url).toBe('http://sample.com');
 					expect(options.type).toBe('GET');
 					expect(options.cache).toBe(false);
 					expect(options.data).toBe(settings.data);
-					return Rx.Observable.returnValue(successResponse);
+					return successDeferred;
 				});
 
 				request.json(settings).subscribe();
 
-				expect($.ajaxAsObservable).toHaveBeenCalled();
+				expect($.ajax).toHaveBeenCalled();
 			});
 
 			it('should set basic authentication', function () {
-				spyOn($, 'ajaxAsObservable').andCallFake(function (options) {
+				spyOn($, 'ajax').andCallFake(function (options) {
 					expect(options.headers.Authorization).toBe('Basic dXNlcm5hbWUxOnBhc3N3b3JkMTIz');
-					return Rx.Observable.returnValue(successResponse);
+					return successDeferred;
 				});
 				var settings = {
 					url: 'http://example.com',
@@ -48,12 +65,12 @@ define([
 
 				request.json(settings).subscribe();
 
-				expect($.ajaxAsObservable).toHaveBeenCalled();
+				expect($.ajax).toHaveBeenCalled();
 			});
 
 			it('should call custom parser if specified', function () {
 				var parser = jasmine.createSpy();
-				spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.returnValue(successResponse));
+				spyOn($, 'ajax').andReturn(successDeferred);
 				var settings = {
 					url: 'http://example.com',
 					parser: parser
@@ -61,19 +78,19 @@ define([
 
 				request.json(settings).subscribe();
 
-				expect(parser).toHaveBeenCalledWith(successResponse.data);
+				expect(parser).toHaveBeenCalledWith(successResponse);
 			});
 
 			it('should return json response', function () {
 				var response = { data: "some data", textStatus: 'success' };
 				var actualResponse;
-				spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.returnValue(response));
+				spyOn($, 'ajax').andReturn(createSuccessDeferred(response));
 
 				request.json({ url: 'http://sample.com'}).subscribe(function (d) {
 					actualResponse = d;
 				});
 
-				expect(actualResponse).toBe(response.data);
+				expect(actualResponse).toBe(response);
 			});
 
 			describe('errors', function () {
@@ -91,7 +108,7 @@ define([
 							'param_2': 'value2'
 						}
 					};
-					spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.throwException(response));
+					spyOn($, 'ajax').andReturn(createFailureDeferred(response));
 
 					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {
 						actualError = d;
@@ -107,7 +124,7 @@ define([
 				it('should throw exception on timeout', function () {
 					var scheduler = new Rx.TestScheduler();
 					var ajaxOptions = { url: 'http://sample.com/', scheduler: scheduler, timeout: 20000 };
-					spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.never());
+					spyOn($, 'ajax').andReturn($.Deferred());
 
 					var result = scheduler.startWithTiming(function () {
 						return request.json(ajaxOptions);
@@ -130,7 +147,7 @@ define([
 					};
 					var actualError;
 					var ajaxOptions = { url: 'http://sample.com' };
-					spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.throwException(response));
+					spyOn($, 'ajax').andReturn(createFailureDeferred(response));
 
 					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {
 						actualError = d;
@@ -150,9 +167,7 @@ define([
 						url: 'http://sample.com',
 						authCookie: 'JSESSIONID'
 					};
-					spyOn($, 'ajaxAsObservable').andCallFake(function (options) {
-						return Rx.Observable.throwException(response);
-					});
+					spyOn($, 'ajax').andReturn(createFailureDeferred(response));
 					spyOn(chrome.cookies, 'remove').andCallFake(function (details, callback) {
 						expect(details.url).toBe(ajaxOptions.url);
 						expect(details.name).toBe(ajaxOptions.authCookie);
@@ -172,9 +187,7 @@ define([
 						url: 'http://sample.com',
 						authCookie: 'JSESSIONID'
 					};
-					spyOn($, 'ajaxAsObservable').andCallFake(function (options) {
-						return Rx.Observable.throwException(response);
-					});
+					spyOn($, 'ajax').andReturn(createFailureDeferred(response));
 					spyOn(chrome.cookies, 'remove');
 
 					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {});
@@ -195,7 +208,7 @@ define([
 					};
 					var actualResponse;
 					var ajaxOptions = { url: 'http://sample.com' };
-					spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.throwException(response));
+					spyOn($, 'ajax').andReturn(createFailureDeferred(response));
 
 					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {
 						actualResponse = d;
@@ -213,7 +226,7 @@ define([
 					var parser = function (response) {
 						return response.unknown.unknown;
 					};
-					spyOn($, 'ajaxAsObservable').andReturn(Rx.Observable.returnValue(successResponse));
+					spyOn($, 'ajax').andReturn(successDeferred);
 					var settings = {
 						url: 'http://example.com',
 						parser: parser
@@ -242,18 +255,18 @@ define([
 					url: 'http://sample.com',
 					data: { param: 'value' }
 				};
-				spyOn($, 'ajaxAsObservable').andCallFake(function (options) {
+				spyOn($, 'ajax').andCallFake(function (options) {
 					expect(options.dataType).toBe('xml');
 					expect(options.url).toBe('http://sample.com');
 					expect(options.type).toBe('GET');
 					expect(options.cache).toBe(false);
 					expect(options.data).toBe(settings.data);
-					return Rx.Observable.returnValue(successResponse);
+					return successDeferred;
 				});
 
 				request.xml(settings).subscribe();
 
-				expect($.ajaxAsObservable).toHaveBeenCalled();
+				expect($.ajax).toHaveBeenCalled();
 			});
 
 		});

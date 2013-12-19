@@ -13,7 +13,7 @@ require.config({
 		mout: '../bower_components/mout/src',
 		'common/core': 'common/core.mock',
 		rx: 'rxjs',
-		'rx.jquery': 'rxjs',
+		'rx.async': 'rxjs',
 		'rx.time': 'rxjs',
 		signals: '../bower_components/js-signals/dist/signals',
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore'

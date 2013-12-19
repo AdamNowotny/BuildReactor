@@ -114,10 +114,10 @@ module.exports = function (grunt) {
 						json2: '../lib/require-handlebars-plugin/hbs/json2',
 						mout: '../bower_components/mout/src',
 						'common/core': 'common/core',
-						rx: '../bower_components/Rx/rx.modern',
-						'rx.binding': '../bower_components/Rx/rx.binding',
-						'rx.jquery': '../bower_components/Rx-jQuery/rx.jquery',
-						'rx.time': '../bower_components/Rx/rx.time',
+						rx: '../bower_components/rxjs/rx',
+						'rx.async': '../bower_components/rxjs/rx.async',
+						'rx.binding': '../bower_components/rxjs/rx.binding',
+						'rx.time': '../bower_components/rxjs/rx.time',
 						signals: '../bower_components/js-signals/dist/signals',
 						underscore: '../lib/require-handlebars-plugin/hbs/underscore'
 					},
@@ -144,16 +144,8 @@ module.exports = function (grunt) {
 							name: 'rxjs',
 							include: [
 								'rx',
-								'rx.jquery',
 								'rx.time'
-							],
-							override: {
-								map: {
-									'rx.jquery': {
-										'jQuery': 'jquery'
-									}
-								}
-							}
+							]
 						},
 						{
 							name: 'main',

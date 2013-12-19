@@ -160,8 +160,8 @@ define([
 				return self.updateAll().toArray();
 			})
 			.catchException(function (ex) {
-				console.error('*** Pooling subscription error ***', ex);
-				this.events.onNext({
+				console.error('*** Pooling subscription error ***', ex, ex.message);
+				self.events.onNext({
 					eventName: 'UnknownError',
 					details: { message: ex.message, error: ex },
 					source: self.settings.name
