@@ -1,13 +1,13 @@
 define([
-	'directives/app',
+	'directives/module',
 	'common/sortBy',
 	'rx',
 	'common/core'
-], function (app, sortBy, Rx, core) {
+], function (module, sortBy, Rx, core) {
 
 	'use strict';
 
-	app.directive('builds', function ($timeout) {
+	module.directive('builds', function ($timeout) {
 		return {
 			restrict: 'E',
 			scope: {},

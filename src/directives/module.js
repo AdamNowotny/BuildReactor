@@ -1,5 +1,6 @@
 define(['angular'], function (angular) {
+	
 	'use strict';
 
-	return angular.module('buildReactor.directives', []);
+	return angular.module('app.directives', []);
 });

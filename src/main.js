@@ -7,9 +7,9 @@ require.config({
 		jquery: "../bower_components/jquery/jquery.min",
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
 		mout: '../bower_components/mout/src',
-		rx: 'rxjs',
-		'rx.binding': 'rxjs',
-		'rx.time': 'rxjs',
+		rx: '../bower_components/rxjs/rx',
+		'rx.binding': '../bower_components/rxjs/rx.binding',
+		'rx.time': '../bower_components/rxjs/rx.time',
 		signals: '../bower_components/js-signals/dist/signals',
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore'
 	},
@@ -20,7 +20,6 @@ require.config({
 	}
 });
 require([
-	'rxjs',
 	'main/backgroundLogger',
 	'main/badgeController',
 	'main/messageHandlers',
@@ -39,7 +38,6 @@ require([
 	'services/teamcity/buildService',
 	'services/travis/buildService'
 ], function (
-	rxjs,
 	backgroundLogger,
 	badgeController,
 	messageHandlers,

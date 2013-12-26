@@ -12,9 +12,9 @@ require.config({
 		jquery: "../bower_components/jquery/jquery.min",
 		mout: '../bower_components/mout/src',
 		'common/core': 'common/core.mock',
-		rx: 'rxjs',
-		'rx.async': 'rxjs',
-		'rx.time': 'rxjs',
+		rx: '../bower_components/rxjs/rx',
+		'rx.async': '../bower_components/rxjs/rx.async',
+		'rx.time': '../bower_components/rxjs/rx.time',
 		signals: '../bower_components/js-signals/dist/signals',
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore'
 	},
@@ -39,11 +39,10 @@ require.config({
 	}
 });
 require([
-	'rxjs',
 	'options/optionsController',
 	'common/core',
 	'common/coreLogger'
-], function (rxjs, optionsController, core, logger) {
+], function (optionsController, core, logger) {
 
 	'use strict';
 

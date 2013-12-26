@@ -1,20 +1,41 @@
-define([
+require.config({
+	baseUrl: 'src',
+	paths: {
+		angular: '../bower_components/angular/angular.min',
+		'angular.route': '../bower_components/angular-route/angular-route.min',
+		bootstrap: '../lib/twitter-bootstrap/js/bootstrap.min',
+		'common/core': 'common/core.mock',
+		jquery: "../bower_components/jquery/jquery.min",
+		mout: '../bower_components/mout/src',
+		rx: '../bower_components/rxjs/rx',
+		'rx.binding': '../bower_components/rxjs/rx.binding',
+		'rx.time': '../bower_components/rxjs/rx.time'
+	},
+	shim: {
+		angular: {
+			deps: ['jquery'],
+			exports: 'angular'
+		},
+		bootstrap: [ 'jquery' ],
+		'angular.route': [ 'angular' ]
+	}
+});
+
+require([
+	'common/core',
+	'common/coreLogger',
+	'angular',
 	'popup/app',
-	'popup/controller',
-	'directives/builds'
-], function (app, controller) {
+	'popup/routes',
+	'popup/controller'
+], function (core, logger, angular) {
+
 	'use strict';
 
-	return app.config(function ($routeProvider, $locationProvider) {
-		$routeProvider
-		.when('/', {
-			templateUrl: 'src/popup/view.html',
-			controller: 'PopupCtrl'
-		})
-		.otherwise({
-			redirectTo: '/'
-		});
+	core.init();
+	logger();
 
-		$locationProvider.html5Mode(false);
+	angular.element(document).ready(function () {
+		angular.bootstrap(document, ['popup']);
 	});
 });

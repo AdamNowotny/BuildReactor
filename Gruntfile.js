@@ -104,6 +104,7 @@ module.exports = function (grunt) {
 					},
 					paths: {
 						angular: 'empty:',
+						'angular.route': 'empty:',
 						bootbox: 'empty:',
 						bootstrap: 'empty:',
 						bootstrapToggle: 'empty:',
@@ -141,35 +142,16 @@ module.exports = function (grunt) {
 					},
 					modules: [
 						{
-							name: 'rxjs',
-							include: [
-								'rx',
-								'rx.time'
-							]
+							name: 'main'
 						},
 						{
-							name: 'main',
-							exclude: [
-								'rxjs'
-							]
+							name: 'options'
 						},
 						{
-							name: 'options',
-							exclude: [
-								'rxjs'
-							]
+							name: 'popup/main'
 						},
 						{
-							name: 'popup',
-							exclude: [
-								'rxjs'
-							]
-						},
-						{
-							name: 'dashboard',
-							exclude: [
-								'rxjs'
-							]
+							name: 'dashboard/main'
 						}
 					]
 				}
@@ -187,14 +169,16 @@ module.exports = function (grunt) {
 						'dashboard.html',
 						'manifest.json',
 						'src/img/*',
+						'bower_components/angular/angular-csp.css',
 						'bower_components/angular/angular.min.js',
+						'bower_components/angular-route/angular-route.min.js',
 						'bower_components/bootbox/bootbox.min.js',
-						'lib/bootstrap-toggle-buttons/stylesheets/bootstrap-toggle-buttons.css',
-						'lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons.js',
 						'bower_components/jquery/jquery.min.js',
-						'bower_components/requirejs/require.js',
 						'bower_components/font-awesome/css/font-awesome.min.css',
 						'bower_components/font-awesome/font/*',
+						'bower_components/requirejs/require.js',
+						'lib/bootstrap-toggle-buttons/stylesheets/bootstrap-toggle-buttons.css',
+						'lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons.js',
 						'lib/twitter-bootstrap/css/bootstrap.css',
 						'lib/twitter-bootstrap/img/*',
 						'lib/twitter-bootstrap/js/bootstrap.min.js'
