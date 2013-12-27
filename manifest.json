@@ -11,14 +11,14 @@
 	"browser_action": {
 		"default_title": "BuildReactor",
 		"default_icon": "src/img/icon-19.png",
-		"default_popup": "popup.html"
+		"default_popup": "src/popup/main.html"
 	},
 	"background": {
 		"scripts": [ "bower_components/requirejs/require.js", "src/main.js" ]
 	},
 	"homepage_url": "https://github.com/AdamNowotny/BuildReactor",
 	"offline_enabled": false,
-	"options_page": "options.html",
+	"options_page": "src/options/main.html",
 	"permissions": [
 		"http://*/*",
 		"https://*/*",

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-csp>
 	<head>
+		<base href="../.." />
 		<title>BuildReactor popup</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="bower_components/angular/angular-csp.css" media="screen" />
@@ -10,6 +11,7 @@
 	</head>
 	<body>
 		<div ng-view></div>
+		<!-- scripts -->
 		<script type="text/javascript" data-main="src/popup/main" src="bower_components/requirejs/require.js"></script>
 	</body>
 </html>

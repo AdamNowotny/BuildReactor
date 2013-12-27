@@ -33,7 +33,6 @@ module.exports = function (grunt) {
 				'<%= vars.dist %>/src/common',
 				'<%= vars.dist %>/src/main',
 				'<%= vars.dist %>/src/mout',
-				'<%= vars.dist %>/src/options',
 				'<%= vars.dist %>/src/templates',
 				'<%= vars.dist %>/src/test',
 				'<%= vars.dist %>/src/test-karma.js',
@@ -145,7 +144,7 @@ module.exports = function (grunt) {
 							name: 'main'
 						},
 						{
-							name: 'options'
+							name: 'options/main'
 						},
 						{
 							name: 'popup/main'
@@ -164,9 +163,6 @@ module.exports = function (grunt) {
 				},
 				files: {
 					'<%= vars.dist %>/': [
-						'options.html',
-						'popup.html',
-						'dashboard.html',
 						'manifest.json',
 						'src/img/*',
 						'bower_components/angular/angular-csp.css',
