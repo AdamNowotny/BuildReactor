@@ -16,7 +16,7 @@ require.config({
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
 		mout: '../bower_components/mout/src',
 		signals: '../bower_components/js-signals/dist/signals',
-		rx: '../bower_components/rxjs/rx',
+		rx: '../bower_components/rxjs/rx.compat',
 		'rx.async': '../bower_components/rxjs/rx.async',
 		'rx.aggregates': '../bower_components/rxjs/rx.aggregates',
 		'rx.binding': '../bower_components/rxjs/rx.binding',

@@ -304,18 +304,22 @@ define([
 
 			describe('filtering', function () {
 
-				var keyups;
+				var keyups, resetClicks;
 
 				beforeEach(function () {
 					keyups = new Rx.Subject();	
-					projectView.initialize('container', { filterKeyups : keyups });
+					resetClicks = new Rx.Subject();	
+					projectView.initialize('container', {
+						filterKeyups : keyups,
+						resetClicks: resetClicks
+					});
 				});
 
 				it('should reset filter if icon clicked', function () {
 					projectView.show(json);
 					$('.filter input').val('something');
 
-					$('.filter i').click();
+					resetClicks.onNext();
 
 					expect($('.filter input')).toHaveValue('');
 				});

@@ -39,7 +39,6 @@ define([
 		filterKeyups
 			.doAction(resetFilterOnEsc)
 			.select(function (e) { return e.target.value; })
-			.distinctUntilChanged()
 			.doAction(filterResetToggle)
 			.select(projectsForText)
 			.select(function (projectsText) { return projectsInCurrentView(projectsText, json.views); })
