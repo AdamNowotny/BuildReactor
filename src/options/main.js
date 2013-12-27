@@ -14,6 +14,7 @@ require.config({
 		'common/core': 'common/core.mock',
 		rx: '../bower_components/rxjs/rx',
 		'rx.async': '../bower_components/rxjs/rx.async',
+		'rx.binding': '../bower_components/rxjs/rx.binding',
 		'rx.time': '../bower_components/rxjs/rx.time',
 		signals: '../bower_components/js-signals/dist/signals',
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore'
