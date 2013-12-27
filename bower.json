@@ -9,8 +9,8 @@
     "font-awesome": "~3.2.1",
     "js-signals": "~1.0.0",
     "jquery": "~1.8.3",
-    "mout": "~0.7.0",
-    "requirejs": "~2.1.8",
+    "mout": "~0.8.0",
+    "requirejs": "~2.1.9",
     "rxjs": "~2.2.9"
   },
   "devDependencies": {
