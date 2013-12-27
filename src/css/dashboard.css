@@ -1,5 +1,9 @@
 @import url("partial/popup.css");
 
+body {
+	margin-top: 0;
+}
+
 .service-group {
 	text-align: left !important;
 }
