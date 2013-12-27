@@ -10,11 +10,14 @@ define([
 
 		var settings;
 		var build;
-		var buildsResponse;
-		var buildsJson, buildsRunningJson;
-		var buildDetailsJson, buildDetailsRunningJson;
+		var buildsJson,
+			buildsRunningJson,
+			buildDetailsJson,
+			buildDetailsRunningJson;
+		var isRunning;
 
 		beforeEach(function () {
+			isRunning = false;
 			settings = {
 				name: 'My Travis CI',
 				icon: 'travis/icon.png',
@@ -26,11 +29,10 @@ define([
 			buildsRunningJson = JSON.parse(readFixtures('src/services/travis/builds_running.fixture.json'));
 			buildDetailsJson = JSON.parse(readFixtures('src/services/travis/build_by_id.fixture.json'));
 			buildDetailsRunningJson = JSON.parse(readFixtures('src/services/travis/build_by_id_running.fixture.json'));
-			buildsResponse = buildsJson;
 			spyOn(request, 'json').andCallFake(function (options) {
 				switch (options.url) {
-				case 'https://api.travis-ci.org/AdamNowotny/BuildReactor/builds':
-					return Rx.Observable.returnValue(buildsResponse);
+				case 'https://api.travis-ci.org/repositories/AdamNowotny/BuildReactor/builds.json':
+					return Rx.Observable.returnValue(isRunning ? buildsRunningJson : buildsJson);
 				case 'https://api.travis-ci.org/builds/6305554':
 					return Rx.Observable.returnValue(buildDetailsRunningJson);
 				case 'https://api.travis-ci.org/builds/6305490':
@@ -53,7 +55,7 @@ define([
 			});
 		});
 
-		it('should set isBroken', function () {
+		it('should set isBroken if last build broken', function () {
 			buildDetailsJson.result = 1;
 
 			build.update().subscribe(function (state) {
@@ -71,8 +73,21 @@ define([
 			});
 		});
 
-		it('should set isRunning', function () {
-			buildsResponse = buildsRunningJson;
+		it('should set isRunning if build started', function () {
+			isRunning = true;
+
+			build.update().subscribe(function (state) {
+				expect(state.isBroken).toBe(false);
+				expect(state.isRunning).toBe(true);
+			});
+		});
+
+		it('should set isRunning if build created', function () {
+			buildsJson[0].state = 'created';
+			buildsJson[0].result = null;
+			buildDetailsRunningJson.state = 'created';
+			buildDetailsRunningJson.result = null;
+			isRunning = true;
 
 			build.update().subscribe(function (state) {
 				expect(state.isBroken).toBe(false);
@@ -81,7 +96,7 @@ define([
 		});
 
 		it('should get result from previous build if null', function () {
-			buildsResponse = buildsRunningJson;
+			isRunning = true;
 			buildDetailsJson.result = 1;
 
 			build.update().subscribe(function (state) {
@@ -96,10 +111,22 @@ define([
 		});
 
 		it('should set previous changes if building', function () {
-			buildsResponse = buildsRunningJson;
+			isRunning = true;
 
 			build.update().subscribe(function (state) {
 				expect(state.changes).toEqual([{ name: 'Adam Nowotny' }]);
+			});
+		});
+
+		it('should parse errored build', function () {
+			buildsJson[0].state = 'finished';
+			buildsJson[0].result = null;
+			buildDetailsJson.state = 'finished';
+			buildDetailsJson.result = null;
+
+			build.update().subscribe(function (state) {
+				expect(state.isBroken).toBe(true);
+				expect(state.isRunning).toBe(false);
 			});
 		});
 
