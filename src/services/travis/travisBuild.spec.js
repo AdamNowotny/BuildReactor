@@ -1,7 +1,8 @@
 define([
 	'services/travis/travisBuild',
 	'services/request',
-	'rx'
+	'rx',
+	'test/rxHelpers'
 ], function (TravisBuild, request, Rx) {
 
 	'use strict';
@@ -15,8 +16,10 @@ define([
 			buildDetailsJson,
 			buildDetailsRunningJson;
 		var isRunning;
+		var scheduler;
 
 		beforeEach(function () {
+			scheduler = new Rx.TestScheduler();
 			isRunning = false;
 			settings = {
 				name: 'My Travis CI',
@@ -127,6 +130,40 @@ define([
 			build.update().subscribe(function (state) {
 				expect(state.isBroken).toBe(true);
 				expect(state.isRunning).toBe(false);
+			});
+		});
+
+		it('should process builds in right order when previous build results come first', function () {
+			var build1Result = new Rx.Subject();
+			var build2Result = new Rx.Subject();
+			request.json.andCallFake(function (options) {
+				switch (options.url) {
+				case 'https://api.travis-ci.org/repositories/AdamNowotny/BuildReactor/builds.json':
+					return Rx.Observable.returnValue(buildsRunningJson);
+				case 'https://api.travis-ci.org/builds/6305554':
+					return build1Result;
+				case 'https://api.travis-ci.org/builds/6305490':
+					return build2Result;
+				default:
+					throw 'Unknown URL ' + options.url;
+				}
+			});
+
+			scheduler.scheduleAbsolute(300, function () {
+				build2Result.onNext(buildDetailsJson);
+				build2Result.onCompleted();
+			});
+			scheduler.scheduleAbsolute(400, function () {
+				build1Result.onNext(buildDetailsRunningJson);
+				build1Result.onCompleted();
+			});
+
+			var result = scheduler.startWithCreate(function () {
+				return build.update();
+			});
+
+			expect(result.messages).toHaveElementsMatchingAt(400, function (build) {
+				return build.webUrl === 'https://travis-ci.org/AdamNowotny/BuildReactor/builds/6305554';
 			});
 		});
 

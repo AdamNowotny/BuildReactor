@@ -19,16 +19,26 @@ define([
 		var self = this;
 		return request.json({
 			url: 'https://api.travis-ci.org/repositories/' + this.id + '/builds.json'
-		}).selectMany(function (response) {
-			return Rx.Observable.fromArray(response)
-				.take(isRunning(response[0]) ? 2 : 1)
-				.selectMany(function (buildInfo) {
-					return request.json({
-						url: 'https://api.travis-ci.org/builds/' + buildInfo.id
+		}).selectMany(function (builds) {
+			if (isRunning(builds[0])) {
+				return Rx.Observable.zip(
+					getBuildDetails(builds[0].id),
+					getBuildDetails(builds[1].id),
+					function (runningBuild, previousBuild) {
+						return createRunningBuild(self, runningBuild, previousBuild);
 					});
-				});
-		}).toArray().select(function (buildDetails) {
-			return createBuildInfo(self, buildDetails[0], buildDetails[1]);
+			} else {
+				return getBuildDetails(builds[0].id)
+					.map(function (buildDetails) {
+						return createBuild(self, buildDetails);
+					});
+			}
+		});
+	};
+
+	var getBuildDetails = function (buildId) {
+		return request.json({
+			url: 'https://api.travis-ci.org/builds/' + buildId
 		});
 	};
 
@@ -45,21 +55,30 @@ define([
 			build.result === RESULT.ERRORED;
 	};
 
-	var createBuildInfo = function (build, lastResponse, previousResponse) {
-		var response = {
-			id: build.id,
-			name: build.name,
-			group: build.group,
-			webUrl: 'https://travis-ci.org/' + build.id + '/builds/' + lastResponse.id,
-			isBroken: isRunning(lastResponse) ?
-				isBroken(previousResponse) :
-				isBroken(lastResponse),
-			isRunning: isRunning(lastResponse),
-			changes: isRunning(lastResponse) ?
-				[{ name: previousResponse.committer_name }] :
-				[{ name: lastResponse.committer_name }]
+	var createBuild = function (self, response) {
+		var result = {
+			id: self.id,
+			name: self.name,
+			group: self.group,
+			webUrl: 'https://travis-ci.org/' + self.id + '/builds/' + response.id,
+			isBroken: isBroken(response),
+			isRunning: false,
+			changes: [{ name: response.committer_name }]
 		};
-		return response;
+		return result;
+	};
+
+	var createRunningBuild = function (self, runningBuild, previousBuild) {
+		var result = {
+			id: self.id,
+			name: self.name,
+			group: self.group,
+			webUrl: 'https://travis-ci.org/' + self.id + '/builds/' + runningBuild.id,
+			isBroken: isBroken(previousBuild),
+			isRunning: true,
+			changes: [{ name: previousBuild.committer_name }]
+		};
+		return result;
 	};
 
 	return TravisBuild;
