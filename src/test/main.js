@@ -76,7 +76,6 @@ require.config({
 		'rx.testing': '../bower_components/rxjs/rx.testing',
 		'rx.time': '../bower_components/rxjs/rx.time',
 		'rx.virtualtime': '../bower_components/rxjs/rx.virtualtime',
-		text: '../bower_components/requirejs-text/text',
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore'
 	},
 	shim: {

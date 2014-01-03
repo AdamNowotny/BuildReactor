@@ -95,19 +95,15 @@ The packaged version uses:
  * [Mout](http://moutjs.com/)
  * [Require-JS](http://requirejs.org/)
  * [RxJS](http://reactive-extensions.github.com/RxJS/)
- * [RxJS-jquery](https://github.com/Reactive-Extensions/rxjs-jquery)
  * [Twitter bootstrap](http://twitter.github.com/bootstrap/)
 
 The build and tests use:
  * [Bower](http://twitter.github.com/bower/)
  * [Grunt](http://gruntjs.com/)
- * [Grunt-karma](https://github.com/gruntjs/grunt-contrib)
  * [Plato](https://github.com/jsoverson/plato)
- * [Jasmine](http://pivotal.github.com/jasmine/)
  * [Jasmine-jquery](https://github.com/velesin/jasmine-jquery/)
  * [Jasmine-signals](https://github.com/AdamNowotny/jasmine-signals)
  * [Karma](http://karma-runner.github.io/)
- * [RequireJS plugins](https://github.com/millermedeiros/requirejs-plugins)
  * [Travis-CI](http://travis-ci.org/)
 
 Legal

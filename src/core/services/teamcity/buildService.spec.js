@@ -2,9 +2,8 @@ define([
 	'core/services/teamcity/buildService',
 	'core/services/teamcity/teamcityBuild',
 	'core/services/request',
-	'rx',
-	'json!core/services/teamcity/buildTypes.fixture.json'
-], function (TeamCity, TeamcityBuild, request, Rx, buildTypesJson) {
+	'rx'
+], function (TeamCity, TeamcityBuild, request, Rx) {
 
 	'use strict';
 
@@ -12,8 +11,10 @@ define([
 
 		var settings;
 		var service;
+		var buildTypesJson;
 
 		beforeEach(function () {
+			buildTypesJson = JSON.parse(readFixtures('src/core/services/teamcity/buildTypes.fixture.json'));
 			settings = {
 				typeName: 'TeamCity',
 				baseUrl: 'teamcity',
