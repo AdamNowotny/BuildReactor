@@ -23,7 +23,8 @@ module.exports = function (grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 		vars: {
 			build: '_build',
-			dist: '_build/<%= pkg.name %>'
+			dist: '_build/<%= pkg.name %>',
+			license: grunt.file.read('LICENSE')
 		},
 		clean: {
 			build: [ '<%= vars.build %>' ],
@@ -87,8 +88,8 @@ module.exports = function (grunt) {
 						max_line_length: 100
 					},
 					wrap: {
-						startFile: 'grunt.startFile.js',
-						endFile: 'grunt.endFile.js'
+						start: "/*\n<%= vars.license %>\n*/\n(function() {",
+						end: "}());"
 					},
 					pragmasOnSave: {
 						//removes Handlebars.Parser code (used to compile template strings) set
