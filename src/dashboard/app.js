@@ -1,7 +1,7 @@
 define([
 	'angular',
 	'angular.route',
-	'directives/builds'
+	'common/directives/builds'
 ], function (angular) {
 
 	'use strict';
