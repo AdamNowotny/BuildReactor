@@ -1,7 +1,7 @@
 define([
-	'core/serviceController',
+	'core/services/serviceController',
 	'rx',
-	'core/serviceLoader',
+	'core/services/serviceLoader',
 	'mout/object/mixIn',
 	'mout/object/equals',
 	'mout/object/deepMatches',
@@ -12,7 +12,7 @@ function (controller, Rx, serviceLoader, mixIn, equals, deepMatches) {
 
 	'use strict';
 	
-	describe('serviceController', function () {
+	describe('core/services/serviceController', function () {
 
 		function CustomBuildService(settings) {
 			this.settings = settings;

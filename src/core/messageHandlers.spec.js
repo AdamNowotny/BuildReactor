@@ -1,7 +1,7 @@
 define([
 	'core/messageHandlers',
-	'core/serviceLoader',
-	'core/serviceController',
+	'core/services/serviceLoader',
+	'core/services/serviceController',
 	'rx',
 	'common/chromeApi'
 ], function (messageHandlers, serviceLoader, serviceController, Rx, chromeApi) {

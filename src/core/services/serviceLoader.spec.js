@@ -1,8 +1,8 @@
-define(['core/serviceLoader'], function (loader) {
+define(['core/services/serviceLoader'], function (loader) {
 
 	'use strict';
 	
-	describe('serviceLoader', function () {
+	describe('core/services/serviceLoader', function () {
 
 		it('should create service', function () {
 			var CustomBuildService = function () {};

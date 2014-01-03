@@ -1,5 +1,5 @@
 define([
-	'core/serviceController',
+	'core/services/serviceController',
 	'core/settingsStore',
 	'mout/string/interpolate',
 	'core/messageHandlers'

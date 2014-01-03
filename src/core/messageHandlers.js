@@ -1,7 +1,7 @@
 define([
 	'core/settingsStore',
-	'core/serviceLoader',
-	'core/serviceController',
+	'core/services/serviceLoader',
+	'core/services/serviceController',
 	'common/chromeApi',
 	'rx'
 ], function (settingsStore, serviceLoader, serviceController, chromeApi, Rx) {

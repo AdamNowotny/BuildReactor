@@ -1,5 +1,5 @@
 define([
-	'core/serviceLoader',
+	'core/services/serviceLoader',
 	'rx',
 	'mout/array/contains',
 	'mout/object/values',
