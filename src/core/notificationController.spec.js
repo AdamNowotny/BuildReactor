@@ -45,7 +45,7 @@ define([
 				}});
 
 				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'src/services/icon.png', 'build (group)', 'Broken'
+					'src/core/services/icon.png', 'build (group)', 'Broken'
 				);
 			});
 
@@ -59,7 +59,7 @@ define([
 				}});
 
 				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'src/services/icon.png', 'build (group)', 'Broken by Adam, Some User'
+					'src/core/services/icon.png', 'build (group)', 'Broken by Adam, Some User'
 				);
 			});
 
@@ -75,7 +75,7 @@ define([
 				}});
 
 				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'src/services/icon.png', 'build (group)', 'Broken by User1, User2, User3, User4, ...'
+					'src/core/services/icon.png', 'build (group)', 'Broken by User1, User2, User3, User4, ...'
 				);
 			});
 
@@ -111,7 +111,7 @@ define([
 				}});
 
 				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'src/services/icon.png', 'build (group)', 'Fixed'
+					'src/core/services/icon.png', 'build (group)', 'Fixed'
 				);
 			});
 
@@ -125,7 +125,7 @@ define([
 				}});
 
 				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'src/services/icon.png', 'build (group)', 'Fixed by Adam, Some User'
+					'src/core/services/icon.png', 'build (group)', 'Fixed by Adam, Some User'
 				);
 			});
 
@@ -167,7 +167,7 @@ define([
 				}});
 
 				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'src/services/icon.png', 'build (group)', 'Unstable, broken'
+					'src/core/services/icon.png', 'build (group)', 'Unstable, broken'
 				);
 			});
 

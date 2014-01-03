@@ -30,8 +30,7 @@ module.exports = function (grunt) {
 			buildSrc: [
 				'<%= vars.dist %>/src/**/*.spec.js',
 				'<%= vars.dist %>/src/**/*.fixture.*',
-				'<%= vars.dist %>/src/common',
-				'<%= vars.dist %>/src/core',
+				'<%= vars.dist %>/src/**/*.mock.*',
 				'<%= vars.dist %>/src/mout',
 				'<%= vars.dist %>/src/templates',
 				'<%= vars.dist %>/src/test',

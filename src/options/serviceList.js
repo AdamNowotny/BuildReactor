@@ -43,7 +43,7 @@ define([
 		for (var i = 0; i < settings.length; i++) {
 			data[i] = {
 				index: i,
-				icon: 'src/services/' + settings[i].icon,
+				icon: 'src/core/services/' + settings[i].icon,
 				name: settings[i].name,
 				disabled: settings[i].disabled
 			};

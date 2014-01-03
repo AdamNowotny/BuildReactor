@@ -40,7 +40,7 @@ define([
 		serviceTypes.forEach(function (d) {
 			input.push({
 				typeName: d.typeName,
-				logo: 'src/services/' + d.logo
+				logo: 'src/core/services/' + d.logo
 			});
 		});
 		return { services: input };

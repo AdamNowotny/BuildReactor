@@ -86,8 +86,8 @@ define([
 			});
 
 			it('should show supported services icons', function () {
-				expect(container.getServiceIconAt(1)).toBe('src/services/' + serviceTypes[0].logo);
-				expect(container.getServiceIconAt(2)).toBe('src/services/' + serviceTypes[1].logo);
+				expect(container.getServiceIconAt(1)).toBe('src/core/services/' + serviceTypes[0].logo);
+				expect(container.getServiceIconAt(2)).toBe('src/core/services/' + serviceTypes[1].logo);
 			});
 
 			it('should disable name if service type not selected', function () {

@@ -29,7 +29,7 @@ define([
 				id: event.details.serviceName + event.details.group + event.details.name,
 				title: event.details.name + (event.details.group ? ' (' + event.details.group + ')' : ''),
 				url: event.details.webUrl,
-				icon: 'src/services/' + event.details.serviceIcon,
+				icon: 'src/core/services/' + event.details.serviceIcon,
 				timeout: timeout ? timeout : undefined,
 				text:  createChangesMessage(event.details.changes)
 			};

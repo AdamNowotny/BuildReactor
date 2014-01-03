@@ -85,8 +85,8 @@ define([
 
 				serviceList.load([mockSettings1, mockSettings2]);
 
-				expect(page.iconAt(0)).toBe('src/services/service1/icon.png');
-				expect(page.iconAt(1)).toBe('src/services/service2/icon.png');
+				expect(page.iconAt(0)).toBe('src/core/services/service1/icon.png');
+				expect(page.iconAt(1)).toBe('src/core/services/service2/icon.png');
 			});
 
 			it('should show disabled services', function () {

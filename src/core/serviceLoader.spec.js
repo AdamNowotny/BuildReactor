@@ -6,7 +6,7 @@ define(['core/serviceLoader'], function (loader) {
 
 		it('should create service', function () {
 			var CustomBuildService = function () {};
-			define('services/test/buildService', function () {
+			define('core/services/test/buildService', function () {
 				return CustomBuildService;
 			});
 			var settings = {

@@ -4,7 +4,7 @@ define(['rx'], function (Rx) {
 
 	var load = function (settings) {
 		var subject = new Rx.AsyncSubject();
-		require(['services/' + settings.baseUrl + '/buildService'], function (BuildService) {
+		require(['core/services/' + settings.baseUrl + '/buildService'], function (BuildService) {
 			var service = new BuildService(settings);
 			subject.onNext(service);
 			subject.onCompleted();
