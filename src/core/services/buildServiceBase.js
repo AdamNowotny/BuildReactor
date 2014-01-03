@@ -1,12 +1,11 @@
 define([
 	'rx',
-	'jquery',
 	'mout/object/values',
 	'mout/object/mixIn',
 	'mout/array/unique',
 	'rx.time',
 	'rx.binding'
-], function (Rx, $, values, mixIn, unique) {
+], function (Rx, values, mixIn, unique) {
 	'use strict';
 
 	function BuildServiceBase(settings, scheduler) {
