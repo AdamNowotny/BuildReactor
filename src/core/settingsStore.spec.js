@@ -1,4 +1,4 @@
-define(['main/settingsStore', 'jasmineSignals'], function (settingsStore, spyOnSignal) {
+define(['core/settingsStore', 'jasmineSignals'], function (settingsStore, spyOnSignal) {
 
 	'use strict';
 	

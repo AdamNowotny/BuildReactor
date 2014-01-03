@@ -1,6 +1,6 @@
 /* global chrome: false */
 define([
-	'main/serviceController'
+	'core/serviceController'
 ], function (serviceController) {
 	
 	'use strict';

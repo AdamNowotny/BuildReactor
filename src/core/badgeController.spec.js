@@ -1,7 +1,7 @@
 /* global chrome: false */
 define([
-	'main/badgeController',
-	'main/serviceController',
+	'core/badgeController',
+	'core/serviceController',
 	'rx'
 ], function (badgeController, serviceController, Rx) {
 

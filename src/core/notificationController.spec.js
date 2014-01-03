@@ -1,7 +1,7 @@
 /* global chrome: false */
 define([
-	'main/notificationController',
-	'main/serviceController',
+	'core/notificationController',
+	'core/serviceController',
 	'common/chromeApi',
 	'rx',
 	'rx.testing'

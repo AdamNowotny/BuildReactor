@@ -20,12 +20,12 @@ require.config({
 	}
 });
 require([
-	'main/backgroundLogger',
-	'main/badgeController',
-	'main/messageHandlers',
-	'main/notificationController',
-	'main/serviceController',
-	'main/settingsStore',
+	'core/backgroundLogger',
+	'core/badgeController',
+	'core/messageHandlers',
+	'core/notificationController',
+	'core/serviceController',
+	'core/settingsStore',
 	'services/bamboo/buildService',
 	'services/buildbot/buildService',
 	'services/cctray/buildService',

@@ -1,8 +1,8 @@
 define([
-	'main/serviceController',
-	'main/settingsStore',
+	'core/serviceController',
+	'core/settingsStore',
 	'mout/string/interpolate',
-	'main/messageHandlers'
+	'core/messageHandlers'
 ], function (serviceController, settingsStore, interpolate, messageHandlers) {
 
 	'use strict';

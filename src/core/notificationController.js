@@ -1,6 +1,6 @@
 /* global chrome: false */
 define([
-	'main/serviceController',
+	'core/serviceController',
 	'rx',
 	'common/tags',
 	'common/chromeApi',

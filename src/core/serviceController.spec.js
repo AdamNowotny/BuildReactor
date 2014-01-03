@@ -1,7 +1,7 @@
 define([
-	'main/serviceController',
+	'core/serviceController',
 	'rx',
-	'main/serviceLoader',
+	'core/serviceLoader',
 	'mout/object/mixIn',
 	'mout/object/equals',
 	'mout/object/deepMatches',

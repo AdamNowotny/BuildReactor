@@ -1,4 +1,4 @@
-define(['main/serviceLoader'], function (loader) {
+define(['core/serviceLoader'], function (loader) {
 
 	'use strict';
 	

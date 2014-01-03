@@ -31,7 +31,7 @@ module.exports = function (grunt) {
 				'<%= vars.dist %>/src/**/*.spec.js',
 				'<%= vars.dist %>/src/**/*.fixture.*',
 				'<%= vars.dist %>/src/common',
-				'<%= vars.dist %>/src/main',
+				'<%= vars.dist %>/src/core',
 				'<%= vars.dist %>/src/mout',
 				'<%= vars.dist %>/src/templates',
 				'<%= vars.dist %>/src/test',
@@ -140,7 +140,7 @@ module.exports = function (grunt) {
 					},
 					modules: [
 						{
-							name: 'main'
+							name: 'core/main'
 						},
 						{
 							name: 'options/main'
