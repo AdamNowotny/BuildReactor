@@ -21,8 +21,7 @@ module.exports = function (config) {
 		files: [
 			{pattern: 'bower_components/jquery/jquery.js', watched: false, served: true, included: true},
 			{pattern: 'bower_components/jasmine-jquery/lib/jasmine-jquery.js', watched: false, served: true, included: true},
-			'src/requirejs-config.js',
-			'src/test-karma.js',
+			'src/test/main.js',
 			{pattern: 'src/**/*', watched: true, served: true, included: false},
 			{pattern: 'lib/**/*', watched: true, served: true, included: false},
 			{pattern: 'bower_components/**/*.js', watched: false, served: true, included: false},

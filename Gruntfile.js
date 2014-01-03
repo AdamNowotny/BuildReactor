@@ -35,7 +35,6 @@ module.exports = function (grunt) {
 				'<%= vars.dist %>/src/mout',
 				'<%= vars.dist %>/src/templates',
 				'<%= vars.dist %>/src/test',
-				'<%= vars.dist %>/src/test-karma.js',
 				'<%= vars.dist %>/src/build.txt'
 			]
 		},
@@ -164,7 +163,7 @@ module.exports = function (grunt) {
 				files: {
 					'<%= vars.dist %>/': [
 						'manifest.json',
-						'src/img/*',
+						'img/*',
 						'bower_components/angular/angular-csp.css',
 						'bower_components/angular/angular.min.js',
 						'bower_components/angular-route/angular-route.min.js',

@@ -1,5 +1,58 @@
+var chrome = {
+	browserAction: {
+		setBadgeText: function () {},
+		setBadgeBackgroundColor: function () {}
+	},
+	tabs : {
+		create: function () {},
+		query: function (queryInfo, callback) {}
+	},
+	runtime: {
+		sendMessage: function () {},
+		onMessage: {
+			addListener: function () {}
+		},
+		connect: function () {
+			'use strict';
+			return {
+				onMessage: {
+					addListener: function () {}
+				}
+			};
+		},
+		onConnect: {
+			addListener: function () {}
+		}
+	},
+	extension: {
+		sendMessage: function () {},
+		onMessage: {
+			addListener: function () {}
+		},
+		onConnect: {
+			addListener: function () {}
+		},
+		connect: function () {},
+		getURL: function (path) {}
+	},
+	cookies: {
+		remove: function () {}
+	}
+};
+
+window.webkitNotifications = window.webkitNotifications || {};
+window.webkitNotifications.createNotification = function () {};
+
+jasmine.getFixtures().fixturesPath = 'base/';
+
+var tests = Object.keys(window.__karma__.files).filter(function (file) {
+	'use strict';
+
+	return (/\.spec\.js$/).test(file);
+});
+
 require.config({
-	baseUrl: 'src',
+	baseUrl: '/base/src',
 	paths: {
 		angular: '../bower_components/angular/angular',
 		angularMocks: '../bower_components/angular-mocks/angular-mocks',
@@ -49,5 +102,7 @@ require.config({
 		helperDirectory: 'templates/helpers/',
 		i18nDirectory:   'templates/i18n/'
 	},
-	waitSeconds: 10
+	waitSeconds: 10,
+	deps: tests,
+	callback: window.__karma__.start
 });
