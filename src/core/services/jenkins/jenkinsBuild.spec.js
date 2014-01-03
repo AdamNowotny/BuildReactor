@@ -1,8 +1,10 @@
 define([
 	'core/services/jenkins/jenkinsBuild',
 	'core/services/request',
-	'rx'
-], function (Build, request, Rx) {
+	'rx',
+	'text!core/services/jenkins/job.fixture.json',
+	'text!core/services/jenkins/lastCompletedBuild.fixture.json'
+], function (Build, request, Rx, jobFixture, lastCompletedBuildFixture) {
 	'use strict';
 
 	describe('core/services/jenkins/jenkinsBuild', function () {
@@ -16,8 +18,8 @@ define([
 			settings = {
 				url: 'http://example.com'
 			};
-			jobJson = JSON.parse(readFixtures('src/core/services/jenkins/job.fixture.json'));
-			lastCompletedBuildJson = JSON.parse(readFixtures('src/core/services/jenkins/lastCompletedBuild.fixture.json'));
+			jobJson = JSON.parse(jobFixture);
+			lastCompletedBuildJson = JSON.parse(lastCompletedBuildFixture);
 			var callCount = 0;
 			spyOn(request, 'json').andCallFake(function () {
 				callCount++;

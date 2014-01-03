@@ -1,8 +1,10 @@
 define([
 	'core/services/buildbot/buildbotBuild',
 	'core/services/request',
-	'rx'
-], function (Build, request, Rx) {
+	'rx',
+	'text!core/services/buildbot/builder.fixture.json',
+	'text!core/services/buildbot/lastCompleted.fixture.json'
+], function (Build, request, Rx, builderFixture, lastCompletedBuildFixture) {
 	'use strict';
 
 	describe('core/services/buildbot/buildbotBuild', function () {
@@ -16,8 +18,8 @@ define([
 			settings = {
 				url: 'http://example.com'
 			};
-			builderJson = JSON.parse(readFixtures('src/core/services/buildbot/builder.fixture.json'));
-			lastCompletedBuildJson = JSON.parse(readFixtures('src/core/services/buildbot/lastCompleted.fixture.json'));
+			builderJson = JSON.parse(builderFixture);
+			lastCompletedBuildJson = JSON.parse(lastCompletedBuildFixture);
 			var callCount = 0;
 			spyOn(request, 'json').andCallFake(function () {
 				callCount++;

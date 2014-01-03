@@ -1,8 +1,10 @@
 define([
 	'core/services/bamboo/bambooPlan',
 	'core/services/request',
-	'rx'
-], function (BambooPlan, request, Rx) {
+	'rx',
+	'text!core/services/bamboo/plan.fixture.json',
+	'text!core/services/bamboo/latestPlanResult.fixture.json'
+], function (BambooPlan, request, Rx, planText, resultText) {
 
 	'use strict';
 
@@ -21,8 +23,8 @@ define([
 				username: 'username1',
 				password: 'password1'
 			};
-			planJson = JSON.parse(readFixtures('src/core/services/bamboo/plan.fixture.json'));
-			resultJson = JSON.parse(readFixtures('src/core/services/bamboo/latestPlanResult.fixture.json'));
+			planJson = JSON.parse(planText);
+			resultJson = JSON.parse(resultText);
 			var callCount = 0;
 			spyOn(request, 'json').andCallFake(function () {
 				callCount++;

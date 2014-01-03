@@ -1,8 +1,13 @@
 define([
 	'core/services/teamcity/teamcityBuild',
 	'core/services/request',
-	'rx'
-], function (Build, request, Rx) {
+	'rx',
+	'text!core/services/teamcity/build.fixture.json',
+	'text!core/services/teamcity/buildList.fixture.json',
+	'text!core/services/teamcity/buildListRunning.fixture.json',
+	'text!core/services/teamcity/changes.fixture.json',
+	'text!core/services/teamcity/changes_id.fixture.json'
+], function (Build, request, Rx, buildFixture, buildListFixture, buildListRunningFixture, changesFixture, changeFixture) {
 	'use strict';
 
 	describe('core/services/teamcity/teamcityBuild', function () {
@@ -15,11 +20,11 @@ define([
 			settings = {
 				url: 'http://example.com'
 			};
-			buildJson = JSON.parse(readFixtures('src/core/services/teamcity/build.fixture.json'));
-			buildListJson = JSON.parse(readFixtures('src/core/services/teamcity/buildList.fixture.json'));
-			buildListRunningJson = JSON.parse(readFixtures('src/core/services/teamcity/buildListRunning.fixture.json'));
-			changesJson = JSON.parse(readFixtures('src/core/services/teamcity/changes.fixture.json'));
-			changeJson = JSON.parse(readFixtures('src/core/services/teamcity/changes_id.fixture.json'));
+			buildJson = JSON.parse(buildFixture);
+			buildListJson = JSON.parse(buildListFixture);
+			buildListRunningJson = JSON.parse(buildListRunningFixture);
+			changesJson = JSON.parse(changesFixture);
+			changeJson = JSON.parse(changeFixture);
 			spyOn(request, 'json').andCallFake(function (options) {
 				switch (options.url) {
 				case 'http://example.com/guestAuth/app/rest/changes?build=id:63887':

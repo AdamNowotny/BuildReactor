@@ -2,8 +2,9 @@ define([
 	'core/services/buildbot/buildService',
 	'core/services/buildbot/buildbotBuild',
 	'core/services/request',
-	'rx'
-], function (BuildService, BuildbotBuild, request, Rx) {
+	'rx',
+	'text!core/services/buildbot/builders_all.fixture.json',
+], function (BuildService, BuildbotBuild, request, Rx, apiFixture) {
 
 	'use strict';
 
@@ -58,7 +59,7 @@ define([
 			var service;
 
 			beforeEach(function () {
-				apiJson = JSON.parse(readFixtures('src/core/services/buildbot/builders_all.fixture.json'));
+				apiJson = JSON.parse(apiFixture);
 				service = new BuildService(settings);
 			});
 

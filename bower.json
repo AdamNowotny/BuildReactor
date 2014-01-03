@@ -16,6 +16,7 @@
   "devDependencies": {
     "angular-mocks": "~1.2.6",
     "jasmine-jquery": "~1.4.2",
-    "jasmine-signals": "git://github.com/AdamNowotny/jasmine-signals.git"
+    "jasmine-signals": "git://github.com/AdamNowotny/jasmine-signals.git",
+    "requirejs-text": "~2.0.10"
   }
 }

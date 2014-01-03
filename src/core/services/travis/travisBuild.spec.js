@@ -2,8 +2,12 @@ define([
 	'core/services/travis/travisBuild',
 	'core/services/request',
 	'rx',
+	'text!core/services/travis/builds.fixture.json',
+	'text!core/services/travis/builds_running.fixture.json',
+	'text!core/services/travis/build_by_id.fixture.json',
+	'text!core/services/travis/build_by_id_running.fixture.json',
 	'test/rxHelpers'
-], function (TravisBuild, request, Rx) {
+], function (TravisBuild, request, Rx, buildFixture, buildsRunningFixture, buildDetailsFixture, buildDetailsRunningFixture) {
 
 	'use strict';
 
@@ -28,10 +32,10 @@ define([
 				updateInterval: 10000,
 				projects: ['AdamNowotny/BuildReactor']
 			};
-			buildsJson = JSON.parse(readFixtures('src/core/services/travis/builds.fixture.json'));
-			buildsRunningJson = JSON.parse(readFixtures('src/core/services/travis/builds_running.fixture.json'));
-			buildDetailsJson = JSON.parse(readFixtures('src/core/services/travis/build_by_id.fixture.json'));
-			buildDetailsRunningJson = JSON.parse(readFixtures('src/core/services/travis/build_by_id_running.fixture.json'));
+			buildsJson = JSON.parse(buildFixture);
+			buildsRunningJson = JSON.parse(buildsRunningFixture);
+			buildDetailsJson = JSON.parse(buildDetailsFixture);
+			buildDetailsRunningJson = JSON.parse(buildDetailsRunningFixture);
 			spyOn(request, 'json').andCallFake(function (options) {
 				switch (options.url) {
 				case 'https://api.travis-ci.org/repositories/AdamNowotny/BuildReactor/builds.json':

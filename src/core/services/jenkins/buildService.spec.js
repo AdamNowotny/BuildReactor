@@ -2,8 +2,9 @@ define([
 	'core/services/jenkins/buildService',
 	'core/services/jenkins/jenkinsBuild',
 	'core/services/request',
-	'rx'
-], function (BuildService, JenkinsBuild, request, Rx) {
+	'rx',
+	'text!core/services/jenkins/views.fixture.json'
+], function (BuildService, JenkinsBuild, request, Rx, apiFixture) {
 
 	'use strict';
 
@@ -58,7 +59,7 @@ define([
 			var service;
 
 			beforeEach(function () {
-				apiJson = JSON.parse(readFixtures('src/core/services/jenkins/views.fixture.json'));
+				apiJson = JSON.parse(apiFixture);
 				service = new BuildService(settings);
 			});
 

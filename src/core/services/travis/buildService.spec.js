@@ -2,8 +2,9 @@ define([
 	'core/services/travis/buildService',
 	'core/services/travis/travisBuild',
 	'core/services/request',
-	'rx'
-], function (BuildService, TravisBuild, request, Rx) {
+	'rx',
+	'text!core/services/travis/repositories.fixture.json'
+], function (BuildService, TravisBuild, request, Rx, reposFixture) {
 
 	'use strict';
 
@@ -71,7 +72,7 @@ define([
 			});
 
 			it('should parse response', function () {
-				var reposJson = JSON.parse(readFixtures('src/core/services/travis/repositories.fixture.json'));
+				var reposJson = JSON.parse(reposFixture);
 				spyOn(request, 'json').andCallFake(function (options) {
 					var response = options.parser(reposJson);
 					expect(response.items.length).toBe(2);

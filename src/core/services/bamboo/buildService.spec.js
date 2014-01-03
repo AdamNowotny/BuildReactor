@@ -3,9 +3,12 @@ define([
 		'core/services/bamboo/bambooPlan',
 		'rx',
 		'core/services/request',
+		'text!core/services/bamboo/projects.fixture.json',
+		'text!core/services/bamboo/projects_page2.fixture.json',
+		'text!core/services/bamboo/projects_plans_page2.fixture.json',
 		'rx.aggregates'
 	],
-	function (BuildService, BambooPlan, Rx, request) {
+	function (BuildService, BambooPlan, Rx, request, projectsFixture, projects2Fixture, projects3Fixture) {
 
 		'use strict';
 
@@ -45,9 +48,9 @@ define([
 				var projectsJson, projectsJson2, projectsJson3;
 
 				beforeEach(function () {
-					projectsJson = JSON.parse(readFixtures('src/core/services/bamboo/projects.fixture.json'));
-					projectsJson2 = JSON.parse(readFixtures('src/core/services/bamboo/projects_page2.fixture.json'));
-					projectsJson3 = JSON.parse(readFixtures('src/core/services/bamboo/projects_plans_page2.fixture.json'));
+					projectsJson = JSON.parse(projectsFixture);
+					projectsJson2 = JSON.parse(projects2Fixture);
+					projectsJson3 = JSON.parse(projects3Fixture);
 					spyOn(request, 'json').andCallFake(function (options) {
 						switch (options.url) {
 						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=0':

@@ -3,9 +3,12 @@ define([
 	'core/services/request',
 	'rx',
 	'jquery',
-	'mout/object/mixIn'
+	'mout/object/mixIn',
+	'text!core/services/cctray/cruisecontrolnet.fixture.xml',
+	'text!core/services/cctray/go.fixture.xml',
+	'text!core/services/cctray/breakers_empty.fixture.xml',
 ],
-function (BuildService, request, Rx, $, mixIn) {
+function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreakersFixture) {
 
 	'use strict';
 
@@ -166,7 +169,7 @@ function (BuildService, request, Rx, $, mixIn) {
 				var parsedResponse;
 
 				beforeEach(function () {
-					projectsXml = $(readFixtures('src/core/services/cctray/cruisecontrolnet.fixture.xml'));
+					projectsXml = $(ccnetFixture);
 					request.xml.andCallFake(function (options) {
 						parsedResponse = options.parser(projectsXml);
 						return Rx.Observable.returnValue(parsedResponse);
@@ -191,7 +194,7 @@ function (BuildService, request, Rx, $, mixIn) {
 				});
 
 				it('should parse changes', function () {
-					projectsXml = $(readFixtures('src/core/services/cctray/go.fixture.xml'));
+					projectsXml = $(goFixture);
 
 					service.updateAll();
 
@@ -200,7 +203,7 @@ function (BuildService, request, Rx, $, mixIn) {
 				});
 
 				it('should parse changes if breakers message empty', function () {
-					projectsXml = $(readFixtures('src/core/services/cctray/breakers_empty.fixture.xml'));
+					projectsXml = $(noBreakersFixture);
 
 					service.updateAll();
 
@@ -398,7 +401,7 @@ function (BuildService, request, Rx, $, mixIn) {
 
 		describe('availableBuilds', function () {
 
-			var projectsXml = $(readFixtures('src/core/services/cctray/cruisecontrolnet.fixture.xml'));
+			var projectsXml = $(ccnetFixture);
 
 			it('should return available builds', function () {
 				var builds = Rx.Observable.returnValue(projectsXml);
