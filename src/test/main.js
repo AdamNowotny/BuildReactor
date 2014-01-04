@@ -84,17 +84,13 @@ require.config({
 			deps: ['jquery'],
 			exports: 'angular'
 		},
+		'angular.route': ['angular'],
 		bootstrap: [ 'jquery' ],
 		bootbox: {
 			deps: [ 'bootstrap' ],
 			exports: 'bootbox'
 		},
-		bootstrapToggle: {
-			deps: [ 'jquery', 'bootstrap' ]
-		},
-		jquery: {
-			exports: 'jquery'
-		},
+		bootstrapToggle: [ 'jquery', 'bootstrap' ],
 		'rx.testing': [ 'rx.virtualtime' ]
 	},
 	hbs: {

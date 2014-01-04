@@ -1,14 +1,3 @@
-require.config({
-	baseUrl: 'src',
-	paths: {
-		jquery: "../bower_components/jquery/jquery.min",
-		mout: '../bower_components/mout/src',
-		rx: '../bower_components/rxjs/rx',
-		'rx.binding': '../bower_components/rxjs/rx.binding',
-		'rx.time': '../bower_components/rxjs/rx.time',
-		signals: '../bower_components/js-signals/dist/signals'
-	}
-});
 require([
 	'core/backgroundLogger',
 	'core/badgeController',

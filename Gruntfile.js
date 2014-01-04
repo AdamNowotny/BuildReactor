@@ -101,18 +101,18 @@ module.exports = function (grunt) {
 						excludeAfterBuild: true
 					},
 					paths: {
-						angular: 'empty:',
-						'angular.route': 'empty:',
-						bootbox: 'empty:',
-						bootstrap: 'empty:',
-						bootstrapToggle: 'empty:',
+						angular: '../bower_components/angular/angular',
+						'angular.route': '../bower_components/angular-route/angular-route',
+						bootbox: '../bower_components/bootbox/bootbox',
+						bootstrap: '../lib/twitter-bootstrap/js/bootstrap',
+						bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons',
+						'common/core': 'common/core',
 						handlebars: '../lib/require-handlebars-plugin/Handlebars',
 						hbs: '../lib/require-handlebars-plugin/hbs-plugin',
 						i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
-						jquery: 'empty:',
+						jquery: "../bower_components/jquery/jquery",
 						json2: '../lib/require-handlebars-plugin/hbs/json2',
 						mout: '../bower_components/mout/src',
-						'common/core': 'common/core',
 						rx: '../bower_components/rxjs/rx',
 						'rx.async': '../bower_components/rxjs/rx.async',
 						'rx.binding': '../bower_components/rxjs/rx.binding',
@@ -130,26 +130,40 @@ module.exports = function (grunt) {
 							deps: ['jquery'],
 							exports: 'angular'
 						},
+						'angular.route': ['angular'],
+						bootstrap: [ 'jquery' ],
 						bootbox: {
 							deps: [ 'jquery', 'bootstrap' ],
 							exports: 'bootbox'
 						},
-						bootstrapToggle: {
-							deps: [ 'jquery', 'bootstrap' ]
-						}
+						bootstrapToggle: [ 'jquery', 'bootstrap' ]
 					},
 					modules: [
 						{
-							name: 'core/main'
+							name: 'common/main'
 						},
 						{
-							name: 'options/main'
+							name: 'common/main-web',
+							exclude: ['common/main']
 						},
 						{
-							name: 'popup/main'
+							name: 'core/main',
+							exclude: ['common/main', 'common/main-web']
 						},
 						{
-							name: 'dashboard/main'
+							name: 'options/main',
+							include: ['options/main-app'],
+							exclude: ['common/main', 'common/main-web']
+						},
+						{
+							name: 'popup/main',
+							include: ['popup/main-app'],
+							exclude: ['common/main', 'common/main-web']
+						},
+						{
+							name: 'dashboard/main',
+							include: ['dashboard/main-app'],
+							exclude: ['common/main', 'common/main-web']
 						}
 					]
 				}
@@ -165,18 +179,12 @@ module.exports = function (grunt) {
 						'manifest.json',
 						'img/*',
 						'bower_components/angular/angular-csp.css',
-						'bower_components/angular/angular.min.js',
-						'bower_components/angular-route/angular-route.min.js',
-						'bower_components/bootbox/bootbox.min.js',
-						'bower_components/jquery/jquery.min.js',
 						'bower_components/font-awesome/css/font-awesome.min.css',
 						'bower_components/font-awesome/font/*',
 						'bower_components/requirejs/require.js',
 						'lib/bootstrap-toggle-buttons/stylesheets/bootstrap-toggle-buttons.css',
-						'lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons.js',
 						'lib/twitter-bootstrap/css/bootstrap.css',
-						'lib/twitter-bootstrap/img/*',
-						'lib/twitter-bootstrap/js/bootstrap.min.js'
+						'lib/twitter-bootstrap/img/*'
 					]
 				}
 			}
