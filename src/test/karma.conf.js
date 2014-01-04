@@ -30,7 +30,7 @@ module.exports = function (config) {
 			{pattern: 'src/**/*.html', watched: false, served: true, included: false},
 			{pattern: 'bower_components/angular/angular-csp.css', watched: false, served: true, included: false},
 			{pattern: 'bower_components/font-awesome/css/font-awesome.min.css', watched: false, served: true, included: false},
-			{pattern: 'bower_components/font-awesome/font/fontawesome-webfont.*', watched: false, served: true, included: false},
+			{pattern: 'bower_components/font-awesome/fonts/fontawesome-webfont.*', watched: false, served: true, included: false},
 		],
 
 		// test results reporter to use

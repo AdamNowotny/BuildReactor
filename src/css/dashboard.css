@@ -1,11 +1,13 @@
 @import url("partial/popup.css");
 
 body {
+	background-color: #141414;
+	color: white;
 	margin-top: 0;
 }
 
 .service-group {
-	text-align: left !important;
+	text-align: left;
 }
 
 .label .error-message {

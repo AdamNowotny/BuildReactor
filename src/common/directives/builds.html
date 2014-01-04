@@ -9,6 +9,7 @@
 				<li class="service-item" ng-class="getItemClasses(item)" ng-repeat="item in group.items">
 					<a href="{{item.webUrl}}" target="_blank">
 						<span class="service-item-name pull-left">{{ item.name }}</span>
+						<i class="fa fa-spinner fa-spin fa-lg pull-right"></i>
 						<span class="labels">
 							<span ng-show="item.error" class="label label-inverse pull-right" title="{{ item.error.description }}">
 								Offline
@@ -19,7 +20,6 @@
 							</span>
 							<span ng-show="item.isDisabled" class="label label-inverse pull-right">Disabled</span>
 						</span>
-						<i class="icon-spinner icon-spin icon-large pull-right"></i>
 					</a>
 				</li>
 			</ul>

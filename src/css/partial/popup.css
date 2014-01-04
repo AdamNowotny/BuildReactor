@@ -1,24 +1,3 @@
-body {
-	background-color: #141414;
-	color: white;
-	margin-top: 55px;
-	min-width: 210px;
-}
-
-.navbar a.brand {
-	margin-left: -10px;
-}
-
-	.navbar a.brand img {
-		height: 25px;
-		width: 25px;
-		vertical-align: text-bottom;
-	}
-
-	.navbar .nav {
-		padding-right: 10px;
-	}
-
 .service-name-container {
 	color: #F90;
 	font-weight: bold;
@@ -105,12 +84,12 @@ li.service-item {
 		}
 
 		li.service-item.offline .service-item-name,
-		li.service-item.offline .icon-spinner {
+		li.service-item.offline .fa-spinner {
 			color: #360;
 		}
 
 		li.service-item.offline.broken .service-item-name,
-		li.service-item.offline.broken .icon-spinner {
+		li.service-item.offline.broken .fa-spinner {
 			color: #900;
 		}
 
@@ -120,7 +99,7 @@ li.service-item {
 
 		li.service-item.building .service-item-name,
 		li.service-item.building .label-warning,
-		li.service-item.building .icon-spinner {
+		li.service-item.building .fa-spinner {
 			color: #360;
 		}
 
@@ -134,7 +113,7 @@ li.service-item {
 	
 		li.service-item.broken.building .service-item-name,
 		li.service-item.broken.building .label-warning,
-		li.service-item.broken.building .icon-spinner {
+		li.service-item.broken.building .fa-spinner {
 			color: #900;
 		}
 
@@ -146,14 +125,14 @@ li.service-item {
 		margin: 1px 0px 0 7px;
 	}
 
-	.service-item i.icon-spinner {
+	.service-item i.fa-spinner {
 		display: none;
 		position: absolute;
 		right: 5px;
 		top: 6px;
 	}
 
-	.service-item.building i.icon-spinner {
+	.service-item.building i.fa-spinner {
 		display: inline-block;
 	}
 
@@ -163,9 +142,4 @@ li.service-item {
 	font-size: 8pt;
 	margin-top: 5px;
 	margin-bottom: -5px;
-	text-align: right;
-}
-
-.label .error-message {
-	display: none;
 }

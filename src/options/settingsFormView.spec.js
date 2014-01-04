@@ -163,7 +163,7 @@ define([
 
 			$('.show-button').click();
 
-			expect($('.show-button i')).toHaveClass('icon-spin');
+			expect($('.show-button i')).toHaveClass('fa-spin');
 		});
 
 		it('should signal changed when Save button clicked', function () {
@@ -195,13 +195,13 @@ define([
 		it('should reset buttons', function () {
 			form.show(settings);
 			$('.show-button').attr('disabled', 'disabled');
-			$('.show-button i').addClass('icon-spin');
+			$('.show-button i').addClass('fa-spin');
 			$('.save-button').attr('disabled', 'disabled');
 
 			form.resetButtons();
 
 			expect($('.show-button')).not.toBeDisabled();
-			expect($('.show-button i')).not.toHaveClass('icon-spin');
+			expect($('.show-button i')).not.toHaveClass('fa-spin');
 			expect($('.save-button')).not.toBeDisabled();
 		});
 

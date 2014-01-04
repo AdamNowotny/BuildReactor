@@ -180,7 +180,7 @@ module.exports = function (grunt) {
 						'img/*',
 						'bower_components/angular/angular-csp.css',
 						'bower_components/font-awesome/css/font-awesome.min.css',
-						'bower_components/font-awesome/font/*',
+						'bower_components/font-awesome/fonts/*',
 						'bower_components/requirejs/require.js',
 						'lib/bootstrap-toggle-buttons/stylesheets/bootstrap-toggle-buttons.css',
 						'lib/twitter-bootstrap/css/bootstrap.css',

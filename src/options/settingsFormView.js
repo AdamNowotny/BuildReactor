@@ -37,7 +37,7 @@ define([
 
 	settingsFormView.resetButtons = function () {
 		$('.show-button', container).removeAttr('disabled');
-		$('.show-button i', container).removeClass('icon-spin');
+		$('.show-button i', container).removeClass('fa-spin');
 		$('.save-button', container).removeAttr('disabled');
 	};
 
@@ -46,7 +46,7 @@ define([
 			return;
 		}
 		$('.show-button', container).attr('disabled', 'disabled');
-		$('.show-button i', container).addClass('icon-spin');
+		$('.show-button i', container).addClass('fa-spin');
 		settingsFormView.on.clickedShow.dispatch(getCurrentValues());
 	}
 

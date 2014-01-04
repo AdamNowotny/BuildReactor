@@ -1,1 +1,16 @@
 @import url("partial/popup.css");
+
+body {
+	background-color: #141414;
+	color: white;
+	margin-top: 55px;
+	min-width: 210px;
+}
+
+.service-group {
+	text-align: right;
+}
+
+.label .error-message {
+	display: none;
+}
