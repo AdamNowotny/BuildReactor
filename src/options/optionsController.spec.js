@@ -271,7 +271,7 @@ define([
 
 					serviceList.itemClicked.dispatch(createItem(0, 'Server 1'));
 
-					expect($('.toggle-button input')).toBeChecked();
+					expect($('.toggle-button input')).toHaveAttr('checked', 'checked');
 				});
 
 				it('should not show if button disabled', function () {
