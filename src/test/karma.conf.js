@@ -1,13 +1,12 @@
+/*global module:false, process:false*/
 // Karma configuration
-// Generated on Wed Aug 28 2013 22:18:26 GMT+1000 (AUS Eastern Standard Time)
-
 module.exports = function (config) {
 	'use strict';
 
 	config.set({
 
 		// base path, that will be used to resolve files and exclude
-		basePath: '.',
+		basePath: '../..',
 
 
 		// frameworks to use
