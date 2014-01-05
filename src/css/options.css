@@ -4,7 +4,7 @@
 @import url("partial/serviceSettings.css");
 
 body {
-	padding-top: 50px;
+	padding-top: 55px;
 }
 
 a {
@@ -17,12 +17,6 @@ a {
 	width: 100%;
 }
 
-.fixed-bottom {
-	position: absolute;
-	bottom: 0;
-	width: 100%
-}
-
 .content-container {
 	bottom: 0;
 	left: 241px;
@@ -30,7 +24,7 @@ a {
 	position: absolute;
 	right: 0;
 	overflow: auto;
-	top: 40px;
+	top: 50px;
 }
 
 	.settings-form-container {
@@ -41,6 +35,11 @@ a {
 
 		.settings-form-container fieldset {
 			padding-left: 10px;
+			padding-right: 10px;
+		}
+
+		.settings-form-container .form-buttons {
+			text-align: center;
 		}
 
 	.project-selection-container {
@@ -55,36 +54,46 @@ a {
 		}
 
 		.project-selection-container .check-all {
-			float: left;
-			margin: 11px 7px 0 15px;
+			margin-right: 5px;
 		}
 		
-		.project-selection-container .group-name {
+		.project-selection-container .panel-title {
 			font-weight: bold;
 		}
 
+		.project-selection-container .panel-body {
+			padding: 10px 15px 0 15px;
+		}
+		
+		.project-selection-container .panel-body label {
+			font-weight: normal;
+		}
+		
 	.content-container .alert-error {
 		clear: both;
 		margin: 10px;
 	}
 
-.navbar .brand {
-	margin-left: 0 !important;
+.navbar-brand {
 	text-align: center;
-	width: 190px;
+	width: 240px;
 }
 
-	.navbar .logo {
+	.navbar-brand .logo {
 		vertical-align: top;
 		width: 20px;
 	}
 
 	.navbar .toggle-button {
-		top: 6px;
+		top: 11px;
 	}
 
-	.navbar .nav.pull-right {
-		margin-right: 10px;
+	.navbar .service-name {
+		font-weight: bold;
+	}
+
+	.navbar {
+		padding-right: 15px;
 	}
 
 .sidebar-nav {
@@ -93,7 +102,7 @@ a {
 	left: 0;
 	position: fixed;
 	text-align: center;
-	top: 40px;
+	top: 50px;
 	width: 240px;
 }
 

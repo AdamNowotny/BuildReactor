@@ -1,14 +1,7 @@
 .service-name-container {
 	color: #F90;
 	font-weight: bold;
-	text-align: center;
-}
-
-.no-services-message {
-	color: #F90;
-	font-weight: bold;
-	margin-top: 60px;
-	margin-bottom: 1em;
+	padding-top: 5px;
 	text-align: center;
 }
 
@@ -20,14 +13,6 @@
     text-align: center;
     text-overflow: ellipsis;
     top: 20px;
-}
-
-ul {
-	margin: 0;
-}
-
-.info-list li {
-	list-style: none;
 }
 
 	.info-list li.info {
@@ -44,7 +29,6 @@ li.service-item {
 	background-color: #360;
 	border-radius: 5px;
 	cursor: pointer;
-	height: 20px;
 	margin-top: 5px;
 	padding: 5px 30px 5px 5px;
 	position: relative;
@@ -129,7 +113,7 @@ li.service-item {
 		display: none;
 		position: absolute;
 		right: 5px;
-		top: 6px;
+		top: 8px;
 	}
 
 	.service-item.building i.fa-spinner {
@@ -142,4 +126,12 @@ li.service-item {
 	font-size: 8pt;
 	margin-top: 5px;
 	margin-bottom: -5px;
+}
+
+.label-warning {
+	background-color: #f89406;
+}
+
+.label-default {
+	background-color: #444;
 }

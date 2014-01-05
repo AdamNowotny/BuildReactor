@@ -12,17 +12,11 @@ define([
 			var serviceTypes;
 
 			var container = {
-				hide: function () {
-					$('#service-add-wizard').modal('hide');
-				},
 				show: function () {
 					addService.show();
 				},
 				isShown: function () {
 					return $('.service-add-container').is(':visible');
-				},
-				close: function () {
-					$('#service-add-wizard .close').click();
 				},
 				selectService: function (index) {
 					if (index === undefined) {
@@ -49,7 +43,7 @@ define([
 					return $('.thumbnail').length;
 				},
 				getServiceNameAt: function (index) {
-					return $('.thumbnail .caption h5').eq(index - 1).text();
+					return $('.thumbnail .caption').eq(index - 1).text();
 				},
 				getServiceIconAt: function (index) {
 					return $('.thumbnail img').eq(index - 1).attr('src');
@@ -76,7 +70,6 @@ define([
 
 			afterEach(function () {
 				addService.on.selected.removeAll();
-				container.hide();
 			});
 
 			it('should show supported services name', function () {
@@ -127,7 +120,6 @@ define([
 			it('should clear name if previously entered', function () {
 				container.selectService();
 				container.enterServiceName('Some name');
-				container.close();
 
 				container.show();
 

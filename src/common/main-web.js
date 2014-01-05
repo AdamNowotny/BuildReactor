@@ -4,7 +4,7 @@ require.config({
 		angular: '../bower_components/angular/angular',
 		'angular.route': '../bower_components/angular-route/angular-route',
 		bootbox: '../bower_components/bootbox/bootbox',
-		bootstrap: '../lib/twitter-bootstrap/js/bootstrap',
+		bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
 		bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons',
 		'common/core': 'common/core.mock',
 		handlebars: '../lib/require-handlebars-plugin/Handlebars',

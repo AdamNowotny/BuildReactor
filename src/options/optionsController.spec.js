@@ -255,7 +255,7 @@ define([
 				it('should highlight button', function () {
 					$('#service-add-button').click();
 
-					expect($('#service-add-button')).toHaveClass('btn-primary');
+					expect($('#service-add-pill')).toHaveClass('active');
 				});
 
 				it('should remove service highlight', function () {
@@ -275,7 +275,7 @@ define([
 				});
 
 				it('should not show if button disabled', function () {
-					$('#service-add-button').addClass('disabled');
+					$('#service-add-pill').addClass('disabled');
 
 					$('#service-add-button').click();
 
@@ -329,26 +329,26 @@ define([
 				it('should disable add button if new service not saved yet', function () {
 					add('Service');
 
-					expect($('#service-add-button')).toHaveClass('disabled');
+					expect($('#service-add-pill')).toHaveClass('disabled');
 				});
 
 				it('should enable add button if service saved', function () {
-					$('#service-add-button').addClass('disabled');
+					$('#service-add-pill').addClass('disabled');
 
 					serviceOptionsPage.on.updated.dispatch(createSettings('service'));
 					
-					expect($('#service-add-button')).not.toHaveClass('disabled');
+					expect($('#service-add-pill')).not.toHaveClass('disabled');
 				});
 
 				it('should deactivate add button if service selected', function () {
-					$('#service-add-button').addClass('btn-primary');
+					$('#service-add-pill').addClass('active');
 					var serviceInfo = new MockSettingsBuilder().create();
 					var item = createItem(0, 'service name');
 					spyServiceSettingsGetByIndex.andReturn(serviceInfo);
 
 					serviceList.itemSelected.dispatch(item);
 
-					expect($('#service-add-button')).not.toHaveClass('btn-primary');
+					expect($('#service-add-pill')).not.toHaveClass('active');
 				});
 
 				it('should hide new service list if service selected', function () {
@@ -372,7 +372,7 @@ define([
 
 					serviceList.itemSelected.dispatch(createItem(0, 'Server 1'));
 
-					expect($('#service-add-button')).not.toHaveClass('disabled');
+					expect($('#service-add-pill')).not.toHaveClass('disabled');
 				});
 
 				it('should not send update if disabled new service', function () {

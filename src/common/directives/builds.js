@@ -57,7 +57,7 @@ define([
 				};
 
 				$scope.getLabelClasses = function (tag) {
-					var classes = tag.type ? 'label-' + tag.type : 'label-inverse';
+					var classes = tag.type ? 'label-' + tag.type : 'label-default';
 					return classes;
 				};
 

@@ -4,40 +4,48 @@
 		<base href="../.." />
 		<title>BuildReactor settings page</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" type="text/css" href="lib/twitter-bootstrap/css/bootstrap.css" media="screen" />
-		<link rel="stylesheet" type="text/css" href="src/css/options.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="lib/bootstrap-toggle-buttons/stylesheets/bootstrap-toggle-buttons.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="src/css/options.css" media="screen" />
 	</head>
 	<body>
-		<div class="navbar navbar-fixed-top">
-			<div class="navbar-inner">
-				<a class="brand" href="http://twitter.com/BuildReactor" target="_blank">
-					<img class="logo" src="img/icon.svg" alt="BuildReactor logo" />
-					<span class="brand-name">BuildReactor</span>
+		<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://twitter.com/BuildReactor" target="_blank">
+					<img class="logo" src="img/icon.svg" alt="BuildReactor logo" /> BuildReactor
 				</a>
-				<ul class="nav">
-					<li class="divider-vertical"></li>
-					<li class="dropdown service-action">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							<strong><span class="service-name"></span></strong>
-							<b class="caret"></b>
+			</div>
+			<div class="collapse navbar-collapse" id="navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="service-action">
+						<div class="toggle-button">
+							<input id="service-enabled" type="checkbox" checked="checked">
+						</div>
+					</li>
+					<li class="divider"></li>
+					<li class="service-action">
+						<a id="service-remove-button" tabindex="-1">
+							<i class="fa fa-trash-o"></i> Remove
 						</a>
-						<ul class="dropdown-menu">
-							<li>
-								<a id="service-rename-action" tabindex="-1">
-									<i class="fa fa-pencil"></i> Rename
-								</a>
-							</li>
-							<li>
-								<a id="service-remove-button" tabindex="-1">
-									<i class="fa fa-trash-o"></i> Remove
-								</a>
-							</li>
-						</ul>
+					</li>
+					<li class="divider"></li>
+					<li class="service-action">
+						<a id="service-rename-action" tabindex="-1">
+							<i class="fa fa-pencil"></i> Rename
+						</a>
+					</li>
+					<li class="service-action">
+						<p class="navbar-text"><span class="service-name"></span></p>
 					</li>
 				</ul>
-				<ul class="nav pull-right">
+				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown help-menu">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							Help
@@ -52,11 +60,6 @@
 							</li>
 						</ul>
 					</li>
-					<li>
-						<div class="toggle-button service-action">
-							<input id="service-enabled" type="checkbox" checked="checked">
-						</div>
-					</li>
 				</ul>
 			</div>
 		</div>
@@ -65,7 +68,7 @@
 				<ul class="service-list nav nav-pills nav-stacked"></ul>
 				<hr class="service-list-separator" />
 				<ul class="actions nav nav-pills nav-stacked">
-					<li>
+					<li id="service-add-pill">
 						<a id="service-add-button">
 							<i class="pill-icon fa fa-plus-circle fa-3x"></i>
 							<span class="pill-name">Add</span>
@@ -82,18 +85,21 @@
 				<div class="error-message"></div>
 				<div>URL: <span class="error-url"></span></div>
 			</div>
+			
 			<div class="service-add-container">
-					<div class="service-add-list">
-						<ul class="thumbnails"></ul>
-					</div>
-					<div class="panel-footer">
-						<form class="service-add-form form-horizontal" action="">
-							<div class="form-actions">
-								<input type="text" name="service-add-name" id="service-add-name" placeholder="Name" disabled />
+				<div class="thumbnails"></div>
+				<div class="panel-footer">
+					<form class="service-add-form form-inline" action="">
+						<div class="form-actions">
+							<div class="form-group">
+								<input type="text" class="form-control" name="service-add-name" id="service-add-name" placeholder="Name" disabled />
+							</div>
+							<div class="form-group">
 								<button type="button" class="btn btn-primary">Add</button>
 							</div>
-						</form>
-					</div>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 		<div class="alert-saved alert alert-success alert-hide"><i class="fa fa-check fa-lg"></i> Settings saved</div>

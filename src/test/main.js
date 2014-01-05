@@ -57,7 +57,7 @@ require.config({
 		angular: '../bower_components/angular/angular',
 		angularMocks: '../bower_components/angular-mocks/angular-mocks',
 		bootbox: '../bower_components/bootbox/bootbox',
-		bootstrap: '../lib/twitter-bootstrap/js/bootstrap',
+		bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
 		bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons',
 		'common/core': 'common/core',
 		handlebars: '../lib/require-handlebars-plugin/Handlebars',

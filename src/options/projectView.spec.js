@@ -91,7 +91,7 @@ define([
 			it('should show groups', function () {
 				projectView.show(json);
 
-				expect($('.accordion-group').length).toBe(3);
+				expect($('.panel').length).toBe(3);
 			});
 
 			it('should sort groups', function () {
@@ -115,8 +115,8 @@ define([
 
 				projectView.show(unsortedJson);
 
-				expect($('.accordion-group a').eq(0)).toHaveText('group 1');
-				expect($('.accordion-group a').eq(1)).toHaveText('group 2');
+				expect($('.panel a').eq(0)).toHaveText('group 1');
+				expect($('.panel a').eq(1)).toHaveText('group 2');
 			});
 
 			it('should sort projects by name within a group', function () {
@@ -183,7 +183,7 @@ define([
 
 				projectView.show(noGroupJson);
 
-				expect($('.accordion-group a').eq(0)).toHaveText('Projects');
+				expect($('.panel-group a').eq(0)).toHaveText('Projects');
 			});
 
 			it('should expand if only 1 group present', function () {

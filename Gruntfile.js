@@ -82,7 +82,7 @@ module.exports = function (grunt) {
 					useStrict: true,
 					preserveLicenseComments: true,
 					optimize: 'none',
-					optimizeCss: 'standard',
+					// optimizeCss: 'standard',
 					uglify: {
 						toplevel: true,
 						max_line_length: 100
@@ -104,7 +104,7 @@ module.exports = function (grunt) {
 						angular: '../bower_components/angular/angular',
 						'angular.route': '../bower_components/angular-route/angular-route',
 						bootbox: '../bower_components/bootbox/bootbox',
-						bootstrap: '../lib/twitter-bootstrap/js/bootstrap',
+						bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
 						bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons',
 						'common/core': 'common/core',
 						handlebars: '../lib/require-handlebars-plugin/Handlebars',
@@ -180,8 +180,7 @@ module.exports = function (grunt) {
 						'bower_components/font-awesome/fonts/*',
 						'bower_components/requirejs/require.js',
 						'lib/bootstrap-toggle-buttons/stylesheets/bootstrap-toggle-buttons.css',
-						'lib/twitter-bootstrap/css/bootstrap.css',
-						'lib/twitter-bootstrap/img/*'
+						'bower_components/bootstrap/dist/css/bootstrap.min.css'
 					]
 				}
 			}

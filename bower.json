@@ -6,6 +6,7 @@
     "angular": "~1.2.7",
     "angular-route": "~1.2.7",
     "bootbox": "~3.0.0",
+    "bootstrap": "~3.0.3",
     "font-awesome": "~4.0.3",
     "js-signals": "~1.0.0",
     "jquery": "~2.0.3",

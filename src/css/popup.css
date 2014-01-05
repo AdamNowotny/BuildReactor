@@ -3,8 +3,16 @@
 body {
 	background-color: #141414;
 	color: white;
-	margin-top: 55px;
+	margin-top: 45px;
 	min-width: 210px;
+}
+
+.no-services-message {
+	color: #F90;
+	font-weight: bold;
+	margin-top: 60px;
+	margin-bottom: 1em;
+	text-align: center;
 }
 
 .service-group {
@@ -13,4 +21,18 @@ body {
 
 .label .error-message {
 	display: none;
+}
+
+.navbar {
+	padding-right: 1em;
+	min-height: 40px;
+}
+
+.navbar-right li {
+	float: right;
+}
+
+.navbar-nav>li>a {
+	padding-top: 5px;
+	padding-bottom: 0;
 }

@@ -28,6 +28,7 @@ module.exports = function (config) {
 			// only for http server
 			{pattern: 'img/*', watched: false, served: true, included: false},
 			{pattern: 'src/**/*.html', watched: false, served: true, included: false},
+			{pattern: 'bower_components/bootstrap/dist/css/bootstrap.min.css', watched: false, served: true, included: false},
 			{pattern: 'bower_components/angular/angular-csp.css', watched: false, served: true, included: false},
 			{pattern: 'bower_components/font-awesome/css/font-awesome.min.css', watched: false, served: true, included: false},
 			{pattern: 'bower_components/font-awesome/fonts/fontawesome-webfont.*', watched: false, served: true, included: false},

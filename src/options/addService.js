@@ -19,7 +19,7 @@ define([
 		serviceTypeName = undefined;
 		serviceTypes = availableServices;
 		var templateInput = createTemplateInput(serviceTypes);
-		$('.service-add-list ul', container).html(addServiceItemTemplate(templateInput));
+		$('.thumbnails', container).html(addServiceItemTemplate(templateInput));
 		$('.thumbnails a', container).click(serviceAddSelect);
 		$('.service-add-form', container).submit(function () {
 			serviceAdd();

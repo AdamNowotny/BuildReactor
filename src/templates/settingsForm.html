@@ -5,42 +5,52 @@
 	'styles' : [ 'css/settingsForm.css' ]
 }
 }}
-<form class="settings-form" action="">
+<form class="settings-form" action="" role="form">
 	<fieldset>
 		{{#isDefined url}}
-		<div class="input-prepend field url" data-name="url">
-			<span class="add-on"><i class="fa fa-globe"></i></span>
-			<input type="url" name="url" class="url-input" required placeholder="{{ urlHint }}" value="{{ url }}" />
+		<div class="form-group">
+			<div class="input-group field url" data-name="url">
+				<span class="input-group-addon"><i class="fa fa-globe fa-fw"></i></span>
+				<input type="url" name="url" class="form-control url-input" required placeholder="{{ urlHint }}" value="{{ url }}" />
+			</div>
 		</div>
 		{{/isDefined}}
 		{{#isDefined username}}
-		<div class="input-prepend field" data-name="username">
-			<span class="add-on"><i class="fa fa-user"></i></span>
-			<input type="text" name="username" class="username-input" placeholder="{{$ 'settings_username'}}" value="{{ username }}" />
+		<div class="form-group">
+			<div class="input-group field" data-name="username">
+				<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+				<input type="text" name="username" class="form-control username-input" placeholder="{{$ 'settings_username'}}" value="{{ username }}" />
+			</div>
 		</div>
 		{{/isDefined}}
 		{{#isDefined password}}
-		<div class="input-prepend field" data-name="password">
-			<span class="add-on"><i class="fa fa-key"></i></span>
-			<input type="password" name="password" class="password-input" placeholder="{{$ 'settings_password'}}" value="{{ password }}" />
+		<div class="form-group">
+			<div class="input-group field" data-name="password">
+				<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+				<input type="password" name="password" class="form-control password-input" placeholder="{{$ 'settings_password'}}" value="{{ password }}" />
+			</div>
 		</div>
 		{{/isDefined}}
 		{{#isDefined branch}}
-		<div class="input-prepend field" data-name="branch">
-			<span class="add-on"><i class="fa fa-code-fork"></i></span>
-			<input type="text" name="branch" class="branch-input" placeholder="{{$ 'settings_branch'}}" value="{{ branch }}" />
+		<div class="form-group">
+			<div class="input-group field" data-name="branch">
+				<span class="input-group-addon"><i class="fa fa-code-fork fa-fw"></i></span>
+				<input type="text" name="branch" class="form-control branch-input" placeholder="{{$ 'settings_branch'}}" value="{{ branch }}" />
+			</div>
 		</div>
 		{{/isDefined}}
 		{{#isDefined updateInterval}}
-		<label for="update-interval">{{$ 'settings_interval' }}</label>
-		<div class="input-append input-prepend field" data-name="updateInterval">
-			<span class="add-on"><i class="fa fa-repeat"></i></span>
-			<input type="number" name="update-interval" class="input-mini update-interval-input" min="1" value="{{ updateInterval }}" />
-			<span class="add-on">{{$ 'settings_interval_unit' }}</span>
+		<div class="form-group">
+			<label for="update-interval">{{$ 'settings_interval' }}</label>
+			<div class="input-append input-group field" data-name="updateInterval">
+				<span class="input-group-addon"><i class="fa fa-repeat fa-fw"></i></span>
+				<input type="number" name="update-interval" class="form-control input-mini update-interval-input" min="1" value="{{ updateInterval }}" />
+				<span class="input-group-addon">{{$ 'settings_interval_unit' }}</span>
+			</div>
 		</div>
 		{{/isDefined}}
 	</fieldset>
-	<div class="form-actions">
+	<div class="form-group form-buttons">
 		<button type="submit" class="btn btn-primary show-button" name="show-button"><i class="fa fa-refresh"></i> {{$ 'settings_showProjects' }}</button>
 		<button type="button" class="btn btn-success save-button" name="save-button" disabled><i class="fa fa-save"></i> Save</button>
 	</div>

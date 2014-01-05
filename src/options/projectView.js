@@ -57,7 +57,7 @@ define([
 			.select(function (e) { return $(e.target); })
 			.select(function (el) {
 				return {
-					checked: el.attr('checked') !== undefined,
+					checked: el[0].checked,
 					projectItems: el.closest('.group').find('.project-item input:visible')
 				};
 			})

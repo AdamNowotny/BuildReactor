@@ -19,7 +19,7 @@ define([
 
 	function setIsNewService(isNew) {
 		isNewService = isNew;
-		$('#service-add-button').toggleClass('disabled', isNewService);
+		$('#service-add-pill').toggleClass('disabled', isNewService);
 	}
 
 	function initialize(serviceTypes) {
@@ -45,12 +45,12 @@ define([
 			}
 		});
 		$('#service-add-button').click(function () {
-			if (!$('#service-add-button').hasClass('disabled')) {
+			if (!$('#service-add-pill').hasClass('disabled')) {
 				serviceOptionsPage.hide();
 				addService.show();
 				$('.service-action').hide();
 				serviceList.selectItem(null);
-				$('#service-add-button').addClass('btn-primary');
+				$('#service-add-pill').addClass('active');
 			}
 		});
 		$('#service-remove-button').click(function () {
@@ -157,7 +157,7 @@ define([
 			throw { name: 'showServicePage', message: 'serviceInfo is undefined' };
 		}
 		currentSettings = serviceInfo;
-		$('#service-add-button').removeClass('btn-primary');
+		$('#service-add-pill').removeClass('active');
 		addService.hide();
 		serviceOptionsPage.show(serviceInfo);
 		$('.toggle-button').toggleButtons('setState', !serviceInfo.disabled);

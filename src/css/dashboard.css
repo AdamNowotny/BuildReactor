@@ -6,12 +6,20 @@ body {
 	margin-top: 0;
 }
 
+.no-services-message {
+	color: #F90;
+	font-size: x-large;
+	font-weight: bold;
+	margin-top: 60px;
+	margin-bottom: 1em;
+	text-align: center;
+}
+
 .service-group {
 	text-align: left;
 }
 
 .label .error-message {
-	display: inline-block;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	max-width: 250px;
