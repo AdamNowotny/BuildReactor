@@ -151,18 +151,15 @@ module.exports = function (grunt) {
 							exclude: ['common/main', 'common/main-web']
 						},
 						{
-							name: 'options/main',
-							include: ['options/main-app'],
+							name: 'options/main-app',
 							exclude: ['common/main', 'common/main-web']
 						},
 						{
-							name: 'popup/main',
-							include: ['popup/main-app'],
+							name: 'popup/main-app',
 							exclude: ['common/main', 'common/main-web']
 						},
 						{
-							name: 'dashboard/main',
-							include: ['dashboard/main-app'],
+							name: 'dashboard/main-app',
 							exclude: ['common/main', 'common/main-web']
 						}
 					]
