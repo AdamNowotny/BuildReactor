@@ -27,18 +27,18 @@ a {
 	top: 50px;
 }
 
-	.settings-form-container {
+	.settings-container {
 		box-sizing: border-box;
 		float: left;
 		width: 50%;
 	}
 
-		.settings-form-container fieldset {
+		.settings-container fieldset {
 			padding-left: 10px;
 			padding-right: 10px;
 		}
 
-		.settings-form-container .form-buttons {
+		.settings-container .form-buttons {
 			text-align: center;
 		}
 
@@ -69,7 +69,7 @@ a {
 			font-weight: normal;
 		}
 		
-	.content-container .alert-error {
+	.content-container .alert-danger {
 		clear: both;
 		margin: 10px;
 	}
@@ -145,7 +145,7 @@ a {
 		position: absolute;
 	}
 
-	.settings-form-container {
+	.settings-container {
 		float: none;
 		width: 100%;
 	}

@@ -29,7 +29,7 @@ define([
 		updateWithDefaults(serviceInfo);
 		currentServiceInfo = serviceInfo;
 		projectView.hide();
-		$('.alert-error').hide();
+		$('.alert-danger').hide();
 		settingsFormView.show(serviceInfo);
 		settingsFormView.on.changed.add(function (currentValues) {
 			var newSettings = fillIn(currentValues, currentServiceInfo);
@@ -41,7 +41,7 @@ define([
 
 	function showProjects(currentValues) {
 		projectView.hide();
-		$('.alert-error').hide();
+		$('.alert-danger').hide();
 		core.availableProjects(fillIn(currentValues, currentServiceInfo), function (response) {
 			if (response.error) {
 				renderError(response.error);
@@ -60,7 +60,8 @@ define([
 		settingsFormView.resetButtons();
 		$('.error-message').text(ajaxError.message);
 		$('.error-url').text(ajaxError.url);
-		$('.alert-error').show();
+		$('.error-url').closest('a').attr('href', ajaxError.url);
+		$('.alert-danger').show();
 	}
 
 	var updateWithDefaults = function (serviceInfo) {
@@ -75,7 +76,7 @@ define([
 	var hide = function () {
 		settingsFormView.hide();
 		projectView.hide();
-		$('.alert-error').hide();
+		$('.alert-danger').hide();
 		currentServiceInfo = null;
 	};
 

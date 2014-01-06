@@ -64,15 +64,15 @@ define([
 
 			expect(settingsFormView.hide).toHaveBeenCalled();
 			expect(projectView.hide).toHaveBeenCalled();
-			expect($('.alert-error')).not.toBeVisible();
+			expect($('.alert-danger')).not.toBeVisible();
 		});
 
 		it('should hide previous errors if showing empty page', function () {
-			$('.alert-error').show();
+			$('.alert-danger').show();
 
 			serviceOptions.hide();
 
-			expect($('.alert-error')).not.toBeVisible();
+			expect($('.alert-danger')).not.toBeVisible();
 		});
 
 		it('should show form', function () {
@@ -160,19 +160,19 @@ define([
 
 		it('should hide error when show button clicked', function () {
 			serviceOptions.show(settings);
-			$('.alert-error').show();
+			$('.alert-danger').show();
 
 			settingsFormView.on.clickedShow.dispatch({});
 
-			expect($('.alert-error')).not.toBeVisible();
+			expect($('.alert-danger')).not.toBeVisible();
 		});
 
 		it('should hide error if shown for previous service', function () {
-			$('.alert-error').show();
+			$('.alert-danger').show();
 
 			serviceOptions.show(settings);
 
-			expect($('.alert-error')).not.toBeVisible();
+			expect($('.alert-danger')).not.toBeVisible();
 		});
 
 		describe('show projects', function () {
@@ -228,7 +228,7 @@ define([
 
 				settingsFormView.on.clickedShow.dispatch({});
 
-				expect($('.alert-error')).toBeVisible();
+				expect($('.alert-danger')).toBeVisible();
 				expect($('.error-message')).toHaveText('error message');
 				expect($('.error-url')).toHaveText('http://error.com/');
 			});
