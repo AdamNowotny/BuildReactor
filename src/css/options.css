@@ -1,7 +1,6 @@
 ﻿@import url("partial/addService.css");
 @import url("partial/alert.css");
 @import url("partial/serviceList.css");
-@import url("partial/serviceSettings.css");
 
 body {
 	padding-top: 55px;
@@ -38,6 +37,10 @@ a {
 			padding-right: 10px;
 		}
 
+		.settings-container .update-interval {
+			width: 50%;
+		}
+
 		.settings-container .form-buttons {
 			text-align: center;
 		}
@@ -48,6 +51,10 @@ a {
 		padding: 0 10px;
 		width: 50%;
 	}
+
+		.project-selection-container .view-selection {
+			text-align: right;
+		}
 
 		.project-selection-container .filter-count {
 			float: right;
