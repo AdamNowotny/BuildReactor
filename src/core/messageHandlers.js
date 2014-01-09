@@ -1,10 +1,10 @@
 define([
-	'core/settingsStore',
 	'core/services/serviceLoader',
 	'core/services/serviceController',
+	'core/services/serviceConfiguration',
 	'common/chromeApi',
 	'rx'
-], function (settingsStore, serviceLoader, serviceController, chromeApi, Rx) {
+], function (serviceLoader, serviceController, serviceConfiguration, chromeApi, Rx) {
 
 	'use strict';
 
@@ -12,13 +12,12 @@ define([
 		switch (request.name) {
 		case 'initOptions':
 			sendResponse({
-				settings: settingsStore.getAll(),
+				settings: serviceConfiguration.getAll(),
 				serviceTypes: serviceController.getAllTypes()
 			});
 			break;
 		case 'updateSettings':
-			settingsStore.store(request.settings);
-			serviceController.start(request.settings);
+			serviceConfiguration.setAll(request.settings);
 			break;
 		case 'availableProjects':
 			serviceLoader.load(request.serviceSettings).subscribe(function (service) {
@@ -30,6 +29,12 @@ define([
 				});
 			});
 			return true;
+		case 'enableService':
+			serviceConfiguration.enableService(request.serviceName);
+			break;
+		case 'disableService':
+			serviceConfiguration.disableService(request.serviceName);
+			break;
 		}
 	}
 

@@ -1,3 +1,4 @@
+@import url("../../bower_components/angular/angular-csp.css");
 @import url("partial/popup.css");
 
 body {

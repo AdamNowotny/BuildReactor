@@ -45,53 +45,59 @@ window.webkitNotifications.createNotification = function () {};
 
 jasmine.getFixtures().fixturesPath = 'base/';
 
-var tests = Object.keys(window.__karma__.files).filter(function (file) {
+var deps = Object.keys(window.__karma__.files).filter(function (file) {
 	'use strict';
 
 	return (/\.spec\.js$/).test(file);
 });
+deps.push('angularMocks');
 
 require.config({
 	baseUrl: '/base/src',
 	paths: {
+		jquery: "../bower_components/jquery/jquery",
+		mout: '../bower_components/mout/src',
+		rx: '../bower_components/rxjs/rx',
+		'rx.async': '../bower_components/rxjs/rx.async',
+		'rx.binding': '../bower_components/rxjs/rx.binding',
+		'rx.time': '../bower_components/rxjs/rx.time',
+		signals: '../bower_components/js-signals/dist/signals',
+
 		angular: '../bower_components/angular/angular',
-		angularMocks: '../bower_components/angular-mocks/angular-mocks',
+		angularBootstrapSwitch: '../bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch',
+		'angular.route': '../bower_components/angular-route/angular-route',
 		bootbox: '../bower_components/bootbox/bootbox',
 		bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
-		bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons',
-		'common/core': 'common/core',
+		bootstrapSwitch: '../bower_components/bootstrap-switch/build/js/bootstrap-switch',
 		handlebars: '../lib/require-handlebars-plugin/Handlebars',
 		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
-		jasmineSignals: '../bower_components/jasmine-signals/jasmine-signals',
-		jquery: '../bower_components/jquery/jquery',
-		json: '../bower_components/requirejs-plugins/src/json',
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
-		mout: '../bower_components/mout/src',
-		signals: '../bower_components/js-signals/dist/signals',
-		rx: '../bower_components/rxjs/rx.compat',
-		'rx.async': '../bower_components/rxjs/rx.async',
+		underscore: '../lib/require-handlebars-plugin/hbs/underscore',
+
+		angularMocks: '../bower_components/angular-mocks/angular-mocks',
+		'common/core': 'common/core',
+		jasmineSignals: '../bower_components/jasmine-signals/jasmine-signals',
 		'rx.aggregates': '../bower_components/rxjs/rx.aggregates',
-		'rx.binding': '../bower_components/rxjs/rx.binding',
 		'rx.testing': '../bower_components/rxjs/rx.testing',
-		'rx.time': '../bower_components/rxjs/rx.time',
 		'rx.virtualtime': '../bower_components/rxjs/rx.virtualtime',
 		text: '../bower_components/requirejs-text/text',
-		underscore: '../lib/require-handlebars-plugin/hbs/underscore'
 	},
 	shim: {
 		angular: {
 			deps: ['jquery'],
 			exports: 'angular'
 		},
+		angularBootstrapSwitch: [ 'bootstrapSwitch' ],
 		'angular.route': ['angular'],
-		bootstrap: [ 'jquery' ],
 		bootbox: {
 			deps: [ 'bootstrap' ],
 			exports: 'bootbox'
 		},
-		bootstrapToggle: [ 'jquery', 'bootstrap' ],
-		'rx.testing': [ 'rx.virtualtime' ]
+		bootstrap: [ 'jquery' ],
+		bootstrapSwitch: [ 'jquery' ],
+		'rx.testing': [ 'rx.virtualtime' ],
+		angularMocks: [ 'angular' ]
 	},
 	hbs: {
 		templateExtension: 'html',
@@ -99,6 +105,6 @@ require.config({
 		i18nDirectory:   'templates/i18n/'
 	},
 	waitSeconds: 10,
-	deps: tests,
+	deps: deps,
 	callback: window.__karma__.start
 });

@@ -60,13 +60,15 @@
         "expect",
         "it",
         "jasmine",
-        "loadFixtures",
-        "readFixtures",
-        "setFixtures",
+        "inject",
+        "module",
         "require",
         "runs",
         "spyOn",
-        "waitsFor"
+        "waitsFor",
+
+        "loadFixtures",
+        "setFixtures"
     ],
 
     "nomen"         : false,

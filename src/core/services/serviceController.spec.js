@@ -62,7 +62,7 @@ function (controller, Rx, serviceLoader, mixIn, equals, deepMatches) {
 		describe('start/stop', function () {
 
 			it('should start services', function () {
-				controller.start([settings]);
+				controller.start(Rx.Observable.returnValue([settings]));
 
 				expect(CustomBuildService.prototype.start).toHaveBeenCalled();
 			});
@@ -70,7 +70,7 @@ function (controller, Rx, serviceLoader, mixIn, equals, deepMatches) {
 			it('should not start disabled services', function () {
 				settings.disabled = true;
 				
-				controller.start([settings]);
+				controller.start(Rx.Observable.returnValue([settings]));
 
 				expect(CustomBuildService.prototype.start).not.toHaveBeenCalled();
 			});
@@ -78,7 +78,7 @@ function (controller, Rx, serviceLoader, mixIn, equals, deepMatches) {
 
 			it('should subscribe to service events', function () {
 				scheduler.scheduleAbsolute(300, function () {
-					controller.start([settings]);
+					controller.start(Rx.Observable.returnValue([settings]));
 				});
 				scheduler.scheduleAbsolute(400, function () {
 					service.events.onNext({eventName: 'someEvent'});
@@ -93,7 +93,7 @@ function (controller, Rx, serviceLoader, mixIn, equals, deepMatches) {
 
 			it('should push servicesInitializing when configuration is reset', function () {
 				scheduler.scheduleAbsolute(300, function () {
-					controller.start([settings]);
+					controller.start(Rx.Observable.returnValue([settings]));
 				});
 				var result = scheduler.startWithCreate(function () {
 					return controller.events;
@@ -109,7 +109,7 @@ function (controller, Rx, serviceLoader, mixIn, equals, deepMatches) {
 				});
 
 				scheduler.scheduleAbsolute(300, function () {
-					controller.start([settings, settings]);
+					controller.start(Rx.Observable.returnValue([settings, settings]));
 				});
 				scheduler.scheduleAbsolute(400, function () {
 					service.events.onNext({eventName: 'serviceStarted'});
@@ -125,7 +125,7 @@ function (controller, Rx, serviceLoader, mixIn, equals, deepMatches) {
 
 			it('should push servicesInitialized when no services configured', function () {
 				scheduler.scheduleAbsolute(300, function () {
-					controller.start([settings]);
+					controller.start(Rx.Observable.returnValue([settings]));
 				});
 				var result = scheduler.startWithCreate(function () {
 					return controller.events;
@@ -135,11 +135,9 @@ function (controller, Rx, serviceLoader, mixIn, equals, deepMatches) {
 			});
 
 			it('should unsubscribe from events and stop old services', function () {
+				var configs = Rx.Observable.fromArray([[settings], [settings]]);
 				scheduler.scheduleAbsolute(300, function () {
-					controller.start([settings]);
-				});
-				scheduler.scheduleAbsolute(400, function () {
-					controller.start([settings]);
+					controller.start(Rx.Observable.returnValue([settings]));
 				});
 				scheduler.scheduleAbsolute(500, function () {
 					service.events.onNext({eventName: 'someEvent'});
@@ -153,11 +151,9 @@ function (controller, Rx, serviceLoader, mixIn, equals, deepMatches) {
 			});
 
 			it('should unsubscribe from events and stop old services if empty settings passed', function () {
+				var configs = Rx.Observable.fromArray([[settings], []]);
 				scheduler.scheduleAbsolute(300, function () {
-					controller.start([settings]);
-				});
-				scheduler.scheduleAbsolute(400, function () {
-					controller.start([]);
+					controller.start(configs);
 				});
 				scheduler.scheduleAbsolute(500, function () {
 					service.events.onNext({eventName: 'someEvent'});
@@ -177,7 +173,7 @@ function (controller, Rx, serviceLoader, mixIn, equals, deepMatches) {
 			var onNext = Rx.ReactiveTest.onNext;
 
 			it('should push state on subscribe', function () {
-				controller.start([settings]);
+				controller.start(Rx.Observable.returnValue([settings]));
 
 				var result = scheduler.startWithCreate(function () {
 					return controller.activeProjects;
@@ -198,7 +194,7 @@ function (controller, Rx, serviceLoader, mixIn, equals, deepMatches) {
 				});
 
 				scheduler.scheduleAbsolute(200, function () {
-					controller.start([settings1, settings2]);
+					controller.start(Rx.Observable.returnValue([settings1, settings2]));
 				});
 				scheduler.scheduleAbsolute(300, function () {
 					service1.activeProjects.onNext({ name: 'service 1', items: [{ id: 'id1'}] });

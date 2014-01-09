@@ -27,12 +27,22 @@ define([
 		chromeApi.sendMessage({name: "availableProjects", serviceSettings: settings}, callback);
 	};
 
+	var enableService = function (name) {
+		chromeApi.sendMessage({name: "enableService", serviceName: name});
+	};
+
+	var disableService = function (name) {
+		chromeApi.sendMessage({name: "disableService", serviceName: name});
+	};
+
 	return {
 		init: init,
 		activeProjects: activeProjects,
 		initOptions: initOptions,
 		updateSettings: updateSettings,
-		availableProjects: availableProjects
+		availableProjects: availableProjects,
+		enableService: enableService,
+		disableService : disableService
 	};
 	
 });

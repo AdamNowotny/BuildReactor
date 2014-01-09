@@ -3,8 +3,9 @@
   "description": "Developer notifications and dashboard",
   "version": "0.7.7",
   "dependencies": {
-    "angular": "~1.2.7",
-    "angular-route": "~1.2.7",
+    "angular": "1.2.7",
+    "angular-bootstrap-switch": "~0.2.1",
+    "angular-route": "1.2.7",
     "bootbox": "~3.0.0",
     "bootstrap": "~3.0.3",
     "font-awesome": "~4.0.3",
@@ -15,9 +16,13 @@
     "rxjs": "~2.2.10"
   },
   "devDependencies": {
-    "angular-mocks": "~1.2.7",
+    "angular-mocks": "1.2.7",
     "jasmine-jquery": "~1.4.2",
     "jasmine-signals": "git://github.com/AdamNowotny/jasmine-signals.git",
     "requirejs-text": "~2.0.10"
+  },
+  "resolutions": {
+    "angular": "1.2.7",
+    "bootstrap": "~3.0.3"
   }
 }

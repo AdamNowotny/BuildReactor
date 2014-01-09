@@ -2,10 +2,11 @@ require.config({
 	baseUrl: 'src',
 	paths: {
 		angular: '../bower_components/angular/angular',
+		angularBootstrapSwitch: '../bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch',
 		'angular.route': '../bower_components/angular-route/angular-route',
 		bootbox: '../bower_components/bootbox/bootbox',
 		bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
-		bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons',
+		bootstrapSwitch: '../bower_components/bootstrap-switch/build/js/bootstrap-switch',
 		'common/core': 'common/core.mock',
 		handlebars: '../lib/require-handlebars-plugin/Handlebars',
 		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
@@ -23,13 +24,14 @@ require.config({
 			deps: ['jquery'],
 			exports: 'angular'
 		},
+		angularBootstrapSwitch: [ 'bootstrapSwitch' ],
 		'angular.route': ['angular'],
-		bootstrap: [ 'jquery' ],
 		bootbox: {
 			deps: [ 'jquery', 'bootstrap' ],
 			exports: 'bootbox'
 		},
-		bootstrapToggle: [ 'jquery', 'bootstrap' ]
+		bootstrap: [ 'jquery' ],
+		bootstrapSwitch: [ 'jquery' ]
 	}
 });
 
@@ -37,8 +39,5 @@ require([
 	'common/main',
 	'angular',
 	'angular.route',
-	'bootstrap',
-	'bootstrapToggle'
-], function () {
-	// bootstrapToggle depends on jQuery to be loaded already
-});
+	'bootstrap'
+], function () { });

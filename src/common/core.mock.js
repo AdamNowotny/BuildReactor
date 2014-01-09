@@ -26,7 +26,9 @@ define([
 		activeProjects: Rx.Observable.returnValue(activeProjectsResponse),
 		initOptions: initOptions,
 		updateSettings: updateSettings,
-		availableProjects: availableProjects
+		availableProjects: availableProjects,
+		enableService: function () { },
+		disableService: function () { }
 	};
 
 });

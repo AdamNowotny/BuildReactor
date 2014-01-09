@@ -1,9 +1,9 @@
 define([
 	'core/services/serviceController',
-	'core/settingsStore',
+	'core/services/serviceConfiguration',
 	'mout/string/interpolate',
 	'core/messageHandlers'
-], function (serviceController, settingsStore, interpolate, messageHandlers) {
+], function (serviceController, serviceConfiguration, interpolate, messageHandlers) {
 
 	'use strict';
 
@@ -11,21 +11,25 @@ define([
 		serviceController.events.subscribe(function (event) {
 			console.log(new Date().toJSON(), event.source, event.eventName, event.details);
 		}, function () {
-			console.error(new Date().toJSON(), 'Event stream error', arguments);
+			console.error(new Date().toJSON(), 'serviceController.events stream error', arguments);
 		}, function () {
-			console.warn(new Date().toJSON(), 'Event stream completed', arguments);
+			console.warn(new Date().toJSON(), 'serviceController.events stream completed', arguments);
 		});
 
 		messageHandlers.messages.subscribe(function (message) {
-			console.log(new Date().toJSON(), 'messageHandlers', message);
+			console.log(new Date().toJSON(), 'messageHandlers.messages', message);
 		}, function () {
-			console.error(new Date().toJSON(), 'messageHandlers stream error', arguments);
+			console.error(new Date().toJSON(), 'messageHandlers.messages stream error', arguments);
 		}, function () {
-			console.warn(new Date().toJSON(), 'messageHandlers stream completed', arguments);
+			console.warn(new Date().toJSON(), 'messageHandlers.messages stream completed', arguments);
 		});
 
-		settingsStore.on.storedSettings.add(function (settings) {
-			console.log(new Date().toJSON(), 'settingsStore.storedSettings: ', settings);
+		serviceConfiguration.changes.subscribe(function (config) {
+			console.log(new Date().toJSON(), 'serviceConfiguration.changes', config);
+		}, function () {
+			console.error(new Date().toJSON(), 'serviceConfiguration.changes stream error', arguments);
+		}, function () {
+			console.warn(new Date().toJSON(), 'serviceConfiguration.changes stream completed', arguments);
 		});
 
 		window.onerror = function (message, url, line) {

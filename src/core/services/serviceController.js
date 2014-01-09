@@ -98,8 +98,10 @@ define([
 			}).subscribe(activeProjectsSubject);
 	});
 
-	var start = function (settingsList) {
-		settingsSubject.onNext(settingsList);
+	var start = function (configChanges) {
+		configChanges.subscribe(function (allConfig) {
+			settingsSubject.onNext(allConfig);
+		});
 	};
 
 	return {

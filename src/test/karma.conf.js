@@ -32,8 +32,11 @@ module.exports = function (config) {
 			{pattern: 'bower_components/angular/angular-csp.css', watched: false, served: true, included: false},
 			{pattern: 'bower_components/font-awesome/css/font-awesome.min.css', watched: false, served: true, included: false},
 			{pattern: 'bower_components/font-awesome/fonts/fontawesome-webfont.*', watched: false, served: true, included: false},
+			{pattern: 'bower_components/bootstrap-switch/build/css/bootstrap3/bootstrap-switch.css', watched: false, served: true, included: false},
 		],
 
+		exclude: [],
+		
 		// test results reporter to use
 		// possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
 		reporters: ['progress'],

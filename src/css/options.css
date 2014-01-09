@@ -1,4 +1,6 @@
-﻿@import url("partial/addService.css");
+﻿@import url("../../bower_components/angular/angular-csp.css");
+@import url("../../bower_components/bootstrap-switch/build/css/bootstrap3/bootstrap-switch.css");
+@import url("partial/addService.css");
 @import url("partial/alert.css");
 @import url("partial/serviceList.css");
 
@@ -92,7 +94,7 @@ a {
 	}
 
 	.navbar .toggle-button {
-		top: 11px;
+		margin-top: 11px;
 	}
 
 	.navbar .service-name {

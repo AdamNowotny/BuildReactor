@@ -64,6 +64,20 @@ define(['common/core', 'common/chromeApi'], function (core, chromeApi) {
 
 			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "availableProjects", serviceSettings: settings}, callback);
 		});
+
+		it('should send enableService message', function () {
+			core.enableService('service');
+
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "enableService", serviceName: 'service'});
+		});
+
+		it('should send disableService message', function () {
+			core.disableService('service');
+
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "disableService", serviceName: 'service'});
+		});
+
+
 	});
 
 });

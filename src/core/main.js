@@ -3,7 +3,7 @@ require([
 	'core/badgeController',
 	'core/messageHandlers',
 	'core/notificationController',
-	'core/settingsStore',
+	'core/services/serviceConfiguration',
 	'core/services/serviceController',
 	'core/services/bamboo/buildService',
 	'core/services/buildbot/buildService',
@@ -21,7 +21,7 @@ require([
 	badgeController,
 	messageHandlers,
 	notificationController,
-	settingsStore,
+	serviceConfiguration,
 	serviceController,
 	BambooService,
 	BuildBotService,
@@ -55,6 +55,5 @@ require([
 	serviceController.registerType(TeamCityService);
 	serviceController.registerType(TravisService);
 
-	var settings = settingsStore.getAll();
-	serviceController.start(settings);
+	serviceController.start(serviceConfiguration.changes);
 });

@@ -8,14 +8,14 @@ define([
 	'options/serviceList',
 	'options/alert',
 	'bootbox',
-	'rx',
-	'bootstrapToggle'
+	'rx'
 ], function (signals, core, $, serviceSettings, serviceOptionsPage, addService, serviceList, alert, bootbox, Rx) {
 
 	'use strict';
 	
 	var isNewService = false;
 	var currentSettings;
+	var currentServices = new Rx.ReplaySubject();
 
 	function setIsNewService(isNew) {
 		isNewService = isNew;
@@ -23,34 +23,34 @@ define([
 	}
 
 	function initialize(serviceTypes) {
-		$('.toggle-button').toggleButtons({
-			onChange: function ($el, checked, e) {
-				var disabled = !checked;
-				if (currentSettings.disabled !== disabled) {
-					currentSettings.disabled = disabled;
-					if (!isNewService) {
-						serviceSettingsChanged(currentSettings);
-					}
-				}
-			},
-			style: {
-				disabled: 'danger',
-				custom: {
-					enabled: {
-						background: "#e6e6e6",
-						gradient: "#fefefe",
-						color: "black"
-					}
-				}
-			}
-		});
+		// $('.toggle-button').toggleButtons({
+		//	onChange: function ($el, checked, e) {
+		//		var disabled = !checked;
+		//		if (currentSettings.disabled !== disabled) {
+		//			currentSettings.disabled = disabled;
+		//			if (!isNewService) {
+		//				serviceSettingsChanged(currentSettings);
+		//			}
+		//		}
+		//	},
+		//	style: {
+		//		disabled: 'danger',
+		//		custom: {
+		//			enabled: {
+		//				background: "#e6e6e6",
+		//				gradient: "#fefefe",
+		//				color: "black"
+		//			}
+		//		}
+		//	}
+		// });
 		$('#service-add-button').click(function () {
 			if (!$('#service-add-pill').hasClass('disabled')) {
 				serviceOptionsPage.hide();
 				addService.show();
-				$('.service-action').hide();
 				serviceList.selectItem(null);
 				$('#service-add-pill').addClass('active');
+				currentServices.onNext(null);
 			}
 		});
 		$('#service-remove-button').click(function () {
@@ -95,10 +95,9 @@ define([
 			serviceSettings.add(serviceInfo);
 			serviceList.update(serviceSettings.getAll());
 			serviceList.selectLast();
-			$('.toggle-button').toggleButtons('setState', true);
 		});
 		serviceSettings.cleared.add(function () {
-			$('.service-action').hide();
+			// $('.service-action').hide();
 			$('.service-list-separator').hide();
 			$('#service-add-button').click();
 		});
@@ -127,7 +126,6 @@ define([
 		serviceList.itemSelected.add(function (item) {
 			var link = $(item);
 			$('.service-name').text(link.text().trim());
-			$('.service-action').show();
 			var index = link.data('service-index');
 			var serviceInfo = serviceSettings.getByIndex(index);
 			showServicePage(serviceInfo);
@@ -156,19 +154,20 @@ define([
 		if (serviceInfo === undefined) {
 			throw { name: 'showServicePage', message: 'serviceInfo is undefined' };
 		}
+		currentServices.onNext(serviceInfo);
 		currentSettings = serviceInfo;
 		$('#service-add-pill').removeClass('active');
 		addService.hide();
 		serviceOptionsPage.show(serviceInfo);
-		$('.toggle-button').toggleButtons('setState', !serviceInfo.disabled);
 	}
 
 	function serviceSettingsChanged(updatedSettings) {
-		updatedSettings.disabled = !$('.toggle-button').toggleButtons('status');
+		// updatedSettings.disabled = !$('.toggle-button').toggleButtons('status');
 		serviceSettings.update(currentSettings, updatedSettings);
 		core.updateSettings(serviceSettings.getAll());
 		alert.show();
 		setIsNewService(false);
+		currentServices.onNext(updatedSettings);
 		currentSettings = updatedSettings;
 		$('.service-name').text(currentSettings.name);
 		serviceList.update(serviceSettings.getAll());
@@ -176,6 +175,7 @@ define([
 
 	return {
 		initialize: initialize,
-		load: load
+		load: load,
+		currentServices: currentServices
 	};
 });

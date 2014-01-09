@@ -115,15 +115,6 @@ define([
 				expect($('.service-name')).toHaveHtml('Service name');
 			});
 
-			it('should show service actions when service selected', function () {
-				$('.service-action').hide();
-				spyServiceSettingsGetByIndex.andReturn(createSettings('Service name'));
-
-				serviceList.itemSelected.dispatch(createItem(2, 'Service name'));
-
-				expect($('.service-action')).toBeVisible();
-			});
-
 			it('should show separator after service selected', function () {
 				$('.service-list-separator').hide();
 
@@ -188,13 +179,6 @@ define([
 				expect(spyServiceListUpdate).toHaveBeenCalled();
 			});
 
-			it('should not display name after services cleared', function () {
-				$('.service-action').show();
-
-				serviceSettings.cleared.dispatch();
-
-				expect($('.service-action')).toBeHidden();
-			});
 
 			it('should not display separator after services cleared', function () {
 				$('.service-list-separator').show();
@@ -202,12 +186,6 @@ define([
 				serviceSettings.cleared.dispatch();
 
 				expect($('.service-list-separator')).toBeHidden();
-			});
-
-			it('should update services if service disabled', function () {
-				$('.toggle-button .labelLeft').click();
-
-				expect(core.updateSettings).toHaveBeenCalled();
 			});
 
 			it('should not send update if disabled service loaded', function () {
@@ -238,14 +216,6 @@ define([
 					expect(serviceOptionsPage.hide).toHaveBeenCalled();
 				});
 
-				it('should hide service actions when adding service', function () {
-					$('.service-action').show();
-
-					$('#service-add-button').click();
-
-					expect($('.service-action')).toBeHidden();
-				});
-
 				it('should show services when adding service', function () {
 					$('#service-add-button').click();
 
@@ -262,16 +232,6 @@ define([
 					$('#service-add-button').click();
 
 					expect(serviceList.selectItem).toHaveBeenCalledWith(null);
-				});
-
-				it('should toggle enabled when adding service', function () {
-					$('.toggle-button input').attr('checked', false);
-					add('Server 2');
-					spyServiceListGetSelectedName.andReturn('Server 2');
-
-					serviceList.itemClicked.dispatch(createItem(0, 'Server 1'));
-
-					expect($('.toggle-button input')).toHaveAttr('checked', 'checked');
 				});
 
 				it('should not show if button disabled', function () {

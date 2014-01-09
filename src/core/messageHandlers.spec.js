@@ -2,9 +2,10 @@ define([
 	'core/messageHandlers',
 	'core/services/serviceLoader',
 	'core/services/serviceController',
+	'core/services/serviceConfiguration',
 	'rx',
 	'common/chromeApi'
-], function (messageHandlers, serviceLoader, serviceController, Rx, chromeApi) {
+], function (messageHandlers, serviceLoader, serviceController, serviceConfiguration, Rx, chromeApi) {
 	'use strict';
 
 	describe('messageHandlers', function () {
@@ -20,6 +21,11 @@ define([
 			spyOn(chromeApi, 'addConnectListener').andCallFake(function (onConnect) {
 				connectHandler = onConnect;
 			});
+			spyOn(serviceConfiguration, 'enableService');
+			spyOn(serviceConfiguration, 'disableService');
+			spyOn(serviceConfiguration, 'getAll');
+			spyOn(serviceConfiguration, 'setAll');
+			spyOn(serviceController, 'getAllTypes');
 			port = openPort('popup');
 			messageHandlers.init();
 		});
@@ -45,7 +51,44 @@ define([
 			return port;
 		}
 
-		describe('state', function () {
+		it('should handle enableService', function () {
+			handler({ name: 'enableService', serviceName: 'service'}, null, null);
+
+			expect(serviceConfiguration.enableService).toHaveBeenCalledWith('service');
+		});
+
+		it('should handle disableService', function () {
+			handler({ name: 'disableService', serviceName: 'service'}, null, null);
+
+			expect(serviceConfiguration.disableService).toHaveBeenCalledWith('service');
+		});
+
+		it('should handle updateSettings', function () {
+			var settings = [{ name: 'service'}];
+			handler({ name: 'updateSettings', settings: settings}, null, null);
+
+			expect(serviceConfiguration.setAll).toHaveBeenCalledWith(settings);
+		});
+
+		it('should handle initOptions', function () {
+			var settings = [{ name: 'service'}];
+			var serviceTypes = [{ typeName: 'snap' }];
+			serviceConfiguration.getAll.andReturn(settings);
+			serviceController.getAllTypes.andReturn(serviceTypes);
+			var result;
+			var sendResponse = function (response) {
+				result = response;
+			};
+
+			handler({ name: 'initOptions'}, null, sendResponse);
+
+			expect(result).toEqual({
+				settings: settings,
+				serviceTypes: serviceTypes
+			});
+		});
+
+		describe('activeProjects', function () {
 
 			it('should subscribe to state sequence on connect', function () {
 				connectHandler(port);

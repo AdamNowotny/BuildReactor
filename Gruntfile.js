@@ -13,9 +13,9 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-plato');
 	grunt.loadNpmTasks('grunt-version');
 
-	grunt.registerTask('default', ['clean:build', 'jshint', 'karma:once', 'cssmin', 'requirejs', 'copy', 'clean:buildSrc', 'compress']);
+	grunt.registerTask('default', ['clean:build', 'jshint', 'karma:once', 'requirejs', 'cssmin', 'copy', 'clean:buildSrc', 'compress']);
 	grunt.registerTask('test', ['karma:watch']);
-	grunt.registerTask('dist', ['clean:build', 'cssmin', 'requirejs', 'copy', 'clean:buildSrc', 'compress']);
+	grunt.registerTask('dist', ['clean:build', 'requirejs', 'cssmin', 'copy', 'clean:buildSrc', 'compress']);
 	grunt.registerTask('report', ['plato:src']);
 	grunt.registerTask('travis', ['clean:build', 'jshint', 'karma:once']);
 
@@ -32,6 +32,7 @@ module.exports = function (grunt) {
 				'<%= vars.dist %>/src/**/*.spec.js',
 				'<%= vars.dist %>/src/**/*.fixture.*',
 				'<%= vars.dist %>/src/**/*.mock.*',
+				'<%= vars.dist %>/src/css/partial',
 				'<%= vars.dist %>/src/mout',
 				'<%= vars.dist %>/src/templates',
 				'<%= vars.dist %>/src/test',
@@ -82,7 +83,7 @@ module.exports = function (grunt) {
 					useStrict: true,
 					preserveLicenseComments: true,
 					optimize: 'none',
-					// optimizeCss: 'standard',
+					optimizeCss: 'none',
 					uglify: {
 						toplevel: true,
 						max_line_length: 100
@@ -101,24 +102,27 @@ module.exports = function (grunt) {
 						excludeAfterBuild: true
 					},
 					paths: {
-						angular: '../bower_components/angular/angular',
-						'angular.route': '../bower_components/angular-route/angular-route',
-						bootbox: '../bower_components/bootbox/bootbox',
-						bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
-						bootstrapToggle: '../lib/bootstrap-toggle-buttons/js/jquery.toggle.buttons',
-						'common/core': 'common/core',
-						handlebars: '../lib/require-handlebars-plugin/Handlebars',
-						hbs: '../lib/require-handlebars-plugin/hbs-plugin',
-						i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 						jquery: "../bower_components/jquery/jquery",
-						json2: '../lib/require-handlebars-plugin/hbs/json2',
 						mout: '../bower_components/mout/src',
 						rx: '../bower_components/rxjs/rx',
 						'rx.async': '../bower_components/rxjs/rx.async',
 						'rx.binding': '../bower_components/rxjs/rx.binding',
 						'rx.time': '../bower_components/rxjs/rx.time',
 						signals: '../bower_components/js-signals/dist/signals',
-						underscore: '../lib/require-handlebars-plugin/hbs/underscore'
+
+						angular: '../bower_components/angular/angular',
+						angularBootstrapSwitch: '../bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch',
+						'angular.route': '../bower_components/angular-route/angular-route',
+						bootbox: '../bower_components/bootbox/bootbox',
+						bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
+						bootstrapSwitch: '../bower_components/bootstrap-switch/build/js/bootstrap-switch',
+						handlebars: '../lib/require-handlebars-plugin/Handlebars',
+						hbs: '../lib/require-handlebars-plugin/hbs-plugin',
+						i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
+						json2: '../lib/require-handlebars-plugin/hbs/json2',
+						underscore: '../lib/require-handlebars-plugin/hbs/underscore',
+
+						'common/core': 'common/core'
 					},
 					hbs: {
 						templateExtension: 'html',
@@ -130,13 +134,14 @@ module.exports = function (grunt) {
 							deps: ['jquery'],
 							exports: 'angular'
 						},
+						angularBootstrapSwitch: [ 'bootstrapSwitch' ],
 						'angular.route': ['angular'],
-						bootstrap: [ 'jquery' ],
 						bootbox: {
-							deps: [ 'jquery', 'bootstrap' ],
+							deps: [ 'bootstrap' ],
 							exports: 'bootbox'
 						},
-						bootstrapToggle: [ 'jquery', 'bootstrap' ]
+						bootstrap: [ 'jquery' ],
+						bootstrapSwitch: [ 'jquery' ]
 					},
 					modules: [
 						{
@@ -175,11 +180,9 @@ module.exports = function (grunt) {
 					'<%= vars.dist %>/': [
 						'manifest.json',
 						'img/*',
-						'bower_components/angular/angular-csp.css',
 						'bower_components/font-awesome/css/font-awesome.min.css',
 						'bower_components/font-awesome/fonts/*',
 						'bower_components/requirejs/require.js',
-						'lib/bootstrap-toggle-buttons/stylesheets/bootstrap-toggle-buttons.css',
 						'bower_components/bootstrap/dist/css/bootstrap.min.css'
 					]
 				}
