@@ -24,9 +24,12 @@ define([
 			});
 		}));
 
-		it('should initialize scope', function () {
-			expect(scope.isActive).toBe(false);
-			expect(scope.isEnabled).toBe(true);
+		it('should suspend core calls when initializing', function () {
+			stateService.selectedServices.onNext({ disabled: true });
+			stateService.selectedServices.onNext({ disabled: false });
+			
+			expect(stateService.disableService).not.toHaveBeenCalled();
+			expect(stateService.enableService).not.toHaveBeenCalled();
 		});
 
 		it('should show actions when service selected', function () {

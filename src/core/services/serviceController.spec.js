@@ -213,6 +213,18 @@ function (controller, Rx, serviceLoader, mixIn, equals, deepMatches) {
 				);
 			});
 
+			it('should push empty list of projects when services disabled', function () {
+				scheduler.scheduleAbsolute(300, function () {
+					settings.disabled = true;
+					controller.start(Rx.Observable.returnValue([settings]));
+				});
+				var result = scheduler.startWithCreate(function () {
+					return controller.activeProjects;
+				});
+
+				expect(result.messages).toHaveElements(onNext(300, []));
+			});
+
 		});
 
 		describe('registrations', function () {

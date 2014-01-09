@@ -87,6 +87,7 @@ define([
 			activeProjectsSubscription.dispose();
 		}
 		if (services.length === 0) {
+			activeProjectsSubject.onNext([]);
 			return;
 		}
 		activeProjectsSubscription = Rx.Observable
@@ -97,9 +98,11 @@ define([
 				return states;
 			}).subscribe(activeProjectsSubject);
 	});
+	var configChangesSubscription;
 
 	var start = function (configChanges) {
-		configChanges.subscribe(function (allConfig) {
+		configChangesSubscription && configChangesSubscription.dispose();
+		configChangesSubscription = configChanges.subscribe(function (allConfig) {
 			settingsSubject.onNext(allConfig);
 		});
 	};

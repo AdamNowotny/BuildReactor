@@ -17,17 +17,25 @@ define([
 	};
 
 	var enableService = function (serviceName) {
-		var config = configurationStore.getAll();
-		config[0].disabled = false;
-		configurationStore.store(config);
-		changes.onNext(config);
+		var newConfigs = configurationStore.getAll().map(function (config) {
+			if (config.name === serviceName) {
+				config.disabled = false;
+			}
+			return config;
+		});
+		configurationStore.store(newConfigs);
+		changes.onNext(newConfigs);
 	};
 	
 	var disableService = function (serviceName) {
-		var config = configurationStore.getAll();
-		config[0].disabled = true;
-		configurationStore.store(config);
-		changes.onNext(config);
+		var newConfigs = configurationStore.getAll().map(function (config) {
+			if (config.name === serviceName) {
+				config.disabled = true;
+			}
+			return config;
+		});
+		configurationStore.store(newConfigs);
+		changes.onNext(newConfigs);
 	};
 
 	return {

@@ -6,10 +6,10 @@ define([
 
 	app.controller('ActionsCtrl', function ($scope, StateService) {
 
-		$scope.isActive = false;
-		$scope.isEnabled = true;
+		var initializing;
 
 		StateService.selectedServices.subscribe(function (current) {
+			initializing = true;
 			$scope.$apply(function () {
 				if (current) {
 					$scope.isActive = true;
@@ -19,10 +19,11 @@ define([
 					$scope.isActive = false;
 				}
 			});
+			initializing = false;
 		});
 	
 		$scope.$watch('isEnabled', function (newValue, oldValue) {
-			if (newValue === oldValue) {
+			if (newValue === oldValue || initializing) {
 				return;
 			}
 			if ($scope.isEnabled) {

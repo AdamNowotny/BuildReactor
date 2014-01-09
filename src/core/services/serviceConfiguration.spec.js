@@ -42,31 +42,45 @@ define([
 		});
 
 		it('should disable service', function () {
-			configurationStore.getAll.andReturn([{ name: 'serviceName', disabled: false }]);
+			var allConfig = [
+				{ name: 'service1', disabled: false },
+				{ name: 'service2', disabled: false }
+			];
+			configurationStore.getAll.andReturn(allConfig);
 
 			scheduler.scheduleAbsolute(300, function () {
-				serviceConfiguration.disableService('serviceName');
+				serviceConfiguration.disableService('service2');
 			});
 			var changes = scheduler.startWithCreate(function () {
 				return serviceConfiguration.changes;
 			});
 
-			var result = [{ name: 'serviceName', disabled: true }];
+			var result = [
+				{ name: 'service1', disabled: false },
+				{ name: 'service2', disabled: true }
+			];
 			expect(configurationStore.store).toHaveBeenCalledWith(result);
 			expect(changes.messages).toHaveEqualElements(onNext(300, result));
 		});
 
 		it('should enable service', function () {
-			configurationStore.getAll.andReturn([{ name: 'serviceName', disabled: true }]);
+			var allConfig = [
+				{ name: 'service1', disabled: false },
+				{ name: 'service2', disabled: true }
+			];
+			configurationStore.getAll.andReturn(allConfig);
 
 			scheduler.scheduleAbsolute(300, function () {
-				serviceConfiguration.enableService('serviceName');
+				serviceConfiguration.enableService('service2');
 			});
 			var changes = scheduler.startWithCreate(function () {
 				return serviceConfiguration.changes;
 			});
 
-			var result = [{ name: 'serviceName', disabled: false }];
+			var result = [
+				{ name: 'service1', disabled: false },
+				{ name: 'service2', disabled: false }
+			];
 			expect(configurationStore.store).toHaveBeenCalledWith(result);
 			expect(changes.messages).toHaveEqualElements(onNext(300, result));
 		});
