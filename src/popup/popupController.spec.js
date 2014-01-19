@@ -1,12 +1,12 @@
 define([
-	'popup/popupController',
 	'common/core',
 	'jquery'
-], function (controller, core, $) {
+], function (core, $, controller) {
 
 	'use strict';
 
-	describe('popupController', function () {
+	// TODO: port to angular tests
+	xdescribe('popupController', function () {
 
 		var subscription;
 		var state;

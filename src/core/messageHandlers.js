@@ -10,14 +10,8 @@ define([
 
 	function onMessage(request, sender, sendResponse) {
 		switch (request.name) {
-		case 'initOptions':
-			sendResponse({
-				settings: serviceConfiguration.getAll(),
-				serviceTypes: serviceController.getAllTypes()
-			});
-			break;
-		case 'updateSettings':
-			serviceConfiguration.setAll(request.settings);
+		case 'availableServices':
+			sendResponse(serviceController.getAllTypes());
 			break;
 		case 'availableProjects':
 			serviceLoader.load(request.serviceSettings).subscribe(function (service) {
@@ -29,11 +23,17 @@ define([
 				});
 			});
 			return true;
+		case 'updateSettings':
+			serviceConfiguration.setAll(request.settings);
+			break;
 		case 'enableService':
 			serviceConfiguration.enableService(request.serviceName);
 			break;
 		case 'disableService':
 			serviceConfiguration.disableService(request.serviceName);
+			break;
+		case 'removeService':
+			serviceConfiguration.removeService(request.serviceName);
 			break;
 		}
 	}
@@ -41,21 +41,30 @@ define([
 	var messages = new Rx.Subject();
 
 	var onConnect = function (port) {
-		var onDisconnect = function (port) {
-			stateSubscription.dispose();
-		};
-		var stateSubscription = serviceController.activeProjects.subscribe(function (servicesState) {
-			port.postMessage(servicesState);
-			messages.onNext(servicesState);
-		});
-		port.onDisconnect.addListener(onDisconnect);
+		switch (port.name) {
+		case 'state':
+			var stateSubscription = serviceController.activeProjects.subscribe(function (servicesState) {
+				port.postMessage(servicesState);
+			});
+			port.onDisconnect.addListener(function (port) {
+				stateSubscription.dispose();
+			});
+			break;
+		case 'configuration':
+			var configSubscription = serviceConfiguration.changes.subscribe(function (config) {
+				port.postMessage(config);
+			});
+			port.onDisconnect.addListener(function (port) {
+				configSubscription.dispose();
+			});
+			break;
+		}
 	};
 
 	return {
 		init: function () {
 			chromeApi.addConnectListener(onConnect);
 			chromeApi.addMessageListener(onMessage);
-		},
-		messages: messages
+		}
 	};
 });

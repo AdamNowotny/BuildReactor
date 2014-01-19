@@ -1,11 +1,12 @@
 define([
 	'rx',
-	'core/services/configurationStore'
+	'core/services/configurationStore',
+	'rx.binding'
 ], function (Rx, configurationStore) {
 
 	'use strict';
 	
-	var changes = new Rx.Subject();
+	var changes = new Rx.BehaviorSubject(configurationStore.getAll());
 
 	var getAll = function () {
 		return configurationStore.getAll();
@@ -38,11 +39,20 @@ define([
 		changes.onNext(newConfigs);
 	};
 
+	var removeService = function (serviceName) {
+		var newConfigs = configurationStore.getAll().filter(function (config) {
+			return config.name !== serviceName;
+		});
+		configurationStore.store(newConfigs);
+		changes.onNext(newConfigs);
+	};
+
 	return {
 		getAll: getAll,
 		setAll: setAll,
 		enableService: enableService,
 		disableService: disableService,
+		removeService: removeService,
 		changes: changes
 	};
 });

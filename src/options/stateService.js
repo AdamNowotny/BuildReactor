@@ -8,12 +8,12 @@ define([
 
 	app.factory('StateService', function () {
 
-		var selectedServices = new Rx.Subject();
+		var selectedServices = new Rx.BehaviorSubject(null);
 		var currentService;
-		var allServices;
+		var allConfig;
 
-		core.initOptions(function (response) {
-			allServices = response.settings;
+		core.configurations.subscribe(function (config) {
+			allConfig = config;
 		});
 
 		optionsController.currentServices.subscribe(function (service) {
@@ -22,17 +22,26 @@ define([
 		});
 
 		var disableService = function () {
-			core.disableService(currentService.name);
+			if (currentService && !currentService.disabled) {
+				core.disableService(currentService.name);
+			}
 		};
 
 		var enableService = function () {
-			core.enableService(currentService.name);
+			if (currentService && currentService.disabled) {
+				core.enableService(currentService.name);
+			}
+		};
+
+		var removeService = function (serviceName) {
+			core.removeService(serviceName);
 		};
 
 		return {
 			selectedServices: selectedServices,
 			disableService: disableService,
-			enableService: enableService
+			enableService: enableService,
+			removeService: removeService
 		};
 	});
 

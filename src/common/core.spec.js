@@ -1,13 +1,21 @@
-define(['common/core', 'common/chromeApi'], function (core, chromeApi) {
+define([
+	'common/core',
+	'common/chromeApi',
+	'rx',
+	'test/rxHelpers',
+	'rx.binding'
+], function (core, chromeApi, Rx) {
 
 	'use strict';
 
 	describe('common/core', function () {
 
+		var onNext = Rx.ReactiveTest.onNext;
+		var scheduler;
 		var port;
-		var publishMessage;
 
 		beforeEach(function () {
+			scheduler = new Rx.TestScheduler();
 			port = {
 				onMessage: {
 					addListener: function () {}
@@ -15,45 +23,54 @@ define(['common/core', 'common/chromeApi'], function (core, chromeApi) {
 			};
 			spyOn(chromeApi, 'connect').andReturn(port);
 			spyOn(chromeApi, 'sendMessage');
-			spyOn(port.onMessage, 'addListener').andCallFake(function (listener) {
-				publishMessage = listener;
-			});
+			spyOn(port.onMessage, 'addListener');
 		});
 
 		it('should connect on init', function () {
 			core.init();
 
-			expect(chromeApi.connect).toHaveBeenCalledWith({ name: 'state' });
+			expect(chromeApi.connect.argsForCall[0]).toEqual([{ name: 'state' }]);
+			expect(chromeApi.connect.argsForCall[1]).toEqual([{ name: 'configuration' }]);
 		});
 
-		it('should subscribe on init', function () {
-			var message;
-			var settings = [];
-			var subscription = core.activeProjects.subscribe(function (state) {
-				message = state;
+		it('should pass activeProjects from port', function () {
+			var state = [{ name: 'service1' }, { name: 'service2' }];
+			port.onMessage.addListener.andCallFake(function (listener) {
+				listener(state);
 			});
 
-			core.init();
-			publishMessage(settings);
+			scheduler.scheduleAbsolute(300, function () {
+				core.init();
+			});
+			var result = scheduler.startWithCreate(function () {
+				return core.activeProjects;
+			});
 
-			subscription.dispose();
-			expect(message).toBe(settings);
+			expect(result.messages).toHaveElements(onNext(300, state));
 		});
 
-		it('should send initOptions message', function () {
+		it('should pass configurations from port', function () {
+			var config = [{ name: 'service1' }, { name: 'service2' }];
+			port.onMessage.addListener.andCallFake(function (listener) {
+				listener(config);
+			});
+
+			scheduler.scheduleAbsolute(300, function () {
+				core.init();
+			});
+			var result = scheduler.startWithCreate(function () {
+				return core.configurations;
+			});
+
+			expect(result.messages).toHaveElements(onNext(300, config));
+		});
+
+		it('should send availableServices message', function () {
 			var callback = function () {};
 
-			core.initOptions(callback);
+			core.availableServices(callback);
 
-			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "initOptions"}, callback);
-		});
-
-		it('should send updateSettings message', function () {
-			var settings = [];
-
-			core.updateSettings(settings);
-
-			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "updateSettings", settings: settings});
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "availableServices"}, callback);
 		});
 
 		it('should send availableProjects message', function () {
@@ -63,6 +80,14 @@ define(['common/core', 'common/chromeApi'], function (core, chromeApi) {
 			core.availableProjects(settings, callback);
 
 			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "availableProjects", serviceSettings: settings}, callback);
+		});
+
+		it('should send updateSettings message', function () {
+			var settings = [];
+
+			core.updateSettings(settings);
+
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "updateSettings", settings: settings});
 		});
 
 		it('should send enableService message', function () {
@@ -75,6 +100,12 @@ define(['common/core', 'common/chromeApi'], function (core, chromeApi) {
 			core.disableService('service');
 
 			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "disableService", serviceName: 'service'});
+		});
+
+		it('should send removeService message', function () {
+			core.removeService('service');
+
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "removeService", serviceName: 'service'});
 		});
 
 

@@ -38,7 +38,7 @@ define([
 			});
 
 			expect(configurationStore.store).toHaveBeenCalledWith(allConfig);
-			expect(changes.messages).toHaveEqualElements(onNext(300, allConfig));
+			expect(changes.messages).toHaveElements(onNext(300, allConfig));
 		});
 
 		it('should disable service', function () {
@@ -60,7 +60,7 @@ define([
 				{ name: 'service2', disabled: true }
 			];
 			expect(configurationStore.store).toHaveBeenCalledWith(result);
-			expect(changes.messages).toHaveEqualElements(onNext(300, result));
+			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
 
 		it('should enable service', function () {
@@ -82,7 +82,23 @@ define([
 				{ name: 'service2', disabled: false }
 			];
 			expect(configurationStore.store).toHaveBeenCalledWith(result);
-			expect(changes.messages).toHaveEqualElements(onNext(300, result));
+			expect(changes.messages).toHaveElements(onNext(300, result));
+		});
+
+		it('should remove service', function () {
+			var allConfig = [{ name: 'service1' }, { name: 'service2' }];
+			configurationStore.getAll.andReturn(allConfig);
+
+			scheduler.scheduleAbsolute(300, function () {
+				serviceConfiguration.removeService('service1');
+			});
+			var changes = scheduler.startWithCreate(function () {
+				return serviceConfiguration.changes;
+			});
+
+			var result = [{ name: 'service2' }];
+			expect(configurationStore.store).toHaveBeenCalledWith(result);
+			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
 	});
 });

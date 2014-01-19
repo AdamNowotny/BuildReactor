@@ -53,43 +53,43 @@ define([
 				currentServices.onNext(null);
 			}
 		});
-		$('#service-remove-button').click(function () {
-			bootbox.dialog(serviceList.getSelectedName(), [
-				{
-					label: 'Cancel',
-					icon: 'icon-ban-circle'
-				}, {
-					label: 'Remove',
-					icon: 'icon-trash icon-white',
-					'class': 'btn-danger',
-					callback: function () {
-						removeCurrentService();
-					}
-				}
-			], {
-				header: 'Remove',
-				onEscape: true
-			});
-		});
-		$('#service-rename-action').click(function () {
-			bootbox.setIcons({
-				'OK': 'icon-pencil icon-white',
-				'CANCEL': 'icon-ban-circle'
-			});
-			bootbox.prompt(
-				'Rename ' + serviceList.getSelectedName(),
-				'Cancel',
-				'Rename',
-				function (result) {
-					if (result !== null) {
-						currentSettings.name = result;
-						serviceSettingsChanged(currentSettings);
-						serviceList.update(serviceSettings.getAll());
-					}
-				},
-				serviceList.getSelectedName()
-			);
-		});
+		// $('#service-remove-button').click(function () {
+		//	bootbox.dialog(serviceList.getSelectedName(), [
+		//		{
+		//			label: 'Cancel',
+		//			icon: 'icon-ban-circle'
+		//		}, {
+		//			label: 'Remove',
+		//			icon: 'icon-trash icon-white',
+		//			'class': 'btn-danger',
+		//			callback: function () {
+		//				removeCurrentService();
+		//			}
+		//		}
+		//	], {
+		//		header: 'Remove',
+		//		onEscape: true
+		//	});
+		// });
+		// $('#service-rename-action').click(function () {
+		//	bootbox.setIcons({
+		//		'OK': 'icon-pencil icon-white',
+		//		'CANCEL': 'icon-ban-circle'
+		//	});
+		//	bootbox.prompt(
+		//		'Rename ' + serviceList.getSelectedName(),
+		//		'Cancel',
+		//		'Rename',
+		//		function (result) {
+		//			if (result !== null) {
+		//				currentSettings.name = result;
+		//				serviceSettingsChanged(currentSettings);
+		//				serviceList.update(serviceSettings.getAll());
+		//			}
+		//		},
+		//		serviceList.getSelectedName()
+		//	);
+		// });
 		addService.on.selected.add(function (serviceInfo) {
 			setIsNewService(true);
 			serviceSettings.add(serviceInfo);
@@ -125,7 +125,6 @@ define([
 		});
 		serviceList.itemSelected.add(function (item) {
 			var link = $(item);
-			$('.service-name').text(link.text().trim());
 			var index = link.data('service-index');
 			var serviceInfo = serviceSettings.getByIndex(index);
 			showServicePage(serviceInfo);
@@ -169,7 +168,6 @@ define([
 		setIsNewService(false);
 		currentServices.onNext(updatedSettings);
 		currentSettings = updatedSettings;
-		$('.service-name').text(currentSettings.name);
 		serviceList.update(serviceSettings.getAll());
 	}
 

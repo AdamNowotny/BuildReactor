@@ -1,5 +1,6 @@
 ﻿@import url("../../bower_components/angular/angular-csp.css");
 @import url("../../bower_components/bootstrap-switch/build/css/bootstrap3/bootstrap-switch.css");
+@import url("angular-ui.css");
 @import url("partial/addService.css");
 @import url("partial/alert.css");
 @import url("partial/serviceList.css");
@@ -27,6 +28,9 @@ a {
 	overflow: auto;
 	top: 50px;
 }
+
+.modal-header-remove { background-color: #333333; }
+.modal-header-remove span, .modal-header-remove h4 { color: #ffffff; }
 
 	.settings-container {
 		box-sizing: border-box;

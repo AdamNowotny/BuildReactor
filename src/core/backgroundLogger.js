@@ -1,9 +1,8 @@
 define([
 	'core/services/serviceController',
 	'core/services/serviceConfiguration',
-	'mout/string/interpolate',
-	'core/messageHandlers'
-], function (serviceController, serviceConfiguration, interpolate, messageHandlers) {
+	'mout/string/interpolate'
+], function (serviceController, serviceConfiguration, interpolate) {
 
 	'use strict';
 
@@ -16,12 +15,12 @@ define([
 			console.warn(new Date().toJSON(), 'serviceController.events stream completed', arguments);
 		});
 
-		messageHandlers.messages.subscribe(function (message) {
-			console.log(new Date().toJSON(), 'messageHandlers.messages', message);
+		serviceController.activeProjects.subscribe(function (state) {
+			console.log(new Date().toJSON(), 'serviceController.activeProjects', state);
 		}, function () {
-			console.error(new Date().toJSON(), 'messageHandlers.messages stream error', arguments);
+			console.error(new Date().toJSON(), 'serviceController.activeProjects stream error', arguments);
 		}, function () {
-			console.warn(new Date().toJSON(), 'messageHandlers.messages stream completed', arguments);
+			console.warn(new Date().toJSON(), 'serviceController.activeProjects stream completed', arguments);
 		});
 
 		serviceConfiguration.changes.subscribe(function (config) {

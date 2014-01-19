@@ -23,7 +23,7 @@
 			</div>
 			<div class="collapse navbar-collapse" id="navbar-collapse">
 				<ul class="nav navbar-nav" ng-show="isActive" ng-controller="ActionsCtrl" ng-cloak>
-					<li class="service-action">
+					<li class="service-action" ng-click="toggle()">
 						<div class="toggle-button">
 							<input id="service-enabled"
 								bs-switch
@@ -38,13 +38,11 @@
 								switch-off="danger">
 						</div>
 					</li>
-					<li class="divider"></li>
 					<li class="service-action">
-						<a id="service-remove-button" tabindex="-1">
+						<a id="service-remove-button" tabindex="-1" ng-click="remove()">
 							<i class="fa fa-trash-o"></i> Remove
 						</a>
 					</li>
-					<li class="divider"></li>
 					<li class="service-action">
 						<a id="service-rename-action" tabindex="-1">
 							<i class="fa fa-pencil"></i> Rename

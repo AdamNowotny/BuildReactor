@@ -1,5 +1,6 @@
 define([
 	'rx',
+	'angular.ui',
 	'options/actionsCtrl'
 ], function (Rx) {
 
@@ -7,16 +8,21 @@ define([
 	
 	describe('actionCtrl', function () {
 
-		var scope, controller, stateService;
+		var scope, controller, stateService, modal;
+		var timeout;
 
 		beforeEach(module('options'));
 
-		beforeEach(inject(function ($rootScope, $controller) {
+		beforeEach(inject(function ($rootScope, $controller, $modal, $timeout) {
+			timeout = $timeout;
 			scope = $rootScope.$new();
+			modal = $modal;
+			spyOn(modal, 'open');
 			stateService = {
 				selectedServices: new Rx.ReplaySubject(),
 				disableService: jasmine.createSpy(),
-				enableService: jasmine.createSpy()
+				enableService: jasmine.createSpy(),
+				removeService: jasmine.createSpy()
 			};
 			controller = $controller('ActionsCtrl', {
 				$scope: scope,
@@ -24,40 +30,38 @@ define([
 			});
 		}));
 
-		it('should suspend core calls when initializing', function () {
-			stateService.selectedServices.onNext({ disabled: true });
-			stateService.selectedServices.onNext({ disabled: false });
-			
-			expect(stateService.disableService).not.toHaveBeenCalled();
-			expect(stateService.enableService).not.toHaveBeenCalled();
-		});
+		function selectService(config) {
+			stateService.selectedServices.onNext(config);
+			timeout.flush();
+		}
 
 		it('should show actions when service selected', function () {
-			stateService.selectedServices.onNext({});
+			selectService({ name: 'serviceName' });
+			scope.$digest();
 
 			expect(scope.isActive).toBe(true);
 		});
 
 		it('should hide actions when no service selected', function () {
-			stateService.selectedServices.onNext(null);
+			selectService(null);
 
 			expect(scope.isActive).toBe(false);
 		});
 
 		it('should show selected service name', function () {
-			stateService.selectedServices.onNext({ name: 'service name' });
+			selectService({ name: 'service name' });
 
 			expect(scope.serviceName).toBe('service name');
 		});
 
 		it('should indicate when service disabled', function () {
-			stateService.selectedServices.onNext({ disabled: true });
+			selectService({ disabled: true });
 
 			expect(scope.isEnabled).toBe(false);
 		});
 
 		it('should disable service when switch toggled', function () {
-			stateService.selectedServices.onNext({});
+			selectService({ name: 'serviceName' });
 
 			scope.isEnabled = false;
 			scope.$digest();
@@ -66,7 +70,7 @@ define([
 		});
 
 		it('should enable service when switch toggled', function () {
-			stateService.selectedServices.onNext({ disabled: true });
+			selectService({ disabled: true });
 
 			scope.isEnabled = true;
 			scope.$digest();
@@ -74,5 +78,22 @@ define([
 			expect(stateService.enableService).toHaveBeenCalled();
 		});
 
+		it('should remove service', function () {
+			scope.serviceName = 'serviceName';
+			modal.open.andCallFake(function (params) {
+				return {
+					result: {
+						then: function (callback) {
+							callback(scope.serviceName);
+						}
+					}
+				};
+			});
+
+			scope.remove();
+
+			expect(stateService.removeService).toHaveBeenCalledWith('serviceName');
+		});
+		
 	});
 });

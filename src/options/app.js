@@ -1,10 +1,15 @@
 define([
 	'angular',
 	'angular.route',
-	'angularBootstrapSwitch'
+	'angularBootstrapSwitch',
+	'angular.ui'
 ], function (angular) {
 
 	'use strict';
 
-	return angular.module('options', ['ngRoute', 'frapontillo.bootstrap-switch']);
+	return angular.module('options', [
+		'ngRoute',
+		'frapontillo.bootstrap-switch',
+		'ui.bootstrap'
+	]);
 });

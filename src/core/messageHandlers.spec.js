@@ -10,28 +10,27 @@ define([
 
 	describe('messageHandlers', function () {
 
+		var messageHandler, connectHandler;
 		var port;
-		var handler;
-		var connectHandler;
 
 		beforeEach(function () {
-			spyOn(chromeApi, 'addMessageListener').andCallFake(function (handlerFunction) {
-				handler = handlerFunction;
+			spyOn(chromeApi, 'addMessageListener').andCallFake(function (messageListener) {
+				messageHandler = messageListener;
 			});
-			spyOn(chromeApi, 'addConnectListener').andCallFake(function (onConnect) {
-				connectHandler = onConnect;
+			spyOn(chromeApi, 'addConnectListener').andCallFake(function (connectListener) {
+				connectHandler = connectListener;
 			});
 			spyOn(serviceConfiguration, 'enableService');
 			spyOn(serviceConfiguration, 'disableService');
+			spyOn(serviceConfiguration, 'removeService');
 			spyOn(serviceConfiguration, 'getAll');
 			spyOn(serviceConfiguration, 'setAll');
 			spyOn(serviceController, 'getAllTypes');
-			port = openPort('popup');
 			messageHandlers.init();
 		});
 
 		afterEach(function () {
-			if (port.disconnectHandler) {
+			if (port && port.disconnectHandler) {
 				port.disconnectHandler(port);
 			}
 		});
@@ -51,90 +50,45 @@ define([
 			return port;
 		}
 
-		it('should handle enableService', function () {
-			handler({ name: 'enableService', serviceName: 'service'}, null, null);
+		describe('messages', function () {
 
-			expect(serviceConfiguration.enableService).toHaveBeenCalledWith('service');
-		});
+			it('should handle availableServices', function () {
+				var serviceTypes = [{ typeName: 'snap' }];
+				serviceController.getAllTypes.andReturn(serviceTypes);
 
-		it('should handle disableService', function () {
-			handler({ name: 'disableService', serviceName: 'service'}, null, null);
-
-			expect(serviceConfiguration.disableService).toHaveBeenCalledWith('service');
-		});
-
-		it('should handle updateSettings', function () {
-			var settings = [{ name: 'service'}];
-			handler({ name: 'updateSettings', settings: settings}, null, null);
-
-			expect(serviceConfiguration.setAll).toHaveBeenCalledWith(settings);
-		});
-
-		it('should handle initOptions', function () {
-			var settings = [{ name: 'service'}];
-			var serviceTypes = [{ typeName: 'snap' }];
-			serviceConfiguration.getAll.andReturn(settings);
-			serviceController.getAllTypes.andReturn(serviceTypes);
-			var result;
-			var sendResponse = function (response) {
-				result = response;
-			};
-
-			handler({ name: 'initOptions'}, null, sendResponse);
-
-			expect(result).toEqual({
-				settings: settings,
-				serviceTypes: serviceTypes
-			});
-		});
-
-		describe('activeProjects', function () {
-
-			it('should subscribe to state sequence on connect', function () {
-				connectHandler(port);
-
-				serviceController.activeProjects.onNext([{ name: 'service 1', items: [] }]);
-
-				expect(port.postMessage).toHaveBeenCalled();
-			});
-
-			it('should unsubscribe from state changes on disconnect', function () {
-				connectHandler(port);
-				port.disconnectHandler(port);
-
-				serviceController.activeProjects.onNext('test');
-				serviceController.activeProjects.onNext('test');
-				serviceController.activeProjects.onNext('test');
-
-				expect(port.postMessage.callCount).toBe(1);
-			});
-
-			it('should unsubscribe from right channel', function () {
-				var popupPort = openPort('popup');
-				var dashboardPort = openPort('dashboard');
-
-				connectHandler(popupPort);
-				connectHandler(dashboardPort);
-				popupPort.disconnectHandler(popupPort);
-				serviceController.activeProjects.onNext('test');
-				serviceController.activeProjects.onNext('test');
-				serviceController.activeProjects.onNext('test');
-
-				expect(popupPort.postMessage.callCount).toBe(1);
-				expect(dashboardPort.postMessage.callCount).toBe(4);
-			});
-
-			it('should push message on event', function () {
-				connectHandler(port);
-				var lastMessage;
-				messageHandlers.messages.subscribe(function (message) {
-					lastMessage = message;
+				var result;
+				messageHandler({ name: 'availableServices'}, null, function (response) {
+					result = response;
 				});
 
-				serviceController.activeProjects.onNext([{ name: 'service 1', items: [] }]);
-
-				expect(lastMessage).toBeDefined();
+				expect(result).toEqual(serviceTypes);
 			});
+
+			it('should handle updateSettings', function () {
+				var settings = [{ name: 'service'}];
+				messageHandler({ name: 'updateSettings', settings: settings}, null, null);
+
+				expect(serviceConfiguration.setAll).toHaveBeenCalledWith(settings);
+			});
+
+			it('should handle enableService', function () {
+				messageHandler({ name: 'enableService', serviceName: 'service'}, null, null);
+
+				expect(serviceConfiguration.enableService).toHaveBeenCalledWith('service');
+			});
+
+			it('should handle disableService', function () {
+				messageHandler({ name: 'disableService', serviceName: 'service'}, null, null);
+
+				expect(serviceConfiguration.disableService).toHaveBeenCalledWith('service');
+			});
+
+			it('should handle removeService', function () {
+				messageHandler({ name: 'removeService', serviceName: 'service'}, null, null);
+
+				expect(serviceConfiguration.removeService).toHaveBeenCalledWith('service');
+			});
+
 		});
 
 		describe('availableProjects', function () {
@@ -164,13 +118,13 @@ define([
 			});
 
 			it('should create service', function () {
-				handler(request, null, sendResponse);
+				messageHandler(request, null, sendResponse);
 
 				expect(serviceLoader.load).toHaveBeenCalled();
 			});
 
 			it('should call service', function () {
-				handler(request, null, sendResponse);
+				messageHandler(request, null, sendResponse);
 
 				expect(service.availableBuilds).toHaveBeenCalled();
 			});
@@ -183,7 +137,7 @@ define([
 				};
 				mockAvailableBuilds.andReturn(Rx.Observable.returnValue(serviceResponse));
 
-				handler(request, null, sendResponse);
+				messageHandler(request, null, sendResponse);
 
 				expect(actualResponse.projects).toBe(serviceResponse);
 			});
@@ -196,12 +150,38 @@ define([
 				};
 				mockAvailableBuilds.andReturn(Rx.Observable.throwException(serviceError));
 
-				handler(request, null, sendResponse);
+				messageHandler(request, null, sendResponse);
 
 				expect(actualResponse.error).toBe(serviceError);
 			});
 
 		});
+
+		describe('activeProjects', function () {
+
+			it('should subscribe to state sequence on connect', function () {
+				port = openPort('state');
+				connectHandler(port);
+
+				serviceController.activeProjects.onNext([{ name: 'service 1', items: [] }]);
+
+				expect(port.postMessage).toHaveBeenCalled();
+			});
+
+			it('should unsubscribe from state changes on disconnect', function () {
+				port = openPort('state');
+				connectHandler(port);
+				port.disconnectHandler(port);
+
+				serviceController.activeProjects.onNext('test');
+				serviceController.activeProjects.onNext('test');
+				serviceController.activeProjects.onNext('test');
+
+				expect(port.postMessage.callCount).toBe(1);
+			});
+
+		});
+
 
 	});
 });

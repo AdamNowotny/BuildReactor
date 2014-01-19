@@ -7,42 +7,68 @@ define([
 	'use strict';
 
 	var init = function () {
-		var port = chromeApi.connect({ name: 'state' });
-		port.onMessage.addListener(function (message) {
+		var statePort = chromeApi.connect({ name: 'state' });
+		statePort.onMessage.addListener(function (message) {
 			activeProjects.onNext(message);
+		});
+		var configPort = chromeApi.connect({ name: 'configuration' });
+		configPort.onMessage.addListener(function (message) {
+			configurations.onNext(message);
 		});
 	};
 
-	var activeProjects = new Rx.BehaviorSubject([]);
-	
-	var updateSettings = function (settingsList) {
-		chromeApi.sendMessage({name: "updateSettings", settings: settingsList});
-	};
+	var activeProjects = new Rx.ReplaySubject(1);
+	var configurations = new Rx.ReplaySubject(1);
+	var messages = new Rx.ReplaySubject(1);
 
-	var initOptions = function (callback) {
-		chromeApi.sendMessage({name: "initOptions"}, callback);
+	var availableServices = function (callback) {
+		var message = { name: "availableServices" };
+		messages.onNext(message);
+		chromeApi.sendMessage(message, callback);
 	};
 
 	var availableProjects = function (settings, callback) {
-		chromeApi.sendMessage({name: "availableProjects", serviceSettings: settings}, callback);
+		var message = { name: "availableProjects", serviceSettings: settings };
+		messages.onNext(message);
+		chromeApi.sendMessage(message, callback);
+	};
+
+	var updateSettings = function (settingsList) {
+		var message = { name: "updateSettings", settings: settingsList };
+		messages.onNext(message);
+		chromeApi.sendMessage(message);
 	};
 
 	var enableService = function (name) {
-		chromeApi.sendMessage({name: "enableService", serviceName: name});
+		var message = { name: "enableService", serviceName: name };
+		messages.onNext(message);
+		chromeApi.sendMessage(message);
 	};
 
 	var disableService = function (name) {
-		chromeApi.sendMessage({name: "disableService", serviceName: name});
+		var message = { name: "disableService", serviceName: name };
+		messages.onNext(message);
+		chromeApi.sendMessage(message);
+	};
+
+	var removeService = function (name) {
+		var message = { name: "removeService", serviceName: name };
+		messages.onNext(message);
+		chromeApi.sendMessage(message);
 	};
 
 	return {
 		init: init,
+		availableServices: availableServices,
+		configurations: configurations,
 		activeProjects: activeProjects,
-		initOptions: initOptions,
 		updateSettings: updateSettings,
 		availableProjects: availableProjects,
 		enableService: enableService,
-		disableService : disableService
+		disableService : disableService,
+		removeService : removeService,
+		// for logging
+		messages: messages
 	};
 	
 });

@@ -1,10 +1,17 @@
 define([
-	'src/common/core.mock.initOptions.js',
+	'src/common/core.mock.availableServices.js',
 	'src/common/core.mock.activeProjects.js',
 	'src/common/core.mock.availableProjects.js',
+	'src/common/core.mock.configurations.js',
 	'rx',
 	'rx.time'
-], function (initOptionsResponse, activeProjectsResponse, availableProjectsResponse, Rx) {
+], function (
+	availableServicesResponse,
+	activeProjectsResponse,
+	availableProjectsResponse,
+	configurations,
+	Rx
+) {
 
 	'use strict';
 
@@ -13,8 +20,8 @@ define([
 	var updateSettings = function (settingsList) {
 	};
 
-	var initOptions = function (callback) {
-		callback(initOptionsResponse);
+	var availableServices = function (callback) {
+		callback(availableServicesResponse);
 	};
 
 	var availableProjects = function (settings, callback) {
@@ -23,12 +30,15 @@ define([
 
 	return {
 		init: function () {},
+		availableServices: availableServices,
+		configurations: configurations,
 		activeProjects: Rx.Observable.returnValue(activeProjectsResponse),
-		initOptions: initOptions,
 		updateSettings: updateSettings,
 		availableProjects: availableProjects,
 		enableService: function () { },
-		disableService: function () { }
+		disableService: function () { },
+		removeService: function () { },
+		messages: Rx.Observable.never()
 	};
 
 });

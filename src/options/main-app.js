@@ -16,9 +16,12 @@ define([
 	'use strict';
 
 	logger();
-	core.initOptions(function (response) {
-		optionsController.initialize(response.serviceTypes);
-		optionsController.load(response.settings);
+	core.init();
+	core.availableServices(function (serviceTypes) {
+		optionsController.initialize(serviceTypes);
+		core.configurations.subscribe(function (config) {
+			optionsController.load(config);
+		});
 	});
 
 	angular.element(document).ready(function () {

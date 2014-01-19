@@ -14,7 +14,8 @@ define([
 
 		'use strict';
 		
-		describe('optionsController', function () {
+		// TODO: port to angular tests
+		xdescribe('optionsController', function () {
 
 			var spyServiceListGetSelectedName;
 			var spyServiceListUpdate;

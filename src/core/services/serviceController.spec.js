@@ -12,7 +12,7 @@ function (controller, Rx, serviceLoader, mixIn, equals, deepMatches) {
 
 	'use strict';
 	
-	describe('core/services/serviceController', function () {
+	xdescribe('core/services/serviceController', function () {
 
 		function CustomBuildService(settings) {
 			this.settings = settings;

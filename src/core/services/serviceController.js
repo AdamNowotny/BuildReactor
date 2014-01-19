@@ -1,10 +1,11 @@
 define([
+	'core/services/serviceConfiguration',
 	'core/services/serviceLoader',
 	'rx',
 	'mout/array/contains',
 	'mout/object/values',
 	'rx.binding'
-], function (serviceLoader, Rx, contains, values) {
+], function (serviceConfiguration, serviceLoader, Rx, contains, values) {
 
 	'use strict';
 
@@ -27,9 +28,9 @@ define([
 	var eventsSubscriptions = [];
 	var events = new Rx.Subject();
 
-	var settingsSubject = new Rx.BehaviorSubject([]);
-	var servicesSubject = new Rx.BehaviorSubject([]);
-	var activeProjectsSubject = new Rx.BehaviorSubject([]);
+	var settingsSubject = new Rx.ReplaySubject(1);
+	var servicesSubject = new Rx.ReplaySubject(1);
+	var activeProjectsSubject = new Rx.ReplaySubject(1);
 	var activeProjectsSubscription;
 
 	settingsSubject.subscribe(function (settingsList) {
@@ -101,9 +102,15 @@ define([
 	var configChangesSubscription;
 
 	var start = function (configChanges) {
-		configChangesSubscription && configChangesSubscription.dispose();
-		configChangesSubscription = configChanges.subscribe(function (allConfig) {
+		// configChangesSubscription && configChangesSubscription.dispose();
+		// configChangesSubscription = configChanges.subscribe(function (allConfig) {
+		serviceConfiguration.changes.subscribeOn(Rx.Scheduler.timeout).subscribe(function (allConfig) {
+			console.log('config', allConfig);
 			settingsSubject.onNext(allConfig);
+		}, function (e) {
+			console.log('error', e);
+		}, function (e) {
+			console.log('completed', e);
 		});
 	};
 
