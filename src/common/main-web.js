@@ -13,6 +13,7 @@ require.config({
 		hbs: '../lib/require-handlebars-plugin/hbs-plugin',
 		i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 		json2: '../lib/require-handlebars-plugin/hbs/json2',
+		'rx.angular': '../bower_components/angular-rx/rx.angular',
 		underscore: '../lib/require-handlebars-plugin/hbs/underscore'
 	},
 	hbs: {

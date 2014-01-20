@@ -122,6 +122,7 @@ module.exports = function (grunt) {
 						i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
 						json2: '../lib/require-handlebars-plugin/hbs/json2',
 						underscore: '../lib/require-handlebars-plugin/hbs/underscore',
+						'rx.angular': '../bower_components/angular-rx/rx.angular',
 
 						'common/core': 'common/core'
 					},

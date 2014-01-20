@@ -2,11 +2,12 @@ define([
 	'options/app',
 	'rx',
 	'options/stateService',
-	'angular.ui'
+	'angular.ui',
+	'rx.angular'
 ], function (app, Rx) {
 	'use strict';
 
-	app.controller('ActionsCtrl', function ($scope, StateService, $modal, $timeout) {
+	app.controller('ActionsCtrl', function ($scope, StateService, $modal, $timeout, observeOnScope) {
 
 		StateService.selectedServices.subscribe(function (current) {
 			$timeout(function () {
@@ -20,8 +21,8 @@ define([
 			});
 		});
 	
-		$scope.$watch('isEnabled', function () {
-			if ($scope.isEnabled) {
+		observeOnScope($scope, 'isEnabled').subscribe(function (change) {
+			if (change.newValue) {
 				StateService.enableService();
 			} else {
 				StateService.disableService();
