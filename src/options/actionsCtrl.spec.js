@@ -1,6 +1,5 @@
 define([
 	'rx',
-	'angular.ui',
 	'options/actionsCtrl'
 ], function (Rx) {
 

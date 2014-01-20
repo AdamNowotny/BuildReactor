@@ -2,7 +2,6 @@ define([
 	'options/app',
 	'rx',
 	'options/stateService',
-	'angular.ui',
 	'rx.angular'
 ], function (app, Rx) {
 	'use strict';
