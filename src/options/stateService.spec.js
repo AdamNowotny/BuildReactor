@@ -17,56 +17,73 @@ define([
 			spyOn(core, 'enableService');
 			spyOn(core, 'disableService');
 			spyOn(core, 'removeService');
+			spyOn(core, 'renameService');
 		});
 
 		beforeEach(inject(function (StateService) {
 			service = StateService;
 		}));
 
-		it('should disable service', function () {
-			var settings = { name: 'service', disabled: false };
-			core.configurations.onNext([settings]);
-			optionsController.currentServices.onNext(settings);
-			
-			service.disableService();
+		describe('enable', function () {
 
-			expect(core.disableService).toHaveBeenCalledWith('service');
+			it('should enable service', function () {
+				var settings = { name: 'service', disabled: true };
+				core.configurations.onNext([settings]);
+				optionsController.currentServices.onNext(settings);
+				
+				service.enableService();
+
+				expect(core.enableService).toHaveBeenCalledWith('service');
+			});
+
+			it('should not enable service if already enabled', function () {
+				var settings = { name: 'service', disabled: false };
+				core.configurations.onNext([settings]);
+				optionsController.currentServices.onNext(settings);
+				
+				service.enableService();
+
+				expect(core.enableService).not.toHaveBeenCalled();
+			});
+
+			it('should ignore enable service if no service selected yet', function () {
+				service.enableService();
+
+				expect(core.enableService).not.toHaveBeenCalled();
+			});
+
 		});
+		
+		describe('disable', function () {
 
-		it('should not disable service if already disabled', function () {
-			var settings = { name: 'service', disabled: true };
-			core.configurations.onNext([settings]);
-			optionsController.currentServices.onNext(settings);
+			it('should disable service', function () {
+				var settings = { name: 'service', disabled: false };
+				core.configurations.onNext([settings]);
+				optionsController.currentServices.onNext(settings);
+				
+				service.disableService();
 
-			service.disableService();
+				expect(core.disableService).toHaveBeenCalledWith('service');
+			});
 
-			expect(core.disableService).not.toHaveBeenCalled();
-		});
+			it('should not disable service if already disabled', function () {
+				var settings = { name: 'service', disabled: true };
+				core.configurations.onNext([settings]);
+				optionsController.currentServices.onNext(settings);
 
-		it('should enable service', function () {
-			var settings = { name: 'service', disabled: true };
-			core.configurations.onNext([settings]);
-			optionsController.currentServices.onNext(settings);
-			
-			service.enableService();
+				service.disableService();
 
-			expect(core.enableService).toHaveBeenCalledWith('service');
-		});
+				expect(core.disableService).not.toHaveBeenCalled();
+			});
 
-		it('should not enable service if already enabled', function () {
-			var settings = { name: 'service', disabled: false };
-			core.configurations.onNext([settings]);
-			optionsController.currentServices.onNext(settings);
-			
-			service.enableService();
+			it('should ignore disable service if no service selected yet', function () {
+				optionsController.currentServices.onNext(null);
 
-			expect(core.enableService).not.toHaveBeenCalled();
-		});
+				service.disableService();
 
-		it('should ignore enable service if no service selected yet', function () {
-			service.enableService();
+				expect(core.disableService).not.toHaveBeenCalled();
+			});
 
-			expect(core.enableService).not.toHaveBeenCalled();
 		});
 
 		it('should remove service', function () {
@@ -77,12 +94,24 @@ define([
 			expect(core.removeService).toHaveBeenCalledWith('service');
 		});
 
-		it('should ignore disable service if no service selected yet', function () {
-			optionsController.currentServices.onNext(null);
+		it('should rename service', function () {
+			var settings = { name: 'service' };
+			core.configurations.onNext([settings]);
+			optionsController.currentServices.onNext(settings);
+			
+			service.renameService('new service');
 
-			service.disableService();
+			expect(core.renameService).toHaveBeenCalledWith('service', 'new service');
+		});
 
-			expect(core.disableService).not.toHaveBeenCalled();
+		it('should not rename service if name not changed', function () {
+			var settings = { name: 'service' };
+			core.configurations.onNext([settings]);
+			optionsController.currentServices.onNext(settings);
+			
+			service.renameService('service');
+
+			expect(core.renameService).not.toHaveBeenCalled();
 		});
 
 	});

@@ -35,6 +35,9 @@ define([
 		case 'removeService':
 			serviceConfiguration.removeService(request.serviceName);
 			break;
+		case 'renameService':
+			serviceConfiguration.renameService(request.oldName, request.newName);
+			break;
 		}
 	}
 

@@ -47,12 +47,24 @@ define([
 		changes.onNext(newConfigs);
 	};
 
+	var renameService = function (oldName, newName) {
+		var newConfigs = configurationStore.getAll().map(function (config) {
+			if (config.name === oldName) {
+				config.name = newName;
+			}
+			return config;
+		});
+		configurationStore.store(newConfigs);
+		changes.onNext(newConfigs);
+	};
+
 	return {
 		getAll: getAll,
 		setAll: setAll,
 		enableService: enableService,
 		disableService: disableService,
 		removeService: removeService,
+		renameService: renameService,
 		changes: changes
 	};
 });

@@ -21,7 +21,8 @@ define([
 				selectedServices: new Rx.ReplaySubject(),
 				disableService: jasmine.createSpy(),
 				enableService: jasmine.createSpy(),
-				removeService: jasmine.createSpy()
+				removeService: jasmine.createSpy(),
+				renameService: jasmine.createSpy()
 			};
 			controller = $controller('ActionsCtrl', {
 				$scope: scope,
@@ -92,6 +93,23 @@ define([
 			scope.remove();
 
 			expect(stateService.removeService).toHaveBeenCalledWith('serviceName');
+		});
+		
+		it('should rename service', function () {
+			scope.serviceName = 'serviceName';
+			modal.open.andCallFake(function (params) {
+				return {
+					result: {
+						then: function (callback) {
+							callback('new serviceName');
+						}
+					}
+				};
+			});
+
+			scope.rename();
+
+			expect(stateService.renameService).toHaveBeenCalledWith('new serviceName');
 		});
 		
 	});

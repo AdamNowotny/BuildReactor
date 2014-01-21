@@ -100,5 +100,21 @@ define([
 			expect(configurationStore.store).toHaveBeenCalledWith(result);
 			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
+
+		it('should rename service', function () {
+			var allConfig = [{ name: 'service1' }, { name: 'service2' }];
+			configurationStore.getAll.andReturn(allConfig);
+
+			scheduler.scheduleAbsolute(300, function () {
+				serviceConfiguration.renameService('service1', 'service1 new');
+			});
+			var changes = scheduler.startWithCreate(function () {
+				return serviceConfiguration.changes;
+			});
+
+			var result = [{ name: 'service1 new' }, { name: 'service2' }];
+			expect(configurationStore.store).toHaveBeenCalledWith(result);
+			expect(changes.messages).toHaveElements(onNext(300, result));
+		});
 	});
 });

@@ -37,11 +37,18 @@ define([
 			core.removeService(serviceName);
 		};
 
+		var renameService = function (serviceName) {
+			if (currentService && currentService.name !== serviceName) {
+				core.renameService(currentService.name, serviceName);
+			}
+		};
+
 		return {
 			selectedServices: selectedServices,
 			disableService: disableService,
 			enableService: enableService,
-			removeService: removeService
+			removeService: removeService,
+			renameService: renameService
 		};
 	});
 

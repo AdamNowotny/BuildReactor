@@ -12,13 +12,7 @@ define([
 	configurations,
 	Rx
 ) {
-
 	'use strict';
-
-
-
-	var updateSettings = function (settingsList) {
-	};
 
 	var availableServices = function (callback) {
 		callback(availableServicesResponse);
@@ -33,11 +27,12 @@ define([
 		availableServices: availableServices,
 		configurations: configurations,
 		activeProjects: Rx.Observable.returnValue(activeProjectsResponse),
-		updateSettings: updateSettings,
+		updateSettings: function () { },
 		availableProjects: availableProjects,
 		enableService: function () { },
 		disableService: function () { },
 		removeService: function () { },
+		renameService: function () { },
 		messages: Rx.Observable.never()
 	};
 

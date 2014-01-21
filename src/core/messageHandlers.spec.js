@@ -23,6 +23,7 @@ define([
 			spyOn(serviceConfiguration, 'enableService');
 			spyOn(serviceConfiguration, 'disableService');
 			spyOn(serviceConfiguration, 'removeService');
+			spyOn(serviceConfiguration, 'renameService');
 			spyOn(serviceConfiguration, 'getAll');
 			spyOn(serviceConfiguration, 'setAll');
 			spyOn(serviceController, 'getAllTypes');
@@ -87,6 +88,16 @@ define([
 				messageHandler({ name: 'removeService', serviceName: 'service'}, null, null);
 
 				expect(serviceConfiguration.removeService).toHaveBeenCalledWith('service');
+			});
+
+			it('should handle renameService', function () {
+				messageHandler({
+					name: 'renameService',
+					oldName: 'service',
+					newName: 'new service'
+				}, null, null);
+
+				expect(serviceConfiguration.renameService).toHaveBeenCalledWith('service', 'new service');
 			});
 
 		});

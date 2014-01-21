@@ -55,5 +55,31 @@ define([
 			};
 		};
 
+		$scope.rename = function () {
+			$modal.open({
+				templateUrl: 'src/options/renameModal.html',
+				controller: RenameModalCtrl,
+				resolve: {
+					serviceName: function () {
+						return $scope.serviceName;
+					}
+				}
+			}).result.then(function (serviceName) {
+				StateService.renameService(serviceName);
+			});
+		};
+
+		var RenameModalCtrl = function ($scope, $modalInstance, serviceName) {
+
+			$scope.service = { name: serviceName };
+
+			$scope.rename = function () {
+				$modalInstance.close($scope.service.name);
+			};
+
+			$scope.cancel = function () {
+				$modalInstance.dismiss('cancel');
+			};
+		};
 	});
 });

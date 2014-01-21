@@ -57,6 +57,12 @@ define([
 		chromeApi.sendMessage(message);
 	};
 
+	var renameService = function (oldName, newName) {
+		var message = { name: "renameService", oldName: oldName, newName: newName };
+		messages.onNext(message);
+		chromeApi.sendMessage(message);
+	};
+
 	return {
 		init: init,
 		availableServices: availableServices,
@@ -65,8 +71,9 @@ define([
 		updateSettings: updateSettings,
 		availableProjects: availableProjects,
 		enableService: enableService,
-		disableService : disableService,
-		removeService : removeService,
+		disableService: disableService,
+		removeService: removeService,
+		renameService: renameService,
 		// for logging
 		messages: messages
 	};

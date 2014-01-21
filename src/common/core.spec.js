@@ -108,6 +108,16 @@ define([
 			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "removeService", serviceName: 'service'});
 		});
 
+		it('should send renameService message', function () {
+			core.renameService('service', 'new service');
+
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({
+				name: "renameService",
+				oldName: 'service',
+				newName: 'new service'
+			});
+		});
+
 
 	});
 
