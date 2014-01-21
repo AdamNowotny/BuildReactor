@@ -144,7 +144,8 @@ module.exports = function (grunt) {
 							exports: 'bootbox'
 						},
 						bootstrap: [ 'jquery' ],
-						bootstrapSwitch: [ 'jquery' ]
+						bootstrapSwitch: [ 'jquery' ],
+						'rx.angular': [ 'angular', 'rx' ]
 					},
 					modules: [
 						{

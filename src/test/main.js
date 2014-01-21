@@ -99,6 +99,8 @@ require.config({
 		},
 		bootstrap: [ 'jquery' ],
 		bootstrapSwitch: [ 'jquery' ],
+		'rx.angular': [ 'angular', 'rx' ],
+
 		'rx.testing': [ 'rx.virtualtime' ],
 		angularMocks: [ 'angular' ]
 	},
