@@ -114,7 +114,6 @@ module.exports = function (grunt) {
 						angularBootstrapSwitch: '../bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch',
 						'angular.route': '../bower_components/angular-route/angular-route',
 						'angular.ui': '../bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls',
-						bootbox: '../bower_components/bootbox/bootbox',
 						bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
 						bootstrapSwitch: '../bower_components/bootstrap-switch/build/js/bootstrap-switch',
 						handlebars: '../lib/require-handlebars-plugin/Handlebars',
@@ -139,10 +138,6 @@ module.exports = function (grunt) {
 						angularBootstrapSwitch: [ 'bootstrapSwitch' ],
 						'angular.route': ['angular'],
 						'angular.ui': ['angular'],
-						bootbox: {
-							deps: [ 'bootstrap' ],
-							exports: 'bootbox'
-						},
 						bootstrap: [ 'jquery' ],
 						bootstrapSwitch: [ 'jquery' ],
 						'rx.angular': [ 'angular', 'rx' ]

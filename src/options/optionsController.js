@@ -7,9 +7,8 @@ define([
 	'options/addService',
 	'options/serviceList',
 	'options/alert',
-	'bootbox',
 	'rx'
-], function (signals, core, $, serviceSettings, serviceOptionsPage, addService, serviceList, alert, bootbox, Rx) {
+], function (signals, core, $, serviceSettings, serviceOptionsPage, addService, serviceList, alert, Rx) {
 
 	'use strict';
 	
@@ -102,26 +101,26 @@ define([
 			$('#service-add-button').click();
 		});
 		serviceList.itemClicked.add(function (item) {
-			if (isNewService) {
-				bootbox.dialog(serviceList.getSelectedName(), [
-					{
-						label: "Cancel",
-						icon: 'icon-ban-circle'
-					}, {
-						label: 'Remove',
-						icon: 'icon-trash icon-white',
-						'class': 'btn-danger',
-						callback: function () {
-							removeCurrentService();
-						}
-					}
-				], {
-					header: 'Service not saved yet',
-					onEscape: true
-				});
-			} else {
-				serviceList.selectItem(item);
-			}
+			// if (isNewService) {
+				// bootbox.dialog(serviceList.getSelectedName(), [
+				//	{
+				//		label: "Cancel",
+				//		icon: 'icon-ban-circle'
+				//	}, {
+				//		label: 'Remove',
+				//		icon: 'icon-trash icon-white',
+				//		'class': 'btn-danger',
+				//		callback: function () {
+				//			removeCurrentService();
+				//		}
+				//	}
+				// ], {
+				//	header: 'Service not saved yet',
+				//	onEscape: true
+				// });
+			// } else {
+			serviceList.selectItem(item);
+			// }
 		});
 		serviceList.itemSelected.add(function (item) {
 			var link = $(item);

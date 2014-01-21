@@ -5,15 +5,16 @@ define([
 		'options/serviceSettings',
 		'options/serviceOptionsPage',
 		'options/serviceList',
-		'bootbox',
 		'options/alert',
 		'test/mockSettingsBuilder',
 		'common/core',
 		'jasmineSignals'
-	], function ($, controller, addService, serviceSettings, serviceOptionsPage, serviceList, bootbox, alert, MockSettingsBuilder, core, spyOnSignal) {
+	], function ($, controller, addService, serviceSettings, serviceOptionsPage, serviceList, alert, MockSettingsBuilder, core, spyOnSignal) {
 
 		'use strict';
 		
+		var bootbox; // tests not used, this is to pass JSHint
+
 		// TODO: port to angular tests
 		xdescribe('optionsController', function () {
 
