@@ -67,6 +67,7 @@ module.exports = function (grunt) {
 		cssmin: {
 			compress: {
 				files: {
+					'<%= vars.dist %>/src/settings/main.css': [ 'src/settings/main.css'	],
 					'<%= vars.dist %>/src/css/options.css': [ 'src/css/options.css'	],
 					'<%= vars.dist %>/src/css/popup.css': [ 'src/css/popup.css' ],
 					'<%= vars.dist %>/src/css/dashboard.css': [ 'src/css/dashboard.css' ]
@@ -156,6 +157,10 @@ module.exports = function (grunt) {
 						},
 						{
 							name: 'options/main-app',
+							exclude: ['common/main', 'common/main-web']
+						},
+						{
+							name: 'settings/main-app',
 							exclude: ['common/main', 'common/main-web']
 						},
 						{

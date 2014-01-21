@@ -8,8 +8,6 @@ define([
 	'options/routes',
 	'options/controller',
 	'options/actionsCtrl',
-	'options/serviceSettingsCtrl',
-	'options/newServiceCtrl',
 	'options/stateService'
 ], function ($, optionsController, core, logger, angular) {
 

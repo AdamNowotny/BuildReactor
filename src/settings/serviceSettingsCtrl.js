@@ -1,9 +1,8 @@
 define([
-	'options/app',
-	'options/optionsController',
+	'settings/app',
 	'common/core',
 	'rx'
-], function (app, optionsController, core) {
+], function (app, core) {
 	'use strict';
 
 	app.controller('ServiceSettingsCtrl', function ($scope, $routeParams) {

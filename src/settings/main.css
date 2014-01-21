@@ -1,0 +1,38 @@
+@import url("../../bower_components/angular/angular-csp.css");
+@import url("../css/angular-ui.css");
+@import url("newService.css");
+@import url("directives/sidebar/sidebar.css");
+@import url("directives/thumbnails/thumbnails.css");
+
+body {
+	padding-top: 55px;
+}
+
+a {
+	cursor: pointer;
+}
+
+.content-container {
+	bottom: 0;
+	left: 241px;
+	padding-top: 13px;
+	position: absolute;
+	right: 0;
+	overflow: auto;
+	top: 50px;
+}
+
+.navbar-brand {
+	text-align: center;
+	width: 240px;
+}
+
+	.navbar-brand .logo {
+		vertical-align: top;
+		width: 20px;
+	}
+
+	.navbar {
+		padding-right: 15px;
+	}
+

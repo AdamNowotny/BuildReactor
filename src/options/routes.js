@@ -3,20 +3,7 @@ define([
 ], function (app) {
 	'use strict';
 
-	return app.config(function ($routeProvider, $locationProvider) {
-		$routeProvider
-		.when('/new', {
-			templateUrl: 'src/options/newServiceView.html',
-			controller: 'NewServiceCtrl'
-		})
-		.when('/:service', {
-			templateUrl: 'src/options/serviceSettingsView.html',
-			controller: 'ServiceSettingsCtrl'
-		})
-		.otherwise({
-			redirectTo: '/new'
-		});
-
+	return app.config(function ($locationProvider) {
 		$locationProvider.html5Mode(false);
 	}).config([
 		'$compileProvider', function ($compileProvider)	{
