@@ -4,7 +4,7 @@ define([
 ], function (app, core) {
 	'use strict';
 
-	app.controller('NewServiceCtrl', function ($scope, $timeout) {
+	app.controller('AddServiceCtrl', function ($scope, $timeout) {
 
 		core.availableServices(function (serviceTypes) {
 			$timeout(function () {
@@ -19,8 +19,9 @@ define([
 			$scope.selected = selected ? selected[0] : null;
 		});
 
-		$scope.$watch('selected', function (serviceType) {
-			console.log('selected: ', serviceType);
+		$scope.$on('serviceNamePanel.added', function (event, data) {
+			// TODO: add new service
+			console.log('added: ', data);
 		});
 
 	});

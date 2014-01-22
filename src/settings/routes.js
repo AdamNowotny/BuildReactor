@@ -1,15 +1,13 @@
 define([
-	'settings/app',
-	'settings/serviceSettingsCtrl',
-	'settings/newServiceCtrl'
+	'settings/app'
 ], function (app) {
 	'use strict';
 
 	return app.config(function ($routeProvider) {
 		$routeProvider
 		.when('/new', {
-			templateUrl: 'src/settings/newServiceView.html',
-			controller: 'NewServiceCtrl'
+			templateUrl: 'src/settings/addServiceView.html',
+			controller: 'AddServiceCtrl'
 		})
 		.when('/service/:service', {
 			templateUrl: 'src/settings/serviceSettingsView.html',
@@ -25,7 +23,6 @@ define([
 			$compileProvider
 				.aHrefSanitizationWhitelist(/^\s*(https?|chrome-extension):/)
 				.imgSrcSanitizationWhitelist(/^\s*(chrome-extension):/);
-
 		}
 	]);
 });
