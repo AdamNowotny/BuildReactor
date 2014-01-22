@@ -7,7 +7,7 @@ define([
 
 	'use strict';
 
-	module.directive('builds', function ($timeout) {
+	module.directive('builds', function () {
 		return {
 			restrict: 'E',
 			scope: {},
@@ -64,7 +64,7 @@ define([
 				$scope.start = function () {
 					$scope.services = [];
 					core.activeProjects.subscribe(function (services) {
-						$timeout(function () {
+						$scope.$evalAsync(function () {
 							$scope.services = services ? createModel(services) : [];
 						});
 					});

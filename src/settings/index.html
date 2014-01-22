@@ -8,7 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="src/settings/main.css" media="screen" />
 	</head>
-	<body>
+	<body ng-controller="SettingsCtrl">
 		<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
@@ -65,7 +65,7 @@
 				</ul>
 			</div>
 		</div>
-		<sidebar />
+		<sidebar services="services"></sidebar>
 		<ng-view class="content-container"></ng-view>
 		<!-- scripts -->
 		<script type="text/javascript" data-main="src/settings/main" src="bower_components/requirejs/require.js"></script>

@@ -3,11 +3,13 @@ define([
 	'common/coreLogger',
 	'angular',
 	'settings/app',
+	'settings/controller',
 	'settings/routes',
 	'settings/serviceSettingsCtrl',
 	'settings/addServiceCtrl',
 	'settings/directives/focusIf/focusIf',
 	'settings/directives/serviceNamePanel/serviceNamePanel',
+	'settings/directives/sidebar/sidebar',
 	'settings/directives/thumbnails/thumbnails'
 ], function (core, logger, angular) {
 
