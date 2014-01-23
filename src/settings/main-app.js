@@ -7,6 +7,7 @@ define([
 	'settings/routes',
 	'settings/serviceSettingsCtrl',
 	'settings/addServiceCtrl',
+	'settings/directives/dynamicForm/dynamicForm',
 	'settings/directives/focusIf/focusIf',
 	'settings/directives/serviceNamePanel/serviceNamePanel',
 	'settings/directives/sidebar/sidebar',

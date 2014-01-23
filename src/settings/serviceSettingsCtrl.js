@@ -7,7 +7,5 @@ define([
 
 	app.controller('ServiceSettingsCtrl', function ($scope, $routeParams) {
 
-		$scope.serviceId = $routeParams.service;
-		
 	});
 });

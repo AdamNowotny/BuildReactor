@@ -10,7 +10,7 @@
 	</head>
 	<body ng-controller="SettingsCtrl">
 		<section topnav></section>
-		<section sidebar services="services" selected="serviceId"></section>
+		<section sidebar services="services" selected="selected.name"></section>
 		<section ng-view class="content-container"></section>
 		<!-- scripts -->
 		<script type="text/javascript" data-main="src/settings/main" src="bower_components/requirejs/require.js"></script>
