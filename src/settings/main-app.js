@@ -10,7 +10,8 @@ define([
 	'settings/directives/focusIf/focusIf',
 	'settings/directives/serviceNamePanel/serviceNamePanel',
 	'settings/directives/sidebar/sidebar',
-	'settings/directives/thumbnails/thumbnails'
+	'settings/directives/thumbnails/thumbnails',
+	'settings/directives/topnav/topnav'
 ], function (core, logger, angular) {
 
 	'use strict';
