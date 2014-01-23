@@ -1,0 +1,13 @@
+.navbar-brand {
+	text-align: center;
+	width: 240px;
+}
+
+	.navbar-brand .logo {
+		vertical-align: top;
+		width: 20px;
+	}
+
+	.navbar {
+		padding-right: 15px;
+	}

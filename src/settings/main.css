@@ -3,6 +3,7 @@
 @import url("directives/serviceNamePanel/serviceNamePanel.css");
 @import url("directives/sidebar/sidebar.css");
 @import url("directives/thumbnails/thumbnails.css");
+@import url("directives/topnav/topnav.css");
 
 body {
 	padding-top: 55px;
@@ -21,18 +22,4 @@ a {
 	overflow: auto;
 	top: 50px;
 }
-
-.navbar-brand {
-	text-align: center;
-	width: 240px;
-}
-
-	.navbar-brand .logo {
-		vertical-align: top;
-		width: 20px;
-	}
-
-	.navbar {
-		padding-right: 15px;
-	}
 
