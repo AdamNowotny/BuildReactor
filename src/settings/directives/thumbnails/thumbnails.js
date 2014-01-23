@@ -5,7 +5,6 @@ define([
 
 	app.directive('thumbnails', function ($timeout) {
 		return {
-			restrict: 'E',
 			scope: {
 				serviceTypes: '=serviceTypes'
 			},

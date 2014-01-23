@@ -5,7 +5,6 @@ define([
 
 	app.directive('serviceNamePanel', function () {
 		return {
-			restrict: 'E',
 			scope: {
 				active: '=active'
 			},
