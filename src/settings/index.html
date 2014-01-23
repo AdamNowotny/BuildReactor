@@ -65,8 +65,8 @@
 				</ul>
 			</div>
 		</div>
-		<sidebar services="services"></sidebar>
-		<ng-view class="content-container"></ng-view>
+		<section sidebar services="services" selected="serviceId"></section>
+		<section ng-view class="content-container"></section>
 		<!-- scripts -->
 		<script type="text/javascript" data-main="src/settings/main" src="bower_components/requirejs/require.js"></script>
 	</body>

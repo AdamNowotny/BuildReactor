@@ -7,7 +7,9 @@ define([
 
 	app.controller('SettingsCtrl', function ($scope, $routeParams) {
 
-		$scope.serviceId = $routeParams.service;
+		$scope.$on('$routeChangeSuccess', function (event, routeData) {
+			$scope.serviceId = routeData.params.service;
+		});
 
 		core.configurations.subscribe(function (configs) {
 			$scope.$evalAsync(function () {
