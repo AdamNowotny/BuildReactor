@@ -24,7 +24,7 @@
 				<input type="text" name="branch" class="form-control branch-input" placeholder="Branch, f.e. refs/heads/release" value="{{ service.branch }}" />
 			</div>
 		</div>
-		<div class="form-group update-interval" ng-show="isDefined(service.updateInterval)">
+		<div class="form-group number" ng-show="isDefined(service.updateInterval)">
 			<label for="update-interval">Update interval</label>
 			<div class="input-append input-group field" data-name="updateInterval">
 				<span class="input-group-addon"><i class="fa fa-repeat fa-fw"></i></span>
@@ -33,12 +33,4 @@
 			</div>
 		</div>
 	</fieldset>
-	<div class="form-group form-buttons">
-		<button type="submit" class="btn btn-primary show-button" name="show-button">
-			<i class="fa fa-refresh"></i> Show
-		</button>
-		<button type="button" class="btn btn-success save-button" name="save-button" disabled>
-			<i class="fa fa-save"></i> Save
-		</button>
-	</div>
 </form>

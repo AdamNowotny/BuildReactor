@@ -24,3 +24,12 @@ a {
 	top: 50px;
 }
 
+.settings-container {
+	box-sizing: border-box;
+	float: left;
+	width: 50%;
+}
+
+.settings-buttons {
+	text-align: center;
+}

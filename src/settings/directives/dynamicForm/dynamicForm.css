@@ -1,18 +1,8 @@
-.settings-container {
-	box-sizing: border-box;
-	float: left;
-	width: 50%;
+.settings-form fieldset {
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
-	.settings-container fieldset {
-		padding-left: 10px;
-		padding-right: 10px;
-	}
-
-	.settings-container .update-interval {
-		width: 50%;
-	}
-
-	.settings-container .form-buttons {
-		text-align: center;
-	}
+.settings-form .number {
+	width: 50%;
+}
