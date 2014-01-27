@@ -1,16 +1,20 @@
 <div class="settings-container">
 	<section dynamic-form service="selected"></section>
 	<div class="settings-buttons">
-		<button type="submit" class="btn btn-primary" ng-click="show()">
+		<button type="button" class="btn btn-primary" ng-click="show()">
 			<i class="fa fa-refresh"></i> Show
 		</button>
 		<button type="button" class="btn btn-success" ng-click="save()" disabled>
 			<i class="fa fa-save"></i> Save
 		</button>
 	</div>
-	<div class="alert alert-danger" hidden="hidden">
-		<div class="error-message"></div>
-		<div><a href="#" target="_blank" class="alert-link"><span class="error-url"></span></a></div>
+	<div class="alert alert-danger" ng-show="projectsError">
+		<div class="error-message">{{ projectsError.message }}</div>
+		<div>
+			<a ng-href="{{ projectsError.url }}" target="_blank" class="alert-link">
+				{{ projectsError.url }}
+			</a>
+		</div>
 	</div>
 </div>
-<div class="project-selection-container"></div>
+<div class="project-selection-container">{{ projects }}</div>
