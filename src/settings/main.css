@@ -24,6 +24,11 @@ a {
 	top: 50px;
 }
 
+.content-container .alert-danger {
+	clear: both;
+	margin: 10px;
+}
+
 .settings-container {
 	box-sizing: border-box;
 	float: left;
@@ -33,3 +38,4 @@ a {
 .settings-buttons {
 	text-align: center;
 }
+
