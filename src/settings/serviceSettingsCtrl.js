@@ -10,13 +10,17 @@ define([
 
 		var settings;
 
+		$scope.isLoading = false;
+
 		$scope.show = function () {
 			$scope.projectsError = null;
 			$scope.projects = null;
+			$scope.isLoading = true;
 			core.availableProjects(settings, function (response) {
 				$scope.$evalAsync(function () {
 					$scope.projects = response.projects;
 					$scope.projectsError = response.error;
+					$scope.isLoading = false;
 				});
 			});
 		};
