@@ -12,7 +12,8 @@ define([
 	'settings/directives/serviceNamePanel/serviceNamePanel',
 	'settings/directives/sidebar/sidebar',
 	'settings/directives/thumbnails/thumbnails',
-	'settings/directives/topnav/topnav'
+	'settings/directives/topnav/topnav',
+	'settings/directives/viewSelection/viewSelection'
 ], function (core, logger, angular) {
 
 	'use strict';

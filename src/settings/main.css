@@ -5,6 +5,7 @@
 @import url("directives/sidebar/sidebar.css");
 @import url("directives/thumbnails/thumbnails.css");
 @import url("directives/topnav/topnav.css");
+@import url("directives/viewSelection/viewSelection.css");
 
 body {
 	padding-top: 55px;
@@ -39,3 +40,9 @@ a {
 	text-align: center;
 }
 
+.project-selection-container {
+	box-sizing: border-box;
+	float: left;
+	padding: 0 10px;
+	width: 50%;
+}
