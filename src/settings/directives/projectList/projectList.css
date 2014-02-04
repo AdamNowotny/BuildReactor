@@ -1,0 +1,15 @@
+.project-selection-container .check-all {
+	margin-right: 5px;
+}
+
+.project-selection-container .panel-title {
+	font-weight: bold;
+}
+
+.project-selection-container .panel-body {
+	padding: 10px 15px 0 15px;
+}
+
+.project-name {
+	font-weight: normal;
+}

@@ -1,0 +1,23 @@
+<div class="panel-group" id="projects-accordion" ng-show="groups">
+	<div class="panel panel-default" ng-repeat="groupName in groups">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<input type="checkbox" class="check-all" />
+				<a data-toggle="collapse" href="#project-group-{{ $index }}">
+					<span class="group-name">{{ groupName }}</span>
+					<span class="filter-count" title="Visible / All projects in group"></span>
+				</a>
+			</h4>
+		</div>
+		<div class="panel-collapse collapse" ng-class="{ in: true }" id="project-group-{{ $index }}">
+			<div class="panel-body">
+				<label class="checkbox" ng-repeat="item in projects | filter:{ group: groupName }">
+					<input type="checkbox" ng-checked="item.selected"/>
+					<span class="project-name" ng-class="{ muted: item.isDisabled }">{{ item.name }}</span>
+					<span class="label" ng-show="item.isDisabled">Disabled</span>
+				</label>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="alert alert-info" ng-show="!groups">No projects available</div>

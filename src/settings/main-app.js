@@ -9,6 +9,7 @@ define([
 	'settings/addServiceCtrl',
 	'settings/directives/dynamicForm/dynamicForm',
 	'settings/directives/focusIf/focusIf',
+	'settings/directives/projectList/projectList',
 	'settings/directives/serviceNamePanel/serviceNamePanel',
 	'settings/directives/sidebar/sidebar',
 	'settings/directives/thumbnails/thumbnails',
