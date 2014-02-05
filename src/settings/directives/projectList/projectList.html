@@ -13,8 +13,8 @@
 			<div class="panel-body">
 				<label class="checkbox" ng-repeat="item in projects | filter:{ group: groupName }">
 					<input type="checkbox" ng-checked="item.isSelected"/>
-					<span class="project-name" ng-class="{ muted: item.isDisabled }">{{ item.name }}</span>
-					<span class="label" ng-show="item.isDisabled">Disabled</span>
+					<span class="project-name" ng-class="{ 'text-muted': item.isDisabled }">{{ item.name }}</span>
+					<span class="label label-default" ng-show="item.isDisabled">Disabled</span>
 				</label>
 			</div>
 		</div>
