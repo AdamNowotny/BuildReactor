@@ -33,7 +33,7 @@ define([
 				$scope.$evalAsync(function () {
 					$scope.projects = {
 						all: response.projects.items,
-						selected: response.selected
+						selected: response.projects.selected
 					};
 					$scope.views = {
 						all: response.projects.views || [],
