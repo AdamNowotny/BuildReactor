@@ -1,3 +1,7 @@
+.project-selection-container .panel-group {
+	margin-bottom: 10px;
+}
+
 .project-selection-container .check-all {
 	margin-right: 5px;
 }
