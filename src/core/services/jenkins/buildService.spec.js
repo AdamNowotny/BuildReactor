@@ -3,8 +3,10 @@ define([
 	'core/services/jenkins/jenkinsBuild',
 	'core/services/request',
 	'rx',
-	'text!core/services/jenkins/views.fixture.json'
-], function (BuildService, JenkinsBuild, request, Rx, apiFixture) {
+	'text!core/services/jenkins/availableBuilds.fixture.json',
+	'text!core/services/jenkins/availableBuilds.job.fixture.json',
+	'text!core/services/jenkins/availableBuilds.primaryView.fixture.json'
+], function (BuildService, JenkinsBuild, request, Rx, availableBuildsFixture, jobFixture, viewFixture) {
 
 	'use strict';
 
@@ -18,7 +20,7 @@ define([
 				typeName: 'Jenkins',
 				baseUrl: 'jenkins',
 				icon: 'jenkins/icon.png',
-				url: 'http://example.com/',
+				url: 'http://ci.jenkins-ci.org/',
 				name: 'Jenkins instance',
 				projects: ['BuildReactor']
 			};
@@ -55,27 +57,35 @@ define([
 
 		describe('availableBuilds', function () {
 
-			var apiJson;
+			var availableBuildsJson, jobJson, viewJson;
 			var service;
+			var scheduler;
 
 			beforeEach(function () {
-				apiJson = JSON.parse(apiFixture);
+				scheduler = new Rx.TestScheduler();
+				availableBuildsJson = JSON.parse(availableBuildsFixture);
+				jobJson = JSON.parse(jobFixture);
+				viewJson = JSON.parse(viewFixture);
+				spyOn(request, 'json').andCallFake(function (options) {
+					if (options.url === 'http://ci.jenkins-ci.org/api/json') {
+						return Rx.Observable.returnValue(availableBuildsJson);
+					} else if (options.url.indexOf('iew/') > -1) {
+						return Rx.Observable.returnValue(viewJson);
+					} else if (options.url.indexOf('/job/') > -1) {
+						return Rx.Observable.returnValue(jobJson);
+					}
+					throw 'Unknown url: ' + options.url;
+				});
 				service = new BuildService(settings);
-			});
-
-			it('should return available builds', function () {
-				var builds = Rx.Observable.returnValue(apiJson);
-				spyOn(request, 'json').andReturn(builds);
-
-				expect(service.availableBuilds()).toBe(builds);
 			});
 
 			it('should use credentials', function () {
 				settings.username = 'USERNAME';
 				settings.password = 'PASSWORD';
-				spyOn(request, 'json').andCallFake(function (options) {
+				request.json.andCallFake(function (options) {
 					expect(options.username).toBe(settings.username);
 					expect(options.password).toBe(settings.password);
+					return Rx.Observable.never();
 				});
 
 				service.availableBuilds();
@@ -84,54 +94,45 @@ define([
 			});
 
 			it('should get available builds from correct URL', function () {
-				spyOn(request, 'json').andCallFake(function (options) {
-					expect(options.url).toBe('http://example.com/api/json?depth=1');
+				request.json.andCallFake(function (options) {
+					expect(options.url).toBe('http://ci.jenkins-ci.org/api/json');
+					return Rx.Observable.never();
 				});
 
 				service.availableBuilds();
 
 				expect(request.json).toHaveBeenCalled();
 			});
+
 			
-			it('should increase timeout', function () {
-				spyOn(request, 'json').andCallFake(function (options) {
-					expect(options.timeout).toBe(200000);
-				});
-
-				service.availableBuilds();
-
-				expect(request.json).toHaveBeenCalled();
-			});
-
 			it('should return projects', function () {
-				spyOn(request, 'json').andCallFake(function (options) {
-					var response = options.parser(apiJson);
-					expect(response.items).toBeDefined();
-					expect(response.items.length).toBe(63);
-					expect(response.items[0].id).toBe('config-provider-model');
-					expect(response.items[0].name).toBe('config-provider-model');
-					expect(response.items[0].group).toBe(null);
-					expect(response.items[0].isDisabled).toBe(false);
+				var result = scheduler.startWithCreate(function () {
+					return service.availableBuilds();
 				});
-
-				service.availableBuilds();
-
-				expect(request.json).toHaveBeenCalled();
+		
+				expect(result.messages).toHaveElementsMatchingAt(200, function (builds) {
+					expect(builds.items.length).toBe(68);
+					expect(builds.items[0].id).toBe('jenkins_main_trunk');
+					expect(builds.items[0].name).toBe('jenkins_main_trunk');
+					expect(builds.items[0].group).toBe(null);
+					expect(builds.items[0].isDisabled).toBe(false);
+					return true;
+				});
 			});
 
 			it('should return views', function () {
-				spyOn(request, 'json').andCallFake(function (options) {
-					var response = options.parser(apiJson);
-					expect(response.views).toBeDefined();
-					expect(response.views[0].name).toBeDefined();
-					expect(response.views[0].items).toBeDefined();
-					expect(response.views[0].items[0]).toBeDefined();
-					expect(response.primaryView).toBeDefined();
+				var result = scheduler.startWithCreate(function () {
+					return service.availableBuilds();
 				});
-
-				service.availableBuilds();
-
-				expect(request.json).toHaveBeenCalled();
+		
+				expect(result.messages).toHaveElementsMatchingAt(200, function (builds) {
+					expect(builds.primaryView).toBe('All Failed');
+					expect(builds.views.length).toBe(8);
+					expect(builds.views[0].name).toBe('All Failed');
+					expect(builds.views[0].items.length).toBe(12);
+					expect(builds.views[0].items[0]).toBe('gerrit_master');
+					return true;
+				});
 			});
 
 		});

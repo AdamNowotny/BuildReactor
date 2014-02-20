@@ -1,0 +1,68 @@
+{
+    "description": null,
+    "jobs": [
+        {
+            "name": "gerrit_master",
+            "url": "http://ci.jenkins-ci.org/job/gerrit_master/",
+            "color": "disabled"
+        },
+        {
+            "name": "infra_backend-war-size-tracker",
+            "url": "http://ci.jenkins-ci.org/job/infra_backend-war-size-tracker/",
+            "color": "red"
+        },
+        {
+            "name": "infra_backend_jenkins_ci_cloudbess_com_filler",
+            "url": "http://ci.jenkins-ci.org/job/infra_backend_jenkins_ci_cloudbess_com_filler/",
+            "color": "red_anime"
+        },
+        {
+            "name": "infra_commit_history_generation",
+            "url": "http://ci.jenkins-ci.org/job/infra_commit_history_generation/",
+            "color": "red"
+        },
+        {
+            "name": "infra_extension-indexer",
+            "url": "http://ci.jenkins-ci.org/job/infra_extension-indexer/",
+            "color": "red"
+        },
+        {
+            "name": "infra_github_repository_list",
+            "url": "http://ci.jenkins-ci.org/job/infra_github_repository_list/",
+            "color": "red"
+        },
+        {
+            "name": "infra_plugin_changes_report",
+            "url": "http://ci.jenkins-ci.org/job/infra_plugin_changes_report/",
+            "color": "red"
+        },
+        {
+            "name": "infra_plugins_svn_to_git",
+            "url": "http://ci.jenkins-ci.org/job/infra_plugins_svn_to_git/",
+            "color": "disabled"
+        },
+        {
+            "name": "infra_svnsync",
+            "url": "http://ci.jenkins-ci.org/job/infra_svnsync/",
+            "color": "disabled"
+        },
+        {
+            "name": "infra_sync_maven-hpi-plugin_www",
+            "url": "http://ci.jenkins-ci.org/job/infra_sync_maven-hpi-plugin_www/",
+            "color": "red"
+        },
+        {
+            "name": "jenkins_ui-changes_branch",
+            "url": "http://ci.jenkins-ci.org/job/jenkins_ui-changes_branch/",
+            "color": "red"
+        },
+        {
+            "name": "libs_svnkit",
+            "url": "http://ci.jenkins-ci.org/job/libs_svnkit/",
+            "color": "red"
+        }
+    ],
+    "name": "All Failed",
+    "property": [],
+    "url": "http://ci.jenkins-ci.org/"
+}

@@ -3,8 +3,9 @@ define([
 	'core/services/request',
 	'core/services/jenkins/jenkinsBuild',
 	'mout/object/mixIn',
-	'common/joinUrl'
-], function (BuildServiceBase, request, JenkinsBuild, mixIn, joinUrl) {
+	'common/joinUrl',
+	'rx'
+], function (BuildServiceBase, request, JenkinsBuild, mixIn, joinUrl, Rx) {
 
 	'use strict';
 
@@ -30,35 +31,73 @@ define([
 	};
 
 	var availableBuilds = function () {
+		var self = this;
 		return request.json({
-			url: joinUrl(this.settings.url, 'api/json?depth=1'),
-			username: this.settings.username,
-			password: this.settings.password,
-			parser: parseAvailableBuilds,
-			timeout: 200000
+			url: joinUrl(this.settings.url, 'api/json'),
+			username: self.settings.username,
+			password: self.settings.password
+		}).selectMany(function (response) {
+			return Rx.Observable.zip(
+				allJobDetails(response.jobs, self.settings),
+				allViewDetails(response.views, response.primaryView.name, self.settings),
+				function (jobs, views) {
+					return {
+						items: jobs,
+						primaryView: response.primaryView.name,
+						views: views
+					};
+				}
+			);
 		});
 	};
 
-	function parseAvailableBuilds(apiJson) {
-		return {
-			items: apiJson.jobs.map(function (job, index) {
-				return {
-					id: job.name,
-					name: job.displayName,
-					group: null,
-					isDisabled: !job.buildable
-				};
-			}),
-			primaryView: apiJson.primaryView.name,
-			views: apiJson.views.map(function (view, index) {
-				return {
-					name: view.name,
-					items: view.jobs.map(function (job, index) {
-						return job.name;
-					})
-				};
-			})
-		};
+	function allJobDetails(jobs, settings) {
+		return Rx.Observable.zipArray(jobs.map(function (job) {
+			return jobDetails(job, settings);
+		}));
+	}
+
+	function allViewDetails(views, primaryView, settings) {
+		var updatedViews = views.map(function (view) {
+			return {
+				name: view.name,
+				url: (view.name === primaryView) ?
+					joinUrl(view.url, 'primaryView/') : view.url
+			};
+		});
+		return Rx.Observable.zipArray(updatedViews.map(function (view) {
+			return viewDetails(view, settings);
+		}));
+	}
+
+	function jobDetails(job, settings) {
+		return request.json({
+			url: joinUrl(job.url, 'api/json'),
+			username: settings.username,
+			password: settings.password,
+		}).select(function (jobResponse) {
+			return {
+				id: jobResponse.name,
+				name: jobResponse.displayName,
+				group: null,
+				isDisabled: !jobResponse.buildable
+			};
+		});
+	}
+
+	function viewDetails(view, settings) {
+		return request.json({
+			url: joinUrl(view.url, 'api/json'),
+			username: settings.username,
+			password: settings.password,
+		}).select(function (viewResponse) {
+			return {
+				name: viewResponse.name,
+				items: viewResponse.jobs.map(function (job) {
+					return job.name;
+				})
+			};
+		});
 	}
 
 	return JenkinsBuildService;
