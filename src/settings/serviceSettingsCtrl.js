@@ -22,6 +22,7 @@ define([
 			};
 			$scope.projectsError = null;
 			$scope.isLoading = false;
+			$scope.isChanged = false;
 		};
 
 		reset();
@@ -41,6 +42,7 @@ define([
 					};
 					$scope.projectsError = response.error;
 					$scope.isLoading = false;
+					$scope.isChanged = true;
 				});
 			});
 		};
@@ -70,7 +72,8 @@ define([
 		});
 
 		$scope.save = function () {
-			$scope.$emit('dynamicForm.saveClicked');
+			// TODO: save settings
+			$scope.isChanged = false;
 		};
 
 		$scope.$on('dynamicForm.changed', function (event, updatedSettings) {

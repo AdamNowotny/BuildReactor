@@ -4,7 +4,7 @@
 		<button type="button" class="btn btn-primary" ng-click="show()">
 			<i class="fa fa-refresh" ng-class="{ 'fa-spin': isLoading }"></i> Show
 		</button>
-		<button type="button" class="btn btn-success" ng-click="save()" disabled>
+		<button type="button" class="btn btn-success" ng-click="save()" ng-disabled="!isChanged">
 			<i class="fa fa-save"></i> Save
 		</button>
 	</div>
