@@ -24,6 +24,7 @@ define([
 			spyOn(serviceConfiguration, 'disableService');
 			spyOn(serviceConfiguration, 'removeService');
 			spyOn(serviceConfiguration, 'renameService');
+			spyOn(serviceConfiguration, 'updateService');
 			spyOn(serviceConfiguration, 'getAll');
 			spyOn(serviceConfiguration, 'setAll');
 			spyOn(serviceController, 'getAllTypes');
@@ -98,6 +99,13 @@ define([
 				}, null, null);
 
 				expect(serviceConfiguration.renameService).toHaveBeenCalledWith('service', 'new service');
+			});
+
+			it('should handle updateService', function () {
+				var settings = { name: 'service', url: 'http://example.com/' };
+				messageHandler({ name: 'updateService', settings: settings }, null, null);
+
+				expect(serviceConfiguration.updateService).toHaveBeenCalledWith(settings);
 			});
 
 		});

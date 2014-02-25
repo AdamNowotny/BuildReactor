@@ -58,6 +58,14 @@ define([
 		changes.onNext(newConfigs);
 	};
 
+	var updateService = function (settings) {
+		var newConfigs = configurationStore.getAll().map(function (config) {
+			return (config.name === settings.name) ? settings : config;
+		});
+		configurationStore.store(newConfigs);
+		changes.onNext(newConfigs);
+	};
+
 	return {
 		getAll: getAll,
 		setAll: setAll,
@@ -65,6 +73,7 @@ define([
 		disableService: disableService,
 		removeService: removeService,
 		renameService: renameService,
+		updateService: updateService,
 		changes: changes
 	};
 });

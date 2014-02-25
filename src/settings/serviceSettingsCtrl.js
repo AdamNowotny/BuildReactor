@@ -25,8 +25,6 @@ define([
 			$scope.isChanged = false;
 		};
 
-		reset();
-
 		$scope.show = function () {
 			reset();
 			$scope.isLoading = true;
@@ -72,12 +70,15 @@ define([
 		});
 
 		$scope.save = function () {
-			// TODO: save settings
+			core.updateService(settings);
 			$scope.isChanged = false;
 		};
 
 		$scope.$on('dynamicForm.changed', function (event, updatedSettings) {
 			settings = updatedSettings;
 		});
+
+		reset();
+		$scope.selectedDraft = angular.copy($scope.selected);
 	});
 });

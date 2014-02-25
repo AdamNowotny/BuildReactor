@@ -116,5 +116,23 @@ define([
 			expect(configurationStore.store).toHaveBeenCalledWith(result);
 			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
+
+		it('should update service', function () {
+			var allConfig = [{ name: 'service', url: 'http://example1.com' }];
+			configurationStore.getAll.andReturn(allConfig);
+			var newSettings = { name: 'service', url: 'http://example2.com' };
+
+			scheduler.scheduleAbsolute(300, function () {
+				serviceConfiguration.updateService(newSettings);
+			});
+			var changes = scheduler.startWithCreate(function () {
+				return serviceConfiguration.changes;
+			});
+
+			var result = [newSettings];
+			expect(configurationStore.store).toHaveBeenCalledWith(result);
+			expect(changes.messages).toHaveElements(onNext(300, result));
+		});
+
 	});
 });

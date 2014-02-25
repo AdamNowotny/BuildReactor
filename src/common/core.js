@@ -63,6 +63,12 @@ define([
 		chromeApi.sendMessage(message);
 	};
 
+	var updateService = function (settings) {
+		var message = { name: "updateService", settings: settings };
+		messages.onNext(message);
+		chromeApi.sendMessage(message);
+	};
+
 	return {
 		init: init,
 		availableServices: availableServices,
@@ -74,6 +80,7 @@ define([
 		disableService: disableService,
 		removeService: removeService,
 		renameService: renameService,
+		updateService: updateService,
 		// for logging
 		messages: messages
 	};
