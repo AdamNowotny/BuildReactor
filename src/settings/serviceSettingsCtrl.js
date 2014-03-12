@@ -78,6 +78,15 @@ define([
 			settings = updatedSettings;
 		});
 
+		$scope.$on('projectList.change', function (event, updatedProjects) {
+			$scope.projects.selected = updatedProjects.filter(function (project) {
+				return project.isSelected;
+			}).map(function (selectedProject) {
+				return selectedProject.id;
+			});
+			console.log('selected', $scope.projects.selected);
+		});
+
 		reset();
 		$scope.selectedDraft = angular.copy($scope.selected);
 	});

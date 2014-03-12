@@ -1,7 +1,8 @@
 define([
 	'settings/app',
-	'rx'
-], function (app, Rx) {
+	'rx',
+	'angular'
+], function (app, Rx, angular) {
 	'use strict';
 
 	var emptyGroupName = 'Projects';
@@ -27,14 +28,20 @@ define([
 			controller: function ($scope, $element, $attrs, $transclude) {
 				$scope.groups = null;
 				$scope.selected = [];
+
 				$scope.$watch('projects', function (projects) {
+					$scope.projectList = angular.copy($scope.projects);
 					$scope.selected = $scope.selected || [];
-					projects.forEach(function (project) {
+					$scope.projectList.forEach(function (project) {
 						project.group = project.group || emptyGroupName;
 						project.isSelected = $scope.selected.indexOf(project.id) > -1;
 					});
-					$scope.groups = getGroupsFromProjects(projects);
+					$scope.groups = getGroupsFromProjects($scope.projectList);
 				});
+
+				$scope.$watch('projectList', function (projects) {
+					$scope.$emit('projectList.change', angular.copy(projects || []));
+				}, true);
 			}
 		};
 	});
