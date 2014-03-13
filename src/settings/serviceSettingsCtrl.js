@@ -57,6 +57,7 @@ define([
 		});
 
 		$scope.save = function () {
+			settings.projects = $scope.projects.selected;
 			core.updateService(settings);
 			$scope.isChanged = false;
 		};
@@ -71,8 +72,6 @@ define([
 			}).map(function (selectedProject) {
 				return selectedProject.id;
 			});
-
-			console.log('selected', $scope.projects.selected);
 		});
 
 		reset();
