@@ -13,16 +13,23 @@ define([
 		var reset = function () {
 			$scope.projects = {
 				all: [],
-				selected: null,
-				allInView: []
+				selected: null
 			};
 			$scope.views = {
 				all: [],
-				selected: null
+				selected: null,
+				selectedItems: null
 			};
 			$scope.projectsError = null;
 			$scope.isLoading = false;
 			$scope.isChanged = false;
+		};
+
+		var getItemsForView = function (views, viewName) {
+			var view = views.filter(function (view) {
+				return view.name === viewName;
+			});
+			return view.length ? view[0].items : null;
 		};
 
 		$scope.show = function () {
@@ -46,27 +53,7 @@ define([
 		};
 
 		$scope.$watch('views.selected', function (viewName) {
-			var getProjectById = function (id) {
-				return Rx.Observable.fromArray($scope.projects.all)
-					.where(function (item) {
-						return item.id === id;
-					});
-			};
-
-			if ($scope.views.all.length) {
-				Rx.Observable.fromArray($scope.views.all)
-					.where(function (view) {
-						return view.name === viewName;
-					}).selectMany(function (view) {
-						return Rx.Observable.fromArray(view.items);
-					}).selectMany(getProjectById)
-					.toArray()
-					.subscribe(function (projects) {
-						$scope.projects.allInView = projects;
-					});
-			} else {
-				$scope.projects.allInView = $scope.projects.all;
-			}
+			$scope.views.selectedItems = getItemsForView($scope.views.all, viewName);
 		});
 
 		$scope.save = function () {
@@ -84,6 +71,7 @@ define([
 			}).map(function (selectedProject) {
 				return selectedProject.id;
 			});
+
 			console.log('selected', $scope.projects.selected);
 		});
 

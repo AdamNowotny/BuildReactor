@@ -8,7 +8,9 @@ define([
 	var emptyGroupName = 'Projects';
 
 	var getGroupsFromProjects = function (projects) {
-		return projects.map(function (item) {
+		return projects.filter(function (project) {
+				return project.isVisible;
+			}).map(function (item) {
 				return item.group;
 			}).reduce(function (agg, group) {
 				if (agg.indexOf(group) < 0) {
@@ -22,7 +24,8 @@ define([
 		return {
 			scope: {
 				projects: '=',
-				selected: '='
+				selected: '=',
+				viewItems: '='
 			},
 			templateUrl: 'src/settings/directives/projectList/projectList.html',
 			controller: function ($scope, $element, $attrs, $transclude) {
@@ -35,8 +38,15 @@ define([
 					$scope.projectList.forEach(function (project) {
 						project.group = project.group || emptyGroupName;
 						project.isSelected = $scope.selected.indexOf(project.id) > -1;
+						project.isVisible = !$scope.viewItems || $scope.viewItems.indexOf(project.id) > -1;
 					});
 					$scope.groups = getGroupsFromProjects($scope.projectList);
+				});
+
+				$scope.$watch('viewItems', function (viewItems) {
+					$scope.projectList.forEach(function (project) {
+						project.isVisible = !viewItems || viewItems.indexOf(project.id) > -1;
+					});
 				});
 
 				$scope.$watch('projectList', function (projects) {
