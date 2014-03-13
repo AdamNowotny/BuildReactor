@@ -75,11 +75,16 @@ define([
 
 		it('should send availableProjects message', function () {
 			var settings = [];
-			var callback = function () {};
-
+			var callback = jasmine.createSpy();
+			chromeApi.sendMessage.andCallFake(function (message, callback) {
+				callback('result');
+			});
+			
 			core.availableProjects(settings, callback);
 
-			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "availableProjects", serviceSettings: settings}, callback);
+			expect(chromeApi.sendMessage).toHaveBeenCalled();
+			expect(chromeApi.sendMessage.mostRecentCall.args[0]).toEqual({name: "availableProjects", serviceSettings: settings});
+			expect(callback).toHaveBeenCalled();
 		});
 
 		it('should send updateSettings message', function () {

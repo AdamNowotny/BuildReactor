@@ -30,7 +30,10 @@ define([
 	var availableProjects = function (settings, callback) {
 		var message = { name: "availableProjects", serviceSettings: settings };
 		messages.onNext(message);
-		chromeApi.sendMessage(message, callback);
+		chromeApi.sendMessage(message, function (response) {
+			messages.onNext({ name: "availableProjects", response: response, serviceSettings: settings });
+			callback(response);
+		});
 	};
 
 	var updateSettings = function (settingsList) {
