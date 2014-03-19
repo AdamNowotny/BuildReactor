@@ -3,7 +3,7 @@ define([
 ], function (app) {
 	'use strict';
 
-	app.directive('focusIf', function ($timeout) {
+	app.directive('focusIf', function () {
 		return {
 			restrict: 'A',
 			link: function (scope, element, attrs) {

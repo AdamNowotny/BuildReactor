@@ -3,7 +3,7 @@ define([
 ], function (app) {
 	'use strict';
 
-	app.directive('thumbnails', function ($timeout) {
+	app.directive('thumbnails', function () {
 		return {
 			scope: {
 				serviceTypes: '=serviceTypes'
