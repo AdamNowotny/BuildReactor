@@ -1,5 +1,6 @@
 @import url("../../bower_components/angular/angular-csp.css");
 @import url("../css/angular-ui.css");
+@import url("directives/alert/alert.css");
 @import url("directives/dynamicForm/dynamicForm.css");
 @import url("directives/projectList/projectList.css");
 @import url("directives/serviceNamePanel/serviceNamePanel.css");

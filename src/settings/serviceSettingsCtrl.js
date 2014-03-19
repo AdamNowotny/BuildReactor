@@ -59,6 +59,7 @@ define([
 		$scope.save = function () {
 			settings.projects = $scope.projects.selected;
 			core.updateService(settings);
+			$scope.saving = true;
 			$scope.isChanged = false;
 		};
 
