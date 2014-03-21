@@ -47,7 +47,6 @@ define([
 					};
 					$scope.projectsError = response.error;
 					$scope.isLoading = false;
-					$scope.isChanged = true;
 				});
 			});
 		};
@@ -57,7 +56,6 @@ define([
 		});
 
 		$scope.save = function () {
-			settings.projects = $scope.projects.selected;
 			core.updateService(settings);
 			$scope.saving = true;
 			$scope.isChanged = false;
@@ -67,12 +65,10 @@ define([
 			settings = updatedSettings;
 		});
 
-		$scope.$on('projectList.change', function (event, updatedProjects) {
-			$scope.projects.selected = updatedProjects.filter(function (project) {
-				return project.isSelected;
-			}).map(function (selectedProject) {
-				return selectedProject.id;
-			});
+		$scope.$on('projectList.change', function (event, selectedProjects) {
+			settings.projects = selectedProjects;
+			$scope.isChanged = $scope.projects.selected !== null &&
+				!angular.equals($scope.projects.selected, selectedProjects);
 		});
 
 		reset();

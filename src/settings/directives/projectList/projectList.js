@@ -50,7 +50,12 @@ define([
 				});
 
 				$scope.$watch('projectList', function (projects) {
-					$scope.$emit('projectList.change', angular.copy(projects || []));
+					var selectedProjects = projects.filter(function (project) {
+						return project.isSelected;
+					}).map(function (selectedProject) {
+						return selectedProject.id;
+					});
+					$scope.$emit('projectList.change', selectedProjects);
 				}, true);
 			}
 		};
