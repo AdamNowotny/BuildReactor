@@ -59,6 +59,7 @@ define([
 			core.updateService(settings);
 			$scope.saving = true;
 			$scope.isChanged = false;
+			$scope.projects.selected = settings.projects;
 		};
 
 		$scope.$on('dynamicForm.changed', function (event, updatedSettings) {
@@ -66,8 +67,9 @@ define([
 		});
 
 		$scope.$on('projectList.change', function (event, selectedProjects) {
+			console.log('selectedProjects', selectedProjects, $scope.projects.selected);
 			settings.projects = selectedProjects;
-			$scope.isChanged = $scope.projects.selected !== null &&
+			$scope.isChanged = $scope.projects.selected &&
 				!angular.equals($scope.projects.selected, selectedProjects);
 		});
 
