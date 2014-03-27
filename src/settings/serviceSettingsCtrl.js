@@ -67,13 +67,17 @@ define([
 		});
 
 		$scope.$on('projectList.change', function (event, selectedProjects) {
-			console.log('selectedProjects', selectedProjects, $scope.projects.selected);
-			settings.projects = selectedProjects;
+			if (settings) {
+				settings.projects = selectedProjects;
+			}
 			$scope.isChanged = $scope.projects.selected &&
 				!angular.equals($scope.projects.selected, selectedProjects);
 		});
 
+		$scope.$watch('selected', function (selectedService) {
+			$scope.selectedDraft = angular.copy($scope.selected);
+		});
+		
 		reset();
-		$scope.selectedDraft = angular.copy($scope.selected);
 	});
 });

@@ -5,11 +5,12 @@ define([
 ], function (app, core) {
 	'use strict';
 
-	app.controller('SettingsCtrl', function ($scope, $routeParams) {
+	app.controller('SettingsCtrl', function ($scope, $routeParams, $rootScope) {
 
 		core.configurations.subscribe(function (configs) {
 			$scope.$evalAsync(function () {
 				$scope.services = configs;
+				updateSelected();
 			});
 		});
 
