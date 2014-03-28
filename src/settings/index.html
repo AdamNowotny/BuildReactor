@@ -9,7 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="src/settings/main.css" media="screen" />
 	</head>
 	<body ng-controller="SettingsCtrl">
-		<section topnav></section>
+		<section topnav service="selected"></section>
 		<section sidebar services="services" selected="selected.name"></section>
 		<section ng-view class="content-container"></section>
 		<!-- scripts -->

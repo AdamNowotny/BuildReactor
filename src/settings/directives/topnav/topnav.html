@@ -11,6 +11,18 @@
 		</a>
 	</div>
 	<div class="collapse navbar-collapse" id="navbar-collapse">
+		<ul class="nav navbar-nav" ng-show="isActive" ng-cloak>
+			<li>
+				<a id="service-remove-button" tabindex="-1" ng-click="remove()">
+					<i class="fa fa-trash-o"></i> Remove
+				</a>
+			</li>
+			<li>
+				<a id="service-rename-action" tabindex="-1" ng-click="rename()">
+					<i class="fa fa-pencil"></i> Rename
+				</a>
+			</li>
+		</ul>
 		<ul class="nav navbar-nav navbar-right">
 			<li class="dropdown help-menu">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">

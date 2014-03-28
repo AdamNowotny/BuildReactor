@@ -11,3 +11,7 @@
 	.navbar {
 		padding-right: 15px;
 	}
+
+
+.modal-header { background-color: #333333; }
+.modal-header span, .modal-header h4 { color: #ffffff; }
