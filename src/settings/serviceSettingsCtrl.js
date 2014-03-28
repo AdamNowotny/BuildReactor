@@ -32,21 +32,34 @@ define([
 			return view.length ? view[0].items : null;
 		};
 
+		var showError = function (errorResponse) {
+			reset();
+			$scope.projectsError = errorResponse;
+		};
+		
+		var showProjects = function (projects) {
+			$scope.projectsError = null;
+			$scope.projects = {
+				all: projects.items,
+				selected: projects.selected
+			};
+			$scope.views = {
+				all: projects.views || [],
+				selected: projects.primaryView
+			};
+		};
+		
 		$scope.show = function () {
 			reset();
 			$scope.isLoading = true;
 			core.availableProjects(settings, function (response) {
 				$scope.$evalAsync(function () {
-					$scope.projects = {
-						all: response.projects.items,
-						selected: response.projects.selected
-					};
-					$scope.views = {
-						all: response.projects.views || [],
-						selected: response.projects.primaryView
-					};
-					$scope.projectsError = response.error;
 					$scope.isLoading = false;
+					if (response.error) {
+						showError(response.error);
+					} else {
+						showProjects(response.projects);
+					}
 				});
 			});
 		};
