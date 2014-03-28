@@ -1,3 +1,7 @@
+.navbar {
+	padding-right: 15px;
+}
+
 .navbar-brand {
 	text-align: center;
 	width: 240px;
@@ -8,10 +12,9 @@
 		width: 20px;
 	}
 
-	.navbar {
-		padding-right: 15px;
+	.navbar .on-off-switch {
+		margin-top: 10px;
 	}
-
 
 .modal-header { background-color: #333333; }
 .modal-header span, .modal-header h4 { color: #ffffff; }

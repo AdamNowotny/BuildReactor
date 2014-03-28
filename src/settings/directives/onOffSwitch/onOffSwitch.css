@@ -1,0 +1,129 @@
+/*************************************
+* AngularJS + CSS3 Radio Buttons v.01
+* Author: iamtyce.com
+* Source: http://bit.ly/Nh4U6g
+*************************************/
+
+/*body {
+	background: white;
+	padding: 2em;
+	font: 16px / 20px "Helvetica Neue", Helvetica;
+}
+
+p {
+	padding: 1em 0 0;
+	clear: both;
+	text-transform: capitalize;
+	font-weight: 200;
+	color: #999;
+}
+*/
+.toggle-bg {
+	background: white;
+	border-radius: 2em;
+	border: 0.12em solid #e6e6e6;
+	display: block;
+	/* ...So that we can set a height and width */
+	float: left;
+	/* ...So that it doesn't take up the full width of the page */
+	height: 1.9em;
+	/* You can change this later if you want */
+	position: relative;
+	/* Required to allow the switch to move around */
+	width: 3.2em;
+	/* This can be changed later as well */
+	-moz-transition-duration: 0.2s;
+	-o-transition-duration: 0.2s;
+	-webkit-transition-duration: 0.2s;
+	transition-duration: 0.2s;
+	position: relative;
+}
+.toggle-bg:hover {
+	border-color: #d9d9d9;
+}
+.toggle-bg.on {
+	background: #00dc61;
+	border-color: #00c356;
+}
+.toggle-bg input {
+	margin: 0;
+	padding: 0;
+	width: 4.8em;
+	height: 100%;
+	filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+	opacity: 0;
+	position: absolute;
+	left: 0;
+	top: 0;
+	cursor: pointer;
+	z-index: 2;
+	/* We want the input to be over the span.switch, which we'll give a z-index of 1 */
+	/*IE*/
+	zoom: 1;
+	filter: alpha(opacity=0);
+	/* initial toggle position */
+	/* final relative toggle position */
+}
+.toggle-bg input:checked ~ .switch {
+	left: 0;
+}
+.toggle-bg input ~ :checked ~ .switch {
+	left: 1.18em;
+}
+.toggle-bg input:checked {
+	z-index: 0;
+}
+
+.switch {
+	background: white;
+	border-radius: 2em;
+	border: 0.1em solid #d9d9d9;
+	display: block;
+	float: left;
+	height: 1.8em;
+	width: 1.8em;
+	left: -.1em;
+	position: relative;
+	-moz-transition-duration: 0.2s;
+	-o-transition-duration: 0.2s;
+	-webkit-transition-duration: 0.2s;
+	transition-duration: 0.2s;
+	z-index: 1;
+	/* Remember, it must be below the invisible inputs */
+}
+.switch.on {
+	box-shadow: -0.2em 0.2em 0.5em rgba(0, 0, 0, 0.06), 0.4em 0.4em 1.5em rgba(0, 0, 0, 0.08);
+}
+.switch.off {
+	box-shadow: 0.2em 0.2em 0.5em rgba(0, 0, 0, 0.06), -0.4em 0.4em 1.5em rgba(0, 0, 0, 0.08);
+}
+
+.toggle-alternate {
+	clear: both;
+	width: 4.7em;
+}
+.toggle-alternate input {
+	width: 6.24em;
+}
+.toggle-alternate input ~ :checked ~ .switch {
+	left: 2.75em;
+}
+
+.toggle-alternate label {
+	font-weight: 300;
+	font-size: .9em;
+	text-transform: uppercase;
+	position: absolute;
+	top: 0.40em;
+}
+
+.toggle-bg label.on {
+	left: .75em;
+	color: white;
+	text-shadow: 0 0.1em 0 #00dc61;
+}
+
+.toggle-bg label.off {
+	right: .55em;
+	color: #aaa;
+}

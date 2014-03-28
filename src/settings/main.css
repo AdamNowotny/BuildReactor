@@ -5,6 +5,7 @@
 @import url("directives/projectList/projectList.css");
 @import url("directives/serviceNamePanel/serviceNamePanel.css");
 @import url("directives/sidebar/sidebar.css");
+@import url("directives/onOffSwitch/onOffSwitch.css");
 @import url("directives/thumbnails/thumbnails.css");
 @import url("directives/topnav/topnav.css");
 @import url("directives/viewSelection/viewSelection.css");

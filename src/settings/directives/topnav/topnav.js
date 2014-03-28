@@ -13,7 +13,6 @@ define([
 			controller: function ($scope, $element, $attrs, $transclude) {
 
 				$scope.$watch('service', function (selectedService) {
-					console.log('new service for topnav', selectedService);
 					if (selectedService) {
 						$scope.isActive = true;
 						$scope.isEnabled = !selectedService.disabled;
@@ -23,6 +22,9 @@ define([
 				});
 			
 				$scope.$watch('isEnabled', function (isEnabled) {
+					if (!$scope.service) {
+						return;
+					}
 					if (isEnabled) {
 						core.enableService($scope.service.name);
 					} else {

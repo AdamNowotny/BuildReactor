@@ -13,6 +13,7 @@ define([
 	'settings/directives/projectList/projectList',
 	'settings/directives/serviceNamePanel/serviceNamePanel',
 	'settings/directives/sidebar/sidebar',
+	'settings/directives/onOffSwitch/onOffSwitch',
 	'settings/directives/thumbnails/thumbnails',
 	'settings/directives/topnav/topnav',
 	'settings/directives/viewSelection/viewSelection'
