@@ -5,9 +5,9 @@
 *************************************/
 
 .toggle-bg {
-	background: white;
+	background: #d9534f;
 	border-radius: 2em;
-	border: 0.12em solid #e6e6e6;
+	border: 0.12em solid #d43f3a;
 	display: block;
 	/* ...So that we can set a height and width */
 	float: left;
@@ -28,8 +28,8 @@
 	border-color: #d9d9d9;
 }
 .toggle-bg.on {
-	background: #00dc61;
-	border-color: #00c356;
+	background: #5cb85c;
+	border-color: #4cae4c;
 }
 .toggle-bg input {
 	margin: 0;
@@ -105,5 +105,6 @@
 
 .toggle-bg label.off {
 	right: .55em;
-	color: #aaa;
+	color: white;
+	font-weight: bold;
 }
