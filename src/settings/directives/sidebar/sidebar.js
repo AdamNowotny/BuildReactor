@@ -6,9 +6,9 @@ define([
 	app.directive('sidebar', function () {
 		return {
 			scope: {
-				services: '=services',
-				selected: '=selected',
-				isNew: '=new'
+				services: '=',
+				selected: '=',
+				isNew: '='
 			},
 			templateUrl: 'src/settings/directives/sidebar/sidebar.html'
 		};
