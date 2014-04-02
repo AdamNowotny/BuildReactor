@@ -6,7 +6,7 @@ define([
 	app.directive('serviceNamePanel', function () {
 		return {
 			scope: {
-				active: '=active'
+				active: '&'
 			},
 			templateUrl: 'src/settings/directives/serviceNamePanel/serviceNamePanel.html',
 			controller: function ($scope, $element, $attrs, $transclude) {

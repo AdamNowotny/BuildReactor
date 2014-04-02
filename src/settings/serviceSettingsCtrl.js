@@ -6,7 +6,7 @@ define([
 ], function (app, core, angular, Rx) {
 	'use strict';
 
-	app.controller('ServiceSettingsCtrl', function ($scope, $routeParams) {
+	app.controller('ServiceSettingsCtrl', function ($scope) {
 
 		var settings;
 

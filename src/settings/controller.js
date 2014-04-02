@@ -1,11 +1,10 @@
 define([
 	'settings/app',
-	'common/core',
-	'rx'
+	'common/core'
 ], function (app, core) {
 	'use strict';
 
-	app.controller('SettingsCtrl', function ($scope, $routeParams, $rootScope) {
+	app.controller('SettingsCtrl', function ($scope, $route) {
 
 		core.configurations.subscribe(function (configs) {
 			$scope.$evalAsync(function () {
@@ -14,17 +13,38 @@ define([
 			});
 		});
 
+		core.availableServices(function (types) {
+			$scope.serviceTypes = types;
+			updateSelected();
+		});
+
 		$scope.$on('$routeChangeSuccess', function (event, routeData) {
-			$scope.serviceId = routeData.params.service;
+			$scope.serviceId = routeData.params.serviceName || null;
+			$scope.serviceTypeId = routeData.params.serviceTypeId || null;
+			$scope.isNew = $route.current.isNew;
 			updateSelected();
 		});
 
 		var updateSelected = function () {
+			$scope.isNew ? updateSelectedForNew() : updateSelectedForService();
+		};
+
+		var updateSelectedForService = function () {
 			if ($scope.services) {
-				var selected = $scope.services.filter(function (service) {
+				$scope.selected = $scope.services.filter(function (service) {
 					return service.name === $scope.serviceId;
-				});
-				$scope.selected = selected ? selected[0] : null;
+				})[0];
+			} else {
+				$scope.selected = null;
+			}
+		};
+
+		var updateSelectedForNew = function () {
+			if ($scope.serviceId) {
+				$scope.selected = $scope.serviceTypes.filter(function (type) {
+					return type.baseUrl === $scope.serviceTypeId;
+				})[0];
+				$scope.selected.name = $scope.serviceId;
 			} else {
 				$scope.selected = null;
 			}

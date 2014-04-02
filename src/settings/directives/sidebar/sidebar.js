@@ -7,7 +7,8 @@ define([
 		return {
 			scope: {
 				services: '=services',
-				selected: '=selected'
+				selected: '=selected',
+				isNew: '=new'
 			},
 			templateUrl: 'src/settings/directives/sidebar/sidebar.html'
 		};

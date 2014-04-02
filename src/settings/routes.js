@@ -5,13 +5,21 @@ define([
 
 	return app.config(function ($routeProvider) {
 		$routeProvider
+		.when('/service/:serviceName', {
+			templateUrl: 'src/settings/serviceSettingsView.html',
+			controller: 'ServiceSettingsCtrl',
+			isNew: false
+		})
 		.when('/new', {
 			templateUrl: 'src/settings/addServiceView.html',
-			controller: 'AddServiceCtrl'
+			controller: 'AddServiceCtrl',
+			reloadOnSearch: false,
+			isNew: true
 		})
-		.when('/service/:service', {
+		.when('/new/:serviceTypeId/:serviceName', {
 			templateUrl: 'src/settings/serviceSettingsView.html',
-			controller: 'ServiceSettingsCtrl'
+			controller: 'ServiceSettingsCtrl',
+			isNew: true
 		})
 		.otherwise({
 			redirectTo: '/new'

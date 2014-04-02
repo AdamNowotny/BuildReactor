@@ -1,23 +1,9 @@
 /*************************************
-* AngularJS + CSS3 Radio Buttons v.01
+* AngularJS + CSS3 Radio Buttons v.01 (modified)
 * Author: iamtyce.com
 * Source: http://bit.ly/Nh4U6g
 *************************************/
 
-/*body {
-	background: white;
-	padding: 2em;
-	font: 16px / 20px "Helvetica Neue", Helvetica;
-}
-
-p {
-	padding: 1em 0 0;
-	clear: both;
-	text-transform: capitalize;
-	font-weight: 200;
-	color: #999;
-}
-*/
 .toggle-bg {
 	background: white;
 	border-radius: 2em;
@@ -90,12 +76,6 @@ p {
 	transition-duration: 0.2s;
 	z-index: 1;
 	/* Remember, it must be below the invisible inputs */
-}
-.switch.on {
-	box-shadow: -0.2em 0.2em 0.5em rgba(0, 0, 0, 0.06), 0.4em 0.4em 1.5em rgba(0, 0, 0, 0.08);
-}
-.switch.off {
-	box-shadow: 0.2em 0.2em 0.5em rgba(0, 0, 0, 0.06), -0.4em 0.4em 1.5em rgba(0, 0, 0, 0.08);
 }
 
 .toggle-alternate {

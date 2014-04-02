@@ -3,17 +3,23 @@
 		<ul class="service-list nav nav-pills nav-stacked">
 			<li
 				ng-repeat="service in services"
-				ng-class="{ muted: service.disabled, active: service.name === selected }">
-				<a ng-href="src/settings/index.html#/service/{{ service.name }}">
-					<img class="pill-icon" ng-src="src/core/services/{{ service.icon }}">
+				ng-class="{ muted: service.disabled, active: service.name === selected.name }">
+				<a ng-href="/src/settings/index.html#/service/{{ service.name }}">
+					<img class="pill-icon" ng-src="/src/core/services/{{ service.icon }}">
 					<span class="pill-name">{{ service.name }}</span>
 				</a>
 			</li>	
 		</ul>
 		<hr class="service-list-separator" ng-show="services" />
 		<ul class="actions nav nav-pills nav-stacked">
+			<li ng-class="{ active: isNew, muted: selected.disabled }" ng-show="isNew && selected">
+				<a href="#">
+					<img class="pill-icon" ng-src="{{ selected.icon && '/src/core/services/' + selected.icon || '' }}">
+					<span class="pill-name">{{ selected.name }}</span>
+				</a>
+			</li>
 			<li id="service-add-pill" ng-class="{ active: !selected }">
-				<a id="service-add-button" ng-href="src/settings/index.html#/new">
+				<a id="service-add-button" ng-href="/src/settings/index.html#/new">
 					<i class="pill-icon fa fa-plus-circle fa-3x"></i>
 					<span class="pill-name">Add</span>
 				</a>

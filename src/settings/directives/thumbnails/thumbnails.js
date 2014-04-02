@@ -6,11 +6,12 @@ define([
 	app.directive('thumbnails', function () {
 		return {
 			scope: {
-				serviceTypes: '=serviceTypes'
+				serviceTypes: '=serviceTypes',
+				selected: '=selected'
 			},
 			templateUrl: 'src/settings/directives/thumbnails/thumbnails.html',
 			controller: function ($scope, $element, $attrs, $transclude) {
-				$scope.selectType = function (serviceTypeId) {
+				$scope.select = function (serviceTypeId) {
 					$scope.selected = serviceTypeId;
 					$scope.$emit('thumbnails.selected', serviceTypeId);
 				};

@@ -2,7 +2,7 @@
 	<a
 		ng-repeat="service in serviceTypes"
 		ng-class="{ thumbnail: true, active: service.baseUrl === selected }"
-		ng-click="selectType(service.baseUrl)">
+		ng-click="select(service.baseUrl)">
 		<div class="thumbnail-image">
 			<img ng-src="src/core/services/{{ service.logo }}" alt="{{ service.typeName }}" />
 		</div>
