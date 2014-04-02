@@ -43,7 +43,7 @@ define([
 		};
 
 		var updateSelectedForNew = function () {
-			if ($scope.serviceId) {
+			if ($scope.serviceTypes) {
 				$scope.selected = $scope.serviceTypes.filter(function (type) {
 					return type.baseUrl === $scope.serviceTypeId;
 				})[0];

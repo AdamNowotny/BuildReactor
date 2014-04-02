@@ -58,10 +58,19 @@ define([
 		changes.onNext(newConfigs);
 	};
 
-	var updateService = function (settings) {
+	var saveService = function (settings) {
+		var isNew = true;
 		var newConfigs = configurationStore.getAll().map(function (config) {
-			return (config.name === settings.name) ? settings : config;
+			if (config.name === settings.name) {
+				isNew = false;
+				return settings;
+			} else {
+				return config;
+			}
 		});
+		if (isNew) {
+			newConfigs.push(settings);
+		}
 		configurationStore.store(newConfigs);
 		changes.onNext(newConfigs);
 	};
@@ -73,7 +82,7 @@ define([
 		disableService: disableService,
 		removeService: removeService,
 		renameService: renameService,
-		updateService: updateService,
+		saveService: saveService,
 		changes: changes
 	};
 });

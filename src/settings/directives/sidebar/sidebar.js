@@ -8,7 +8,7 @@ define([
 			scope: {
 				services: '=',
 				selected: '=',
-				isNew: '='
+				isNew: '=new'
 			},
 			templateUrl: 'src/settings/directives/sidebar/sidebar.html'
 		};

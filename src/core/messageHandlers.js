@@ -38,8 +38,8 @@ define([
 		case 'renameService':
 			serviceConfiguration.renameService(request.oldName, request.newName);
 			break;
-		case 'updateService':
-			serviceConfiguration.updateService(request.settings);
+		case 'saveService':
+			serviceConfiguration.saveService(request.settings);
 			break;
 		}
 	}

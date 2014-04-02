@@ -6,7 +6,7 @@ define([
 ], function (app, core, angular, Rx) {
 	'use strict';
 
-	app.controller('ServiceSettingsCtrl', function ($scope) {
+	app.controller('ServiceSettingsCtrl', function ($scope, $location) {
 
 		var settings;
 
@@ -69,10 +69,11 @@ define([
 		});
 
 		$scope.save = function () {
-			core.updateService(settings);
+			core.saveService(settings);
 			$scope.saving = true;
 			$scope.isChanged = false;
 			$scope.projects.selected = settings.projects;
+			$location.path('/service/' + settings.name);
 		};
 
 		$scope.$on('dynamicForm.changed', function (event, updatedSettings) {
