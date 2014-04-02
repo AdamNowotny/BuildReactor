@@ -22,7 +22,7 @@
 	},
 	"homepage_url": "https://github.com/AdamNowotny/BuildReactor",
 	"offline_enabled": false,
-	"options_page": "src/options/main.html",
+	"options_page": "src/settings/index.html",
 	"permissions": [
 		"http://*/*",
 		"https://*/*",
