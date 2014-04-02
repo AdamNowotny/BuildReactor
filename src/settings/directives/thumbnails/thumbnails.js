@@ -6,8 +6,8 @@ define([
 	app.directive('thumbnails', function () {
 		return {
 			scope: {
-				serviceTypes: '=serviceTypes',
-				selected: '=selected'
+				serviceTypes: '=',
+				selected: '='
 			},
 			templateUrl: 'src/settings/directives/thumbnails/thumbnails.html',
 			controller: function ($scope, $element, $attrs, $transclude) {

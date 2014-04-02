@@ -8,7 +8,7 @@ define([
 			restrict: 'A',
 			link: function (scope, element, attrs) {
 				scope.$watch(attrs.focusIf, function (value) {
-					if (value === true) {
+					if (value) {
 						scope.$evalAsync(function () {
 							element[0].focus();
 						});

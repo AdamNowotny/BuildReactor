@@ -6,6 +6,9 @@ define([
 
 	app.controller('SettingsCtrl', function ($scope, $route) {
 
+		$scope.serviceId = null;
+		$scope.serviceTypeId = null;
+		
 		core.configurations.subscribe(function (configs) {
 			$scope.$evalAsync(function () {
 				$scope.services = configs;
