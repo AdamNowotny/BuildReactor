@@ -1,36 +1,34 @@
-<form class="settings-form" action="" role="form">
-	<fieldset>
-		<div class="form-group" ng-show="isDefined(service.url)">
-			<div class="input-group">
-				<span class="input-group-addon"><i class="fa fa-globe fa-fw"></i></span>
-				<input type="url" class="form-control" required placeholder="{{ service.urlHint }}" ng-model="service.url" />
-			</div>
+<fieldset>
+	<div class="form-group" ng-show="isDefined(service.url)">
+		<div class="input-group">
+			<span class="input-group-addon"><i class="fa fa-globe fa-fw"></i></span>
+			<input type="url" class="form-control" required placeholder="{{ service.urlHint }}" ng-model="service.url" />
 		</div>
-		<div class="form-group" ng-show="isDefined(service.username)">
-			<div class="input-group">
-				<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-				<input type="text" class="form-control" placeholder="Username" ng-model="service.username" />
-			</div>
+	</div>
+	<div class="form-group" ng-show="isDefined(service.username)">
+		<div class="input-group">
+			<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+			<input type="text" class="form-control" placeholder="Username" ng-model="service.username" />
 		</div>
-		<div class="form-group" ng-show="isDefined(service.password)">
-			<div class="input-group">
-				<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-				<input type="password" class="form-control" placeholder="Password" ng-model="service.password" />
-			</div>
+	</div>
+	<div class="form-group" ng-show="isDefined(service.password)">
+		<div class="input-group">
+			<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+			<input type="password" class="form-control" placeholder="Password" ng-model="service.password" />
 		</div>
-		<div class="form-group" ng-show="isDefined(service.branch)">
-			<div class="input-group">
-				<span class="input-group-addon"><i class="fa fa-code-fork fa-fw"></i></span>
-				<input type="text" class="form-control" placeholder="Branch, f.e. refs/heads/release" ng-model="service.branch" />
-			</div>
+	</div>
+	<div class="form-group" ng-show="isDefined(service.branch)">
+		<div class="input-group">
+			<span class="input-group-addon"><i class="fa fa-code-fork fa-fw"></i></span>
+			<input type="text" class="form-control" placeholder="Branch, f.e. refs/heads/release" ng-model="service.branch" />
 		</div>
-		<div class="form-group number" ng-show="isDefined(service.updateInterval)">
-			<label for="update-interval">Update interval</label>
-			<div class="input-append input-group" data-name="updateInterval">
-				<span class="input-group-addon"><i class="fa fa-repeat fa-fw"></i></span>
-				<input type="number" name="update-interval" class="form-control input-mini" min="1" ng-model="service.updateInterval" />
-				<span class="input-group-addon">sec</span>
-			</div>
+	</div>
+	<div class="form-group number" ng-show="isDefined(service.updateInterval)">
+		<label for="update-interval">Update interval</label>
+		<div class="input-append input-group" data-name="updateInterval">
+			<span class="input-group-addon"><i class="fa fa-repeat fa-fw"></i></span>
+			<input type="number" name="update-interval" class="form-control input-mini" min="1" ng-model="service.updateInterval" />
+			<span class="input-group-addon">sec</span>
 		</div>
-	</fieldset>
-</form>
+	</div>
+</fieldset>

@@ -7,7 +7,7 @@ define([
 	app.directive('dynamicForm', function () {
 		return {
 			scope: {
-				service: '=service'
+				service: '='
 			},
 			templateUrl: 'src/settings/directives/dynamicForm/dynamicForm.html',
 			controller: function ($scope, $element, $attrs, $transclude) {

@@ -1,13 +1,15 @@
 <div class="settings-container">
-	<section dynamic-form service="selectedDraft"></section>
-	<div class="settings-buttons">
-		<button type="button" class="btn btn-primary" ng-click="show()">
-			<i class="fa fa-refresh" ng-class="{ 'fa-spin': isLoading }"></i> Show
-		</button>
-		<button type="button" class="btn btn-success" ng-click="save()" ng-disabled="!isChanged">
-			<i class="fa fa-save"></i> Save
-		</button>
-	</div>
+	<form class="settings-form" action="" role="form">
+		<section dynamic-form service="selectedDraft"></section>
+		<div class="settings-buttons">
+			<button type="submit" class="btn btn-primary" ng-click="show()">
+				<i class="fa fa-refresh" ng-class="{ 'fa-spin': isLoading }"></i> Show
+			</button>
+			<button type="button" class="btn btn-success" ng-click="save()" ng-disabled="!isChanged">
+				<i class="fa fa-save"></i> Save
+			</button>
+		</div>
+	</form>
 	<div class="alert alert-danger" ng-show="projectsError">
 		<div class="error-message">{{ projectsError.message }}</div>
 		<div>
