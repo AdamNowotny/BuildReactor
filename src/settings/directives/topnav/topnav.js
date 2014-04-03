@@ -7,14 +7,15 @@ define([
 	app.directive('topnav', function ($modal, $location) {
 		return {
 			scope: {
-				service: '='
+				service: '=',
+				showActions: '='
 			},
 			templateUrl: 'src/settings/directives/topnav/topnav.html',
 			controller: function ($scope, $element, $attrs, $transclude) {
 
 				$scope.$watch('service', function (selectedService) {
 					if (selectedService) {
-						$scope.isActive = true;
+						$scope.isActive = $scope.showActions;
 						$scope.isEnabled = !selectedService.disabled;
 					} else {
 						$scope.isActive = false;
