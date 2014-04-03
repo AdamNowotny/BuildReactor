@@ -4,7 +4,7 @@ define([
 ], function (app, core) {
 	'use strict';
 
-	app.directive('topnav', function ($modal) {
+	app.directive('topnav', function ($modal, $location) {
 		return {
 			scope: {
 				service: '='
@@ -34,7 +34,7 @@ define([
 
 				$scope.remove = function () {
 					$modal.open({
-						templateUrl: 'src/settings/removeModal.html',
+						templateUrl: 'src/settings/directives/topnav/removeModal.html',
 						controller: RemoveModalCtrl,
 						scope: $scope,
 						resolve: {
@@ -44,6 +44,7 @@ define([
 						}
 					}).result.then(function (serviceName) {
 						core.removeService(serviceName);
+						$location.path('/new/').replace();
 					});
 				};
 
@@ -59,7 +60,7 @@ define([
 
 				$scope.rename = function () {
 					$modal.open({
-						templateUrl: 'src/settings/renameModal.html',
+						templateUrl: 'src/settings/directives/topnav/renameModal.html',
 						controller: RenameModalCtrl,
 						resolve: {
 							serviceName: function () {
@@ -68,6 +69,7 @@ define([
 						}
 					}).result.then(function (serviceName) {
 						core.renameService($scope.service.name, serviceName);
+						$location.path('/service/' + serviceName).replace();
 					});
 				};
 
