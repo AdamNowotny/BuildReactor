@@ -8,6 +8,7 @@ define([
 
 		$scope.serviceId = null;
 		$scope.serviceTypeId = null;
+		$scope.selected = null;
 		
 		core.configurations.subscribe(function (configs) {
 			$scope.$evalAsync(function () {
@@ -33,7 +34,7 @@ define([
 		};
 
 		var updateSelectedForService = function () {
-			if ($scope.services) {
+			if ($scope.services && $scope.serviceId) {
 				$scope.selected = $scope.services.filter(function (service) {
 					return service.name === $scope.serviceId;
 				})[0];
@@ -43,7 +44,7 @@ define([
 		};
 
 		var updateSelectedForNew = function () {
-			if ($scope.serviceTypes) {
+			if ($scope.serviceTypes && $scope.serviceTypeId) {
 				$scope.selected = $scope.serviceTypes.filter(function (type) {
 					return type.baseUrl === $scope.serviceTypeId;
 				})[0];
