@@ -20,7 +20,8 @@
 	</div>
 </div>
 <div class="project-selection-container">
-	<section view-selection views="views.all" selected="views.selected"></section>
-	<section project-list projects="projects.all" view-items="views.selectedItems" selected="projects.selected"></section>
+	<section view-selection views="views.all" selected="views.selected" ng-show="views.all"></section>
+	<section filter-query ng-show="projects.all"></section>
+	<section project-list projects="projects.all" view-items="views.selectedItems" selected="projects.selected" filter="filterQuery" ng-show="projects.all"></section>
 </div>
 <section br-alert show="saving"></section>

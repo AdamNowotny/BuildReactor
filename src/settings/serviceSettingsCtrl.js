@@ -23,6 +23,7 @@ define([
 			$scope.projectsError = null;
 			$scope.isLoading = false;
 			$scope.isChanged = false;
+			$scope.filterQuery = '';
 		};
 
 		var getItemsForView = function (views, viewName) {
@@ -78,6 +79,10 @@ define([
 
 		$scope.$on('dynamicForm.changed', function (event, updatedSettings) {
 			settings = updatedSettings;
+		});
+
+		$scope.$on('filterQuery.changed', function (event, query) {
+			$scope.filterQuery = query;
 		});
 
 		$scope.$on('projectList.change', function (event, selectedProjects) {

@@ -9,7 +9,7 @@ define([
 
 	var getGroupsFromProjects = function (projects) {
 		return projects.filter(function (project) {
-				return project.isVisible;
+				return project.isInView;
 			}).map(function (item) {
 				return item.group;
 			}).reduce(function (agg, group) {
@@ -25,7 +25,8 @@ define([
 			scope: {
 				projects: '=',
 				selected: '=',
-				viewItems: '='
+				viewItems: '=',
+				filterQuery: '=filter'
 			},
 			templateUrl: 'src/settings/directives/projectList/projectList.html',
 			controller: function ($scope, $element, $attrs, $transclude) {
@@ -38,14 +39,19 @@ define([
 					$scope.projectList.forEach(function (project) {
 						project.group = project.group || emptyGroupName;
 						project.isSelected = $scope.selected.indexOf(project.id) > -1;
-						project.isVisible = !$scope.viewItems || $scope.viewItems.indexOf(project.id) > -1;
+						project.isInView = !$scope.viewItems || $scope.viewItems.indexOf(project.id) > -1;
 					});
-					$scope.groups = getGroupsFromProjects($scope.projectList);
+					$scope.groups = getGroupsFromProjects($scope.projectList).map(function (groupName) {
+						return {
+							name: groupName,
+							hasSelectedItems: true
+						};
+					});
 				});
 
 				$scope.$watch('viewItems', function (viewItems) {
 					$scope.projectList.forEach(function (project) {
-						project.isVisible = !viewItems || viewItems.indexOf(project.id) > -1;
+						project.isInView = !viewItems || viewItems.indexOf(project.id) > -1;
 					});
 				});
 
@@ -57,6 +63,10 @@ define([
 					});
 					$scope.$emit('projectList.change', selectedProjects);
 				}, true);
+
+				$scope.$watch('filterQuery', function (query) {
+					console.log('query', query);
+				});
 			}
 		};
 	});
