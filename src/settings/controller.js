@@ -10,25 +10,6 @@ define([
 		$scope.serviceTypeId = null;
 		$scope.selected = null;
 		
-		core.configurations.subscribe(function (configs) {
-			$scope.$evalAsync(function () {
-				$scope.services = configs;
-				updateSelected();
-			});
-		});
-
-		core.availableServices(function (types) {
-			$scope.serviceTypes = types;
-			updateSelected();
-		});
-
-		$scope.$on('$routeChangeSuccess', function (event, routeData) {
-			$scope.serviceId = routeData.params.serviceName || null;
-			$scope.serviceTypeId = routeData.params.serviceTypeId || null;
-			$scope.isNew = $route.current.isNew;
-			updateSelected();
-		});
-
 		var updateSelected = function () {
 			$scope.isNew ? updateSelectedForNew() : updateSelectedForService();
 		};
@@ -53,6 +34,25 @@ define([
 				$scope.selected = null;
 			}
 		};
+
+		core.configurations.subscribe(function (configs) {
+			$scope.$evalAsync(function () {
+				$scope.services = configs;
+				updateSelected();
+			});
+		});
+
+		core.availableServices(function (types) {
+			$scope.serviceTypes = types;
+			updateSelected();
+		});
+
+		$scope.$on('$routeChangeSuccess', function (event, routeData) {
+			$scope.serviceId = routeData.params.serviceName || null;
+			$scope.serviceTypeId = routeData.params.serviceTypeId || null;
+			$scope.isNew = $route.current.isNew;
+			updateSelected();
+		});
 
 	});
 });
