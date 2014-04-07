@@ -5,9 +5,7 @@ define([
 ], function (app, Rx, angular) {
 	'use strict';
 
-	var emptyGroupName = 'Projects';
-
-	var getGroupsFromProjects = function (projects) {
+	var getGroupNamesFromProjects = function (projects) {
 		return projects.filter(function (project) {
 				return project.isInView;
 			}).map(function (item) {
@@ -20,10 +18,36 @@ define([
 			}, []) || null;
 	};
 
+	var getProjectsForGroup = function (projects, groupName) {
+		return projects.filter(function (project) {
+			return project.isInView && project.group === groupName;
+		});
+	};
+
+	var getSelectedProjects = function (projects) {
+		return projects.filter(function (project) {
+			return project.isSelected;
+		});
+	};
+
+	var createGroups = function (projects) {
+		var groupNames = getGroupNamesFromProjects(projects);
+		return groupNames.map(function (groupName) {
+			var groupProjects = getProjectsForGroup(projects, groupName);
+			return {
+				name: groupName,
+				projects: groupProjects,
+				hasSelectedItems: getSelectedProjects(groupProjects).length > 0,
+				visibleCount: groupProjects.length,
+				projectsCount: groupProjects.length
+			};
+		});
+	};
+
 	app.directive('projectList', function () {
 		return {
 			scope: {
-				projects: '=',
+				projects: '=projects',
 				selected: '=',
 				viewItems: '=',
 				filterQuery: '=filter'
@@ -34,39 +58,42 @@ define([
 				$scope.selected = [];
 
 				$scope.$watch('projects', function (projects) {
-					$scope.projectList = angular.copy($scope.projects);
 					$scope.selected = $scope.selected || [];
+					$scope.projectList = angular.copy($scope.projects);
 					$scope.projectList.forEach(function (project) {
-						project.group = project.group || emptyGroupName;
 						project.isSelected = $scope.selected.indexOf(project.id) > -1;
 						project.isInView = !$scope.viewItems || $scope.viewItems.indexOf(project.id) > -1;
 					});
-					$scope.groups = getGroupsFromProjects($scope.projectList).map(function (groupName) {
-						return {
-							name: groupName,
-							hasSelectedItems: true
-						};
-					});
+					$scope.groups = createGroups($scope.projectList);
 				});
 
 				$scope.$watch('viewItems', function (viewItems) {
-					$scope.projectList.forEach(function (project) {
+					$scope.projectList && $scope.projectList.forEach(function (project) {
 						project.isInView = !viewItems || viewItems.indexOf(project.id) > -1;
 					});
 				});
 
 				$scope.$watch('projectList', function (projects) {
-					var selectedProjects = projects.filter(function (project) {
-						return project.isSelected;
-					}).map(function (selectedProject) {
-						return selectedProject.id;
+					console.log('projectList', projects);
+					var selectedIds = getSelectedProjects(projects).map(function (project) {
+						return project.id;
 					});
-					$scope.$emit('projectList.change', selectedProjects);
+					$scope.$emit('projectList.change', selectedIds);
 				}, true);
 
 				$scope.$watch('filterQuery', function (query) {
 					console.log('query', query);
+					$scope.groups && $scope.groups.forEach(function (group) {
+						group.visibleCount = group.projects.filter(function (project) {
+							return project.name.indexOf(query) > -1;
+						}).length;
+					});
 				});
+
+				$scope.checkAll = function (group) {
+					console.log('checkAll', group);
+				};
+
 			}
 		};
 	});

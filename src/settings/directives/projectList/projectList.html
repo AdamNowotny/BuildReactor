@@ -2,16 +2,16 @@
 	<div class="panel panel-default" ng-repeat="group in groups">
 		<div class="panel-heading">
 			<h4 class="panel-title">
-				<input type="checkbox" class="check-all" />
+				<input type="checkbox" class="check-all" ng-click="checkAll(group)" />
 				<a data-toggle="collapse" href="#project-group-{{ $index }}">
-					<span class="group-name">{{ group.name }}</span>
-					<span class="filter-count" title="Visible / All projects in group"></span>
+					<span class="group-name">{{ group.name || 'Projects' }}</span>
+					<span class="filter-count" title="Visible / All projects in group"><span ng-show="group.visibleCount != group.projectsCount">{{ group.visibleCount }} / </span>{{ group.projectsCount }}</span>
 				</a>
 			</h4>
 		</div>
 		<div class="panel-collapse collapse" ng-class="{ in: group.hasSelectedItems }" id="project-group-{{ $index }}">
 			<div class="panel-body">
-				<label class="checkbox" ng-repeat="item in projectList | filter:{ group: group.name, isInView: true, name: filterQuery }">
+				<label class="checkbox" ng-repeat="item in group.projects | filter:{ name: filterQuery }">
 					<input type="checkbox" ng-model="item.isSelected">
 					<span class="project-name" ng-class="{ 'text-muted': item.isDisabled }">{{ item.name }}</span>
 					<span class="label label-default" ng-show="item.isDisabled">Disabled</span>

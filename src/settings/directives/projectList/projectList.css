@@ -2,6 +2,10 @@
 	margin-bottom: 10px;
 }
 
+.project-selection-container .filter-count {
+	float: right;
+}
+
 .project-selection-container .check-all {
 	margin-right: 5px;
 }
