@@ -11,7 +11,7 @@
 		</div>
 		<div class="panel-collapse collapse" ng-class="{ in: group.hasSelectedItems }" id="project-group-{{ $index }}">
 			<div class="panel-body">
-				<label class="checkbox" ng-repeat="item in group.projects | filter:{ name: filterQuery }">
+				<label class="checkbox" ng-repeat="item in group.projects | filter:search">
 					<input type="checkbox" ng-model="item.isSelected">
 					<span class="project-name" ng-class="{ 'text-muted': item.isDisabled }">{{ item.name }}</span>
 					<span class="label label-default" ng-show="item.isDisabled">Disabled</span>

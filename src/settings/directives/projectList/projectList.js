@@ -85,10 +85,14 @@ define([
 					console.log('query', query);
 					$scope.groups && $scope.groups.forEach(function (group) {
 						group.visibleCount = group.projects.filter(function (project) {
-							return project.name.indexOf(query) > -1;
+							return $scope.search(project);
 						}).length;
 					});
 				});
+
+				$scope.search = function (project) {
+					return project.name.toLowerCase().indexOf($scope.filterQuery.toLowerCase()) > -1;
+				};
 
 				$scope.checkAll = function (group) {
 					console.log('checkAll', group);
