@@ -1,5 +1,5 @@
 <div class="panel-group" id="projects-accordion">
-	<div class="panel panel-default" ng-repeat="group in groups">
+	<div class="panel panel-default" ng-repeat="group in groups" ng-hide="group.visibleCount == 0">
 		<div class="panel-heading">
 			<h4 class="panel-title">
 				<input type="checkbox" class="check-all" ng-click="checkAll(group)" />
