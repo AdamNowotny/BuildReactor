@@ -2,6 +2,7 @@ define([
 	'angular',
 	'angular.route',
 	'angular.ui',
+	'angular.ui.highlight',
 	'rx.angular'
 ], function (angular) {
 
@@ -10,6 +11,7 @@ define([
 	return angular.module('settings', [
 		'ngRoute',
 		'ui.bootstrap',
+		'ui.highlight',
 		'rx'
 	]);
 });

@@ -44,7 +44,7 @@ define([
 		});
 	};
 
-	app.directive('projectList', function () {
+	app.directive('projectList', function ($sce, highlightFilter) {
 		return {
 			scope: {
 				projects: '=projects',
@@ -65,6 +65,7 @@ define([
 						project.isInView = !$scope.viewItems || $scope.viewItems.indexOf(project.id) > -1;
 					});
 					$scope.groups = createGroups($scope.projectList);
+					highlightNames($scope.projectList, $scope.filterQuery);
 				});
 
 				$scope.$watch('viewItems', function (viewItems) {
@@ -74,7 +75,6 @@ define([
 				});
 
 				$scope.$watch('projectList', function (projects) {
-					console.log('projectList', projects);
 					var selectedIds = getSelectedProjects(projects).map(function (project) {
 						return project.id;
 					});
@@ -82,16 +82,23 @@ define([
 				}, true);
 
 				$scope.$watch('filterQuery', function (query) {
-					console.log('query', query);
 					$scope.groups && $scope.groups.forEach(function (group) {
 						group.visibleCount = group.projects.filter(function (project) {
 							return $scope.search(project);
 						}).length;
 					});
+					highlightNames($scope.projectList, $scope.filterQuery);
 				});
 
 				$scope.search = function (project) {
 					return project.name.toLowerCase().indexOf($scope.filterQuery.toLowerCase()) > -1;
+				};
+
+				var highlightNames = function (projects, highlightText) {
+					projects.forEach(function (project) {
+						var nameHtml = highlightFilter(project.name, highlightText);
+						project.nameHtml = $sce.trustAsHtml(nameHtml);
+					});
 				};
 
 				$scope.checkAll = function (group) {
