@@ -2,7 +2,7 @@ define([
 	'angular',
 	'angular.route',
 	'angular.ui',
-	'angular.ui.highlight',
+	'angular.ui.utils',
 	'rx.angular'
 ], function (angular) {
 
@@ -12,6 +12,7 @@ define([
 		'ngRoute',
 		'ui.bootstrap',
 		'ui.highlight',
+		'ui.indeterminate',
 		'rx'
 	]);
 });
