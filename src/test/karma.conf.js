@@ -18,11 +18,9 @@ module.exports = function (config) {
 
 		// list of files / patterns to load in the browser
 		files: [
-			{pattern: 'bower_components/jquery/jquery.js', watched: false, served: true, included: true},
-			{pattern: 'bower_components/jasmine-jquery/lib/jasmine-jquery.js', watched: false, served: true, included: true},
+			{pattern: 'bower_components/jquery/dist/jquery.js', watched: false, served: true, included: true},
 			'src/test/main.js',
 			{pattern: 'src/**/*', watched: true, served: true, included: false},
-			{pattern: 'lib/**/*', watched: true, served: true, included: false},
 			{pattern: 'bower_components/**/*.js', watched: false, served: true, included: false},
 
 			// only for http server
@@ -31,8 +29,7 @@ module.exports = function (config) {
 			{pattern: 'bower_components/bootstrap/dist/css/bootstrap.min.css', watched: false, served: true, included: false},
 			{pattern: 'bower_components/angular/angular-csp.css', watched: false, served: true, included: false},
 			{pattern: 'bower_components/font-awesome/css/font-awesome.min.css', watched: false, served: true, included: false},
-			{pattern: 'bower_components/font-awesome/fonts/fontawesome-webfont.*', watched: false, served: true, included: false},
-			{pattern: 'bower_components/bootstrap-switch/build/css/bootstrap3/bootstrap-switch.css', watched: false, served: true, included: false},
+			{pattern: 'bower_components/font-awesome/fonts/fontawesome-webfont.*', watched: false, served: true, included: false}
 		],
 
 		exclude: [],

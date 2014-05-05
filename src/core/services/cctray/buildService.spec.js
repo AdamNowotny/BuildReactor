@@ -142,7 +142,8 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 						isDisabled: false,
 						serviceName: settings.name,
 						serviceIcon: settings.icon,
-						tags: []
+						tags: [],
+						changes: []
 					};
 				}; 
 

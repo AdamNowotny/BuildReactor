@@ -1,13 +1,12 @@
 require.config({
 	baseUrl: 'src',
 	paths: {
-		jquery: "../bower_components/jquery/jquery",
+		jquery: "../bower_components/jquery/dist/jquery",
 		mout: '../bower_components/mout/src',
 		rx: '../bower_components/rxjs/rx',
 		'rx.async': '../bower_components/rxjs/rx.async',
 		'rx.binding': '../bower_components/rxjs/rx.binding',
-		'rx.time': '../bower_components/rxjs/rx.time',
-		signals: '../bower_components/js-signals/dist/signals'
+		'rx.time': '../bower_components/rxjs/rx.time'
 	}
 });
 
@@ -27,6 +26,5 @@ require([
 	'rx',
 	'rx.async',
 	'rx.binding',
-	'rx.time',
-	'signals'
+	'rx.time'
 ], function () {});

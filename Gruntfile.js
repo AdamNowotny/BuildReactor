@@ -93,56 +93,32 @@ module.exports = function (grunt) {
 						start: "/*\n<%= vars.license %>\n*/\n(function() {",
 						end: "}());"
 					},
-					pragmasOnSave: {
-						//removes Handlebars.Parser code (used to compile template strings) set
-						//it to `false` if you need to parse template strings even after build
-						excludeHbsParser : true,
-						// kills the entire plugin set once it's built.
-						excludeHbs: true,
-						// removes i18n precompiler, handlebars and json2
-						excludeAfterBuild: true
-					},
 					paths: {
-						jquery: "../bower_components/jquery/jquery",
+						jquery: "../bower_components/jquery/dist/jquery",
 						mout: '../bower_components/mout/src',
 						rx: '../bower_components/rxjs/rx',
 						'rx.async': '../bower_components/rxjs/rx.async',
 						'rx.binding': '../bower_components/rxjs/rx.binding',
 						'rx.time': '../bower_components/rxjs/rx.time',
-						signals: '../bower_components/js-signals/dist/signals',
 
 						angular: '../bower_components/angular/angular',
-						angularBootstrapSwitch: '../bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch',
 						'angular.route': '../bower_components/angular-route/angular-route',
 						'angular.ui': '../bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls',
 						'angular.ui.utils': '../bower_components/angular-ui-utils/ui-utils',
 						bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
-						bootstrapSwitch: '../bower_components/bootstrap-switch/build/js/bootstrap-switch',
-						handlebars: '../lib/require-handlebars-plugin/Handlebars',
-						hbs: '../lib/require-handlebars-plugin/hbs-plugin',
-						i18nprecompile: '../lib/require-handlebars-plugin/hbs/i18nprecompile',
-						json2: '../lib/require-handlebars-plugin/hbs/json2',
-						underscore: '../lib/require-handlebars-plugin/hbs/underscore',
 						'rx.angular': '../bower_components/angular-rx/rx.angular',
 
 						'common/core': 'common/core'
-					},
-					hbs: {
-						templateExtension: 'html',
-						helperDirectory: 'templates/helpers/',
-						i18nDirectory:   'templates/i18n/'
 					},
 					shim: {
 						angular: {
 							deps: ['jquery'],
 							exports: 'angular'
 						},
-						angularBootstrapSwitch: [ 'bootstrapSwitch' ],
 						'angular.route': ['angular'],
 						'angular.ui': ['angular'],
 						'angular.ui.utils': ['angular'],
 						bootstrap: [ 'jquery' ],
-						bootstrapSwitch: [ 'jquery' ],
 						'rx.angular': [ 'angular', 'rx' ]
 					},
 					modules: [
@@ -155,10 +131,6 @@ module.exports = function (grunt) {
 						},
 						{
 							name: 'core/main',
-							exclude: ['common/main', 'common/main-web']
-						},
-						{
-							name: 'options/main-app',
 							exclude: ['common/main', 'common/main-web']
 						},
 						{

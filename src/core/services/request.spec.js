@@ -130,13 +130,12 @@ define([
 						return request.json(ajaxOptions);
 					}, 100, 200, 21000);
 
-					expect(result.messages).toHaveElements(
-						onError(20200, {
-							name: 'TimeoutError',
-							message: 'Timeout',
-							description: 'Connection timed out after 20 seconds'
-						})
-					);
+					expect(result.messages[0].time).toBe(20200);
+					var actualError = result.messages[0].value.exception;
+					expect(actualError.name).toBe('TimeoutError');
+					expect(actualError.message).toBe('Timeout');
+					expect(actualError.description).toBe('Connection timed out after 20 seconds');
+					expect(actualError.url).toBe('http://sample.com/');
 				});
 
 				it('should throw exception on connection error with message', function () {
