@@ -82,14 +82,12 @@ Testing
 
 Once running you can also open `localhost:9876/base/options.html` or any other HTML file in the browser to test using sample data. This does not require you to load as Chrome Extension.
 
-Technical overview
-==================
+Dependencies
+============
 
 The packaged version uses:
  * [AngularJS](angularjs.org)
  * [Font Awesome](http://fortawesome.github.com/Font-Awesome/)
- * [Handlebars](http://handlebarsjs.com/) templates using [require-handlebars-plugin](https://github.com/SlexAxton/require-handlebars-plugin)
- * [JS-Signals](http://millermedeiros.github.com/js-signals/)
  * [jQuery](http://jquery.com/)
  * [Mout](http://moutjs.com/)
  * [Require-JS](http://requirejs.org/)
@@ -100,8 +98,6 @@ The build and tests use:
  * [Bower](http://twitter.github.com/bower/)
  * [Grunt](http://gruntjs.com/)
  * [Plato](https://github.com/jsoverson/plato)
- * [Jasmine-jquery](https://github.com/velesin/jasmine-jquery/)
- * [Jasmine-signals](https://github.com/AdamNowotny/jasmine-signals)
  * [Karma](http://karma-runner.github.io/)
  * [Travis-CI](http://travis-ci.org/)
 
