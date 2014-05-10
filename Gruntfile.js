@@ -32,9 +32,7 @@ module.exports = function (grunt) {
 				'<%= vars.dist %>/src/**/*.spec.js',
 				'<%= vars.dist %>/src/**/*.fixture.*',
 				'<%= vars.dist %>/src/**/*.mock.*',
-				'<%= vars.dist %>/src/css/partial',
 				'<%= vars.dist %>/src/mout',
-				'<%= vars.dist %>/src/templates',
 				'<%= vars.dist %>/src/test',
 				'<%= vars.dist %>/src/build.txt'
 			]
@@ -68,9 +66,8 @@ module.exports = function (grunt) {
 			compress: {
 				files: {
 					'<%= vars.dist %>/src/settings/main.css': [ 'src/settings/main.css'	],
-					'<%= vars.dist %>/src/css/options.css': [ 'src/css/options.css'	],
-					'<%= vars.dist %>/src/css/popup.css': [ 'src/css/popup.css' ],
-					'<%= vars.dist %>/src/css/dashboard.css': [ 'src/css/dashboard.css' ]
+					'<%= vars.dist %>/src/popup/main.css': [ 'src/popup/main.css' ],
+					'<%= vars.dist %>/src/dashboard/main.css': [ 'src/dashboard/main.css' ]
 				}
 			}
 		},

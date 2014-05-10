@@ -1,15 +1,15 @@
 @import url("../../bower_components/angular/angular-csp.css");
-@import url("partial/popup.css");
+@import url("../common-ui/popup.css");
 
 body {
 	background-color: #141414;
 	color: white;
-	margin-top: 45px;
-	min-width: 210px;
+	margin-top: 0;
 }
 
 .no-services-message {
 	color: #F90;
+	font-size: x-large;
 	font-weight: bold;
 	margin-top: 60px;
 	margin-bottom: 1em;
@@ -17,23 +17,15 @@ body {
 }
 
 .service-group {
-	text-align: right;
+	text-align: left;
 }
 
 .label .error-message {
-	display: none;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 250px;
 }
 
-.navbar {
-	padding-right: 1em;
-	min-height: 40px;
-}
-
-.navbar-right li {
-	float: right;
-}
-
-.navbar-nav>li>a {
-	padding-top: 5px;
-	padding-bottom: 0;
+li .service-item-name {
+	font-weight: bold;
 }
