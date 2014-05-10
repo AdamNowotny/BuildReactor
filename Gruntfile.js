@@ -123,24 +123,24 @@ module.exports = function (grunt) {
 							name: 'common/main'
 						},
 						{
-							name: 'common/main-web',
+							name: 'common-ui/main',
 							exclude: ['common/main']
 						},
 						{
 							name: 'core/main',
-							exclude: ['common/main', 'common/main-web']
+							exclude: ['common/main', 'common-ui/main']
 						},
 						{
 							name: 'settings/main-app',
-							exclude: ['common/main', 'common/main-web']
+							exclude: ['common/main', 'common-ui/main']
 						},
 						{
 							name: 'popup/main-app',
-							exclude: ['common/main', 'common/main-web']
+							exclude: ['common/main', 'common-ui/main']
 						},
 						{
 							name: 'dashboard/main-app',
-							exclude: ['common/main', 'common/main-web']
+							exclude: ['common/main', 'common-ui/main']
 						}
 					]
 				}

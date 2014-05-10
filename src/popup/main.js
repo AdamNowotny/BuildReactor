@@ -4,7 +4,7 @@ require.config({
 
 require(['common/main'], function (common) {
 	'use strict';
-	require(['common/main-web'], function () {
+	require(['common-ui/main'], function () {
 		require(['popup/main-app']);
 	});
 });
