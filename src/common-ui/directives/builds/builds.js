@@ -1,5 +1,5 @@
 define([
-	'common/directives/module',
+	'common-ui/directives/module',
 	'common/sortBy',
 	'rx',
 	'common/core'
@@ -11,7 +11,7 @@ define([
 		return {
 			restrict: 'E',
 			scope: {},
-			templateUrl: 'src/common/directives/builds.html',
+			templateUrl: 'src/common-ui/directives/builds/builds.html',
 			controller: function ($scope, $element, $attrs, $transclude) {
 
 				function createModel(state) {
