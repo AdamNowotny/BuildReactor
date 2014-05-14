@@ -33,16 +33,15 @@ define([
 	var availableBuilds = function () {
 		var self = this;
 		return request.json({
-			url: joinUrl(this.settings.url, 'api/json'),
+			url: joinUrl(this.settings.url, 'api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]'),
 			username: self.settings.username,
 			password: self.settings.password
 		}).selectMany(function (response) {
 			return Rx.Observable.zip(
-				allJobDetails(response.jobs, self.settings),
 				allViewDetails(response.views, response.primaryView.name, self.settings),
-				function (jobs, views) {
+				function (views) {
 					return {
-						items: jobs,
+						items: response.jobs.map(jobDetails),
 						primaryView: response.primaryView.name,
 						views: views
 					};
@@ -51,10 +50,13 @@ define([
 		});
 	};
 
-	function allJobDetails(jobs, settings) {
-		return Rx.Observable.zipArray(jobs.map(function (job) {
-			return jobDetails(job, settings);
-		}));
+	function jobDetails(job) {
+		return {
+			id: job.name,
+			name: job.name,
+			group: null,
+			isDisabled: !job.buildable
+		};
 	}
 
 	function allViewDetails(views, primaryView, settings) {
@@ -70,29 +72,14 @@ define([
 		}));
 	}
 
-	function jobDetails(job, settings) {
-		return request.json({
-			url: joinUrl(job.url, 'api/json'),
-			username: settings.username,
-			password: settings.password,
-		}).select(function (jobResponse) {
-			return {
-				id: jobResponse.name,
-				name: jobResponse.displayName,
-				group: null,
-				isDisabled: !jobResponse.buildable
-			};
-		});
-	}
-
 	function viewDetails(view, settings) {
 		return request.json({
-			url: joinUrl(view.url, 'api/json'),
+			url: joinUrl(view.url, 'api/json?tree=jobs[name]'),
 			username: settings.username,
 			password: settings.password,
 		}).select(function (viewResponse) {
 			return {
-				name: viewResponse.name,
+				name: view.name,
 				items: viewResponse.jobs.map(function (job) {
 					return job.name;
 				})

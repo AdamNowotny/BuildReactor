@@ -1,396 +1,349 @@
 {
-    "assignedLabels": [
-        {}
-    ],
-    "mode": "EXCLUSIVE",
-    "nodeDescription": "the master Jenkins node",
-    "nodeName": "",
-    "numExecutors": 2,
-    "description": null,
-    "jobs": [
-        {
-            "name": "config-provider-model",
-            "url": "http://ci.jenkins-ci.org/job/config-provider-model/",
-            "color": "blue"
-        },
-        {
-            "name": "fix-git-configuration-on-remote-slave-8",
-            "url": "http://ci.jenkins-ci.org/job/fix-git-configuration-on-remote-slave-8/",
-            "color": "blue"
-        },
-        {
-            "name": "gerrit_master",
-            "url": "http://ci.jenkins-ci.org/job/gerrit_master/",
-            "color": "disabled"
-        },
-        {
-            "name": "infra_backend-confluence-spam-remover",
-            "url": "http://ci.jenkins-ci.org/job/infra_backend-confluence-spam-remover/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_backend-merge-all-repo",
-            "url": "http://ci.jenkins-ci.org/job/infra_backend-merge-all-repo/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_backend-plugin-report-card",
-            "url": "http://ci.jenkins-ci.org/job/infra_backend-plugin-report-card/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_backend-war-size-tracker",
-            "url": "http://ci.jenkins-ci.org/job/infra_backend-war-size-tracker/",
-            "color": "red"
-        },
-        {
-            "name": "infra_backend_jenkins_ci_cloudbess_com_filler",
-            "url": "http://ci.jenkins-ci.org/job/infra_backend_jenkins_ci_cloudbess_com_filler/",
-            "color": "red_anime"
-        },
-        {
-            "name": "infra_backend_pull_request_greeter",
-            "url": "http://ci.jenkins-ci.org/job/infra_backend_pull_request_greeter/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_changelog_refresh",
-            "url": "http://ci.jenkins-ci.org/job/infra_changelog_refresh/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_checkout_stats",
-            "url": "http://ci.jenkins-ci.org/job/infra_checkout_stats/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_commit_history_generation",
-            "url": "http://ci.jenkins-ci.org/job/infra_commit_history_generation/",
-            "color": "red"
-        },
-        {
-            "name": "infra_drupalcron",
-            "url": "http://ci.jenkins-ci.org/job/infra_drupalcron/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_extension-indexer",
-            "url": "http://ci.jenkins-ci.org/job/infra_extension-indexer/",
-            "color": "red"
-        },
-        {
-            "name": "infra_generate_monthly_json",
-            "url": "http://ci.jenkins-ci.org/job/infra_generate_monthly_json/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_github_repository_list",
-            "url": "http://ci.jenkins-ci.org/job/infra_github_repository_list/",
-            "color": "red"
-        },
-        {
-            "name": "infra_javadoc",
-            "url": "http://ci.jenkins-ci.org/job/infra_javadoc/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_jenkins-ci.org_jekyll",
-            "url": "http://ci.jenkins-ci.org/job/infra_jenkins-ci.org_jekyll/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_jenkins-ci.org_webcontents",
-            "url": "http://ci.jenkins-ci.org/job/infra_jenkins-ci.org_webcontents/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_main_svn_to_git",
-            "url": "http://ci.jenkins-ci.org/job/infra_main_svn_to_git/",
-            "color": "disabled"
-        },
-        {
-            "name": "infra_mirroring",
-            "url": "http://ci.jenkins-ci.org/job/infra_mirroring/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_plugin-compat-tester",
-            "url": "http://ci.jenkins-ci.org/job/infra_plugin-compat-tester/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_plugin_changes_report",
-            "url": "http://ci.jenkins-ci.org/job/infra_plugin_changes_report/",
-            "color": "red"
-        },
-        {
-            "name": "infra_pluginmirror",
-            "url": "http://ci.jenkins-ci.org/job/infra_pluginmirror/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_plugins_svn_to_git",
-            "url": "http://ci.jenkins-ci.org/job/infra_plugins_svn_to_git/",
-            "color": "disabled"
-        },
-        {
-            "name": "infra_pull_m2repo",
-            "url": "http://ci.jenkins-ci.org/job/infra_pull_m2repo/",
-            "color": "aborted"
-        },
-        {
-            "name": "infra_pull_releases",
-            "url": "http://ci.jenkins-ci.org/job/infra_pull_releases/",
-            "color": "disabled"
-        },
-        {
-            "name": "infra_release.rss",
-            "url": "http://ci.jenkins-ci.org/job/infra_release.rss/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_repo.jenkins-ci.org_maven_index",
-            "url": "http://ci.jenkins-ci.org/job/infra_repo.jenkins-ci.org_maven_index/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_statistics",
-            "url": "http://ci.jenkins-ci.org/job/infra_statistics/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_svnsync",
-            "url": "http://ci.jenkins-ci.org/job/infra_svnsync/",
-            "color": "disabled"
-        },
-        {
-            "name": "infra_sync_maven-hpi-plugin_www",
-            "url": "http://ci.jenkins-ci.org/job/infra_sync_maven-hpi-plugin_www/",
-            "color": "red"
-        },
-        {
-            "name": "infra_update_center",
-            "url": "http://ci.jenkins-ci.org/job/infra_update_center/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_update_center_experimental",
-            "url": "http://ci.jenkins-ci.org/job/infra_update_center_experimental/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_update_center_mirror",
-            "url": "http://ci.jenkins-ci.org/job/infra_update_center_mirror/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_update_center_stable",
-            "url": "http://ci.jenkins-ci.org/job/infra_update_center_stable/",
-            "color": "blue"
-        },
-        {
-            "name": "infra_update_mave_site",
-            "url": "http://ci.jenkins-ci.org/job/infra_update_mave_site/",
-            "color": "blue"
-        },
-        {
-            "name": "jenkins_lts_branch",
-            "url": "http://ci.jenkins-ci.org/job/jenkins_lts_branch/",
-            "color": "blue"
-        },
-        {
-            "name": "jenkins_main_maven-3.1.0",
-            "url": "http://ci.jenkins-ci.org/job/jenkins_main_maven-3.1.0/",
-            "color": "blue"
-        },
-        {
-            "name": "jenkins_main_trunk",
-            "url": "http://ci.jenkins-ci.org/job/jenkins_main_trunk/",
-            "color": "blue"
-        },
-        {
-            "name": "jenkins_pom",
-            "url": "http://ci.jenkins-ci.org/job/jenkins_pom/",
-            "color": "blue"
-        },
-        {
-            "name": "jenkins_rc_branch",
-            "url": "http://ci.jenkins-ci.org/job/jenkins_rc_branch/",
-            "color": "yellow"
-        },
-        {
-            "name": "jenkins_ui-changes_branch",
-            "url": "http://ci.jenkins-ci.org/job/jenkins_ui-changes_branch/",
-            "color": "red"
-        },
-        {
-            "name": "kohsuke_github-api",
-            "url": "http://ci.jenkins-ci.org/job/kohsuke_github-api/",
-            "color": "blue"
-        },
-        {
-            "name": "lib-jenkins-maven-artifact-manager",
-            "url": "http://ci.jenkins-ci.org/job/lib-jenkins-maven-artifact-manager/",
-            "color": "blue"
-        },
-        {
-            "name": "lib-jenkins-maven-embedder",
-            "url": "http://ci.jenkins-ci.org/job/lib-jenkins-maven-embedder/",
-            "color": "blue"
-        },
-        {
-            "name": "lib-jira-api",
-            "url": "http://ci.jenkins-ci.org/job/lib-jira-api/",
-            "color": "blue"
-        },
-        {
-            "name": "libs_core-js",
-            "url": "http://ci.jenkins-ci.org/job/libs_core-js/",
-            "color": "blue"
-        },
-        {
-            "name": "libs_dom4j",
-            "url": "http://ci.jenkins-ci.org/job/libs_dom4j/",
-            "color": "blue"
-        },
-        {
-            "name": "libs_htmlunit",
-            "url": "http://ci.jenkins-ci.org/job/libs_htmlunit/",
-            "color": "aborted"
-        },
-        {
-            "name": "libs_jelly",
-            "url": "http://ci.jenkins-ci.org/job/libs_jelly/",
-            "color": "blue"
-        },
-        {
-            "name": "libs_jexl",
-            "url": "http://ci.jenkins-ci.org/job/libs_jexl/",
-            "color": "blue"
-        },
-        {
-            "name": "libs_jmdns",
-            "url": "http://ci.jenkins-ci.org/job/libs_jmdns/",
-            "color": "blue"
-        },
-        {
-            "name": "libs_json-lib",
-            "url": "http://ci.jenkins-ci.org/job/libs_json-lib/",
-            "color": "blue"
-        },
-        {
-            "name": "libs_maven-jetty-plugin",
-            "url": "http://ci.jenkins-ci.org/job/libs_maven-jetty-plugin/",
-            "color": "blue"
-        },
-        {
-            "name": "libs_netx",
-            "url": "http://ci.jenkins-ci.org/job/libs_netx/",
-            "color": "blue"
-        },
-        {
-            "name": "libs_svnkit",
-            "url": "http://ci.jenkins-ci.org/job/libs_svnkit/",
-            "color": "red"
-        },
-        {
-            "name": "libs_trilead-ssh2",
-            "url": "http://ci.jenkins-ci.org/job/libs_trilead-ssh2/",
-            "color": "blue"
-        },
-        {
-            "name": "libs_winstone",
-            "url": "http://ci.jenkins-ci.org/job/libs_winstone/",
-            "color": "blue"
-        },
-        {
-            "name": "libs_xstream",
-            "url": "http://ci.jenkins-ci.org/job/libs_xstream/",
-            "color": "blue"
-        },
-        {
-            "name": "maven-interceptors",
-            "url": "http://ci.jenkins-ci.org/job/maven-interceptors/",
-            "color": "blue"
-        },
-        {
-            "name": "model-ant-project",
-            "url": "http://ci.jenkins-ci.org/job/model-ant-project/",
-            "color": "blue"
-        },
-        {
-            "name": "peripheral apps deactivation prevention",
-            "url": "http://ci.jenkins-ci.org/job/peripheral%20apps%20deactivation%20prevention/",
-            "color": "blue"
-        },
-        {
-            "name": "plugin-compat-tester",
-            "url": "http://ci.jenkins-ci.org/job/plugin-compat-tester/",
-            "color": "disabled"
-        },
-        {
-            "name": "remoting",
-            "url": "http://ci.jenkins-ci.org/job/remoting/",
-            "color": "blue"
-        },
-        {
-            "name": "test-matrix",
-            "url": "http://ci.jenkins-ci.org/job/test-matrix/",
-            "color": "notbuilt"
-        },
-        {
-            "name": "tools_maven-hpi-plugin",
-            "url": "http://ci.jenkins-ci.org/job/tools_maven-hpi-plugin/",
-            "color": "blue"
-        },
-        {
-            "name": "tools_maven-hpi-plugin-maven-2.x",
-            "url": "http://ci.jenkins-ci.org/job/tools_maven-hpi-plugin-maven-2.x/",
-            "color": "blue"
-        }
-    ],
-    "overallLoad": {},
-    "primaryView": {
-        "name": "All Failed",
-        "url": "http://ci.jenkins-ci.org/"
+  "jobs" : [
+    {
+      "name" : "config-provider-model",
+      "buildable" : true
     },
-    "quietingDown": false,
-    "slaveAgentPort": 47278,
-    "unlabeledLoad": {},
-    "useCrumbs": false,
-    "useSecurity": true,
-    "views": [
-        {
-            "name": "All",
-            "url": "http://ci.jenkins-ci.org/view/All/"
-        },
-        {
-            "name": "All Disabled",
-            "url": "http://ci.jenkins-ci.org/view/All%20Disabled/"
-        },
-        {
-            "name": "All Failed",
-            "url": "http://ci.jenkins-ci.org/"
-        },
-        {
-            "name": "All Unstable",
-            "url": "http://ci.jenkins-ci.org/view/All%20Unstable/"
-        },
-        {
-            "name": "Infrastructure",
-            "url": "http://ci.jenkins-ci.org/view/Infrastructure/"
-        },
-        {
-            "name": "Jenkins core",
-            "url": "http://ci.jenkins-ci.org/view/Jenkins%20core/"
-        },
-        {
-            "name": "Libraries",
-            "url": "http://ci.jenkins-ci.org/view/Libraries/"
-        },
-        {
-            "name": "Other Projects",
-            "url": "http://ci.jenkins-ci.org/view/Other%20Projects/"
-        }
-    ]
+    {
+      "name" : "core_selenium-test",
+      "buildable" : true
+    },
+    {
+      "name" : "fix-git-configuration-on-remote-slave-8",
+      "buildable" : true
+    },
+    {
+      "name" : "gerrit_master",
+      "buildable" : false
+    },
+    {
+      "name" : "infra_accountapp",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_backend-confluence-spam-remover",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_backend-merge-all-repo",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_backend-plugin-report-card",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_backend-war-size-tracker",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_backend_jenkins_ci_cloudbess_com_filler",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_backend_pull_request_greeter",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_bind",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_changelog_refresh",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_checkout_stats",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_commit_history_generation",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_drupalcron",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_extension-indexer",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_generate_monthly_json",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_github_repository_list",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_ircbot",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_javadoc",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_jenkins-ci.org_jekyll",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_jenkins-ci.org_webcontents",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_ldap",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_main_svn_to_git",
+      "buildable" : false
+    },
+    {
+      "name" : "infra_mirroring",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_patron_messages",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_plugin-compat-tester",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_plugin_changes_report",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_pluginmirror",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_plugins_svn_to_git",
+      "buildable" : false
+    },
+    {
+      "name" : "infra_pull_m2repo",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_pull_releases",
+      "buildable" : false
+    },
+    {
+      "name" : "infra_release.rss",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_repo.jenkins-ci.org_maven_index",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_robobutler",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_statistics",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_svnsync",
+      "buildable" : false
+    },
+    {
+      "name" : "infra_sync_maven-hpi-plugin_www",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_update_center",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_update_center_experimental",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_update_center_mirror",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_update_center_stable",
+      "buildable" : true
+    },
+    {
+      "name" : "infra_update_mave_site",
+      "buildable" : true
+    },
+    {
+      "name" : "jenkins_lts_branch",
+      "buildable" : true
+    },
+    {
+      "name" : "jenkins_main_maven-3.1.0",
+      "buildable" : true
+    },
+    {
+      "name" : "jenkins_main_trunk",
+      "buildable" : true
+    },
+    {
+      "name" : "jenkins_pom",
+      "buildable" : true
+    },
+    {
+      "name" : "jenkins_rc_branch",
+      "buildable" : true
+    },
+    {
+      "name" : "jenkins_ui-changes_branch",
+      "buildable" : true
+    },
+    {
+      "name" : "kohsuke_github-api",
+      "buildable" : true
+    },
+    {
+      "name" : "lib-jenkins-maven-artifact-manager",
+      "buildable" : true
+    },
+    {
+      "name" : "lib-jenkins-maven-embedder",
+      "buildable" : true
+    },
+    {
+      "name" : "lib-jira-api",
+      "buildable" : true
+    },
+    {
+      "name" : "libs_core-js",
+      "buildable" : true
+    },
+    {
+      "name" : "libs_dom4j",
+      "buildable" : true
+    },
+    {
+      "name" : "libs_htmlunit",
+      "buildable" : true
+    },
+    {
+      "name" : "libs_jelly",
+      "buildable" : true
+    },
+    {
+      "name" : "libs_jexl",
+      "buildable" : true
+    },
+    {
+      "name" : "libs_jmdns",
+      "buildable" : true
+    },
+    {
+      "name" : "libs_json-lib",
+      "buildable" : true
+    },
+    {
+      "name" : "libs_maven-jetty-plugin",
+      "buildable" : true
+    },
+    {
+      "name" : "libs_netx",
+      "buildable" : true
+    },
+    {
+      "name" : "libs_svnkit",
+      "buildable" : true
+    },
+    {
+      "name" : "libs_trilead-ssh2",
+      "buildable" : true
+    },
+    {
+      "name" : "libs_winstone",
+      "buildable" : true
+    },
+    {
+      "name" : "libs_xstream",
+      "buildable" : true
+    },
+    {
+      "name" : "maven-interceptors",
+      "buildable" : true
+    },
+    {
+      "name" : "model-ant-project",
+      "buildable" : true
+    },
+    {
+      "name" : "model-ruby-project",
+      "buildable" : true
+    },
+    {
+      "name" : "peripheral apps deactivation prevention",
+      "buildable" : true
+    },
+    {
+      "name" : "plugin-compat-tester",
+      "buildable" : false
+    },
+    {
+      "name" : "remoting",
+      "buildable" : true
+    },
+    {
+      "name" : "selenium-tests",
+      "buildable" : true
+    },
+    {
+      "name" : "test-matrix",
+      "buildable" : true
+    },
+    {
+      "name" : "tools_maven-hpi-plugin",
+      "buildable" : true
+    },
+    {
+      "name" : "tools_maven-hpi-plugin-maven-2.x",
+      "buildable" : true
+    }
+  ],
+  "primaryView" : {
+    "name" : "All Failed"
+  },
+  "views" : [
+    {
+      "name" : "All",
+      "url" : "http://ci.jenkins-ci.org/view/All/"
+    },
+    {
+      "name" : "All Disabled",
+      "url" : "http://ci.jenkins-ci.org/view/All%20Disabled/"
+    },
+    {
+      "name" : "All Failed",
+      "url" : "http://ci.jenkins-ci.org/"
+    },
+    {
+      "name" : "All Unstable",
+      "url" : "http://ci.jenkins-ci.org/view/All%20Unstable/"
+    },
+    {
+      "name" : "Infrastructure",
+      "url" : "http://ci.jenkins-ci.org/view/Infrastructure/"
+    },
+    {
+      "name" : "Jenkins core",
+      "url" : "http://ci.jenkins-ci.org/view/Jenkins%20core/"
+    },
+    {
+      "name" : "Libraries",
+      "url" : "http://ci.jenkins-ci.org/view/Libraries/"
+    },
+    {
+      "name" : "Other Projects",
+      "url" : "http://ci.jenkins-ci.org/view/Other%20Projects/"
+    }
+  ]
 }
