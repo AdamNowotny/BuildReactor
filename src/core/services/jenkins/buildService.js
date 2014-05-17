@@ -77,6 +77,7 @@ define([
 			url: joinUrl(view.url, 'api/json?tree=jobs[name]'),
 			username: settings.username,
 			password: settings.password,
+			timeout: 90000
 		}).select(function (viewResponse) {
 			return {
 				name: view.name,

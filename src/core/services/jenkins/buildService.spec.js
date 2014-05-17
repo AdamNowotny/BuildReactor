@@ -100,6 +100,21 @@ define([
 				expect(request.json).toHaveBeenCalled();
 			});
 
+			it('should increase timeout for view details', function () {
+				request.json.andCallFake(function (options) {
+					if (options.url === 'http://ci.jenkins-ci.org/api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]') {
+						return Rx.Observable.returnValue(availableBuildsJson);
+					} else if (options.url.indexOf('iew/') > -1) {
+						expect(options.timeout).toBe(90000);
+						return Rx.Observable.returnValue(viewJson);
+					}
+					throw 'Unknown url: ' + options.url;
+				});
+
+				service.availableBuilds();
+
+				expect(request.json).toHaveBeenCalled();
+			});
 			
 			it('should return projects', function () {
 				var result = scheduler.startWithCreate(function () {
