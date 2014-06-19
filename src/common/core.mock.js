@@ -14,6 +14,8 @@ define([
 ) {
 	'use strict';
 
+	var messages = new Rx.ReplaySubject(1);
+
 	var availableServices = function (callback) {
 		callback(availableServicesResponse);
 	};
@@ -22,18 +24,23 @@ define([
 		callback(availableProjectsResponse);
 	};
 
+	var log = function (parameters) {
+		messages.onNext(parameters);
+	};
+
 	return {
 		init: function () {},
 		availableServices: availableServices,
 		configurations: configurations,
 		activeProjects: Rx.Observable.returnValue(activeProjectsResponse),
-		updateSettings: function () { },
+		updateSettings: log,
 		availableProjects: availableProjects,
-		enableService: function () { },
-		disableService: function () { },
-		removeService: function () { },
-		renameService: function () { },
-		messages: Rx.Observable.never()
+		enableService: log,
+		disableService: log,
+		removeService: log,
+		renameService: log,
+		setOrder: log,
+		messages: messages
 	};
 
 });

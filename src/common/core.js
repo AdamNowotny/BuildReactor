@@ -22,52 +22,58 @@ define([
 	var messages = new Rx.ReplaySubject(1);
 
 	var availableServices = function (callback) {
-		var message = { name: "availableServices" };
+		var message = { name: 'availableServices' };
 		messages.onNext(message);
 		chromeApi.sendMessage(message, callback);
 	};
 
 	var availableProjects = function (settings, callback) {
-		var message = { name: "availableProjects", serviceSettings: settings };
+		var message = { name: 'availableProjects', serviceSettings: settings };
 		messages.onNext(message);
 		chromeApi.sendMessage(message, function (response) {
-			messages.onNext({ name: "availableProjects", response: response, serviceSettings: settings });
+			messages.onNext({ name: 'availableProjects', response: response, serviceSettings: settings });
 			callback(response);
 		});
 	};
 
 	var updateSettings = function (settingsList) {
-		var message = { name: "updateSettings", settings: settingsList };
+		var message = { name: 'updateSettings', settings: settingsList };
+		messages.onNext(message);
+		chromeApi.sendMessage(message);
+	};
+
+	var setOrder = function (serviceNames) {
+		var message = { name: 'setOrder', order: serviceNames };
 		messages.onNext(message);
 		chromeApi.sendMessage(message);
 	};
 
 	var enableService = function (name) {
-		var message = { name: "enableService", serviceName: name };
+		var message = { name: 'enableService', serviceName: name };
 		messages.onNext(message);
 		chromeApi.sendMessage(message);
 	};
 
 	var disableService = function (name) {
-		var message = { name: "disableService", serviceName: name };
+		var message = { name: 'disableService', serviceName: name };
 		messages.onNext(message);
 		chromeApi.sendMessage(message);
 	};
 
 	var removeService = function (name) {
-		var message = { name: "removeService", serviceName: name };
+		var message = { name: 'removeService', serviceName: name };
 		messages.onNext(message);
 		chromeApi.sendMessage(message);
 	};
 
 	var renameService = function (oldName, newName) {
-		var message = { name: "renameService", oldName: oldName, newName: newName };
+		var message = { name: 'renameService', oldName: oldName, newName: newName };
 		messages.onNext(message);
 		chromeApi.sendMessage(message);
 	};
 
 	var saveService = function (settings) {
-		var message = { name: "saveService", settings: settings };
+		var message = { name: 'saveService', settings: settings };
 		messages.onNext(message);
 		chromeApi.sendMessage(message);
 	};
@@ -78,6 +84,7 @@ define([
 		configurations: configurations,
 		activeProjects: activeProjects,
 		updateSettings: updateSettings,
+		setOrder: setOrder,
 		availableProjects: availableProjects,
 		enableService: enableService,
 		disableService: disableService,

@@ -3,7 +3,8 @@ define([
 	'angular.route',
 	'angular.ui',
 	'angular.ui.utils',
-	'rx.angular'
+	'rx.angular',
+	'htmlSortable'
 ], function (angular) {
 
 	'use strict';
@@ -13,6 +14,7 @@ define([
 		'ui.bootstrap',
 		'ui.highlight',
 		'ui.indeterminate',
-		'rx'
+		'rx',
+		'htmlSortable'
 	]);
 });

@@ -70,7 +70,7 @@ define([
 
 			core.availableServices(callback);
 
-			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "availableServices"}, callback);
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({ name: "availableServices" }, callback);
 		});
 
 		it('should send availableProjects message', function () {
@@ -83,7 +83,7 @@ define([
 			core.availableProjects(settings, callback);
 
 			expect(chromeApi.sendMessage).toHaveBeenCalled();
-			expect(chromeApi.sendMessage.mostRecentCall.args[0]).toEqual({name: "availableProjects", serviceSettings: settings});
+			expect(chromeApi.sendMessage.mostRecentCall.args[0]).toEqual({ name: "availableProjects", serviceSettings: settings });
 			expect(callback).toHaveBeenCalled();
 		});
 
@@ -92,25 +92,25 @@ define([
 
 			core.updateSettings(settings);
 
-			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "updateSettings", settings: settings});
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({ name: "updateSettings", settings: settings });
 		});
 
 		it('should send enableService message', function () {
 			core.enableService('service');
 
-			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "enableService", serviceName: 'service'});
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({ name: "enableService", serviceName: 'service' });
 		});
 
 		it('should send disableService message', function () {
 			core.disableService('service');
 
-			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "disableService", serviceName: 'service'});
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({ name: "disableService", serviceName: 'service' });
 		});
 
 		it('should send removeService message', function () {
 			core.removeService('service');
 
-			expect(chromeApi.sendMessage).toHaveBeenCalledWith({name: "removeService", serviceName: 'service'});
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({ name: "removeService", serviceName: 'service' });
 		});
 
 		it('should send renameService message', function () {
@@ -123,6 +123,11 @@ define([
 			});
 		});
 
+		it('should send setOrder message', function () {
+			core.setOrder(['service2', 'service1']);
+
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({ name: "setOrder", order: ['service2', 'service1'] });
+		});
 
 	});
 

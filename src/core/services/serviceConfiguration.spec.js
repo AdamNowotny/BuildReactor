@@ -151,5 +151,43 @@ define([
 			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
 
+		describe('reordering', function () {
+			it('should reorder services', function () {
+				var allConfig = [
+					{ name: 'service1' },
+					{ name: 'service2' }
+				];
+				configurationStore.getAll.andReturn(allConfig);
+
+				scheduler.scheduleAbsolute(300, function () {
+					serviceConfiguration.setOrder(['service2', 'service1']);
+				});
+				var changes = scheduler.startWithCreate(function () {
+					return serviceConfiguration.changes;
+				});
+
+				var result = [
+					{ name: 'service2' },
+					{ name: 'service1' }
+				];
+				expect(changes.messages).toHaveElementsMatchingAt(300, function (value) {
+					return value[0].name === 'service2' && value[1].name === 'service1';
+				});
+			});
+
+			it('should throw error when service count does not match', function () {
+				var allConfig = [
+					{ name: 'service1' },
+					{ name: 'service2' },
+					{ name: 'service3' }
+				];
+				configurationStore.getAll.andReturn(allConfig);
+
+				expect(function () {
+					serviceConfiguration.setOrder(['service2', 'service1']);
+				}).toThrow({ name: 'ArgumentInvalid', message: 'All services required' });
+			});
+		});
+		
 	});
 });

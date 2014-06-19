@@ -103,6 +103,8 @@ module.exports = function (grunt) {
 						'angular.ui': '../bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls',
 						'angular.ui.utils': '../bower_components/angular-ui-utils/ui-utils',
 						bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
+						htmlSortable: '../bower_components/html.sortable/dist/html.sortable.angular.0.1.2',
+						htmlSortableJquery: '../bower_components/html.sortable/dist/html.sortable.0.1.2',
 						'rx.angular': '../bower_components/angular-rx/rx.angular',
 
 						'common/core': 'common/core'
@@ -116,6 +118,7 @@ module.exports = function (grunt) {
 						'angular.ui': ['angular'],
 						'angular.ui.utils': ['angular'],
 						bootstrap: [ 'jquery' ],
+						htmlSortable: [ 'angular', 'htmlSortableJquery' ],
 						'rx.angular': [ 'angular', 'rx' ]
 					},
 					modules: [

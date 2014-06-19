@@ -17,6 +17,20 @@ define([
 		changes.onNext(allConfig);
 	};
 
+	var setOrder = function (serviceNames) {
+		var oldConfig = configurationStore.getAll();
+  		if (oldConfig.length !== serviceNames.length) {
+   			throw { name: 'ArgumentInvalid', message: 'All services required'};
+  		}
+  		var newConfigs = serviceNames.map(function (name) {
+  			return oldConfig.filter(function (config) {
+  				return config.name === name;
+  			})[0];
+  		});
+  		configurationStore.store(newConfigs);
+		changes.onNext(newConfigs);
+	};
+	
 	var enableService = function (serviceName) {
 		var newConfigs = configurationStore.getAll().map(function (config) {
 			if (config.name === serviceName) {
@@ -78,6 +92,7 @@ define([
 	return {
 		getAll: getAll,
 		setAll: setAll,
+		setOrder: setOrder,
 		enableService: enableService,
 		disableService: disableService,
 		removeService: removeService,

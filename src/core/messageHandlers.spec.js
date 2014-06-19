@@ -20,6 +20,7 @@ define([
 			spyOn(chromeApi, 'addConnectListener').andCallFake(function (connectListener) {
 				connectHandler = connectListener;
 			});
+			spyOn(serviceConfiguration, 'setOrder');
 			spyOn(serviceConfiguration, 'enableService');
 			spyOn(serviceConfiguration, 'disableService');
 			spyOn(serviceConfiguration, 'removeService');
@@ -71,6 +72,13 @@ define([
 				messageHandler({ name: 'updateSettings', settings: settings}, null, null);
 
 				expect(serviceConfiguration.setAll).toHaveBeenCalledWith(settings);
+			});
+
+			it('should handle setOrder', function () {
+				var serviceNames = [ 'service2', 'service1' ];
+				messageHandler({ name: 'setOrder', order: serviceNames}, null, null);
+
+				expect(serviceConfiguration.setOrder).toHaveBeenCalledWith(serviceNames);
 			});
 
 			it('should handle enableService', function () {

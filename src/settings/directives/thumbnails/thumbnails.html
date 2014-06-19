@@ -1,4 +1,4 @@
-<div class="thumbnails">
+<div class="thumbnails" html-sortable ng-model="serviceTypes">
 	<a
 		ng-repeat="service in serviceTypes"
 		ng-class="{ thumbnail: true, active: service.baseUrl === selected }"
