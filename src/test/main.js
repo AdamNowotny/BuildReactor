@@ -50,27 +50,40 @@ var deps = Object.keys(window.__karma__.files).filter(function (file) {
 });
 deps.push('angularMocks');
 
+if (!Function.prototype.bind) {
+	Function.prototype.bind = function (context) {
+		'use strict';
+		var self = this;
+		return function () {
+			return self.apply(context, arguments);
+		};
+	};
+}
+
 require.config({
 	baseUrl: '/base/src',
 	paths: {
 		jquery: "../bower_components/jquery/dist/jquery",
 		mout: '../bower_components/mout/src',
-		rx: '../bower_components/rxjs/rx',
-		'rx.async': '../bower_components/rxjs/rx.async',
-		'rx.binding': '../bower_components/rxjs/rx.binding',
-		'rx.time': '../bower_components/rxjs/rx.time',
+		rx: '../bower_components/Rx/dist/rx',
+		'rx.async': '../bower_components/Rx/dist/rx.async',
+		'rx.binding': '../bower_components/Rx/dist/rx.binding',
+		'rx.time': '../bower_components/Rx/dist/rx.time',
 
 		angular: '../bower_components/angular/angular',
 		'angular.route': '../bower_components/angular-route/angular-route',
 		'angular.ui': '../bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls',
+		'angular.ui.utils': '../bower_components/angular-ui-utils/ui-utils',
 		bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
+		htmlSortable: '../bower_components/html.sortable/dist/html.sortable.angular.0.1.2',
+		htmlSortableJquery: '../bower_components/html.sortable/dist/html.sortable.0.1.2',
 		'rx.angular': '../bower_components/angular-rx/rx.angular',
 
 		angularMocks: '../bower_components/angular-mocks/angular-mocks',
 		'common/core': 'common/core',
-		'rx.aggregates': '../bower_components/rxjs/rx.aggregates',
-		'rx.testing': '../bower_components/rxjs/rx.testing',
-		'rx.virtualtime': '../bower_components/rxjs/rx.virtualtime',
+		'rx.aggregates': '../bower_components/Rx/dist/rx.aggregates',
+		'rx.testing': '../bower_components/Rx/dist/rx.testing',
+		'rx.virtualtime': '../bower_components/Rx/dist/rx.virtualtime',
 		text: '../bower_components/requirejs-text/text',
 	},
 	shim: {
@@ -80,11 +93,16 @@ require.config({
 		},
 		'angular.route': ['angular'],
 		'angular.ui': ['angular'],
+		'angular.ui.utils': ['angular'],
 		bootstrap: [ 'jquery' ],
+		htmlSortable: [ 'angular', 'htmlSortableJquery' ],
 		'rx.angular': [ 'angular', 'rx' ],
 
 		'rx.testing': [ 'rx.virtualtime' ],
-		angularMocks: [ 'angular' ]
+		angularMocks: {
+			deps: ['angular'],
+			exports: 'angular.mock'
+		},
 	},
 	waitSeconds: 10,
 	deps: deps,

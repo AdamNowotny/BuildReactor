@@ -93,18 +93,18 @@ module.exports = function (grunt) {
 					paths: {
 						jquery: "../bower_components/jquery/dist/jquery",
 						mout: '../bower_components/mout/src',
-						rx: '../bower_components/rxjs/rx',
-						'rx.async': '../bower_components/rxjs/rx.async',
-						'rx.binding': '../bower_components/rxjs/rx.binding',
-						'rx.time': '../bower_components/rxjs/rx.time',
+						rx: '../bower_components/Rx/dist/rx',
+						'rx.async': '../bower_components/Rx/dist/rx.async',
+						'rx.binding': '../bower_components/Rx/dist/rx.binding',
+						'rx.time': '../bower_components/Rx/dist/rx.time',
 
 						angular: '../bower_components/angular/angular',
 						'angular.route': '../bower_components/angular-route/angular-route',
 						'angular.ui': '../bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls',
 						'angular.ui.utils': '../bower_components/angular-ui-utils/ui-utils',
 						bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
-						htmlSortable: '../bower_components/html.sortable/dist/html.sortable.angular.0.1.2',
-						htmlSortableJquery: '../bower_components/html.sortable/dist/html.sortable.0.1.2',
+						htmlSortable: '../bower_components/html.sortable/dist/html.sortable.angular',
+						htmlSortableJquery: '../bower_components/html.sortable/dist/html.sortable',
 						'rx.angular': '../bower_components/angular-rx/rx.angular',
 
 						'common/core': 'common/core'

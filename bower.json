@@ -5,16 +5,16 @@
   "dependencies": {
     "angular": "~1.2.16",
     "angular-route": "~1.2.16",
-    "angular-rx": "~0.0.3",
+    "angular-rx": "~0.0.8",
     "angular-ui-bootstrap-bower": "~0.10.0",
     "angular-ui-utils": "~0.1.1",
     "bootstrap": "~3.1.1",
     "font-awesome": "~4.0.3",
-    "html.sortable": "~0.1.2",
+    "html.sortable": "~0.1.5",
     "jquery": "~2.1.0",
     "mout": "~0.9.1",
     "requirejs": "~2.1.11",
-    "rxjs": "~2.2.20"
+    "Rx": "~2.3.4"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.16",

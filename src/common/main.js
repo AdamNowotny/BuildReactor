@@ -3,10 +3,10 @@ require.config({
 	paths: {
 		jquery: "../bower_components/jquery/dist/jquery",
 		mout: '../bower_components/mout/src',
-		rx: '../bower_components/rxjs/rx',
-		'rx.async': '../bower_components/rxjs/rx.async',
-		'rx.binding': '../bower_components/rxjs/rx.binding',
-		'rx.time': '../bower_components/rxjs/rx.time'
+		rx: '../bower_components/Rx/dist/rx',
+		'rx.async': '../bower_components/Rx/dist/rx.async',
+		'rx.binding': '../bower_components/Rx/dist/rx.binding',
+		'rx.time': '../bower_components/Rx/dist/rx.time'
 	}
 });
 
