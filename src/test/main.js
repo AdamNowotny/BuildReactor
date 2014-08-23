@@ -63,7 +63,7 @@ if (!Function.prototype.bind) {
 require.config({
 	baseUrl: '/base/src',
 	paths: {
-		jquery: "../bower_components/jquery/dist/jquery",
+		jquery: '../bower_components/jquery/dist/jquery',
 		mout: '../bower_components/mout/src',
 		rx: '../bower_components/Rx/dist/rx',
 		'rx.async': '../bower_components/Rx/dist/rx.async',
@@ -75,8 +75,8 @@ require.config({
 		'angular.ui': '../bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls',
 		'angular.ui.utils': '../bower_components/angular-ui-utils/ui-utils',
 		bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
-		htmlSortable: '../bower_components/html.sortable/dist/html.sortable.angular.0.1.2',
-		htmlSortableJquery: '../bower_components/html.sortable/dist/html.sortable.0.1.2',
+		htmlSortable: '../bower_components/html.sortable/dist/html.sortable.angular',
+		htmlSortableJquery: '../bower_components/html.sortable/dist/html.sortable',
 		'rx.angular': '../bower_components/angular-rx/rx.angular',
 
 		angularMocks: '../bower_components/angular-mocks/angular-mocks',
@@ -103,6 +103,7 @@ require.config({
 			deps: ['angular'],
 			exports: 'angular.mock'
 		},
+		'settings/directives/sidebar/sidebar.html': ['angular']
 	},
 	waitSeconds: 10,
 	deps: deps,

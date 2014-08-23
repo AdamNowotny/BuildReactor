@@ -14,6 +14,7 @@ require([
 	'jquery',
 	'mout/array/contains',
 	'mout/array/remove',
+	'mout/array/removeAll',
 	'mout/object/deepMatches',
 	'mout/object/equals',
 	'mout/object/fillIn',

@@ -1,10 +1,13 @@
 <div class="sidebar-nav">
 	<div class="scrollable">
-		<ul class="service-list nav nav-pills nav-stacked" html-sortable="{ handle: '.handle' }" ng-model="services">
+		<ul class="service-list nav nav-pills nav-stacked"
+		    html-sortable="{ handle: '.handle' }"
+		    html-sortable-callback="sortableCallback"
+		    ng-model="services">
 			<li
 				ng-repeat="service in services"
 				ng-class="{ muted: service.disabled, active: service.name === selected.name }">
-				<a ng-click="navigate('/service/' + service.name)" class="nav-pill">
+				<a ng-click="changeService(service.name)" class="nav-pill">
 					<span class="handle">::</span>
 					<img class="pill-icon" ng-src="/src/core/services/{{ service.icon }}">
 					<span class="pill-name">{{ service.name }}</span>

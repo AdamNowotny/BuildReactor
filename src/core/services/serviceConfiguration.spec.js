@@ -187,6 +187,24 @@ define([
 					serviceConfiguration.setOrder(['service2', 'service1']);
 				}).toThrow({ name: 'ArgumentInvalid', message: 'All services required' });
 			});
+
+			it('should not publish changes when order not changed', function () {
+				var allConfig = [
+					{ name: 'service1' },
+					{ name: 'service2' }
+				];
+				configurationStore.getAll.andReturn(allConfig);
+
+				scheduler.scheduleAbsolute(300, function () {
+					serviceConfiguration.setOrder(['service1', 'service2']);
+				});
+				var changes = scheduler.startWithCreate(function () {
+					return serviceConfiguration.changes;
+				});
+
+				expect(changes.messages).not.toHaveElementsAtTimes(300);
+			});
+
 		});
 		
 	});

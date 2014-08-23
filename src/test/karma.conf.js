@@ -12,8 +12,9 @@ module.exports = function (config) {
 		// frameworks to use
 		frameworks: ['jasmine', 'requirejs'],
 
-		// don't use html2js for Handlebars templates
+		 // generate js files from html templates
 		preprocessors: {
+			'src/**/*.html': ['ng-html2js']
 		},
 
 		// list of files / patterns to load in the browser
@@ -59,7 +60,8 @@ module.exports = function (config) {
 		// - Safari (only Mac)
 		// - PhantomJS
 		// - IE (only Windows)
-		browsers: [process.env.TRAVIS ? 'PhantomJS' : 'Chrome'],
+		// browsers: [process.env.TRAVIS ? 'PhantomJS' : 'Chrome'],
+		browsers: ['PhantomJS'],
 
 		// If browser does not capture in given timeout [ms], kill it
 		captureTimeout: 60000,

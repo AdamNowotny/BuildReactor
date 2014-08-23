@@ -7,8 +7,8 @@ require.config({
 		'angular.ui.utils': '../bower_components/angular-ui-utils/ui-utils',
 		bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
 		'common/core': 'common/core.mock',
-		htmlSortable: '../bower_components/html.sortable/dist/html.sortable.angular.0.1.2',
-		htmlSortableJquery: '../bower_components/html.sortable/dist/html.sortable.0.1.2',
+		htmlSortable: '../bower_components/html.sortable/dist/html.sortable.angular',
+		htmlSortableJquery: '../bower_components/html.sortable/dist/html.sortable',
 		'rx.angular': '../bower_components/angular-rx/rx.angular'
 	},
 	shim: {
@@ -29,5 +29,6 @@ require([
 	'common/main',
 	'angular',
 	'angular.route',
+	'rx.angular',
 	'bootstrap'
 ], function () { });

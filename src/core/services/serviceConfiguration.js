@@ -1,8 +1,9 @@
 define([
 	'rx',
 	'core/services/configurationStore',
+	'common/arrayEquals',
 	'rx.binding'
-], function (Rx, configurationStore) {
+], function (Rx, configurationStore, arrayEquals) {
 
 	'use strict';
 	
@@ -22,13 +23,18 @@ define([
   		if (oldConfig.length !== serviceNames.length) {
    			throw { name: 'ArgumentInvalid', message: 'All services required'};
   		}
+  		var oldServiceNames = oldConfig.map(function (config) {
+  			return config.name;
+  		});
   		var newConfigs = serviceNames.map(function (name) {
   			return oldConfig.filter(function (config) {
   				return config.name === name;
   			})[0];
   		});
-  		configurationStore.store(newConfigs);
-		changes.onNext(newConfigs);
+  		if (!arrayEquals(oldServiceNames, serviceNames)) {
+	  		configurationStore.store(newConfigs);
+			changes.onNext(newConfigs);
+  		}
 	};
 	
 	var enableService = function (serviceName) {

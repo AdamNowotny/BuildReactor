@@ -4,7 +4,7 @@ define([
 	'htmlSortable'
 ], function (app, core) {
 	'use strict';
-
+	
 	app.directive('sidebar', function ($location) {
 		return {
 			scope: {
@@ -14,19 +14,18 @@ define([
 			},
 			templateUrl: 'src/settings/directives/sidebar/sidebar.html',
 			controller: function ($scope, $element, $attrs, $transclude) {
-				
-				$scope.navigate = function (url) {
-					$location.path(url);
+
+				$scope.changeService = function (serviceName) {
+					$location.path('/service/' + serviceName);
 				};
 
-				$scope.$watchCollection('services', function (services) {
-					if (services) {
-						var orderItems = services.map(function (service) {
-							return service.name;
-						});
-						orderItems && core.setOrder(orderItems);
-					}
-				});
+				$scope.sortableCallback = function (startModel, destModel, start, end) {
+					var items = destModel.map(function (service) {
+						return service.name;
+					});
+					core.setOrder(items);
+				};
+
 			}
 		};
 	});

@@ -1,7 +1,8 @@
 define([
 	'mout/array/remove',
-	'mout/object/deepMatches'
-], function (remove, deepMatches) {
+	'mout/object/deepMatches',
+	'mout/array/removeAll'
+], function (remove, deepMatches, removeAll) {
 
 	'use strict';
 
@@ -31,13 +32,11 @@ define([
 			},
 			toHaveElementsAtTimes: function () {
 				var expectedTimes = Array.prototype.slice.call(arguments);
-				var i;
-				for (i = 0; i < this.actual.length; i++) {
-					if (expectedTimes.indexOf(this.actual[i].time) !== -1) {
-						remove(expectedTimes, this.actual[i].time);
-					}
-				}
-				return expectedTimes.length === 0;
+				var actualTimes = this.actual.map(function (value) {
+					return value.time;
+				});
+				removeAll(actualTimes, expectedTimes);
+				return actualTimes.length === 0;
 			},
 			toHaveEvent: function (eventName, expectedCount) {
 				var i, times = 0;
