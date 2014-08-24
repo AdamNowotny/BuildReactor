@@ -5,7 +5,9 @@
 				<input type="checkbox" class="check-all" ng-change="checkAll(group)" ng-model="group.allSelected" ui-indeterminate="group.someSelected" />
 				<a data-toggle="collapse" href="#project-group-{{ $index }}">
 					<span class="group-name">{{ group.name || 'Projects' }}</span>
-					<span class="filter-count" title="Visible / All projects in group"><span ng-show="group.visibleCount != group.projectsCount">{{ group.visibleCount }} / </span>{{ group.projectsCount }}</span>
+					<span class="filter-count badge" title="Visible / All projects in group">
+						<span ng-show="group.visibleCount != group.projectsCount">{{ group.visibleCount }} / </span>{{ group.projectsCount }}
+					</span>
 				</a>
 			</h4>
 		</div>
