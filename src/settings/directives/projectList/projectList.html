@@ -16,7 +16,9 @@
 				<label class="checkbox" ng-repeat="item in group.projects | filter:search">
 					<input type="checkbox" ng-model="item.isSelected">
 					<span class="project-name" ng-class="{ 'text-muted': item.isDisabled }" ng-bind-html="item.nameHtml"></span>
-					<span class="label label-default" ng-show="item.isDisabled">Disabled</span>
+					<span class="pull-right">
+						<span class="label label-default" ng-show="item.isDisabled">Disabled</span>
+					</span>
 				</label>
 			</div>
 		</div>
