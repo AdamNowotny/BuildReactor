@@ -6,7 +6,7 @@ define([
 ], function (serviceConfiguration, configurationStore, Rx) {
 
 	'use strict';
-	
+
 	describe('serviceConfiguration', function () {
 
 		var onNext = Rx.ReactiveTest.onNext;
@@ -25,20 +25,6 @@ define([
 			var result = serviceConfiguration.getAll();
 
 			expect(result).toEqual(allConfig);
-		});
-
-		it('should set all service configuration', function () {
-			var allConfig = [{ name: 'name1' }, { name: 'name2' }];
-
-			scheduler.scheduleAbsolute(300, function () {
-				serviceConfiguration.setAll(allConfig);
-			});
-			var changes = scheduler.startWithCreate(function () {
-				return serviceConfiguration.changes;
-			});
-
-			expect(configurationStore.store).toHaveBeenCalledWith(allConfig);
-			expect(changes.messages).toHaveElements(onNext(300, allConfig));
 		});
 
 		it('should disable service', function () {
@@ -206,6 +192,6 @@ define([
 			});
 
 		});
-		
+
 	});
 });

@@ -6,16 +6,11 @@ define([
 ], function (Rx, configurationStore, arrayEquals) {
 
 	'use strict';
-	
+
 	var changes = new Rx.BehaviorSubject(configurationStore.getAll());
 
 	var getAll = function () {
 		return configurationStore.getAll();
-	};
-
-	var setAll = function (allConfig) {
-		configurationStore.store(allConfig);
-		changes.onNext(allConfig);
 	};
 
 	var setOrder = function (serviceNames) {
@@ -36,7 +31,7 @@ define([
 			changes.onNext(newConfigs);
   		}
 	};
-	
+
 	var enableService = function (serviceName) {
 		var newConfigs = configurationStore.getAll().map(function (config) {
 			if (config.name === serviceName) {
@@ -47,7 +42,7 @@ define([
 		configurationStore.store(newConfigs);
 		changes.onNext(newConfigs);
 	};
-	
+
 	var disableService = function (serviceName) {
 		var newConfigs = configurationStore.getAll().map(function (config) {
 			if (config.name === serviceName) {
@@ -97,7 +92,6 @@ define([
 
 	return {
 		getAll: getAll,
-		setAll: setAll,
 		setOrder: setOrder,
 		enableService: enableService,
 		disableService: disableService,

@@ -33,7 +33,6 @@ define([
 		availableServices: availableServices,
 		configurations: configurations,
 		activeProjects: Rx.Observable.returnValue(activeProjectsResponse),
-		updateSettings: log,
 		availableProjects: availableProjects,
 		enableService: log,
 		disableService: log,

@@ -79,20 +79,12 @@ define([
 			chromeApi.sendMessage.andCallFake(function (message, callback) {
 				callback('result');
 			});
-			
+
 			core.availableProjects(settings, callback);
 
 			expect(chromeApi.sendMessage).toHaveBeenCalled();
 			expect(chromeApi.sendMessage.mostRecentCall.args[0]).toEqual({ name: "availableProjects", serviceSettings: settings });
 			expect(callback).toHaveBeenCalled();
-		});
-
-		it('should send updateSettings message', function () {
-			var settings = [];
-
-			core.updateSettings(settings);
-
-			expect(chromeApi.sendMessage).toHaveBeenCalledWith({ name: "updateSettings", settings: settings });
 		});
 
 		it('should send enableService message', function () {

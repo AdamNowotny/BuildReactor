@@ -3,7 +3,7 @@ define([
 	'rx',
 	'rx.binding'
 ], function (chromeApi, Rx) {
-	
+
 	'use strict';
 
 	var init = function () {
@@ -34,12 +34,6 @@ define([
 			messages.onNext({ name: 'availableProjects', response: response, serviceSettings: settings });
 			callback(response);
 		});
-	};
-
-	var updateSettings = function (settingsList) {
-		var message = { name: 'updateSettings', settings: settingsList };
-		messages.onNext(message);
-		chromeApi.sendMessage(message);
 	};
 
 	var setOrder = function (serviceNames) {
@@ -83,7 +77,6 @@ define([
 		availableServices: availableServices,
 		configurations: configurations,
 		activeProjects: activeProjects,
-		updateSettings: updateSettings,
 		setOrder: setOrder,
 		availableProjects: availableProjects,
 		enableService: enableService,
@@ -94,5 +87,5 @@ define([
 		// for logging
 		messages: messages
 	};
-	
+
 });

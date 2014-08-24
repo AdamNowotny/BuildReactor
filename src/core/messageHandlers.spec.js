@@ -27,7 +27,6 @@ define([
 			spyOn(serviceConfiguration, 'renameService');
 			spyOn(serviceConfiguration, 'saveService');
 			spyOn(serviceConfiguration, 'getAll');
-			spyOn(serviceConfiguration, 'setAll');
 			spyOn(serviceController, 'getAllTypes');
 			messageHandlers.init();
 		});
@@ -65,13 +64,6 @@ define([
 				});
 
 				expect(result).toEqual(serviceTypes);
-			});
-
-			it('should handle updateSettings', function () {
-				var settings = [{ name: 'service'}];
-				messageHandler({ name: 'updateSettings', settings: settings}, null, null);
-
-				expect(serviceConfiguration.setAll).toHaveBeenCalledWith(settings);
 			});
 
 			it('should handle setOrder', function () {

@@ -23,9 +23,6 @@ define([
 				});
 			});
 			return true;
-		case 'updateSettings':
-			serviceConfiguration.setAll(request.settings);
-			break;
 		case 'setOrder':
 			serviceConfiguration.setOrder(request.order);
 			break;

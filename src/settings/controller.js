@@ -9,7 +9,7 @@ define([
 		$scope.serviceId = null;
 		$scope.serviceTypeId = null;
 		$scope.selected = null;
-		
+
 		var updateSelected = function () {
 			$scope.isNew ? updateSelectedForNew() : updateSelectedForService();
 		};
