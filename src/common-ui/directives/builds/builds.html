@@ -11,11 +11,11 @@
 						<span class="service-item-name pull-left">{{ item.name }}</span>
 						<i class="fa fa-spinner fa-spin fa-lg pull-right"></i>
 						<span class="labels">
-							<span ng-show="item.error" class="label label-default pull-right" title="{{ item.error.description }}">
+							<span ng-show="item.error" class="label label-default pull-right" tooltip="{{ item.error.description }}">
 								Offline	<span class="error-message">({{ item.error.message }})</span>
 							</span>
 							<span ng-repeat="tag in item.tags">
-								<span class="label pull-right" ng-class="getLabelClasses(tag)" title="{{ item.description }}">{{ tag.name }}</span>
+								<span class="label pull-right" ng-class="getLabelClasses(tag)" tooltip="{{ item.description }}">{{ tag.name }}</span>
 							</span>
 							<span ng-show="item.isDisabled" class="label label-default pull-right">Disabled</span>
 						</span>

@@ -5,5 +5,8 @@ require([
 	'angular',
 	'angular.route',
 	'rx.coincidence',
-	'bootstrap'
+	'bootstrap',
+	'angular.ui',
+	'angular.ui.utils',
+	'htmlSortable'
 ], function () { });
