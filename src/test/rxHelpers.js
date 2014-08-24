@@ -1,8 +1,7 @@
 define([
-	'mout/array/remove',
 	'mout/object/deepMatches',
 	'mout/array/removeAll'
-], function (remove, deepMatches, removeAll) {
+], function (deepMatches, removeAll) {
 
 	'use strict';
 

@@ -2,10 +2,8 @@ define([
 	'core/services/serviceConfiguration',
 	'core/services/serviceLoader',
 	'rx',
-	'mout/array/contains',
-	'mout/object/values',
 	'rx.binding'
-], function (serviceConfiguration, serviceLoader, Rx, contains, values) {
+], function (serviceConfiguration, serviceLoader, Rx) {
 
 	'use strict';
 
@@ -76,7 +74,7 @@ define([
 		services.forEach(function (service) {
 			service.stop();
 		});
-		eventsSubscriptions.forEach(function (subscription) { 
+		eventsSubscriptions.forEach(function (subscription) {
 			subscription.dispose();
 		});
 		services = [];

@@ -13,11 +13,19 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-plato');
 	grunt.loadNpmTasks('grunt-version');
 
+	// default task - run tests and package
 	grunt.registerTask('default', ['clean:build', 'jshint', 'karma:once', 'requirejs', 'cssmin', 'copy', 'clean:buildSrc', 'compress']);
+	// continuous testing and web server at http://localhost:9876/ (need to disable ng-html2js in karma.conf.js for templates to load)
+	// Pages available:
+	// http://localhost:9876/base/src/popup/main.html
+	// http://localhost:9876/base/src/dashboard/main.html
+	// http://localhost:9876/base/src/settings/index.html
 	grunt.registerTask('test', ['karma:watch']);
+	// skip tests and create package
 	grunt.registerTask('dist', ['clean:build', 'requirejs', 'cssmin', 'copy', 'clean:buildSrc', 'compress']);
 	grunt.registerTask('report', ['plato:src']);
-	grunt.registerTask('travis', ['clean:build', 'jshint', 'karma:once']);
+	// default task run by CI server
+	grunt.registerTask('ci', ['clean:build', 'jshint', 'karma:once']);
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -75,6 +83,7 @@ module.exports = function (grunt) {
 			compile: {
 				options: {
 					baseUrl: "src",
+					mainConfigFile: 'src/common/main.js',
 					dir: '<%= vars.dist %>/src',
 					removeCombined: true,
 					inlineText: true,
@@ -91,36 +100,8 @@ module.exports = function (grunt) {
 						end: "}());"
 					},
 					paths: {
-						jquery: "../bower_components/jquery/dist/jquery",
-						mout: '../bower_components/mout/src',
-						rx: '../bower_components/Rx/dist/rx',
-						'rx.async': '../bower_components/Rx/dist/rx.async',
-						'rx.binding': '../bower_components/Rx/dist/rx.binding',
-						'rx.coincidence': '../bower_components/Rx/dist/rx.coincidence',
-						'rx.time': '../bower_components/Rx/dist/rx.time',
-
-						angular: '../bower_components/angular/angular',
-						'angular.route': '../bower_components/angular-route/angular-route',
-						'angular.ui': '../bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls',
-						'angular.ui.utils': '../bower_components/angular-ui-utils/ui-utils',
-						bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
-						htmlSortable: '../bower_components/html.sortable/dist/html.sortable.angular',
-						htmlSortableJquery: '../bower_components/html.sortable/dist/html.sortable',
-						'rx.angular': '../bower_components/angular-rx/rx.angular',
-
+						// override default
 						'common/core': 'common/core'
-					},
-					shim: {
-						angular: {
-							deps: ['jquery'],
-							exports: 'angular'
-						},
-						'angular.route': ['angular'],
-						'angular.ui': ['angular'],
-						'angular.ui.utils': ['angular'],
-						bootstrap: [ 'jquery' ],
-						htmlSortable: [ 'angular', 'htmlSortableJquery' ],
-						'rx.angular': [ 'angular', 'rx' ]
 					},
 					modules: [
 						{

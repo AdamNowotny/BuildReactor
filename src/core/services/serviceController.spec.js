@@ -3,15 +3,13 @@ define([
 	'rx',
 	'core/services/serviceLoader',
 	'mout/object/mixIn',
-	'mout/object/equals',
-	'mout/object/deepMatches',
 	'test/rxHelpers',
 	'rx.binding'
 ],
-function (controller, Rx, serviceLoader, mixIn, equals, deepMatches) {
+function (controller, Rx, serviceLoader, mixIn) {
 
 	'use strict';
-	
+
 	xdescribe('core/services/serviceController', function () {
 
 		function CustomBuildService(settings) {
@@ -69,7 +67,7 @@ function (controller, Rx, serviceLoader, mixIn, equals, deepMatches) {
 
 			it('should not start disabled services', function () {
 				settings.disabled = true;
-				
+
 				controller.start(Rx.Observable.returnValue([settings]));
 
 				expect(CustomBuildService.prototype.start).not.toHaveBeenCalled();

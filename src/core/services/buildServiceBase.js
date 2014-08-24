@@ -1,10 +1,9 @@
 define([
 	'rx',
-	'mout/object/values',
 	'mout/object/mixIn',
 	'rx.time',
 	'rx.binding'
-], function (Rx, values, mixIn) {
+], function (Rx, mixIn) {
 	'use strict';
 
 	function BuildServiceBase(settings, scheduler) {
@@ -136,7 +135,7 @@ define([
 		if (!this.settings.updateInterval) {
 			throw { name: 'ArgumentInvalid', message: 'updateInterval not defined'};
 		}
-		if (this.poolingSubscription !== null) { 
+		if (this.poolingSubscription !== null) {
 			return Rx.Observable.empty();
 		}
 		var self = this;
@@ -191,6 +190,6 @@ define([
 				})
 		};
 	};
-	
+
 	return BuildServiceBase;
 });

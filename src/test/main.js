@@ -62,14 +62,8 @@ if (!Function.prototype.bind) {
 
 require.config({
 	baseUrl: '/base/src',
-	paths: {
-		jquery: '../bower_components/jquery/dist/jquery',
-		mout: '../bower_components/mout/src',
-		rx: '../bower_components/Rx/dist/rx',
-		'rx.async': '../bower_components/Rx/dist/rx.async',
-		'rx.binding': '../bower_components/Rx/dist/rx.binding',
-		'rx.time': '../bower_components/Rx/dist/rx.time',
-
+	mainConfigFile: 'common/main.js',	paths: {
+		// copied from from src/common/main.js
 		angular: '../bower_components/angular/angular',
 		'angular.route': '../bower_components/angular-route/angular-route',
 		'angular.ui': '../bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls',
@@ -77,8 +71,15 @@ require.config({
 		bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
 		htmlSortable: '../bower_components/html.sortable/dist/html.sortable.angular',
 		htmlSortableJquery: '../bower_components/html.sortable/dist/html.sortable',
-		'rx.angular': '../bower_components/angular-rx/rx.angular',
+		jquery: "../bower_components/jquery/dist/jquery",
+		mout: '../bower_components/mout/src',
+		rx: '../bower_components/Rx/dist/rx',
+		'rx.async': '../bower_components/Rx/dist/rx.async',
+		'rx.binding': '../bower_components/Rx/dist/rx.binding',
+		'rx.coincidence': '../bower_components/Rx/dist/rx.coincidence',
+		'rx.time': '../bower_components/Rx/dist/rx.time',
 
+		// needed for testing only
 		angularMocks: '../bower_components/angular-mocks/angular-mocks',
 		'common/core': 'common/core',
 		'rx.aggregates': '../bower_components/Rx/dist/rx.aggregates',
@@ -87,6 +88,7 @@ require.config({
 		text: '../bower_components/requirejs-text/text',
 	},
 	shim: {
+		// copied from from src/common/main.js
 		angular: {
 			deps: ['jquery'],
 			exports: 'angular'
@@ -96,8 +98,8 @@ require.config({
 		'angular.ui.utils': ['angular'],
 		bootstrap: [ 'jquery' ],
 		htmlSortable: [ 'angular', 'htmlSortableJquery' ],
-		'rx.angular': [ 'angular', 'rx' ],
 
+		// needed for testing only
 		'rx.testing': [ 'rx.virtualtime' ],
 		angularMocks: {
 			deps: ['angular'],

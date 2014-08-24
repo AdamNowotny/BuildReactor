@@ -25,7 +25,7 @@
     "node": ">= 0.10.0"
   },
   "scripts": {
-    "test": "bower update && grunt travis --verbose"
+    "test": "bower update && grunt ci --verbose"
   },
   "dependencies": {},
   "devDependencies": {
