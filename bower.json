@@ -3,21 +3,21 @@
   "description": "Developer notifications and dashboard",
   "version": "0.7.7",
   "dependencies": {
-    "angular": "~1.2.16",
-    "angular-route": "~1.2.16",
+    "angular": "~1.2.23",
+    "angular-route": "~1.2.23",
     "angular-rx": "~0.0.8",
-    "angular-ui-bootstrap-bower": "~0.10.0",
+    "angular-ui-bootstrap-bower": "~0.11.0",
     "angular-ui-utils": "~0.1.1",
-    "bootstrap": "~3.1.1",
-    "font-awesome": "~4.0.3",
+    "bootstrap": "~3.2.0",
+    "font-awesome": "~4.1.0",
     "html.sortable": "~0.1.5",
-    "jquery": "~2.1.0",
+    "jquery": "~2.1.1",
     "mout": "~0.9.1",
-    "requirejs": "~2.1.11",
-    "Rx": "~2.2.20"
+    "requirejs": "~2.1.14",
+    "Rx": "~2.3.4"
   },
   "devDependencies": {
-    "angular-mocks": "~1.2.16",
+    "angular-mocks": "~1.2.23",
     "requirejs-text": "~2.0.12"
   }
 }

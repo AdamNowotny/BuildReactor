@@ -2,7 +2,8 @@ define([
 	'common-ui/directives/module',
 	'common/sortBy',
 	'rx',
-	'common/core'
+	'common/core',
+	'rx.coincidence'
 ], function (module, sortBy, Rx, core) {
 
 	'use strict';
