@@ -13,19 +13,31 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-plato');
 	grunt.loadNpmTasks('grunt-version');
 
+	/**
+	 * Grunt tasks
+	 */
+
 	// default task - run tests and package
-	grunt.registerTask('default', ['clean:build', 'jshint', 'karma:once', 'requirejs', 'cssmin', 'copy', 'clean:buildSrc', 'compress']);
-	// continuous testing and web server at http://localhost:9876/ (need to disable ng-html2js in karma.conf.js for templates to load)
-	// Pages available:
-	// http://localhost:9876/base/src/popup/main.html
-	// http://localhost:9876/base/src/dashboard/main.html
-	// http://localhost:9876/base/src/settings/index.html
-	grunt.registerTask('test', ['karma:watch']);
+	grunt.registerTask('default', [ 'clean:build', 'jshint', 'karma:once', 'requirejs', 'cssmin', 'copy', 'clean:buildSrc', 'compress' ]);
+
+	// continuous testing and web server at http://localhost:9876/base/src/test/index.html
+	// need to disable ng-html2js in karma.conf.js for templates to load
+	grunt.registerTask('test', [ 'karma:watch' ]);
+
 	// skip tests and create package
-	grunt.registerTask('dist', ['clean:build', 'requirejs', 'cssmin', 'copy', 'clean:buildSrc', 'compress']);
-	grunt.registerTask('report', ['plato:src']);
+	grunt.registerTask('dist', [ 'clean:build', 'requirejs', 'cssmin', 'copy', 'clean:buildSrc', 'compress' ]);
+
+	// create code quality report
+	grunt.registerTask('report', [ 'plato:src' ]);
+
 	// default task run by CI server
-	grunt.registerTask('ci', ['clean:build', 'jshint', 'karma:once']);
+	grunt.registerTask('ci', [ 'clean:build', 'jshint', 'karma:once' ]);
+
+	// grunt version::[major,minor,patch] - update version based on package.json
+
+	/*
+	 * Configuration
+	 */
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -46,19 +58,21 @@ module.exports = function (grunt) {
 			]
 		},
 		jshint: {
-			files: ['src/**/*.js'],
+			files: [ 'src/**/*.js' ],
 			options: {
 				jshintrc: '.jshintrc'
 			}
 		},
 		version: {
-			patch: {
-				src: ['manifest.json', 'bower.json']
+			defaults: {
+				src: [
+					'package.json',
+					'manifest.json',
+					'bower.json',
+					'src/common/configuration.js'
+				]
 			}
 		},
-		/**
-		 * The Karma configurations.
-		 */
 		karma: {
 			options: {
 				configFile: 'src/test/karma.conf.js'

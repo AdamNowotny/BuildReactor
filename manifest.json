@@ -1,6 +1,6 @@
 {
 	"name": "BuildReactor",
-	"version": "0.7.7",
+	"version": "0.8.0",
 	"manifest_version": 2,
 	"description": "Developer notifications and dashboard",
 	"icons": {
@@ -11,7 +11,7 @@
 	"browser_action": {
 		"default_title": "BuildReactor",
 		"default_icon": "img/icon-19.png",
-		"default_popup": "src/popup/main.html"
+		"default_popup": "src/popup/index.html"
 	},
 	"background": {
 		"scripts": [
