@@ -12,6 +12,7 @@ define([
 	'settings/directives/filterQuery/filterQuery',
 	'settings/directives/focusIf/focusIf',
 	'settings/directives/projectList/projectList',
+	'settings/directives/selectedProjects/selectedProjects',
 	'settings/directives/serviceNamePanel/serviceNamePanel',
 	'settings/directives/sidebar/sidebar',
 	'settings/directives/onOffSwitch/onOffSwitch',
