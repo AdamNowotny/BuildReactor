@@ -1,23 +1,12 @@
 @import url("../../bower_components/angular/angular-csp.css");
-@import url("../common-ui/popup.css");
+@import url("../common-ui/directives/buildList/buildList.css");
+@import url("../common-ui/directives/service/service.css");
+@import url("../common-ui/directives/build/build.css");
 
 body {
 	background-color: #141414;
 	color: white;
 	margin-top: 0;
-}
-
-.no-services-message {
-	color: #F90;
-	font-size: x-large;
-	font-weight: bold;
-	margin-top: 60px;
-	margin-bottom: 1em;
-	text-align: center;
-}
-
-.service-group {
-	text-align: left;
 }
 
 .label .error-message {
@@ -26,6 +15,14 @@ body {
 	max-width: 250px;
 }
 
-li .service-item-name {
+.build-list .no-services-message {
+	font-size: x-large;
+}
+
+.build .group-name {
+	text-align: left;
+}
+
+.build .build-name {
 	font-weight: bold;
 }

@@ -13,7 +13,6 @@ require.config({
 		rx: '../bower_components/Rx/dist/rx',
 		'rx.async': '../bower_components/Rx/dist/rx.async',
 		'rx.binding': '../bower_components/Rx/dist/rx.binding',
-		'rx.coincidence': '../bower_components/Rx/dist/rx.coincidence',
 		'rx.time': '../bower_components/Rx/dist/rx.time',
 
 		// mock by default for test web server

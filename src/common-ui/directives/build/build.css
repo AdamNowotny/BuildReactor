@@ -1,0 +1,127 @@
+.build-changes {
+    font-size: 7pt;
+    overflow: hidden;
+    position: absolute;
+    right: 100px;
+    text-align: center;
+    text-overflow: ellipsis;
+    top: 20px;
+}
+
+.build .group-name {
+	color: #999;
+	display: block;
+	font-size: 8pt;
+	margin-top: 5px;
+	margin-bottom: -5px;
+}
+
+
+.build a,
+.build a:hover,
+.build a:visited {
+	color: white;
+	display: block;
+	text-decoration: none;
+}
+
+	.build .tooltip {
+		white-space: normal;
+	}
+	
+	.build a {
+		background-color: #360;
+		border-radius: 5px;
+		cursor: pointer;
+		height: 30px;
+		margin-top: 5px;
+		padding: 5px 30px 5px 5px;
+		position: relative;
+		white-space: nowrap;
+	}
+
+	.build.disabled a {
+		background-color: #888;
+	}
+
+		.build.disabled .build-name {
+			color: black;
+		}
+
+		.build.disabled.broken a {
+			background-color: #888;
+		}
+
+	.build.offline a,
+	.build.offline.broken a,
+	.build.offline.building a,
+	.build.offline.broken.building a {
+		background-color: #888;
+	}
+
+		.build.offline.disabled .build-name,
+		.build.offline.disabled.broken .build-name {
+			color: black;
+		}
+
+		.build.offline .build-name,
+		.build.offline .fa-spinner {
+			color: #360;
+		}
+
+		.build.offline.broken .build-name,
+		.build.offline.broken .fa-spinner {
+			color: #900;
+		}
+
+	.build.building a {
+		background-color: #f89406;
+	}
+
+		.build.building .build-name,
+		.build.building .label-warning,
+		.build.building .fa-spinner {
+			color: #360;
+		}
+
+	.build.broken a {
+		background-color: #900;
+	}
+
+		.build.broken.building a {
+			background-color: #f89406;
+		}
+	
+		.build.broken.building .build-name,
+		.build.broken.building .label-warning,
+		.build.broken.building .fa-spinner {
+			color: #900;
+		}
+
+	.build-name {
+		margin-right: 10px;
+	}
+
+	.build .label {
+		margin: 1px 0px 0 7px;
+	}
+
+	.build i.fa-spinner {
+		display: none;
+		position: absolute;
+		right: 5px;
+		top: 8px;
+	}
+
+	.build.building i.fa-spinner {
+		display: inline-block;
+	}
+
+
+	.build .label-warning {
+		background-color: #f89406;
+	}
+
+	.build .label-default {
+		background-color: #444;
+	}

@@ -4,7 +4,6 @@
 require([
 	'angular',
 	'angular.route',
-	'rx.coincidence',
 	'bootstrap',
 	'angular.ui',
 	'angular.ui.utils',

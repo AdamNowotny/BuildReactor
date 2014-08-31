@@ -2,9 +2,8 @@ define([
 	'dashboard/app',
 	'common/core',
 	'rx',
-	'common/sortBy',
 	'angular'
-], function (app, core, Rx, sortBy, angular) {
+], function (app, core, Rx, angular) {
 
 	'use strict';
 

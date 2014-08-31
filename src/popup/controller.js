@@ -1,9 +1,8 @@
 define([
 	'popup/app',
 	'common/core',
-	'rx',
-	'common/sortBy'
-], function (app, core, Rx, sortBy) {
+	'rx'
+], function (app, core, Rx) {
 
 	'use strict';
 
