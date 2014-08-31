@@ -20,9 +20,11 @@ module.exports = function (grunt) {
 	// default task - run tests and package
 	grunt.registerTask('default', [ 'clean:build', 'jshint', 'karma:once', 'requirejs', 'cssmin', 'copy', 'clean:buildSrc', 'compress' ]);
 
-	// continuous testing and web server at http://localhost:9876/base/src/test/index.html
-	// need to disable ng-html2js in karma.conf.js for templates to load
+	// continuous testing using PhantomJS
 	grunt.registerTask('test', [ 'karma:watch' ]);
+	
+	// web server at http://localhost:9876/base/src/test/index.html
+	grunt.registerTask('browser', [ 'karma:browser' ]);
 
 	// skip tests and create package
 	grunt.registerTask('dist', [ 'clean:build', 'requirejs', 'cssmin', 'copy', 'clean:buildSrc', 'compress' ]);
@@ -82,6 +84,10 @@ module.exports = function (grunt) {
 			},
 			watch: {
 				singleRun: false
+			},
+			browser: {
+				singleRun: false,
+				preprocessors: {}
 			}
 		},
 		cssmin: {
