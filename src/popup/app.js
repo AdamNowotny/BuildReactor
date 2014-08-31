@@ -2,7 +2,7 @@ define([
 	'angular',
 	'angular.route',
 	'angular.ui',
-	'common-ui/directives/builds/builds'
+	'common-ui/directives/buildList/buildList'
 ], function (angular) {
 
 	'use strict';
