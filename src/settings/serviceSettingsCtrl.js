@@ -93,8 +93,8 @@ define([
 				!angular.equals($scope.projects.selected, selectedProjects);
 		});
 
-		$scope.$watch('selected', function (selectedService) {
-			$scope.selectedDraft = angular.copy($scope.selected);
+		$scope.$watchCollection('selected', function (selectedService) {
+			$scope.selectedDraft = angular.copy(selectedService);
 		});
 		
 		reset();

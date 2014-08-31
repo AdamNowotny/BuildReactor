@@ -42,6 +42,12 @@ define([
 		chromeApi.sendMessage(message);
 	};
 
+	var setBuildOrder = function (serviceName, builds) {
+		var message = { name: 'setBuildOrder', serviceName: serviceName, order: builds };
+		messages.onNext(message);
+		chromeApi.sendMessage(message);
+	};
+
 	var enableService = function (name) {
 		var message = { name: 'enableService', serviceName: name };
 		messages.onNext(message);
@@ -78,6 +84,7 @@ define([
 		configurations: configurations,
 		activeProjects: activeProjects,
 		setOrder: setOrder,
+		setBuildOrder: setBuildOrder,
 		availableProjects: availableProjects,
 		enableService: enableService,
 		disableService: disableService,

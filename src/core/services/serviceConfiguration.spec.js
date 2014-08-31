@@ -1,9 +1,10 @@
 define([
 	'core/services/serviceConfiguration',
 	'core/services/configurationStore',
+	'common/arrayEquals',
 	'rx',
 	'rx.testing'
-], function (serviceConfiguration, configurationStore, Rx) {
+], function (serviceConfiguration, configurationStore, arrayEquals, Rx) {
 
 	'use strict';
 
@@ -138,6 +139,7 @@ define([
 		});
 
 		describe('reordering', function () {
+
 			it('should reorder services', function () {
 				var allConfig = [
 					{ name: 'service1' },
@@ -152,10 +154,6 @@ define([
 					return serviceConfiguration.changes;
 				});
 
-				var result = [
-					{ name: 'service2' },
-					{ name: 'service1' }
-				];
 				expect(changes.messages).toHaveElementsMatchingAt(300, function (value) {
 					return value[0].name === 'service2' && value[1].name === 'service1';
 				});
@@ -192,6 +190,48 @@ define([
 			});
 
 		});
+
+		describe('reordering builds', function () {
+
+			it('should store updated builds', function () {
+				var allConfig = [
+					{ name: 'service name', projects: ['build1', 'build2'] }
+				];
+				configurationStore.getAll.andReturn(allConfig);
+
+				scheduler.scheduleAbsolute(300, function () {
+					serviceConfiguration.setBuildOrder('service name', ['build2', 'build1']);
+				});
+				var changes = scheduler.startWithCreate(function () {
+					return serviceConfiguration.changes;
+				});
+
+				var result = configurationStore.store.mostRecentCall.args[0][0];
+				expect(result.name).toBe('service name');
+				expect(result.projects).toEqual(['build2', 'build1']);
+			});
+
+			it('should publish changes', function () {
+				var allConfig = [
+					{ name: 'service name', projects: ['build1', 'build2'] }
+				];
+				configurationStore.getAll.andReturn(allConfig);
+
+				scheduler.scheduleAbsolute(300, function () {
+					serviceConfiguration.setBuildOrder('service name', ['build2', 'build1']);
+				});
+				var changes = scheduler.startWithCreate(function () {
+					return serviceConfiguration.changes;
+				});
+
+				expect(changes.messages).toHaveElementsMatchingAt(300, function (value) {
+					return arrayEquals(value[0].projects, ['build2', 'build1']);
+				});
+			});
+
+		});
+		
+
 
 	});
 });

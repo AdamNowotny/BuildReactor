@@ -21,6 +21,7 @@ define([
 				connectHandler = connectListener;
 			});
 			spyOn(serviceConfiguration, 'setOrder');
+			spyOn(serviceConfiguration, 'setBuildOrder');
 			spyOn(serviceConfiguration, 'enableService');
 			spyOn(serviceConfiguration, 'disableService');
 			spyOn(serviceConfiguration, 'removeService');
@@ -71,6 +72,13 @@ define([
 				messageHandler({ name: 'setOrder', order: serviceNames}, null, null);
 
 				expect(serviceConfiguration.setOrder).toHaveBeenCalledWith(serviceNames);
+			});
+
+			it('should handle setBuildOrder', function () {
+				var builds = [ 'build1', 'build2' ];
+				messageHandler({ name: 'setBuildOrder', serviceName: 'service', order: builds}, null, null);
+
+				expect(serviceConfiguration.setBuildOrder).toHaveBeenCalledWith('service', builds);
 			});
 
 			it('should handle enableService', function () {

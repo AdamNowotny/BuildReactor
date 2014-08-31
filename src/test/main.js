@@ -105,7 +105,8 @@ require.config({
 			deps: ['angular'],
 			exports: 'angular.mock'
 		},
-		'settings/directives/sidebar/sidebar.html': ['angular']
+		'settings/directives/sidebar/sidebar.html': ['angular'],
+		'settings/directives/selectedProjects/selectedProjects.html': ['angular']
 	},
 	waitSeconds: 10,
 	deps: deps,

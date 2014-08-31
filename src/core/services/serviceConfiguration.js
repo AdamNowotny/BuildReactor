@@ -32,6 +32,17 @@ define([
   		}
 	};
 
+	var setBuildOrder = function (serviceName, builds) {
+		var newConfigs = configurationStore.getAll().map(function (serviceConfig) {
+			if (serviceConfig.name === serviceName) {
+				serviceConfig.projects = builds;
+			}
+			return serviceConfig;
+		});
+		configurationStore.store(newConfigs);
+		changes.onNext(newConfigs);
+	};
+
 	var enableService = function (serviceName) {
 		var newConfigs = configurationStore.getAll().map(function (config) {
 			if (config.name === serviceName) {
@@ -93,6 +104,7 @@ define([
 	return {
 		getAll: getAll,
 		setOrder: setOrder,
+		setBuildOrder: setBuildOrder,
 		enableService: enableService,
 		disableService: disableService,
 		removeService: removeService,

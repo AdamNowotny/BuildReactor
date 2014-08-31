@@ -2,7 +2,7 @@
 	<div class="panel-heading">
 		Monitored builds
 	</div>
-	<ul class="list-group" html-sortable ng-model="projects">
+	<ul class="list-group" html-sortable ng-model="projects" html-sortable-callback="sortableCallback">
 		<li class="list-group-item" ng-repeat="item in projects">{{ item }}</li>
 	</ul>
 </div>

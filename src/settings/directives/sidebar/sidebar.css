@@ -20,7 +20,7 @@
 	}
 
 	.sidebar-nav .sortable-placeholder {
-		border: 1px dashed #BBB;
+		background-color: #FFE;
 		height: 70px;
 		width: 100%;
 	}

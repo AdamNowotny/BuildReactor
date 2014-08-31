@@ -1,3 +1,8 @@
 .selected-projects {
 	margin: 10px;
 }
+
+	.selected-projects .sortable-placeholder {
+		background-color: #FFE;
+		height: 41px;
+	}

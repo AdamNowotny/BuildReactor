@@ -26,6 +26,9 @@ define([
 		case 'setOrder':
 			serviceConfiguration.setOrder(request.order);
 			break;
+		case 'setBuildOrder':
+			serviceConfiguration.setBuildOrder(request.serviceName, request.order);
+			break;
 		case 'enableService':
 			serviceConfiguration.enableService(request.serviceName);
 			break;

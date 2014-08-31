@@ -121,6 +121,12 @@ define([
 			expect(chromeApi.sendMessage).toHaveBeenCalledWith({ name: "setOrder", order: ['service2', 'service1'] });
 		});
 
+		it('should send setBuildOrder message', function () {
+			core.setBuildOrder('service name', ['build2', 'build1']);
+
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({ name: "setBuildOrder", serviceName: 'service name', order: ['build2', 'build1'] });
+		});
+
 	});
 
 });

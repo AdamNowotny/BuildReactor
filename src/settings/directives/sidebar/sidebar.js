@@ -4,7 +4,7 @@ define([
 	'htmlSortable'
 ], function (app, core) {
 	'use strict';
-	
+
 	app.directive('sidebar', function ($location) {
 		return {
 			scope: {
