@@ -187,6 +187,23 @@ define([
 
 		});
 
+		it('should show message when password expired', function () {
+			serviceController.events.onNext({
+				eventName: 'passwordExpired',
+				details: {
+					serviceName: 'service',
+					group: 'group',
+					name: 'build',
+					serviceIcon: 'icon.png'
+				},
+				source: 'service'
+			});
+
+			expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
+				'src/core/services/icon.png', 'service', 'Password expired. Service has been disabled.'
+			);
+		});
+
 		it('should not show buildBroken notifications when initializing', function () {
 			serviceController.events.onNext({ eventName: 'servicesInitializing' });
 			serviceController.events.onNext({ eventName: 'buildBroken', details: {} });

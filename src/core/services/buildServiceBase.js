@@ -74,7 +74,7 @@ define([
 				stack: ex.stack
 			};
 		} else {
-			error = { name: 'UnknownError', message: ex.toString() };
+			error = { name: 'UnknownError', message: ex.toString(), description: ex };
 		}
 		return error;
 	};
@@ -116,6 +116,9 @@ define([
 		}
 		if (lastState.isRunning && !newState.isRunning) {
 			this.events.onNext({ eventName: 'buildFinished', details: newState, source: newState.serviceName });
+		}
+		if (newState.error && newState.error.name === 'UnauthorisedError') {
+			this.events.onNext({ eventName: 'passwordExpired', details: newState, source: newState.serviceName });
 		}
 	};
 

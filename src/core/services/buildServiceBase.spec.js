@@ -240,6 +240,24 @@ define([
 
 			describe('error handling', function () {
 
+				it('should push passwordExpired if build update failed with 401', function () {
+					update1Response = new Rx.Subject();
+					var error = {
+						name: 'UnauthorisedError',
+						message: 'Your password expired',
+						httpStatus: 401
+					};
+
+					scheduler.scheduleAbsolute(300, function () {
+						service.updateAll().subscribe();
+						update1Response.onError(error);
+					});
+					var result = scheduler.startWithCreate(function () {
+						return service.events;
+					});
+					expect(result.messages).toHaveEvent('passwordExpired');
+				});
+
 				it('should push state if build update failed with AjaxError', function () {
 					update2Response = new Rx.Subject();
 					var error = {
@@ -297,7 +315,30 @@ define([
 						onNext(200, buildState1),
 						onNext(300, mixIn(createDefaultState('Build2'), { error : {
 							name : 'UnknownError',
-							message : 'error'
+							message : 'error',
+							description: 'error'
+						} })),
+						onCompleted(300)
+					);
+				});
+
+				it('should push state if build update failed with object error', function () {
+					update2Response = new Rx.Subject();
+					var error = { errorCode: 111 };
+
+					scheduler.scheduleAbsolute(300, function () {
+						update2Response.onError(error);
+					});
+					var result = scheduler.startWithCreate(function () {
+						return service.updateAll();
+					});
+
+					expect(result.messages).toHaveEqualElements(
+						onNext(200, buildState1),
+						onNext(300, mixIn(createDefaultState('Build2'), { error : {
+							name : 'UnknownError',
+							message : '[object Object]',
+							description: error
 						} })),
 						onCompleted(300)
 					);

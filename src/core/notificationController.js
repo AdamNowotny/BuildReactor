@@ -11,6 +11,43 @@ define([
 	
 	function init(options) {
 
+		function onBrokenBuild(event) {
+			if (reloading) {
+				return;
+			}
+			if (tags.contains('Unstable', event.details.tags)) {
+				showNotification(createNotificationInfo(event, 'Unstable, broken', options.timeout));
+			} else {
+				showNotification(createNotificationInfo(event, 'Broken'));
+			}
+		}
+
+		function onFixedBuild(event) {
+			if (reloading) {
+				return;
+			}
+			showNotification(createNotificationInfo(event, 'Fixed', options.timeout));
+		}
+
+		function onPasswordExpired(event) {
+			showNotification({
+				id: event.source + '_disabled',
+				title: event.source,
+				url: 'settings.html',
+				icon: 'src/core/services/' + event.details.serviceIcon,
+				text: 'Password expired. Service has been disabled.'
+			});
+		}
+
+		function showNotification(info) {
+			if (visibleNotifications[info.id]) {
+				visibleNotifications[info.id].dispose();
+			}
+			visibleNotifications[info.id] = createNotification(info).subscribe(undefined, undefined, function () {
+				delete visibleNotifications[info.id];
+			});
+		}
+
 		function createNotificationInfo(event, message, timeout) {
 
 			function createChangesMessage(changes) {
@@ -34,33 +71,6 @@ define([
 				text:  createChangesMessage(event.details.changes)
 			};
 			return info;
-		}
-
-		function onBrokenBuild(event) {
-			if (reloading) {
-				return;
-			}
-			if (tags.contains('Unstable', event.details.tags)) {
-				showNotification(createNotificationInfo(event, 'Unstable, broken', options.timeout));
-			} else {
-				showNotification(createNotificationInfo(event, 'Broken'));
-			}
-		}
-
-		function onFixedBuild(event) {
-			if (reloading) {
-				return;
-			}
-			showNotification(createNotificationInfo(event, 'Fixed', options.timeout));
-		}
-
-		function showNotification(info) {
-			if (visibleNotifications[info.id]) {
-				visibleNotifications[info.id].dispose();
-			}
-			visibleNotifications[info.id] = createNotification(info).subscribe(undefined, undefined, function () {
-				delete visibleNotifications[info.id];
-			});
 		}
 
 		function createNotification(info) {
@@ -97,7 +107,8 @@ define([
 				reloading = false;
 			},
 			'buildBroken': onBrokenBuild,
-			'buildFixed': onFixedBuild
+			'buildFixed': onFixedBuild,
+			'passwordExpired': onPasswordExpired
 		};
 		var eventsSubscription;
 		var visibleNotifications = {};

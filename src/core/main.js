@@ -5,6 +5,8 @@ require([
 	'core/notificationController',
 	'core/services/serviceConfiguration',
 	'core/services/serviceController',
+	'core/services/passwordExpiredHandler',
+
 	'core/services/bamboo/buildService',
 	'core/services/buildbot/buildService',
 	'core/services/cctray/buildService',
@@ -23,6 +25,8 @@ require([
 	notificationController,
 	serviceConfiguration,
 	serviceController,
+	passwordExpiredHandler,
+	
 	BambooService,
 	BuildBotService,
 	CctrayService,

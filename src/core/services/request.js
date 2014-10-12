@@ -8,7 +8,8 @@ define([
 
 	'use strict';
 
-	var unauthorizedStatusCode = 401;
+	var httpStatusUnauthorized = 401;
+	var httpStatusOk = 200;
 
 	function send(options, dataType) {
 		var timeout = options.timeout || 30000;
@@ -18,7 +19,7 @@ define([
 		return Rx.Observable.fromPromise(promise)
 			.catchException(function (ex) {
 				var ajaxError = createAjaxError(ex, ajaxOptions);
-				if (options.authCookie && ajaxError.httpStatus === unauthorizedStatusCode) {
+				if (options.authCookie && ajaxError.httpStatus === httpStatusUnauthorized) {
 					chrome.cookies.remove({ url: options.url, name: options.authCookie });
 				}
 				return Rx.Observable.throwException(ajaxError);
@@ -64,7 +65,7 @@ define([
 		}
 		var httpStatus = (error.jqXHR && error.jqXHR.status > 0) ? error.jqXHR.status : null;
 		response.httpStatus = httpStatus;
-		if (httpStatus && httpStatus !== 200) {
+		if (httpStatus && httpStatus !== httpStatusOk) {
 			response.description = response.message + ' (' + httpStatus + ')';
 		}
 		return response;

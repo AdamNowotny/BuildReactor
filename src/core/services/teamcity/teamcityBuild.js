@@ -42,16 +42,6 @@ define([
 		});
 	};
 
-	function changesRequest(self, urlPath) {
-		return urlRequest(self, urlPath).selectMany(function (changesResponse) {
-			return Rx.Observable.fromArray(changesResponse.change).selectMany(function (change) {
-				return urlRequest(self, change.href);
-			});
-		}).select(function (changeResponse) {
-			return { name: changeResponse.username };
-		}).toArray();
-	}
-
 	function createState(id, buildResponse) {
 		var state = {
 			id: id,
@@ -69,14 +59,6 @@ define([
 		return state;
 	}
 
-	var urlRequest = function (self, urlPath) {
-		return request.json({
-			url: joinUrl(self.settings.url, urlPath),
-			username: self.settings.username,
-			password: self.settings.password
-		});
-	};
-
 	var buildListRequest = function (self) {
 		var urlPath = '/app/rest/builds?locator=buildType:' + self.id + ',running:any';
 		urlPath += self.settings.branch ? ',branch:(' + self.settings.branch + ')' : '';
@@ -88,14 +70,22 @@ define([
 		return sendRequest(self.settings, urlPath);
 	};
 
-	var buildRequest = function (self) {
-		var urlPath = '/app/rest/buildTypes/id:' + self.id + '/builds/count:1';
-		return sendRequest(self.settings, urlPath);
+	var changesRequest = function (self, urlPath) {
+		return urlRequest(self, urlPath).selectMany(function (changesResponse) {
+			return Rx.Observable.fromArray(changesResponse.change).selectMany(function (change) {
+				return urlRequest(self, change.href);
+			});
+		}).select(function (changeResponse) {
+			return { name: changeResponse.username };
+		}).toArray();
 	};
 
-	var buildRunningRequest = function (self) {
-		var urlPath = '/app/rest/buildTypes/id:' + self.id + '/builds/running:any';
-		return sendRequest(self.settings, urlPath);
+	var urlRequest = function (self, urlPath) {
+		return request.json({
+			url: joinUrl(self.settings.url, urlPath),
+			username: self.settings.username,
+			password: self.settings.password
+		});
 	};
 
 	var sendRequest = function (settings, urlPath) {
