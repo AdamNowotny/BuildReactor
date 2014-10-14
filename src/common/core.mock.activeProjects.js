@@ -66,35 +66,35 @@ define(function () {
 				{
 					name: "Failed building offline",
 					group: "Offline",
-					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
+					error: { name: 'Error', message: 'Ajax error' },
 					isBroken: true,
 					url: null,
 					isRunning: true
 				}, {
 					name: "Success building offline",
 					group: "Offline",
-					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
+					error: { name: 'Error', message: 'Ajax error' },
 					isBroken: false,
 					url: null,
 					isRunning: true
 				}, {
 					name: "Failed offline",
 					group: "Offline",
-					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
+					error: { name: 'Error', message: 'Ajax error' },
 					isBroken: true,
 					url: null,
 					isRunning: false
 				}, {
 					name: "Success offline",
 					group: "Offline",
-					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
+					error: { name: 'Error', message: 'Ajax error' },
 					isBroken: false,
 					url: null,
 					isRunning: false
 				}, {
 					name: "Success disabled offline",
 					group: "Offline",
-					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
+					error: { name: 'Error', message: 'Ajax error' },
 					isBroken: false,
 					url: null,
 					isRunning: false,
@@ -102,7 +102,7 @@ define(function () {
 				}, {
 					name: "Broken disabled offline",
 					group: "Offline",
-					error: { name: 'Error', message: 'Ajax error', description: 'Ajax connection error (500)' },
+					error: { name: 'Error', message: 'Ajax error' },
 					isBroken: true,
 					url: null,
 					isRunning: false,

@@ -263,7 +263,6 @@ define([
 					var error = {
 						name: 'AjaxError',
 						message: 'Ajax call failed',
-						description: 'Ajax connection failed (500)',
 						url: 'http://example.com/'
 					};
 
@@ -277,7 +276,6 @@ define([
 					expect(result.messages).toHaveElementsMatchingAt(300, function (details) {
 						return details.error.name === 'AjaxError' &&
 							details.error.message === 'Ajax call failed' &&
-							details.error.description === 'Ajax connection failed (500)' &&
 							details.error.url === 'http://example.com/';
 					});
 				});
@@ -295,8 +293,7 @@ define([
 
 					expect(result.messages).toHaveElementsMatchingAt(300, function (details) {
 						return details.error.name === 'Error' &&
-							details.error.message === 'Function call failed' &&
-							details.error.description === 'Function call failed';
+							details.error.message === 'Function call failed';
 					});
 				});
 
@@ -315,8 +312,7 @@ define([
 						onNext(200, buildState1),
 						onNext(300, mixIn(createDefaultState('Build2'), { error : {
 							name : 'UnknownError',
-							message : 'error',
-							description: 'error'
+							message : '"error"'
 						} })),
 						onCompleted(300)
 					);
@@ -337,8 +333,7 @@ define([
 						onNext(200, buildState1),
 						onNext(300, mixIn(createDefaultState('Build2'), { error : {
 							name : 'UnknownError',
-							message : '[object Object]',
-							description: error
+							message : '{"errorCode":111}'
 						} })),
 						onCompleted(300)
 					);

@@ -11,7 +11,7 @@
 		</div>
 	</form>
 	<div class="alert alert-danger" ng-show="projectsError">
-		<div class="error-message">{{ projectsError.message }}</div>
+		<div class="error-message">{{ projectsError.name }}: {{ projectsError.message }}</div>
 		<div>
 			<a ng-href="{{ projectsError.url }}" target="_blank" class="alert-link">
 				{{ projectsError.url }}

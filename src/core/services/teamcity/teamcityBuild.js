@@ -17,8 +17,7 @@ define([
 			if (buildListResponse.build.length === 0) {
 				throw {
 					name: 'NotFoundError',
-					message: 'Build not found',
-					description: 'No build for branch [' + self.settings.branch + '] found'
+					message: 'No build for branch [' + self.settings.branch + ']'
 				};
 			}
 			var isRunning = !!buildListResponse.build[0].running;

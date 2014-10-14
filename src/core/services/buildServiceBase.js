@@ -74,7 +74,7 @@ define([
 				stack: ex.stack
 			};
 		} else {
-			error = { name: 'UnknownError', message: ex.toString(), description: ex };
+			error = { name: 'UnknownError', message: JSON.stringify(ex) };
 		}
 		return error;
 	};

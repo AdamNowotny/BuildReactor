@@ -97,10 +97,9 @@ define([
 
 				it('should throw exception on unknown connection error', function () {
 					var response = {
-						textStatus: 'error',
-						jqXHR: { status: 0 }
+						statusText: 'error',
+						status: 500
 					};
-					var actualError;
 					var ajaxOptions = {
 						url: 'http://sample.com/',
 						data: {
@@ -110,15 +109,27 @@ define([
 					};
 					spyOn($, 'ajax').andReturn(createFailureDeferred(response));
 
+					var actualError;
 					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {
 						actualError = d;
 					});
 
-					expect(actualError.name).toBe('AjaxError');
-					expect(actualError.message).toBe('Ajax connection error');
-					expect(actualError.description).not.toBeDefined();
-					expect(actualError.url).toBe('http://sample.com/?param1=value1&param_2=value2');
-					expect(actualError.ajaxOptions).toBeDefined();
+					expect(actualError).toEqual({
+						name: 'AjaxError',
+						httpStatus: 500,
+						message: 'error',
+						url: 'http://sample.com/?param1=value1&param_2=value2',
+						ajaxOptions: {
+							type: 'GET',
+							url: 'http://sample.com/',
+							data: {
+								param1: 'value1',
+								'param_2': 'value2'
+							},
+							cache: false,
+							dataType: 'json'
+						}
+					});
 				});
 
 				it('should throw exception on timeout', function () {
@@ -132,35 +143,79 @@ define([
 
 					expect(result.messages[0].time).toBe(20200);
 					var actualError = result.messages[0].value.exception;
-					expect(actualError.name).toBe('TimeoutError');
-					expect(actualError.message).toBe('Timeout');
-					expect(actualError.description).toBe('Connection timed out after 20 seconds');
-					expect(actualError.url).toBe('http://sample.com/');
+
+					expect(actualError).toEqual({
+						name: 'TimeoutError',
+						httpStatus: null,
+						message: 'Connection timed out after 20 seconds',
+						url: 'http://sample.com/',
+						ajaxOptions: {
+							type: 'GET',
+							url: 'http://sample.com/',
+							cache: false,
+							dataType: 'json'
+						}
+					});
 				});
 
 				it('should throw exception on connection error with message', function () {
 					var response = {
-						errorThrown: 'Not found',
-						textStatus: 'error',
-						jqXHR: { status: 404 }
+						status: 404,
+						statusText: 'Not found'
 					};
 					var actualError;
-					var ajaxOptions = { url: 'http://sample.com' };
+					var ajaxOptions = { url: 'http://sample.com/' };
 					spyOn($, 'ajax').andReturn(createFailureDeferred(response));
 
 					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {
 						actualError = d;
 					});
 
-					expect(actualError.message).toBe('Not found');
-					expect(actualError.description).toBe('Not found (404)');
-					expect(actualError.httpStatus).toBe(404);
+					expect(actualError).toEqual({
+						name: 'NotFoundError',
+						message: 'Not found',
+						httpStatus: 404,
+						url: 'http://sample.com/',
+						ajaxOptions: {
+							type: 'GET',
+							url: 'http://sample.com/',
+							cache: false,
+							dataType: 'json'
+						}
+					});
+				});
+
+				it('should throw UnauthorisedError on 401', function () {
+					var response = {
+						status: 401,
+						statusText: 'Unauthorized'
+					};
+					var ajaxOptions = { url: 'http://sample.com/' };
+					spyOn($, 'ajax').andReturn(createFailureDeferred(response));
+
+					var actualError;
+					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {
+						actualError = d;
+					});
+
+					expect(actualError).toEqual({
+						name: 'UnauthorisedError',
+						message: 'Unauthorized',
+						httpStatus: 401,
+						url: 'http://sample.com/',
+						ajaxOptions: {
+							type: 'GET',
+							url: 'http://sample.com/',
+							cache: false,
+							dataType: 'json'
+						}
+					});
 				});
 
 				it('should remove session cookie if 401 received', function () {
 					var response = {
-						textStatus: 'error',
-						jqXHR: { status: 401 }
+						statusText: 'error',
+						status: 401
 					};
 					var ajaxOptions = {
 						url: 'http://sample.com',
@@ -179,8 +234,8 @@ define([
 
 				it('should retry once if 401 received', function () {
 					var response = {
-						textStatus: 'error',
-						jqXHR: { status: 401 }
+						statusText: 'error',
+						status: 401
 					};
 					var ajaxOptions = {
 						url: 'http://sample.com',
@@ -196,52 +251,62 @@ define([
 
 				it('should throw exception on jQuery parse error', function () {
 					var response = {
-						textStatus: 'parsererror',
-						jqXHR: {
-							status: 200,
-							responseText: '<html />'
-						},
-						errorThrown: {
-							message: 'Unexpected token <'
-						}
+						statusText: 'OK',
+						status: 200
 					};
-					var actualResponse;
-					var ajaxOptions = { url: 'http://sample.com' };
+					var ajaxOptions = { url: 'http://sample.com/' };
 					spyOn($, 'ajax').andReturn(createFailureDeferred(response));
 
+					var actualError;
 					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {
-						actualResponse = d;
+						actualError = d;
 					});
 
-					expect(actualResponse.name).toBe('ParseError');
-					expect(actualResponse.message).toBe('Unexpected token <');
-					expect(actualResponse.description).not.toBeDefined();
-					expect(actualResponse.httpStatus).toBe(200);
-					expect(actualResponse.url).toBe('http://sample.com');
-					expect(actualResponse.ajaxOptions).toBeDefined();
+					expect(actualError).toEqual({
+						name: 'ParseError',
+						message: 'Parsing json failed',
+						httpStatus: 200,
+						url: 'http://sample.com/',
+						ajaxOptions: {
+							type: 'GET',
+							url: 'http://sample.com/',
+							cache: false,
+							dataType: 'json'
+						}
+					});
 				});
 
 				it('should throw exception on custom parse error', function () {
-					var parser = function (response) {
-						return response.unknown.unknown;
+					var response = {
+						statusText: 'OK',
+						status: 200
 					};
-					spyOn($, 'ajax').andReturn(successDeferred);
-					var settings = {
+					spyOn($, 'ajax').andReturn(createSuccessDeferred(response));
+					var ajaxOptions = {
 						url: 'http://example.com',
-						parser: parser
+						parser: function (response) {
+							return response.unknown.unknown;
+						}
 					};
 
-					var errorResponse;
-					var a = request.json(settings);
-					a.subscribe(function (d) {}, function (ex) {
-						errorResponse = ex;
+					var actualError;
+					request.json(ajaxOptions).subscribe(function (d) {}, function (ex) {
+						actualError = ex;
 					});
 
-					expect(errorResponse.name).toBe('ParseError');
-					expect(errorResponse.message).toBe('Unrecognized response');
-					expect(errorResponse.description).toBe('Unrecognized response received from [http://example.com]');
-					expect(errorResponse.url).toBe('http://example.com');
-					expect(errorResponse.ajaxOptions).toBeDefined();
+					expect(actualError).toEqual({
+						name: 'ParseError',
+						message: "'undefined' is not an object (evaluating 'response.unknown.unknown')",
+						httpStatus: 200,
+						url: 'http://example.com',
+						ajaxOptions: {
+							type: 'GET',
+							url: 'http://example.com',
+							data: undefined,
+							cache: false,
+							dataType: 'json'
+						}
+					});
 				});
 
 			});
@@ -250,7 +315,7 @@ define([
 		describe('xml', function () {
 
 			it('should set ajax options', function () {
-				var settings = {
+				var ajaxOptions = {
 					url: 'http://sample.com',
 					data: { param: 'value' }
 				};
@@ -259,11 +324,11 @@ define([
 					expect(options.url).toBe('http://sample.com');
 					expect(options.type).toBe('GET');
 					expect(options.cache).toBe(false);
-					expect(options.data).toBe(settings.data);
+					expect(options.data).toBe(ajaxOptions.data);
 					return successDeferred;
 				});
 
-				request.xml(settings).subscribe();
+				request.xml(ajaxOptions).subscribe();
 
 				expect($.ajax).toHaveBeenCalled();
 			});

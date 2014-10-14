@@ -9,6 +9,7 @@ define([
 	'use strict';
 
 	var httpStatusUnauthorized = 401;
+	var httpStatusNotFound = 404;
 	var httpStatusOk = 200;
 
 	function send(options, dataType) {
@@ -25,50 +26,7 @@ define([
 				return Rx.Observable.throwException(ajaxError);
 			}).retry(2)
 			.timeout(timeout, Rx.Observable.throwException(createTimeoutError(timeout, ajaxOptions)), scheduler)
-			.select(createParser(options.parser, ajaxOptions));
-	}
-
-	function createTimeoutError(timeout, ajaxOptions) {
-		return {
-			name: 'TimeoutError',
-			message: 'Timeout',
-			description: 'Connection timed out after ' + timeout / 1000 + ' seconds',
-			ajaxOptions: ajaxOptions,
-			url: ajaxOptions.url + encode(ajaxOptions.data)
-		};
-	}
-	
-	function createParseError(ajaxOptions) {
-		var url = ajaxOptions.url + encode(ajaxOptions.data);
-		return {
-			name: 'ParseError',
-			message: 'Unrecognized response',
-			description: 'Unrecognized response received from [' + url + ']',
-			ajaxOptions: ajaxOptions,
-			url: url
-		};
-	}
-
-	function createAjaxError(error, ajaxOptions) {
-		var response = {
-			ajaxOptions: ajaxOptions,
-			url: ajaxOptions.url + encode(ajaxOptions.data)
-		};
-		if (error.textStatus === 'parsererror') {
-			response.name = 'ParseError';
-			response.message = (error.errorThrown && error.errorThrown.message) ?
-				error.errorThrown.message :
-				'Unrecognized response';
-		} else {
-			response.name = 'AjaxError';
-			response.message = (error.errorThrown) ? error.errorThrown : 'Ajax connection error';
-		}
-		var httpStatus = (error.jqXHR && error.jqXHR.status > 0) ? error.jqXHR.status : null;
-		response.httpStatus = httpStatus;
-		if (httpStatus && httpStatus !== httpStatusOk) {
-			response.description = response.message + ' (' + httpStatus + ')';
-		}
-		return response;
+			.selectMany(createParser(options.parser, ajaxOptions));
 	}
 
 	function createAjaxOptions(options, dataType) {
@@ -87,17 +45,59 @@ define([
 		return ajaxOptions;
 	}
 
+	function createAjaxError(error, ajaxOptions) {
+		var response = {
+			name: 'AjaxError',
+			message: error.statusText,
+			httpStatus: error.status,
+			url: ajaxOptions.url + encode(ajaxOptions.data),
+			ajaxOptions: ajaxOptions
+		};
+		if (response.httpStatus === httpStatusUnauthorized) {
+			response.name = 'UnauthorisedError';
+		}
+		if (response.httpStatus === httpStatusNotFound) {
+			response.name = 'NotFoundError';
+		}
+		if (error.status === httpStatusOk) {
+			response.name = 'ParseError';
+			response.message = 'Parsing ' + ajaxOptions.dataType + ' failed';
+		}
+		return response;
+	}
+
+	function createTimeoutError(timeout, ajaxOptions) {
+		return {
+			name: 'TimeoutError',
+			message: 'Connection timed out after ' + timeout / 1000 + ' seconds',
+			httpStatus: null,
+			ajaxOptions: ajaxOptions,
+			url: ajaxOptions.url + encode(ajaxOptions.data)
+		};
+	}
+
 	function createParser(parser, ajaxOptions) {
 		return function (response) {
 			try {
 				if (parser) {
-					return parser(response);
+					return Rx.Observable.returnValue(parser(response));
 				} else {
-					return response;
+					return Rx.Observable.returnValue(response);
 				}
 			} catch (ex) {
-				throw createParseError(ajaxOptions);
+				return Rx.Observable.throwException(createParseError(ex, ajaxOptions));
 			}
+		};
+	}
+
+	function createParseError(ex, ajaxOptions) {
+		var url = ajaxOptions.url + encode(ajaxOptions.data);
+		return {
+			name: 'ParseError',
+			message: ex.message,
+			httpStatus: httpStatusOk,
+			url: url,
+			ajaxOptions: ajaxOptions
 		};
 	}
 

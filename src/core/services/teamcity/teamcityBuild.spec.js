@@ -104,8 +104,7 @@ define([
 				throw new Error('Error expected');
 			}, function (ex) {
 				expect(ex.name).toEqual('NotFoundError');
-				expect(ex.message).toEqual('Build not found');
-				expect(ex.description).toEqual('No build for branch [refs/heads/master] found');
+				expect(ex.message).toEqual('No build for branch [refs/heads/master]');
 			});
 		});
 
