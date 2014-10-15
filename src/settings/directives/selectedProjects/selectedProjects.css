@@ -6,3 +6,18 @@
 		background-color: #FFE;
 		height: 41px;
 	}
+
+	.selected-projects .handle {
+		display: none;
+		left: 3px;
+		position: absolute;
+		top: 10px;
+	}
+
+	.selected-projects .list-group-item:hover {
+		background-color: transparent;
+	}
+
+	.selected-projects .list-group-item:hover .handle {
+		display: inline;
+	}
