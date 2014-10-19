@@ -40,8 +40,14 @@ var chrome = {
 	}
 };
 
-window.webkitNotifications = window.webkitNotifications || {};
-window.webkitNotifications.createNotification = function () {};
+var Notification = function () {
+	'use strict';
+
+	return {
+		show: function () {},
+		close: function () {}
+	};
+};
 
 var deps = Object.keys(window.__karma__.files).filter(function (file) {
 	'use strict';
@@ -50,6 +56,7 @@ var deps = Object.keys(window.__karma__.files).filter(function (file) {
 });
 deps.push('angularMocks');
 
+// needed for RxJS to work in PhantomJS
 if (!Function.prototype.bind) {
 	Function.prototype.bind = function (context) {
 		'use strict';
@@ -62,7 +69,8 @@ if (!Function.prototype.bind) {
 
 require.config({
 	baseUrl: '/base/src',
-	mainConfigFile: 'common/main.js',	paths: {
+	mainConfigFile: 'common/main.js',
+	paths: {
 		// copied from from src/common/main.js
 		angular: '../bower_components/angular/angular',
 		'angular.route': '../bower_components/angular-route/angular-route',

@@ -1,101 +1,123 @@
 /* global chrome: false */
 define([
 	'core/notificationController',
-	'core/services/serviceController',
+	'core/events',
 	'common/chromeApi',
 	'rx',
 	'rx.testing'
-], function (notificationController, serviceController, chromeApi, Rx) {
+], function (notificationController, events, chromeApi, Rx) {
 
 	'use strict';
 	
 	describe('notificationController', function () {
 
-		var mockBadgeText;
-		var mockBadgeColor;
+		var buildBrokenEvents, buildFixedEvents;
+		var servicesInitializingEvents, servicesInitializedEvents;
+		var passwordExpiredEvents;
 		var mockNotification;
-		var subscription;
 		var scheduler;
 
 		beforeEach(function () {
+			buildBrokenEvents = new Rx.Subject();
+			buildFixedEvents = new Rx.Subject();
+			servicesInitializingEvents = new Rx.Subject();
+			servicesInitializedEvents = new Rx.Subject();
+			passwordExpiredEvents = new Rx.Subject();
+			spyOn(events, 'getByName').andCallFake(function (name) {
+				switch (name) {
+					case 'buildBroken':
+						return buildBrokenEvents;
+					case 'buildFixed':
+						return buildFixedEvents;
+					case 'servicesInitializing':
+						return servicesInitializingEvents;
+					case 'servicesInitialized':
+						return servicesInitializedEvents;
+					case 'passwordExpired':
+						return passwordExpiredEvents;
+				}
+			});
 			scheduler = new Rx.TestScheduler();
 			mockNotification = {
-				show: jasmine.createSpy(),
-				cancel: jasmine.createSpy().andCallFake(function () {
-					this.onclose();
-				})
+				close: jasmine.createSpy(),
+				onshow: jasmine.createSpy(),
+				onclick: jasmine.createSpy()
 			};
-			spyOn(window.webkitNotifications, 'createNotification').andReturn(mockNotification);
+			spyOn(window, 'Notification').andReturn(mockNotification);
 			spyOn(chromeApi, 'isDashboardActive').andReturn(Rx.Observable.returnValue(false));
-			subscription = notificationController.init({ timeout: 5000, scheduler: scheduler });
-		});
-
-		afterEach(function () {
-			subscription.dispose();
+			notificationController.init({ timeout: 5000, scheduler: scheduler });
 		});
 
 		describe('build broken', function () {
 
 			it('should show message when build fails', function () {
-				serviceController.events.onNext({ eventName: 'buildBroken', details: {
+				buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {
 					serviceName: 'service',
-					group: 'group',
 					name: 'build',
-					serviceIcon: 'icon.png'
+					serviceIcon: 'test/icon.png'
 				}});
 
-				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'src/core/services/icon.png', 'build (group)', 'Broken'
+				expect(window.Notification).toHaveBeenCalledWith(
+					'build (service)', {
+						icon: 'src/core/services/test/icon.png',
+						body: 'Broken',
+						tag: 'service_build'
+					}
 				);
 			});
 
 			it('should show who broke the build when changes available', function () {
-				serviceController.events.onNext({ eventName: 'buildBroken', details: {
+				buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {
 					serviceName: 'service',
-					group: 'group',
 					name: 'build',
-					serviceIcon: 'icon.png',
-					changes: [{ name: 'Adam' }, { name: 'Some User' }]
+					serviceIcon: 'test/icon.png',
+					changes: [{ name: 'User 1' }, { name: 'User 2' }]
 				}});
 
-				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'src/core/services/icon.png', 'build (group)', 'Broken by Adam, Some User'
+				expect(window.Notification).toHaveBeenCalledWith(
+					'build (service)', {
+						icon: 'src/core/services/test/icon.png',
+						body: 'Broken by User 1, User 2',
+						tag: 'service_build'
+					}
 				);
 			});
 
 			it('should show max 4 users who broke the build', function () {
-				serviceController.events.onNext({ eventName: 'buildBroken', details: {
+				buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {
 					serviceName: 'service',
-					group: 'group',
 					name: 'build',
-					serviceIcon: 'icon.png',
+					serviceIcon: 'test/icon.png',
 					changes: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (d) {
-						return { name: 'User' + d };
+						return { name: 'User ' + d };
 					})
 				}});
 
-				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'src/core/services/icon.png', 'build (group)', 'Broken by User1, User2, User3, User4, ...'
+				expect(window.Notification).toHaveBeenCalledWith(
+					'build (service)', {
+						icon: 'src/core/services/test/icon.png',
+						body: 'Broken by User 1, User 2, User 3, User 4, ...',
+						tag: 'service_build'
+					}
 				);
 			});
 
 			it('should not show message when build fails but is disabled', function () {
-				serviceController.events.onNext({ eventName: 'buildBroken', details: {
+				buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {
 					serviceName: 'service',
-					group: 'group',
 					name: 'build',
-					serviceIcon: 'icon.png',
+					serviceIcon: 'test/icon.png',
 					isDisabled: true
 				}});
 
-				expect(window.webkitNotifications.createNotification).not.toHaveBeenCalled();
+				expect(window.Notification).not.toHaveBeenCalled();
 			});
 
 			it('should not close notifications about failed builds', function () {
-				serviceController.events.onNext({ eventName: 'buildFixed', details: {} });
-				mockNotification.ondisplay();
+				buildBrokenEvents.onNext({ eventName: 'buildFixed', details: {} });
+				mockNotification.onshow();
 
-				expect(mockNotification.cancel).not.toHaveBeenCalled();
+				expect(mockNotification.close).not.toHaveBeenCalled();
 			});
 
 		});
@@ -103,54 +125,58 @@ define([
 		describe('build fixed', function () {
 
 			it('should show message if build fixed', function () {
-				serviceController.events.onNext({ eventName: 'buildFixed', details: {
+				buildFixedEvents.onNext({ eventName: 'buildFixed', details: {
 					serviceName: 'service',
-					group: 'group',
 					name: 'build',
-					serviceIcon: 'icon.png'
+					serviceIcon: 'test/icon.png'
 				}});
 
-				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'src/core/services/icon.png', 'build (group)', 'Fixed'
+				expect(window.Notification).toHaveBeenCalledWith(
+					'build (service)', {
+						icon: 'src/core/services/test/icon.png',
+						body: 'Fixed',
+						tag: 'service_build'
+					}
 				);
 			});
 
 			it('should show who fixed the build when changes available', function () {
-				serviceController.events.onNext({ eventName: 'buildFixed', details: {
+				buildFixedEvents.onNext({ eventName: 'buildFixed', details: {
 					serviceName: 'service',
-					group: 'group',
 					name: 'build',
-					serviceIcon: 'icon.png',
-					changes: [{ name: 'Adam' }, { name: 'Some User' }]
+					serviceIcon: 'test/icon.png',
+					changes: [{ name: 'User 1' }, { name: 'User 2' }]
 				}});
 
-				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'src/core/services/icon.png', 'build (group)', 'Fixed by Adam, Some User'
+				expect(window.Notification).toHaveBeenCalledWith(
+					'build (service)', {
+						icon: 'src/core/services/test/icon.png',
+						body: 'Fixed by User 1, User 2',
+						tag: 'service_build'
+					}
 				);
 			});
 
 			it('should not show message if build fixed but is disabled', function () {
-				serviceController.events.onNext({ eventName: 'buildFixed', details: {
+				buildFixedEvents.onNext({ eventName: 'buildFixed', details: {
 					serviceName: 'service',
-					group: 'group',
 					name: 'build',
-					serviceIcon: 'icon.png',
 					isDisabled: true
 				}});
 
-				expect(window.webkitNotifications.createNotification).not.toHaveBeenCalled();
+				expect(window.Notification).not.toHaveBeenCalled();
 			});
 
 			it('should close notifications about fixed builds after 5 seconds', function () {
-				serviceController.events.onNext({ eventName: 'buildFixed', details: {} });
+				buildFixedEvents.onNext({ eventName: 'buildFixed', details: {} });
 
 				scheduler.advanceBy(3000);
-				mockNotification.ondisplay();
+				mockNotification.onshow();
 				
 				scheduler.advanceBy(3000);
-				expect(mockNotification.cancel).not.toHaveBeenCalled();
+				expect(mockNotification.close).not.toHaveBeenCalled();
 				scheduler.advanceBy(5000);
-				expect(mockNotification.cancel).toHaveBeenCalled();
+				expect(mockNotification.close).toHaveBeenCalled();
 			});
 
 		});
@@ -158,88 +184,95 @@ define([
 		describe('unstable', function () {
 
 			it('should show message when unstable build fails', function () {
-				serviceController.events.onNext({ eventName: 'buildBroken', details: {
+				buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {
 					serviceName: 'service',
-					group: 'group',
 					name: 'build',
-					serviceIcon: 'icon.png',
+					serviceIcon: 'test/icon.png',
 					tags: [{ name: 'Unstable' }]
 				}});
 
-				expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-					'src/core/services/icon.png', 'build (group)', 'Unstable, broken'
+				expect(window.Notification).toHaveBeenCalledWith(
+					'build (service)', {
+						icon: 'src/core/services/test/icon.png',
+						body: 'Unstable, broken',
+						tag: 'service_build'
+					}
 				);
 			});
 
 			it('should close notifications about unstable builds after 5 seconds', function () {
-				serviceController.events.onNext({
+				buildBrokenEvents.onNext({
 					eventName: 'buildBroken',
 					details: {
 						tags: [{ name: 'Unstable' }]
 					}
 				});
 
-				mockNotification.ondisplay();
+				mockNotification.onshow();
 				
 				scheduler.advanceBy(5000);
-				expect(mockNotification.cancel).toHaveBeenCalled();
+				expect(mockNotification.close).toHaveBeenCalled();
 			});
 
 		});
 
 		it('should show message when password expired', function () {
-			serviceController.events.onNext({
+			passwordExpiredEvents.onNext({
 				eventName: 'passwordExpired',
 				details: {
 					serviceName: 'service',
-					group: 'group',
 					name: 'build',
-					serviceIcon: 'icon.png'
+					serviceIcon: 'test/icon.png'
 				},
 				source: 'service'
 			});
 
-			expect(window.webkitNotifications.createNotification).toHaveBeenCalledWith(
-				'src/core/services/icon.png', 'service', 'Password expired. Service has been disabled.'
+
+			expect(window.Notification).toHaveBeenCalledWith(
+				'service', {
+					icon: 'src/core/services/test/icon.png',
+					body: 'Password expired. Service has been disabled.',
+					tag: 'service_disabled'
+				}
 			);
 		});
 
 		it('should not show buildBroken notifications when initializing', function () {
-			serviceController.events.onNext({ eventName: 'servicesInitializing' });
-			serviceController.events.onNext({ eventName: 'buildBroken', details: {} });
+			servicesInitializingEvents.onNext({ eventName: 'servicesInitializing' });
+			buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {} });
 
 			scheduler.advanceBy(5000);
 
-			expect(mockNotification.show).not.toHaveBeenCalled();
+			expect(window.Notification).not.toHaveBeenCalled();
 		});
 
 		it('should show notifications after initialized', function () {
-			serviceController.events.onNext({ eventName: 'servicesInitializing' });
-			serviceController.events.onNext({ eventName: 'buildBroken', details: {} });
-			serviceController.events.onNext({ eventName: 'buildFixed', details: {} });
-			serviceController.events.onNext({ eventName: 'servicesInitialized', details: {} });
-			serviceController.events.onNext({ eventName: 'buildBroken', details: {} });
-			serviceController.events.onNext({ eventName: 'buildFixed', details: {} });
+			servicesInitializingEvents.onNext({ eventName: 'servicesInitializing' });
+			buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {} });
+			buildFixedEvents.onNext({ eventName: 'buildFixed', details: {} });
+			servicesInitializedEvents.onNext({ eventName: 'servicesInitialized', details: {} });
+			buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {} });
+			buildFixedEvents.onNext({ eventName: 'buildFixed', details: {} });
 
 			scheduler.advanceBy(5000);
 
-			expect(mockNotification.show.callCount).toBe(2);
+			expect(window.Notification.callCount).toBe(2);
 		});
 
 		it('should not show any notifications when dashboard active', function () {
 			chromeApi.isDashboardActive.andReturn(Rx.Observable.returnValue(true));
-			serviceController.events.onNext({ eventName: 'buildBroken', details: {} });
-			serviceController.events.onNext({ eventName: 'buildFixed', details: {} });
+			buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {} });
+			buildFixedEvents.onNext({ eventName: 'buildFixed', details: {} });
 
 			scheduler.advanceBy(5000);
 
-			expect(mockNotification.show).not.toHaveBeenCalled();
+			expect(window.Notification).not.toHaveBeenCalled();
 		});
 
 		it('should show url when notification clicked', function () {
 			spyOn(chrome.tabs, 'create');
 
-			serviceController.events.onNext({ eventName: 'buildBroken', details: {} });
+			buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {} });
 			mockNotification.onclick();
 			
 			expect(chrome.tabs.create).toHaveBeenCalled();
@@ -250,28 +283,28 @@ define([
 				callback();
 			});
 
-			serviceController.events.onNext({ eventName: 'buildBroken', details: {} });
+			buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {} });
 			mockNotification.onclick();
 
-			expect(mockNotification.cancel).toHaveBeenCalled();
+			expect(mockNotification.close).toHaveBeenCalled();
 		});
 
 		it('should hide notifications about failed build if already fixed', function () {
-			serviceController.events.onNext({ eventName: 'buildBroken', details: { serviceName: '1'} });
-			serviceController.events.onNext({ eventName: 'buildFixed', details: { serviceName: '1'} });
+			buildBrokenEvents.onNext({ eventName: 'buildBroken', details: { serviceName: '1'} });
+			buildFixedEvents.onNext({ eventName: 'buildFixed', details: { serviceName: '1'} });
 
-			expect(mockNotification.cancel).toHaveBeenCalled();
+			expect(mockNotification.close).toHaveBeenCalled();
 		});
 
 		it('should not hide notifications about all failed builds if one fixed', function () {
-			serviceController.events.onNext({ eventName: 'buildBroken', details: {
+			buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {
 				serviceName: 'service 1'
 			} });
-			serviceController.events.onNext({ eventName: 'buildFixed', details: {
+			buildFixedEvents.onNext({ eventName: 'buildFixed', details: {
 				serviceName: 'service 2'
 			} });
 
-			expect(mockNotification.cancel).not.toHaveBeenCalled();
+			expect(mockNotification.close).not.toHaveBeenCalled();
 		});
 		
 	});

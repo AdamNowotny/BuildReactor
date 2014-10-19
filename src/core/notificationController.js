@@ -1,54 +1,67 @@
-/* global chrome: false */
+/* global chrome: false, Notification: false */
 define([
-	'core/services/serviceController',
+	'core/events',
 	'rx',
+	'mout/string/interpolate',
 	'common/tags',
 	'common/chromeApi',
 	'rx.time'
-], function (serviceController, Rx, tags, chromeApi) {
+], function (events, Rx, interpolate, tags, chromeApi) {
 
 	'use strict';
 	
 	function init(options) {
 
-		function onBrokenBuild(event) {
-			if (reloading) {
-				return;
-			}
-			if (tags.contains('Unstable', event.details.tags)) {
-				showNotification(createNotificationInfo(event, 'Unstable, broken', options.timeout));
-			} else {
-				showNotification(createNotificationInfo(event, 'Broken'));
-			}
-		}
-
-		function onFixedBuild(event) {
-			if (reloading) {
-				return;
-			}
-			showNotification(createNotificationInfo(event, 'Fixed', options.timeout));
-		}
-
-		function onPasswordExpired(event) {
-			showNotification({
+		function createPasswordExpiredMessage(event) {
+			return {
 				id: event.source + '_disabled',
 				title: event.source,
 				url: 'settings.html',
 				icon: 'src/core/services/' + event.details.serviceIcon,
 				text: 'Password expired. Service has been disabled.'
-			});
+			};
 		}
-
-		function showNotification(info) {
-			if (visibleNotifications[info.id]) {
-				visibleNotifications[info.id].dispose();
+		
+		function createBuildBrokenMessage(event) {
+			if (tags.contains('Unstable', event.details.tags)) {
+				return createNotificationInfo(event.details, 'Unstable, broken', options.timeout);
+			} else {
+				return createNotificationInfo(event.details, 'Broken');
 			}
-			visibleNotifications[info.id] = createNotification(info).subscribe(undefined, undefined, function () {
-				delete visibleNotifications[info.id];
+		}
+
+		function createBuildFixedMessage(event) {
+			return createNotificationInfo(event.details, 'Fixed', options.timeout);
+		}
+
+		function isBuildEnabled(event) {
+			return !event.details.isDisabled;
+		}
+
+		function isInitialized(event) {
+			return !reloading;
+		}
+
+		function whenDashboardInactive(event) {
+			return chromeApi.isDashboardActive().where(function (active) {
+				return !active;
+			}).select(function (active) {
+				return event;
 			});
 		}
 
-		function createNotificationInfo(event, message, timeout) {
+		function createNotificationInfo(eventDetails, message, timeout) {
+
+			function createId(eventDetails) {
+				return interpolate('{{0}}_{{1}}', [
+					eventDetails.serviceName,
+					eventDetails.name
+				]);
+			}
+
+			function createTitle(eventDetails) {
+				return interpolate('{{0}} ({{1}})', [eventDetails.name, eventDetails.serviceName]);
+			}
 
 			function createChangesMessage(changes) {
 				return !changes ? message : message + changes.reduce(function (agg, change, i) {
@@ -63,74 +76,83 @@ define([
 			}
 
 			var info = {
-				id: event.details.serviceName + event.details.group + event.details.name,
-				title: event.details.name + (event.details.group ? ' (' + event.details.group + ')' : ''),
-				url: event.details.webUrl,
-				icon: 'src/core/services/' + event.details.serviceIcon,
+				id: createId(eventDetails),
+				title: createTitle(eventDetails),
+				url: eventDetails.webUrl,
+				icon: 'src/core/services/' + eventDetails.serviceIcon,
 				timeout: timeout ? timeout : undefined,
-				text:  createChangesMessage(event.details.changes)
+				text:  createChangesMessage(eventDetails.changes)
 			};
 			return info;
 		}
 
+		function showNotification(info) {
+			if (visibleNotifications[info.id]) {
+				visibleNotifications[info.id].dispose();
+			}
+			visibleNotifications[info.id] = createNotification(info).subscribe(undefined, undefined, function () {
+				delete visibleNotifications[info.id];
+			});
+		}
+
 		function createNotification(info) {
 			return Rx.Observable.create(function (observer) {
-				var notification = window.webkitNotifications.createNotification(info.icon, info.title, info.text);
+				var notification = new Notification(info.title, {
+					icon: info.icon,
+					body: info.text,
+					tag: info.id
+				});
 				notification.onclick = function () {
 					chrome.tabs.create({'url': info.url}, function (tab) {
-						notification.cancel();
+						notification.close();
 					});
 				};
 				notification.onclose = function () {
 					observer.onCompleted();
 				};
-				notification.show();
 				if (info.timeout) {
-					notification.ondisplay = function () {
+					notification.onshow = function () {
 						Rx.Observable.timer(info.timeout, scheduler).subscribe(function () {
-							notification.cancel();
+							notification.close();
 						});
 					};
 				}
 				return function () {
-					notification.cancel();
+					notification.close();
 				};
 			});
 		}
 
 		var scheduler = options.scheduler || Rx.Scheduler.timeout;
-		var eventHandlers = {
-			'servicesInitializing': function () {
-				reloading = true;
-			},
-			'servicesInitialized': function () {
-				reloading = false;
-			},
-			'buildBroken': onBrokenBuild,
-			'buildFixed': onFixedBuild,
-			'passwordExpired': onPasswordExpired
-		};
-		var eventsSubscription;
 		var visibleNotifications = {};
 		var reloading = false;
 
-		return serviceController.events.select(function (event) {
-			return {
-				event: event,
-				handler: eventHandlers[event.eventName]
-			};
-		}).where(function (d) {
-			var isDisabled = d.event.details && d.event.details.isDisabled;
-			return !isDisabled && d.handler;
-		}).selectMany(function (d) {
-			return chromeApi.isDashboardActive().where(function (active) {
-				return !active;
-			}).select(function (active) {
-				return d;
+		var buildBroken = events.getByName('buildBroken')
+			.where(isInitialized)
+			.where(isBuildEnabled)
+			.selectMany(whenDashboardInactive)
+			.select(createBuildBrokenMessage);
+		var buildFixed = events.getByName('buildFixed')
+			.where(isInitialized)
+			.where(isBuildEnabled)
+			.selectMany(whenDashboardInactive)
+			.select(createBuildFixedMessage);
+		var passwordExpired = events.getByName('passwordExpired')
+			.select(createPasswordExpiredMessage);
+
+		events.getByName('servicesInitializing').subscribe(function () {
+			reloading = true;
+		});
+		events.getByName('servicesInitialized').subscribe(function () {
+			reloading = false;
+		});
+
+		passwordExpired
+			.merge(buildBroken)
+			.merge(buildFixed)
+			.subscribe(function (notification) {
+				notification && showNotification(notification);
 			});
-		}).doAction(function (d) {
-			d.handler(d.event);
-		}).subscribe();
 	}
 	
 	return {
