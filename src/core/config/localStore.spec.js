@@ -1,10 +1,10 @@
 define([
-	'core/services/configurationStore'
-], function (configurationStore) {
+	'core/config/localStore'
+], function (localStore) {
 
 	'use strict';
 	
-	describe('configurationStore', function () {
+	describe('localStore', function () {
 
 		var mockLocalStorage;
 
@@ -15,13 +15,13 @@ define([
 		it('should get all settings from local storage', function () {
 			spyOn(localStorage, 'getItem').andReturn('{ "field": "value" }');
 
-			var result = configurationStore.getAll();
+			var result = localStore.getAll();
 
 			expect(result.field).toBe('value');
 		});
 
 		it('should store settings', function () {
-			configurationStore.store({ field: 'value2' });
+			localStore.store({ field: 'value2' });
 
 			expect(mockLocalStorage).toHaveBeenCalled();
 		});

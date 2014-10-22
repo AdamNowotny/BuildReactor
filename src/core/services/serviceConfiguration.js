@@ -1,20 +1,20 @@
 define([
 	'rx',
-	'core/services/configurationStore',
+	'core/config/localStore',
 	'common/arrayEquals',
 	'rx.binding'
-], function (Rx, configurationStore, arrayEquals) {
+], function (Rx, configStore, arrayEquals) {
 
 	'use strict';
 
-	var changes = new Rx.BehaviorSubject(configurationStore.getAll());
+	var changes = new Rx.BehaviorSubject(configStore.getAll());
 
 	var getAll = function () {
-		return configurationStore.getAll();
+		return configStore.getAll();
 	};
 
 	var setOrder = function (serviceNames) {
-		var oldConfig = configurationStore.getAll();
+		var oldConfig = configStore.getAll();
   		if (oldConfig.length !== serviceNames.length) {
    			throw { name: 'ArgumentInvalid', message: 'All services required'};
   		}
@@ -27,66 +27,66 @@ define([
   			})[0];
   		});
   		if (!arrayEquals(oldServiceNames, serviceNames)) {
-	  		configurationStore.store(newConfigs);
+	  		configStore.store(newConfigs);
 			changes.onNext(newConfigs);
   		}
 	};
 
 	var setBuildOrder = function (serviceName, builds) {
-		var newConfigs = configurationStore.getAll().map(function (serviceConfig) {
+		var newConfigs = configStore.getAll().map(function (serviceConfig) {
 			if (serviceConfig.name === serviceName) {
 				serviceConfig.projects = builds;
 			}
 			return serviceConfig;
 		});
-		configurationStore.store(newConfigs);
+		configStore.store(newConfigs);
 		changes.onNext(newConfigs);
 	};
 
 	var enableService = function (serviceName) {
-		var newConfigs = configurationStore.getAll().map(function (config) {
+		var newConfigs = configStore.getAll().map(function (config) {
 			if (config.name === serviceName) {
 				config.disabled = false;
 			}
 			return config;
 		});
-		configurationStore.store(newConfigs);
+		configStore.store(newConfigs);
 		changes.onNext(newConfigs);
 	};
 
 	var disableService = function (serviceName) {
-		var newConfigs = configurationStore.getAll().map(function (config) {
+		var newConfigs = configStore.getAll().map(function (config) {
 			if (config.name === serviceName) {
 				config.disabled = true;
 			}
 			return config;
 		});
-		configurationStore.store(newConfigs);
+		configStore.store(newConfigs);
 		changes.onNext(newConfigs);
 	};
 
 	var removeService = function (serviceName) {
-		var newConfigs = configurationStore.getAll().filter(function (config) {
+		var newConfigs = configStore.getAll().filter(function (config) {
 			return config.name !== serviceName;
 		});
-		configurationStore.store(newConfigs);
+		configStore.store(newConfigs);
 		changes.onNext(newConfigs);
 	};
 
 	var renameService = function (oldName, newName) {
-		var newConfigs = configurationStore.getAll().map(function (config) {
+		var newConfigs = configStore.getAll().map(function (config) {
 			if (config.name === oldName) {
 				config.name = newName;
 			}
 			return config;
 		});
-		configurationStore.store(newConfigs);
+		configStore.store(newConfigs);
 		changes.onNext(newConfigs);
 	};
 
 	var saveService = function (settings) {
 		var isNew = true;
-		var newConfigs = configurationStore.getAll().map(function (config) {
+		var newConfigs = configStore.getAll().map(function (config) {
 			if (config.name === settings.name) {
 				isNew = false;
 				return settings;
@@ -97,7 +97,7 @@ define([
 		if (isNew) {
 			newConfigs.push(settings);
 		}
-		configurationStore.store(newConfigs);
+		configStore.store(newConfigs);
 		changes.onNext(newConfigs);
 	};
 

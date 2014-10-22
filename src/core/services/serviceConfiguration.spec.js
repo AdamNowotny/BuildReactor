@@ -1,10 +1,10 @@
 define([
 	'core/services/serviceConfiguration',
-	'core/services/configurationStore',
+	'core/config/localStore',
 	'common/arrayEquals',
 	'rx',
 	'rx.testing'
-], function (serviceConfiguration, configurationStore, arrayEquals, Rx) {
+], function (serviceConfiguration, configStore, arrayEquals, Rx) {
 
 	'use strict';
 
@@ -14,14 +14,14 @@ define([
 		var scheduler;
 
 		beforeEach(function () {
-			spyOn(configurationStore, 'store');
-			spyOn(configurationStore, 'getAll');
+			spyOn(configStore, 'store');
+			spyOn(configStore, 'getAll');
 			scheduler = new Rx.TestScheduler();
 		});
 
 		it('should get all service configuration', function () {
 			var allConfig = [{ name: 'name1' }, { name: 'name2' }];
-			configurationStore.getAll.andReturn(allConfig);
+			configStore.getAll.andReturn(allConfig);
 
 			var result = serviceConfiguration.getAll();
 
@@ -33,7 +33,7 @@ define([
 				{ name: 'service1', disabled: false },
 				{ name: 'service2', disabled: false }
 			];
-			configurationStore.getAll.andReturn(allConfig);
+			configStore.getAll.andReturn(allConfig);
 
 			scheduler.scheduleAbsolute(300, function () {
 				serviceConfiguration.disableService('service2');
@@ -46,7 +46,7 @@ define([
 				{ name: 'service1', disabled: false },
 				{ name: 'service2', disabled: true }
 			];
-			expect(configurationStore.store).toHaveBeenCalledWith(result);
+			expect(configStore.store).toHaveBeenCalledWith(result);
 			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
 
@@ -55,7 +55,7 @@ define([
 				{ name: 'service1', disabled: false },
 				{ name: 'service2', disabled: true }
 			];
-			configurationStore.getAll.andReturn(allConfig);
+			configStore.getAll.andReturn(allConfig);
 
 			scheduler.scheduleAbsolute(300, function () {
 				serviceConfiguration.enableService('service2');
@@ -68,13 +68,13 @@ define([
 				{ name: 'service1', disabled: false },
 				{ name: 'service2', disabled: false }
 			];
-			expect(configurationStore.store).toHaveBeenCalledWith(result);
+			expect(configStore.store).toHaveBeenCalledWith(result);
 			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
 
 		it('should remove service', function () {
 			var allConfig = [{ name: 'service1' }, { name: 'service2' }];
-			configurationStore.getAll.andReturn(allConfig);
+			configStore.getAll.andReturn(allConfig);
 
 			scheduler.scheduleAbsolute(300, function () {
 				serviceConfiguration.removeService('service1');
@@ -84,13 +84,13 @@ define([
 			});
 
 			var result = [{ name: 'service2' }];
-			expect(configurationStore.store).toHaveBeenCalledWith(result);
+			expect(configStore.store).toHaveBeenCalledWith(result);
 			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
 
 		it('should rename service', function () {
 			var allConfig = [{ name: 'service1' }, { name: 'service2' }];
-			configurationStore.getAll.andReturn(allConfig);
+			configStore.getAll.andReturn(allConfig);
 
 			scheduler.scheduleAbsolute(300, function () {
 				serviceConfiguration.renameService('service1', 'service1 new');
@@ -100,13 +100,13 @@ define([
 			});
 
 			var result = [{ name: 'service1 new' }, { name: 'service2' }];
-			expect(configurationStore.store).toHaveBeenCalledWith(result);
+			expect(configStore.store).toHaveBeenCalledWith(result);
 			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
 
 		it('should save existing service', function () {
 			var allConfig = [{ name: 'service', url: 'http://example1.com' }];
-			configurationStore.getAll.andReturn(allConfig);
+			configStore.getAll.andReturn(allConfig);
 			var newSettings = { name: 'service', url: 'http://example2.com' };
 
 			scheduler.scheduleAbsolute(300, function () {
@@ -117,13 +117,13 @@ define([
 			});
 
 			var result = [newSettings];
-			expect(configurationStore.store).toHaveBeenCalledWith(result);
+			expect(configStore.store).toHaveBeenCalledWith(result);
 			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
 
 		it('should add new service', function () {
 			var allConfig = [{ name: 'service', url: 'http://example1.com' }];
-			configurationStore.getAll.andReturn(allConfig);
+			configStore.getAll.andReturn(allConfig);
 			var newSettings = { name: 'service-new', url: 'http://example2.com' };
 
 			scheduler.scheduleAbsolute(300, function () {
@@ -134,7 +134,7 @@ define([
 			});
 
 			var result = [allConfig[0], newSettings];
-			expect(configurationStore.store).toHaveBeenCalledWith(result);
+			expect(configStore.store).toHaveBeenCalledWith(result);
 			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
 
@@ -145,7 +145,7 @@ define([
 					{ name: 'service1' },
 					{ name: 'service2' }
 				];
-				configurationStore.getAll.andReturn(allConfig);
+				configStore.getAll.andReturn(allConfig);
 
 				scheduler.scheduleAbsolute(300, function () {
 					serviceConfiguration.setOrder(['service2', 'service1']);
@@ -165,7 +165,7 @@ define([
 					{ name: 'service2' },
 					{ name: 'service3' }
 				];
-				configurationStore.getAll.andReturn(allConfig);
+				configStore.getAll.andReturn(allConfig);
 
 				expect(function () {
 					serviceConfiguration.setOrder(['service2', 'service1']);
@@ -177,7 +177,7 @@ define([
 					{ name: 'service1' },
 					{ name: 'service2' }
 				];
-				configurationStore.getAll.andReturn(allConfig);
+				configStore.getAll.andReturn(allConfig);
 
 				scheduler.scheduleAbsolute(300, function () {
 					serviceConfiguration.setOrder(['service1', 'service2']);
@@ -197,7 +197,7 @@ define([
 				var allConfig = [
 					{ name: 'service name', projects: ['build1', 'build2'] }
 				];
-				configurationStore.getAll.andReturn(allConfig);
+				configStore.getAll.andReturn(allConfig);
 
 				scheduler.scheduleAbsolute(300, function () {
 					serviceConfiguration.setBuildOrder('service name', ['build2', 'build1']);
@@ -206,7 +206,7 @@ define([
 					return serviceConfiguration.changes;
 				});
 
-				var result = configurationStore.store.mostRecentCall.args[0][0];
+				var result = configStore.store.mostRecentCall.args[0][0];
 				expect(result.name).toBe('service name');
 				expect(result.projects).toEqual(['build2', 'build1']);
 			});
@@ -215,7 +215,7 @@ define([
 				var allConfig = [
 					{ name: 'service name', projects: ['build1', 'build2'] }
 				];
-				configurationStore.getAll.andReturn(allConfig);
+				configStore.getAll.andReturn(allConfig);
 
 				scheduler.scheduleAbsolute(300, function () {
 					serviceConfiguration.setBuildOrder('service name', ['build2', 'build1']);
