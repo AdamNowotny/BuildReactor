@@ -13,17 +13,20 @@ define([
 		});
 
 		it('should get all settings from local storage', function () {
-			spyOn(localStorage, 'getItem').andReturn('{ "field": "value" }');
+			spyOn(localStorage, 'getItem').andCallFake(function (key) {
+				expect(key).toBe('key');
+				return '{ "field": "value" }';
+			});
 
-			var result = localStore.getAll();
+			var result = localStore.getItem('key');
 
 			expect(result.field).toBe('value');
 		});
 
 		it('should store settings', function () {
-			localStore.store({ field: 'value2' });
+			localStore.setItem('key', { field: 'value2' });
 
-			expect(mockLocalStorage).toHaveBeenCalled();
+			expect(mockLocalStorage).toHaveBeenCalledWith('key', '{"field":"value2"}');
 		});
 
 	});

@@ -7,14 +7,15 @@ define([
 
 	'use strict';
 
-	var changes = new Rx.BehaviorSubject(configStore.getAll());
+	var key = 'services';
+	var changes = new Rx.BehaviorSubject(configStore.getItem(key));
 
 	var getAll = function () {
-		return configStore.getAll();
+		return configStore.getItem(key);
 	};
 
 	var setOrder = function (serviceNames) {
-		var oldConfig = configStore.getAll();
+		var oldConfig = configStore.getItem(key);
   		if (oldConfig.length !== serviceNames.length) {
    			throw { name: 'ArgumentInvalid', message: 'All services required'};
   		}
@@ -27,66 +28,66 @@ define([
   			})[0];
   		});
   		if (!arrayEquals(oldServiceNames, serviceNames)) {
-	  		configStore.store(newConfigs);
+	  		configStore.setItem(key,newConfigs);
 			changes.onNext(newConfigs);
   		}
 	};
 
 	var setBuildOrder = function (serviceName, builds) {
-		var newConfigs = configStore.getAll().map(function (serviceConfig) {
+		var newConfigs = configStore.getItem(key).map(function (serviceConfig) {
 			if (serviceConfig.name === serviceName) {
 				serviceConfig.projects = builds;
 			}
 			return serviceConfig;
 		});
-		configStore.store(newConfigs);
+		configStore.setItem(key, newConfigs);
 		changes.onNext(newConfigs);
 	};
 
 	var enableService = function (serviceName) {
-		var newConfigs = configStore.getAll().map(function (config) {
+		var newConfigs = configStore.getItem(key).map(function (config) {
 			if (config.name === serviceName) {
 				config.disabled = false;
 			}
 			return config;
 		});
-		configStore.store(newConfigs);
+		configStore.setItem(key, newConfigs);
 		changes.onNext(newConfigs);
 	};
 
 	var disableService = function (serviceName) {
-		var newConfigs = configStore.getAll().map(function (config) {
+		var newConfigs = configStore.getItem(key).map(function (config) {
 			if (config.name === serviceName) {
 				config.disabled = true;
 			}
 			return config;
 		});
-		configStore.store(newConfigs);
+		configStore.setItem(key, newConfigs);
 		changes.onNext(newConfigs);
 	};
 
 	var removeService = function (serviceName) {
-		var newConfigs = configStore.getAll().filter(function (config) {
+		var newConfigs = configStore.getItem(key).filter(function (config) {
 			return config.name !== serviceName;
 		});
-		configStore.store(newConfigs);
+		configStore.setItem(key, newConfigs);
 		changes.onNext(newConfigs);
 	};
 
 	var renameService = function (oldName, newName) {
-		var newConfigs = configStore.getAll().map(function (config) {
+		var newConfigs = configStore.getItem(key).map(function (config) {
 			if (config.name === oldName) {
 				config.name = newName;
 			}
 			return config;
 		});
-		configStore.store(newConfigs);
+		configStore.setItem(key, newConfigs);
 		changes.onNext(newConfigs);
 	};
 
 	var saveService = function (settings) {
 		var isNew = true;
-		var newConfigs = configStore.getAll().map(function (config) {
+		var newConfigs = configStore.getItem(key).map(function (config) {
 			if (config.name === settings.name) {
 				isNew = false;
 				return settings;
@@ -97,7 +98,7 @@ define([
 		if (isNew) {
 			newConfigs.push(settings);
 		}
-		configStore.store(newConfigs);
+		configStore.setItem(key, newConfigs);
 		changes.onNext(newConfigs);
 	};
 

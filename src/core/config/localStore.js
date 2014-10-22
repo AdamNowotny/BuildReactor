@@ -2,24 +2,24 @@ define(function () {
 
 	'use strict';
 	
-	function store(settings) {
+	function setItem(key, settings) {
 		var settingsString = JSON.stringify(settings);
-		localStorage.setItem('services', settingsString);
+		localStorage.setItem(key, settingsString);
 	}
 
-	function getAll() {
+	function getItem(key) {
 		var settings;
-		if (!localStorage.getItem('services')) {
+		if (!localStorage.getItem(key)) {
 			settings = [];
 		} else {
-			var settingsString = localStorage.getItem('services');
+			var settingsString = localStorage.getItem(key);
 			settings = JSON.parse(settingsString);
 		}
 		return settings;
 	}
 
 	return {
-		store: store,
-		getAll: getAll
+		setItem: setItem,
+		getItem: getItem
 	};
 });
