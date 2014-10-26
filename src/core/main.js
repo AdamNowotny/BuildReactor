@@ -1,4 +1,5 @@
 require([
+	'core/config/localStore',
 	'core/backgroundLogger',
 	'core/badgeController',
 	'core/messageHandlers',
@@ -19,6 +20,7 @@ require([
 	'core/services/teamcity/buildService',
 	'core/services/travis/buildService'
 ], function (
+	localStore,
 	backgroundLogger,
 	badgeController,
 	messageHandlers,
@@ -41,6 +43,7 @@ require([
 ) {
 	'use strict';
 
+	localStore.update();
 	backgroundLogger();
 	badgeController();
 	notificationController.init({ timeout: 5000 });

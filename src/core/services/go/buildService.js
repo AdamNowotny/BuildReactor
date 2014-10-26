@@ -12,7 +12,7 @@ define([
 	
 	GoBuildService.settings = function () {
 		return {
-			typeName: 'ThoughtWorks GO',
+			typeName: 'GoCD',
 			baseUrl: 'go',
 			icon: 'go/icon.png',
 			logo: 'go/logo.png',

@@ -1,7 +1,18 @@
-define(function () {
-
+define([
+	'core/config/version2Updater'
+], function (updater) {
 	'use strict';
 	
+	function update() {
+		var config = {
+			version: localStorage.getItem('version') || 1,
+			services: JSON.parse(localStorage.getItem('services'))
+		};
+		var updatedConfig = updater.update(config);
+		localStorage.setItem('services', JSON.stringify(updatedConfig.services));
+		localStorage.setItem('version', updatedConfig.version);
+	}
+
 	function setItem(key, settings) {
 		var settingsString = JSON.stringify(settings);
 		localStorage.setItem(key, settingsString);
@@ -19,6 +30,7 @@ define(function () {
 	}
 
 	return {
+		update: update,
 		setItem: setItem,
 		getItem: getItem
 	};

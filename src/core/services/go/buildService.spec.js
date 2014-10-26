@@ -4,13 +4,13 @@ define([
 
 	'use strict';
 
-	describe('core/services/cruisecontrol.rb/buildService', function () {
+	describe('core/services/go/buildService', function () {
 
 		var settings;
 
 		beforeEach(function () {
 			settings = {
-				typeName: 'ThoughtWorks GO',
+				typeName: 'GoCD',
 				baseUrl: 'go',
 				icon: 'go/icon.png',
 				url: 'http://example.com/',
@@ -22,7 +22,7 @@ define([
 		it('should provide default settings', function () {
 			var defaultSettings = BuildService.settings();
 
-			expect(defaultSettings.typeName).toBe('ThoughtWorks GO');
+			expect(defaultSettings.typeName).toBe('GoCD');
 			expect(defaultSettings.baseUrl).toBe('go');
 			expect(defaultSettings.icon).toBe('go/icon.png');
 			expect(defaultSettings.logo).toBe('go/logo.png');
