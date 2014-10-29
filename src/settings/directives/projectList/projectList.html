@@ -1,5 +1,5 @@
 <div class="panel-group" id="projects-accordion">
-	<div class="panel panel-default" ng-repeat="group in groups" ng-hide="group.visibleCount == 0">
+	<div class="panel panel-default" ng-repeat="group in groups" ng-show="group.visible">
 		<div class="panel-heading">
 			<h4 class="panel-title">
 				<input type="checkbox" class="check-all" ng-change="checkAll(group)" ng-model="group.allSelected" ui-indeterminate="group.someSelected">
@@ -11,7 +11,7 @@
 				</a>
 			</h4>
 		</div>
-		<div class="panel-collapse collapse" ng-class="{ in: group.hasSelectedOnShow }" id="project-group-{{ $index }}">
+		<div class="panel-collapse collapse" ng-class="{ in: group.expanded }" id="project-group-{{ $index }}">
 			<div class="panel-body">
 				<label class="checkbox" ng-repeat="item in group.projects | filter:search">
 					<input type="checkbox" ng-model="item.isSelected">

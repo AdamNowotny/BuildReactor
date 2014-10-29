@@ -38,11 +38,12 @@ define([
 			return {
 				name: groupName,
 				projects: groupProjects,
-				hasSelectedOnShow: selectedProjects.length > 0,
+				expanded: selectedProjects.length > 0 || groupNames.length === 1,
 				visibleCount: groupProjects.length,
 				projectsCount: groupProjects.length,
 				allSelected: selectedProjects.length === groupProjects.length,
-				someSelected: selectedProjects.length !== 0 && selectedProjects.length !== groupProjects.length
+				someSelected: selectedProjects.length !== 0 && selectedProjects.length !== groupProjects.length,
+				visible: groupProjects.length !== 0
 			};
 		});
 	};
