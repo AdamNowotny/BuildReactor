@@ -3,18 +3,18 @@ BuildReactor [![Build Status](https://secure.travis-ci.org/AdamNowotny/BuildReac
 
 Developer notifications and dashboard (Google Chrome extension)
  * Gives you overview of all your builds in one place
- * Supports all continuous integration servers
+ * Supports multiple continuous integration servers
  * Shows only relevant notifications to minimise distractions
- * Let's you setup information radiator for your team within minutes, not hours or days
+ * Fullscreen mode let's you setup information radiator for your team within minutes, not hours or days
  * Works on Windows, Mac and Linux
 
 Links
 -----
-Install from [Chrome Web Store](http://goo.gl/BX01T)
+[Chrome Web Store](http://goo.gl/BX01T) - latest stable version
 
-Updates on [Twitter](https://twitter.com/BuildReactor) and [Google Plus](https://plus.google.com/110744393630490320507/)
+[Twitter](https://twitter.com/BuildReactor)
 
-[Version history](https://github.com/AdamNowotny/BuildReactor/wiki/What's-new)
+[Google Plus](https://plus.google.com/110744393630490320507/)
 
 Supported services
 ==================
@@ -24,7 +24,7 @@ Below are the supported CI servers.
  * [Atlassian Bamboo](http://www.atlassian.com/software/bamboo/)
  * [BuildBot](http://buildbot.net/)
  * Servers using [XML cctray format](http://confluence.public.thoughtworks.org/display/CI/Multiple+Project+Summary+Reporting+Standard) like [CruiseControl](http://cruisecontrol.sourceforge.net/), [CruiseControl.NET](http://www.cruisecontrolnet.org/), [CruiseControl.rb](http://cruisecontrolrb.thoughtworks.com/)
- * [ThoughtWorks GO](http://www.thoughtworks-studios.com/go-continuous-delivery)
+ * [GoCD](https://github.com/gocd/gocd)
  * [Jenkins](http://jenkins-ci.org/) (Hudson)
  * [Snap](http://snap-ci.com/)
  * [TeamCity](http://www.jetbrains.com/teamcity/)
