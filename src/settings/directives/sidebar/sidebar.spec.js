@@ -21,7 +21,7 @@ define([
 		beforeEach(inject(function ($compile, $rootScope) {
 			element = $compile('<section sidebar services="services" selected="selected" new="false"></section>')($rootScope);
 			$rootScope.$digest();
-			scope = element.find('.scrollable').scope();
+			scope = element.isolateScope();
 		}));
 
 		it('should call setOrder when order changed', inject(function($compile, $rootScope) {

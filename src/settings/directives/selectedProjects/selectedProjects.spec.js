@@ -21,7 +21,7 @@ define([
 		beforeEach(inject(function ($compile, $rootScope) {
 			element = $compile('<section selected-projects projects="projects" service-name="service name"></section>')($rootScope);
 			$rootScope.$digest();
-			scope = element.find('.selected-projects').scope();
+			scope = element.isolateScope();
 		}));
 
 		it('should call setBuildOrder when order changed', inject(function($compile, $rootScope) {
