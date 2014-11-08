@@ -84,6 +84,7 @@ define([
 					$scope.projectList && $scope.projectList.forEach(function (project) {
 						project.isInView = !viewItems || viewItems.indexOf(project.id) > -1;
 					});
+					$scope.groups = createGroups($scope.projectList);
 				});
 
 				$scope.$watch('projectList', function (projects) {
