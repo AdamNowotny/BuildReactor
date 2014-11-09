@@ -1,8 +1,7 @@
 define([
 	'settings/app',
-	'common/core',
-	'common/configuration'
-], function (app, core, configuration) {
+	'common/core'
+], function (app, core) {
 	'use strict';
 
 	app.directive('topnav', function ($modal, $location) {
@@ -14,8 +13,6 @@ define([
 			templateUrl: 'src/settings/directives/topnav/topnav.html',
 			controller: function ($scope, $element, $attrs, $transclude) {
 
-				$scope.version = configuration.version;
-				
 				$scope.$watch('service', function (selectedService) {
 					if (selectedService) {
 						$scope.isActive = $scope.showActions;

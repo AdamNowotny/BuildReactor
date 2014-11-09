@@ -70,8 +70,7 @@ module.exports = function (grunt) {
 				src: [
 					'package.json',
 					'manifest.json',
-					'bower.json',
-					'src/common/configuration.js'
+					'bower.json'
 				]
 			}
 		},
