@@ -32,7 +32,7 @@ define([
 
 	var createGroups = function (projects) {
 		var groupNames = getGroupNamesFromProjects(projects);
-		return groupNames.map(function (groupName) {
+		var groups = groupNames.map(function (groupName) {
 			var groupProjects = getVisibleProjectsForGroup(projects, groupName);
 			var selectedProjects = getSelectedProjects(groupProjects);
 			return {
@@ -46,10 +46,11 @@ define([
 				visible: groupProjects.length !== 0
 			};
 		});
+		return groups.length ? groups : null;
 	};
 
 	var updateCheckAll = function (groups) {
-		groups.forEach(function (group) {
+		groups && groups.forEach(function (group) {
 			var selectedProjects = getSelectedProjects(group.projects);
 			group.someSelected = selectedProjects.length !== 0 && selectedProjects.length !== group.projects.length;
 			group.allSelected = selectedProjects.length === group.projects.length;
@@ -92,7 +93,7 @@ define([
 						return project.id;
 					});
 					updateCheckAll($scope.groups);
-					$scope.$emit('projectList.change', selectedIds);
+					$scope.groups && $scope.$emit('projectList.change', selectedIds);
 				}, true);
 
 				$scope.$watch('filterQuery', function (query) {
