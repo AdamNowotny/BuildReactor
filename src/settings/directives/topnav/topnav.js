@@ -22,7 +22,7 @@ define([
 					}
 				});
 
-				$scope.$watch('isEnabled', function (isEnabled) {
+				$scope.$on('onOffSwitch.change', function (event, isEnabled) {
 					if (!$scope.service) {
 						return;
 					}

@@ -14,9 +14,10 @@ define([
 					$scope.switch = onOff ? 'on' : 'off';
 				});
 
-				$scope.$watch('switch', function (onOffValue) {
-					$scope.onOff = (onOffValue === 'on');
-				});
+				$scope.userSwitch = function (oldValue) {
+					var newValue = (oldValue === 'off');
+					$scope.$emit('onOffSwitch.change', newValue);
+				};
 			}
 		};
 	});
