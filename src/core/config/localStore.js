@@ -6,7 +6,7 @@ define([
 	function update() {
 		var config = {
 			version: localStorage.getItem('version') || 1,
-			services: JSON.parse(localStorage.getItem('services'))
+			services: JSON.parse(localStorage.getItem('services')) || []
 		};
 		var updatedConfig = updater.update(config);
 		localStorage.setItem('services', JSON.stringify(updatedConfig.services));

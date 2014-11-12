@@ -56,6 +56,21 @@ define([
 			expect(localStorage.setItem).toHaveBeenCalledWith('services', JSON.stringify(config2.services));
 		});
 
+		it('should update to default config if localStorage empty', function () {
+			localStorage.getItem.andReturn(null);
+			version2Updater.update.andCallFake(function (config) {
+				expect(config).toEqual({
+					version: 1,
+					services: []
+				});
+				return config2;
+			});
+
+			localStore.update();
+
+			expect(version2Updater.update).toHaveBeenCalled();
+		});
+
 		it('should store version', function () {
 			localStore.update();
 
