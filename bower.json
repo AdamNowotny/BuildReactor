@@ -1,7 +1,7 @@
 {
   "name": "BuildReactor",
   "description": "Developer notifications and dashboard",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "dependencies": {
     "angular": "~1.2.23",
     "angular-route": "~1.2.23",
