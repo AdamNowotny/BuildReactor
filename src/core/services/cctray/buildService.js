@@ -71,7 +71,9 @@ define([
 					webUrl: $(d).attr('webUrl'),
 					isRunning: $(d).attr('activity') === 'Building',
 					tags: [],
-					changes: !breakers ? [] : [{ name: breakers }]
+					changes: !breakers ? [] : breakers.split(', ').map(function (breaker) {
+						return { name: breaker };
+					})
 				};
 				if (status in { 'Success': 1, 'Failure': 1, 'Exception': 1 }) {
 					state.isBroken = status in { 'Failure': 1, 'Exception': 1 };

@@ -7,8 +7,9 @@ define([
 	'text!core/services/cctray/cruisecontrolnet.fixture.xml',
 	'text!core/services/cctray/go.fixture.xml',
 	'text!core/services/cctray/breakers_empty.fixture.xml',
+	'text!core/services/cctray/go_multiple_breakers.fixture.xml'
 ],
-function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreakersFixture) {
+function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreakersFixture, manyBreakersFixture) {
 
 	'use strict';
 
@@ -210,6 +211,19 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 
 					expect(request.xml).toHaveBeenCalled();
 					expect(parsedResponse[10].changes).toEqual([]);
+				});
+
+				it('should parse changes when more breakers listed', function () {
+					projectsXml = $(manyBreakersFixture);
+
+					service.updateAll();
+
+					expect(request.xml).toHaveBeenCalled();
+					expect(parsedResponse[2].changes).toEqual([
+						{ name: 'user1' },
+						{ name: 'user2' },
+						{ name: 'user3' }
+					]);
 				});
 
 				it('should parse xml if build broken with failure', function () {
