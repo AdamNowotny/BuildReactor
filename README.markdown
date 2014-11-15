@@ -63,8 +63,8 @@ Installation
 
 ```
 npm install
-bower update
-grunt
+node_modules/.bin/bower update
+node_modules/.bin/grunt
 ```
 
 Open Chrome Extension manager and `Load unpacked extension..` from `_build/BuildReactor` folder.
