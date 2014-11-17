@@ -1,3 +1,20 @@
+.group-name {
+	clear: both;
+	color: #999;
+	display: block;
+	font-size: 8pt;
+	margin-bottom: -5px;
+	margin-left: 5px;
+	margin-top: 5px;
+}
+
+.build {
+	padding-left: 5px;
+	padding-right: 5px;
+	float: left;
+	width: 100%;
+}
+
 .build-changes {
     font-size: 7pt;
     overflow: hidden;
@@ -7,15 +24,6 @@
     text-overflow: ellipsis;
     top: 20px;
 }
-
-.build .group-name {
-	color: #999;
-	display: block;
-	font-size: 8pt;
-	margin-top: 5px;
-	margin-bottom: -5px;
-}
-
 
 .build a,
 .build a:hover,
@@ -99,7 +107,10 @@
 		}
 
 	.build-name {
+		display: block;
 		margin-right: 10px;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.build .label {

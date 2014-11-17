@@ -1,16 +1,16 @@
+<div class="group-name" ng-hide="build.group == previousBuild.group">{{ build.group }}</div>
 <div class="build" ng-class="getItemClasses(build)">
-	<div class="group-name" ng-hide="build.group == previousBuild.group">{{ build.group }}</div>
 	<a href="{{ build.webUrl }}" target="_blank">
-		<span class="build-name pull-left">{{ build.name }}</span>
 		<i class="fa fa-spinner fa-spin fa-lg pull-right"></i>
-		<span class="labels">
-			<span ng-show="build.error" class="label label-default pull-right" tooltip="{{ build.error.description }}">
+		<span class="labels pull-right">
+			<span ng-show="build.error" class="label label-default" tooltip="{{ build.error.description }}">
 				Offline	<span class="error-message">({{ build.error.message }})</span>
 			</span>
 			<span ng-repeat="tag in build.tags">
-				<span class="label pull-right" ng-class="getLabelClasses(tag)" tooltip="{{ build.description }}">{{ tag.name }}</span>
+				<span class="label" ng-class="getLabelClasses(tag)" tooltip="{{ build.description }}">{{ tag.name }}</span>
 			</span>
-			<span ng-show="build.isDisabled" class="label label-default pull-right">Disabled</span>
+			<span ng-show="build.isDisabled" class="label label-default">Disabled</span>
 		</span>
+		<span class="build-name">{{ build.name }}</span>
 	</a>
 </div>
