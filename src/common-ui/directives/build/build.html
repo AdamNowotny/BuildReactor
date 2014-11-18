@@ -1,7 +1,5 @@
-<div class="group-name" ng-hide="build.group == previousBuild.group">{{ build.group }}</div>
-<div class="build" ng-class="getItemClasses(build)">
-	<a href="{{ build.webUrl }}" target="_blank">
-		<i class="fa fa-spinner fa-spin fa-lg pull-right"></i>
+<div class="build" ng-class="{ 'broken': build.isBroken, 'disabled': build.isDisabled, 'building': build.isRunning, 'offline': build.error }">
+	<a href="{{ build.webUrl }}" target="_blank" class="progress-bar" ng-class="{ 'active': build.isRunning, 'progress-bar-striped':build.isRunning }">
 		<span class="labels pull-right">
 			<span ng-show="build.error" class="label label-default" tooltip="{{ build.error.description }}">
 				Offline	<span class="error-message">({{ build.error.message }})</span>

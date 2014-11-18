@@ -1,4 +1,4 @@
 <div class="service row">
 	<div class="service-name">{{ service.name }}</div>
-	<section build build-info="item" previous-build="service.items[$index - 1]" ng-repeat="item in service.items"></section>
+	<section build-group name="group.name" items="group.items" ng-repeat="group in groups"></section>
 </div>

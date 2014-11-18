@@ -24,13 +24,13 @@ define([
 			scope = element.isolateScope();
 		}));
 
-		it('should call setBuildOrder when order changed', inject(function($compile, $rootScope) {
+		it('should call setBuildOrder when order changed', function() {
 			scope.projects = [ 'name1', 'name2' ];
 
 			scope.sortableCallback([ 'name2', 'name1' ], [ 'name2', 'name1' ], 0, 1);
 			
 			expect(core.setBuildOrder).toHaveBeenCalledWith('service name', [ 'name2', 'name1' ]);
-		}));
+		});
 
 	});
 

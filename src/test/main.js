@@ -84,6 +84,7 @@ require.config({
 		rx: '../bower_components/Rx/dist/rx',
 		'rx.async': '../bower_components/Rx/dist/rx.async',
 		'rx.binding': '../bower_components/Rx/dist/rx.binding',
+		'rx.coincidence': '../bower_components/Rx/dist/rx.coincidence',
 		'rx.time': '../bower_components/Rx/dist/rx.time',
 
 		// needed for testing only
@@ -112,6 +113,9 @@ require.config({
 			deps: ['angular'],
 			exports: 'angular.mock'
 		},
+		'common-ui/directives/build/build.html': ['angular'],
+		'common-ui/directives/buildGroup/buildGroup.html': ['angular'],
+		'common-ui/directives/service/service.html': ['angular'],
 		'settings/directives/sidebar/sidebar.html': ['angular'],
 		'settings/directives/selectedProjects/selectedProjects.html': ['angular']
 	},

@@ -1,3 +1,7 @@
+.build-list {
+	margin-bottom: 5px;
+}
+
 .build-list .no-services-message {
 	color: #F90;
 	font-weight: bold;

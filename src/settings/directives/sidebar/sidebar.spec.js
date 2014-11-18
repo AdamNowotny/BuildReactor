@@ -24,7 +24,7 @@ define([
 			scope = element.isolateScope();
 		}));
 
-		it('should call setOrder when order changed', inject(function($compile, $rootScope) {
+		it('should call setOrder when order changed', function() {
 			var service1 = { name: 'name1'};
 			var service2 = { name: 'name2'};
 			scope.services = [{ name: 'name1'}, { name: 'name2' }];
@@ -33,7 +33,7 @@ define([
 			scope.sortableCallback(model, model, 0, 1);
 			
 			expect(core.setOrder).toHaveBeenCalled();
-		}));
+		});
 
 	});
 

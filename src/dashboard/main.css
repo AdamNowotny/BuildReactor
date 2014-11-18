@@ -1,6 +1,7 @@
 @import url("../../bower_components/angular/angular-csp.css");
 @import url("../common-ui/directives/buildList/buildList.css");
 @import url("../common-ui/directives/service/service.css");
+@import url("../common-ui/directives/buildGroup/buildGroup.css");
 @import url("../common-ui/directives/build/build.css");
 
 body {
@@ -17,12 +18,4 @@ body {
 
 .build-list .no-services-message {
 	font-size: x-large;
-}
-
-.build .group-name {
-	text-align: left;
-}
-
-.build .build-name {
-	font-weight: bold;
 }
