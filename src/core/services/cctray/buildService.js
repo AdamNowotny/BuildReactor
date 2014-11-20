@@ -64,12 +64,14 @@ define([
 			.map(function (i, d) {
 				var status = $(d).attr('lastBuildStatus');
 				var breakers = $(d).find('message[kind=Breakers]').attr('text');
+				var name = $(d).attr('name');
 				var state = {
-					id: $(d).attr('name'),
-					name: $(d).attr('name'),
+					id: name,
+					name: name,
 					group: $(d).attr('category'),
 					webUrl: $(d).attr('webUrl'),
 					isRunning: $(d).attr('activity') === 'Building',
+					isWaiting: status === 'Pending',
 					tags: [],
 					changes: !breakers ? [] : breakers.split(', ').map(function (breaker) {
 						return { name: breaker };
@@ -83,7 +85,17 @@ define([
 				}
 
 				return state;
-			}).toArray();
+			}).map(categoriseFromName)
+			.toArray();
+	};
+
+	var categoriseFromName = function (i, d) {
+		if (!d.group && d.name.split(' :: ').length) {
+			var nameParts = d.name.split(' :: ');
+			d.group = nameParts[0];
+			d.name = nameParts.slice(1).join(' :: ');
+		}
+		return d;
 	};
 
 	var availableBuilds = function () {
@@ -106,7 +118,7 @@ define([
 						group: $(project).attr('category'),
 						isDisabled: false
 					};
-				})
+				}).map(categoriseFromName)
 				.toArray()
 		};
 	}

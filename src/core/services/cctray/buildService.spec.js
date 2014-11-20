@@ -46,6 +46,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				webUrl: 'http://build.nauck-it.de/server/build.nauck-it.de/project/CruiseControl.NET/ViewProjectReport.aspx',
 				isBroken: false,
 				isRunning: false,
+				isWaiting: false,
 				tags: [],
 				changes: []
 			};
@@ -242,6 +243,15 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 
 					expect(request.xml).toHaveBeenCalled();
 					expect(parsedResponse[0].isRunning).toBe(true);
+				});
+
+				it('should parse xml if build pending', function () {
+					projectsXml.find('Project').attr('lastBuildStatus', 'Pending');
+
+					service.updateAll();
+
+					expect(request.xml).toHaveBeenCalled();
+					expect(parsedResponse[0].isWaiting).toBe(true);
 				});
 
 				it('should ignore if status unknown and broken previously', function () {
@@ -457,6 +467,19 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 					expect(response.items[0].name).toBe('CruiseControl.NET');
 					expect(response.items[0].group).toBe('CruiseControl.NET');
 					expect(response.items[0].isDisabled).toBe(false);
+				});
+
+				service.availableBuilds();
+
+				expect(request.xml).toHaveBeenCalled();
+			});
+
+			it('should parse groups for names with ::', function () {
+				request.xml.andCallFake(function (options) {
+					var response = options.parser(goFixture);
+					expect(response.items[0].id).toBe('Project :: Build');
+					expect(response.items[0].name).toBe('Build');
+					expect(response.items[0].group).toBe('Project');
 				});
 
 				service.availableBuilds();
