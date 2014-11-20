@@ -17,6 +17,7 @@ define([
 			var state = {
 				id: self.id,
 				name: self.id,
+				group: null,
 				webUrl: jobResponse.lastBuild.url,
 				isBroken: lastCompletedResponse.result in
 					{ 'FAILURE': 1, 'UNSTABLE': 1, 'ABORTED': 1, 'NOT_BUILT': 1 },

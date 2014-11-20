@@ -77,8 +77,8 @@ define([
 					var response = options.parser(reposJson);
 					expect(response.items.length).toBe(2);
 					expect(response.items[1].id).toBe('AdamNowotny/BuildReactor');
-					expect(response.items[1].name).toBe('AdamNowotny/BuildReactor');
-					expect(response.items[1].group).toBe(null);
+					expect(response.items[1].name).toBe('BuildReactor');
+					expect(response.items[1].group).toBe('AdamNowotny');
 					expect(response.items[1].isDisabled).toBe(false);
 				});
 

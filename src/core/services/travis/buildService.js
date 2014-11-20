@@ -34,8 +34,8 @@ define([
 					items: response.map(function (repo) {
 						return {
 							id: repo.slug,
-							name: repo.slug,
-							group: null,
+							name: repo.slug.split('/')[1],
+							group: repo.slug.split('/')[0],
 							isDisabled: false
 						};
 					})
