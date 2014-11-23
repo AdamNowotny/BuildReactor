@@ -1,3 +1,7 @@
+.build-group {
+	float: left;
+}
+
 .group-name {
 	clear: both;
 	display: block;

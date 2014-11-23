@@ -15,10 +15,15 @@ define([
 		configPort.onMessage.addListener(function (message) {
 			configurations.onNext(message);
 		});
+		var viewConfigPort = chromeApi.connect({ name: 'views' });
+		viewConfigPort.onMessage.addListener(function (message) {
+			viewConfigurations.onNext(message);
+		});
 	};
 
 	var activeProjects = new Rx.ReplaySubject(1);
 	var configurations = new Rx.ReplaySubject(1);
+	var viewConfigurations = new Rx.ReplaySubject(1);
 	var messages = new Rx.ReplaySubject(1);
 
 	var availableServices = function (callback) {
@@ -82,6 +87,7 @@ define([
 		init: init,
 		availableServices: availableServices,
 		configurations: configurations,
+		views: viewConfigurations,
 		activeProjects: activeProjects,
 		setOrder: setOrder,
 		setBuildOrder: setBuildOrder,

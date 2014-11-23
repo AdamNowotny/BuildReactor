@@ -12,18 +12,33 @@ define([
 
 		var onNext = Rx.ReactiveTest.onNext;
 		var scheduler;
-		var port;
+		var statePort, configPort, viewsPort;
 
-		beforeEach(function () {
-			scheduler = new Rx.TestScheduler();
-			port = {
+		var createPort = function () {
+			return {
 				onMessage: {
 					addListener: function () {}
 				}
 			};
-			spyOn(chromeApi, 'connect').andReturn(port);
+		};
+
+		beforeEach(function () {
+			scheduler = new Rx.TestScheduler();
+			statePort = createPort();
+			configPort = createPort();
+			viewsPort = createPort();
+			spyOn(chromeApi, 'connect').andCallFake(function (request) {
+				var ports = {
+					'state': statePort,
+					'configuration': configPort,
+					'views': viewsPort
+				};
+				return ports[request.name];
+			});
 			spyOn(chromeApi, 'sendMessage');
-			spyOn(port.onMessage, 'addListener');
+			spyOn(statePort.onMessage, 'addListener');
+			spyOn(configPort.onMessage, 'addListener');
+			spyOn(viewsPort.onMessage, 'addListener');
 		});
 
 		it('should connect on init', function () {
@@ -31,11 +46,12 @@ define([
 
 			expect(chromeApi.connect.argsForCall[0]).toEqual([{ name: 'state' }]);
 			expect(chromeApi.connect.argsForCall[1]).toEqual([{ name: 'configuration' }]);
+			expect(chromeApi.connect.argsForCall[2]).toEqual([{ name: 'views' }]);
 		});
 
 		it('should pass activeProjects from port', function () {
 			var state = [{ name: 'service1' }, { name: 'service2' }];
-			port.onMessage.addListener.andCallFake(function (listener) {
+			statePort.onMessage.addListener.andCallFake(function (listener) {
 				listener(state);
 			});
 
@@ -51,7 +67,7 @@ define([
 
 		it('should pass configurations from port', function () {
 			var config = [{ name: 'service1' }, { name: 'service2' }];
-			port.onMessage.addListener.andCallFake(function (listener) {
+			configPort.onMessage.addListener.andCallFake(function (listener) {
 				listener(config);
 			});
 
@@ -60,6 +76,22 @@ define([
 			});
 			var result = scheduler.startWithCreate(function () {
 				return core.configurations;
+			});
+
+			expect(result.messages).toHaveElements(onNext(300, config));
+		});
+
+		it('should pass view configurations from port', function () {
+			var config = [{ columns: 5 }];
+			viewsPort.onMessage.addListener.andCallFake(function (listener) {
+				listener(config);
+			});
+
+			scheduler.scheduleAbsolute(300, function () {
+				core.init();
+			});
+			var result = scheduler.startWithCreate(function () {
+				return core.views;
 			});
 
 			expect(result.messages).toHaveElements(onNext(300, config));
