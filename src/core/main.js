@@ -4,7 +4,8 @@ require([
 	'core/badgeController',
 	'core/messageHandlers',
 	'core/notificationController',
-	'core/services/serviceConfiguration',
+	'core/config/serviceConfiguration',
+	'core/config/viewConfiguration',
 	'core/services/serviceController',
 	'core/services/passwordExpiredHandler',
 
@@ -26,6 +27,7 @@ require([
 	messageHandlers,
 	notificationController,
 	serviceConfiguration,
+	viewConfiguration,
 	serviceController,
 	passwordExpiredHandler,
 	
@@ -43,7 +45,8 @@ require([
 ) {
 	'use strict';
 
-	localStore.update();
+	serviceConfiguration.init();
+	viewConfiguration.init();
 	backgroundLogger();
 	badgeController();
 	notificationController.init({ timeout: 5000 });

@@ -1,7 +1,7 @@
 define([
 	'core/services/passwordExpiredHandler',
 	'core/services/serviceController',
-	'core/services/serviceConfiguration'
+	'core/config/serviceConfiguration'
 ], function (handler, serviceController, serviceConfiguration) {
 
 	'use strict';

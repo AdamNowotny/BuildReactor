@@ -1,6 +1,6 @@
 define([
 	'core/services/serviceController',
-	'core/services/serviceConfiguration'
+	'core/config/serviceConfiguration'
 ], function (serviceController, serviceConfiguration) {
 
 	'use strict';

@@ -1,14 +1,15 @@
 define([
-	'core/services/serviceConfiguration',
+	'core/config/serviceConfiguration',
 	'core/config/localStore',
+	'core/config/serviceConfigUpdater',
 	'common/arrayEquals',
 	'rx',
 	'rx.testing'
-], function (serviceConfiguration, configStore, arrayEquals, Rx) {
+], function (serviceConfiguration, configStore, configUpdater, arrayEquals, Rx) {
 
 	'use strict';
 
-	describe('serviceConfiguration', function () {
+	describe('core/config/serviceConfiguration', function () {
 
 		var onNext = Rx.ReactiveTest.onNext;
 		var scheduler;
@@ -16,19 +17,29 @@ define([
 		beforeEach(function () {
 			spyOn(configStore, 'setItem');
 			spyOn(configStore, 'getItem');
+			spyOn(configUpdater, 'update');
 			scheduler = new Rx.TestScheduler();
 		});
 
-		it('should get all service configuration', function () {
-			var allConfig = [{ name: 'name1' }, { name: 'name2' }];
-			configStore.getItem.andCallFake(function (key) {
-				expect(key).toBe('services');
-				return allConfig;
+		it('should update service config on init', function () {
+			var oldConfig = [
+				{ name: 'service', disabled: false }
+			];
+			var newConfig = [
+				{ name: 'updated service', disabled: false }
+			];
+			configStore.getItem.andReturn(oldConfig);
+			configUpdater.update.andReturn(newConfig);
+
+			scheduler.scheduleAbsolute(300, function () {
+				serviceConfiguration.init();
+			});
+			var changes = scheduler.startWithCreate(function () {
+				return serviceConfiguration.changes;
 			});
 
-			var result = serviceConfiguration.getAll();
-
-			expect(result).toEqual(allConfig);
+			expect(configStore.setItem).toHaveBeenCalledWith('services', newConfig);
+			expect(changes.messages).toHaveElements(onNext(300, newConfig));
 		});
 
 		it('should disable service', function () {

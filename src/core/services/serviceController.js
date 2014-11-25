@@ -1,5 +1,5 @@
 define([
-	'core/services/serviceConfiguration',
+	'core/config/serviceConfiguration',
 	'core/services/serviceLoader',
 	'rx',
 	'rx.binding'

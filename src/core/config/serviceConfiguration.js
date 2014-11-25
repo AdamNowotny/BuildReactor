@@ -1,17 +1,20 @@
 define([
 	'rx',
 	'core/config/localStore',
+	'core/config/serviceConfigUpdater',
 	'common/arrayEquals',
 	'rx.binding'
-], function (Rx, configStore, arrayEquals) {
+], function (Rx, configStore, configUpdater, arrayEquals) {
 
 	'use strict';
 
 	var key = 'services';
 	var changes = new Rx.BehaviorSubject(configStore.getItem(key));
 
-	var getAll = function () {
-		return configStore.getItem(key);
+	var init = function () {
+		var config = configUpdater.update(configStore.getItem(key));
+		configStore.setItem(key, config);
+		changes.onNext(config);
 	};
 
 	var setOrder = function (serviceNames) {
@@ -103,7 +106,7 @@ define([
 	};
 
 	return {
-		getAll: getAll,
+		init: init,
 		setOrder: setOrder,
 		setBuildOrder: setBuildOrder,
 		enableService: enableService,

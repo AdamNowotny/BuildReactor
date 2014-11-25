@@ -1,18 +1,6 @@
-define([
-	'core/config/version2Updater'
-], function (updater) {
+define([], function () {
 	'use strict';
 	
-	function update() {
-		var config = {
-			version: localStorage.getItem('version') || 1,
-			services: JSON.parse(localStorage.getItem('services')) || []
-		};
-		var updatedConfig = updater.update(config);
-		localStorage.setItem('services', JSON.stringify(updatedConfig.services));
-		localStorage.setItem('version', updatedConfig.version);
-	}
-
 	function setItem(key, settings) {
 		var settingsString = JSON.stringify(settings);
 		localStorage.setItem(key, settingsString);
@@ -20,9 +8,7 @@ define([
 
 	function getItem(key) {
 		var settings;
-		if (!localStorage.getItem(key)) {
-			settings = [];
-		} else {
+		if (localStorage.getItem(key)) {
 			var settingsString = localStorage.getItem(key);
 			settings = JSON.parse(settingsString);
 		}
@@ -30,7 +16,6 @@ define([
 	}
 
 	return {
-		update: update,
 		setItem: setItem,
 		getItem: getItem
 	};

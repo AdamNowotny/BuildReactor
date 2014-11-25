@@ -2,10 +2,11 @@ define([
 	'core/messageHandlers',
 	'core/services/serviceLoader',
 	'core/services/serviceController',
-	'core/services/serviceConfiguration',
+	'core/config/serviceConfiguration',
+	'core/config/viewConfiguration',
 	'rx',
 	'common/chromeApi'
-], function (messageHandlers, serviceLoader, serviceController, serviceConfiguration, Rx, chromeApi) {
+], function (messageHandlers, serviceLoader, serviceController, serviceConfiguration, viewConfiguration, Rx, chromeApi) {
 	'use strict';
 
 	describe('messageHandlers', function () {
@@ -27,7 +28,6 @@ define([
 			spyOn(serviceConfiguration, 'removeService');
 			spyOn(serviceConfiguration, 'renameService');
 			spyOn(serviceConfiguration, 'saveService');
-			spyOn(serviceConfiguration, 'getAll');
 			spyOn(serviceController, 'getAllTypes');
 			messageHandlers.init();
 		});
@@ -37,21 +37,6 @@ define([
 				port.disconnectHandler(port);
 			}
 		});
-
-		function openPort(portName) {
-			var port = {
-				name: portName,
-				postMessage: function () {},
-				onDisconnect: {
-					addListener: function () {}
-				}
-			};
-			spyOn(port.onDisconnect, 'addListener').andCallFake(function (onDisconnect) {
-				port.disconnectHandler = onDisconnect;
-			});
-			spyOn(port, 'postMessage');
-			return port;
-		}
 
 		describe('messages', function () {
 
@@ -186,29 +171,100 @@ define([
 
 		describe('activeProjects', function () {
 
-			it('should subscribe to state sequence on connect', function () {
-				port = openPort('state');
-				connectHandler(port);
+			function openPort(portName) {
+				var port = {
+					name: portName,
+					postMessage: function () {},
+					onDisconnect: {
+						addListener: function () {}
+					}
+				};
+				spyOn(port.onDisconnect, 'addListener').andCallFake(function (onDisconnect) {
+					port.disconnectHandler = onDisconnect;
+				});
+				spyOn(port, 'postMessage');
+				return port;
+			}
 
-				serviceController.activeProjects.onNext([{ name: 'service 1', items: [] }]);
+			describe('activeProjects', function () {
 
-				expect(port.postMessage).toHaveBeenCalled();
+				it('should subscribe to state sequence on connect', function () {
+					port = openPort('state');
+					connectHandler(port);
+
+					var projects = [{ name: 'service 1', items: [] }];
+					serviceController.activeProjects.onNext(projects);
+
+					expect(port.postMessage).toHaveBeenCalledWith(projects);
+				});
+
+				it('should unsubscribe from state changes on disconnect', function () {
+					port = openPort('state');
+					connectHandler(port);
+					port.disconnectHandler(port);
+
+					serviceController.activeProjects.onNext('test');
+					serviceController.activeProjects.onNext('test');
+					serviceController.activeProjects.onNext('test');
+
+					expect(port.postMessage.callCount).toBe(1);
+				});
+
 			});
 
-			it('should unsubscribe from state changes on disconnect', function () {
-				port = openPort('state');
-				connectHandler(port);
-				port.disconnectHandler(port);
+			describe('serviceConfiguration', function () {
 
-				serviceController.activeProjects.onNext('test');
-				serviceController.activeProjects.onNext('test');
-				serviceController.activeProjects.onNext('test');
+				it('should subscribe to configuration sequence on connect', function () {
+					port = openPort('configuration');
+					connectHandler(port);
 
-				expect(port.postMessage.callCount).toBe(1);
+					var config = [{ name: 'service 1' }];
+					serviceConfiguration.changes.onNext(config);
+
+					expect(port.postMessage).toHaveBeenCalledWith(config);
+				});
+
+				it('should unsubscribe from configuration changes on disconnect', function () {
+					port = openPort('configuration');
+					connectHandler(port);
+					port.disconnectHandler(port);
+
+					serviceConfiguration.changes.onNext('test');
+					serviceConfiguration.changes.onNext('test');
+					serviceConfiguration.changes.onNext('test');
+
+					expect(port.postMessage.callCount).toBe(1);
+				});
+
+			});
+
+			describe('viewConfiguration', function () {
+
+				it('should subscribe to view changes on connect', function () {
+					port = openPort('views');
+					connectHandler(port);
+
+					var config = [{ columns: 8 }];
+					viewConfiguration.changes.onNext(config);
+
+					expect(port.postMessage).toHaveBeenCalledWith(config);
+				});
+
+				it('should unsubscribe from view changes on disconnect', function () {
+					port = openPort('views');
+					connectHandler(port);
+					port.disconnectHandler(port);
+
+					viewConfiguration.changes.onNext({ columns: 5 });
+					viewConfiguration.changes.onNext({ columns: 6 });
+					viewConfiguration.changes.onNext({ columns: 7 });
+
+					expect(port.postMessage.callCount).toBe(1);
+				});
+
 			});
 
 		});
-
 
 	});
 });

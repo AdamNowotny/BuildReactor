@@ -1,10 +1,11 @@
 define([
 	'core/services/serviceLoader',
 	'core/services/serviceController',
-	'core/services/serviceConfiguration',
+	'core/config/serviceConfiguration',
+	'core/config/viewConfiguration',
 	'common/chromeApi',
 	'rx'
-], function (serviceLoader, serviceController, serviceConfiguration, chromeApi, Rx) {
+], function (serviceLoader, serviceController, serviceConfiguration, viewConfiguration, chromeApi, Rx) {
 
 	'use strict';
 
@@ -65,6 +66,14 @@ define([
 			});
 			port.onDisconnect.addListener(function (port) {
 				configSubscription.dispose();
+			});
+			break;
+		case 'views':
+			var viewSubscription = viewConfiguration.changes.subscribe(function (config) {
+				port.postMessage(config);
+			});
+			port.onDisconnect.addListener(function (port) {
+				viewSubscription.dispose();
 			});
 			break;
 		}
