@@ -22,6 +22,14 @@ define([
 			console.warn(new Date().toJSON(), 'core.configurations stream completed', arguments);
 		});
 
+		core.views.subscribe(function (state) {
+			console.log(new Date().toJSON(), 'core.views', state);
+		}, function () {
+			console.error(new Date().toJSON(), 'core.views stream error', arguments);
+		}, function () {
+			console.warn(new Date().toJSON(), 'core.views stream completed', arguments);
+		});
+
 		core.messages.subscribe(function (state) {
 			console.log(new Date().toJSON(), 'core.messages', state);
 		}, function () {

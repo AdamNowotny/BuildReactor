@@ -1,8 +1,9 @@
 define([
 	'core/services/serviceController',
 	'core/config/serviceConfiguration',
+	'core/config/viewConfiguration',
 	'mout/string/interpolate'
-], function (serviceController, serviceConfiguration, interpolate) {
+], function (serviceController, serviceConfiguration, viewConfiguration, interpolate) {
 
 	'use strict';
 
@@ -29,6 +30,14 @@ define([
 			console.error(new Date().toJSON(), 'serviceConfiguration.changes stream error', arguments);
 		}, function () {
 			console.warn(new Date().toJSON(), 'serviceConfiguration.changes stream completed', arguments);
+		});
+
+		viewConfiguration.changes.subscribe(function (config) {
+			console.log(new Date().toJSON(), 'viewConfiguration.changes', config);
+		}, function () {
+			console.error(new Date().toJSON(), 'viewConfiguration.changes stream error', arguments);
+		}, function () {
+			console.warn(new Date().toJSON(), 'viewConfiguration.changes stream completed', arguments);
 		});
 
 		window.onerror = function (message, url, line) {
