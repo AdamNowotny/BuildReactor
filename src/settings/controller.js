@@ -11,7 +11,7 @@ define([
 		$scope.selected = null;
 
 		var updateSelected = function () {
-			$scope.isNew ? updateSelectedForNew() : updateSelectedForService();
+			$scope.view === 'new' ? updateSelectedForNew() : updateSelectedForService();
 		};
 
 		var updateSelectedForService = function () {
@@ -50,7 +50,7 @@ define([
 		$scope.$on('$routeChangeSuccess', function (event, routeData) {
 			$scope.serviceId = routeData.params.serviceName || null;
 			$scope.serviceTypeId = routeData.params.serviceTypeId || null;
-			$scope.isNew = $route.current.isNew;
+			$scope.view = $route.current.view;
 			updateSelected();
 		});
 

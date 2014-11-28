@@ -7,7 +7,7 @@ define([
 ], function (sidebar, core, angular, mocks) {
 	'use strict';
 
-	describe('sidebar', function () {
+	describe('settings/directives/sidebar/sidebar', function () {
 
 		var scope;
 		var element;

@@ -7,6 +7,7 @@ define([
 	'settings/routes',
 	'settings/serviceSettingsCtrl',
 	'settings/addServiceCtrl',
+	'settings/viewSettings/controller',
 	'settings/directives/alert/alert',
 	'settings/directives/dynamicForm/dynamicForm',
 	'settings/directives/filterQuery/filterQuery',

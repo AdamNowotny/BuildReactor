@@ -7,7 +7,7 @@
 			<li
 				ng-repeat="service in services"
 				ng-class="{ muted: service.disabled, active: service.name === selected.name }">
-				<a ng-click="changeService(service.name)" class="nav-pill">
+				<a ng-href="/src/settings/index.html#/service/{{ service.name }}" class="nav-pill">
 					<span class="handle">::</span>
 					<img class="pill-icon" ng-src="/src/core/services/{{ service.icon }}">
 					<span class="pill-name">{{ service.name }}</span>
@@ -16,16 +16,22 @@
 		</ul>
 		<hr class="service-list-separator" ng-show="services">
 		<ul class="actions nav nav-pills nav-stacked">
-			<li ng-class="{ active: isNew, muted: selected.disabled }" ng-show="isNew && selected">
+			<li ng-class="{ active: view == 'new', muted: selected.disabled }" ng-show="view == 'new' && selected">
 				<a href="#">
 					<img class="pill-icon" ng-src="{{ selected.icon && '/src/core/services/' + selected.icon || '' }}">
 					<span class="pill-name">{{ selected.name }}</span>
 				</a>
 			</li>
-			<li id="service-add-pill" ng-class="{ active: !selected }">
-				<a id="service-add-button" ng-href="/src/settings/index.html#/new">
+			<li ng-class="{ active: view == 'new'  && !selected }">
+				<a ng-href="/src/settings/index.html#/new">
 					<i class="pill-icon fa fa-plus-circle fa-3x"></i>
 					<span class="pill-name">Add</span>
+				</a>
+			</li>
+			<li ng-class="{ active: view == 'view' }">
+				<a ng-href="/src/settings/index.html#/view">
+					<i class="pill-icon fa fa-desktop fa-3x"></i>
+					<span class="pill-name">View</span>
 				</a>
 			</li>
 		</ul>

@@ -9,8 +9,8 @@
 		<link rel="stylesheet" type="text/css" href="src/settings/main.css" media="screen">
 	</head>
 	<body ng-controller="SettingsCtrl">
-		<section topnav service="selected" show-actions="!isNew"></section>
-		<section sidebar services="services" selected="selected" new="isNew"></section>
+		<section topnav service="selected" show-actions="view == 'service'"></section>
+		<section sidebar services="services" selected="selected" view="view"></section>
 		<section ng-view class="content-container"></section>
 		<!-- scripts -->
 		<script type="text/javascript" data-main="src/settings/main" src="bower_components/requirejs/require.js"></script>

@@ -8,18 +8,23 @@ define([
 		.when('/service/:serviceName', {
 			templateUrl: 'src/settings/serviceSettingsView.html',
 			controller: 'ServiceSettingsCtrl',
-			isNew: false
+			view: 'service'
 		})
 		.when('/new', {
 			templateUrl: 'src/settings/addServiceView.html',
 			controller: 'AddServiceCtrl',
 			reloadOnSearch: false,
-			isNew: true
+			view: 'new'
 		})
 		.when('/new/:serviceTypeId/:serviceName', {
 			templateUrl: 'src/settings/serviceSettingsView.html',
 			controller: 'ServiceSettingsCtrl',
-			isNew: true
+			view: 'new'
+		})
+		.when('/view', {
+			templateUrl: 'src/settings/viewSettings/view.html',
+			controller: 'ViewSettingsCtrl',
+			view: 'view'
 		})
 		.otherwise({
 			redirectTo: '/new'
