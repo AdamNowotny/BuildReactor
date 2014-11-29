@@ -17,8 +17,13 @@ define([
 	};
 
 	var save = function (config) {
-		configStore.setItem(key, config);
-		changes.onNext(config);
+		if (typeof config !== 'object' || config === null) {
+			throw new Error('view config has to be an object');
+		}
+		if (JSON.stringify(configStore.getItem(key)) !== JSON.stringify(config)) {
+			configStore.setItem(key, config);
+			changes.onNext(config);
+		}
 	};
 
 	return {

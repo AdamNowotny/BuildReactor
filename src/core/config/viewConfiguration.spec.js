@@ -20,7 +20,7 @@ define([
 			scheduler = new Rx.TestScheduler();
 		});
 
-		it('should update service config on init', function () {
+		it('should update view config on init', function () {
 			var oldConfig = [
 				{ columns: 4 }
 			];
@@ -41,6 +41,13 @@ define([
 			expect(changes.messages).toHaveElements(onNext(300, newConfig));
 		});
 
+		it('should not update view config if not an object', function () {
+			expect(function () {
+				viewConfiguration.save('undefined');
+			}).toThrow();
+			expect(configStore.setItem).not.toHaveBeenCalled();
+		});
+
 		it('should publish changes on save', function () {
 			var viewConfig = {
 				columns: 2
@@ -55,6 +62,22 @@ define([
 
 			expect(configStore.setItem).toHaveBeenCalledWith('views', viewConfig);
 			expect(changes.messages).toHaveElements(onNext(300, viewConfig));
+		});
+		
+		it('should not publish changes if config unchanged', function () {
+			var viewConfig = {
+				columns: 2
+			};
+			configStore.getItem.andReturn(viewConfig);
+			
+			scheduler.scheduleAbsolute(300, function () {
+				viewConfiguration.save(viewConfig);
+			});
+			var changes = scheduler.startWithCreate(function () {
+				return viewConfiguration.changes;
+			});
+
+			expect(changes.messages).not.toHaveElements(onNext(300, viewConfig));
 		});
 		
 

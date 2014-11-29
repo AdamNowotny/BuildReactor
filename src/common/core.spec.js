@@ -159,6 +159,12 @@ define([
 			expect(chromeApi.sendMessage).toHaveBeenCalledWith({ name: "setBuildOrder", serviceName: 'service name', order: ['build2', 'build1'] });
 		});
 
+		it('should send setViews message', function () {
+			core.setViews({ columns: 5 });
+
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({ name: "setViews", views: { columns: 5 } });
+		});
+
 	});
 
 });

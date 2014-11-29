@@ -7,5 +7,6 @@ require([
 	'bootstrap',
 	'angular.ui',
 	'angular.ui.utils',
-	'htmlSortable'
+	'htmlSortable',
+	'common-ui/directives/buildList/buildList'
 ], function () { });

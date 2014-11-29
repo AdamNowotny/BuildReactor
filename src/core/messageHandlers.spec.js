@@ -28,6 +28,7 @@ define([
 			spyOn(serviceConfiguration, 'removeService');
 			spyOn(serviceConfiguration, 'renameService');
 			spyOn(serviceConfiguration, 'saveService');
+			spyOn(viewConfiguration, 'save');
 			spyOn(serviceController, 'getAllTypes');
 			messageHandlers.init();
 		});
@@ -37,6 +38,22 @@ define([
 				port.disconnectHandler(port);
 			}
 		});
+
+		function openPort(portName) {
+			var port = {
+				name: portName,
+				postMessage: function () {},
+				onDisconnect: {
+					addListener: function () {}
+				}
+			};
+			spyOn(port.onDisconnect, 'addListener').andCallFake(function (onDisconnect) {
+				port.disconnectHandler = onDisconnect;
+			});
+			spyOn(port, 'postMessage');
+			return port;
+		}
+
 
 		describe('messages', function () {
 
@@ -99,6 +116,13 @@ define([
 				messageHandler({ name: 'saveService', settings: settings }, null, null);
 
 				expect(serviceConfiguration.saveService).toHaveBeenCalledWith(settings);
+			});
+
+			it('should handle setViews', function () {
+				var viewConfig = { columns: 2 };
+				messageHandler({ name: 'setViews', views: viewConfig }, null, null);
+
+				expect(viewConfiguration.save).toHaveBeenCalledWith(viewConfig);
 			});
 
 		});
@@ -171,97 +195,78 @@ define([
 
 		describe('activeProjects', function () {
 
-			function openPort(portName) {
-				var port = {
-					name: portName,
-					postMessage: function () {},
-					onDisconnect: {
-						addListener: function () {}
-					}
-				};
-				spyOn(port.onDisconnect, 'addListener').andCallFake(function (onDisconnect) {
-					port.disconnectHandler = onDisconnect;
-				});
-				spyOn(port, 'postMessage');
-				return port;
-			}
+			it('should subscribe to state sequence on connect', function () {
+				port = openPort('state');
+				connectHandler(port);
 
-			describe('activeProjects', function () {
+				var projects = [{ name: 'service 1', items: [] }];
+				serviceController.activeProjects.onNext(projects);
 
-				it('should subscribe to state sequence on connect', function () {
-					port = openPort('state');
-					connectHandler(port);
-
-					var projects = [{ name: 'service 1', items: [] }];
-					serviceController.activeProjects.onNext(projects);
-
-					expect(port.postMessage).toHaveBeenCalledWith(projects);
-				});
-
-				it('should unsubscribe from state changes on disconnect', function () {
-					port = openPort('state');
-					connectHandler(port);
-					port.disconnectHandler(port);
-
-					serviceController.activeProjects.onNext('test');
-					serviceController.activeProjects.onNext('test');
-					serviceController.activeProjects.onNext('test');
-
-					expect(port.postMessage.callCount).toBe(1);
-				});
-
+				expect(port.postMessage).toHaveBeenCalledWith(projects);
 			});
 
-			describe('serviceConfiguration', function () {
+			it('should unsubscribe from state changes on disconnect', function () {
+				port = openPort('state');
+				connectHandler(port);
+				port.disconnectHandler(port);
 
-				it('should subscribe to configuration sequence on connect', function () {
-					port = openPort('configuration');
-					connectHandler(port);
+				serviceController.activeProjects.onNext('test');
+				serviceController.activeProjects.onNext('test');
+				serviceController.activeProjects.onNext('test');
 
-					var config = [{ name: 'service 1' }];
-					serviceConfiguration.changes.onNext(config);
-
-					expect(port.postMessage).toHaveBeenCalledWith(config);
-				});
-
-				it('should unsubscribe from configuration changes on disconnect', function () {
-					port = openPort('configuration');
-					connectHandler(port);
-					port.disconnectHandler(port);
-
-					serviceConfiguration.changes.onNext('test');
-					serviceConfiguration.changes.onNext('test');
-					serviceConfiguration.changes.onNext('test');
-
-					expect(port.postMessage.callCount).toBe(1);
-				});
-
+				expect(port.postMessage.callCount).toBe(1);
 			});
 
-			describe('viewConfiguration', function () {
+		});
 
-				it('should subscribe to view changes on connect', function () {
-					port = openPort('views');
-					connectHandler(port);
+		describe('serviceConfiguration', function () {
 
-					var config = [{ columns: 8 }];
-					viewConfiguration.changes.onNext(config);
+			it('should subscribe to configuration sequence on connect', function () {
+				port = openPort('configuration');
+				connectHandler(port);
 
-					expect(port.postMessage).toHaveBeenCalledWith(config);
-				});
+				var config = [{ name: 'service 1' }];
+				serviceConfiguration.changes.onNext(config);
 
-				it('should unsubscribe from view changes on disconnect', function () {
-					port = openPort('views');
-					connectHandler(port);
-					port.disconnectHandler(port);
+				expect(port.postMessage).toHaveBeenCalledWith(config);
+			});
 
-					viewConfiguration.changes.onNext({ columns: 5 });
-					viewConfiguration.changes.onNext({ columns: 6 });
-					viewConfiguration.changes.onNext({ columns: 7 });
+			it('should unsubscribe from configuration changes on disconnect', function () {
+				port = openPort('configuration');
+				connectHandler(port);
+				port.disconnectHandler(port);
 
-					expect(port.postMessage.callCount).toBe(1);
-				});
+				serviceConfiguration.changes.onNext('test');
+				serviceConfiguration.changes.onNext('test');
+				serviceConfiguration.changes.onNext('test');
 
+				expect(port.postMessage.callCount).toBe(1);
+			});
+
+		});
+
+		describe('viewConfiguration', function () {
+
+			it('should subscribe to view changes on connect', function () {
+				port = openPort('views');
+				connectHandler(port);
+
+				var config = [{ columns: 8 }];
+				viewConfiguration.changes.onNext(config);
+
+				expect(port.postMessage).toHaveBeenCalledWith(config);
+			});
+
+			it('should unsubscribe from view changes on disconnect', function () {
+				port = openPort('views');
+				connectHandler(port);
+				port.disconnectHandler(port);
+
+				viewConfiguration.changes.onNext({ columns: 5 });
+				viewConfiguration.changes.onNext({ columns: 6 });
+				viewConfiguration.changes.onNext({ columns: 7 });
+
+				expect(port.postMessage.callCount).toBe(1);
 			});
 
 		});

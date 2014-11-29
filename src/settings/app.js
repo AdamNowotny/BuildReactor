@@ -13,6 +13,7 @@ define([
 		'ui.bootstrap',
 		'ui.highlight',
 		'ui.indeterminate',
-		'htmlSortable'
+		'htmlSortable',
+		'app.directives'
 	]);
 });

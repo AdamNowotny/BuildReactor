@@ -7,7 +7,7 @@ define([
 	app.directive('topnav', function ($modal, $location) {
 		return {
 			scope: {
-				service: '=',
+				service: '=currentService',
 				showActions: '='
 			},
 			templateUrl: 'src/settings/directives/topnav/topnav.html',

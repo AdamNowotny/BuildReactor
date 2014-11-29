@@ -48,5 +48,10 @@ require([
 	'rx.async',
 	'rx.coincidence',
 	'rx.binding',
-	'rx.time'
+	'rx.time',
+	'common/arrayEquals',
+	'common/chromeApi',
+	'common/joinUrl',
+	'common/sortBy',
+	'common/tags'
 ], function () {});

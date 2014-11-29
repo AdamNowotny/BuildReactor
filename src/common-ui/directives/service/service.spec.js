@@ -21,7 +21,7 @@ define([
 		));
 
 		beforeEach(inject(function ($compile, $rootScope) {
-			element = $compile('<section service service-info="service"></section>')($rootScope);
+			element = $compile('<service service-info="service"></service>')($rootScope);
 			$rootScope.$digest();
 			scope = element.isolateScope();
 		}));

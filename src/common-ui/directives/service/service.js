@@ -11,6 +11,7 @@ define([
 
 	module.directive('service', function () {
 		return {
+			restrict: 'E',
 			scope: {
 				service: '=serviceInfo'
 			},

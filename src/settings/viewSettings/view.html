@@ -1,0 +1,22 @@
+<div class="view-config col-md-12">
+	<form class="form-horizontal col-md-4" role="form">
+		<div class="form-group">
+			<label class="col-md-6 control-label">Number of columns</label>
+			<div class="col-md-6">
+				<input type="number" class="form-control" ng-change="save(config)" ng-model="config.columns">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-6 control-label">Column width</label>
+			<div class="col-md-6">
+				<ul class="nav nav-pills">
+					<li role="presentation" ng-class="{ active: !config.fullWidthGroups }" ng-click="setFixedWidth(true)"><a>Fixed</a></li>
+					<li role="presentation" ng-class="{ active: config.fullWidthGroups }" ng-click="setFixedWidth(false)"><a>Variable</a></li>
+				</ul>
+			</div>
+		</div>
+	</form>
+	<div class="build-preview col-md-8">
+		<section build-list services="services"></section>
+	</div>
+</div>

@@ -3,6 +3,7 @@ define([
 	'src/common/core.mock.activeProjects.js',
 	'src/common/core.mock.availableProjects.js',
 	'src/common/core.mock.configurations.js',
+	'src/common/core.mock.views.js',
 	'rx',
 	'rx.time'
 ], function (
@@ -10,6 +11,7 @@ define([
 	activeProjectsResponse,
 	availableProjectsResponse,
 	configurations,
+	views,
 	Rx
 ) {
 	'use strict';
@@ -32,6 +34,7 @@ define([
 		init: function () {},
 		availableServices: availableServices,
 		configurations: configurations,
+		views: views,
 		activeProjects: Rx.Observable.returnValue(activeProjectsResponse),
 		availableProjects: availableProjects,
 		enableService: log,

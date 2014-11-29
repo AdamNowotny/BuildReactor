@@ -17,13 +17,13 @@ define([
 		});
 		var viewConfigPort = chromeApi.connect({ name: 'views' });
 		viewConfigPort.onMessage.addListener(function (message) {
-			viewConfigurations.onNext(message);
+			views.onNext(message);
 		});
 	};
 
 	var activeProjects = new Rx.ReplaySubject(1);
 	var configurations = new Rx.ReplaySubject(1);
-	var viewConfigurations = new Rx.ReplaySubject(1);
+	var views = new Rx.ReplaySubject(1);
 	var messages = new Rx.ReplaySubject(1);
 
 	var availableServices = function (callback) {
@@ -83,11 +83,17 @@ define([
 		chromeApi.sendMessage(message);
 	};
 
+	var setViews = function (viewConfig) {
+		var message = { name: 'setViews', views: viewConfig };
+		messages.onNext(message);
+		chromeApi.sendMessage(message);
+	};
+
 	return {
 		init: init,
 		availableServices: availableServices,
 		configurations: configurations,
-		views: viewConfigurations,
+		views: views,
 		activeProjects: activeProjects,
 		setOrder: setOrder,
 		setBuildOrder: setBuildOrder,
@@ -97,6 +103,7 @@ define([
 		removeService: removeService,
 		renameService: renameService,
 		saveService: saveService,
+		setViews: setViews,
 		// for logging
 		messages: messages
 	};
