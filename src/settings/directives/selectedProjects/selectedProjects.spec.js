@@ -1,6 +1,6 @@
 define([
 	'settings/directives/selectedProjects/selectedProjects',
-	'common/core',
+	'common-ui/core',
 	'angular',
 	'angularMocks',
 	'settings/directives/selectedProjects/selectedProjects.html'

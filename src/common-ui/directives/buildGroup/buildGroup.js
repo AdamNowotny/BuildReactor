@@ -1,6 +1,6 @@
 define([
 	'common-ui/directives/module',
-	'common/core',
+	'common-ui/core',
 	'common-ui/directives/build/build'
 ], function (module, core) {
 

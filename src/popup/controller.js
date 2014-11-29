@@ -1,6 +1,6 @@
 define([
 	'popup/app',
-	'common/core',
+	'common-ui/core',
 	'rx'
 ], function (app, core, Rx) {
 

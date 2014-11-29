@@ -89,7 +89,7 @@ require.config({
 
 		// needed for testing only
 		angularMocks: '../bower_components/angular-mocks/angular-mocks',
-		'common/core': 'common/core',
+		'common-ui/core': 'common-ui/core',
 		'rx.aggregates': '../bower_components/Rx/dist/rx.aggregates',
 		'rx.testing': '../bower_components/Rx/dist/rx.testing',
 		'rx.virtualtime': '../bower_components/Rx/dist/rx.virtualtime',

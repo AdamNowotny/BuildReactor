@@ -18,7 +18,7 @@ require.config({
 
 		// mock by default for test web server
 		// this wil be overriden for karma tests and compilation
-		'common/core': 'common/core.mock'
+		'common-ui/core': 'common-ui/core.mock'
 	},
 	shim: {
 		angular: {

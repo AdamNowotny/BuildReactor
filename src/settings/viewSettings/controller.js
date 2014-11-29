@@ -1,6 +1,6 @@
 define([
 	'settings/app',
-	'common/core',
+	'common-ui/core',
 	'angular',
 	'common-ui/directives/buildList/buildList'
 ], function (app, core, angular) {

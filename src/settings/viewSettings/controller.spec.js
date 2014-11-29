@@ -1,6 +1,6 @@
 define([
 	'settings/viewSettings/controller',
-	'common/core',
+	'common-ui/core',
 	'angular',
 	'angularMocks'
 ], function (sidebar, core, angular, mocks) {

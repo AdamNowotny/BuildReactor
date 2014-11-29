@@ -1,6 +1,6 @@
 define([
 	'settings/app',
-	'common/core',
+	'common-ui/core',
 	'htmlSortable'
 ], function (app, core) {
 	'use strict';

@@ -1,5 +1,5 @@
 define([
-	'common/core',
+	'common-ui/core',
 	'common/chromeApi',
 	'rx',
 	'test/rxHelpers',
@@ -8,7 +8,7 @@ define([
 
 	'use strict';
 
-	describe('common/core', function () {
+	describe('common-ui/core', function () {
 
 		var onNext = Rx.ReactiveTest.onNext;
 		var scheduler;

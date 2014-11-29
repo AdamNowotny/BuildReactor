@@ -120,7 +120,7 @@ module.exports = function (grunt) {
 					},
 					paths: {
 						// override default
-						'common/core': 'common/core'
+						'common-ui/core': 'common-ui/core'
 					},
 					modules: [
 						{

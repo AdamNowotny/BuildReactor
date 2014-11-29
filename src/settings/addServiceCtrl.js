@@ -1,7 +1,6 @@
 define([
-	'settings/app',
-	'common/core'
-], function (app, core) {
+	'settings/app'
+], function (app) {
 	'use strict';
 
 	app.controller('AddServiceCtrl', function ($scope, $routeParams, $location) {

@@ -1,8 +1,6 @@
 define([
-	'settings/app',
-	'rx',
-	'angular'
-], function (app, Rx, angular) {
+	'settings/app'
+], function (app) {
 	'use strict';
 
 	var KEY_ESC = 27;

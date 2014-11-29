@@ -1,6 +1,6 @@
 define([
 	'settings/app',
-	'common/core',
+	'common-ui/core',
 	'angular',
 	'rx'
 ], function (app, core, angular, Rx) {

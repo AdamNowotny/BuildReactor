@@ -1,6 +1,6 @@
 define([
 	'settings/directives/sidebar/sidebar',
-	'common/core',
+	'common-ui/core',
 	'angular',
 	'angularMocks',
 	'settings/directives/sidebar/sidebar.html'

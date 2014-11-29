@@ -1,6 +1,6 @@
 define([
 	'common-ui/directives/buildGroup/buildGroup',
-	'common/core',
+	'common-ui/core',
 	'rx',
 	'angular',
 	'angularMocks',

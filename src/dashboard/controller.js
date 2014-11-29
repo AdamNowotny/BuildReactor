@@ -1,6 +1,6 @@
 define([
 	'dashboard/app',
-	'common/core',
+	'common-ui/core',
 	'rx',
 	'angular'
 ], function (app, core, Rx, angular) {

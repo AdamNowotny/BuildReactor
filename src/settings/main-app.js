@@ -1,6 +1,6 @@
 define([
-	'common/core',
-	'common/coreLogger',
+	'common-ui/core',
+	'common-ui/coreLogger',
 	'angular',
 	'settings/app',
 	'settings/controller',
