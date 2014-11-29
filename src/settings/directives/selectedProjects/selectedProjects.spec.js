@@ -1,10 +1,9 @@
 define([
 	'settings/directives/selectedProjects/selectedProjects',
 	'common-ui/core',
-	'angular',
 	'angularMocks',
 	'settings/directives/selectedProjects/selectedProjects.html'
-], function (sidebar, core, angular, mocks) {
+], function (sidebar, core) {
 	'use strict';
 
 	describe('selectedProjects', function () {

@@ -1,9 +1,8 @@
 define([
 	'settings/viewSettings/controller',
 	'common-ui/core',
-	'angular',
 	'angularMocks'
-], function (sidebar, core, angular, mocks) {
+], function (sidebar, core) {
 	'use strict';
 
 	describe('settings/viewSettings/controller', function () {

@@ -3,8 +3,7 @@ define([
 	'common-ui/coreLogger',
 	'angular',
 	'popup/app',
-	'popup/routes',
-	'popup/controller'
+	'popup/routes'
 ], function (core, logger, angular) {
 	'use strict';
 

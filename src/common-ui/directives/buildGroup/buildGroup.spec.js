@@ -1,12 +1,10 @@
 define([
 	'common-ui/directives/buildGroup/buildGroup',
 	'common-ui/core',
-	'rx',
-	'angular',
 	'angularMocks',
 	'common-ui/directives/buildGroup/buildGroup.html',
 	'common-ui/directives/build/build.html'
-], function (buildGroup, core, Rx, angular, mocks) {
+], function (buildGroup, core) {
 	'use strict';
 
 	describe('buildGroup', function () {

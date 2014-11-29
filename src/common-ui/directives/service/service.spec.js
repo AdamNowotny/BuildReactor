@@ -5,7 +5,7 @@ define([
 	'common-ui/directives/service/service.html',
 	'common-ui/directives/buildGroup/buildGroup.html',
 	'common-ui/directives/build/build.html'
-], function (service, angular, mocks) {
+], function (service, angular) {
 	'use strict';
 
 	describe('service', function () {

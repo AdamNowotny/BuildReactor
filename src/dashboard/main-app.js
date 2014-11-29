@@ -3,8 +3,7 @@ define([
 	'common-ui/coreLogger',
 	'angular',
 	'dashboard/app',
-	'dashboard/routes',
-	'dashboard/controller'
+	'dashboard/routes'
 ], function (core, logger, angular) {
 
 	'use strict';

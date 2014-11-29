@@ -8,5 +8,7 @@ require([
 	'angular.ui',
 	'angular.ui.utils',
 	'htmlSortable',
+	'common-ui/core',
+	'common-ui/coreLogger',
 	'common-ui/directives/buildList/buildList'
 ], function () { });

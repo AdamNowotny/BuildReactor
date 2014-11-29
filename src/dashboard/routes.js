@@ -6,8 +6,7 @@ define([
 	return app.config(function ($routeProvider, $locationProvider) {
 		$routeProvider
 		.when('/', {
-			templateUrl: 'src/dashboard/view.html',
-			controller: 'DashboardCtrl'
+			templateUrl: 'src/dashboard/view.html'
 		})
 		.otherwise({
 			redirectTo: '/'

@@ -1,11 +1,10 @@
 define([
 	'common-ui/directives/module',
 	'rx',
-	'angular',
 	'rx.binding',
 	'rx.coincidence',
 	'common-ui/directives/buildGroup/buildGroup'
-], function (module, Rx, angular) {
+], function (module, Rx) {
 
 	'use strict';
 

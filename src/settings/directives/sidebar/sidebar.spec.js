@@ -1,10 +1,9 @@
 define([
 	'settings/directives/sidebar/sidebar',
 	'common-ui/core',
-	'angular',
 	'angularMocks',
 	'settings/directives/sidebar/sidebar.html'
-], function (sidebar, core, angular, mocks) {
+], function (sidebar, core) {
 	'use strict';
 
 	describe('settings/directives/sidebar/sidebar', function () {

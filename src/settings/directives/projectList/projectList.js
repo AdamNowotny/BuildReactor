@@ -1,8 +1,7 @@
 define([
 	'settings/app',
-	'rx',
 	'angular'
-], function (app, Rx, angular) {
+], function (app, angular) {
 	'use strict';
 
 	var getGroupNamesFromProjects = function (projects) {

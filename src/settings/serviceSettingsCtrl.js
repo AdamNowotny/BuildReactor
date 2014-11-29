@@ -2,8 +2,7 @@ define([
 	'settings/app',
 	'common-ui/core',
 	'angular',
-	'rx'
-], function (app, core, angular, Rx) {
+], function (app, core, angular) {
 	'use strict';
 
 	app.controller('ServiceSettingsCtrl', function ($scope, $location) {

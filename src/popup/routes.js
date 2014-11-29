@@ -6,8 +6,7 @@ define([
 	return app.config(function ($routeProvider, $locationProvider) {
 		$routeProvider
 		.when('/', {
-			templateUrl: 'src/popup/view.html',
-			controller: 'PopupCtrl'
+			templateUrl: 'src/popup/view.html'
 		})
 		.otherwise({
 			redirectTo: '/'
