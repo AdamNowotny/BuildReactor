@@ -8,6 +8,7 @@ define([
 
 	module.directive('buildGroup', function () {
 		return {
+			restrict: 'E',
 			scope: {
 				name: '=',
 				items: '='

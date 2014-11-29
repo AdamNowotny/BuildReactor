@@ -23,7 +23,7 @@ define([
 		));
 
 		beforeEach(inject(function ($compile, $rootScope) {
-			element = $compile('<section build-group name="group.name" items="items"></section>')($rootScope);
+			element = $compile('<build-group name="group.name" items="items"></build-group>')($rootScope);
 			$rootScope.$digest();
 			scope = element.isolateScope();
 		}));

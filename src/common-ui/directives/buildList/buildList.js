@@ -8,6 +8,7 @@ define([
 
 	module.directive('buildList', function () {
 		return {
+			restrict: 'E',
 			scope: {},
 			templateUrl: 'src/common-ui/directives/buildList/buildList.html',
 			controller: function ($scope, $element, $attrs, $transclude) {

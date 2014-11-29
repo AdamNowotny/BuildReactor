@@ -6,6 +6,7 @@ define([
 
 	module.directive('build', function () {
 		return {
+			restrict: 'E',
 			scope: {
 				build: '=buildInfo'
 			},
