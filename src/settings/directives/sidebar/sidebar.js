@@ -8,7 +8,6 @@ define([
 	app.directive('sidebar', function ($location) {
 		return {
 			scope: {
-				services: '=',
 				selected: '=',
 				view: '='
 			},
@@ -21,6 +20,12 @@ define([
 					});
 					core.setOrder(items);
 				};
+
+				core.configurations.subscribe(function (configs) {
+					$scope.$evalAsync(function () {
+						$scope.services = configs;
+					});
+				});
 
 			}
 		};

@@ -26,7 +26,7 @@ define([
 		it('should call setOrder when order changed', function() {
 			var service1 = { name: 'name1'};
 			var service2 = { name: 'name2'};
-			scope.services = [{ name: 'name1'}, { name: 'name2' }];
+			core.configurations.onNext([{ name: 'name1'}, { name: 'name2' }]);
 
 			var model = [service2, service1];
 			scope.sortableCallback(model, model, 0, 1);
