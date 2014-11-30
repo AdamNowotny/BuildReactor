@@ -1,8 +1,4 @@
-.build-group {
-	float: left;
-}
-
-.group-name {
+.build-group .group-name {
 	clear: both;
 	display: block;
 	font-weight: bold;
@@ -11,4 +7,8 @@
 	margin-bottom: -5px;
 	margin-left: 5px;
 	margin-top: 5px;
+}
+
+.build-group .group-items {
+	float: left;
 }
