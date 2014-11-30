@@ -1,0 +1,12 @@
+<Projects CCType="CCNet">
+  <Project name="CruiseControl.NET" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="1.7.706.8065" lastBuildTime="2012-02-29T09:35:22.796875+01:00" nextBuildTime="2012-04-19T12:32:55.91+02:00" webUrl="http://build.nauck-it.de/server/build.nauck-it.de/project/CruiseControl.NET/ViewProjectReport.aspx" CurrentMessage="Build (IfModificationExists) triggered from IntervalTrigger" BuildStage="" serverName="build.nauck-it.de" description="">
+	<messages>
+	  <message text="Build (IfModificationExists) triggered from IntervalTrigger" kind="BuildStatus" />
+	</messages>
+  </Project>
+  <Project name="AspSQLProvider" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="1.3.14.0" lastBuildTime="2011-09-01T10:18:41.101454+02:00" nextBuildTime="2012-04-19T12:30:35.25375+02:00" webUrl="http://build.nauck-it.de/server/build.nauck-it.de/project/AspSQLProvider/ViewProjectReport.aspx" CurrentMessage="Build (IfModificationExists) triggered from IntervalTrigger" BuildStage="" serverName="build.nauck-it.de" description="">
+	<messages>
+	  <message text="Build (IfModificationExists) triggered from IntervalTrigger" kind="BuildStatus" />
+	</messages>
+  </Project>
+</Projects>

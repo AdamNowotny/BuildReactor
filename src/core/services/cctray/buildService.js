@@ -90,7 +90,7 @@ define([
 	};
 
 	var categoriseFromName = function (i, d) {
-		if (!d.group && d.name.split(' :: ').length) {
+		if (!d.group && d.name.split(' :: ').length > 1) {
 			var nameParts = d.name.split(' :: ');
 			d.group = nameParts[0];
 			d.name = nameParts.slice(1).join(' :: ');
@@ -115,7 +115,7 @@ define([
 					return {
 						id: $(project).attr('name'),
 						name: $(project).attr('name'),
-						group: $(project).attr('category'),
+						group: $(project).attr('category') || null,
 						isDisabled: false
 					};
 				}).map(categoriseFromName)

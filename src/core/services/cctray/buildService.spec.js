@@ -7,9 +7,10 @@ define([
 	'text!core/services/cctray/cruisecontrolnet.fixture.xml',
 	'text!core/services/cctray/go.fixture.xml',
 	'text!core/services/cctray/breakers_empty.fixture.xml',
-	'text!core/services/cctray/go_multiple_breakers.fixture.xml'
+	'text!core/services/cctray/go_multiple_breakers.fixture.xml',
+	'text!core/services/cctray/ccnet_no_categories.fixture.xml'
 ],
-function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreakersFixture, manyBreakersFixture) {
+function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreakersFixture, manyBreakersFixture, noCategoriesFixture) {
 
 	'use strict';
 
@@ -459,13 +460,28 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				expect(request.xml).toHaveBeenCalled();
 			});
 
-			it('should parse response', function () {
+			it('should parse response with CC.NET categories', function () {
 				request.xml.andCallFake(function (options) {
 					var response = options.parser(projectsXml);
 					expect(response.items.length).toBe(9);
 					expect(response.items[0].id).toBe('CruiseControl.NET');
 					expect(response.items[0].name).toBe('CruiseControl.NET');
 					expect(response.items[0].group).toBe('CruiseControl.NET');
+					expect(response.items[0].isDisabled).toBe(false);
+				});
+
+				service.availableBuilds();
+
+				expect(request.xml).toHaveBeenCalled();
+			});
+
+			it('should parse response without categories', function () {
+				request.xml.andCallFake(function (options) {
+					var response = options.parser(noCategoriesFixture);
+					expect(response.items.length).toBe(2);
+					expect(response.items[0].id).toBe('CruiseControl.NET');
+					expect(response.items[0].name).toBe('CruiseControl.NET');
+					expect(response.items[0].group).toBe(null);
 					expect(response.items[0].isDisabled).toBe(false);
 				});
 
