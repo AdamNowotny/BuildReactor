@@ -38,6 +38,26 @@ define([
 			expect(core.setViews).toHaveBeenCalledWith(viewConfig);
 		});
 
+		it('should set minumun number of columns to 0', function() {
+			core.views.onNext({ columns: 4 });
+			scope.$digest();
+
+			scope.config = { columns: -1 };
+			scope.$digest();
+
+			expect(scope.config.columns).toEqual(0);
+		});
+
+		it('should set maximum number of columns to 20', function() {
+			core.views.onNext({ columns: 4 });
+			scope.$digest();
+
+			scope.config = { columns: 21 };
+			scope.$digest();
+
+			expect(scope.config.columns).toEqual(20);
+		});
+
 		it('should save when column width set', function() {
 			scope.config = { fullWidthGroups: true };
 
