@@ -21,17 +21,14 @@ define([
 		});
 
 		$scope.save =  function (config) {
-			core.setViews(angular.copy(config));
-		};
-
-		$scope.$watch('config', function (config) {
 			if (config.columns < 0) {
 				config.columns = 0;
 			}
 			if (config.columns > 20) {
 				config.columns = 20;
 			}
-		});
+			core.setViews(angular.copy(config));
+		};
 
 		$scope.setFixedWidth =  function (isFixed) {
 			var changed = $scope.config.fullWidthGroups === isFixed;

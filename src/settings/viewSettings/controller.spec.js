@@ -39,23 +39,19 @@ define([
 		});
 
 		it('should set minumun number of columns to 0', function() {
-			core.views.onNext({ columns: 4 });
-			scope.$digest();
+			var viewConfig = { columns: -1 };
+			
+			scope.save(viewConfig);
 
-			scope.config = { columns: -1 };
-			scope.$digest();
-
-			expect(scope.config.columns).toEqual(0);
+			expect(core.setViews).toHaveBeenCalledWith({ columns: 0 });
 		});
 
 		it('should set maximum number of columns to 20', function() {
-			core.views.onNext({ columns: 4 });
-			scope.$digest();
+			var viewConfig = { columns: 21 };
+			
+			scope.save(viewConfig);
 
-			scope.config = { columns: 21 };
-			scope.$digest();
-
-			expect(scope.config.columns).toEqual(20);
+			expect(core.setViews).toHaveBeenCalledWith({ columns: 20 });
 		});
 
 		it('should save when column width set', function() {
