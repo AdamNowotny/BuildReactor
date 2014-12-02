@@ -35,7 +35,7 @@ module.exports = function (grunt) {
 	// default task run by CI server
 	grunt.registerTask('ci', [ 'clean:build', 'jshint', 'karma:once' ]);
 
-	// grunt version::[major,minor,patch] - update version based on package.json
+	// grunt version::[major.minor.patch] - update version based on package.json
 
 	/*
 	 * Configuration
