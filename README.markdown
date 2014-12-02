@@ -49,6 +49,10 @@ Options page - service settings
 -------------------------------
 <img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/settings-1280x800.jpg" alt="BuildReactor options page">
 
+Options page - view configuration
+---------------------------------
+<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/settings-view-1280x800.jpg" alt="BuildReactor view configuration page">
+
 Dashboard page
 -------------------------------
 <img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/dashboard-1280x800.jpg" alt="BuildReactor dashboard">
