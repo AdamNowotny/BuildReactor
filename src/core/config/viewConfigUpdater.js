@@ -5,7 +5,8 @@ define(function () {
 		config = config || {};
 		config.columns = config.columns || 2;
 		config.fullWidthGroups = (typeof config.fullWidthGroups === 'boolean') ? config.fullWidthGroups : true;
-		return config ? config : { columns: 2, fullWidthGroups: true };
+		config.singleGroupRows = (typeof config.singleGroupRows === 'boolean') ? config.singleGroupRows : false;
+		return config ? config : { columns: 2, fullWidthGroups: true, singleGroupRows: false };
 	}
 
 	return {

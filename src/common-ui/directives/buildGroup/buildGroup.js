@@ -15,26 +15,40 @@ define([
 			},
 			templateUrl: 'src/common-ui/directives/buildGroup/buildGroup.html',
 			controller: function ($scope, $element, $attrs, $transclude) {
-				$scope.getItemWidth = function (build) {
-					return $scope.viewConfig ?
-						getWidth(build, $scope.viewConfig) :
-						'100%';
-				};
 
-				var getWidth = function (build, config) {
-					var width;
-					if (config.fullWidthGroups) {
-						var items = $scope.items.length;
-						width = 100 / Math.min(items, config.columns);
-					} else {
-						width = 100 / config.columns;
+				$scope.fullWidth = '100%';
+				$scope.itemWidth = '100%';
+
+				$scope.$watch('viewConfig', function (config) {
+					if (config && $scope.items) {
+						$scope.fullWidth = calculateFullWidth(config, $scope.items);
+						$scope.itemWidth = calculateWidth(config, $scope.items);
+						$scope.isNewRow = calculateIsNewRow(config, $scope.items);
 					}
+				});
+
+				var calculateWidth = function (config, items) {
+					var width = 100 / Math.min(items.length, config.columns);
 					return width + '%';
 				};
 
-				core.views.subscribe(function (configs) {
+				var calculateFullWidth = function (config, items) {
+					if (config.fullWidthGroups) {
+						return '100%';
+					} else {
+						var columnWidth = 100 / config.columns;
+						var allColumnsWidth = columnWidth * Math.min(items.length, config.columns);
+						return allColumnsWidth + '%';
+					}
+				};
+
+				var calculateIsNewRow = function (config, items) {
+					return config.fullWidthGroups || items.length < config.columns;
+				};
+
+				core.views.subscribe(function (config) {
 					$scope.$evalAsync(function () {
-						$scope.viewConfig = configs;
+						$scope.viewConfig = config;
 					});
 				});
 

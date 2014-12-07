@@ -38,5 +38,13 @@ define([
 			}
 		};
 
+		$scope.setSingleGroupRows = function (onlyOne) {
+			var changed = $scope.config.singleGroupRows !== onlyOne;
+			if (changed) {
+				$scope.config.singleGroupRows = onlyOne;
+				core.setViews(angular.copy($scope.config));
+			}
+		};
+
 	});
 });

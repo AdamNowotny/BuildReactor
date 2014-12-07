@@ -79,6 +79,26 @@ define([
 			expect(scope.services).toEqual(projects);
 		});
 
+		describe('singleGroupRows', function () {
+
+			it('should save when singleGroupRows set', function() {
+				scope.config = { singleGroupRows: true };
+
+				scope.setSingleGroupRows(false);
+
+				expect(core.setViews).toHaveBeenCalledWith({ singleGroupRows: false });
+			});
+
+			it('should not save when already set', function() {
+				scope.config = { singleGroupRows: false };
+				
+				scope.setSingleGroupRows(false);
+
+				expect(core.setViews).not.toHaveBeenCalled();
+			});
+
+		});
+
 	});
 
 });

@@ -1,4 +1,4 @@
-<div class="build-group">
+<div class="build-group" ng-style="{ width: fullWidth }" ng-class="{ 'pull-left': !viewConfig.singleGroupRows }">
 	<div class="group-name" ng-hide="!name">{{ name }}</div>
-	<build class="group-items" build-info="item" ng-repeat="item in items" ng-style="{ width: getItemWidth(item) }"></build>
+	<build class="group-items" build-info="item" ng-repeat="item in items" ng-style="{ width: itemWidth }"></build>
 </div>

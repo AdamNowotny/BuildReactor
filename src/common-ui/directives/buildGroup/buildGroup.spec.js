@@ -39,38 +39,70 @@ define([
 			}];
 		});
 
-		it('should default to 100% width without config', function() {
+		describe('itemWidth', function () {
 
-			expect(scope.getItemWidth(scope.items[0])).toEqual('100%');
-			expect(scope.getItemWidth(scope.items[1])).toEqual('100%');
-			expect(scope.getItemWidth(scope.items[2])).toEqual('100%');
+			it('should default to 100% width without config', function() {
+				expect(scope.itemWidth).toEqual('100%');
+			});
+
+			it('should calculate width for fixed columns', function() {
+				core.views.onNext({ columns: 4 });
+				scope.$digest();
+				
+				expect(scope.itemWidth).toEqual('33.333333333333336%');
+			});
+
+			it('should calculate width for fixed columns with many builds', function() {
+				core.views.onNext({ columns: 2, fullWidthGroups: false });
+				scope.$digest();
+				
+				expect(scope.itemWidth).toEqual('50%');
+			});
+
+			it('should calculate width for full-width', function() {
+				core.views.onNext({ columns: 4, fullWidthGroups: true });
+				scope.$digest();
+				
+				expect(scope.itemWidth).toEqual('33.333333333333336%');
+			});
+
+			it('should calculate width for full-width with many builds', function() {
+				core.views.onNext({ columns: 2, fullWidthGroups: true });
+				scope.$digest();
+				
+				expect(scope.itemWidth).toEqual('50%');
+			});
+
 		});
 
-		it('should calculate width for fixed columns', function() {
-			core.views.onNext({ columns: 4 });
-			scope.$digest();
-			
-			expect(scope.getItemWidth(scope.items[0])).toEqual('25%');
-			expect(scope.getItemWidth(scope.items[1])).toEqual('25%');
-			expect(scope.getItemWidth(scope.items[2])).toEqual('25%');
-		});
+		describe('fullWidth', function () {
 
-		it('should calculate width for full-width', function() {
-			core.views.onNext({ columns: 4, fullWidthGroups: true });
-			scope.$digest();
-			
-			expect(scope.getItemWidth(scope.items[0])).toEqual('33.333333333333336%');
-			expect(scope.getItemWidth(scope.items[1])).toEqual('33.333333333333336%');
-			expect(scope.getItemWidth(scope.items[2])).toEqual('33.333333333333336%');
-		});
+			it('should default to full page width', function() {
+				expect(scope.fullWidth).toEqual('100%');
+			});
 
-		it('should calculate width for full-width with many builds', function() {
-			core.views.onNext({ columns: 2, fullWidthGroups: true });
-			scope.$digest();
-			
-			expect(scope.getItemWidth(scope.items[0])).toEqual('50%');
-			expect(scope.getItemWidth(scope.items[1])).toEqual('50%');
-			expect(scope.getItemWidth(scope.items[0])).toEqual('50%');
+			it('should calculate width if builds take less than 100%', function() {
+				core.views.onNext({ columns: 6, fullWidthGroups: false });
+				scope.$digest();
+				
+				expect(scope.fullWidth).toEqual('50%');
+			});
+
+			it('should assume full width if more builds than columns', function() {
+				core.views.onNext({ columns: 2, fullWidthGroups: false });
+				scope.$digest();
+				
+				expect(scope.fullWidth).toEqual('100%');
+			});
+
+			it('should use new row if more builds then columns', function() {
+				core.views.onNext({ columns: 2, fullWidthGroups: true });
+				scope.$digest();
+				
+				expect(scope.fullWidth).toEqual('100%');
+				expect(scope.isNewRow).toEqual(true);
+			});
+
 		});
 
 	});

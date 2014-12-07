@@ -7,6 +7,9 @@
 	margin-bottom: -5px;
 	margin-left: 5px;
 	margin-top: 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .build-group .group-items {

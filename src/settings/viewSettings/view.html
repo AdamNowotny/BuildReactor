@@ -15,6 +15,15 @@
 				</ul>
 			</div>
 		</div>
+		<div class="form-group">
+			<label class="col-md-6 control-label">Collapse groups</label>
+			<div class="col-md-6">
+				<ul class="nav nav-pills">
+					<li role="presentation" ng-class="{ active: !config.singleGroupRows }" ng-click="setSingleGroupRows(false)"><a>On</a></li>
+					<li role="presentation" ng-class="{ active: config.singleGroupRows }" ng-click="setSingleGroupRows(true)"><a>Off</a></li>
+				</ul>
+			</div>
+		</div>
 	</form>
 	<div class="build-preview col-md-8">
 		<build-list services="services"></build-list>
