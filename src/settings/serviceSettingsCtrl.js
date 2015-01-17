@@ -21,7 +21,6 @@ define([
 			};
 			$scope.projectsError = null;
 			$scope.isLoading = false;
-			$scope.isChanged = false;
 			$scope.filterQuery = '';
 		};
 
@@ -71,7 +70,6 @@ define([
 		$scope.save = function () {
 			core.saveService(settings);
 			$scope.saving = true;
-			$scope.isChanged = false;
 			$scope.projects.selected = settings.projects;
 			$location.path('/service/' + settings.name);
 		};
@@ -88,8 +86,6 @@ define([
 			if (settings) {
 				settings.projects = selectedProjects;
 			}
-			$scope.isChanged = $scope.projects.selected &&
-				!angular.equals($scope.projects.selected, selectedProjects);
 		});
 
 		$scope.$watchCollection('selected', function (selectedService) {
