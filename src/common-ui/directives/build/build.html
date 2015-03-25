@@ -1,5 +1,5 @@
 <div class="build" ng-class="{ 'broken': build.isBroken, 'disabled': build.isDisabled, 'building': build.isRunning, 'offline': build.error }">
-	<a href="{{ build.webUrl }}" target="_blank" class="progress-bar" ng-class="{ 'active': build.isRunning, 'progress-bar-striped':build.isRunning }">
+	<a ng-href="{{ build.webUrl }}" target="{{ build.webUrl ? '_blank' : '_self' }}" class="progress-bar" ng-class="{ 'active': build.isRunning, 'progress-bar-striped':build.isRunning }">
 		<span class="labels pull-right">
 			<span ng-show="build.error" class="label label-default" tooltip="{{ build.error.description }}">
 				Offline	<span class="error-message">({{ build.error.message }})</span>
