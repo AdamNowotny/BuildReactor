@@ -24,8 +24,11 @@ define([
 				isRunning: jobResponse.lastBuild.number !== jobResponse.lastCompletedBuild.number,
 				isDisabled: !jobResponse.buildable,
 				tags: [],
-				changes: lastCompletedResponse.culprits.map(function (item) { 
-					return { name: item.fullName };
+				changes: lastCompletedResponse.changeSet.items.map(function (change) {
+					return {
+						name: change.author.fullName,
+						message: change.comment.split('\n')[0]
+					};
 				})
 			};
 			if (lastCompletedResponse.result === 'UNSTABLE') {

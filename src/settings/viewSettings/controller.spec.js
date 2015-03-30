@@ -99,6 +99,26 @@ define([
 
 		});
 
+		describe('showCommits', function () {
+
+			it('should save when showCommits set', function() {
+				scope.config = { showCommits: true };
+
+				scope.setShowCommits(false);
+
+				expect(core.setViews).toHaveBeenCalledWith({ showCommits: false });
+			});
+
+			it('should not save when already set', function() {
+				scope.config = { showCommits: false };
+				
+				scope.setShowCommits(false);
+
+				expect(core.setViews).not.toHaveBeenCalled();
+			});
+
+		});
+
 	});
 
 });

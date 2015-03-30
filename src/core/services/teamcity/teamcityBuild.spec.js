@@ -155,9 +155,12 @@ define([
 			});
 		});
 
-		it('should set changes', function () {
+		it('should set changes ignoring new line', function () {
 			build.update().subscribe(function (state) {
-				expect(state.changes).toEqual([{ name: 'dkavanagh' }, { name: 'dkavanagh' }]);
+				expect(state.changes).toEqual([
+					{ name: 'dkavanagh', message : 'use seconds in request timestamp' },
+					{ name: 'dkavanagh', message: 'use seconds in request timestamp' }
+				]);
 			});
 		});
 

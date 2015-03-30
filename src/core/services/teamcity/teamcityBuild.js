@@ -75,7 +75,10 @@ define([
 				return urlRequest(self, change.href);
 			});
 		}).select(function (changeResponse) {
-			return { name: changeResponse.username };
+			return {
+				name: changeResponse.username,
+				message: changeResponse.comment.split('\n')[0]
+			};
 		}).toArray();
 	};
 

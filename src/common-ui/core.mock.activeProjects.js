@@ -11,26 +11,41 @@ define(function () {
 					group: "Normal",
 					isBroken: false,
 					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
-					isRunning: false
-				}, {
-					name: "Failed",
-					group: "Normal",
-					isBroken: true,
-					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
-					isRunning: false
+					isRunning: false,
+					changes: [{
+						name: 'Name',
+						message: 'Message'
+					}]
 				}, {
 					name: "Unstable",
 					group: "Normal",
 					isBroken: true,
 					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
 					isRunning: false,
-					tags: [{ name: 'Unstable', type: 'warning' }]
+					tags: [{ name: 'Unstable', type: 'warning' }],
+					changes: [{
+						name: 'Name1',
+						message: 'Message1 Message1 Message1 Message1 Message1 Message1 Message1 Message1 '
+					},{
+						name: 'Name2',
+						message: 'Message2 Message2 Message2 Message2 Message2 Message2 Message2 Message2 Message2 Message2 '
+					}]
+				}, {
+					name: "Failed",
+					group: "Normal",
+					isBroken: true,
+					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
+					isRunning: false,
+					changes: [{
+						name: 'Name only'
+					}]
 				}, {
 					name: "Success",
 					group: "Building",
 					isBroken: false,
 					url: "http://ci.openmrs.org/browse/FUNC-PERF-4",
-					isRunning: true
+					isRunning: true,
+					changes: []
 				}, {
 					name: "Failed",
 					group: "Building",
@@ -69,7 +84,14 @@ define(function () {
 					error: { name: 'Error', message: 'Ajax error' },
 					isBroken: true,
 					url: null,
-					isRunning: true
+					isRunning: true,
+					changes: [{
+						name: 'Name1',
+						message: 'Message1'
+					},{
+						name: 'Name2',
+						message: 'Message2'
+					}]
 				}, {
 					name: "Success building offline",
 					group: "Offline",

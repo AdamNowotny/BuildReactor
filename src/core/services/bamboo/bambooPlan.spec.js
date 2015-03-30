@@ -126,7 +126,7 @@ define([
 
 		it('should set changes', function () {
 			build.update().subscribe(function (state) {
-				expect(state.changes).toEqual([{ name: 'Adam Nowotny' }]);
+				expect(state.changes).toEqual([{ name: 'Adam Nowotny', message : 'PROJ-1707 - anowotny: some random feature added' }]);
 			});
 
 			expect(request.json).toHaveBeenCalled();

@@ -5,13 +5,28 @@
 	width: 100%;
 }
 
-.build-changes {
-    overflow: hidden;
-    position: absolute;
-    right: 100px;
-    text-align: center;
-    text-overflow: ellipsis;
-    top: 20px;
+.changes-container {
+	height: 1.5em;
+	overflow: hidden;
+	position: relative;
+	text-align: left;
+}
+
+.changes {
+	display: block;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	text-overflow: ellipsis;
+	transform: translateY(90%); 
+	transition: opacity 1s, transform 2s;
+	width: 100%;
+}
+
+.changes.active {
+	opacity: 1;
+	transform: translateY(0); 
+	transition: opacity 2s, transform 2s;
 }
 
 .build a,
@@ -104,6 +119,10 @@
 		overflow: hidden;
 	}
 
+	.build .label {
+		margin-left: .5em;
+	}
+	
 	.build .label-warning {
 		background-color: #f89406;
 	}

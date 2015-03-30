@@ -113,7 +113,9 @@ define([
 
 		it('should set changes', function () {
 			build.update().subscribe(function (state) {
-				expect(state.changes).toEqual([{ name: 'Adam Nowotny' }]);
+				expect(state.changes).toEqual([
+					{ name: 'Adam Nowotny', message : 'added bower to dependencies' }
+				]);
 			});
 		});
 
@@ -121,7 +123,9 @@ define([
 			isRunning = true;
 
 			build.update().subscribe(function (state) {
-				expect(state.changes).toEqual([{ name: 'Adam Nowotny' }]);
+				expect(state.changes).toEqual([
+					{ name : 'Spun Nakandala', message : 'code for displaying confirm page removed.' }
+				]);
 			});
 		});
 

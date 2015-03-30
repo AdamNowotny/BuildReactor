@@ -46,5 +46,13 @@ define([
 			}
 		};
 
+		$scope.setShowCommits = function (show) {
+			var changed = $scope.config.showCommits !== show;
+			if (changed) {
+				$scope.config.showCommits = show;
+				core.setViews(angular.copy($scope.config));
+			}
+		};
+
 	});
 });

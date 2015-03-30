@@ -161,11 +161,11 @@ define([
 
 		it('should set changes', function () {
 			build.update().subscribe(function (state) {
-				expect(state.changes).toEqual([
-					{ name : 'Christoph Kutzinski' },
-					{ name : 'Seiji Sogabe' },
-					{ name : 'Kohsuke Kawaguchi' }
-				]);
+				expect(state.changes[0]).toEqual({ name : 'Kohsuke Kawaguchi', message : 'the trunk is toward 1.493-SNAPSHOT' });
+				expect(state.changes[1]).toEqual({ name : 'Seiji Sogabe', message : '[FIXED JENKINS-15836] Slave\'s Name should be trimmed of spaces at the beginning and end of the Name on Save' });
+				expect(state.changes[2]).toEqual({ name : 'Christoph Kutzinski', message : 'Switch to ignore post-commit hook in SCM polling triggers [FIXED JENKINS-6846]' });
+				expect(state.changes[3]).toEqual({ name : 'Christoph Kutzinski', message : 'disambiguate method call to make Eclipse happy' });
+				expect(state.changes[4]).toEqual({ name : 'Kohsuke Kawaguchi', message: 'bundling the new versions of slave installer.' });
 			});
 
 			expect(request.json).toHaveBeenCalled();

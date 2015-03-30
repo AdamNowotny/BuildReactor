@@ -63,7 +63,10 @@ define([
 			webUrl: 'https://travis-ci.org/' + self.id + '/builds/' + response.id,
 			isBroken: isBroken(response),
 			isRunning: false,
-			changes: [{ name: response.committer_name }]
+			changes: [{
+				name: response.committer_name,
+				message: response.message
+			}]
 		};
 		return result;
 	};
@@ -76,7 +79,10 @@ define([
 			webUrl: 'https://travis-ci.org/' + self.id + '/builds/' + runningBuild.id,
 			isBroken: isBroken(previousBuild),
 			isRunning: true,
-			changes: [{ name: previousBuild.committer_name }]
+			changes: [{
+				name: runningBuild.committer_name,
+				message: runningBuild.message
+			}]
 		};
 		return result;
 	};
