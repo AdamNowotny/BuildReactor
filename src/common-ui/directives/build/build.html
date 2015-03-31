@@ -11,7 +11,7 @@
 		</span>
 		<span class="build-name">{{ build.name }}</span>
 		<div class="changes-container" ng-show="viewConfig.showCommits">
-			<span class="changes" ng-class="{ active: $index === changeIndex }" ng-repeat="change in build.changes">
+			<span class="changes" ng-class="{ active: $index === changeIndex }" title="{{ change.name + ': ' + change.message }}" ng-repeat="change in build.changes">
 				<span class="change-name">{{ change.name }}</span>
 				<span class="change-message" ng-if="change.message">: {{ change.message }}</span>
 			</span>
