@@ -24,9 +24,7 @@ define([
 				});
 
 				core.configurations.subscribe(function (configs) {
-					$scope.$evalAsync(function () {
-						$scope.services = configs;
-					});
+					$scope.services = configs;
 				});
 
 			}

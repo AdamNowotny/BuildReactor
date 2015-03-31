@@ -1,6 +1,8 @@
 define([
 	'settings/app',
-	'common-ui/core'
+	'common-ui/core',
+	'settings/directives/topnav/removeModalCtrl',
+	'settings/directives/topnav/renameModalCtrl'
 ], function (app, core) {
 	'use strict';
 
@@ -36,7 +38,7 @@ define([
 				$scope.remove = function () {
 					$modal.open({
 						templateUrl: 'src/settings/directives/topnav/removeModal.html',
-						controller: RemoveModalCtrl,
+						controller: 'RemoveModalCtrl',
 						scope: $scope,
 						resolve: {
 							serviceName: function () {
@@ -49,20 +51,10 @@ define([
 					});
 				};
 
-				var RemoveModalCtrl = function ($scope, $modalInstance, serviceName) {
-					$scope.serviceName = serviceName;
-					$scope.remove = function () {
-						$modalInstance.close($scope.serviceName);
-					};
-					$scope.cancel = function () {
-						$modalInstance.dismiss('cancel');
-					};
-				};
-
 				$scope.rename = function () {
 					$modal.open({
 						templateUrl: 'src/settings/directives/topnav/renameModal.html',
-						controller: RenameModalCtrl,
+						controller: 'RenameModalCtrl',
 						resolve: {
 							serviceName: function () {
 								return $scope.service.name;
@@ -74,15 +66,6 @@ define([
 					});
 				};
 
-				var RenameModalCtrl = function ($scope, $modalInstance, serviceName) {
-					$scope.service = { name: serviceName };
-					$scope.rename = function () {
-						$modalInstance.close($scope.service.name);
-					};
-					$scope.cancel = function () {
-						$modalInstance.dismiss('cancel');
-					};
-				};
 			}
 		};
 	});
