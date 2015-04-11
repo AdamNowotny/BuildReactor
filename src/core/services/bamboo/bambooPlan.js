@@ -45,18 +45,16 @@ define([
 			url: joinUrl(self.settings.url, 'rest/api/latest/plan/' + self.id),
 			data: {os_authType: 'basic'},
 			username: self.settings.username,
-			password: self.settings.password,
-			authCookie: 'JSESSIONID'
+			password: self.settings.password
 		});
 	};
 
 	var result = function (self) {
 		return request.json({
-			url: joinUrl(self.settings.url, 'rest/api/latest/result/' + self.id + '/latest?expand=changes'),
-			data: {os_authType: 'basic'},
+			url: joinUrl(self.settings.url, 'rest/api/latest/result/' + self.id + '/latest'),
+			data: {expand: 'changes', os_authType: 'basic'},
 			username: self.settings.username,
-			password: self.settings.password,
-			authCookie: 'JSESSIONID'
+			password: self.settings.password
 		});
 	};
 

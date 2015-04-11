@@ -6,9 +6,10 @@ define([
 		'text!core/services/bamboo/projects.fixture.json',
 		'text!core/services/bamboo/projects_page2.fixture.json',
 		'text!core/services/bamboo/projects_plans_page2.fixture.json',
+		'jquery',
 		'rx.aggregates'
 	],
-	function (BuildService, BambooPlan, Rx, request, projectsFixture, projects2Fixture, projects3Fixture) {
+	function (BuildService, BambooPlan, Rx, request, projectsFixture, projects2Fixture, projects3Fixture, $) {
 
 		'use strict';
 
@@ -16,7 +17,7 @@ define([
 
 			var service;
 			var settings;
-			
+
 			beforeEach(function () {
 				settings = {
 					name: 'My Bamboo CI',
@@ -52,12 +53,12 @@ define([
 					projectsJson2 = JSON.parse(projects2Fixture);
 					projectsJson3 = JSON.parse(projects3Fixture);
 					spyOn(request, 'json').andCallFake(function (options) {
-						switch (options.url) {
-						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=0':
+						switch (options.url + '?' + $.param(options.data)) {
+						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=0&os_authType=basic':
 							return Rx.Observable.returnValue(projectsJson);
-						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=1':
+						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=1&os_authType=basic':
 							return Rx.Observable.returnValue(projectsJson2);
-						case 'http://example.com/rest/api/latest/project/PROJECT1?expand=plans.plan&start-index=3':
+						case 'http://example.com/rest/api/latest/project/PROJECT1?expand=plans.plan&start-index=3&os_authType=basic':
 							return Rx.Observable.returnValue(projectsJson3);
 						default:
 							throw new Error('Unknown URL: ' + options.url);
@@ -69,8 +70,8 @@ define([
 					request.json.andCallFake(function (options) {
 						expect(options.username).toBe(settings.username);
 						expect(options.password).toBe(settings.password);
-						expect(options.url).toBe('http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=0');
-						expect(options.authCookie).toBe('JSESSIONID');
+						expect(options.url).toBe('http://example.com/rest/api/latest/project');
+						expect(options.data).toEqual({expand: 'projects.project.plans.plan', 'start-index': 0, os_authType: 'basic'});
 						return Rx.Observable.never();
 					});
 
