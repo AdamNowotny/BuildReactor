@@ -53,14 +53,15 @@ define([
 		function createNotificationInfo(eventDetails, message, timeout) {
 
 			function createId(eventDetails) {
-				return interpolate('{{0}}_{{1}}', [
-					eventDetails.serviceName,
-					eventDetails.name
-				]);
+				return eventDetails.group ?
+					interpolate('{{0}}_{{1}}_{{2}}', [ eventDetails.serviceName, eventDetails.group, eventDetails.name ]) :
+					interpolate('{{0}}_{{1}}', [ eventDetails.serviceName, eventDetails.name ]);
 			}
 
 			function createTitle(eventDetails) {
-				return interpolate('{{0}} ({{1}})', [eventDetails.name, eventDetails.serviceName]);
+				return eventDetails.group ?
+					interpolate('{{0}} / {{1}} ({{2}})', [ eventDetails.group, eventDetails.name, eventDetails.serviceName ]) :
+					interpolate('{{0}} ({{1}})', [ eventDetails.name, eventDetails.serviceName ]);
 			}
 
 			function createChangesMessage(changes) {

@@ -83,6 +83,24 @@ define([
 				);
 			});
 
+			it('should show group name when available', function () {
+				buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {
+					serviceName: 'service',
+					name: 'build',
+					group: 'group',
+					serviceIcon: 'test/icon.png',
+					changes: [{ name: 'User 1' }, { name: 'User 2' }]
+				}});
+
+				expect(window.Notification).toHaveBeenCalledWith(
+					'group / build (service)', {
+						icon: 'src/core/services/test/icon.png',
+						body: 'Broken by User 1, User 2',
+						tag: 'service_group_build'
+					}
+				);
+			});
+
 			it('should show max 4 users who broke the build', function () {
 				buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {
 					serviceName: 'service',
