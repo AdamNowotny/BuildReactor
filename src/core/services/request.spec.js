@@ -212,43 +212,6 @@ define([
 					});
 				});
 
-				it('should remove session cookie if 401 received', function () {
-					var response = {
-						statusText: 'error',
-						status: 401
-					};
-					var ajaxOptions = {
-						url: 'http://sample.com',
-						authCookie: 'JSESSIONID'
-					};
-					spyOn($, 'ajax').andReturn(createFailureDeferred(response));
-					spyOn(chrome.cookies, 'remove').andCallFake(function (details, callback) {
-						expect(details.url).toBe(ajaxOptions.url);
-						expect(details.name).toBe(ajaxOptions.authCookie);
-					});
-
-					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {});
-
-					expect(chrome.cookies.remove).toHaveBeenCalled();
-				});
-
-				it('should retry once if 401 received', function () {
-					var response = {
-						statusText: 'error',
-						status: 401
-					};
-					var ajaxOptions = {
-						url: 'http://sample.com',
-						authCookie: 'JSESSIONID'
-					};
-					spyOn($, 'ajax').andReturn(createFailureDeferred(response));
-					spyOn(chrome.cookies, 'remove');
-
-					request.json(ajaxOptions).subscribe(function (d) {}, function (d) {});
-
-					expect(chrome.cookies.remove.callCount).toBe(2);
-				});
-
 				it('should throw exception on jQuery parse error', function () {
 					var response = {
 						statusText: 'OK',

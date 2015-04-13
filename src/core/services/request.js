@@ -19,12 +19,8 @@ define([
 		var promise = $.ajax(ajaxOptions).promise();
 		return Rx.Observable.fromPromise(promise)
 			.catchException(function (ex) {
-				var ajaxError = createAjaxError(ex, ajaxOptions);
-				if (options.authCookie && ajaxError.httpStatus === httpStatusUnauthorized) {
-					chrome.cookies.remove({ url: options.url, name: options.authCookie });
-				}
-				return Rx.Observable.throwException(ajaxError);
-			}).retry(2)
+				return Rx.Observable.throwException(createAjaxError(ex, ajaxOptions));
+			})
 			.timeout(timeout, Rx.Observable.throwException(createTimeoutError(timeout, ajaxOptions)), scheduler)
 			.selectMany(createParser(options.parser, ajaxOptions));
 	}

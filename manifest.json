@@ -27,7 +27,6 @@
 		"http://*/*",
 		"https://*/*",
 		"notifications",
-		"cookies",
 		"tabs"
 	],
 	"web_accessible_resources": [
