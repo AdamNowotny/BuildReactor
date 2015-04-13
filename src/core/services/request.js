@@ -1,4 +1,3 @@
-/* global chrome: false */
 define([
 	'rx',
 	'jquery',

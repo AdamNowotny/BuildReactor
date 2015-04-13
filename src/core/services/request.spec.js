@@ -1,4 +1,3 @@
-/* global chrome: false */
 define([
 	'core/services/request',
 	'rx',
