@@ -56,19 +56,19 @@ define([
 
 	var projectsFromIndex = function (self, startIndex) {
 		return request.json({
-			url: joinUrl(self.settings.url, 'rest/api/latest/project?expand=projects.project.plans.plan&start-index=' + startIndex),
+			url: joinUrl(self.settings.url, 'rest/api/latest/project'),
+			data: {expand: 'projects.project.plans.plan', 'start-index': startIndex, os_authType: 'basic'},
 			username: self.settings.username,
-			password: self.settings.password,
-			authCookie: 'JSESSIONID'
+			password: self.settings.password
 		});
 	};
 
 	var projectPlansFromIndex = function (self, projectKey, startIndex) {
 		return request.json({
-			url: joinUrl(self.settings.url, 'rest/api/latest/project/' + projectKey + '?expand=plans.plan&start-index=' + startIndex),
+			url: joinUrl(self.settings.url, 'rest/api/latest/project/' + projectKey),
+			data: {expand: 'plans.plan', 'start-index': startIndex, os_authType: 'basic'},
 			username: self.settings.username,
-			password: self.settings.password,
-			authCookie: 'JSESSIONID'
+			password: self.settings.password
 		});
 	};
 
@@ -87,7 +87,7 @@ define([
 		});
 	};
 
-	var getPageIndexes = function (pageSize, totalSize) { 
+	var getPageIndexes = function (pageSize, totalSize) {
 		var pageIndexes = [];
 		for (var index = pageSize; index < totalSize; index += pageSize) {
 			pageIndexes.push(index);
