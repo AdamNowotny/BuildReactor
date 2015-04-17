@@ -11,24 +11,27 @@ define([
 			expect(config).toEqual({
 				columns: 2,
 				fullWidthGroups: true,
-				singleGroupRows: false
+				singleGroupRows: false,
+				showCommits: true
 			});
 		});
 
 		it('should not override existing view configuration', function () {
 			var config = updater.update({ columns: 4 });
 
-			expect(config).toEqual({
-				columns: 4,
-				fullWidthGroups: true,
-				singleGroupRows: false
-			});
+			expect(config.columns).toBe(4);
 		});
 
 		it('should add default singleGroupRows', function () {
-			var config = updater.update({ columns: 4, fullWidthGroups: false });
+			var config = updater.update({ columns: 4});
 
-			expect(config).toEqual({ columns: 4, fullWidthGroups: false, singleGroupRows: false });
+			expect(config.singleGroupRows).toBe(false);
+		});
+
+		it('should add default showCommits', function () {
+			var config = updater.update({ columns: 4 });
+
+			expect(config.showCommits).toBe(true);
 		});
 	});
 
