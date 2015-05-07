@@ -1,14 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>BuildReactor testing</title>
-		<style>
-			a { display: block }
-		</style>
-	</head>
-	<body>
-		<a href="../settings/index.html">Settings</a>
-		<a href="../popup/index.html">Popup</a>
-		<a href="../dashboard/index.html">Dashboard</a>
-	</body>
+<head>
+	<title>BuildReactor testing</title>
+	<style>
+		a { display: block }
+	</style>
+</head>
+<body>
+	<a href="../settings/index.html">Settings</a>
+	<a href="../popup/index.html">Popup</a>
+	<a href="../dashboard/index.html">Dashboard</a>
+	<p>
+		Test notifications by opening background page and typing in console:
+		<pre>
+require('core/events').publish({
+	eventName: 'buildBroken',
+	details: {
+		serviceName: 'service',
+		name: 'build',
+		group: 'group',
+		serviceIcon: 'go/icon.png',
+		changes: [{ name: 'User 1' }, { name: 'User 2' }]
+	}
+})
+		</pre>
+	</p>
+</body>
 </html>

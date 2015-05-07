@@ -12,7 +12,12 @@ define([
 		});
 	};
 
+	var publish = function (event) {
+		serviceController.events.onNext(event);
+	};
+
 	return {
-		getByName: getByName
+		getByName: getByName,
+		publish: publish
 	};
 });

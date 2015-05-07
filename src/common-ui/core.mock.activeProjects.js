@@ -24,11 +24,11 @@ define(function () {
 					isRunning: false,
 					tags: [{ name: 'Unstable', type: 'warning' }],
 					changes: [{
-						name: 'Name1',
-						message: 'Message1 Message1 Message1 Message1 Message1 Message1 Message1 Message1 '
+						name: 'Adam',
+						message: 'Sample commit message'
 					},{
 						name: 'Name2',
-						message: 'Message2 Message2 Message2 Message2 Message2 Message2 Message2 Message2 Message2 Message2 '
+						message: 'A really long commit message that will most likely be truncated'
 					}]
 				}, {
 					name: "Failed",

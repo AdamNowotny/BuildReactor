@@ -51,8 +51,6 @@ define([
 		}
 	}
 
-	var messages = new Rx.Subject();
-
 	var onConnect = function (port) {
 		switch (port.name) {
 		case 'state':
