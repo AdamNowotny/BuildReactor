@@ -21,8 +21,8 @@ define([
 			beforeEach(function () {
 				settings = {
 					name: 'My Bamboo CI',
-					username: null,
-					password: null,
+					username: 'username',
+					password: 'password',
 					url: 'http://example.com/',
 					updateInterval: 10000,
 					projects: ['PROJECT1-PLAN1', 'PROJECT2-PLAN2']
@@ -55,10 +55,13 @@ define([
 					spyOn(request, 'json').andCallFake(function (options) {
 						switch (options.url + '?' + $.param(options.data)) {
 						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=0&os_authType=basic':
+						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=0':
 							return Rx.Observable.returnValue(projectsJson);
 						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=1&os_authType=basic':
+						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=1':
 							return Rx.Observable.returnValue(projectsJson2);
 						case 'http://example.com/rest/api/latest/project/PROJECT1?expand=plans.plan&start-index=3&os_authType=basic':
+						case 'http://example.com/rest/api/latest/project/PROJECT1?expand=plans.plan&start-index=3':
 							return Rx.Observable.returnValue(projectsJson3);
 						default:
 							throw new Error('Unknown URL: ' + options.url);
@@ -72,6 +75,19 @@ define([
 						expect(options.password).toBe(settings.password);
 						expect(options.url).toBe('http://example.com/rest/api/latest/project');
 						expect(options.data).toEqual({expand: 'projects.project.plans.plan', 'start-index': 0, os_authType: 'basic'});
+						return Rx.Observable.never();
+					});
+
+					service.availableBuilds();
+
+					expect(request.json).toHaveBeenCalled();
+				});
+
+				it('should not set authType when no credentials specified', function () {
+					settings.username = null;
+					settings.password = null;
+					request.json.andCallFake(function (options) {
+						expect(options.data).toEqual({expand: 'projects.project.plans.plan', 'start-index': 0});
 						return Rx.Observable.never();
 					});
 

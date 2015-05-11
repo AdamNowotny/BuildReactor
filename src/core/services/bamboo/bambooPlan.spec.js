@@ -38,6 +38,21 @@ define([
 			build = new BambooPlan('KEY', settings);
 		});
 
+		it('should make calls on update with no credentials', function () {
+			settings.username = null;
+			settings.password = null;
+
+			build.update();
+
+			expect(request.json).toHaveBeenCalled();
+			expect(request.json.calls[0].args[0].url).toBe('http://example.com/rest/api/latest/plan/KEY');
+			expect(request.json.calls[0].args[0].username).toBe(settings.username);
+			expect(request.json.calls[0].args[0].password).toBe(settings.password);
+			expect(request.json.calls[0].args[0].data).toEqual({});
+			expect(request.json.calls[1].args[0].url).toBe('http://example.com/rest/api/latest/result/KEY/latest');
+			expect(request.json.calls[1].args[0].data).toEqual({expand: 'changes'});
+		});
+
 		it('should make calls on update', function () {
 			build.update();
 
