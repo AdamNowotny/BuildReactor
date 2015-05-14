@@ -27,7 +27,7 @@ define([
 				changes: lastCompletedResponse.changeSet.items.map(function (change) {
 					return {
 						name: change.author.fullName,
-						message: change.msg.split('\n')[0]
+						message: change.msg
 					};
 				})
 			};
