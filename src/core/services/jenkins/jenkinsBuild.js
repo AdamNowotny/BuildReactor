@@ -16,7 +16,7 @@ define([
 		return job(self).zip(lastCompletedBuild(self), function (jobResponse, lastCompletedResponse) {
 			var state = {
 				id: self.id,
-				name: self.id,
+				name: jobResponse.displayName,
 				group: null,
 				webUrl: jobResponse.lastBuild.url,
 				isBroken: lastCompletedResponse.result in

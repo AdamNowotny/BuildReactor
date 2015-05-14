@@ -46,7 +46,7 @@ define([
 		it('should parse response and return current state', function () {
 			build.update().subscribe(function (state) {
 				expect(state.id).toBe('build_id');
-				expect(state.name).toBe('build_id');
+				expect(state.name).toBe('config-provider-model');
 				expect(state.webUrl).toBe('http://ci.jenkins-ci.org/job/config-provider-model/1354/');
 				expect(state.isBroken).toBe(false);
 				expect(state.isRunning).toBe(false);
