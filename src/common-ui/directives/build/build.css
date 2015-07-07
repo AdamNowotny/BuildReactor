@@ -1,4 +1,5 @@
 .build {
+    font-weight: bold;
 	padding-left: 5px;
 	padding-right: 5px;
 	float: left;
@@ -43,7 +44,7 @@
 	}
 	
 	.build a {
-		background-color: #360;
+		background-color: #5cb85c;
 		border-radius: 5px;
 		cursor: pointer;
 		margin-top: 5px;
@@ -53,58 +54,57 @@
 	}
 
 	.build.disabled a {
-		background-color: #888;
+		background-color: #999;
 	}
 
 		.build.disabled .build-name {
-			color: black;
+			color: #fff;
 		}
 
 		.build.disabled.broken a {
-			background-color: #888;
+			background-color: #999;
 		}
 
 	.build.offline a,
 	.build.offline.broken a,
 	.build.offline.building a,
 	.build.offline.broken.building a {
-		background-color: #888;
+		background-color: #999;
 	}
 
 		.build.offline.disabled .build-name,
 		.build.offline.disabled.broken .build-name {
-			color: black;
+			color: #fff;
 		}
 
 		.build.offline .build-name {
-			color: #360;
+			color: #fff;
 		}
 
 		.build.offline.broken .build-name {
-			color: #900;
+			color: #fff;
 		}
 
 	.build.building a {
-		background-color: #f89406;
+		background-color: #5cb85c;
 	}
 
 		.build.building .build-name,
 		.build.building .label-warning {
-			color: #360;
+			color: #fff;
 		}
 
 	.build.broken a {
-		background-color: #900;
-		font-weight: bold;
+		background-color: #d9534f;
 	}
 
 		.build.broken.building a {
-			background-color: #f89406;
+			background-color: #d9534f;
 		}
 	
 		.build.broken.building .build-name,
 		.build.broken.building .label-warning {
-			color: #900;
+			color: #fff;
 		}
 
 	.build-name {
@@ -124,7 +124,12 @@
 	}
 	
 	.build .label-warning {
-		background-color: #f89406;
+		background-color: #d9534f;
+        color: #fff;
+	}
+
+	.build .label-success {
+		background-color: #5cb85c;
 	}
 
 	.build .label-default {
