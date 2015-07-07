@@ -101,7 +101,7 @@ module.exports = function (grunt) {
 		requirejs: {
 			compile: {
 				options: {
-					baseUrl: "src",
+					baseUrl: "./src",
 					mainConfigFile: 'src/common/main.js',
 					dir: '<%= vars.dist %>/src',
 					removeCombined: true,
