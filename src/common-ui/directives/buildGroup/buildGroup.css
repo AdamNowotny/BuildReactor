@@ -1,6 +1,7 @@
 .build-group .group-name {
 	clear: both;
 	display: block;
+    color: #000;
 	font-weight: bold;
 	height: 30px;
 	line-height: 40px;
