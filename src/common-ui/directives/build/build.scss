@@ -1,0 +1,137 @@
+.build {
+    padding-left: 5px;
+	padding-right: 5px;
+	float: left;
+	width: 100%;
+}
+
+.changes-container {
+	height: 1.5em;
+	overflow: hidden;
+	position: relative;
+	text-align: left;
+}
+
+.changes {
+	display: block;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	text-overflow: ellipsis;
+	transform: translateY(90%); 
+	transition: opacity 1s, transform 2s;
+	width: 100%;
+}
+
+.changes.active {
+	opacity: 1;
+	transform: translateY(0); 
+	transition: opacity 2s, transform 2s;
+}
+
+.build a,
+.build a:hover,
+.build a:visited {
+	color: white;
+	display: block;
+	text-decoration: none;
+	width: 100%;
+}
+
+	.build .tooltip {
+		white-space: normal;
+	}
+	
+	.build a {
+		background-color: #5cb85c;
+		border-radius: 5px;
+		cursor: pointer;
+		margin-top: 5px;
+		padding: 5px 10px 5px 5px;
+		position: relative;
+		white-space: nowrap;
+	}
+
+	.build.disabled a {
+		background-color: #999;
+	}
+
+		.build.disabled .build-name {
+			color: #fff;
+		}
+
+		.build.disabled.broken a {
+			background-color: #999;
+		}
+
+	.build.offline a,
+	.build.offline.broken a,
+	.build.offline.building a,
+	.build.offline.broken.building a {
+		background-color: #999;
+	}
+
+		.build.offline.disabled .build-name,
+		.build.offline.disabled.broken .build-name {
+			color: #fff;
+		}
+
+		.build.offline .build-name {
+			color: #fff;
+		}
+
+		.build.offline.broken .build-name {
+			color: #fff;
+		}
+
+	.build.building a {
+		background-color: #5cb85c;
+	}
+
+		.build.building .build-name,
+		.build.building .label-warning {
+			color: #fff;
+		}
+
+	.build.broken a {
+		background-color: #d9534f;
+	}
+
+		.build.broken.building a {
+			background-color: #d9534f;
+		}
+	
+		.build.broken.building .build-name,
+		.build.broken.building .label-warning {
+			color: #fff;
+		}
+
+	.build-name {
+        font-weight: bold;
+		display: block;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.build .labels {
+		margin-top: -1px;
+		max-width: 50%;
+		overflow: hidden;
+	}
+
+	.build .label {
+		margin-left: .5em;
+	}
+	
+	.build .label-warning {
+		background-color: #d9534f;
+        color: #fff;
+	}
+
+	.build .label-success {
+		background-color: #5cb85c;
+	}
+
+	.build .label-default {
+		background-color: #444;
+	}

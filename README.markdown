@@ -63,7 +63,7 @@ Developer setup
 Installation
 ------------
 
-[Node.js](http://nodejs.org/) is required to build the extension. After it's installed go to project directory and run:
+[Node.js](http://nodejs.org/) and [Sass](http://sass-lang.com/install) is required to build the extension. After it's installed go to project directory and run:
 
 ```
 npm install

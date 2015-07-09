@@ -1,0 +1,21 @@
+@import url("../../bower_components/angular/angular-csp.css");
+@import url("../common-ui/directives/buildList/buildList.css");
+@import url("../common-ui/directives/service/service.css");
+@import url("../common-ui/directives/buildGroup/buildGroup.css");
+@import url("../common-ui/directives/build/build.css");
+
+body {
+	background-color: #fff;
+	color: white;
+	margin-top: 0;
+}
+
+.label .error-message {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 250px;
+}
+
+.build-list .no-services-message {
+	font-size: x-large;
+}
