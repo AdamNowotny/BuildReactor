@@ -1,0 +1,18 @@
+.build-group .group-name {
+  clear: both;
+  display: block;
+  color: #000;
+  font-weight: bold;
+  height: 30px;
+  line-height: 40px;
+  margin-bottom: -5px;
+  margin-left: 5px;
+  margin-top: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+.build-group .group-items {
+  float: left; }
+
+/*# sourceMappingURL=buildGroup.css.map */
