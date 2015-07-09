@@ -94,8 +94,6 @@ module.exports = function (grunt) {
 		sass: {
 			dist: {
 				files: {
-					'src/dashboard/main.css' : 'src/dashboard/main.scss',
-					'src/popup/main.css' : 'src/popup/main.scss',
 					'src/common-ui/directives/build/build.css' : 'src/common-ui/directives/build/build.scss',
 					'src/common-ui/directives/buildGroup/buildGroup.css' : 'src/common-ui/directives/buildGroup/buildGroup.scss',
 					'src/common-ui/directives/service/service.css' : 'src/common-ui/directives/service/service.scss'

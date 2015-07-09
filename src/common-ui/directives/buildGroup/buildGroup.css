@@ -1,7 +1,6 @@
 .build-group .group-name {
   clear: both;
   display: block;
-  color: #000;
   font-weight: bold;
   height: 30px;
   line-height: 40px;
@@ -14,5 +13,15 @@
 
 .build-group .group-items {
   float: left; }
+
+.theme-dark {
+  background-color: #000; }
+  .theme-dark .build-group .group-name {
+    color: #fff; }
+
+.theme-light {
+  background-color: #fff; }
+  .theme-light .build-group .group-name {
+    color: #000; }
 
 /*# sourceMappingURL=buildGroup.css.map */

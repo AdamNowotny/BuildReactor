@@ -3,17 +3,19 @@
 @import url("../common-ui/directives/service/service.css");
 @import url("../common-ui/directives/buildGroup/buildGroup.css");
 @import url("../common-ui/directives/build/build.css");
+
 body {
-  background-color: #fff;
+  background-color: #141414;
   color: white;
-  margin-top: 0; }
+  margin-top: 0;
+}
 
 .label .error-message {
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 250px; }
+  max-width: 250px;
+}
 
 .build-list .no-services-message {
-  font-size: x-large; }
-
-/*# sourceMappingURL=main.css.map */
+  font-size: x-large;
+}

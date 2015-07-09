@@ -12,7 +12,8 @@ define([
 				columns: 2,
 				fullWidthGroups: true,
 				singleGroupRows: false,
-				showCommits: true
+				showCommits: true,
+				theme: 'dark'
 			});
 		});
 
@@ -32,6 +33,12 @@ define([
 			var config = updater.update({ columns: 4 });
 
 			expect(config.showCommits).toBe(true);
+		});
+
+		it('should add default theme', function () {
+			var config = updater.update({ columns: 4 });
+
+			expect(config.theme).toBe('dark');
 		});
 	});
 

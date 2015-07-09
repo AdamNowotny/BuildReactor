@@ -5,6 +5,7 @@ define(['rx'], function (Rx) {
 	return Rx.Observable.returnValue({
 		columns: 3,
 		fullWidthGroups: true,
-		showCommits: true
+		showCommits: true,
+		theme: 'dark'
 	});
 });
