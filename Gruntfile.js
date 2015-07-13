@@ -12,22 +12,24 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-plato');
 	grunt.loadNpmTasks('grunt-version');
+	grunt.loadNpmTasks('grunt-sass');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	/**
 	 * Grunt tasks
 	 */
 
 	// default task - run tests and package
-	grunt.registerTask('default', [ 'clean:build', 'jshint', 'karma:once', 'requirejs', 'cssmin', 'copy', 'clean:buildSrc', 'compress' ]);
+	grunt.registerTask('default', [ 'clean:build', 'jshint', 'karma:once', 'requirejs', 'sass', 'cssmin', 'copy', 'clean:buildSrc', 'compress', 'watch' ]);
 
 	// continuous testing using PhantomJS
 	grunt.registerTask('test', [ 'karma:watch' ]);
-	
+
 	// web server at http://localhost:9876/base/src/test/index.html
 	grunt.registerTask('browser', [ 'karma:browser' ]);
 
 	// skip tests and create package
-	grunt.registerTask('dist', [ 'clean:build', 'requirejs', 'cssmin', 'copy', 'clean:buildSrc', 'compress' ]);
+	grunt.registerTask('dist', [ 'clean:build', 'requirejs', 'sass', 'cssmin', 'copy', 'clean:buildSrc', 'compress' ]);
 
 	// create code quality report
 	grunt.registerTask('report', [ 'plato:src' ]);
@@ -87,6 +89,24 @@ module.exports = function (grunt) {
 			browser: {
 				singleRun: false,
 				preprocessors: {}
+			}
+		},
+		sass: {
+			dist: {
+				options: {
+					sourceMap: true
+				},
+				files: {
+					'src/common-ui/directives/build/build.css' : 'src/common-ui/directives/build/build.scss',
+					'src/common-ui/directives/buildGroup/buildGroup.css' : 'src/common-ui/directives/buildGroup/buildGroup.scss',
+					'src/common-ui/directives/service/service.css' : 'src/common-ui/directives/service/service.scss'
+				}
+			}
+		},
+		watch: {
+			css: {
+				files: '**/*.scss',
+				tasks: ['sass']
 			}
 		},
 		cssmin: {

@@ -9,19 +9,25 @@
   margin-top: 5px;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap; }
+  white-space: nowrap;
+}
 
 .build-group .group-items {
-  float: left; }
+  float: left;
+}
 
 .theme-dark {
-  background-color: #000; }
-  .theme-dark .build-group .group-name {
-    color: #fff; }
+  background-color: #000;
+
+  .build-group .group-name {
+    color: #fff;
+  }
+}
 
 .theme-light {
-  background-color: #fff; }
-  .theme-light .build-group .group-name {
-    color: #000; }
+  background-color: #fff;
 
-/*# sourceMappingURL=buildGroup.css.map */
+  .build-group .group-name {
+    color: #000;
+  }
+}
