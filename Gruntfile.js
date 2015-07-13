@@ -24,7 +24,7 @@ module.exports = function (grunt) {
 
 	// continuous testing using PhantomJS
 	grunt.registerTask('test', [ 'karma:watch' ]);
-	
+
 	// web server at http://localhost:9876/base/src/test/index.html
 	grunt.registerTask('browser', [ 'karma:browser' ]);
 
@@ -121,7 +121,7 @@ module.exports = function (grunt) {
 		requirejs: {
 			compile: {
 				options: {
-					baseUrl: "./src",
+					baseUrl: "src",
 					mainConfigFile: 'src/common/main.js',
 					dir: '<%= vars.dist %>/src',
 					removeCombined: true,

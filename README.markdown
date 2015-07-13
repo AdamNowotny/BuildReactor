@@ -63,12 +63,13 @@ Developer setup
 Installation
 ------------
 
-1. Install [Node.js](http://nodejs.org/) and [Sass](http://sass-lang.com/install) to build the extension. 
-2. Go to project directory and run:
+1. Install [Node.js](http://nodejs.org/) to build the extension.
+2. Install Bower globally `npm install -g bower` 
+3. Go to project directory `/git/BuildReactor/` and run:
  - `npm install`
  - `bower update`
  - `/node_modules/.bin/grunt`
-3. Open Chrome Extension manager and `Load unpacked extension..` from `_build/BuildReactor` folder.
+4. Open Chrome Extension manager and `Load unpacked extension..` from `_build/BuildReactor` folder.
 
 
 `grunt` - full build
