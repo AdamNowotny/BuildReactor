@@ -12,7 +12,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-plato');
 	grunt.loadNpmTasks('grunt-version');
-	grunt.loadNpmTasks('grunt-contrib-sass');
+	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	/**
@@ -93,6 +93,9 @@ module.exports = function (grunt) {
 		},
 		sass: {
 			dist: {
+				options: {
+					sourceMap: true
+				},
 				files: {
 					'src/common-ui/directives/build/build.css' : 'src/common-ui/directives/build/build.scss',
 					'src/common-ui/directives/buildGroup/buildGroup.css' : 'src/common-ui/directives/buildGroup/buildGroup.scss',

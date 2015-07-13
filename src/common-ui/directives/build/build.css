@@ -25,9 +25,7 @@
   transform: translateY(0);
   transition: opacity 2s, transform 2s; }
 
-.build a,
-.build a:hover,
-.build a:visited {
+.build a, .build a:hover, .build a:visited {
   color: white;
   display: block;
   text-decoration: none;
@@ -66,13 +64,9 @@
   color: black; }
 .theme-dark .build.disabled.broken a {
   background-color: #888; }
-.theme-dark .build.offline a,
-.theme-dark .build.offline.broken a,
-.theme-dark .build.offline.building a,
-.theme-dark .build.offline.broken.building a {
+.theme-dark .build.offline a, .theme-dark .build.offline.broken a, .theme-dark .build.offline.building a, .theme-dark .build.offline.broken.building a {
   background-color: #888; }
-.theme-dark .build.offline.disabled .build-name,
-.theme-dark .build.offline.disabled.broken .build-name {
+.theme-dark .build.offline.disabled .build-name, .theme-dark .build.offline.disabled.broken .build-name {
   color: black; }
 .theme-dark .build.offline .build-name {
   color: #360; }
@@ -80,15 +74,13 @@
   color: #900; }
 .theme-dark .build.building a {
   background-color: #f89406; }
-.theme-dark .build.building .build-name,
-.theme-dark .build.building .label-warning {
+.theme-dark .build.building .build-name, .theme-dark .build.building .label-warning {
   color: #360; }
 .theme-dark .build.broken a {
   background-color: #900; }
 .theme-dark .build.broken.building a {
   background-color: #f89406; }
-.theme-dark .build.broken.building .build-name,
-.theme-dark .build.broken.building .label-warning {
+.theme-dark .build.broken.building .build-name, .theme-dark .build.broken.building .label-warning {
   color: #900; }
 .theme-dark .build .label-warning {
   background-color: #444; }
@@ -105,13 +97,9 @@
   color: #fff; }
 .theme-light .build.disabled.broken a {
   background-color: #999; }
-.theme-light .build.offline a,
-.theme-light .build.offline.broken a,
-.theme-light .build.offline.building a,
-.theme-light .build.offline.broken.building a {
+.theme-light .build.offline a, .theme-light .build.offline.broken a, .theme-light .build.offline.building a, .theme-light .build.offline.broken.building a {
   background-color: #999; }
-.theme-light .build.offline.disabled .build-name,
-.theme-light .build.offline.disabled.broken .build-name {
+.theme-light .build.offline.disabled .build-name, .theme-light .build.offline.disabled.broken .build-name {
   color: #fff; }
 .theme-light .build.offline .build-name {
   color: #fff; }
@@ -119,15 +107,13 @@
   color: #fff; }
 .theme-light .build.building a {
   background-color: #5cb85c; }
-.theme-light .build.building .build-name,
-.theme-light .build.building .label-warning {
+.theme-light .build.building .build-name, .theme-light .build.building .label-warning {
   color: #fff; }
 .theme-light .build.broken a {
   background-color: #d9534f; }
 .theme-light .build.broken.building a {
   background-color: #d9534f; }
-.theme-light .build.broken.building .build-name,
-.theme-light .build.broken.building .label-warning {
+.theme-light .build.broken.building .build-name, .theme-light .build.broken.building .label-warning {
   color: #fff; }
 .theme-light .build .label-warning {
   background-color: #d9534f; }
