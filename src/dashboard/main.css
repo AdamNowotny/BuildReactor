@@ -4,6 +4,10 @@
 @import url("../common-ui/directives/buildGroup/buildGroup.css");
 @import url("../common-ui/directives/build/build.css");
 
+html, body, .dashboard-view {
+  height: 100%;
+}
+
 body {
   background-color: #141414;
   color: white;

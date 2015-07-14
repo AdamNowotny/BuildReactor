@@ -1,6 +1,5 @@
 .build-list {
-	margin-bottom: 5px;
-	height: 1334px;
+	height: 100%;
 }
 
 .build-list .no-services-message {
