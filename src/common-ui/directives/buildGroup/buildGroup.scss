@@ -1,12 +1,7 @@
 .build-group .group-name {
   clear: both;
   display: block;
-  font-weight: bold;
-  height: 30px;
-  line-height: 40px;
-  margin-bottom: -5px;
-  margin-left: 5px;
-  margin-top: 5px;
+  height: 32px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -17,17 +12,14 @@
 }
 
 .theme-dark {
-  background-color: #000;
-
   .build-group .group-name {
     color: #fff;
   }
 }
 
 .theme-light {
-  background-color: #fff;
-
   .build-group .group-name {
+    border-bottom: 1px solid #999;
     color: #000;
   }
 }

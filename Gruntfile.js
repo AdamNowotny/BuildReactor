@@ -98,6 +98,7 @@ module.exports = function (grunt) {
 				},
 				files: {
 					'src/common-ui/directives/build/build.css' : 'src/common-ui/directives/build/build.scss',
+					'src/common-ui/directives/buildList/buildList.css' : 'src/common-ui/directives/buildList/buildList.scss',
 					'src/common-ui/directives/buildGroup/buildGroup.css' : 'src/common-ui/directives/buildGroup/buildGroup.scss',
 					'src/common-ui/directives/service/service.css' : 'src/common-ui/directives/service/service.scss'
 				}
