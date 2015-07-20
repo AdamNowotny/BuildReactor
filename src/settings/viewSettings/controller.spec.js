@@ -119,6 +119,26 @@ define([
 
 		});
 
+		describe('theme', function () {
+
+			it('should save when theme set', function() {
+				scope.config = { theme: 'dark' };
+
+				scope.setTheme('light');
+
+				expect(core.setViews).toHaveBeenCalledWith({ theme: 'light' });
+			});
+
+			it('should not save when already set', function() {
+				scope.config = { theme: 'dark' };
+
+				scope.setTheme('dark');
+
+				expect(core.setViews).not.toHaveBeenCalled();
+			});
+
+		});
+
 	});
 
 });

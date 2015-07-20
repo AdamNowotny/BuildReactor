@@ -15,6 +15,7 @@ define([
 				service: '=serviceInfo'
 			},
 			templateUrl: 'src/common-ui/directives/service/service.html',
+			replace: true,
 			controller: function ($scope, $element, $attrs, $transclude) {
 				$scope.$watch('service', function (service) {
 					var items = $scope.service ? $scope.service.items : [];

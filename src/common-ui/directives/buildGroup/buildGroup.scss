@@ -1,0 +1,25 @@
+.build-group .group-name {
+  clear: both;
+  display: block;
+  height: 32px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.build-group .group-items {
+  float: left;
+}
+
+.theme-dark {
+  .build-group .group-name {
+    color: #fff;
+  }
+}
+
+.theme-light {
+  .build-group .group-name {
+    border-bottom: 1px solid #999;
+    color: #000;
+  }
+}

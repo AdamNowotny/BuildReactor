@@ -1,17 +1,19 @@
 .build-group .group-name {
-	clear: both;
-	display: block;
-	font-weight: bold;
-	height: 30px;
-	line-height: 40px;
-	margin-bottom: -5px;
-	margin-left: 5px;
-	margin-top: 5px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
+  clear: both;
+  display: block;
+  height: 32px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
 
 .build-group .group-items {
-	float: left;
-}
+  float: left; }
+
+.theme-dark .build-group .group-name {
+  color: #fff; }
+
+.theme-light .build-group .group-name {
+  border-bottom: 1px solid #999;
+  color: #000; }
+
+/*# sourceMappingURL=buildGroup.css.map */

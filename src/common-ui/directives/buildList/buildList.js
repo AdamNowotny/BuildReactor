@@ -11,6 +11,7 @@ define([
 			restrict: 'E',
 			scope: {},
 			templateUrl: 'src/common-ui/directives/buildList/buildList.html',
+			replace: true,
 			controller: function ($scope, $element, $attrs, $transclude) {
 
 				$scope.start = function () {
@@ -21,6 +22,12 @@ define([
 						});
 					});
 				};
+
+				core.views.subscribe(function (config) {
+					$scope.$evalAsync(function () {
+						$scope.viewConfig = config;
+					});
+				});
 			},
 			link: function (scope, element, attrs, controller) {
 				scope.start();

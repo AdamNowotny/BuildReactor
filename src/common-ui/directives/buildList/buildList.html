@@ -1,4 +1,6 @@
-<div class="build-list container-fluid">
+<div class="build-list container-fluid theme-{{viewConfig.theme}}">
 	<service service-info="service" ng-repeat="service in services" ng-show="services"></service>
 	<div class="no-services-message" ng-hide="services">No services configured</div>
+	<br>
+	<br>
 </div>

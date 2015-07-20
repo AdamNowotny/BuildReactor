@@ -33,6 +33,15 @@
 				</ul>
 			</div>
 		</div>
+		<div class="form-group">
+			<label class="col-md-6 control-label">Theme</label>
+			<div class="col-md-6">
+				<ul class="nav nav-pills">
+					<li role="presentation" ng-class="{ active: config.theme === 'dark' }" ng-click="setTheme('dark')"><a>Dark</a></li>
+					<li role="presentation" ng-class="{ active: config.theme === 'light' }" ng-click="setTheme('light')"><a>Light</a></li>
+				</ul>
+			</div>
+		</div>
 	</form>
 	<div class="build-preview col-md-8">
 		<build-list services="services"></build-list>

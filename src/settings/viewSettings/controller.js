@@ -54,5 +54,13 @@ define([
 			}
 		};
 
+		$scope.setTheme = function (theme) {
+			var changed = $scope.config.theme !== theme;
+			if(changed) {
+				$scope.config.theme = theme;
+				core.setViews(angular.copy($scope.config));
+			}
+		};
+
 	});
 });

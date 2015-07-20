@@ -5,26 +5,26 @@
 @import url("../common-ui/directives/build/build.css");
 
 body {
-	background-color: #141414;
-	color: white;
-	margin-top: 45px;
-	min-width: 350px;
+  background-color: #141414;
+  color: white;
+  margin-top: 45px;
+  min-width: 350px;
 }
 
 .label .error-message {
-	display: none;
+  display: none;
 }
 
 .navbar {
-	padding-right: 1em;
-	min-height: 40px;
+  padding-right: 1em;
+  min-height: 40px;
 }
 
 .navbar-right li {
-	float: right;
+  float: right;
 }
 
 .navbar-nav>li>a {
-	padding-top: 5px;
-	padding-bottom: 0;
+  padding-top: 5px;
+  padding-bottom: 0;
 }
