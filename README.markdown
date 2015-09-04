@@ -23,6 +23,7 @@ Below are the supported CI servers.
 
  * [Atlassian Bamboo](http://www.atlassian.com/software/bamboo/)
  * [BuildBot](http://buildbot.net/)
+ * [CircleCI](https://circleci.com) (using cctray format)
  * Servers using [XML cctray format](http://confluence.public.thoughtworks.org/display/CI/Multiple+Project+Summary+Reporting+Standard) like [CruiseControl](http://cruisecontrol.sourceforge.net/), [CruiseControl.NET](http://www.cruisecontrolnet.org/), [CruiseControl.rb](http://cruisecontrolrb.thoughtworks.com/)
  * [GoCD](https://github.com/gocd/gocd)
  * [Jenkins](http://jenkins-ci.org/) (Hudson)
