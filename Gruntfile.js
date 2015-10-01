@@ -20,7 +20,7 @@ module.exports = function (grunt) {
 	 */
 
 	// default task - run tests and package
-	grunt.registerTask('default', [ 'clean:build', 'jshint', 'karma:once', 'requirejs', 'sass', 'cssmin', 'copy', 'clean:buildSrc', 'compress', 'watch' ]);
+	grunt.registerTask('default', [ 'clean:build', 'jshint', 'karma:once', 'requirejs', 'sass', 'cssmin', 'copy', 'clean:buildSrc', 'compress' ]);
 
 	// continuous testing using PhantomJS
 	grunt.registerTask('test', [ 'karma:watch' ]);
@@ -30,6 +30,9 @@ module.exports = function (grunt) {
 
 	// skip tests and create package
 	grunt.registerTask('dist', [ 'clean:build', 'requirejs', 'sass', 'cssmin', 'copy', 'clean:buildSrc', 'compress' ]);
+
+	// compile and watch
+	grunt.registerTask('dist-watch', [ 'dist', 'watch' ]);
 
 	// create code quality report
 	grunt.registerTask('report', [ 'plato:src' ]);
