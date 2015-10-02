@@ -37,7 +37,7 @@ define([
 				if (event.details && event.details.isDisabled) {
 					return;
 				}
-				failedBuildsCount--;
+				failedBuildsCount = Math.max(failedBuildsCount - 1, 0);
 				updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
 			},
 			'buildOffline': function () {

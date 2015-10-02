@@ -76,6 +76,12 @@ define([
 				expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('1');
 			});
 
+			it('should not show less than 0 failed builds', function () {
+				serviceController.events.onNext({ eventName: 'buildFixed' });
+
+				expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe(' ');
+			});
+
 			it('should ignore broken builds if build disabled', function () {
 				serviceController.events.onNext({ eventName: 'servicesInitialized' });
 
