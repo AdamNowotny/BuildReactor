@@ -22,17 +22,17 @@ module.exports = function (grunt) {
 	// default task - run tests and package
 	grunt.registerTask('default', [ 'clean:build', 'jshint', 'karma:once', 'requirejs', 'sass', 'cssmin', 'copy', 'clean:buildSrc', 'compress' ]);
 
-	// continuous testing using PhantomJS
-	grunt.registerTask('test', [ 'karma:watch' ]);
-
 	// web server at http://localhost:9876/base/src/test/index.html
 	grunt.registerTask('browser', [ 'karma:browser' ]);
 
 	// skip tests and create package
 	grunt.registerTask('dist', [ 'clean:build', 'requirejs', 'sass', 'cssmin', 'copy', 'clean:buildSrc', 'compress' ]);
 
-	// compile and watch
-	grunt.registerTask('dist-watch', [ 'dist', 'watch' ]);
+	// continuous compilation
+	grunt.registerTask('auto-dist', [ 'dist', 'watch' ]);
+
+	// continuous testing
+	grunt.registerTask('auto-test', [ 'karma:watch' ]);
 
 	// create code quality report
 	grunt.registerTask('report', [ 'plato:src' ]);
