@@ -65,11 +65,11 @@ Installation
 ------------
 
 1. Install [Node.js](http://nodejs.org/) to build the extension.
-2. Install Bower globally `npm install -g bower` 
+2. Install Bower globally `npm install -g bower grunt-cli` 
 3. Go to project directory `/git/BuildReactor/` and run:
  - `npm install`
  - `bower update`
- - `/node_modules/.bin/grunt`
+ - `grunt`
 4. Open Chrome Extension manager and `Load unpacked extension..` from `_build/BuildReactor` folder.
 
 
