@@ -51,6 +51,20 @@ define([
 				expect($.ajax).toHaveBeenCalled();
 			});
 
+			it('should encode url', function () {
+				var settings = {
+					url: 'http://sample.com/white space/and[brackets]'
+				};
+				spyOn($, 'ajax').andCallFake(function (options) {
+					expect(options.url).toBe('http://sample.com/white%20space/and%5Bbrackets%5D');
+					return successDeferred;
+				});
+
+				request.json(settings).subscribe();
+
+				expect($.ajax).toHaveBeenCalled();
+			});
+
 			it('should set basic authentication', function () {
 				spyOn($, 'ajax').andCallFake(function (options) {
 					expect(options.headers.Authorization).toBe('Basic dXNlcm5hbWUxOnBhc3N3b3JkMTIz');
