@@ -323,7 +323,7 @@
     },
     {
       "name" : "All Failed",
-      "url" : "http://ci.jenkins-ci.org/view/All%20Failed"
+      "url" : "http://ci.jenkins-ci.org/"
     },
     {
       "name" : "All Unstable",

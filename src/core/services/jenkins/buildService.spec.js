@@ -4,8 +4,9 @@ define([
 	'core/services/request',
 	'rx',
 	'text!core/services/jenkins/availableBuilds.fixture.json',
-	'text!core/services/jenkins/availableBuilds.primaryView.fixture.json'
-], function (BuildService, JenkinsBuild, request, Rx, availableBuildsFixture, viewFixture) {
+	'text!core/services/jenkins/availableBuilds.primaryView.fixture.json',
+	'text!core/services/jenkins/availableBuilds.incorrectUrl.fixture.json',
+], function (BuildService, JenkinsBuild, request, Rx, availableBuildsFixture, viewFixture, availableBuildsIncorrectFixture) {
 
 	'use strict';
 
@@ -60,19 +61,24 @@ define([
 			var service;
 			var scheduler;
 
-			beforeEach(function () {
-				scheduler = new Rx.TestScheduler();
-				availableBuildsJson = JSON.parse(availableBuildsFixture);
-				viewJson = JSON.parse(viewFixture);
-				spyOn(request, 'json').andCallFake(function (options) {
+			function setupRequestSpy(availableBuildsJson, viewJson) {
+				request.json.andCallFake(function (options) {
 					if (options.url === 'http://ci.jenkins-ci.org/api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]') {
 						return Rx.Observable.returnValue(availableBuildsJson);
-					} else if (options.url.indexOf('iew/') > -1) {
+					} else if (options.url.indexOf('/view/') > -1) {
 						return Rx.Observable.returnValue(viewJson);
 					}
 					throw 'Unknown url: ' + options.url;
 				});
+			}
+
+			beforeEach(function () {
+				scheduler = new Rx.TestScheduler();
+				availableBuildsJson = JSON.parse(availableBuildsFixture);
+				viewJson = JSON.parse(viewFixture);
+				spyOn(request, 'json');
 				service = new BuildService(settings);
+				setupRequestSpy(availableBuildsJson, viewJson);
 			});
 
 			it('should use credentials', function () {
@@ -142,6 +148,21 @@ define([
 					expect(builds.views[0].name).toBe('All');
 					expect(builds.views[0].items.length).toBe(16);
 					expect(builds.views[0].items[0]).toBe('core_selenium-test');
+					return true;
+				});
+			});
+
+			it('should fix url to primaryView', function () {
+				var availableBuildsJson = JSON.parse(availableBuildsIncorrectFixture);
+				setupRequestSpy(availableBuildsJson, viewJson);
+
+				var result = scheduler.startWithCreate(function () {
+					return service.availableBuilds();
+				});
+		
+				expect(result.messages).toHaveElementsMatchingAt(200, function (builds) {
+					expect(builds.primaryView).toBe('All Failed');
+					expect(builds.views.length).toBe(8);
 					return true;
 				});
 			});

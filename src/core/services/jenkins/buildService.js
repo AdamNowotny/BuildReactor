@@ -63,8 +63,8 @@ define([
 		var updatedViews = views.map(function (view) {
 			return {
 				name: view.name,
-				url: (view.name === primaryView) ?
-					joinUrl(view.url, 'primaryView/') : view.url
+				url: (view.name === primaryView && view.url.indexOf(primaryView) < 0) ?
+					joinUrl(view.url, 'view' + '/' + primaryView) : view.url
 			};
 		});
 		return Rx.Observable.zipArray(updatedViews.map(function (view) {
