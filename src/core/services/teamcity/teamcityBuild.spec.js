@@ -39,9 +39,9 @@ define([
 					return Rx.Observable.returnValue(buildListJson);
 				case 'http://example.com/httpAuth/app/rest/builds?locator=buildType:build_id,running:any':
 					return Rx.Observable.returnValue(buildListJson);
-				case 'http://example.com/guestAuth/app/rest/builds/18':
+				case 'http://example.com/guestAuth/app/rest/builds/id:18':
 					return Rx.Observable.returnValue(buildJson);
-				case 'http://example.com/httpAuth/app/rest/builds/18':
+				case 'http://example.com/httpAuth/app/rest/builds/id:18':
 					return Rx.Observable.returnValue(buildJson);
 				default:
 					throw 'Unknown URL ' + options.url;
@@ -56,7 +56,7 @@ define([
 
 			expect(request.json).toHaveBeenCalled();
 			expect(request.json.calls[0].args[0].url).toBe('http://example.com/guestAuth/app/rest/builds?locator=buildType:build_id,running:any');
-			expect(request.json.calls[1].args[0].url).toBe('http://example.com/guestAuth/app/rest/builds/18');
+			expect(request.json.calls[1].args[0].url).toBe('http://example.com/guestAuth/app/rest/builds/id:18');
 		});
 
 		it('should make call on update specifying the branch', function () {
@@ -66,10 +66,10 @@ define([
 
 			expect(request.json).toHaveBeenCalled();
 			expect(request.json.calls[0].args[0].url).toBe('http://example.com/guestAuth/app/rest/builds?locator=buildType:build_id,running:any,branch:(refs/heads/master)');
-			expect(request.json.calls[1].args[0].url).toBe('http://example.com/guestAuth/app/rest/builds/18');
+			expect(request.json.calls[1].args[0].url).toBe('http://example.com/guestAuth/app/rest/builds/id:18');
 		});
 
-		it('should make call on update for registered user', function () {
+		it('should add httpAuth for initial call on update for registered user', function () {
 			settings.username = 'username';
 			settings.password = 'password';
 
@@ -79,9 +79,6 @@ define([
 			expect(request.json.calls[0].args[0].url).toBe('http://example.com/httpAuth/app/rest/builds?locator=buildType:build_id,running:any');
 			expect(request.json.calls[0].args[0].username).toBe('username');
 			expect(request.json.calls[0].args[0].password).toBe('password');
-			expect(request.json.calls[1].args[0].url).toBe('http://example.com/httpAuth/app/rest/builds/18');
-			expect(request.json.calls[1].args[0].username).toBe('username');
-			expect(request.json.calls[1].args[0].password).toBe('password');
 		});
 
 

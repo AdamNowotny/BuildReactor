@@ -22,7 +22,7 @@ define([
 			}
 			var isRunning = !!buildListResponse.build[0].running;
 			var lastCompleted = buildListResponse.build[isRunning ? 1 : 0];
-			return buildDetailsRequest(self, lastCompleted.id).selectMany(function (buildDetailsResponse) {
+			return buildDetailsRequest(self, lastCompleted.href).selectMany(function (buildDetailsResponse) {
 				var state = createState(self.id, buildDetailsResponse);
 				var result = Rx.Observable.returnValue(state);
 				return !buildDetailsResponse.changes.count ?
@@ -59,20 +59,20 @@ define([
 	}
 
 	var buildListRequest = function (self) {
-		var urlPath = '/app/rest/builds?locator=buildType:' + self.id + ',running:any';
+		var urlPath = self.settings.username ? 'httpAuth' : 'guestAuth';
+		urlPath += '/app/rest/builds?locator=buildType:' + self.id + ',running:any';
 		urlPath += self.settings.branch ? ',branch:(' + self.settings.branch + ')' : '';
-		return sendRequest(self.settings, urlPath);
+		return sendRequest(self, urlPath);
 	};
 
-	var buildDetailsRequest = function (self, buildId) {
-		var urlPath = '/app/rest/builds/' + buildId;
-		return sendRequest(self.settings, urlPath);
+	var buildDetailsRequest = function (self, href) {
+		return sendRequest(self, href);
 	};
 
 	var changesRequest = function (self, urlPath) {
-		return urlRequest(self, urlPath).selectMany(function (changesResponse) {
+		return sendRequest(self, urlPath).selectMany(function (changesResponse) {
 			return Rx.Observable.fromArray(changesResponse.change).selectMany(function (change) {
-				return urlRequest(self, change.href);
+				return sendRequest(self, change.href);
 			});
 		}).select(function (changeResponse) {
 			return {
@@ -82,20 +82,11 @@ define([
 		}).toArray();
 	};
 
-	var urlRequest = function (self, urlPath) {
+	var sendRequest = function (self, urlPath) {
 		return request.json({
 			url: joinUrl(self.settings.url, urlPath),
 			username: self.settings.username,
 			password: self.settings.password
-		});
-	};
-
-	var sendRequest = function (settings, urlPath) {
-		var authUrl = settings.username ? 'httpAuth' : 'guestAuth';
-		return request.json({
-			url: joinUrl(settings.url, authUrl + urlPath),
-			username: settings.username,
-			password: settings.password
 		});
 	};
 
