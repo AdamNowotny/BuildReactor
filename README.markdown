@@ -65,7 +65,7 @@ Installation
 ------------
 
 1. Install [Node.js](http://nodejs.org/) to build the extension.
-2. Install Bower globally `npm install -g bower grunt-cli` 
+2. `npm install -g bower grunt-cli` 
 3. Go to project directory `/git/BuildReactor/` and run:
  - `npm install`
  - `bower update`
