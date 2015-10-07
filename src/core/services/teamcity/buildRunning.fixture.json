@@ -43,8 +43,7 @@
       ]
    },
    "changes":{
-      "href":"/guestAuth/app/rest/changes?build=id:6",
-      "count":0
+      "href":"/guestAuth/app/rest/changes?build=id:6"
    },
    "relatedIssues":null
 }

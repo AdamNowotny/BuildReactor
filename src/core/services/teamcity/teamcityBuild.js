@@ -25,12 +25,10 @@ define([
 			return buildDetailsRequest(self, lastCompleted.href).selectMany(function (buildDetailsResponse) {
 				var state = createState(self.id, buildDetailsResponse);
 				var result = Rx.Observable.returnValue(state);
-				return !buildDetailsResponse.changes.count ?
-					result :
-					result.zip(changesRequest(self, buildDetailsResponse.changes.href), function (state, changes) {
-						state.changes = changes;
-						return state;
-					});
+				return result.zip(changesRequest(self, buildDetailsResponse.changes.href), function (state, changes) {
+					state.changes = changes;
+					return state;
+				});
 			}).select(function (state) {
 				state.isRunning = isRunning;
 				if (isRunning) {
@@ -71,7 +69,7 @@ define([
 
 	var changesRequest = function (self, urlPath) {
 		return sendRequest(self, urlPath).selectMany(function (changesResponse) {
-			return Rx.Observable.fromArray(changesResponse.change).selectMany(function (change) {
+			return Rx.Observable.fromArray(changesResponse.change || []).selectMany(function (change) {
 				return sendRequest(self, change.href);
 			});
 		}).select(function (changeResponse) {

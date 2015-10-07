@@ -162,7 +162,8 @@ define([
 		});
 
 		it('should set empty changes', function () {
-			buildJson.changes.count = 0;
+			changesJson.count = 0;
+			delete changesJson.change;
 
 			build.update().subscribe(function (state) {
 				expect(state.changes).toEqual([]);
