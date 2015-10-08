@@ -12,5 +12,9 @@ define([
 		'template/tooltip/tooltip-popup.html',
 		'ui.bootstrap.tooltip',
 		'app.directives'
+	]).config([
+		'$compileProvider', function ($compileProvider)	{
+			$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|chrome-extension):/);
+		}
 	]);
 });

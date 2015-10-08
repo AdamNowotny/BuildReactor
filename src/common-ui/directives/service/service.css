@@ -1,7 +1,10 @@
-.service .service-name {
-  font-weight: bold;
-  padding-top: 5px;
-  text-align: center; }
+.service {
+  margin-bottom: 10px; }
+  .service .service-name {
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 5px;
+    text-align: center; }
 
 .theme-dark .service .service-name {
   color: #F90; }

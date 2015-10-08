@@ -23,11 +23,6 @@ define([
 					});
 				};
 
-				core.views.subscribe(function (config) {
-					$scope.$evalAsync(function () {
-						$scope.viewConfig = config;
-					});
-				});
 			},
 			link: function (scope, element, attrs, controller) {
 				scope.start();

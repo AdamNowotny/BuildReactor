@@ -8,8 +8,8 @@
 		<link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css" media="screen">
 		<link rel="stylesheet" type="text/css" href="src/dashboard/main.css" media="screen">
 	</head>
-	<body>
-		<div class="dashboard-view" ng-view></div>
+	<body ng-controller="DashboardCtrl" class="theme-{{ viewConfig.theme }}">
+		<build-list services="services"></build-list>
 		<!-- scripts -->
 		<script type="text/javascript" data-main="src/dashboard/main" src="bower_components/requirejs/require.js"></script>
 	</body>

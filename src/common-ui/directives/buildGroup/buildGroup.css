@@ -1,7 +1,9 @@
 .build-group .group-name {
   clear: both;
   display: block;
-  height: 32px;
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: .5em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap; }
@@ -10,7 +12,9 @@
   float: left; }
 
 .theme-dark .build-group .group-name {
-  color: #fff; }
+  color: #fff;
+  margin-bottom: -.3em;
+  padding-left: 3px; }
 
 .theme-light .build-group .group-name {
   border-bottom: 1px solid #999;

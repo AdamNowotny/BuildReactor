@@ -8,8 +8,22 @@
 		<link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css" media="screen">
 		<link rel="stylesheet" type="text/css" href="src/popup/main.css" media="screen">
 	</head>
-	<body>
-		<div ng-view></div>
+	<body ng-controller="PopupCtrl" class="theme-{{ viewConfig.theme }}">
+		<div class="navbar navbar-fixed-top {{ navbarStyle }}" role="navigation">
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="src/settings/index.html" target="_blank" tooltip="Settings" tooltip-placement="bottom">
+						<i class="fa fa-gear fa-2x"></i>
+					</a>
+				</li>
+				<li>
+					<a href="src/dashboard/index.html" target="_blank" tooltip="Dashboard" tooltip-placement="bottom">
+						<i class="fa fa-tasks fa-2x"></i>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<build-list services="services"></build-list>
 		<!-- scripts -->
 		<script type="text/javascript" data-main="src/popup/main" src="bower_components/requirejs/require.js"></script>
 	</body>

@@ -4,14 +4,8 @@
 @import url("../common-ui/directives/buildGroup/buildGroup.css");
 @import url("../common-ui/directives/build/build.css");
 
-html, body, .dashboard-view {
+html, body {
   height: 100%;
-}
-
-body {
-  background-color: #141414;
-  color: white;
-  margin-top: 0;
 }
 
 .label .error-message {
@@ -22,4 +16,12 @@ body {
 
 .build-list .no-services-message {
   font-size: x-large;
+}
+
+.theme-dark {
+  background-color: #000;
+}
+
+.theme-light {
+  background-color: #fff;
 }

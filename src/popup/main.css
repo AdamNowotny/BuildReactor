@@ -5,8 +5,8 @@
 @import url("../common-ui/directives/build/build.css");
 
 body {
-  background-color: #141414;
-  color: white;
+  margin-left: .3em;
+  margin-right: .3em;
   margin-top: 45px;
   min-width: 350px;
 }
@@ -24,7 +24,15 @@ body {
   float: right;
 }
 
-.navbar-nav>li>a {
+.navbar-nav > li > a {
   padding-top: 5px;
   padding-bottom: 0;
+}
+
+.theme-dark {
+  background-color: #000;
+}
+
+.theme-light {
+  background-color: #fff;
 }
