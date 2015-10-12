@@ -1,8 +1,8 @@
-@import url("../../bower_components/angular/angular-csp.css");
-@import url("../common-ui/directives/buildList/buildList.css");
-@import url("../common-ui/directives/service/service.css");
-@import url("../common-ui/directives/buildGroup/buildGroup.css");
-@import url("../common-ui/directives/build/build.css");
+@import "../common-ui/_angular-ui.scss";
+@import "../common-ui/directives/buildList/_buildList.scss";
+@import "../common-ui/directives/service/_service.scss";
+@import "../common-ui/directives/buildGroup/_buildGroup.scss";
+@import "../common-ui/directives/build/_build.scss";
 
 body {
   margin-left: .3em;

@@ -1,0 +1,27 @@
+.navbar {
+	padding-right: 15px;
+	.on-off-switch {
+		margin-top: 10px;
+	}
+	.navbar-brand {
+		text-align: center;
+		width: 240px;
+		.logo {
+			vertical-align: top;
+			width: 20px;
+		}
+
+		.version {
+			display: block;
+			font-size: 0.7em;
+			padding-top: -3px;
+		}
+	}
+}
+
+.modal-header {
+	background-color: #333333;
+	span, h4 {
+		color: #ffffff;
+	}
+}

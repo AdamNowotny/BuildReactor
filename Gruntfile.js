@@ -7,7 +7,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-compress');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-plato');
@@ -20,13 +19,13 @@ module.exports = function (grunt) {
 	 */
 
 	// default task - run tests and package
-	grunt.registerTask('default', [ 'clean:build', 'jshint', 'karma:once', 'requirejs', 'sass', 'cssmin', 'copy', 'clean:buildSrc', 'compress' ]);
+	grunt.registerTask('default', [ 'clean:build', 'jshint', 'karma:once', 'requirejs', 'sass', 'copy', 'clean:buildSrc', 'compress' ]);
 
 	// web server at http://localhost:9876/base/src/test/index.html
 	grunt.registerTask('browser', [ 'karma:browser' ]);
 
 	// skip tests and create package
-	grunt.registerTask('dist', [ 'clean:build', 'requirejs', 'sass', 'cssmin', 'copy', 'clean:buildSrc', 'compress' ]);
+	grunt.registerTask('dist', [ 'clean:build', 'requirejs', 'sass', 'copy', 'clean:buildSrc', 'compress' ]);
 
 	// continuous compilation
 	grunt.registerTask('auto-dist', [ 'dist', 'watch' ]);
@@ -56,11 +55,12 @@ module.exports = function (grunt) {
 		clean: {
 			build: [ '<%= vars.build %>' ],
 			buildSrc: [
-				'<%= vars.dist %>/src/**/*.spec.js',
-				'<%= vars.dist %>/src/**/*.fixture.*',
-				'<%= vars.dist %>/src/**/*.mock.*',
+				'<%= vars.dist %>/**/*.spec.js',
+				'<%= vars.dist %>/**/*.fixture.*',
+				'<%= vars.dist %>/**/*.mock.*',
 				'<%= vars.dist %>/src/mout',
 				'<%= vars.dist %>/src/test',
+				'<%= vars.dist %>/**/*.scss',
 				'<%= vars.dist %>/src/build.txt'
 			]
 		},
@@ -100,10 +100,9 @@ module.exports = function (grunt) {
 					sourceMap: true
 				},
 				files: {
-					'src/common-ui/directives/build/build.css' : 'src/common-ui/directives/build/build.scss',
-					'src/common-ui/directives/buildList/buildList.css' : 'src/common-ui/directives/buildList/buildList.scss',
-					'src/common-ui/directives/buildGroup/buildGroup.css' : 'src/common-ui/directives/buildGroup/buildGroup.scss',
-					'src/common-ui/directives/service/service.css' : 'src/common-ui/directives/service/service.scss'
+					'<%= vars.dist %>/src/dashboard/main.css': 'src/dashboard/main.scss',
+					'<%= vars.dist %>/src/popup/main.css': 'src/popup/main.scss',
+					'<%= vars.dist %>/src/settings/main.css': 'src/settings/main.scss'
 				}
 			}
 		},
@@ -111,15 +110,6 @@ module.exports = function (grunt) {
 			css: {
 				files: '**/*.scss',
 				tasks: ['sass']
-			}
-		},
-		cssmin: {
-			compress: {
-				files: {
-					'<%= vars.dist %>/src/settings/main.css': [ 'src/settings/main.css'	],
-					'<%= vars.dist %>/src/popup/main.css': [ 'src/popup/main.css' ],
-					'<%= vars.dist %>/src/dashboard/main.css': [ 'src/dashboard/main.css' ]
-				}
 			}
 		},
 		requirejs: {

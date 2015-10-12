@@ -1,0 +1,22 @@
+.filter-query {
+    box-sizing: border-box;
+    height: 30px;
+    margin: 0 20px 5px 0;
+    position: relative;
+    width: 100%;
+    input {
+        box-sizing: border-box;
+        height: 30px;
+        left: 0;
+        position: absolute;
+        width: 100%;
+    }
+
+    i {
+        cursor: pointer;
+        position: absolute;
+        right: 3px;
+        top: 2px;
+    }
+}
+

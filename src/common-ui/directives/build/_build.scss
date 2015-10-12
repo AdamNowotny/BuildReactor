@@ -1,0 +1,199 @@
+.build {
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-bottom: 5px;
+    float: left;
+    width: 100%;
+
+    a {
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+    padding: 5px 10px 5px 5px;
+    position: relative;
+    white-space: nowrap;
+    }
+
+    a,
+    a:hover,
+    a:visited {
+        color: white;
+        display: block;
+        text-decoration: none;
+        width: 100%;
+    }
+
+    .tooltip {
+        white-space: normal;
+    }
+
+    .labels {
+        margin-top: -1px;
+        max-width: 50%;
+        overflow: hidden;
+    }
+
+    .label {
+        margin-left: .5em;
+    }
+
+
+}
+
+.changes-container {
+  height: 1.5em;
+  overflow: hidden;
+  position: relative;
+  text-align: left;
+}
+
+.changes {
+    display: block;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    transform: translateY(90%);
+    transition: opacity 1s, transform 2s;
+    width: 100%;
+    &.active {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 2s, transform 2s;
+    }
+}
+
+.build-name {
+  font-weight: bold;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.theme-dark .build {
+    a {
+        background-color: #360;
+    }
+    &.disabled {
+        a {
+            background-color: #888;
+        }
+        .build-name {
+            color: black;
+        }
+        &.broken a {
+            background-color: #888;
+        }
+    }
+    &.offline {
+        a,
+        &.broken a,
+        &.building a,
+        &.broken.building a {
+            background-color: #888;
+        }
+        &.disabled .build-name,
+        &.disabled.broken .build-name {
+            color: black;
+        }
+        .build-name {
+            color: #360;
+        }
+        &.broken .build-name {
+            color: #900;
+        }
+    }
+    &.building {
+        a {
+            background-color: #f89406;
+        }
+        .build-name,
+        .label-warning {
+            color: #360;
+        }
+    }
+    &.broken {
+        a {
+            background-color: #900;
+        }
+        &.building a {
+            background-color: #f89406;
+        }
+        &.building .build-name,
+        &.building .label-warning {
+            color: #900;
+        }
+    }
+    .label-warning {
+        background-color: #444;
+    }
+    .label-success {
+        background-color: #444;
+    }
+    .label-default {
+        background-color: #f89406;
+    }
+}
+
+.theme-light .build {
+    a {
+        background-color: #5cb85c;
+    }
+    &.disabled a {
+        background-color: #999;
+        .build-name {
+            color: #fff;
+        }
+        &.broken a {
+            background-color: #999;
+        }
+    }
+    &.offline {
+        a,
+        &.broken a,
+        &.building a,
+        &.broken.building a {
+            background-color: #999;
+        }
+        &.disabled .build-name,
+        &.disabled.broken .build-name {
+            color: #fff;
+        }
+        .build-name {
+            color: #fff;
+        }
+        &.broken .build-name {
+            color: #fff;
+        }
+    }
+    &.building {
+        a {
+            background-color: #5cb85c;
+        }
+        .build-name,
+        .label-warning {
+            color: #fff;
+        }
+    }
+    &.broken {
+        a {
+            background-color: #d9534f;
+        }
+        &.building a {
+            background-color: #d9534f;
+        }
+        &.building .build-name,
+        &.building .label-warning {
+            color: #fff;
+        }
+    }
+    .label-warning {
+        background-color: #d9534f;
+    }
+    .label-success {
+        background-color: #5cb85c;
+    }
+    .label-default {
+        background-color: #444;
+    }
+}

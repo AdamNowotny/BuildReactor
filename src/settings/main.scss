@@ -1,0 +1,64 @@
+@import "../common-ui/_angular-ui.scss";
+@import "../common-ui/directives/buildList/_buildList.scss";
+@import "../common-ui/directives/service/_service.scss";
+@import "../common-ui/directives/buildGroup/_buildGroup.scss";
+@import "../common-ui/directives/build/_build.scss";
+@import "directives/alert/_alert.scss";
+@import "directives/dynamicForm/_dynamicForm.scss";
+@import "directives/filterQuery/_filterQuery.scss";
+@import "directives/onOffSwitch/_onOffSwitch.scss";
+@import "directives/projectList/_projectList.scss";
+@import "directives/selectedProjects/_selectedProjects.scss";
+@import "directives/serviceNamePanel/_serviceNamePanel.scss";
+@import "directives/sidebar/_sidebar.scss";
+@import "directives/thumbnails/_thumbnails.scss";
+@import "directives/topnav/_topnav.scss";
+@import "directives/viewSelection/_viewSelection.scss";
+
+body {
+	padding-top: 55px;
+}
+
+a {
+	cursor: pointer;
+}
+
+.content-container {
+	bottom: 0;
+	left: 241px;
+	padding-top: 13px;
+	position: absolute;
+	right: 0;
+	overflow: auto;
+	top: 50px;
+
+	.alert-danger {
+		clear: both;
+		margin: 10px;
+	}
+}
+
+.settings-container {
+	box-sizing: border-box;
+	float: left;
+	width: 50%;
+}
+
+.settings-buttons {
+	text-align: center;
+}
+
+.project-selection-container {
+	box-sizing: border-box;
+	float: left;
+	padding: 0 10px;
+	width: 50%;
+}
+
+.theme-dark {
+  background-color: #000;
+}
+
+.theme-light {
+  background-color: #fff;
+}

@@ -1,0 +1,27 @@
+@import "../common-ui/_angular-ui.scss";
+@import "../common-ui/directives/buildList/_buildList.scss";
+@import "../common-ui/directives/service/_service.scss";
+@import "../common-ui/directives/buildGroup/_buildGroup.scss";
+@import "../common-ui/directives/build/_build.scss";
+
+html, body {
+  height: 100%;
+}
+
+.label .error-message {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+}
+
+.build-list .no-services-message {
+  font-size: x-large;
+}
+
+.theme-dark {
+  background-color: #000;
+}
+
+.theme-light {
+  background-color: #fff;
+}

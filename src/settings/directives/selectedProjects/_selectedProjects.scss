@@ -1,0 +1,22 @@
+.selected-projects {
+    margin: 10px;
+
+    .sortable-placeholder {
+        background-color: #FFE;
+        height: 41px;
+    }
+
+    .handle {
+        display: none;
+        left: 3px;
+        position: absolute;
+        top: 10px;
+    }
+
+    .list-group-item:hover {
+        background-color: transparent;
+        .handle {
+            display: inline;
+        }
+    }
+}
