@@ -23,6 +23,13 @@
         width: 100%;
     }
 
+    .build-name {
+        font-weight: bold;
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     .tooltip {
         white-space: normal;
     }
@@ -37,37 +44,27 @@
         margin-left: .5em;
     }
 
-
-}
-
-.changes-container {
-  height: 1.5em;
-  overflow: hidden;
-  position: relative;
-  text-align: left;
-}
-
-.changes {
-    display: block;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    text-overflow: ellipsis;
-    transform: translateY(90%);
-    transition: opacity 1s, transform 2s;
-    width: 100%;
-    &.active {
-        opacity: 1;
-        transform: translateY(0);
-        transition: opacity 2s, transform 2s;
+    .changes-container {
+        height: 1.5em;
+        overflow: hidden;
+        position: relative;
+        text-align: left;
+        .changes {
+            display: block;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            text-overflow: ellipsis;
+            transform: translateY(90%);
+            transition: opacity 1s, transform 2s;
+            width: 100%;
+            &.active {
+                opacity: 1;
+                transform: translateY(0);
+                transition: opacity 2s, transform 2s;
+            }
+        }
     }
-}
-
-.build-name {
-  font-weight: bold;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .theme-dark .build {
@@ -110,6 +107,9 @@
         .build-name,
         .label-warning {
             color: #360;
+        }
+        .changes {
+            color: black;
         }
     }
     &.broken {
