@@ -19,8 +19,7 @@ define([
 				name: jobResponse.displayName,
 				group: null,
 				webUrl: jobResponse.lastBuild.url,
-				isBroken: lastCompletedResponse.result in
-					{ 'FAILURE': 1, 'UNSTABLE': 1, 'ABORTED': 1, 'NOT_BUILT': 1 },
+				isBroken: lastCompletedResponse.result in { 'FAILURE': 1, 'UNSTABLE': 1 },
 				isRunning: jobResponse.lastBuild.number !== jobResponse.lastCompletedBuild.number,
 				isDisabled: !jobResponse.buildable,
 				tags: [],
@@ -33,6 +32,12 @@ define([
 			};
 			if (lastCompletedResponse.result === 'UNSTABLE') {
 				state.tags.push({ name: 'Unstable', type: 'warning' });
+			}
+			if (lastCompletedResponse.result === 'ABORTED') {
+				state.tags.push({ name: 'Canceled', type: 'warning' });
+			}
+			if (lastCompletedResponse.result === 'NOT_BUILT') {
+				state.tags.push({ name: 'Not built', type: 'warning' });
 			}
 			if (!(lastCompletedResponse.result in
 					{ 'SUCCESS': 1, 'FAILURE': 1, 'UNSTABLE': 1, 'ABORTED': 1, 'NOT_BUILT': 1 })) {

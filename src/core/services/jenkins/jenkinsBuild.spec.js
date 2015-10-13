@@ -76,26 +76,6 @@ define([
 			expect(request.json).toHaveBeenCalled();
 		});
 
-		it('should set isBroken on ABORTED', function () {
-			lastCompletedBuildJson.result = 'ABORTED';
-
-			build.update().subscribe(function (state) {
-				expect(state.isBroken).toBe(true);
-			});
-
-			expect(request.json).toHaveBeenCalled();
-		});
-
-		it('should set isBroken on NOT_BUILT', function () {
-			lastCompletedBuildJson.result = 'NOT_BUILT';
-
-			build.update().subscribe(function (state) {
-				expect(state.isBroken).toBe(true);
-			});
-
-			expect(request.json).toHaveBeenCalled();
-		});
-
 		it('should set isBroken to false on successful build', function () {
 			lastCompletedBuildJson.result = 'SUCCESS';
 
@@ -154,6 +134,28 @@ define([
 
 			build.update().subscribe(function (state) {
 				expect(state.tags).toContain({ name: 'Unstable', type: 'warning' });
+			});
+
+			expect(request.json).toHaveBeenCalled();
+		});
+
+		it('should set Canceled tag if build aborted', function () {
+			lastCompletedBuildJson.result = 'ABORTED';
+
+			build.update().subscribe(function (state) {
+				expect(state.tags).toContain({ name: 'Canceled', type: 'warning' });
+				expect(state.isBroken).toBe(false);
+			});
+
+			expect(request.json).toHaveBeenCalled();
+		});
+
+		it('should set NotBuilt tag if not built', function () {
+			lastCompletedBuildJson.result = 'NOT_BUILT';
+
+			build.update().subscribe(function (state) {
+				expect(state.tags).toContain({ name: 'Not built', type: 'warning' });
+				expect(state.isBroken).toBe(false);
 			});
 
 			expect(request.json).toHaveBeenCalled();
