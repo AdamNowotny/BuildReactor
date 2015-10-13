@@ -27,7 +27,7 @@ define([
 	function createAjaxOptions(options, dataType) {
 		var ajaxOptions = {
 			type: 'GET',
-			url: encodeURI(options.url),
+			url: options.url,
 			data: options.data,
 			cache: false,
 			dataType: dataType
