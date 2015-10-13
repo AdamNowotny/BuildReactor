@@ -139,8 +139,10 @@
     a {
         background-color: #5cb85c;
     }
-    &.disabled a {
-        background-color: #999;
+    &.disabled {
+        a {
+            background-color: #999;
+        }
         .build-name {
             color: #fff;
         }
