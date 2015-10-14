@@ -6,12 +6,12 @@
     width: 100%;
 
     a {
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 5px;
-    padding: 5px 10px 5px 5px;
-    position: relative;
-    white-space: nowrap;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 5px;
+        padding: 5px 10px 5px 5px;
+        position: relative;
+        white-space: nowrap;
     }
 
     a,
@@ -102,9 +102,8 @@
     }
     &.building {
         a {
-            background-color: #f89406;
+            background-color: #566600;
         }
-        .build-name,
         .label-warning {
             color: #360;
         }
@@ -117,21 +116,14 @@
             background-color: #900;
         }
         &.building a {
-            background-color: #f89406;
-        }
-        &.building .build-name,
-        &.building .label-warning {
-            color: #900;
+            background-color: #992300;
         }
     }
     .label-warning {
-        background-color: #444;
-    }
-    .label-success {
-        background-color: #444;
+        background-color: #f89406;
     }
     .label-default {
-        background-color: #f89406;
+        background-color: #444;
     }
 }
 
@@ -168,32 +160,24 @@
             color: #fff;
         }
     }
-    &.building {
-        a {
-            background-color: #5cb85c;
-        }
-        .build-name,
-        .label-warning {
-            color: #fff;
-        }
-    }
     &.broken {
         a {
             background-color: #d9534f;
         }
+        .label-warning {
+            background-color: #f89406;
+        }
         &.building a {
             background-color: #d9534f;
         }
-        &.building .build-name,
-        &.building .label-warning {
+        &.building .build-name {
             color: #fff;
         }
     }
-    .label-warning {
+    .label-warning,
+    &.disabled .label-warning,
+    &.offline .label-warning {
         background-color: #d9534f;
-    }
-    .label-success {
-        background-color: #5cb85c;
     }
     .label-default {
         background-color: #444;

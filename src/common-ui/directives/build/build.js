@@ -24,17 +24,9 @@ define([
 					}, commentChangeInterval);
 				}
 
-				$scope.getLabelClasses = function (build) {
-                    if(build.isDisabled && build.isBroken) {
-                        return 'label-warning';
-                    } else if(build.isDisabled && !build.isBroken) {
-                        return 'label-success';
-                    } else if(build.error && build.isBroken) {
-                        return 'label-warning';
-                    } else if(build.error && !build.isBroken) {
-                        return 'label-success';    
-                    }
-                    return 'label-default';
+				$scope.getLabelClasses = function (tag) {
+					var classes = tag.type ? 'label-' + tag.type : 'label-default';
+						return classes;
 				};
 
 				core.views.subscribe(function (config) {
