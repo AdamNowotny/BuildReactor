@@ -41,19 +41,21 @@ define([
 	};
 
 	var plan = function (self) {
-		var data = self.settings.username ? { os_authType: 'basic' } : {};
-		return request.json({
-			url: joinUrl(self.settings.url, 'rest/api/latest/plan/' + self.id),
-			data: data,
-			username: self.settings.username,
-			password: self.settings.password
-		});
+		return sendRequest(self, 'rest/api/latest/plan/' + self.id, { });
 	};
 
 	var result = function (self) {
-		var data = self.settings.username ? { expand: 'changes', os_authType: 'basic' } : { expand: 'changes' };
+		return sendRequest(self, 'rest/api/latest/result/' + self.id + '/latest', { expand: 'changes' });
+	};
+
+	var sendRequest = function (self, urlPath, data) {
+		if (self.settings.username) {
+			data.os_authType = 'basic';
+		} else {
+			data.os_authType = 'guest';
+		}
 		return request.json({
-			url: joinUrl(self.settings.url, 'rest/api/latest/result/' + self.id + '/latest'),
+			url: joinUrl(self.settings.url, urlPath),
 			data: data,
 			username: self.settings.username,
 			password: self.settings.password

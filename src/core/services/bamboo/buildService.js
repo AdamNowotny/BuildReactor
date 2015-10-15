@@ -55,25 +55,27 @@ define([
 	};
 
 	var projectsFromIndex = function (self, startIndex) {
-		var data = { expand: 'projects.project.plans.plan', 'start-index': startIndex };
-		if (self.settings.username) {
-			data.os_authType = 'basic';
-		}
-		return request.json({
-			url: joinUrl(self.settings.url, 'rest/api/latest/project'),
-			data: data,
-			username: self.settings.username,
-			password: self.settings.password
+		return sendRequest(self, 'rest/api/latest/project', {
+			expand: 'projects.project.plans.plan',
+			'start-index': startIndex
 		});
 	};
 
 	var projectPlansFromIndex = function (self, projectKey, startIndex) {
-		var data = { expand: 'plans.plan', 'start-index': startIndex };
+		return sendRequest(self, 'rest/api/latest/project/' + projectKey, {
+			expand: 'plans.plan',
+			'start-index': startIndex
+		});
+	};
+
+	var sendRequest = function (self, urlPath, data) {
 		if (self.settings.username) {
 			data.os_authType = 'basic';
+		} else {
+			data.os_authType = 'guest';
 		}
 		return request.json({
-			url: joinUrl(self.settings.url, 'rest/api/latest/project/' + projectKey),
+			url: joinUrl(self.settings.url, urlPath),
 			data: data,
 			username: self.settings.username,
 			password: self.settings.password

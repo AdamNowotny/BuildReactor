@@ -48,9 +48,9 @@ define([
 			expect(request.json.calls[0].args[0].url).toBe('http://example.com/rest/api/latest/plan/KEY');
 			expect(request.json.calls[0].args[0].username).toBe(settings.username);
 			expect(request.json.calls[0].args[0].password).toBe(settings.password);
-			expect(request.json.calls[0].args[0].data).toEqual({});
+			expect(request.json.calls[0].args[0].data).toEqual({ os_authType: 'guest' });
 			expect(request.json.calls[1].args[0].url).toBe('http://example.com/rest/api/latest/result/KEY/latest');
-			expect(request.json.calls[1].args[0].data).toEqual({expand: 'changes'});
+			expect(request.json.calls[1].args[0].data).toEqual({ expand: 'changes', os_authType: 'guest' });
 		});
 
 		it('should make calls on update', function () {

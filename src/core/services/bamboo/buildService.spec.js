@@ -83,11 +83,15 @@ define([
 					expect(request.json).toHaveBeenCalled();
 				});
 
-				it('should not set authType when no credentials specified', function () {
+				it('should set authType to guest when no credentials specified', function () {
 					settings.username = null;
 					settings.password = null;
 					request.json.andCallFake(function (options) {
-						expect(options.data).toEqual({expand: 'projects.project.plans.plan', 'start-index': 0});
+						expect(options.data).toEqual({
+							expand: 'projects.project.plans.plan',
+							'start-index': 0,
+							'os_authType': 'guest'
+						});
 						return Rx.Observable.never();
 					});
 
