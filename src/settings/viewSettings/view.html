@@ -3,15 +3,15 @@
 		<div class="form-group">
 			<label class="col-md-6 control-label">Number of columns</label>
 			<div class="col-md-6">
-				<input type="number" class="form-control" ng-change="save(config)" ng-model="config.columns">
+				<input type="number" class="form-control" ng-change="save(viewConfig)" ng-model="viewConfig.columns">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-md-6 control-label">Column width</label>
 			<div class="col-md-6">
 				<ul class="nav nav-pills">
-					<li role="presentation" ng-class="{ active: !config.fullWidthGroups }" ng-click="setFixedWidth(true)"><a>Fixed</a></li>
-					<li role="presentation" ng-class="{ active: config.fullWidthGroups }" ng-click="setFixedWidth(false)"><a>Variable</a></li>
+					<li role="presentation" ng-class="{ active: !viewConfig.fullWidthGroups }" ng-click="setField('fullWidthGroups', false)"><a>Fixed</a></li>
+					<li role="presentation" ng-class="{ active: viewConfig.fullWidthGroups }" ng-click="setField('fullWidthGroups', true)"><a>Variable</a></li>
 				</ul>
 			</div>
 		</div>
@@ -19,8 +19,8 @@
 			<label class="col-md-6 control-label">Collapse groups</label>
 			<div class="col-md-6">
 				<ul class="nav nav-pills">
-					<li role="presentation" ng-class="{ active: !config.singleGroupRows }" ng-click="setSingleGroupRows(false)"><a>On</a></li>
-					<li role="presentation" ng-class="{ active: config.singleGroupRows }" ng-click="setSingleGroupRows(true)"><a>Off</a></li>
+					<li role="presentation" ng-class="{ active: !viewConfig.singleGroupRows }" ng-click="setField('singleGroupRows', false)"><a>On</a></li>
+					<li role="presentation" ng-class="{ active: viewConfig.singleGroupRows }" ng-click="setField('singleGroupRows', true)"><a>Off</a></li>
 				</ul>
 			</div>
 		</div>
@@ -28,8 +28,8 @@
 			<label class="col-md-6 control-label">Show commit messages</label>
 			<div class="col-md-6">
 				<ul class="nav nav-pills">
-					<li role="presentation" ng-class="{ active: config.showCommits }" ng-click="setShowCommits(true)"><a>On</a></li>
-					<li role="presentation" ng-class="{ active: !config.showCommits }" ng-click="setShowCommits(false)"><a>Off</a></li>
+					<li role="presentation" ng-class="{ active: viewConfig.showCommits }" ng-click="setField('showCommits', true)"><a>On</a></li>
+					<li role="presentation" ng-class="{ active: !viewConfig.showCommits }" ng-click="setField('showCommits', false)"><a>Off</a></li>
 				</ul>
 			</div>
 		</div>
@@ -37,13 +37,13 @@
 			<label class="col-md-6 control-label">Theme</label>
 			<div class="col-md-6">
 				<ul class="nav nav-pills">
-					<li role="presentation" ng-class="{ active: config.theme === 'dark' }" ng-click="setTheme('dark')"><a>Dark</a></li>
-					<li role="presentation" ng-class="{ active: config.theme === 'light' }" ng-click="setTheme('light')"><a>Light</a></li>
+					<li role="presentation" ng-class="{ active: viewConfig.theme === 'dark' }" ng-click="setField('theme', 'dark')"><a>Dark</a></li>
+					<li role="presentation" ng-class="{ active: viewConfig.theme === 'light' }" ng-click="setField('theme', 'light')""><a>Light</a></li>
 				</ul>
 			</div>
 		</div>
 	</form>
-	<div class="theme-{{ config.theme }} col-md-8">
-		<build-list services="services"></build-list>
+	<div class="theme-{{ viewConfig.theme }} col-md-8">
+		<build-list services="activeProjects"></build-list>
 	</div>
 </div>

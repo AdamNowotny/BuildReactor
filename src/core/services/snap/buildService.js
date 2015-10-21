@@ -19,7 +19,8 @@ define([
 			projects: [],
 			url: '',
 			urlHint: 'copy CCTRAY link from Snap',
-			updateInterval: 60
+			updateInterval: 60,
+			initialUrl: ''
 		};
 	};
 

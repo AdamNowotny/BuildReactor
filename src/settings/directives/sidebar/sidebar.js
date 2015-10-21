@@ -8,7 +8,10 @@ define([
 	app.directive('sidebar', function ($location) {
 		return {
 			scope: {
-				selected: '=',
+				services: '=',
+				configs: '=',
+				currentService: '=',
+				currentConfig: '=',
 				view: '='
 			},
 			templateUrl: 'src/settings/directives/sidebar/sidebar.html',
@@ -21,12 +24,15 @@ define([
 					core.setOrder(items);
 				};
 
-				core.configurations.subscribe(function (configs) {
-					$scope.$evalAsync(function () {
-						$scope.services = configs;
-					});
-				});
-
+				$scope.getServiceIcon = function (typeName) {
+					if (typeName) {
+						var service = $scope.services.filter(function (service) {
+							return service.typeName === typeName;
+						})[0];
+						return '/src/core/services/' + service.icon;
+					}
+					return '';
+				};
 			}
 		};
 	});

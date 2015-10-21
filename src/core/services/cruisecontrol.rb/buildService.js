@@ -21,7 +21,8 @@ define([
 			urlHint: 'URL, e.g. http://cruisecontrolrb.thoughtworks.com/',
 			username: '',
 			password: '',
-			updateInterval: 60
+			updateInterval: 60,
+			initialUrl: 'XmlStatusReport.aspx'
 		};
 	};
 

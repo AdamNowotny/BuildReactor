@@ -1,6 +1,6 @@
 <div class="settings-container">
 	<form class="settings-form" action="" role="form">
-		<section dynamic-form service="selectedDraft"></section>
+		<section dynamic-form service="service" config="config"></section>
 		<div class="settings-buttons">
 			<button type="submit" class="btn btn-primary" ng-click="show()">
 				<i class="fa fa-refresh" ng-class="{ 'fa-spin': isLoading }"></i> Show
@@ -18,7 +18,7 @@
 			</a>
 		</div>
 	</div>
-	<section selected-projects projects="selectedDraft.projects" service-name="{{ selectedDraft.name }}"></section>
+	<section selected-projects projects="config.projects" service-name="{{ config.name }}"></section>
 </div>
 <div class="project-selection-container">
 	<section view-selection views="views.all" selected="views.selected" ng-show="views.all"></section>

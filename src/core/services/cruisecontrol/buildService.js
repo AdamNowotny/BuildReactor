@@ -21,7 +21,8 @@ define([
 			urlHint: 'URL, e.g. http://cruisecontrol.instance.com/',
 			username: '',
 			password: '',
-			updateInterval: 60
+			updateInterval: 60,
+			initialUrl: 'cctray.xml'
 		};
 	};
 

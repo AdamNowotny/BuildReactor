@@ -26,7 +26,8 @@ define([
 			urlHint: 'URL, e.g. http://ci.jenkins-ci.org/',
 			username: '',
 			password: '',
-			updateInterval: 60
+			updateInterval: 60,
+			initialUrl: 'api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]'
 		};
 	};
 

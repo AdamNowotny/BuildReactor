@@ -25,7 +25,8 @@ define([
 			urlHint: 'URL, e.g. http://buildbot.buildbot.net/',
 			username: '',
 			password: '',
-			updateInterval: 60
+			updateInterval: 60,
+			initialUrl: 'json/builders'
 		};
 	};
 

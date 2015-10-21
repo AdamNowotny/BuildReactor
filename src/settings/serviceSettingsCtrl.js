@@ -7,7 +7,7 @@ define([
 
 	app.controller('ServiceSettingsCtrl', function ($scope, $location) {
 
-		var settings;
+		var config;
 
 		var reset = function () {
 			$scope.projects = {
@@ -51,7 +51,7 @@ define([
 		$scope.show = function () {
 			reset();
 			$scope.isLoading = true;
-			core.availableProjects(settings, function (response) {
+			core.availableProjects(config, function (response) {
 				$scope.$evalAsync(function () {
 					$scope.isLoading = false;
 					if (response.error) {
@@ -68,14 +68,14 @@ define([
 		});
 
 		$scope.save = function () {
-			core.saveService(settings);
+			core.saveService(config);
 			$scope.saving = true;
-			$scope.projects.selected = settings.projects;
-			$location.path('/service/' + settings.name);
+			$scope.projects.selected = config.projects;
+			$location.path('/service/' + config.name);
 		};
 
-		$scope.$on('dynamicForm.changed', function (event, updatedSettings) {
-			settings = updatedSettings;
+		$scope.$on('dynamicForm.changed', function (event, updatedConfig) {
+			config = updatedConfig;
 		});
 
 		$scope.$on('filterQuery.changed', function (event, query) {
@@ -83,15 +83,11 @@ define([
 		});
 
 		$scope.$on('projectList.change', function (event, selectedProjects) {
-			if (settings) {
-				settings.projects = selectedProjects;
+			if (config) {
+				config.projects = selectedProjects;
 			}
 		});
 
-		$scope.$watchCollection('selected', function (selectedService) {
-			$scope.selectedDraft = angular.copy(selectedService);
-		});
-		
 		reset();
 	});
 });

@@ -21,16 +21,16 @@ define([
 			controller = $controller('ViewSettingsCtrl', { $scope: scope });
 		}));
 
-		it('should set config on scope', function() {
+		it('should set viewConfig on scope', function() {
 			var viewConfig = { columns: 4 };
 			
 			core.views.onNext(viewConfig);
 			scope.$digest();
 			
-			expect(scope.config).toEqual(viewConfig);
+			expect(scope.viewConfig).toEqual(viewConfig);
 		});
 
-		it('should save view config', function() {
+		it('should save view viewConfig', function() {
 			var viewConfig = { columns: 4 };
 			
 			scope.save(viewConfig);
@@ -38,7 +38,7 @@ define([
 			expect(core.setViews).toHaveBeenCalledWith(viewConfig);
 		});
 
-		it('should set minumun number of columns to 0', function() {
+		it('should set minimun number of columns to 0', function() {
 			var viewConfig = { columns: -1 };
 			
 			scope.save(viewConfig);
@@ -54,18 +54,18 @@ define([
 			expect(core.setViews).toHaveBeenCalledWith({ columns: 20 });
 		});
 
-		it('should save when column width set', function() {
-			scope.config = { fullWidthGroups: true };
+		it('should save when field set', function() {
+			scope.viewConfig = { fullWidthGroups: true };
 
-			scope.setFixedWidth(true);
+			scope.setField('fullWidthGroups', false);
 
 			expect(core.setViews).toHaveBeenCalledWith({ fullWidthGroups: false });
 		});
 
-		it('should not save when column width already set', function() {
-			scope.config = { columns: 4, fullWidthGroups: true };
+		it('should not save when field did not change', function() {
+			scope.viewConfig = { columns: 4, fullWidthGroups: true };
 			
-			scope.setFixedWidth(false);
+			scope.setField('fullWidthGroups', true);
 
 			expect(core.setViews).not.toHaveBeenCalled();
 		});
@@ -76,67 +76,7 @@ define([
 			core.activeProjects.onNext(projects);
 			scope.$digest();
 			
-			expect(scope.services).toEqual(projects);
-		});
-
-		describe('singleGroupRows', function () {
-
-			it('should save when singleGroupRows set', function() {
-				scope.config = { singleGroupRows: true };
-
-				scope.setSingleGroupRows(false);
-
-				expect(core.setViews).toHaveBeenCalledWith({ singleGroupRows: false });
-			});
-
-			it('should not save when already set', function() {
-				scope.config = { singleGroupRows: false };
-				
-				scope.setSingleGroupRows(false);
-
-				expect(core.setViews).not.toHaveBeenCalled();
-			});
-
-		});
-
-		describe('showCommits', function () {
-
-			it('should save when showCommits set', function() {
-				scope.config = { showCommits: true };
-
-				scope.setShowCommits(false);
-
-				expect(core.setViews).toHaveBeenCalledWith({ showCommits: false });
-			});
-
-			it('should not save when already set', function() {
-				scope.config = { showCommits: false };
-				
-				scope.setShowCommits(false);
-
-				expect(core.setViews).not.toHaveBeenCalled();
-			});
-
-		});
-
-		describe('theme', function () {
-
-			it('should save when theme set', function() {
-				scope.config = { theme: 'dark' };
-
-				scope.setTheme('light');
-
-				expect(core.setViews).toHaveBeenCalledWith({ theme: 'light' });
-			});
-
-			it('should not save when already set', function() {
-				scope.config = { theme: 'dark' };
-
-				scope.setTheme('dark');
-
-				expect(core.setViews).not.toHaveBeenCalled();
-			});
-
+			expect(scope.activeProjects).toEqual(projects);
 		});
 
 	});

@@ -26,7 +26,8 @@ define([
 			username: '',
 			password: '',
 			updateInterval: 60,
-			branch: ''
+			branch: '',
+			initialUrl: 'app/rest/buildTypes'
 		};
 	};
 

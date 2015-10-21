@@ -24,10 +24,11 @@ define([
 			logo: 'bamboo/logo.png',
 			projects: [],
 			url: '',
-			urlHint: 'URL, e.g. https://ci.openmrs.org/',
+			urlHint: 'URL, e.g. https://[your_account].atlassian.net/builds',
 			username: '',
 			password: '',
-			updateInterval: 60
+			updateInterval: 60,
+			initialUrl: 'rest/api/latest/project?expand=projects.project.plans.plan&start-index=0'
 		};
 	};
 
