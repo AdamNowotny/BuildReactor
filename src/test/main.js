@@ -116,6 +116,7 @@ require.config({
 		'common-ui/directives/build/build.html': ['angular'],
 		'common-ui/directives/buildGroup/buildGroup.html': ['angular'],
 		'common-ui/directives/service/service.html': ['angular'],
+		'settings/directives/dynamicForm/dynamicForm.html': ['angular'],
 		'settings/directives/sidebar/sidebar.html': ['angular'],
 		'settings/directives/selectedProjects/selectedProjects.html': ['angular']
 	},

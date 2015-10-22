@@ -16,13 +16,16 @@ define([
 			baseUrl: 'cruisecontrol',
 			icon: 'cruisecontrol/icon.png',
 			logo: 'cruisecontrol/logo.png',
-			projects: [],
-			url: '',
 			urlHint: 'URL, e.g. http://cruisecontrol.instance.com/',
-			username: '',
-			password: '',
-			updateInterval: 60,
-			initialUrl: 'cctray.xml'
+			defaultConfig: {
+				baseUrl: 'cruisecontrol',
+				name: '',
+				projects: [],
+				url: '',
+				username: '',
+				password: '',
+				updateInterval: 60
+			}
 		};
 	};
 

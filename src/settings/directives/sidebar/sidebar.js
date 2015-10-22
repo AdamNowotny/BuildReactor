@@ -24,15 +24,12 @@ define([
 					core.setOrder(items);
 				};
 
-				$scope.getServiceIcon = function (typeName) {
-					if (typeName) {
-						var service = $scope.services.filter(function (service) {
-							return service.typeName === typeName;
-						})[0];
-						return '/src/core/services/' + service.icon;
-					}
-					return '';
-				};
+				$scope.$watch('services', function (services) {
+					$scope.serviceIcons = {};
+					(services || []).forEach(function(service) {
+						$scope.serviceIcons[service.baseUrl] = '/src/core/services/' + service.icon;
+					});
+				});
 			}
 		};
 	});

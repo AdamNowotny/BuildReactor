@@ -9,7 +9,7 @@
 				ng-class="{ muted: config.disabled, active: config.name === currentConfig.name }">
 				<a ng-href="/src/settings/index.html#/service/{{ config.name }}" class="nav-pill">
 					<span class="handle">::</span>
-					<img class="pill-icon" ng-src="{{ getServiceIcon(config.typeName) }}">
+					<img class="pill-icon" ng-src="{{ serviceIcons[config.baseUrl] }}">
 					<span class="pill-name">{{ config.name }}</span>
 				</a>
 			</li>
@@ -18,7 +18,7 @@
 		<ul class="actions nav nav-pills nav-stacked">
 			<li ng-class="{ active: view == 'new', muted: currentConfig.disabled }" ng-show="view == 'new' && currentConfig">
 				<a href="#">
-					<img class="pill-icon" ng-src="{{ getServiceIcon(currentConfig.typeName) }}">
+					<img class="pill-icon" ng-src="{{ serviceIcons[currentConfig.baseUrl] }}">
 					<span class="pill-name">{{ currentConfig.name }}</span>
 				</a>
 			</li>

@@ -27,21 +27,6 @@ define([
 			service = new TeamCity(settings);
 		});
 
-		it('should provide default settings', function () {
-			var defaultSettings = TeamCity.settings();
-
-			expect(defaultSettings.typeName).toBe('TeamCity');
-			expect(defaultSettings.baseUrl).toBe('teamcity');
-			expect(defaultSettings.icon).toBe('teamcity/icon.png');
-			expect(defaultSettings.logo).toBe('teamcity/logo.png');
-			expect(defaultSettings.url).toBeDefined();
-			expect(defaultSettings.urlHint).toBe('URL, e.g. http://teamcity.jetbrains.com/');
-			expect(defaultSettings.username).toBeDefined();
-			expect(defaultSettings.password).toBeDefined();
-			expect(defaultSettings.updateInterval).toBe(60);
-			expect(defaultSettings.branch).toBe('');
-		});
-
 		it('should set Build factory method', function () {
 			expect(service.Build).toBe(TeamcityBuild);
 		});

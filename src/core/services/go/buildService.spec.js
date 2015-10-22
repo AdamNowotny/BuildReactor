@@ -7,6 +7,7 @@ define([
 	describe('core/services/go/buildService', function () {
 
 		var settings;
+		var service;
 
 		beforeEach(function () {
 			settings = {
@@ -17,25 +18,20 @@ define([
 				name: 'GO instance',
 				projects : []
 			};
+			service = new BuildService(settings);
 		});
 
-		it('should provide default settings', function () {
-			var defaultSettings = BuildService.settings();
-
-			expect(defaultSettings.typeName).toBe('GoCD');
-			expect(defaultSettings.baseUrl).toBe('go');
-			expect(defaultSettings.icon).toBe('go/icon.png');
-			expect(defaultSettings.logo).toBe('go/logo.png');
-			expect(defaultSettings.url).toBeDefined();
-			expect(defaultSettings.urlHint).toBe('URL, e.g. http://example-go.thoughtworks.com/');
-			expect(defaultSettings.username).toBeDefined();
-			expect(defaultSettings.password).toBeDefined();
-			expect(defaultSettings.updateInterval).toBe(60);
+		it('should expose interface', function () {
+			expect(service.settings).toBe(settings);
+			expect(service.updateAll).toBeDefined();
+			expect(service.start).toBeDefined();
+			expect(service.stop).toBeDefined();
+			expect(service.activeProjects).toBeDefined();
+			expect(service.availableBuilds).toBeDefined();
+			expect(service.events).toBeDefined();
 		});
 
 		it('should define cctray xml location', function () {
-			var service = new BuildService(settings);
-
 			expect(service.cctrayLocation).toBe('cctray.xml');
 		});
 

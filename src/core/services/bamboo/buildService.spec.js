@@ -30,18 +30,14 @@ define([
 				service = new BuildService(settings);
 			});
 
-			it('should provide default settings', function () {
-				var settings = BuildService.settings();
-
-				expect(settings.typeName).toBe('Atlassian Bamboo');
-				expect(settings.baseUrl).toBe('bamboo');
-				expect(settings.icon).toBe('bamboo/icon.png');
-				expect(settings.projects.length).toBe(0);
-				expect(settings.urlHint).toBe('URL, e.g. https://[your_account].atlassian.net/builds');
-				expect(settings.url).toBeDefined();
-				expect(settings.username).toBeDefined();
-				expect(settings.password).toBeDefined();
-				expect(settings.updateInterval).toBe(60);
+			it('should expose interface', function () {
+				expect(service.settings).toBe(settings);
+				expect(service.updateAll).toBeDefined();
+				expect(service.start).toBeDefined();
+				expect(service.stop).toBeDefined();
+				expect(service.activeProjects).toBeDefined();
+				expect(service.availableBuilds).toBeDefined();
+				expect(service.events).toBeDefined();
 			});
 
 			describe('availableBuilds', function () {

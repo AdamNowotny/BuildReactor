@@ -21,13 +21,16 @@ define([
 			baseUrl: 'jenkins',
 			icon: 'jenkins/icon.png',
 			logo: 'jenkins/logo.png',
-			projects: [],
-			url: '',
 			urlHint: 'URL, e.g. http://ci.jenkins-ci.org/',
-			username: '',
-			password: '',
-			updateInterval: 60,
-			initialUrl: 'api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]'
+			defaultConfig: {
+				baseUrl: 'jenkins',
+				name: '',
+				projects: [],
+				url: '',
+				username: '',
+				password: '',
+				updateInterval: 60
+			}
 		};
 	};
 

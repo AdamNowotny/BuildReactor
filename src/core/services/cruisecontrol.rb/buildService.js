@@ -16,13 +16,16 @@ define([
 			baseUrl: 'cruisecontrol.rb',
 			icon: 'cruisecontrol.rb/icon.png',
 			logo: 'cruisecontrol.rb/logo.png',
-			projects: [],
-			url: '',
 			urlHint: 'URL, e.g. http://cruisecontrolrb.thoughtworks.com/',
-			username: '',
-			password: '',
-			updateInterval: 60,
-			initialUrl: 'XmlStatusReport.aspx'
+			defaultConfig: {
+				baseUrl: 'cruisecontrol.rb',
+				name: '',
+				projects: [],
+				url: '',
+				username: '',
+				password: '',
+				updateInterval: 60
+			}
 		};
 	};
 

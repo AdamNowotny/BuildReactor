@@ -7,6 +7,7 @@ define([
 	describe('core/services/snap/buildService', function () {
 
 		var settings;
+		var service;
 
 		beforeEach(function () {
 			settings = {
@@ -17,23 +18,20 @@ define([
 				name: 'Snap instance',
 				projects : []
 			};
+			service = new BuildService(settings);
 		});
 
-		it('should provide default settings', function () {
-			var defaultSettings = BuildService.settings();
-
-			expect(defaultSettings.typeName).toBe('Snap');
-			expect(defaultSettings.baseUrl).toBe('snap');
-			expect(defaultSettings.icon).toBe('snap/icon.png');
-			expect(defaultSettings.logo).toBe('snap/logo.png');
-			expect(defaultSettings.url).toBeDefined();
-			expect(defaultSettings.urlHint).toBe('copy CCTRAY link from Snap');
-			expect(defaultSettings.updateInterval).toBe(60);
+		it('should expose interface', function () {
+			expect(service.settings).toBe(settings);
+			expect(service.updateAll).toBeDefined();
+			expect(service.start).toBeDefined();
+			expect(service.stop).toBeDefined();
+			expect(service.activeProjects).toBeDefined();
+			expect(service.availableBuilds).toBeDefined();
+			expect(service.events).toBeDefined();
 		});
 
 		it('should define cctray xml location', function () {
-			var service = new BuildService(settings);
-
 			expect(service.cctrayLocation).toBe('');
 		});
 

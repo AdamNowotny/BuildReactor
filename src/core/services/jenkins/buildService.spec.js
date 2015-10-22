@@ -27,20 +27,6 @@ define([
 			service = new BuildService(settings);
 		});
 
-		it('should provide default settings', function () {
-			var defaultSettings = BuildService.settings();
-
-			expect(defaultSettings.typeName).toBe('Jenkins');
-			expect(defaultSettings.baseUrl).toBe('jenkins');
-			expect(defaultSettings.icon).toBe('jenkins/icon.png');
-			expect(defaultSettings.logo).toBe('jenkins/logo.png');
-			expect(defaultSettings.url).toBeDefined();
-			expect(defaultSettings.urlHint).toBe('URL, e.g. http://ci.jenkins-ci.org/');
-			expect(defaultSettings.username).toBeDefined();
-			expect(defaultSettings.password).toBeDefined();
-			expect(defaultSettings.updateInterval).toBe(60);
-		});
-
 		it('should set Build factory method', function () {
 			expect(service.Build).toBe(JenkinsBuild);
 		});

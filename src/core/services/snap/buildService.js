@@ -16,11 +16,14 @@ define([
 			baseUrl: 'snap',
 			icon: 'snap/icon.png',
 			logo: 'snap/logo.png',
-			projects: [],
-			url: '',
 			urlHint: 'copy CCTRAY link from Snap',
-			updateInterval: 60,
-			initialUrl: ''
+			defaultConfig: {
+				baseUrl: 'snap',
+				name: '',
+				projects: [],
+				url: '',
+				updateInterval: 60
+			}
 		};
 	};
 

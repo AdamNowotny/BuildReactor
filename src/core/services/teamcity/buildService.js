@@ -20,14 +20,17 @@ define([
 			baseUrl: 'teamcity',
 			icon: 'teamcity/icon.png',
 			logo: 'teamcity/logo.png',
-			projects: [],
-			url: '',
 			urlHint: 'URL, e.g. http://teamcity.jetbrains.com/',
-			username: '',
-			password: '',
-			updateInterval: 60,
-			branch: '',
-			initialUrl: 'app/rest/buildTypes'
+			defaultConfig: {
+				baseUrl: 'teamcity',
+				name: '',
+				projects: [],
+				url: '',
+				username: '',
+				password: '',
+				branch: '',
+				updateInterval: 60
+			}
 		};
 	};
 

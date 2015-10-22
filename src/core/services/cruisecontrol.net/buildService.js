@@ -16,13 +16,16 @@ define([
 			baseUrl: 'cruisecontrol.net',
 			icon: 'cruisecontrol.net/icon.png',
 			logo: 'cruisecontrol.net/logo.png',
-			projects: [],
-			url: '',
 			urlHint: 'URL, e.g. http://build.nauck-it.de/',
-			username: '',
-			password: '',
-			updateInterval: 60,
-			initialUrl: 'XmlStatusReport.aspx'
+			defaultConfig: {
+				baseUrl: 'cruisecontrol.net',
+				name: '',
+				projects: [],
+				url: '',
+				username: '',
+				password: '',
+				updateInterval: 60
+			}
 		};
 	};
 

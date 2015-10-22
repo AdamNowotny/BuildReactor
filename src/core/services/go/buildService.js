@@ -16,13 +16,16 @@ define([
 			baseUrl: 'go',
 			icon: 'go/icon.png',
 			logo: 'go/logo.png',
-			projects: [],
-			url: '',
 			urlHint: 'URL, e.g. http://example-go.thoughtworks.com/',
-			username: '',
-			password: '',
-			updateInterval: 60,
-			initialUrl: 'cctray.xml'
+			defaultConfig: {
+				baseUrl: 'go',
+				name: '',
+				projects: [],
+				url: '',
+				username: '',
+				password: '',
+				updateInterval: 60
+			}
 		};
 	};
 

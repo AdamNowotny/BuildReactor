@@ -23,18 +23,6 @@ define([
 			service = new BuildService(settings);
 		});
 
-		it('should get settings', function () {
-			var settings = BuildService.settings();
-
-			expect(settings.typeName).toBe('Travis');
-			expect(settings.baseUrl).toBe('travis');
-			expect(settings.icon).toBe('travis/icon.png');
-			expect(settings.logo).toBe('travis/logo.png');
-			expect(settings.projects.length).toBe(0);
-			expect(settings.username).toBe('');
-			expect(settings.updateInterval).toBe(60);
-		});
-
 		it('should set Build factory method', function () {
 			expect(service.Build).toBe(TravisBuild);
 		});

@@ -19,9 +19,13 @@ define([
 			baseUrl: 'travis',
 			icon: 'travis/icon.png',
 			logo: 'travis/logo.png',
-			projects: [],
-			username: '',
-			updateInterval: 60
+			defaultConfig: {
+				baseUrl: 'travis',
+				name: '',
+				projects: [],
+				username: '',
+				updateInterval: 60
+			}
 		};
 	};
 

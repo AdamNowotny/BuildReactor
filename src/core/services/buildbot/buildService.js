@@ -20,13 +20,16 @@ define([
 			baseUrl: 'buildbot',
 			icon: 'buildbot/icon.png',
 			logo: 'buildbot/logo.png',
-			projects: [],
-			url: '',
 			urlHint: 'URL, e.g. http://buildbot.buildbot.net/',
-			username: '',
-			password: '',
-			updateInterval: 60,
-			initialUrl: 'json/builders'
+			defaultConfig: {
+				baseUrl: 'buildbot',
+				name: '',
+				projects: [],
+				url: '',
+				username: '',
+				password: '',
+				updateInterval: 60
+			}
 		};
 	};
 

@@ -28,7 +28,7 @@ define([
 		var updateForNewService = function () {
 			if ($scope.serviceTypes && $scope.serviceId && $scope.serviceTypeId) {
 				$scope.service = find($scope.serviceTypes, 'baseUrl', $scope.serviceTypeId);
-				$scope.config = angular.copy($scope.service);
+				$scope.config = angular.copy($scope.service.defaultConfig);
 				$scope.config.name = $scope.serviceId;
 			} else {
 				$scope.config = null;
@@ -51,10 +51,8 @@ define([
 		});
 
 		core.availableServices(function (types) {
-			$scope.$evalAsync(function () {
-				$scope.serviceTypes = types;
-				update();
-			});
+			$scope.serviceTypes = types;
+			update();
 		});
 
 		$scope.$on('$routeChangeSuccess', function (event, routeData) {

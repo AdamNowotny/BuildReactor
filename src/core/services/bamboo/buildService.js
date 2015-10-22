@@ -22,13 +22,16 @@ define([
 			baseUrl: 'bamboo',
 			icon: 'bamboo/icon.png',
 			logo: 'bamboo/logo.png',
-			projects: [],
-			url: '',
 			urlHint: 'URL, e.g. https://[your_account].atlassian.net/builds',
-			username: '',
-			password: '',
-			updateInterval: 60,
-			initialUrl: 'rest/api/latest/project?expand=projects.project.plans.plan&start-index=0'
+			defaultConfig: {
+				baseUrl: 'bamboo',
+				name: '',
+				projects: [],
+				url: '',
+				username: '',
+				password: '',
+				updateInterval: 60
+			}
 		};
 	};
 
