@@ -10,7 +10,7 @@ function (controller, Rx, serviceLoader, mixIn) {
 
 	'use strict';
 
-	xdescribe('core/services/serviceController', function () {
+	describe('core/services/serviceController', function () {
 
 		function CustomBuildService(settings) {
 			this.settings = settings;
@@ -21,11 +21,6 @@ function (controller, Rx, serviceLoader, mixIn) {
 			};
 			this.activeProjects = new Rx.BehaviorSubject(this.initialActiveProjects);
 		}
-		CustomBuildService.settings = function () {
-			return {
-				typeName: 'test'
-			};
-		};
 		CustomBuildService.prototype.start = function () {};
 		CustomBuildService.prototype.stop = function () {};
 
@@ -39,8 +34,6 @@ function (controller, Rx, serviceLoader, mixIn) {
 				baseUrl: 'test',
 				url: 'http://www.example.com/',
 				name: 'service name',
-				icon: 'mocks/icon.png',
-				logo: 'mocks/icon.png',
 				projects: [],
 				disabled: false
 			};
@@ -55,11 +48,15 @@ function (controller, Rx, serviceLoader, mixIn) {
 				return Rx.Observable.returnValue(service);
 			});
 			scheduler = new Rx.TestScheduler();
+			CustomBuildService.settings = function () {
+				return settings;
+			};
 		});
 
-		describe('start/stop', function () {
+		xdescribe('start/stop', function () {
 
 			it('should start services', function () {
+				controller.registerType(CustomBuildService);
 				controller.start(Rx.Observable.returnValue([settings]));
 
 				expect(CustomBuildService.prototype.start).toHaveBeenCalled();
@@ -166,7 +163,7 @@ function (controller, Rx, serviceLoader, mixIn) {
 
 		});
 
-		describe('activeProjects', function () {
+		xdescribe('activeProjects', function () {
 
 			var onNext = Rx.ReactiveTest.onNext;
 
@@ -238,11 +235,19 @@ function (controller, Rx, serviceLoader, mixIn) {
 			});
 
 			it('should register service', function () {
-				spyOn(CustomBuildService, 'settings');
+				spyOn(CustomBuildService, 'settings').andReturn(settings);
 
 				controller.registerType(CustomBuildService);
 
 				expect(CustomBuildService.settings).toHaveBeenCalled();
+			});
+
+			it('should add icon and logo to settings on registration', function () {
+				controller.registerType(CustomBuildService);
+				var types = controller.getAllTypes();
+
+				expect(types[0].icon).toBe('src/core/services/test/icon.png');
+				expect(types[0].logo).toBe('src/core/services/test/logo.png');
 			});
 
 			it('should return registered services settings', function () {

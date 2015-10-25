@@ -27,7 +27,7 @@ define([
 				$scope.$watch('services', function (services) {
 					$scope.serviceIcons = {};
 					(services || []).forEach(function(service) {
-						$scope.serviceIcons[service.baseUrl] = '/src/core/services/' + service.icon;
+						$scope.serviceIcons[service.baseUrl] = service.icon;
 					});
 				});
 			}

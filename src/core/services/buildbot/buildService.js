@@ -18,8 +18,6 @@ define([
 		return {
 			typeName: 'BuildBot',
 			baseUrl: 'buildbot',
-			icon: 'buildbot/icon.png',
-			logo: 'buildbot/logo.png',
 			urlHint: 'URL, e.g. http://buildbot.buildbot.net/',
 			defaultConfig: {
 				baseUrl: 'buildbot',

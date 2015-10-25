@@ -4,7 +4,7 @@
 		ng-class="{ thumbnail: true, active: service.baseUrl === selected }"
 		ng-click="select(service.baseUrl)">
 		<div class="thumbnail-image">
-			<img ng-src="src/core/services/{{ service.logo }}" alt="{{ service.typeName }}">
+			<img ng-src="{{ service.logo }}" alt="{{ service.typeName }}">
 		</div>
 		<div class="caption">{{ service.typeName }}</div>
 	</a>

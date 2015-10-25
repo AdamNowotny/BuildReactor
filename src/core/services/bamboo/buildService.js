@@ -20,8 +20,6 @@ define([
 		return {
 			typeName: 'Atlassian Bamboo',
 			baseUrl: 'bamboo',
-			icon: 'bamboo/icon.png',
-			logo: 'bamboo/logo.png',
 			urlHint: 'URL, e.g. https://[your_account].atlassian.net/builds',
 			defaultConfig: {
 				baseUrl: 'bamboo',

@@ -19,8 +19,6 @@ define([
 		return {
 			typeName: 'Jenkins',
 			baseUrl: 'jenkins',
-			icon: 'jenkins/icon.png',
-			logo: 'jenkins/logo.png',
 			urlHint: 'URL, e.g. http://ci.jenkins-ci.org/',
 			defaultConfig: {
 				baseUrl: 'jenkins',
