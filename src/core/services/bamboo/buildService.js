@@ -20,7 +20,8 @@ define([
 		return {
 			typeName: 'Atlassian Bamboo',
 			baseUrl: 'bamboo',
-			urlHint: 'URL, e.g. https://[your_account].atlassian.net/builds',
+			urlHint: 'URL, e.g. http://ci.openmrs.org/',
+			urlHelp: 'For Bamboo OnDemand use https://[your_account].atlassian.net/builds',
 			defaultConfig: {
 				baseUrl: 'bamboo',
 				name: '',
