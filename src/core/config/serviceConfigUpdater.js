@@ -2,14 +2,20 @@ define(function () {
 	'use strict';
 	
 	function update(config) {
-		return config ? config.map(updateService) : [];
+		return (config || []).map(updateVersion2);
 	}
 
-	function updateService(service) {
-		if (service.typeName === 'ThoughtWorks GO') {
-			service.typeName = 'GoCD';
-		}
-		return service;
+	function updateVersion2(service) {
+		return {
+			baseUrl: service.baseUrl,
+      		projects: service.projects,
+      		url: service.url,
+      		username: service.username,
+      		password: service.password,
+      		updateInterval: service.updateInterval,
+      		name: service.name,
+      		disabled: service.disabled
+		};
 	}
 
 	return {

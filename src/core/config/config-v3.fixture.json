@@ -1,0 +1,55 @@
+{
+  "version": 3,
+  "services": [
+    {
+      "baseUrl": "go",
+      "projects": [
+        "ansible :: SetupAgents",
+        "ansible :: UpdateServers"
+      ],
+      "url": "http://ci.sample.com:8153/go",
+      "username": "",
+      "password": "",
+      "updateInterval": 60,
+      "name": "GoCD sample",
+      "disabled": false
+    },
+    {
+      "baseUrl": "travis",
+      "projects": [
+        "AdamNowotny/BuildReactor"
+      ],
+      "username": "AdamNowotny",
+      "updateInterval": 60,
+      "name": "BuildReactor",
+      "disabled": false
+    },
+    {
+      "baseUrl": "bamboo",
+      "projects": [
+        "TRUNK-MASTER",
+        "TRUNK-LATEST"
+      ],
+      "url": "http://ci.openmrs.org/",
+      "username": "",
+      "password": "",
+      "updateInterval": 60,
+      "name": "OpenMRS",
+      "disabled": true
+    },
+    {
+      "baseUrl": "jenkins",
+      "projects": [
+        "infra_sync_maven-hpi-plugin_www",
+        "infra_github_repository_list",
+        "infra_plugins_svn_to_git"
+      ],
+      "url": "http://ci.jenkins-ci.org/",
+      "username": "",
+      "password": "",
+      "updateInterval": 60,
+      "name": "Jenkins",
+      "disabled": true
+    }
+  ]
+}

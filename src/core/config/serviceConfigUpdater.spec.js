@@ -1,17 +1,19 @@
 define([
 	'core/config/serviceConfigUpdater',
 	'text!core/config/config-v1.fixture.json',
-	'text!core/config/config-v2.fixture.json'
-], function (updater, config1Text, config2Text) {
+	'text!core/config/config-v2.fixture.json',
+	'text!core/config/config-v3.fixture.json'
+], function (updater, config1Text, config2Text, config3Text) {
 	'use strict';
 
 	describe('core/config/serviceConfigUpdater', function () {
 
-		var config1, config2;
+		var config1, config2, config3;
 
 		beforeEach(function () {
 			config1 = JSON.parse(config1Text).services;
 			config2 = JSON.parse(config2Text).services;
+			config3 = JSON.parse(config3Text).services;
 		});
 
 		it('should return empty array by default', function () {
@@ -20,11 +22,12 @@ define([
 			expect(updated).toEqual([]);
 		});
 
-		it('should update ThoughtWorks GO to GoCD', function () {
-			var config = updater.update(config1);
+		it('should remove fields that dont belong to service instance', function () {
+			var config = updater.update(config2);
 
-			expect(config[0].typeName).toEqual(config2[0].typeName);
+			expect(config[0]).toEqual(config3[0]);
 		});
+
 	});
 
 });
