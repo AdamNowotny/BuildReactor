@@ -17,7 +17,7 @@ define([
 				id: event.source + '_disabled',
 				title: event.source,
 				url: 'settings.html',
-				icon: 'src/core/services/' + event.details.serviceIcon,
+				icon: event.details.serviceIcon,
 				text: 'Password expired. Service has been disabled.'
 			};
 		}
@@ -80,7 +80,7 @@ define([
 				id: createId(eventDetails),
 				title: createTitle(eventDetails),
 				url: eventDetails.webUrl,
-				icon: 'src/core/services/' + eventDetails.serviceIcon,
+				icon: eventDetails.serviceIcon,
 				timeout: timeout ? timeout : undefined,
 				text:  createChangesMessage(eventDetails.changes)
 			};

@@ -54,7 +54,7 @@ define([
 				buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {
 					serviceName: 'service',
 					name: 'build',
-					serviceIcon: 'test/icon.png'
+					serviceIcon: 'src/core/services/test/icon.png'
 				}});
 
 				expect(window.Notification).toHaveBeenCalledWith(
@@ -70,7 +70,7 @@ define([
 				buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {
 					serviceName: 'service',
 					name: 'build',
-					serviceIcon: 'test/icon.png',
+					serviceIcon: 'src/core/services/test/icon.png',
 					changes: [{ name: 'User 1' }, { name: 'User 2' }]
 				}});
 
@@ -88,7 +88,7 @@ define([
 					serviceName: 'service',
 					name: 'build',
 					group: 'group',
-					serviceIcon: 'test/icon.png',
+					serviceIcon: 'src/core/services/test/icon.png',
 					changes: [{ name: 'User 1' }, { name: 'User 2' }]
 				}});
 
@@ -105,7 +105,7 @@ define([
 				buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {
 					serviceName: 'service',
 					name: 'build',
-					serviceIcon: 'test/icon.png',
+					serviceIcon: 'src/core/services/test/icon.png',
 					changes: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (d) {
 						return { name: 'User ' + d };
 					})
@@ -124,7 +124,7 @@ define([
 				buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {
 					serviceName: 'service',
 					name: 'build',
-					serviceIcon: 'test/icon.png',
+					serviceIcon: 'src/core/services/test/icon.png',
 					isDisabled: true
 				}});
 
@@ -146,7 +146,7 @@ define([
 				buildFixedEvents.onNext({ eventName: 'buildFixed', details: {
 					serviceName: 'service',
 					name: 'build',
-					serviceIcon: 'test/icon.png'
+					serviceIcon: 'src/core/services/test/icon.png'
 				}});
 
 				expect(window.Notification).toHaveBeenCalledWith(
@@ -162,7 +162,7 @@ define([
 				buildFixedEvents.onNext({ eventName: 'buildFixed', details: {
 					serviceName: 'service',
 					name: 'build',
-					serviceIcon: 'test/icon.png',
+					serviceIcon: 'src/core/services/test/icon.png',
 					changes: [{ name: 'User 1' }, { name: 'User 2' }]
 				}});
 
@@ -205,7 +205,7 @@ define([
 				buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {
 					serviceName: 'service',
 					name: 'build',
-					serviceIcon: 'test/icon.png',
+					serviceIcon: 'src/core/services/test/icon.png',
 					tags: [{ name: 'Unstable' }]
 				}});
 
@@ -240,7 +240,7 @@ define([
 				details: {
 					serviceName: 'service',
 					name: 'build',
-					serviceIcon: 'test/icon.png'
+					serviceIcon: 'src/core/services/test/icon.png'
 				},
 				source: 'service'
 			});
