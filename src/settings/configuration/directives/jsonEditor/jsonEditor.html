@@ -1,0 +1,10 @@
+<div class="jsoneditor">
+	<textarea ng-model="content"></textarea>
+	<div class="editor-button">
+		<button type="button" class="btn btn-success" ng-click="save()" ng-disabled="!saveEnabled">
+			<i class="fa fa-save"></i> Save
+		</button>
+		<span class="editor-error">{{ error }}</span>
+	</div>
+
+</div>

@@ -8,6 +8,7 @@ define([
 	'settings/serviceSettingsCtrl',
 	'settings/addServiceCtrl',
 	'settings/viewSettings/controller',
+	'settings/configuration/controller',
 	'settings/directives/alert/alert',
 	'settings/directives/dynamicForm/dynamicForm',
 	'settings/directives/filterQuery/filterQuery',

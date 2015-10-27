@@ -1,0 +1,14 @@
+<form class="form-horizontal col-md-4" role="form">
+	<div class="form-group">
+		<label class="col-md-6 control-label">Include passwords</label>
+		<div class="col-md-6">
+			<ul class="nav nav-pills">
+				<li role="presentation" ng-class="{ active: includePasswords }" ng-click="includePasswords = true"><a>On</a></li>
+				<li role="presentation" ng-class="{ active: !includePasswords }" ng-click="includePasswords = false"><a>Off</a></li>
+			</ul>
+		</div>
+	</div>
+</form>
+<div class="col-md-8" style="height: 100%">
+	<section json-editor json="displayConfig" style="height: 100%"></section>
+</div>

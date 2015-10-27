@@ -26,6 +26,11 @@ define([
 			controller: 'ViewSettingsCtrl',
 			view: 'view'
 		})
+		.when('/configuration', {
+			templateUrl: 'src/settings/configuration/view.html',
+			controller: 'ConfigurationCtrl',
+			view: 'configuration'
+		})
 		.otherwise({
 			redirectTo: '/new'
 		});

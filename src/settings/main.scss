@@ -3,6 +3,7 @@
 @import "../common-ui/directives/service/_service.scss";
 @import "../common-ui/directives/buildGroup/_buildGroup.scss";
 @import "../common-ui/directives/build/_build.scss";
+@import "configuration/directives/jsonEditor/_jsonEditor.scss";
 @import "directives/alert/_alert.scss";
 @import "directives/dynamicForm/_dynamicForm.scss";
 @import "directives/filterQuery/_filterQuery.scss";
@@ -15,6 +16,10 @@
 @import "directives/topnav/_topnav.scss";
 @import "directives/viewSelection/_viewSelection.scss";
 
+html, body {
+	height: 100%;
+}
+
 body {
 	padding-top: 55px;
 }
@@ -26,11 +31,9 @@ a {
 .content-container {
 	bottom: 0;
 	left: 241px;
-	padding-top: 13px;
 	position: absolute;
 	right: 0;
-	overflow: auto;
-	top: 50px;
+	top: 60px;
 
 	.alert-danger {
 		clear: both;
