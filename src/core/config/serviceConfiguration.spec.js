@@ -245,6 +245,19 @@ define([
 
 		});
 		
+		it('should save service configuration', function () {
+			var newSettings = [{ name: 'service' }];
+
+			scheduler.scheduleAbsolute(300, function () {
+				serviceConfiguration.save(newSettings);
+			});
+			var changes = scheduler.startWithCreate(function () {
+				return serviceConfiguration.changes;
+			});
+
+			expect(configStore.setItem).toHaveBeenCalledWith('services', newSettings);
+			expect(changes.messages).toHaveElements(onNext(300, newSettings));
+		});
 
 
 	});

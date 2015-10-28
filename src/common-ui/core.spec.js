@@ -165,6 +165,14 @@ define([
 			expect(chromeApi.sendMessage).toHaveBeenCalledWith({ name: "setViews", views: { columns: 5 } });
 		});
 
+		it('should send saveConfig message', function () {
+			var config = [{ name: 'service' }];
+
+			core.saveConfig(config);
+
+			expect(chromeApi.sendMessage).toHaveBeenCalledWith({ name: "saveConfig", config: config });
+		});
+
 	});
 
 });

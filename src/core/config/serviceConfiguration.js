@@ -105,6 +105,11 @@ define([
 		changes.onNext(newConfigs);
 	};
 
+	var save = function (config) {
+		configStore.setItem(key, config);
+		changes.onNext(config);
+	};
+
 	return {
 		init: init,
 		setOrder: setOrder,
@@ -114,6 +119,7 @@ define([
 		removeService: removeService,
 		renameService: renameService,
 		saveService: saveService,
+		save: save,
 		changes: changes
 	};
 });

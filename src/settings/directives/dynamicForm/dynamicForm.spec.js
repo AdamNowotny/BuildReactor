@@ -17,6 +17,23 @@ define([
 			scope = element.isolateScope();
 		}));
 
+		it('should add missing fields to config', function() {
+			scope.service = {
+				defaultConfig: {
+					url: '',
+					username: 'guest'
+				}
+			};
+			scope.config = {
+				url: 'http://localhost/'
+			};
+
+			scope.$digest();
+
+			expect(scope.config.url).toBe('http://localhost/');
+			expect(scope.config.username).toBe('guest');
+		});
+
 		it('should emit dynamicForm.changed on config change', function() {
 			scope.config = {
 				url: ''

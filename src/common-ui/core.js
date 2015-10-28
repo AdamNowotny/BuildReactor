@@ -83,6 +83,12 @@ define([
 		chromeApi.sendMessage(message);
 	};
 
+	var saveConfig = function (config) {
+		var message = { name: 'saveConfig', config: config };
+		messages.onNext(message);
+		chromeApi.sendMessage(message);
+	};
+
 	var setViews = function (viewConfig) {
 		var message = { name: 'setViews', views: viewConfig };
 		messages.onNext(message);
@@ -103,6 +109,7 @@ define([
 		removeService: removeService,
 		renameService: renameService,
 		saveService: saveService,
+		saveConfig: saveConfig,
 		setViews: setViews,
 		// for logging
 		messages: messages

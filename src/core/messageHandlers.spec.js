@@ -28,6 +28,7 @@ define([
 			spyOn(serviceConfiguration, 'removeService');
 			spyOn(serviceConfiguration, 'renameService');
 			spyOn(serviceConfiguration, 'saveService');
+			spyOn(serviceConfiguration, 'save');
 			spyOn(viewConfiguration, 'save');
 			spyOn(serviceController, 'getAllTypes');
 			messageHandlers.init();
@@ -113,9 +114,18 @@ define([
 
 			it('should handle saveService', function () {
 				var settings = { name: 'service', url: 'http://example.com/' };
+
 				messageHandler({ name: 'saveService', settings: settings }, null, null);
 
 				expect(serviceConfiguration.saveService).toHaveBeenCalledWith(settings);
+			});
+
+			it('should handle saveConfig', function () {
+				var config = [{ name: 'service' }];
+
+				messageHandler({ name: 'saveConfig', config: config }, null, null);
+
+				expect(serviceConfiguration.save).toHaveBeenCalledWith(config);
 			});
 
 			it('should handle setViews', function () {

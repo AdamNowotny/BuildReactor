@@ -6,7 +6,7 @@
 		    ng-model="configs">
 			<li
 				ng-repeat="config in configs"
-				ng-class="{ muted: config.disabled, active: config.name === currentConfig.name }">
+				ng-class="{ muted: config.disabled, active: view == 'service' && config.name === currentConfig.name }">
 				<a ng-href="/src/settings/index.html#/service/{{ config.name }}" class="nav-pill">
 					<span class="handle">::</span>
 					<img class="pill-icon" ng-src="{{ serviceIcons[config.baseUrl] }}">

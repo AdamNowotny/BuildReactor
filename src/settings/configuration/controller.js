@@ -22,7 +22,8 @@ define([
 		});
 
 		$scope.$on('jsonEditor.changed', function (event, json) {
-			console.log('save', json);
+			$scope.saving = true;
+			core.saveConfig(json);
  		});
 
 		var getDisplayConfig = function (config, includePasswords) {

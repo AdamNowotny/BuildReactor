@@ -45,6 +45,9 @@ define([
 		case 'saveService':
 			serviceConfiguration.saveService(request.settings);
 			break;
+		case 'saveConfig':
+			serviceConfiguration.save(request.config);
+			break;
 		case 'setViews':
 			viewConfiguration.save(request.views);
 			break;
