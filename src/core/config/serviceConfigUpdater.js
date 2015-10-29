@@ -1,11 +1,12 @@
 define(function () {
 	'use strict';
 	
-	function update(config) {
-		return (config || []).map(updateVersion2);
-	}
+	var update = function(config) {
+		return isValid(config) ? config.map(updateVersion2) : [];
+	};
 
-	function updateVersion2(service) {
+
+	var updateVersion2 = function(service) {
 		return {
 			baseUrl: service.baseUrl,
       		projects: service.projects,
@@ -16,7 +17,14 @@ define(function () {
       		name: service.name,
       		disabled: service.disabled
 		};
-	}
+	};
+
+	var isValid = function(config) {
+		var isArray = !!config && config.length > -1;
+		return isArray && config.every(function (value) {
+			return typeof value === 'object';
+		});
+	};
 
 	return {
 		update: update

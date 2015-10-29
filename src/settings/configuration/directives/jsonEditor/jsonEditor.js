@@ -22,10 +22,10 @@ define([
 						if (obj && typeof obj === "object" && obj.length > -1) {
 							showError(null);
 				        } else {
-							showError('JSON validation error');
+							showError('Configuration validation error');
 				        }
 					} catch (ex) {
-						showError(ex.message || 'Validation error');
+						showError(ex.message || 'JSON Validation error');
 					}
 				});
 

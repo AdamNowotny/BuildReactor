@@ -22,6 +22,18 @@ define([
 			expect(updated).toEqual([]);
 		});
 
+		it('should fix config by returning empty array if not array', function () {
+			var updated = updater.update({});
+
+			expect(updated).toEqual([]);
+		});
+
+		it('should fix config by returning empty array if not array of objects', function () {
+			var updated = updater.update(["a", "b"]);
+
+			expect(updated).toEqual([]);
+		});
+
 		it('should remove fields that dont belong to service instance', function () {
 			var config = updater.update(config2);
 
