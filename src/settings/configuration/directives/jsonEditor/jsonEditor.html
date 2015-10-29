@@ -1,7 +1,7 @@
 <div class="jsoneditor">
-	<textarea ng-model="content"></textarea>
+	<textarea ng-model="content" class="form-control"></textarea>
 	<div class="editor-button">
-		<button type="button" class="btn btn-success" ng-click="save()" ng-disabled="!saveEnabled">
+		<button type="button" class="btn btn-danger" ng-click="save()" ng-disabled="!saveEnabled">
 			<i class="fa fa-save"></i> Save
 		</button>
 		<span class="editor-error">{{ error }}</span>

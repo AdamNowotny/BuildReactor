@@ -6,19 +6,14 @@ define([
 ], function (app, core, angular) {
 	'use strict';
 
-	app.controller('ConfigurationCtrl', function ($scope) {
+	app.controller('ConfigurationCtrl', function ($scope, $http) {
 
 		$scope.includePasswords = false;
 
 		core.configurations.subscribe(function (config) {
 			$scope.$evalAsync(function () {
 				$scope.config = config;
-				$scope.displayConfig = getDisplayConfig(config, $scope.includePasswords);
 			});
-		});
-
-		$scope.$watch('includePasswords', function (includePasswords) {
-			$scope.displayConfig = getDisplayConfig($scope.config, $scope.includePasswords);
 		});
 
 		$scope.$on('jsonEditor.changed', function (event, json) {
@@ -26,18 +21,28 @@ define([
 			core.saveConfig(json);
  		});
 
-		var getDisplayConfig = function (config, includePasswords) {
-			if (!config) {
-				return;
-			}
-			var displayConfig = angular.copy(config);
-			if (!includePasswords) {
+		$scope.showLocalConfig = function () {
+			var displayConfig = angular.copy($scope.config);
+			if (!$scope.includePasswords) {
 				displayConfig.forEach(function (serviceConfig) {
 					delete serviceConfig.username;
 					delete serviceConfig.password;
 				});
 			}
-			return displayConfig;
+			$scope.displayConfig = displayConfig;
+		};
+
+		$scope.showFromUrl = function (url) {
+			$http({
+			  method: 'GET',
+			  url: url
+			}).then(function successCallback(response) {
+			    $scope.displayConfig = response.data;
+			    $scope.urlError = null;
+			}, function errorCallback(response) {
+				response = response || {};
+				$scope.urlError = response.statusText || 'Request failed. Status = ' + response.status;
+			});
 		};
 	});
 });

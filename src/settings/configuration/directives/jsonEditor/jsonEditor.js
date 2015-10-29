@@ -13,26 +13,28 @@ define([
 			controller: function ($scope, $element, $attrs, $transclude) {
 
 				$scope.$watch('json', function (json) {
-					$scope.content = JSON.stringify(json, null, 2);
+					$scope.content = JSON.stringify(json, null, 2) || "";
 				});
 
 				$scope.$watch('content', function (content) {
 					try {
 						var obj = JSON.parse(content);
-						if (obj && typeof obj === "object" && obj !== null) {
-							$scope.saveEnabled = true;
-							$scope.error = null;
-				            return;
+						if (obj && typeof obj === "object" && obj.length > -1) {
+							showError(null);
+				        } else {
+							showError('JSON validation error');
 				        }
-						$scope.saveEnabled = false;
-						$scope.error = 'JSON validation error';
 					} catch (ex) {
-						$scope.saveEnabled = false;
-						$scope.error = (ex || {}).message;
+						showError(ex.message || 'Validation error');
 					}
 				});
 
-				$scope.save = function() {
+				var showError = function (message) {
+					$scope.saveEnabled = !message;
+					$scope.error = message;
+				};
+
+ 				$scope.save = function() {
 					$scope.$emit('jsonEditor.changed', JSON.parse($scope.content));
 				};
 				
