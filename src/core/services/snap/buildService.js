@@ -6,7 +6,7 @@ define([
 	'use strict';
 
 	var SnapService = function (settings) {
-		mixIn(this, new CCTrayBuildService(settings));
+		mixIn(this, new CCTrayBuildService(settings, SnapService.settings()));
 		this.cctrayLocation = '';
 	};
 	
@@ -15,6 +15,8 @@ define([
 			typeName: 'Snap',
 			baseUrl: 'snap',
 			urlHint: 'copy CCTRAY link from Snap',
+			icon: 'src/core/services/snap/icon.png',
+			logo: 'src/core/services/snap/logo.png',
 			defaultConfig: {
 				baseUrl: 'snap',
 				name: '',

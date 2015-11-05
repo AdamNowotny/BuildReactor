@@ -6,7 +6,7 @@ define([
 	'use strict';
 
 	var CcnetBuildService = function (settings) {
-		mixIn(this, new CCTrayBuildService(settings));
+		mixIn(this, new CCTrayBuildService(settings, CcnetBuildService.settings()));
 		this.cctrayLocation = 'XmlStatusReport.aspx';
 	};
 	
@@ -15,6 +15,8 @@ define([
 			typeName: 'CruiseControl.NET',
 			baseUrl: 'cruisecontrol.net',
 			urlHint: 'URL, e.g. http://build.nauck-it.de/',
+			icon: 'src/core/services/cruisecontrol.net/icon.png',
+			logo: 'src/core/services/cruisecontrol.net/logo.png',
 			defaultConfig: {
 				baseUrl: 'cruisecontrol.net',
 				name: '',

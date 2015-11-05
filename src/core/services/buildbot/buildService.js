@@ -9,7 +9,7 @@ define([
 	'use strict';
 
 	var BuildBotBuildService = function (settings) {
-		mixIn(this, new BuildServiceBase(settings));
+		mixIn(this, new BuildServiceBase(settings, BuildBotBuildService.settings()));
 		this.Build = BuildBotBuild;
 		this.availableBuilds = availableBuilds;
 	};
@@ -19,6 +19,8 @@ define([
 			typeName: 'BuildBot',
 			baseUrl: 'buildbot',
 			urlHint: 'URL, e.g. http://buildbot.buildbot.net/',
+			icon: 'src/core/services/buildbot/icon.png',
+			logo: 'src/core/services/buildbot/logo.png',
 			defaultConfig: {
 				baseUrl: 'buildbot',
 				name: '',

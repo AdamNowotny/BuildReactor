@@ -14,7 +14,7 @@ define([
 	describe('core/services/buildServiceBase', function () {
 
 		var scheduler;
-		var settings, service;
+		var settings, serviceInfo, service;
 		var update1Response, update2Response;
 		var buildState1, buildState2;
 
@@ -26,11 +26,27 @@ define([
 			settings = {
 				typeName: 'custom',
 				baseUrl: 'prefix',
-				icon: 'base/icon.png',
 				url: 'http://example.com/',
 				name: 'Service name',
 				projects: [ 'Build1', 'Build2'],
 				updateInterval: 1
+			};
+			serviceInfo = {
+				typeName: 'custom',
+				baseUrl: 'prefix',
+				urlHint: 'URL',
+				icon: 'src/core/services/custom/icon.png',
+				logo: 'src/core/services/custom/logo.png',
+				defaultConfig: {
+					baseUrl: 'prefix',
+					name: '',
+					projects: [],
+					url: '',
+					username: '',
+					password: '',
+					branch: '',
+					updateInterval: 60
+				}
 			};
 			buildState1 = createStateForId('Build1');
 			buildState2 = createStateForId('Build2');
@@ -49,7 +65,7 @@ define([
 		});
 
 		function CustomBuildService() {
-			mixIn(this, new BuildServiceBase(settings, scheduler));
+			mixIn(this, new BuildServiceBase(settings, serviceInfo, scheduler));
 			this.Build = GenericBuild;
 		}
 
@@ -69,7 +85,7 @@ define([
 				isRunning: false,
 				isDisabled: false,
 				serviceName: settings.name,
-				serviceIcon: settings.icon,
+				serviceIcon: serviceInfo.icon,
 				tags: [],
 				changes: []
 			};
@@ -85,7 +101,7 @@ define([
 				isRunning: false,
 				isDisabled: false,
 				serviceName: settings.name,
-				serviceIcon: settings.icon,
+				serviceIcon: serviceInfo.icon,
 				tags: [],
 				changes: []
 			};

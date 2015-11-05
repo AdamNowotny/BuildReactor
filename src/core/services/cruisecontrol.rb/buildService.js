@@ -6,7 +6,7 @@ define([
 	'use strict';
 
 	var CcrbBuildService = function (settings) {
-		mixIn(this, new CCTrayBuildService(settings));
+		mixIn(this, new CCTrayBuildService(settings, CcrbBuildService.settings()));
 		this.cctrayLocation = 'XmlStatusReport.aspx';
 	};
 	
@@ -15,6 +15,8 @@ define([
 			typeName: 'CruiseControl.rb',
 			baseUrl: 'cruisecontrol.rb',
 			urlHint: 'URL, e.g. http://cruisecontrolrb.thoughtworks.com/',
+			icon: 'src/core/services/cruisecontrol.rb/icon.png',
+			logo: 'src/core/services/cruisecontrol.rb/logo.png',
 			defaultConfig: {
 				baseUrl: 'cruisecontrol.rb',
 				name: '',

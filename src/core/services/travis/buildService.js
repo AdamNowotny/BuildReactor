@@ -8,7 +8,7 @@ define([
 	'use strict';
 
 	var TravisBuildService = function (settings) {
-		mixIn(this, new BuildServiceBase(settings));
+		mixIn(this, new BuildServiceBase(settings, TravisBuildService.settings()));
 		this.Build = TravisBuild;
 		this.availableBuilds = availableBuilds;
 	};
@@ -17,6 +17,8 @@ define([
 		return {
 			typeName: 'Travis',
 			baseUrl: 'travis',
+			icon: 'src/core/services/travis/icon.png',
+			logo: 'src/core/services/travis/logo.png',
 			defaultConfig: {
 				baseUrl: 'travis',
 				name: '',

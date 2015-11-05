@@ -28,7 +28,6 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				password: null,
 				url: 'http://example.com/',
 				updateInterval: 10000,
-				icon: 'cctray/icon.png',
 				projects: ['CruiseControl.NET', 'Build-Server-Config']
 			};
 			states = [createState1(), createState2()];
@@ -48,6 +47,8 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				isBroken: false,
 				isRunning: false,
 				isWaiting: false,
+				serviceName: settings.name,
+				serviceIcon: 'src/core/services/cctray/icon.png',
 				tags: [],
 				changes: []
 			};
@@ -61,6 +62,8 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				webUrl: 'http://build.nauck-it.de/server/build.nauck-it.de/project/Build-Server-Config/ViewProjectReport.aspx',
 				isBroken: false,
 				isRunning: false,
+				serviceName: settings.name,
+				serviceIcon: 'src/core/services/cctray/icon.png',
 				changes: []
 			};
 		}
@@ -69,7 +72,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 			return mixIn(state, {
 				isDisabled: false,
 				serviceName: 'Build Server',
-				serviceIcon: 'cctray/icon.png',
+				serviceIcon: 'src/core/services/cctray/icon.png',
 				tags: []
 			});
 		}
@@ -130,7 +133,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 						isRunning: false,
 						isDisabled: false,
 						serviceName: settings.name,
-						serviceIcon: settings.icon,
+						serviceIcon: 'src/core/services/cctray/icon.png',
 						tags: [],
 						changes: []
 					};
@@ -171,7 +174,17 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 
 					expect(request.xml).toHaveBeenCalled();
 					expect(parsedResponse.length).toBe(9);
-					expect(parsedResponse[0]).toEqual(createState1());
+					expect(parsedResponse[0]).toEqual({
+						id: 'CruiseControl.NET',
+						name: 'CruiseControl.NET',
+						group: 'CruiseControl.NET',
+						webUrl: 'http://build.nauck-it.de/server/build.nauck-it.de/project/CruiseControl.NET/ViewProjectReport.aspx',
+						isBroken: false,
+						isRunning: false,
+						isWaiting: false,
+						tags: [],
+						changes: []
+					});
 				});
 
 				it('should parse xml if build broken with failure', function () {

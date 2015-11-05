@@ -15,8 +15,6 @@ define([
 
 	var registerType = function (Service) {
 		var settings = Service.settings();
-		settings.icon = 'src/core/services/' + settings.baseUrl + '/icon.png';
-		settings.logo = 'src/core/services/' + settings.baseUrl + '/logo.png';
 		types.push(settings);
 	};
 

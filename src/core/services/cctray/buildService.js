@@ -10,11 +10,13 @@ define([
 
 	'use strict';
 
-	var CCBuildService = function (settings) {
-		mixIn(this, new BuildServiceBase(settings));
+	var CCBuildService = function (settings, serviceInfo) {
+		serviceInfo = serviceInfo || CCBuildService.settings();
+		mixIn(this, new BuildServiceBase(settings, serviceInfo));
 		this.availableBuilds = availableBuilds;
 		this.updateAll = updateAll;
 		this.cctrayLocation = '';
+		this.serviceInfo = serviceInfo;
 	};
 
 	CCBuildService.settings = function () {
@@ -22,6 +24,8 @@ define([
 			typeName: 'CCTray Generic',
 			baseUrl: 'cctray',
 			urlHint: 'URL, e.g. http://cruisecontrol.instance.com/cctray.xml',
+			icon: 'src/core/services/cctray/icon.png',
+			logo: 'src/core/services/cctray/logo.png',
 			defaultConfig: {
 				baseUrl: 'cctray',
 				name: '',
@@ -54,7 +58,7 @@ define([
 		}).where(function (build) {
 			return contains(self.settings.projects, build.id);
 		}).select(function (state) {
-			return self.mixInMissingState(state);
+			return self.mixInMissingState(state, self.serviceInfo);
 		}).doAction(function (state) {
 			return self.processBuildUpdate(state);
 		}).defaultIfEmpty([]);

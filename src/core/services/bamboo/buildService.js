@@ -11,7 +11,7 @@ define([
 	'use strict';
 
 	var BambooBuildService = function (settings) {
-		mixIn(this, new BuildServiceBase(settings));
+		mixIn(this, new BuildServiceBase(settings, BambooBuildService.settings()));
 		this.Build = BambooPlan;
 		this.availableBuilds = availableBuilds;
 	};
@@ -22,6 +22,8 @@ define([
 			baseUrl: 'bamboo',
 			urlHint: 'URL, e.g. http://ci.openmrs.org/',
 			urlHelp: 'For Bamboo OnDemand use https://[your_account].atlassian.net/builds',
+			icon: 'src/core/services/bamboo/icon.png',
+			logo: 'src/core/services/bamboo/logo.png',
 			defaultConfig: {
 				baseUrl: 'bamboo',
 				name: '',

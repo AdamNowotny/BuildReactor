@@ -6,7 +6,7 @@ define([
 	'use strict';
 
 	var CCBuildService = function (settings) {
-		mixIn(this, new CCTrayBuildService(settings));
+		mixIn(this, new CCTrayBuildService(settings, CCBuildService.settings()));
 		this.cctrayLocation = 'cctray.xml';
 	};
 	
@@ -15,6 +15,8 @@ define([
 			typeName: 'CruiseControl',
 			baseUrl: 'cruisecontrol',
 			urlHint: 'URL, e.g. http://cruisecontrol.instance.com/',
+			icon: 'src/core/services/cruisecontrol/icon.png',
+			logo: 'src/core/services/cruisecontrol/logo.png',
 			defaultConfig: {
 				baseUrl: 'cruisecontrol',
 				name: '',

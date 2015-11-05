@@ -10,7 +10,7 @@ define([
 	'use strict';
 
 	var JenkinsBuildService = function (settings) {
-		mixIn(this, new BuildServiceBase(settings));
+		mixIn(this, new BuildServiceBase(settings, JenkinsBuildService.settings()));
 		this.Build = JenkinsBuild;
 		this.availableBuilds = availableBuilds;
 	};
@@ -20,6 +20,8 @@ define([
 			typeName: 'Jenkins',
 			baseUrl: 'jenkins',
 			urlHint: 'URL, e.g. http://ci.jenkins-ci.org/',
+			icon: 'src/core/services/jenkins/icon.png',
+			logo: 'src/core/services/jenkins/logo.png',
 			defaultConfig: {
 				baseUrl: 'jenkins',
 				name: '',

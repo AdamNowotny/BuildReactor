@@ -6,23 +6,24 @@ define([
 ], function (Rx, mixIn) {
 	'use strict';
 
-	function BuildServiceBase(settings, scheduler) {
+	function BuildServiceBase(settings, serviceInfo, scheduler) {
 		this.scheduler = scheduler || Rx.Scheduler.timeout;
 		this.Build = null;
 		this.settings = settings;
+		this.serviceInfo = serviceInfo;
 		this.updateAll = updateAll;
 		this.start = start;
 		this.stop = stop;
 		this.events = new Rx.Subject();
 		this.builds = {};
-		this.latestBuildStates = getInitialStates(settings);
+		this.latestBuildStates = getInitialStates(settings, this.serviceInfo);
 		this.poolingSubscription = null;
 		this.mixInMissingState = mixInMissingState;
 		this.processBuildUpdate = processBuildUpdate;
 		this.activeProjects = new Rx.BehaviorSubject(createState(this));
 	}
 
-	var getInitialStates = function (settings) {
+	var getInitialStates = function (settings, serviceInfo) {
 		var createDefaultState = function (id, settings) {
 			return {
 				id: id,
@@ -33,7 +34,7 @@ define([
 				isRunning: false,
 				isDisabled: false,
 				serviceName: settings.name,
-				serviceIcon: settings.icon,
+				serviceIcon: serviceInfo.icon,
 				tags: [],
 				changes: []
 			};
@@ -58,7 +59,7 @@ define([
 							error: createError(ex)
 						});
 					});
-			}).select(function (state) { return self.mixInMissingState(state); })
+			}).select(function (state) { return self.mixInMissingState(state, self.serviceInfo); })
 			.doAction(function (state) { return self.processBuildUpdate(state); });
 	};
 
@@ -79,7 +80,7 @@ define([
 		return error;
 	};
 
-	var mixInMissingState = function (state) {
+	var mixInMissingState = function (state, serviceInfo) {
 		var previous = this.latestBuildStates[state.id];
 		var defaults = {
 			name: previous.name,
@@ -89,7 +90,7 @@ define([
 			isRunning: previous.isRunning,
 			isDisabled: previous.isDisabled,
 			serviceName: this.settings.name,
-			serviceIcon: this.settings.icon,
+			serviceIcon: serviceInfo.icon,
 			tags: []
 		};
 		return mixIn(defaults, state);

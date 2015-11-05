@@ -9,7 +9,7 @@ define([
 	'use strict';
 
 	var TeamcityBuildService = function (settings) {
-		mixIn(this, new BuildServiceBase(settings));
+		mixIn(this, new BuildServiceBase(settings, TeamcityBuildService.settings()));
 		this.Build = TravisBuild;
 		this.availableBuilds = availableBuilds;
 	};
@@ -19,6 +19,8 @@ define([
 			typeName: 'TeamCity',
 			baseUrl: 'teamcity',
 			urlHint: 'URL, e.g. http://teamcity.jetbrains.com/',
+			icon: 'src/core/services/teamcity/icon.png',
+			logo: 'src/core/services/teamcity/logo.png',
 			defaultConfig: {
 				baseUrl: 'teamcity',
 				name: '',

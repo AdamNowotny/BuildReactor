@@ -242,14 +242,6 @@ function (controller, Rx, serviceLoader, mixIn) {
 				expect(CustomBuildService.settings).toHaveBeenCalled();
 			});
 
-			it('should add icon and logo to settings on registration', function () {
-				controller.registerType(CustomBuildService);
-				var types = controller.getAllTypes();
-
-				expect(types[0].icon).toBe('src/core/services/test/icon.png');
-				expect(types[0].logo).toBe('src/core/services/test/logo.png');
-			});
-
 			it('should return registered services settings', function () {
 				controller.registerType(CustomBuildService);
 
