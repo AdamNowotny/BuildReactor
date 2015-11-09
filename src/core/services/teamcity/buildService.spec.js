@@ -55,17 +55,6 @@ define([
 				expect(request.json).toHaveBeenCalled();
 			});
 
-			it('should modify url when branch specified', function () {
-				spyOn(request, 'json').andCallFake(function (options) {
-					expect(options.url).toBe('http://example.com/guestAuth/app/rest/buildTypes?branch:(refs/heads/master)');
-				});
-
-				settings.branch = 'refs/heads/master';
-				service.availableBuilds();
-
-				expect(request.json).toHaveBeenCalled();
-			});
-
 			it('should modify url if username and password specified', function () {
 				settings.username = 'USERNAME';
 				settings.password = 'PASSWORD';

@@ -37,9 +37,6 @@ define([
 	var availableBuilds = function () {
 		var urlPath = ((this.settings.username) ? 'httpAuth' : 'guestAuth');
 		urlPath += '/app/rest/buildTypes';
-		if (this.settings.branch) {
-			urlPath += '?branch:(' + this.settings.branch + ')';
-		}
 		return request.json({
 			url: joinUrl(this.settings.url, urlPath),
 			username: this.settings.username,
