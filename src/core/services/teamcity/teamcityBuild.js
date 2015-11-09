@@ -14,7 +14,7 @@ define([
 	var update = function () {
 		var self = this;
 		return buildListRequest(self).selectMany(function (buildListResponse) {
-			if (buildListResponse.build.length === 0) {
+			if (buildListResponse.count === 0) {
 				throw {
 					name: 'NotFoundError',
 					message: 'No build for branch [' + self.settings.branch + ']'
