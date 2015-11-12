@@ -15,7 +15,8 @@ define(function () {
       		password: service.password,
       		updateInterval: service.updateInterval,
       		name: service.name,
-      		disabled: service.disabled
+      		disabled: service.disabled,
+      		branch: service.branch
 		};
 	};
 
