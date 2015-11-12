@@ -1,6 +1,6 @@
 {
 	"name": "BuildReactor",
-	"version": "0.11.1",
+	"version": "0.12.0",
 	"manifest_version": 2,
 	"description": "Developer notifications and dashboard",
 	"icons": {
