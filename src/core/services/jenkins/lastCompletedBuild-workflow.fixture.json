@@ -1,0 +1,261 @@
+{
+  "actions" : [
+    {
+      "causes" : [
+        {
+          "shortDescription" : "Started by an SCM change"
+        }
+      ]
+    },
+    {
+      
+    },
+    {
+      "buildsByBranchName" : {
+        "origin/rc" : {
+          "buildNumber" : 298,
+          "buildResult" : null,
+          "revision" : {
+            "SHA1" : "5d1b5b3b112fac05081bbdbdcc96b9ced286f1d9",
+            "branch" : [
+              {
+                "SHA1" : "5d1b5b3b112fac05081bbdbdcc96b9ced286f1d9",
+                "name" : "origin/rc"
+              }
+            ]
+          }
+        }
+      },
+      "lastBuiltRevision" : {
+        "SHA1" : "5d1b5b3b112fac05081bbdbdcc96b9ced286f1d9",
+        "branch" : [
+          {
+            "SHA1" : "5d1b5b3b112fac05081bbdbdcc96b9ced286f1d9",
+            "name" : "origin/rc"
+          }
+        ]
+      },
+      "remoteUrls" : [
+        "git://github.com/jenkinsci/jenkins"
+      ],
+      "scmName" : ""
+    },
+    {
+      
+    },
+    {
+      
+    },
+    {
+      "failCount" : 0,
+      "skipCount" : 0,
+      "totalCount" : 4164,
+      "urlName" : "testReport"
+    },
+    {
+      
+    },
+    {
+      
+    }
+  ],
+  "artifacts" : [
+    {
+      "displayPath" : "cli-1.493-SNAPSHOT-jar-with-dependencies.jar",
+      "fileName" : "cli-1.493-SNAPSHOT-jar-with-dependencies.jar",
+      "relativePath" : "cli/target/cli-1.493-SNAPSHOT-jar-with-dependencies.jar"
+    },
+    {
+      "displayPath" : "cli-1.493-SNAPSHOT.jar",
+      "fileName" : "cli-1.493-SNAPSHOT.jar",
+      "relativePath" : "cli/target/cli-1.493-SNAPSHOT.jar"
+    },
+    {
+      "displayPath" : "jenkins-core-1.493-SNAPSHOT.jar",
+      "fileName" : "jenkins-core-1.493-SNAPSHOT.jar",
+      "relativePath" : "core/target/jenkins-core-1.493-SNAPSHOT.jar"
+    },
+    {
+      "displayPath" : "maven-plugin.hpi",
+      "fileName" : "maven-plugin.hpi",
+      "relativePath" : "maven-plugin/target/maven-plugin.hpi"
+    },
+    {
+      "displayPath" : "maven-plugin.jar",
+      "fileName" : "maven-plugin.jar",
+      "relativePath" : "maven-plugin/target/maven-plugin.jar"
+    },
+    {
+      "displayPath" : "jenkins-test-harness-1.493-SNAPSHOT.jar",
+      "fileName" : "jenkins-test-harness-1.493-SNAPSHOT.jar",
+      "relativePath" : "test/target/jenkins-test-harness-1.493-SNAPSHOT.jar"
+    },
+    {
+      "displayPath" : "query-1.0-SNAPSHOT.jar",
+      "fileName" : "query-1.0-SNAPSHOT.jar",
+      "relativePath" : "test/target/test-classes/hudson/maven/target/query-1.0-SNAPSHOT.jar"
+    },
+    {
+      "displayPath" : "ui-samples-plugin.hpi",
+      "fileName" : "ui-samples-plugin.hpi",
+      "relativePath" : "ui-samples-plugin/target/ui-samples-plugin.hpi"
+    },
+    {
+      "displayPath" : "ui-samples-plugin.jar",
+      "fileName" : "ui-samples-plugin.jar",
+      "relativePath" : "ui-samples-plugin/target/ui-samples-plugin.jar"
+    },
+    {
+      "displayPath" : "jenkins.war",
+      "fileName" : "jenkins.war",
+      "relativePath" : "war/target/jenkins.war"
+    }
+  ],
+  "building" : false,
+  "description" : null,
+  "duration" : 2272941,
+  "estimatedDuration" : 1898967,
+  "executor" : null,
+  "fullDisplayName" : "jenkins_rc_branch #298",
+  "id" : "2012-11-26_21-30-32",
+  "keepLog" : false,
+  "number" : 298,
+  "result" : "SUCCESS",
+  "timestamp" : 1353983432000,
+  "url" : "http://ci.jenkins-ci.org/job/jenkins_rc_branch/298/",
+  "builtOn" : "remote-slave-6",
+  "changeSets": [
+    {
+      "items": [
+        {
+          "affectedPaths": ["<snip>"],
+          "author": {
+              "absoluteUrl": "<snip>",
+              "fullName": "<fullName1>"
+          },
+          "commitId": "1235",
+          "timestamp": 1448544628405,
+          "date": "2015-11-26T13:30:28.405995Z",
+          "msg": "<msg1>",
+          "paths": [{
+              "editType": "edit",
+              "file": "<snip>"
+          }],
+          "revision": 1235,
+          "user": "<snip>"
+        },
+        {
+          "affectedPaths": ["<snip>"],
+          "author": {
+              "absoluteUrl": "<snip>",
+              "fullName": "<fullName2>"
+          },
+          "commitId": "1234",
+          "timestamp": 1448543949992,
+          "date": "2015-11-26T13:19:09.992576Z",
+          "msg": "<msg2>",
+          "paths": [{
+              "editType": "edit",
+              "file": "<snip>"
+          }],
+          "revision": 1234,
+          "user": "<snip>"
+        },
+        {
+          "affectedPaths": ["<snip>"],
+          "author": {
+              "absoluteUrl": "<snip>",
+              "fullName": "<fullName3>"
+          },
+          "commitId": "1233",
+          "timestamp": 1448543671961,
+          "date": "2015-11-26T13:14:31.961090Z",
+          "msg": "<msg3>",
+          "paths": [{
+              "editType": "edit",
+              "file": "<snip>"
+          }],
+          "revision": 1233,
+          "user": "<snip>"
+        },
+        {
+          "affectedPaths": ["<snip>"],
+          "author": {
+              "absoluteUrl": "<snip>",
+              "fullName": "<fullName4>"
+          },
+          "commitId": "1226",
+          "timestamp": 1448460299470,
+          "date": "2015-11-25T14:04:59.470648Z",
+          "msg": "<msg4>",
+          "paths": [{
+              "editType": "edit",
+              "file": "<snip>"
+          }],
+          "revision": 1226,
+          "user": "<snip>"
+        },
+        {
+          "affectedPaths": ["<snip>"],
+          "author": {
+              "absoluteUrl": "<snip>",
+              "fullName": "<fullName5>"
+          },
+          "commitId": "1223",
+          "timestamp": 1448455693827,
+          "date": "2015-11-25T12:48:13.827391Z",
+          "msg": "<msg5>",
+          "paths": [{
+              "editType": "edit",
+              "file": "<snip>"
+          }],
+          "revision": 1223,
+          "user": "<snip>"
+        }
+      ],
+      "kind": "svn",
+      "revisions": [{
+          "module": "<snip>",
+          "revision": 2448
+      }
+    ]
+  },
+  {
+      "items": [],
+      "kind": "svn",
+      "revisions": [{
+          "module": "<snip>",
+          "revision": 2448
+      }]
+  },
+  {
+      "items": [],
+      "kind": "svn",
+      "revisions": [{
+          "module": "<snip>",
+          "revision": 2448
+      }]
+  },
+  {
+      "items": [],
+      "kind": "svn",
+      "revisions": [{
+          "module": "<snip>",
+          "revision": 2448
+      }]
+  }],
+  "culprits" : [
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/Christoph%20Kutzinski",
+      "fullName" : "Christoph Kutzinski"
+    },
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/Seiji%20Sogabe",
+      "fullName" : "Seiji Sogabe"
+    },
+    {
+      "absoluteUrl" : "http://ci.jenkins-ci.org/user/kohsuke",
+      "fullName" : "Kohsuke Kawaguchi"
+    }
+  ]
+}

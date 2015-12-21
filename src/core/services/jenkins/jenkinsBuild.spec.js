@@ -3,8 +3,9 @@ define([
 	'core/services/request',
 	'rx',
 	'text!core/services/jenkins/job.fixture.json',
-	'text!core/services/jenkins/lastCompletedBuild.fixture.json'
-], function (Build, request, Rx, jobFixture, lastCompletedBuildFixture) {
+	'text!core/services/jenkins/lastCompletedBuild.fixture.json',
+	'text!core/services/jenkins/lastCompletedBuild-workflow.fixture.json'
+], function (Build, request, Rx, jobFixture, lastCompletedBuildFixture, workflowFixture) {
 	'use strict';
 
 	describe('core/services/jenkins/jenkinsBuild', function () {
@@ -13,6 +14,7 @@ define([
 		var settings;
 		var jobJson;
 		var lastCompletedBuildJson;
+		var workflowFixtureJson;
 
 		beforeEach(function () {
 			settings = {
@@ -20,6 +22,7 @@ define([
 			};
 			jobJson = JSON.parse(jobFixture);
 			lastCompletedBuildJson = JSON.parse(lastCompletedBuildFixture);
+			workflowFixtureJson = JSON.parse(workflowFixture);
 			var callCount = 0;
 			spyOn(request, 'json').andCallFake(function () {
 				callCount++;
@@ -167,22 +170,21 @@ define([
 				expect(state.changes[1]).toEqual({ name : 'Seiji Sogabe', message : '[FIXED JENKINS-15836] Slave\'s Name should be trimmed of spaces at the beginning and end of the Name on Save' });
 				expect(state.changes[2]).toEqual({ name : 'Christoph Kutzinski', message : 'Switch to ignore post-commit hook in SCM polling triggers [FIXED JENKINS-6846]' });
 				expect(state.changes[3]).toEqual({ name : 'Christoph Kutzinski', message : 'disambiguate method call to make Eclipse happy' });
-				expect(state.changes[4]).toEqual({ name : 'Kohsuke Kawaguchi', message: 'bundling the new versions of slave installer.' });
+				expect(state.changes[4]).toEqual({ name : 'Kohsuke Kawaguchi', message : 'bundling the new versions of slave installer.' });
 			});
 
 			expect(request.json).toHaveBeenCalled();
 		});
 
 		it('should set changes for changeSets', function () {
-			lastCompletedBuildJson.changeSets = lastCompletedBuildJson.changeSet;
-			delete lastCompletedBuildJson.changeSet;
+			lastCompletedBuildJson = workflowFixtureJson;
 			
 			build.update().subscribe(function (state) {
-				expect(state.changes[0]).toEqual({ name : 'Kohsuke Kawaguchi', message : 'the trunk is toward 1.493-SNAPSHOT' });
-				expect(state.changes[1]).toEqual({ name : 'Seiji Sogabe', message : '[FIXED JENKINS-15836] Slave\'s Name should be trimmed of spaces at the beginning and end of the Name on Save' });
-				expect(state.changes[2]).toEqual({ name : 'Christoph Kutzinski', message : 'Switch to ignore post-commit hook in SCM polling triggers [FIXED JENKINS-6846]' });
-				expect(state.changes[3]).toEqual({ name : 'Christoph Kutzinski', message : 'disambiguate method call to make Eclipse happy' });
-				expect(state.changes[4]).toEqual({ name : 'Kohsuke Kawaguchi', message: 'bundling the new versions of slave installer.' });
+				expect(state.changes[0]).toEqual({ name : '<fullName1>', message : '<msg1>' });
+				expect(state.changes[1]).toEqual({ name : '<fullName2>', message : '<msg2>' });
+				expect(state.changes[2]).toEqual({ name : '<fullName3>', message : '<msg3>' });
+				expect(state.changes[3]).toEqual({ name : '<fullName4>', message : '<msg4>' });
+				expect(state.changes[4]).toEqual({ name : '<fullName5>', message : '<msg5>' });
 			});
 
 			expect(request.json).toHaveBeenCalled();

@@ -14,6 +14,14 @@ define([
 	var update = function () {
 		var self = this;
 		return job(self).zip(lastCompletedBuild(self), function (jobResponse, lastCompletedResponse) {
+			var changeSetItems = [];
+			if (lastCompletedResponse.changeSets) {
+				changeSetItems = [].concat.apply([], lastCompletedResponse.changeSets.map(function (changeSet) {
+					return changeSet.items;
+				}));
+			} else if (lastCompletedResponse.changeSet) {
+				changeSetItems = lastCompletedResponse.changeSet.items;
+			}
 			var state = {
 				id: self.id,
 				name: jobResponse.displayName,
@@ -23,7 +31,7 @@ define([
 				isRunning: jobResponse.lastBuild.number !== jobResponse.lastCompletedBuild.number,
 				isDisabled: !jobResponse.buildable,
 				tags: [],
-				changes: (lastCompletedResponse.changeSet || lastCompletedResponse.changeSets || { items: [] }).items.map(function (change) {
+				changes: changeSetItems.map(function (change) {
 					return {
 						name: change.author.fullName,
 						message: change.msg
