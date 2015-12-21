@@ -23,7 +23,7 @@ define([
 				isRunning: jobResponse.lastBuild.number !== jobResponse.lastCompletedBuild.number,
 				isDisabled: !jobResponse.buildable,
 				tags: [],
-				changes: (lastCompletedResponse.changeSet || lastCompletedResponse.changeSets).items.map(function (change) {
+				changes: (lastCompletedResponse.changeSet || lastCompletedResponse.changeSets || { items: [] }).items.map(function (change) {
 					return {
 						name: change.author.fullName,
 						message: change.msg

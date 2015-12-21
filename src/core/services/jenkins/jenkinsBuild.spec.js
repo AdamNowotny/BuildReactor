@@ -188,6 +188,17 @@ define([
 			expect(request.json).toHaveBeenCalled();
 		});
 
+		it('should set changes to empty array', function () {
+			delete lastCompletedBuildJson.changeSet;
+			delete lastCompletedBuildJson.changeSets;
+			
+			build.update().subscribe(function (state) {
+				expect(state.changes).toEqual([]);
+			});
+
+			expect(request.json).toHaveBeenCalled();
+		});
+
 	});
 
 });
