@@ -12,7 +12,7 @@ define([
 	var httpStatusOk = 200;
 
 	function send(options, dataType) {
-		var timeout = options.timeout || 30000;
+		var timeout = options.timeout || 60000;
 		var scheduler = options.scheduler || Rx.Scheduler.timeout;
 		var ajaxOptions = createAjaxOptions(options, dataType);
 		var promise = $.ajax(ajaxOptions).promise();
