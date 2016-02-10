@@ -11,7 +11,7 @@ define([
 				projects: '=',
 				serviceName: '@'
 			},
-			templateUrl: 'src/settings/directives/selectedProjects/selectedProjects.html',
+			template: require('settings/directives/selectedProjects/selectedProjects.html'),
 			controller: function ($scope, $element, $attrs, $transclude) {
 
 				$scope.sortableCallback = function (startModel, destModel, start, end) {

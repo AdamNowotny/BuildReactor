@@ -1,44 +1,44 @@
 define([
-	'settings/app',
-	'angular'
+    'settings/app',
+    'angular'
 ], function (app) {
-	'use strict';
+    'use strict';
 
-	app.directive('jsonEditor', function () {
-		return {
-			scope: {
-				json: '='
-			},
-			templateUrl: 'src/settings/configuration/directives/jsonEditor/jsonEditor.html',
-			controller: function ($scope, $element, $attrs, $transclude) {
+    app.directive('jsonEditor', function () {
+        return {
+            scope: {
+                json: '='
+            },
+            template: require('settings/configuration/directives/jsonEditor/jsonEditor.html'),
+            controller: function ($scope, $element, $attrs, $transclude) {
 
-				$scope.$watch('json', function (json) {
-					$scope.content = JSON.stringify(json, null, 2) || "";
-				});
+                $scope.$watch('json', function (json) {
+                    $scope.content = JSON.stringify(json, null, 2) || "";
+                });
 
-				$scope.$watch('content', function (content) {
-					try {
-						var obj = JSON.parse(content);
-						if (obj && typeof obj === "object" && obj.length > -1) {
-							showError(null);
-				        } else {
-							showError('Configuration validation error');
-				        }
-					} catch (ex) {
-						showError(ex.message || 'JSON Validation error');
-					}
-				});
+                $scope.$watch('content', function (content) {
+                    try {
+                        var obj = JSON.parse(content);
+                        if (obj && typeof obj === "object" && obj.length > -1) {
+                            showError(null);
+                        } else {
+                            showError('Configuration validation error');
+                        }
+                    } catch (ex) {
+                        showError(ex.message || 'JSON Validation error');
+                    }
+                });
 
-				var showError = function (message) {
-					$scope.saveEnabled = !message;
-					$scope.error = message;
-				};
+                var showError = function (message) {
+                    $scope.saveEnabled = !message;
+                    $scope.error = message;
+                };
 
- 				$scope.save = function() {
-					$scope.$emit('jsonEditor.changed', JSON.parse($scope.content));
-				};
-				
-			}
-		};
-	});
+                $scope.save = function() {
+                    $scope.$emit('jsonEditor.changed', JSON.parse($scope.content));
+                };
+                
+            }
+        };
+    });
 });

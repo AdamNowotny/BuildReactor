@@ -1,3 +1,5 @@
+import "bootstrap/dropdown";
+
 define([
 	'settings/app',
 	'common-ui/core',
@@ -12,7 +14,7 @@ define([
 				service: '=currentService',
 				showActions: '='
 			},
-			templateUrl: 'src/settings/directives/topnav/topnav.html',
+			template: require('settings/directives/topnav/topnav.html'),
 			controller: function ($scope, $element, $attrs, $transclude) {
 
 				$scope.$watch('service', function (selectedService) {
@@ -37,7 +39,7 @@ define([
 
 				$scope.remove = function () {
 					$modal.open({
-						templateUrl: 'src/settings/directives/topnav/removeModal.html',
+						template: require('settings/directives/topnav/removeModal.html'),
 						controller: 'RemoveModalCtrl',
 						scope: $scope,
 						resolve: {
@@ -53,7 +55,7 @@ define([
 
 				$scope.rename = function () {
 					$modal.open({
-						templateUrl: 'src/settings/directives/topnav/renameModal.html',
+						template: require('settings/directives/topnav/renameModal.html'),
 						controller: 'RenameModalCtrl',
 						resolve: {
 							serviceName: function () {

@@ -1,3 +1,6 @@
+import "bootstrap/collapse";
+import "bootstrap/transition";
+
 define([
 	'settings/app',
 	'angular'
@@ -64,7 +67,7 @@ define([
 				viewItems: '=',
 				filterQuery: '=filter'
 			},
-			templateUrl: 'src/settings/directives/projectList/projectList.html',
+			template: require('settings/directives/projectList/projectList.html'),
 			controller: function ($scope, $element, $attrs, $transclude) {
 				$scope.groups = null;
 				$scope.selected = [];

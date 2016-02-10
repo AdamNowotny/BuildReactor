@@ -14,7 +14,7 @@ define([
 				currentConfig: '=',
 				view: '='
 			},
-			templateUrl: 'src/settings/directives/sidebar/sidebar.html',
+			template: require('settings/directives/sidebar/sidebar.html'),
 			controller: function ($scope, $element, $attrs, $transclude) {
 
 				$scope.sortableCallback = function (startModel, destModel, start, end) {

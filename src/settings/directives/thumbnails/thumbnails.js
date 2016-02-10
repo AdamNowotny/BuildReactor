@@ -9,7 +9,7 @@ define([
 				serviceTypes: '=',
 				selected: '='
 			},
-			templateUrl: 'src/settings/directives/thumbnails/thumbnails.html',
+			template: require('settings/directives/thumbnails/thumbnails.html'),
 			controller: function ($scope, $element, $attrs, $transclude) {
 				$scope.select = function (serviceTypeId) {
 					$scope.selected = serviceTypeId;

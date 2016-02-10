@@ -10,7 +10,7 @@ define([
 		return {
 			restrict: 'E',
 			scope: {},
-			templateUrl: 'src/common-ui/directives/buildList/buildList.html',
+			template: require('common-ui/directives/buildList/buildList.html'),
 			replace: true,
 			controller: function ($scope, $element, $attrs, $transclude) {
 

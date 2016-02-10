@@ -8,7 +8,7 @@ define([
 	app.directive('filterQuery', function () {
 		return {
 			scope: { },
-			templateUrl: 'src/settings/directives/filterQuery/filterQuery.html',
+			template: require('settings/directives/filterQuery/filterQuery.html'),
 			controller: function ($scope, $element, $attrs, $transclude) {
 				$scope.query = '';
 

@@ -7,7 +7,7 @@
 			<li
 				ng-repeat="config in configs"
 				ng-class="{ muted: config.disabled, active: view == 'service' && config.name === currentConfig.name }">
-				<a ng-href="/src/settings/index.html#/service/{{ config.name }}" class="nav-pill">
+				<a ng-href="#/service/{{ config.name }}" class="nav-pill">
 					<span class="handle">::</span>
 					<img class="pill-icon" ng-src="{{ serviceIcons[config.baseUrl] }}">
 					<span class="pill-name">{{ config.name }}</span>
@@ -23,19 +23,19 @@
 				</a>
 			</li>
 			<li ng-class="{ active: view == 'new'  && !currentConfig }">
-				<a ng-href="/src/settings/index.html#/new">
+				<a ng-href="#/new">
 					<i class="pill-icon fa fa-plus-circle fa-3x"></i>
 					<span class="pill-name">Add</span>
 				</a>
 			</li>
 			<li ng-class="{ active: view == 'view' }">
-				<a ng-href="/src/settings/index.html#/view">
+				<a ng-href="#/view">
 					<i class="pill-icon fa fa-desktop fa-3x"></i>
 					<span class="pill-name">View</span>
 				</a>
 			</li>
 			<li ng-class="{ active: view == 'configuration' }">
-				<a ng-href="/src/settings/index.html#/configuration">
+				<a ng-href="#/configuration">
 					<i class="pill-icon fa fa-cogs fa-3x"></i>
 					<span class="pill-name">Configuration</span>
 				</a>

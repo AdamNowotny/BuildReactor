@@ -9,7 +9,7 @@ define([
 				views: '=',
 				selected: '='
 			},
-			templateUrl: 'src/settings/directives/viewSelection/viewSelection.html'
+			template: require('settings/directives/viewSelection/viewSelection.html')
 		};
 	});
 });

@@ -1,7 +1,14 @@
+import 'jquery';
+import 'fontAwesome';
+import 'bootstrapCss';
+import './main.scss';
+import 'htmlSortableJquery';
+import angular from 'angular';
+import 'htmlSortable';
+
 define([
 	'common-ui/core',
 	'common-ui/coreLogger',
-	'angular',
 	'settings/app',
 	'settings/controller',
 	'settings/routes',
@@ -21,7 +28,7 @@ define([
 	'settings/directives/thumbnails/thumbnails',
 	'settings/directives/topnav/topnav',
 	'settings/directives/viewSelection/viewSelection'
-], function (core, logger, angular) {
+], function (core, logger) {
 
 	'use strict';
 

@@ -9,7 +9,7 @@ define([
 			scope: {
 				active: '='
 			},
-			templateUrl: 'src/settings/directives/serviceNamePanel/serviceNamePanel.html',
+			template: require('settings/directives/serviceNamePanel/serviceNamePanel.html'),
 			controller: function ($scope, $element, $attrs, $transclude) {
 				$scope.serviceName = '';
 				

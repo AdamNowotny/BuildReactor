@@ -1,3 +1,8 @@
+import 'jquery';
+import 'fontAwesome';
+import 'bootstrapCss';
+import './main.scss';
+
 define([
 	'common-ui/core',
 	'common-ui/coreLogger',

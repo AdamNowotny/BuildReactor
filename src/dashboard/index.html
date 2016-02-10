@@ -1,16 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" ng-csp>
 	<head>
-		<base href="../..">
 		<title>BuildReactor dashboard</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css" media="screen">
-		<link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css" media="screen">
-		<link rel="stylesheet" type="text/css" href="src/dashboard/main.css" media="screen">
 	</head>
 	<body ng-controller="DashboardCtrl" class="theme-{{ viewConfig.theme }}">
 		<build-list services="services"></build-list>
-		<!-- scripts -->
-		<script type="text/javascript" data-main="src/dashboard/main" src="bower_components/requirejs/require.js"></script>
 	</body>
 </html>

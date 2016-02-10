@@ -13,7 +13,7 @@ define([
 				name: '=',
 				items: '='
 			},
-			templateUrl: 'src/common-ui/directives/buildGroup/buildGroup.html',
+			template: require('common-ui/directives/buildGroup/buildGroup.html'),
 			controller: function ($scope, $element, $attrs, $transclude) {
 
 				$scope.fullWidth = '100%';

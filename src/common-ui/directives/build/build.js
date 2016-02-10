@@ -11,7 +11,7 @@ define([
 			scope: {
 				build: '=buildInfo'
 			},
-			templateUrl: 'src/common-ui/directives/build/build.html',
+			template: require('common-ui/directives/build/build.html'),
 			controller: function ($scope, $element, $attrs, $transclude) {
 
 				var commentChangeInterval = 7000;

@@ -8,7 +8,7 @@ define([
 			scope: {
 				onOff: '=onOff'
 			},
-			templateUrl: 'src/settings/directives/onOffSwitch/onOffSwitch.html',
+			template: require('settings/directives/onOffSwitch/onOffSwitch.html'),
 			controller: function ($scope, $element, $attrs, $transclude) {
 				$scope.$watch('onOff', function (onOff) {
 					$scope.switch = onOff ? 'on' : 'off';

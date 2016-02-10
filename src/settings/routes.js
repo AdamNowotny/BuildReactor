@@ -1,3 +1,5 @@
+import serviceSettingsView from 'settings/serviceSettingsView.html';
+
 define([
 	'settings/app'
 ], function (app) {
@@ -6,28 +8,28 @@ define([
 	return app.config(function ($routeProvider) {
 		$routeProvider
 		.when('/service/:serviceName', {
-			templateUrl: 'src/settings/serviceSettingsView.html',
+			template: serviceSettingsView,
 			controller: 'ServiceSettingsCtrl',
 			view: 'service'
 		})
 		.when('/new', {
-			templateUrl: 'src/settings/addServiceView.html',
+			template: require('settings/addServiceView.html'),
 			controller: 'AddServiceCtrl',
 			reloadOnSearch: false,
 			view: 'new'
 		})
 		.when('/new/:serviceTypeId/:serviceName', {
-			templateUrl: 'src/settings/serviceSettingsView.html',
+			template: serviceSettingsView,
 			controller: 'ServiceSettingsCtrl',
 			view: 'new'
 		})
 		.when('/view', {
-			templateUrl: 'src/settings/viewSettings/view.html',
+			template: require('settings/viewSettings/view.html'),
 			controller: 'ViewSettingsCtrl',
 			view: 'view'
 		})
 		.when('/configuration', {
-			templateUrl: 'src/settings/configuration/view.html',
+			template: require('settings/configuration/view.html'),
 			controller: 'ConfigurationCtrl',
 			view: 'configuration'
 		})

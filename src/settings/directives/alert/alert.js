@@ -8,7 +8,7 @@ define([
 			scope: {
 				visible: '=show'
 			},
-			templateUrl: 'src/settings/directives/alert/alert.html',
+			template: require('settings/directives/alert/alert.html'),
 			controller: function ($scope, $element, $attrs, $transclude) {
 				$scope.$watch('visible', function (value) {
 					if (value === true) {

@@ -10,7 +10,7 @@ define([
 				service: '=',
 				config: '='
 			},
-			templateUrl: 'src/settings/directives/dynamicForm/dynamicForm.html',
+			template: require('settings/directives/dynamicForm/dynamicForm.html'),
 			controller: function ($scope, $element, $attrs, $transclude) {
 				$scope.isDefined = angular.isDefined;
 
