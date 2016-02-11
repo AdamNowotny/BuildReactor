@@ -17,8 +17,8 @@ define([
 		return {
 			typeName: 'Travis',
 			baseUrl: 'travis',
-			icon: 'src/core/services/travis/icon.png',
-			logo: 'src/core/services/travis/logo.png',
+			icon: 'core/services/travis/icon.png',
+			logo: 'core/services/travis/logo.png',
 			defaultConfig: {
 				baseUrl: 'travis',
 				name: '',

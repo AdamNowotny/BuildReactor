@@ -15,8 +15,8 @@ define([
 			typeName: 'CruiseControl.NET',
 			baseUrl: 'cruisecontrol.net',
 			urlHint: 'URL, e.g. http://build.nauck-it.de/',
-			icon: 'src/core/services/cruisecontrol.net/icon.png',
-			logo: 'src/core/services/cruisecontrol.net/logo.png',
+			icon: 'core/services/cruisecontrol.net/icon.png',
+			logo: 'core/services/cruisecontrol.net/logo.png',
 			defaultConfig: {
 				baseUrl: 'cruisecontrol.net',
 				name: '',

@@ -22,8 +22,8 @@ define([
 			baseUrl: 'bamboo',
 			urlHint: 'URL, e.g. http://ci.openmrs.org/',
 			urlHelp: 'For Bamboo OnDemand use https://[your_account].atlassian.net/builds',
-			icon: 'src/core/services/bamboo/icon.png',
-			logo: 'src/core/services/bamboo/logo.png',
+			icon: 'core/services/bamboo/icon.png',
+			logo: 'core/services/bamboo/logo.png',
 			defaultConfig: {
 				baseUrl: 'bamboo',
 				name: '',

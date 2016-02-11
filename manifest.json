@@ -15,9 +15,7 @@
 	},
 	"background": {
 		"scripts": [
-			"bower_components/requirejs/require.js",
-			"src/common/main.js",
-			"src/core/main.js"
+			"background.js"
 		]
 	},
 	"homepage_url": "https://github.com/AdamNowotny/BuildReactor",

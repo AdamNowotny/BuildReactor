@@ -20,8 +20,8 @@ define([
 			typeName: 'Jenkins',
 			baseUrl: 'jenkins',
 			urlHint: 'URL, e.g. http://ci.jenkins-ci.org/',
-			icon: 'src/core/services/jenkins/icon.png',
-			logo: 'src/core/services/jenkins/logo.png',
+			icon: 'core/services/jenkins/icon.png',
+			logo: 'core/services/jenkins/logo.png',
 			defaultConfig: {
 				baseUrl: 'jenkins',
 				name: '',

@@ -15,8 +15,8 @@ define([
 			typeName: 'Snap',
 			baseUrl: 'snap',
 			urlHint: 'copy CCTRAY link from Snap',
-			icon: 'src/core/services/snap/icon.png',
-			logo: 'src/core/services/snap/logo.png',
+			icon: 'core/services/snap/icon.png',
+			logo: 'core/services/snap/logo.png',
 			defaultConfig: {
 				baseUrl: 'snap',
 				name: '',

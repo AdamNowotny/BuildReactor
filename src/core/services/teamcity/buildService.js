@@ -19,8 +19,8 @@ define([
 			typeName: 'TeamCity',
 			baseUrl: 'teamcity',
 			urlHint: 'URL, e.g. http://teamcity.jetbrains.com/',
-			icon: 'src/core/services/teamcity/icon.png',
-			logo: 'src/core/services/teamcity/logo.png',
+			icon: 'core/services/teamcity/icon.png',
+			logo: 'core/services/teamcity/logo.png',
 			defaultConfig: {
 				baseUrl: 'teamcity',
 				name: '',

@@ -11,7 +11,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
   context: path.join(__dirname, "src"),
   entry: {
-    // main: path.join(__dirname + "/src/core/main.js"),
+    background: "./core/main.js",
     settings: "./settings/main-app.js",
     dashboard: "./dashboard/main-app.js",
     popup: "./popup/main-app.js"
@@ -77,7 +77,8 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       { from: '../manifest.json' },
-      { from: '../img', to: 'img' }
+      { from: '../img', to: 'img' },
+      { from: 'core/services/*/*.png' }
     ]),
     new ExtractTextPlugin("[name].css")
   ],
