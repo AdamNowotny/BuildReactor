@@ -2,9 +2,7 @@ import 'jquery';
 import 'fontAwesome';
 import 'bootstrapCss';
 import './main.scss';
-import 'htmlSortableJquery';
 import angular from 'angular';
-import 'htmlSortable';
 
 define([
 	'common-ui/core',

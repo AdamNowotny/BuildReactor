@@ -108,21 +108,21 @@ module.exports = {
         test: /\.(ttf|eot|otf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: "file?name=/fonts/[name].[ext]" },
       {
+        test: /\.html$/,
+        loader: 'html'
+      },
+      {
+        test: /jquery\.js$/,
+        loader: 'expose?$!expose?jQuery'
+      },
+      {
         test: /[\/]angular\.js$/,
         loader: "exports?angular"
       },
       {
         test: /[\/]html.sortable.angular\.js$/,
         loader: "exports?angular.module('htmlSortable')"
-      },
-      {
-        test: /\.html$/,
-        loader: 'html'
-      },
-      // {
-      //   test: require.resolve("jquery"),
-      //   loader: 'expose?$'
-      // }
+      }
     ]
   },
 

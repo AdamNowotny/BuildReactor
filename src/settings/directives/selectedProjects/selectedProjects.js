@@ -1,3 +1,6 @@
+import 'htmlSortableJquery';
+import 'htmlSortable';
+
 define([
 	'settings/app',
 	'common-ui/core',
