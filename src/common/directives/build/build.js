@@ -1,6 +1,6 @@
 define([
-	'common-ui/directives/module',
-	'common-ui/core'
+	'common/directives/module',
+	'common/core'
 ], function (module, core) {
 
 	'use strict';
@@ -11,7 +11,7 @@ define([
 			scope: {
 				build: '=buildInfo'
 			},
-			template: require('common-ui/directives/build/build.html'),
+			template: require('common/directives/build/build.html'),
 			controller: function ($scope, $element, $attrs, $transclude) {
 
 				var commentChangeInterval = 7000;

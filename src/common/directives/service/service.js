@@ -1,9 +1,9 @@
 define([
-    'common-ui/directives/module',
+    'common/directives/module',
     'rx',
     'rx.binding',
     'rx.coincidence',
-    'common-ui/directives/buildGroup/buildGroup'
+    'common/directives/buildGroup/buildGroup'
 ], function (module, Rx) {
 
     'use strict';
@@ -14,7 +14,7 @@ define([
             scope: {
                 service: '=serviceInfo'
             },
-            template: require('common-ui/directives/service/service.html'),
+            template: require('common/directives/service/service.html'),
             replace: true,
             controller: function ($scope, $element, $attrs, $transclude) {
                 $scope.$watch('service', function (service) {

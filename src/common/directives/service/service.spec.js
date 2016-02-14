@@ -1,10 +1,10 @@
 define([
-	'common-ui/directives/service/service',
+	'common/directives/service/service',
 	'angular',
 	'angularMocks',
-	'common-ui/directives/service/service.html',
-	'common-ui/directives/buildGroup/buildGroup.html',
-	'common-ui/directives/build/build.html'
+	'common/directives/service/service.html',
+	'common/directives/buildGroup/buildGroup.html',
+	'common/directives/build/build.html'
 ], function (service, angular) {
 	'use strict';
 
@@ -15,9 +15,9 @@ define([
 
 		beforeEach(module(
 			'app.directives',
-			'src/common-ui/directives/service/service.html',
-			'src/common-ui/directives/buildGroup/buildGroup.html',
-			'src/common-ui/directives/build/build.html'
+			'src/common/directives/service/service.html',
+			'src/common/directives/buildGroup/buildGroup.html',
+			'src/common/directives/build/build.html'
 		));
 
 		beforeEach(inject(function ($compile, $rootScope) {

@@ -1,9 +1,9 @@
 define([
-	'common-ui/directives/buildGroup/buildGroup',
-	'common-ui/core',
+	'common/directives/buildGroup/buildGroup',
+	'common/core',
 	'angularMocks',
-	'common-ui/directives/buildGroup/buildGroup.html',
-	'common-ui/directives/build/build.html'
+	'common/directives/buildGroup/buildGroup.html',
+	'common/directives/build/build.html'
 ], function (buildGroup, core) {
 	'use strict';
 
@@ -11,13 +11,11 @@ define([
 
 		var scope;
 		var element;
-		var views;
-		var viewConfig;
 
 		beforeEach(module(
 			'app.directives',
-			'src/common-ui/directives/buildGroup/buildGroup.html',
-			'src/common-ui/directives/build/build.html'
+			'src/common/directives/buildGroup/buildGroup.html',
+			'src/common/directives/build/build.html'
 		));
 
 		beforeEach(inject(function ($compile, $rootScope) {

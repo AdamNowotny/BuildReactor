@@ -1,8 +1,8 @@
 define([
 	'settings/app',
-	'common-ui/core',
+	'common/core',
 	'angular',
-	'common-ui/directives/buildList/buildList'
+	'common/directives/buildList/buildList'
 ], function (app, core, angular) {
 	'use strict';
 

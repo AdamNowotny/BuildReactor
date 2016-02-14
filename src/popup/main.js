@@ -1,10 +1,21 @@
-require.config({
-	baseUrl: 'src',
-});
+import 'jquery';
+import 'fontAwesome';
+import 'bootstrapCss';
+import './main.scss';
 
-require(['common/main'], function (common) {
+define([
+	'common/core',
+	'common/coreLogger',
+	'angular',
+	'popup/app',
+	'popup/controller'
+], function (core, logger, angular) {
 	'use strict';
-	require(['common-ui/main'], function () {
-		require(['popup/main-app']);
+
+	core.init();
+	logger();
+
+	angular.element(document).ready(function () {
+		angular.bootstrap(document, ['popup']);
 	});
 });

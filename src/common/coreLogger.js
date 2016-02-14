@@ -1,5 +1,5 @@
 define([
-	'common-ui/core',
+	'common/core',
 	'mout/string/interpolate'
 ], function (core, interpolate) {
 

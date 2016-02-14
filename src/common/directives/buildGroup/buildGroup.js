@@ -1,7 +1,7 @@
 define([
-	'common-ui/directives/module',
-	'common-ui/core',
-	'common-ui/directives/build/build'
+	'common/directives/module',
+	'common/core',
+	'common/directives/build/build'
 ], function (module, core) {
 
 	'use strict';
@@ -13,7 +13,7 @@ define([
 				name: '=',
 				items: '='
 			},
-			template: require('common-ui/directives/buildGroup/buildGroup.html'),
+			template: require('common/directives/buildGroup/buildGroup.html'),
 			controller: function ($scope, $element, $attrs, $transclude) {
 
 				$scope.fullWidth = '100%';

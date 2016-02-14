@@ -1,6 +1,6 @@
 define([
 	'settings/app',
-	'common-ui/core',
+	'common/core',
 	'angular'
 ], function (app, core, angular) {
 	'use strict';

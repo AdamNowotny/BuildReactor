@@ -1,8 +1,7 @@
 define([
 	'settings/app',
-	'common-ui/core',
-	'angular',
-], function (app, core, angular) {
+	'common/core'
+], function (app, core) {
 	'use strict';
 
 	app.controller('ServiceSettingsCtrl', function ($scope, $location) {

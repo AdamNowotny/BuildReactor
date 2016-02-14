@@ -1,7 +1,7 @@
 define([
-	'common-ui/directives/module',
-	'common-ui/core',
-	'common-ui/directives/service/service'
+	'common/directives/module',
+	'common/core',
+	'common/directives/service/service'
 ], function (module, core) {
 
 	'use strict';
@@ -10,7 +10,7 @@ define([
 		return {
 			restrict: 'E',
 			scope: {},
-			template: require('common-ui/directives/buildList/buildList.html'),
+			template: require('common/directives/buildList/buildList.html'),
 			replace: true,
 			controller: function ($scope, $element, $attrs, $transclude) {
 

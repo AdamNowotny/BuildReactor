@@ -1,7 +1,6 @@
 define([
-	'settings/app',
-	'common-ui/core'
-], function (app, core) {
+	'settings/app'
+], function (app) {
 	'use strict';
 
 	app.controller('RemoveModalCtrl', function ($scope, $modalInstance, serviceName) {

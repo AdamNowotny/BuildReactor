@@ -1,6 +1,6 @@
 define([
 	'popup/app',
-	'common-ui/core'
+	'common/core'
 ], function (app, core) {
 	'use strict';
 

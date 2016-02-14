@@ -3,7 +3,7 @@ import 'htmlSortable';
 
 define([
 	'settings/app',
-	'common-ui/core',
+	'common/core',
 	'htmlSortable'
 ], function (app, core) {
 	'use strict';

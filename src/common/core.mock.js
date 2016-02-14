@@ -1,9 +1,9 @@
 define([
-	'src/common-ui/core.mock.availableServices.js',
-	'src/common-ui/core.mock.activeProjects.js',
-	'src/common-ui/core.mock.availableProjects.js',
-	'src/common-ui/core.mock.configurations.js',
-	'src/common-ui/core.mock.views.js',
+	'src/common/core.mock.availableServices.js',
+	'src/common/core.mock.activeProjects.js',
+	'src/common/core.mock.availableProjects.js',
+	'src/common/core.mock.configurations.js',
+	'src/common/core.mock.views.js',
 	'rx',
 	'rx.time'
 ], function (

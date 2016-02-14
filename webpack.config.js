@@ -12,9 +12,9 @@ module.exports = {
   context: path.join(__dirname, "src"),
   entry: {
     background: "./core/main.js",
-    settings: "./settings/main-app.js",
-    dashboard: "./dashboard/main-app.js",
-    popup: "./popup/main-app.js"
+    settings: "./settings/main.js",
+    dashboard: "./dashboard/main.js",
+    popup: "./popup/main.js"
   },
   output: {
     publicPath: './',

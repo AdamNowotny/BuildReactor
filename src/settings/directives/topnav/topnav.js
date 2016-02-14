@@ -2,7 +2,7 @@ import "bootstrap/dropdown";
 
 define([
 	'settings/app',
-	'common-ui/core',
+	'common/core',
 	'settings/directives/topnav/removeModalCtrl',
 	'settings/directives/topnav/renameModalCtrl'
 ], function (app, core) {

@@ -89,7 +89,7 @@ require.config({
 
 		// needed for testing only
 		angularMocks: '../bower_components/angular-mocks/angular-mocks',
-		'common-ui/core': 'common-ui/core',
+		'common/core': 'common/core',
 		'rx.aggregates': '../bower_components/Rx/dist/rx.aggregates',
 		'rx.testing': '../bower_components/Rx/dist/rx.testing',
 		'rx.virtualtime': '../bower_components/Rx/dist/rx.virtualtime',
@@ -113,9 +113,9 @@ require.config({
 			deps: ['angular'],
 			exports: 'angular.mock'
 		},
-		'common-ui/directives/build/build.html': ['angular'],
-		'common-ui/directives/buildGroup/buildGroup.html': ['angular'],
-		'common-ui/directives/service/service.html': ['angular'],
+		'common/directives/build/build.html': ['angular'],
+		'common/directives/buildGroup/buildGroup.html': ['angular'],
+		'common/directives/service/service.html': ['angular'],
 		'settings/directives/dynamicForm/dynamicForm.html': ['angular'],
 		'settings/directives/sidebar/sidebar.html': ['angular'],
 		'settings/directives/selectedProjects/selectedProjects.html': ['angular']
