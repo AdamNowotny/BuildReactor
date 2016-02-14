@@ -3,7 +3,6 @@
   "description": "Developer notifications and dashboard",
   "version": "0.12.1",
   "dependencies": {
-    "jquery": "~2.1.1",
     "Rx": "~2.3.4"
   }
 }

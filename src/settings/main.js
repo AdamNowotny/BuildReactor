@@ -1,7 +1,8 @@
-import 'jquery';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/scss/font-awesome.scss';
 import './main.scss';
+import 'jquery';
+import 'html5sortable/src/html.sortable.src';
 import angular from 'angular';
 
 define([

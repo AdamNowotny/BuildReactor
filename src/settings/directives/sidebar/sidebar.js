@@ -1,4 +1,4 @@
-import 'html5sortable';
+import 'html5sortable/src/html.sortable.angular';
 
 define([
 	'settings/app',

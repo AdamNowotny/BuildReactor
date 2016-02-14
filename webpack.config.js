@@ -12,9 +12,9 @@ module.exports = {
   context: path.join(__dirname, "src"),
   entry: {
     background: "./core/main.js",
+    popup: "./popup/main.js",
     settings: "./settings/main.js",
-    dashboard: "./dashboard/main.js",
-    popup: "./popup/main.js"
+    dashboard: "./dashboard/main.js"
   },
   output: {
     publicPath: './',
@@ -26,9 +26,6 @@ module.exports = {
   resolve: {
     modulesDirectories: ["node_modules", "bower_components/Rx/dist"],
     extensions: ['', '.js'],
-    alias: {
-      jquery: path.join(__dirname, "/bower_components/jquery/dist/jquery"),
-    },
     root: path.join(__dirname, "src")
   },
 
