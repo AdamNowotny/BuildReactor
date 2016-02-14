@@ -3,7 +3,7 @@ define([
 ], function (app) {
 	'use strict';
 
-	app.directive('onOffSwitch', function ($modal) {
+	app.directive('onOffSwitch', function () {
 		return {
 			scope: {
 				onOff: '=onOff'

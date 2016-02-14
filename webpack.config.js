@@ -28,16 +28,6 @@ module.exports = {
     extensions: ['', '.js'],
     alias: {
       jquery: path.join(__dirname, "/bower_components/jquery/dist/jquery"),
-      mout: path.join(__dirname, '/bower_components/mout/src'),
-      angular: path.join(__dirname, "/bower_components/angular/angular"),
-      bootstrap: path.join(__dirname, "/bower_components/bootstrap/js"),
-      bootstrapCss: path.join(__dirname, "/bower_components/bootstrap/dist/css/bootstrap.min.css"),
-      "angular.ui": path.join(__dirname, "/bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls"),
-      "angular.ui.utils": path.join(__dirname, "/bower_components/angular-ui-utils/ui-utils"),
-      "angular.route": path.join(__dirname, "/bower_components/angular-route/angular-route"),
-      htmlSortable: path.join(__dirname, "/bower_components/html.sortable/src/html.sortable.angular"),
-      htmlSortableJquery: path.join(__dirname, '/bower_components/html.sortable/dist/html.sortable'),
-      fontAwesome: path.join(__dirname, '/bower_components/font-awesome/css/font-awesome.min.css'),
     },
     root: path.join(__dirname, "src")
   },
@@ -49,21 +39,21 @@ module.exports = {
         jQuery: "jquery"
     }),
     new HtmlWebpackPlugin({
-      template: './settings/index.html',
+      template: 'settings/index.html',
       filename: 'settings.html',
       inject: 'body',
       chunks: [ 'commons', 'settings' ],
       minify: false
     }),
     new HtmlWebpackPlugin({
-      template: './popup/index.html',
+      template: 'popup/index.html',
       filename: 'popup.html',
       inject: 'body',
       chunks: [ 'commons', 'popup' ],
       minify: false
     }),
     new HtmlWebpackPlugin({
-      template: './dashboard/index.html',
+      template: 'dashboard/index.html',
       filename: 'dashboard.html',
       inject: 'body',
       chunks: [ 'commons', 'dashboard' ],

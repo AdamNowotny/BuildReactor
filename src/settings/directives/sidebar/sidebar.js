@@ -1,11 +1,12 @@
+import 'html5sortable';
+
 define([
 	'settings/app',
-	'common/core',
-	'htmlSortable'
+	'common/core'
 ], function (app, core) {
 	'use strict';
 
-	app.directive('sidebar', function ($location) {
+	app.directive('sidebar', function () {
 		return {
 			scope: {
 				services: '=',

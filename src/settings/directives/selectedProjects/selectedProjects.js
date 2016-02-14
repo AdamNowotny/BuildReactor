@@ -1,14 +1,12 @@
-import 'htmlSortableJquery';
-import 'htmlSortable';
+import 'html5sortable';
 
 define([
 	'settings/app',
-	'common/core',
-	'htmlSortable'
+	'common/core'
 ], function (app, core) {
 	'use strict';
 
-	app.directive('selectedProjects', function ($location) {
+	app.directive('selectedProjects', function () {
 		return {
 			scope: {
 				projects: '=',

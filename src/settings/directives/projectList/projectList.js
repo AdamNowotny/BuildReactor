@@ -1,5 +1,7 @@
-import "bootstrap/collapse";
-import "bootstrap/transition";
+import "bootstrap/js/collapse";
+import "bootstrap/js/transition";
+import 'angular-ui-utils/modules/highlight/highlight';
+import 'angular-ui-utils/modules/indeterminate/indeterminate';
 
 define([
 	'settings/app',

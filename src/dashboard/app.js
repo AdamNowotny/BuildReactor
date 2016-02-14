@@ -1,15 +1,16 @@
+import angular from 'angular';
+import 'angular-route';
+import 'angular-ui-bootstrap';
+
 define([
-	'angular',
-	'angular.route',
-	'angular.ui',
 	'common/directives/buildList/buildList'
-], function (angular) {
+], function () {
 
 	'use strict';
 
 	return angular.module('dashboard', [
 		'ngRoute',
-		'template/tooltip/tooltip-popup.html',
+		'uib/template/tooltip/tooltip-popup.html',
 		'ui.bootstrap.tooltip',
 		'app.directives'
 	]).config([

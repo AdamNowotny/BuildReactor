@@ -1,6 +1,6 @@
 import 'jquery';
-import 'fontAwesome';
-import 'bootstrapCss';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'font-awesome/scss/font-awesome.scss';
 import './main.scss';
 import angular from 'angular';
 

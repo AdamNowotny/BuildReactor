@@ -1,4 +1,5 @@
-import "bootstrap/dropdown";
+import "bootstrap/js/dropdown";
+import 'angular-ui-bootstrap';
 
 define([
 	'settings/app',
@@ -8,7 +9,7 @@ define([
 ], function (app, core) {
 	'use strict';
 
-	app.directive('topnav', function ($modal, $location) {
+	app.directive('topnav', function ($uibModal, $location) {
 		return {
 			scope: {
 				service: '=currentService',
@@ -38,7 +39,7 @@ define([
 				});
 
 				$scope.remove = function () {
-					$modal.open({
+					$uibModal.open({
 						template: require('settings/directives/topnav/removeModal.html'),
 						controller: 'RemoveModalCtrl',
 						scope: $scope,
@@ -54,7 +55,7 @@ define([
 				};
 
 				$scope.rename = function () {
-					$modal.open({
+					$uibModal.open({
 						template: require('settings/directives/topnav/renameModal.html'),
 						controller: 'RenameModalCtrl',
 						resolve: {

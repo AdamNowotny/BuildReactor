@@ -1,10 +1,12 @@
+import 'angular-ui-bootstrap';
+
 define([
 	'settings/app',
 	'common/core'
 ], function (app, core) {
 	'use strict';
 
-	app.controller('RenameModalCtrl', function ($scope, $modalInstance, serviceName) {
+	app.controller('RenameModalCtrl', function ($scope, $uibModalInstance, serviceName) {
 		$scope.service = { name: serviceName };
 
 		core.configurations.subscribe(function (configs) {
@@ -18,10 +20,10 @@ define([
 		});
 
 		$scope.rename = function () {
-			$modalInstance.close($scope.service.name);
+			$uibModalInstance.close($scope.service.name);
 		};
 		$scope.cancel = function () {
-			$modalInstance.dismiss('cancel');
+			$uibModalInstance.dismiss('cancel');
 		};
 	});
 });

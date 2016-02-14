@@ -6,11 +6,13 @@
 	.navbar-brand {
 		text-align: center;
 		width: 240px;
+		> img {
+			display: inline;
+		}
 		.logo {
 			vertical-align: top;
 			width: 20px;
 		}
-
 		.version {
 			display: block;
 			font-size: 0.7em;

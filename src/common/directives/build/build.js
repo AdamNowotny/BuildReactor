@@ -1,3 +1,5 @@
+import 'angular-ui-bootstrap/src/tooltip/tooltip';
+
 define([
 	'common/directives/module',
 	'common/core'

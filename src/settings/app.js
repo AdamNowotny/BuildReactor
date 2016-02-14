@@ -1,10 +1,13 @@
+import "bootstrap/js/modal";
+import angular from 'angular';
+import 'angular-route';
+import 'angular-ui-bootstrap';
+import 'angular-ui-utils/modules/highlight/highlight';
+import 'angular-ui-utils/modules/indeterminate/indeterminate';
+
 define([
-	'angular',
-	'angular.route',
-	'angular.ui',
-	'angular.ui.utils',
-	'htmlSortable'
-], function (angular) {
+	'html5sortable/src/html.sortable.angular'
+], function () {
 
 	'use strict';
 
