@@ -24,7 +24,7 @@ module.exports = {
   },
 
   resolve: {
-    modulesDirectories: ["node_modules", "bower_components/Rx/dist"],
+    modulesDirectories: ["node_modules", "node_modules/rx/dist"],
     extensions: ['', '.js'],
     root: path.join(__dirname, "src")
   },

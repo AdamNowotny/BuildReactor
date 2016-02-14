@@ -1,8 +1,0 @@
-{
-  "name": "BuildReactor",
-  "description": "Developer notifications and dashboard",
-  "version": "0.12.1",
-  "dependencies": {
-    "Rx": "~2.3.4"
-  }
-}

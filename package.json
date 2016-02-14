@@ -39,7 +39,8 @@
     "font-awesome": "^4.5.0",
     "html5sortable": "^0.3.1",
     "jquery": "^2.2.0",
-    "mout": "^0.11.1"
+    "mout": "^0.11.1",
+    "rx": "^2.3.4"
   },
   "devDependencies": {
     "angular-mocks": "^1.5.0",
