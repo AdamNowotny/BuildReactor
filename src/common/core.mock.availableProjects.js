@@ -2,7 +2,6 @@ define(function () {
 
 	'use strict';
 
-
 	return {
 		projects: {
 			primaryView: 'All',

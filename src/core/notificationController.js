@@ -65,7 +65,7 @@ define([
 			}
 
 			function createChangesMessage(changes) {
-				return !changes ? message : message + changes.reduce(function (agg, change, i) {
+				return changes ? message + changes.reduce(function (agg, change, i) {
 					if (i === 4) {
 						return agg + ', ...';
 					}
@@ -73,7 +73,7 @@ define([
 						return agg;
 					}
 					return agg ? agg + ', ' + change.name : ' by ' + change.name;
-				}, '');
+				}, '') : message;
 			}
 
 			var info = {

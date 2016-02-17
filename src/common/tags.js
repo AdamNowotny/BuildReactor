@@ -4,7 +4,7 @@ define(function () {
 
 	var contains = function (tagName, tags) {
 		return tags && tags.reduce(function (agg, value) {
-			return agg || value.name === tagName; 
+			return agg || value.name === tagName;
 		}, false);
 	};
 

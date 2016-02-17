@@ -245,7 +245,6 @@ define([
 				source: 'service'
 			});
 
-
 			expect(window.Notification).toHaveBeenCalledWith(
 				'service', {
 					icon: 'src/core/services/test/icon.png',

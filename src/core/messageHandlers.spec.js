@@ -55,7 +55,6 @@ define([
 			return port;
 		}
 
-
 		describe('messages', function () {
 
 			it('should handle availableServices', function () {

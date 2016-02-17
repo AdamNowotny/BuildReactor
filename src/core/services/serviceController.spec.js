@@ -70,7 +70,6 @@ function (controller, Rx, serviceLoader, mixIn) {
 				expect(CustomBuildService.prototype.start).not.toHaveBeenCalled();
 			});
 
-
 			it('should subscribe to service events', function () {
 				scheduler.scheduleAbsolute(300, function () {
 					controller.start(Rx.Observable.returnValue([settings]));

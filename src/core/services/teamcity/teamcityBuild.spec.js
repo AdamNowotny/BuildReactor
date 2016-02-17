@@ -81,7 +81,6 @@ define([
 			expect(request.json.calls[0].args[0].password).toBe('password');
 		});
 
-
 		it('should parse response and return current state', function () {
 			build.update().subscribe(function (state) {
 				expect(state.id).toBe('build_id');

@@ -43,15 +43,14 @@ define([
 			password: this.settings.password,
 			parser: function (buildTypesJson) {
 				return {
-					items: !buildTypesJson.buildType ? [] :
-						buildTypesJson.buildType.map(function (d, i) {
+					items: buildTypesJson.buildType ? buildTypesJson.buildType.map(function (d, i) {
 							return {
 								id: d.id,
 								name: d.name,
 								group: d.projectName,
 								isDisabled: false
 							};
-						})
+						}) : []
 				};
 			}
 

@@ -259,6 +259,5 @@ define([
 			expect(changes.messages).toHaveElements(onNext(300, newSettings));
 		});
 
-
 	});
 });

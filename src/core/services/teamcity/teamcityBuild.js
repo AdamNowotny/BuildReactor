@@ -20,7 +20,7 @@ define([
 					message: 'No build for branch [' + self.settings.branch + ']'
 				};
 			}
-			var isRunning = !!buildListResponse.build[0].running;
+			var isRunning = Boolean(buildListResponse.build[0].running);
 			var lastCompleted = buildListResponse.build[isRunning ? 1 : 0];
 			return buildDetailsRequest(self, lastCompleted.href).selectMany(function (buildDetailsResponse) {
 				var state = createState(self.id, buildDetailsResponse);

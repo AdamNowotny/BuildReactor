@@ -69,7 +69,7 @@ define([
 		var text = '';
 		if (!initialized || offlineBuildsCount) {
 			color = colors.grey;
-			text = failedBuildsCount ? failedBuildsCount.toString() : ' ';			
+			text = failedBuildsCount ? failedBuildsCount.toString() : ' ';
 		} else if (failedBuildsCount) {
 			color = colors.red;
 			text = failedBuildsCount.toString();

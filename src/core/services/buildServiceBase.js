@@ -124,7 +124,7 @@ define([
 	};
 
 	var getUniqueChanges = function (allChanges) {
-		return !allChanges ? [] : allChanges.reduce(function (changes, value) {
+		return allChanges ? allChanges.reduce(function (changes, value) {
 			var alreadyAdded = changes.filter(function (change) {
 				return change.name === value.name;
 			}).length > 0;
@@ -132,7 +132,7 @@ define([
 				changes.push(value);
 			}
 			return changes;
-		}, []);
+		}, []) : [];
 	};
 
 	var start = function () {

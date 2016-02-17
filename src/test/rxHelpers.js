@@ -5,7 +5,6 @@ define([
 
 	'use strict';
 
-
 	beforeEach(function () {
 		this.addMatchers({
 			toHaveEqualElements: function () {

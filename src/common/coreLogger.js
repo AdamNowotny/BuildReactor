@@ -1,3 +1,5 @@
+/* eslint no-alert: 0 */
+
 define([
 	'common/core',
 	'mout/string/interpolate'
@@ -41,6 +43,7 @@ define([
 		window.onerror = function (message, url, line) {
 			var displayMessage = interpolate('Unhandled error. message=[{{0}}], url=[{{1}}], line=[{{2}}]', [message, url, line]);
 			window.console.error(displayMessage);
+			
 			alert(displayMessage);
 			return false; // don't suppress default handling
 		};

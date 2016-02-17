@@ -79,9 +79,9 @@ define([
 					isRunning: $(d).attr('activity') === 'Building',
 					isWaiting: status === 'Pending',
 					tags: [],
-					changes: !breakers ? [] : breakers.split(', ').map(function (breaker) {
+					changes: breakers ? breakers.split(', ').map(function (breaker) {
 						return { name: breaker };
-					})
+					}) : []
 				};
 				if (status in { 'Success': 1, 'Failure': 1, 'Exception': 1 }) {
 					state.isBroken = status in { 'Failure': 1, 'Exception': 1 };

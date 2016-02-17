@@ -35,11 +35,10 @@ define([
 				var calculateFullWidth = function (config, items) {
 					if (config.fullWidthGroups) {
 						return '100%';
-					} else {
-						var columnWidth = 100 / config.columns;
-						var allColumnsWidth = columnWidth * Math.min(items.length, config.columns);
-						return allColumnsWidth + '%';
 					}
+					var columnWidth = 100 / config.columns;
+					var allColumnsWidth = columnWidth * Math.min(items.length, config.columns);
+					return allColumnsWidth + '%';
 				};
 
 				var calculateIsNewRow = function (config, items) {

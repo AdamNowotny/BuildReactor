@@ -137,7 +137,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 						tags: [],
 						changes: []
 					};
-				}; 
+				};
 
 				expect(service.latestBuildStates['CruiseControl.NET']).toEqual(getDefaultState('CruiseControl.NET'));
 			});
@@ -367,7 +367,6 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 			it('should push buildFixed if build was fixed', function () {
 				oldState.isBroken = true;
 				newState.isBroken = false;
-
 
 				service.updateAll().subscribe();
 

@@ -3,7 +3,8 @@ define([
 	'common/chromeApi',
 	'rx',
 	'test/rxHelpers',
-	'rx.binding'
+	'rx.binding',
+	'rx.testing'
 ], function (core, chromeApi, Rx) {
 
 	'use strict';

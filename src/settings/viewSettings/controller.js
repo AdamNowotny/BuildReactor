@@ -20,7 +20,7 @@ define([
 			});
 		});
 
-		$scope.save =  function (config) {
+		$scope.save = function (config) {
 			if (config.columns < 0) {
 				config.columns = 0;
 			}

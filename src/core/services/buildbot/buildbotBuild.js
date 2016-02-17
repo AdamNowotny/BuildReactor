@@ -23,7 +23,7 @@ define([
 				isBroken: contains(lastCompletedResponse.text, 'failed'),
 				isRunning: builderResponse.state === "building",
 				isDisabled: builderResponse.state === "offline",
-				changes: lastCompletedResponse.blame.map(function (item) { 
+				changes: lastCompletedResponse.blame.map(function (item) {
 					return { name: item };
 				})
 			};

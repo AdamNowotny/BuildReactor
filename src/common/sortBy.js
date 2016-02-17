@@ -1,3 +1,5 @@
+/* eslint no-nested-ternary: 0 */
+
 define(function () {
 
 	'use strict';

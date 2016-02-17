@@ -80,7 +80,5 @@ define([
 			expect(changes.messages).not.toHaveElements(onNext(300, viewConfig));
 		});
 		
-
-
 	});
 });

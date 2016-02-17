@@ -26,7 +26,7 @@ define(function () {
 					changes: [{
 						name: 'Adam',
 						message: 'Sample commit message'
-					},{
+					}, {
 						name: 'Name2',
 						message: 'A really long commit message that will most likely be truncated'
 					}]
@@ -88,7 +88,7 @@ define(function () {
 					changes: [{
 						name: 'Name1',
 						message: 'Message1'
-					},{
+					}, {
 						name: 'Name2',
 						message: 'Message2'
 					}]

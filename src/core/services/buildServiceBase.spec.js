@@ -105,7 +105,7 @@ define([
 				tags: [],
 				changes: []
 			};
-		}; 
+		};
 
 		describe('activeProjects', function () {
 
@@ -290,9 +290,9 @@ define([
 					});
 
 					expect(result.messages).toHaveElementsMatchingAt(300, function (details) {
-						return details.error.name === 'AjaxError' &&
-							details.error.message === 'Ajax call failed' &&
-							details.error.url === 'http://example.com/';
+						return details.error.name === 'AjaxError'
+							&& details.error.message === 'Ajax call failed'
+							&& details.error.url === 'http://example.com/';
 					});
 				});
 
@@ -308,8 +308,8 @@ define([
 					});
 
 					expect(result.messages).toHaveElementsMatchingAt(300, function (details) {
-						return details.error.name === 'Error' &&
-							details.error.message === 'Function call failed';
+						return details.error.name === 'Error'
+							&& details.error.message === 'Function call failed';
 					});
 				});
 
@@ -516,7 +516,6 @@ define([
 
 					expect(result.messages[0].value.value.details.changes).toEqual([{ name: 'name1' }, { name: 'name2' }]);
 				});
-
 
 			});
 		});
