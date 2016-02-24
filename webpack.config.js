@@ -80,7 +80,7 @@ module.exports = {
           presets: ["es2015"]
         }
       },
-      { 
+      {
         test: /\.?css$/,
         loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
       },
@@ -94,10 +94,12 @@ module.exports = {
       },
       {
         test: /\.(ttf|eot|otf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "file?name=/fonts/[name].[ext]" },
+        loader: "file?name=/fonts/[name].[ext]"
+      },
       {
         test: /\.html$/,
-        loader: 'html'
+        exclude: /index\.html$/,
+        loader: `ngtemplate?relativeTo=${path.resolve(__dirname, 'src')}/!html`
       },
       {
         test: /jquery\.js$/,

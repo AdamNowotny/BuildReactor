@@ -1,4 +1,5 @@
 import 'angular-ui-bootstrap/src/tooltip/tooltip';
+import templateUrl from 'common/directives/build/build.html';
 
 define([
 	'common/directives/module',
@@ -13,7 +14,7 @@ define([
 			scope: {
 				build: '=buildInfo'
 			},
-			template: require('common/directives/build/build.html'),
+			templateUrl: templateUrl,
 			controller: function ($scope, $element, $attrs, $transclude) {
 
 				var commentChangeInterval = 7000;

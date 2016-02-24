@@ -1,4 +1,5 @@
 import 'html5sortable/src/html.sortable.angular';
+import template from 'settings/directives/sidebar/sidebar.html';
 
 define([
 	'settings/app',
@@ -15,7 +16,7 @@ define([
 				currentConfig: '=',
 				view: '='
 			},
-			template: require('settings/directives/sidebar/sidebar.html'),
+			templateUrl: template,
 			controller: function ($scope, $element, $attrs, $transclude) {
 
 				$scope.sortableCallback = function (startModel, destModel, start, end) {

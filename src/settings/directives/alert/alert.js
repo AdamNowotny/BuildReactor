@@ -1,3 +1,5 @@
+import template from 'settings/directives/alert/alert.html';
+
 define([
 	'settings/app'
 ], function (app) {
@@ -8,7 +10,7 @@ define([
 			scope: {
 				visible: '=show'
 			},
-			template: require('settings/directives/alert/alert.html'),
+			templateUrl: template,
 			controller: function ($scope, $element, $attrs, $transclude) {
 				$scope.$watch('visible', function (value) {
 					if (value === true) {

@@ -1,3 +1,5 @@
+import templateUrl from 'settings/configuration/directives/jsonEditor/jsonEditor.html';
+
 define([
     'settings/app',
     'angular'
@@ -9,7 +11,7 @@ define([
             scope: {
                 json: '='
             },
-            template: require('settings/configuration/directives/jsonEditor/jsonEditor.html'),
+            templateUrl: templateUrl,
             controller: function ($scope, $element, $attrs, $transclude) {
 
                 $scope.$watch('json', function (json) {

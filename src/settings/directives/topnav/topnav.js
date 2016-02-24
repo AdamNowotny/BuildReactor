@@ -1,5 +1,8 @@
 import "bootstrap/js/dropdown";
 import 'angular-ui-bootstrap';
+import template from 'settings/directives/topnav/topnav.html';
+import removeTemplate from 'settings/directives/topnav/removeModal.html';
+import renameTemplate from 'settings/directives/topnav/renameModal.html';
 
 define([
 	'settings/app',
@@ -15,7 +18,7 @@ define([
 				service: '=currentService',
 				showActions: '='
 			},
-			template: require('settings/directives/topnav/topnav.html'),
+			templateUrl: template,
 			controller: function ($scope, $element, $attrs, $transclude) {
 
 				$scope.$watch('service', function (selectedService) {
@@ -40,7 +43,7 @@ define([
 
 				$scope.remove = function () {
 					$uibModal.open({
-						template: require('settings/directives/topnav/removeModal.html'),
+						templateUrl: removeTemplate,
 						controller: 'RemoveModalCtrl',
 						scope: $scope,
 						resolve: {
@@ -56,7 +59,7 @@ define([
 
 				$scope.rename = function () {
 					$uibModal.open({
-						template: require('settings/directives/topnav/renameModal.html'),
+						templateUrl: renameTemplate,
 						controller: 'RenameModalCtrl',
 						resolve: {
 							serviceName: function () {

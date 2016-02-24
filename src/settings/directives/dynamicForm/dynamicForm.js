@@ -1,3 +1,5 @@
+import template from 'settings/directives/dynamicForm/dynamicForm.html';
+
 define([
 	'settings/app',
 	'angular'
@@ -10,7 +12,7 @@ define([
 				service: '=',
 				config: '='
 			},
-			template: require('settings/directives/dynamicForm/dynamicForm.html'),
+			templateUrl: template,
 			controller: function ($scope, $element, $attrs, $transclude) {
 				$scope.isDefined = angular.isDefined;
 

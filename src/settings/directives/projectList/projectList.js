@@ -2,6 +2,7 @@ import "bootstrap/js/collapse";
 import "bootstrap/js/transition";
 import 'angular-ui-utils/modules/highlight/highlight';
 import 'angular-ui-utils/modules/indeterminate/indeterminate';
+import template from 'settings/directives/projectList/projectList.html';
 
 define([
 	'settings/app',
@@ -69,7 +70,7 @@ define([
 				viewItems: '=',
 				filterQuery: '=filter'
 			},
-			template: require('settings/directives/projectList/projectList.html'),
+			templateUrl: template,
 			controller: function ($scope, $element, $attrs, $transclude) {
 				$scope.groups = null;
 				$scope.selected = [];

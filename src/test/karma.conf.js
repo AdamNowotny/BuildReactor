@@ -1,5 +1,6 @@
 var webpackConfig = require('../../webpack.config.js');
 webpackConfig.entry = {};
+webpackConfig.devtool = 'inline-source-map';
 
 module.exports = function (config) {
     'use strict';
@@ -8,16 +9,10 @@ module.exports = function (config) {
         basePath: '../..',
         frameworks: [ 'jasmine' ],
         files: [
-            'src/test/main.js',
-            'src/common/**/*.spec.js'
-        ],
-        exclude: [
-            'src/core/config/*',
-            'src/core/services/**/*'
+            'src/test/main.js'
         ],
         preprocessors: {
-          'src/test/main.js': [ 'webpack' ],
-          '**/*.spec.js': [ 'webpack' ]
+          'src/test/main.js': [ 'webpack', 'sourcemap' ]
         },
         // test results reporter to use
         // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'

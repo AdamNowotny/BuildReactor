@@ -1,3 +1,5 @@
+import template from 'settings/directives/serviceNamePanel/serviceNamePanel.html';
+
 define([
 	'settings/app',
 	'common/core'
@@ -9,7 +11,7 @@ define([
 			scope: {
 				active: '='
 			},
-			template: require('settings/directives/serviceNamePanel/serviceNamePanel.html'),
+			templateUrl: template,
 			controller: function ($scope, $element, $attrs, $transclude) {
 				$scope.serviceName = '';
 				

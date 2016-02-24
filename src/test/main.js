@@ -60,12 +60,10 @@ window.Notification = function () {
 // 	};
 // }
 
-// var testsContext;
-
 // require('rx.testing');
 // // require('babel-core/polyfill');
 // require('angular');
 // require('angular-mocks');
 
-// var testsContext = require.context("../common", true, /.spec.js$/);
-// testsContext.keys().forEach(testsContext);
+const testsContext = require.context("../common/directives", true, /.spec.js$/);
+testsContext.keys().forEach(testsContext);

@@ -1,9 +1,9 @@
+import angular from 'angular';
+import 'angular-mocks';
+
 define([
 	'common/directives/buildGroup/buildGroup',
-	'common/core',
-	'angularMocks',
-	'common/directives/buildGroup/buildGroup.html',
-	'common/directives/build/build.html'
+	'common/core'
 ], function (buildGroup, core) {
 	'use strict';
 
@@ -12,13 +12,11 @@ define([
 		var scope;
 		var element;
 
-		beforeEach(module(
-			'app.directives',
-			'src/common/directives/buildGroup/buildGroup.html',
-			'src/common/directives/build/build.html'
+		beforeEach(angular.mock.module(
+			'app.directives'
 		));
 
-		beforeEach(inject(function ($compile, $rootScope) {
+		beforeEach(angular.mock.inject(function ($compile, $rootScope) {
 			element = $compile('<build-group name="group.name" items="items"></build-group>')($rootScope);
 			$rootScope.$digest();
 			scope = element.isolateScope();

@@ -1,3 +1,5 @@
+import templateUrl from 'common/directives/buildList/buildList.html';
+
 define([
 	'common/directives/module',
 	'common/core',
@@ -10,7 +12,7 @@ define([
 		return {
 			restrict: 'E',
 			scope: {},
-			template: require('common/directives/buildList/buildList.html'),
+			templateUrl: templateUrl,
 			replace: true,
 			controller: function ($scope, $element, $attrs, $transclude) {
 

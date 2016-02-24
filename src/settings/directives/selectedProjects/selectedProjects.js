@@ -1,4 +1,5 @@
 import 'html5sortable/src/html.sortable.angular';
+import template from 'settings/directives/selectedProjects/selectedProjects.html';
 
 define([
 	'settings/app',
@@ -12,7 +13,7 @@ define([
 				projects: '=',
 				serviceName: '@'
 			},
-			template: require('settings/directives/selectedProjects/selectedProjects.html'),
+			templateUrl: template,
 			controller: function ($scope, $element, $attrs, $transclude) {
 
 				$scope.sortableCallback = function (startModel, destModel, start, end) {

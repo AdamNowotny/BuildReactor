@@ -1,3 +1,5 @@
+import template from 'settings/directives/viewSelection/viewSelection.html';
+
 define([
 	'settings/app'
 ], function (app) {
@@ -9,7 +11,7 @@ define([
 				views: '=',
 				selected: '='
 			},
-			template: require('settings/directives/viewSelection/viewSelection.html')
+			templateUrl: template
 		};
 	});
 });

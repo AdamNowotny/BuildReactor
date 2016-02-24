@@ -1,3 +1,5 @@
+import template from 'settings/directives/thumbnails/thumbnails.html';
+
 define([
 	'settings/app'
 ], function (app) {
@@ -9,7 +11,7 @@ define([
 				serviceTypes: '=',
 				selected: '='
 			},
-			template: require('settings/directives/thumbnails/thumbnails.html'),
+			templateUrl: template,
 			controller: function ($scope, $element, $attrs, $transclude) {
 				$scope.select = function (serviceTypeId) {
 					$scope.selected = serviceTypeId;

@@ -1,11 +1,9 @@
+import angular from 'angular';
+import 'angular-mocks';
+
 define([
 	'common/directives/service/service',
-	'angular',
-	'angularMocks',
-	'common/directives/service/service.html',
-	'common/directives/buildGroup/buildGroup.html',
-	'common/directives/build/build.html'
-], function (service, angular) {
+], function (service) {
 	'use strict';
 
 	describe('service', function () {
@@ -13,14 +11,11 @@ define([
 		var scope;
 		var element;
 
-		beforeEach(module(
-			'app.directives',
-			'src/common/directives/service/service.html',
-			'src/common/directives/buildGroup/buildGroup.html',
-			'src/common/directives/build/build.html'
+		beforeEach(angular.mock.module(
+			'app.directives'
 		));
 
-		beforeEach(inject(function ($compile, $rootScope) {
+		beforeEach(angular.mock.inject(function ($compile, $rootScope) {
 			element = $compile('<service service-info="service"></service>')($rootScope);
 			$rootScope.$digest();
 			scope = element.isolateScope();

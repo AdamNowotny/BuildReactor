@@ -1,20 +1,22 @@
+import ngModule from 'common/directives/module';
+import 'common/directives/buildGroup/buildGroup';
+import templateUrl from 'common/directives/service/service.html';
+
 define([
-    'common/directives/module',
     'rx',
     'rx.binding',
-    'rx.coincidence',
-    'common/directives/buildGroup/buildGroup'
-], function (module, Rx) {
+    'rx.coincidence'
+], function (Rx) {
 
     'use strict';
 
-    module.directive('service', function () {
+    ngModule.directive('service', function () {
         return {
             restrict: 'E',
             scope: {
                 service: '=serviceInfo'
             },
-            template: require('common/directives/service/service.html'),
+            templateUrl: templateUrl,
             replace: true,
             controller: function ($scope, $element, $attrs, $transclude) {
                 $scope.$watch('service', function (service) {
