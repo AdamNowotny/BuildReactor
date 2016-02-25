@@ -1,3 +1,5 @@
+import angular from 'angular';
+
 define([
 	'settings/directives/sidebar/sidebar',
 	'common/core',
@@ -15,9 +17,9 @@ define([
 			spyOn(core, 'setOrder');
 		});
 
-		beforeEach(module('settings', 'src/settings/directives/sidebar/sidebar.html'));
+		beforeEach(angular.mock.module('settings', 'src/settings/directives/sidebar/sidebar.html'));
 
-		beforeEach(inject(function ($compile, $rootScope) {
+		beforeEach(angular.mock.inject(function ($compile, $rootScope) {
 			element = $compile('<section sidebar services="services" selected="selected" new="false"></section>')($rootScope);
 			$rootScope.$digest();
 			scope = element.isolateScope();

@@ -3,7 +3,7 @@ define([
 	'core/services/buildbot/buildbotBuild',
 	'core/services/request',
 	'rx',
-	'text!core/services/buildbot/builders_all.fixture.json',
+	'text!core/services/buildbot/builders_all.fixture.json'
 ], function (BuildService, BuildbotBuild, request, Rx, apiFixture) {
 
 	'use strict';

@@ -1,6 +1,4 @@
-"use strict";
-
-/* global __dirname: true */
+/* eslint-env node */
 var path = require("path");
 var webpack = require("webpack");
 var WebpackErrorNotificationPlugin = require('webpack-error-notification');

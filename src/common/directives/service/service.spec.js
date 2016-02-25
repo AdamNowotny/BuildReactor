@@ -2,7 +2,7 @@ import angular from 'angular';
 import 'angular-mocks';
 
 define([
-	'common/directives/service/service',
+	'common/directives/service/service'
 ], function (service) {
 	'use strict';
 
@@ -21,7 +21,7 @@ define([
 			scope = element.isolateScope();
 		}));
 
-		it('should default to empty groups if no builds', inject(function($compile, $rootScope) {
+		it('should default to empty groups if no builds', angular.mock.inject(function($compile, $rootScope) {
 			scope.service = {
 				name: 'service name',
 				items: []
@@ -32,7 +32,7 @@ define([
 			expect(scope.groups).toEqual([]);
 		}));
 
-		it('should group builds', inject(function($compile, $rootScope) {
+		it('should group builds', angular.mock.inject(function($compile, $rootScope) {
 			scope.service = {
 				name: 'service name',
 				items: [
@@ -47,7 +47,7 @@ define([
 				name: 'group1',
 				items: [
 					{ group: 'group1', name: 'build1' },
-					{ group: 'group1', name: 'build2' },
+					{ group: 'group1', name: 'build2' }
 				]
 			}, {
 				name: 'group2',
@@ -57,7 +57,7 @@ define([
 			}]);
 		}));
 
-		it('should default to empty group if not specified', inject(function($compile, $rootScope) {
+		it('should default to empty group if not specified', angular.mock.inject(function($compile, $rootScope) {
 			scope.service = {
 				name: 'service name',
 				items: [

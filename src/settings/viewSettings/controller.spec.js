@@ -1,3 +1,5 @@
+import angular from 'angular';
+
 define([
 	'settings/viewSettings/controller',
 	'common/core',
@@ -14,9 +16,9 @@ define([
 			spyOn(core, 'setViews');
 		});
 
-		beforeEach(module('settings'));
+		beforeEach(angular.mock.module('settings'));
 
-		beforeEach(inject(function ($controller, $compile, $rootScope) {
+		beforeEach(angular.mock.inject(function ($controller, $compile, $rootScope) {
 			scope = $rootScope.$new();
 			controller = $controller('ViewSettingsCtrl', { $scope: scope });
 		}));

@@ -5,7 +5,7 @@ define([
 	'rx',
 	'text!core/services/jenkins/availableBuilds.fixture.json',
 	'text!core/services/jenkins/availableBuilds.primaryView.fixture.json',
-	'text!core/services/jenkins/availableBuilds.incorrectUrl.fixture.json',
+	'text!core/services/jenkins/availableBuilds.incorrectUrl.fixture.json'
 ], function (BuildService, JenkinsBuild, request, Rx, availableBuildsFixture, viewFixture, availableBuildsIncorrectFixture) {
 
 	'use strict';

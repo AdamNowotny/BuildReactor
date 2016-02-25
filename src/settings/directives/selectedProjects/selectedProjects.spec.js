@@ -1,3 +1,5 @@
+import angular from 'angular';
+
 define([
 	'settings/directives/selectedProjects/selectedProjects',
 	'common/core',
@@ -15,9 +17,9 @@ define([
 			spyOn(core, 'setBuildOrder');
 		});
 
-		beforeEach(module('settings', 'src/settings/directives/selectedProjects/selectedProjects.html'));
+		beforeEach(angular.mock.module('settings', 'src/settings/directives/selectedProjects/selectedProjects.html'));
 
-		beforeEach(inject(function ($compile, $rootScope) {
+		beforeEach(angular.mock.inject(function ($compile, $rootScope) {
 			element = $compile('<section selected-projects projects="projects" service-name="service name"></section>')($rootScope);
 			$rootScope.$digest();
 			scope = element.isolateScope();

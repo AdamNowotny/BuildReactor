@@ -1,23 +1,14 @@
 {
+    "ecmaVersion": "6",
     "parser": "babel-eslint",
     "ecmaFeatures": {
-        "blockBindings": true
+        "impliedStrict": true
     },
     "env": {
         "es6": true,
         "browser": true,
-        "mocha": true
-    },
-    globals: {
-        "define": true,
-        "expect": true,
-        "inject": true,
         "jasmine": true,
-        "module": true,
-        "require": true,
-        "spyOn": true,
-        "runs": true,
-        "waitsFor": true
+        "amd": true
     },
     "extends": [
         "eslint:recommended"
@@ -124,7 +115,6 @@
         "block-spacing": 2,
         "brace-style": [2, "1tbs", { "allowSingleLine": true }],
 #        "camelcase": 2,
-        "comma-dangle": 1,
         "comma-spacing": 2,
         "comma-style": 2,
         "computed-property-spacing": 2,

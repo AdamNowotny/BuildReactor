@@ -1,3 +1,5 @@
+import angular from 'angular';
+
 define([
 	'settings/directives/dynamicForm/dynamicForm',
 	'settings/directives/dynamicForm/dynamicForm.html'
@@ -9,9 +11,9 @@ define([
 		var scope;
 		var element;
 
-		beforeEach(module('settings', 'src/settings/directives/dynamicForm/dynamicForm.html'));
+		beforeEach(angular.mock.module('settings', 'src/settings/directives/dynamicForm/dynamicForm.html'));
 
-		beforeEach(inject(function ($compile, $rootScope) {
+		beforeEach(angular.mock.inject(function ($compile, $rootScope) {
 			element = $compile('<section dynamic-form service="service" config="config"></section>')($rootScope);
 			$rootScope.$digest();
 			scope = element.isolateScope();

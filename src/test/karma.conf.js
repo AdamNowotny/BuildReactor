@@ -1,3 +1,4 @@
+/* eslint-env node */
 var webpackConfig = require('../../webpack.config.js');
 webpackConfig.entry = {};
 webpackConfig.devtool = 'inline-source-map';
