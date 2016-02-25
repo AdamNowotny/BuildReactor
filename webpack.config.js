@@ -31,10 +31,6 @@ module.exports = {
 
   plugins: [
     new WebpackErrorNotificationPlugin(/* strategy */),
-    new webpack.ProvidePlugin({
-        $: "jquery",
-        jQuery: "jquery"
-    }),
     new HtmlWebpackPlugin({
       template: 'settings/index.html',
       filename: 'settings.html',
@@ -104,14 +100,6 @@ module.exports = {
       {
         test: /jquery\.js$/,
         loader: 'expose?$!expose?jQuery'
-      },
-      {
-        test: /[\/]angular\.js$/,
-        loader: "exports?angular"
-      },
-      {
-        test: /[\/]html.sortable.angular\.js$/,
-        loader: "exports?angular.module('htmlSortable')"
       }
     ]
   },
