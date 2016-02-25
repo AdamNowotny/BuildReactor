@@ -1,3 +1,4 @@
+/* eslint no-console: 0 */
 /* eslint no-alert: 0 */
 
 define([

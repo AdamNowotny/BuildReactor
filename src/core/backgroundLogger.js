@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 define([
 	'core/services/serviceController',
 	'core/config/serviceConfiguration',
