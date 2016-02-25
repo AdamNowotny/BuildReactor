@@ -4,17 +4,17 @@ define([
 	'core/services/buildbot/buildbotBuild',
 	'mout/object/mixIn',
 	'common/joinUrl'
-], function (BuildServiceBase, request, BuildBotBuild, mixIn, joinUrl) {
+], function(BuildServiceBase, request, BuildBotBuild, mixIn, joinUrl) {
 
 	'use strict';
 
-	var BuildBotBuildService = function (settings) {
+	var BuildBotBuildService = function(settings) {
 		mixIn(this, new BuildServiceBase(settings, BuildBotBuildService.settings()));
 		this.Build = BuildBotBuild;
 		this.availableBuilds = availableBuilds;
 	};
 
-	BuildBotBuildService.settings = function () {
+	BuildBotBuildService.settings = function() {
 		return {
 			typeName: 'BuildBot',
 			baseUrl: 'buildbot',
@@ -33,7 +33,7 @@ define([
 		};
 	};
 
-	var availableBuilds = function () {
+	var availableBuilds = function() {
 		return request.json({
 			url: joinUrl(this.settings.url, 'json/builders'),
 			username: this.settings.username,

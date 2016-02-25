@@ -1,16 +1,16 @@
 /* global chrome: false */
-define(['common/chromeApi'], function (chromeApi) {
+define(['common/chromeApi'], function(chromeApi) {
 
 	'use strict';
 
-	describe('sendMessage', function () {
+	describe('sendMessage', function() {
 
-		var callback = function () {};
+		var callback = function() {};
 		var connectInfo = { name: 'message' };
 
-		var connectResponse = { onMessage: { addListener: function () {} } };
+		var connectResponse = { onMessage: { addListener: function() {} } };
 
-		beforeEach(function () {
+		beforeEach(function() {
 			spyOn(chrome.runtime, 'sendMessage');
 			spyOn(chrome.runtime.onMessage, 'addListener');
 			spyOn(chrome.runtime.onConnect, 'addListener');
@@ -21,7 +21,7 @@ define(['common/chromeApi'], function (chromeApi) {
 			spyOn(chrome.extension, 'connect').andReturn(connectResponse);
 		});
 
-		it('should use chrome.runtime for Chrome >= 26', function () {
+		it('should use chrome.runtime for Chrome >= 26', function() {
 			chromeApi.sendMessage('message', callback);
 			chromeApi.addMessageListener(callback);
 			chromeApi.addConnectListener(callback);
@@ -35,7 +35,7 @@ define(['common/chromeApi'], function (chromeApi) {
 			expect(apiConnectResponse).toBe(connectResponse);
 		});
 
-		it('should use chrome.extension for Chrome < 26', function () {
+		it('should use chrome.extension for Chrome < 26', function() {
 			spyOn(chrome, 'runtime').andReturn(null);
 
 			chromeApi.sendMessage('message', callback);
@@ -49,9 +49,9 @@ define(['common/chromeApi'], function (chromeApi) {
 			expect(chrome.extension.connect).toHaveBeenCalledWith(connectInfo);
 		});
 
-		describe('sendMessage', function () {
+		describe('sendMessage', function() {
 
-			it('should ignore callback if not specified', function () {
+			it('should ignore callback if not specified', function() {
 				chromeApi.sendMessage('message');
 			
 				expect(chrome.runtime.sendMessage).toHaveBeenCalledWith('message');
@@ -59,36 +59,36 @@ define(['common/chromeApi'], function (chromeApi) {
 
 		});
 
-		describe('isDashboardActive', function () {
+		describe('isDashboardActive', function() {
 
-			beforeEach(function () {
-				spyOn(chrome.extension, 'getURL').andCallFake(function (path) {
+			beforeEach(function() {
+				spyOn(chrome.extension, 'getURL').andCallFake(function(path) {
 					return 'chrome-extension://extension_id/' + path;
 				});
 			});
 
-			it('should return true if dashboard tab open', function () {
-				spyOn(chrome.tabs, 'query').andCallFake(function (queryInfo, callback) {
+			it('should return true if dashboard tab open', function() {
+				spyOn(chrome.tabs, 'query').andCallFake(function(queryInfo, callback) {
 					expect(queryInfo.url).toBe('chrome-extension://extension_id/dashboard.html');
 					callback([{}]);
 				});
 
 				var isActive = false;
-				chromeApi.isDashboardActive().subscribe(function (result) {
+				chromeApi.isDashboardActive().subscribe(function(result) {
 					isActive = result;
 				});
 
 				expect(isActive).toBe(true);
 			});
 			
-			it('should return false if dashboard tab closed', function () {
-				spyOn(chrome.tabs, 'query').andCallFake(function (queryInfo, callback) {
+			it('should return false if dashboard tab closed', function() {
+				spyOn(chrome.tabs, 'query').andCallFake(function(queryInfo, callback) {
 					expect(queryInfo.url).toBe('chrome-extension://extension_id/dashboard.html');
 					callback([]);
 				});
 
 				var isActive = false;
-				chromeApi.isDashboardActive().subscribe(function (result) {
+				chromeApi.isDashboardActive().subscribe(function(result) {
 					isActive = result;
 				});
 

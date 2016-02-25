@@ -1,15 +1,15 @@
 define([
 	'core/services/go/buildService'
-], function (BuildService) {
+], function(BuildService) {
 
 	'use strict';
 
-	describe('core/services/go/buildService', function () {
+	describe('core/services/go/buildService', function() {
 
 		var settings;
 		var service;
 
-		beforeEach(function () {
+		beforeEach(function() {
 			settings = {
 				typeName: 'GoCD',
 				baseUrl: 'go',
@@ -21,7 +21,7 @@ define([
 			service = new BuildService(settings);
 		});
 
-		it('should expose interface', function () {
+		it('should expose interface', function() {
 			expect(service.settings).toBe(settings);
 			expect(service.updateAll).toBeDefined();
 			expect(service.start).toBeDefined();
@@ -31,7 +31,7 @@ define([
 			expect(service.events).toBeDefined();
 		});
 
-		it('should define cctray xml location', function () {
+		it('should define cctray xml location', function() {
 			expect(service.cctrayLocation).toBe('cctray.xml');
 		});
 

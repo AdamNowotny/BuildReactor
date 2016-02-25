@@ -5,21 +5,21 @@ define([
 	'common/core',
 	'angularMocks',
 	'settings/directives/sidebar/sidebar.html'
-], function (sidebar, core) {
+], function(sidebar, core) {
 	'use strict';
 
-	describe('settings/directives/sidebar/sidebar', function () {
+	describe('settings/directives/sidebar/sidebar', function() {
 
 		var scope;
 		var element;
 
-		beforeEach(function () {
+		beforeEach(function() {
 			spyOn(core, 'setOrder');
 		});
 
 		beforeEach(angular.mock.module('settings', 'src/settings/directives/sidebar/sidebar.html'));
 
-		beforeEach(angular.mock.inject(function ($compile, $rootScope) {
+		beforeEach(angular.mock.inject(function($compile, $rootScope) {
 			element = $compile('<section sidebar services="services" selected="selected" new="false"></section>')($rootScope);
 			$rootScope.$digest();
 			scope = element.isolateScope();

@@ -6,17 +6,17 @@ define([
 	'common/joinUrl',
 	'common/sortBy',
 	'rx'
-], function (BuildServiceBase, request, BambooPlan, mixIn, joinUrl, sortBy, Rx) {
+], function(BuildServiceBase, request, BambooPlan, mixIn, joinUrl, sortBy, Rx) {
 
 	'use strict';
 
-	var BambooBuildService = function (settings) {
+	var BambooBuildService = function(settings) {
 		mixIn(this, new BuildServiceBase(settings, BambooBuildService.settings()));
 		this.Build = BambooPlan;
 		this.availableBuilds = availableBuilds;
 	};
 
-	BambooBuildService.settings = function () {
+	BambooBuildService.settings = function() {
 		return {
 			typeName: 'Atlassian Bamboo',
 			baseUrl: 'bamboo',
@@ -36,13 +36,13 @@ define([
 		};
 	};
 
-	var availableBuilds = function () {
+	var availableBuilds = function() {
 		var self = this;
 		return allProjects(self)
-			.selectMany(function (project) {
+			.selectMany(function(project) {
 				return allProjectPlans(self, project);
 			})
-			.select(function (plan) {
+			.select(function(plan) {
 				return {
 					id: plan.key,
 					name: plan.shortName,
@@ -51,7 +51,7 @@ define([
 				};
 			})
 			.toArray()
-			.select(function (plans) {
+			.select(function(plans) {
 				sortBy('id', plans);
 				return {
 					items: plans
@@ -59,21 +59,21 @@ define([
 			});
 	};
 
-	var projectsFromIndex = function (self, startIndex) {
+	var projectsFromIndex = function(self, startIndex) {
 		return sendRequest(self, 'rest/api/latest/project', {
 			expand: 'projects.project.plans.plan',
 			'start-index': startIndex
 		});
 	};
 
-	var projectPlansFromIndex = function (self, projectKey, startIndex) {
+	var projectPlansFromIndex = function(self, projectKey, startIndex) {
 		return sendRequest(self, 'rest/api/latest/project/' + projectKey, {
 			expand: 'plans.plan',
 			'start-index': startIndex
 		});
 	};
 
-	var sendRequest = function (self, urlPath, data) {
+	var sendRequest = function(self, urlPath, data) {
 		if (self.settings.username) {
 			data.os_authType = 'basic';
 		} else {
@@ -87,22 +87,22 @@ define([
 		});
 	};
 
-	var allProjects = function (self) {
-		return projectsFromIndex(self, 0).selectMany(function (response) {
+	var allProjects = function(self) {
+		return projectsFromIndex(self, 0).selectMany(function(response) {
 			var result = Rx.Observable.returnValue(response);
 			var pageSize = response.projects['max-result'];
 			var totalSize = response.projects['size'];
 			var pageIndexes = getPageIndexes(pageSize, totalSize);
-			var moreProjects = Rx.Observable.fromArray(pageIndexes).selectMany(function (index) {
+			var moreProjects = Rx.Observable.fromArray(pageIndexes).selectMany(function(index) {
 				return projectsFromIndex(self, index);
 			});
 			return Rx.Observable.returnValue(response).concat(moreProjects);
-		}).selectMany(function (projectResponse) {
+		}).selectMany(function(projectResponse) {
 			return Rx.Observable.fromArray(projectResponse.projects.project);
 		});
 	};
 
-	var getPageIndexes = function (pageSize, totalSize) {
+	var getPageIndexes = function(pageSize, totalSize) {
 		var pageIndexes = [];
 		for (var index = pageSize; index < totalSize; index += pageSize) {
 			pageIndexes.push(index);
@@ -110,13 +110,13 @@ define([
 		return pageIndexes;
 	};
 
-	var allProjectPlans = function (self, project) {
+	var allProjectPlans = function(self, project) {
 		var pageSize = project.plans['max-result'];
 		var totalSize = project.plans['size'];
 		var pageIndexes = getPageIndexes(pageSize, totalSize);
-		var morePlans = Rx.Observable.fromArray(pageIndexes).selectMany(function (index) {
+		var morePlans = Rx.Observable.fromArray(pageIndexes).selectMany(function(index) {
 			return projectPlansFromIndex(self, project.key, index);
-		}).selectMany(function (response) {
+		}).selectMany(function(response) {
 			return Rx.Observable.fromArray(response.plans.plan);
 		});
 		return Rx.Observable.fromArray(project.plans.plan).concat(morePlans);

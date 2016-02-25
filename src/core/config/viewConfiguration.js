@@ -3,20 +3,20 @@ define([
 	'core/config/localStore',
 	'core/config/viewConfigUpdater',
 	'rx.binding'
-], function (Rx, configStore, configUpdater) {
+], function(Rx, configStore, configUpdater) {
 
 	'use strict';
 
 	var key = 'views';
 	var changes = new Rx.BehaviorSubject(configStore.getItem(key));
 
-	var init = function () {
+	var init = function() {
 		var config = configUpdater.update(configStore.getItem(key));
 		configStore.setItem(key, config);
 		changes.onNext(config);
 	};
 
-	var save = function (config) {
+	var save = function(config) {
 		if (typeof config !== 'object' || config === null) {
 			throw new Error('view config has to be an object');
 		}

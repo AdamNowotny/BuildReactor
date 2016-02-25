@@ -1,14 +1,14 @@
 define([
 	'settings/app',
 	'common/core'
-], function (app, core) {
+], function(app, core) {
 	'use strict';
 
-	app.controller('ServiceSettingsCtrl', function ($scope, $location) {
+	app.controller('ServiceSettingsCtrl', function($scope, $location) {
 
 		var config;
 
-		var reset = function () {
+		var reset = function() {
 			$scope.projects = {
 				all: [],
 				selected: null
@@ -23,19 +23,19 @@ define([
 			$scope.filterQuery = '';
 		};
 
-		var getItemsForView = function (views, viewName) {
-			var view = views.filter(function (view) {
+		var getItemsForView = function(views, viewName) {
+			var view = views.filter(function(view) {
 				return view.name === viewName;
 			});
 			return view.length ? view[0].items : null;
 		};
 
-		var showError = function (errorResponse) {
+		var showError = function(errorResponse) {
 			reset();
 			$scope.projectsError = errorResponse;
 		};
 		
-		var showProjects = function (projects) {
+		var showProjects = function(projects) {
 			$scope.projectsError = null;
 			$scope.projects = {
 				all: projects.items,
@@ -47,11 +47,11 @@ define([
 			};
 		};
 		
-		$scope.show = function () {
+		$scope.show = function() {
 			reset();
 			$scope.isLoading = true;
-			core.availableProjects(config, function (response) {
-				$scope.$evalAsync(function () {
+			core.availableProjects(config, function(response) {
+				$scope.$evalAsync(function() {
 					$scope.isLoading = false;
 					if (response.error) {
 						showError(response.error);
@@ -62,26 +62,26 @@ define([
 			});
 		};
 
-		$scope.$watch('views.selected', function (viewName) {
+		$scope.$watch('views.selected', function(viewName) {
 			$scope.views.selectedItems = getItemsForView($scope.views.all, viewName);
 		});
 
-		$scope.save = function () {
+		$scope.save = function() {
 			core.saveService(config);
 			$scope.saving = true;
 			$scope.projects.selected = config.projects;
 			$location.path('/service/' + config.name);
 		};
 
-		$scope.$on('dynamicForm.changed', function (event, updatedConfig) {
+		$scope.$on('dynamicForm.changed', function(event, updatedConfig) {
 			config = updatedConfig;
 		});
 
-		$scope.$on('filterQuery.changed', function (event, query) {
+		$scope.$on('filterQuery.changed', function(event, query) {
 			$scope.filterQuery = query;
 		});
 
-		$scope.$on('projectList.change', function (event, selectedProjects) {
+		$scope.$on('projectList.change', function(event, selectedProjects) {
 			if (config) {
 				config.projects = selectedProjects;
 			}

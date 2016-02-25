@@ -3,17 +3,17 @@ import angular from 'angular';
 define([
 	'settings/directives/dynamicForm/dynamicForm',
 	'settings/directives/dynamicForm/dynamicForm.html'
-], function (sidebar) {
+], function(sidebar) {
 	'use strict';
 
-	describe('dynamicForm', function () {
+	describe('dynamicForm', function() {
 
 		var scope;
 		var element;
 
 		beforeEach(angular.mock.module('settings', 'src/settings/directives/dynamicForm/dynamicForm.html'));
 
-		beforeEach(angular.mock.inject(function ($compile, $rootScope) {
+		beforeEach(angular.mock.inject(function($compile, $rootScope) {
 			element = $compile('<section dynamic-form service="service" config="config"></section>')($rootScope);
 			$rootScope.$digest();
 			scope = element.isolateScope();
@@ -41,7 +41,7 @@ define([
 				url: ''
 			};
 			var events = [];
-			scope.$on('dynamicForm.changed', function (event, config) {
+			scope.$on('dynamicForm.changed', function(event, config) {
 				events.push(config);
 			});
 

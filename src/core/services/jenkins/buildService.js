@@ -5,17 +5,17 @@ define([
 	'mout/object/mixIn',
 	'common/joinUrl',
 	'rx'
-], function (BuildServiceBase, request, JenkinsBuild, mixIn, joinUrl, Rx) {
+], function(BuildServiceBase, request, JenkinsBuild, mixIn, joinUrl, Rx) {
 
 	'use strict';
 
-	var JenkinsBuildService = function (settings) {
+	var JenkinsBuildService = function(settings) {
 		mixIn(this, new BuildServiceBase(settings, JenkinsBuildService.settings()));
 		this.Build = JenkinsBuild;
 		this.availableBuilds = availableBuilds;
 	};
 
-	JenkinsBuildService.settings = function () {
+	JenkinsBuildService.settings = function() {
 		return {
 			typeName: 'Jenkins',
 			baseUrl: 'jenkins',
@@ -34,16 +34,16 @@ define([
 		};
 	};
 
-	var availableBuilds = function () {
+	var availableBuilds = function() {
 		var self = this;
 		return request.json({
 			url: joinUrl(this.settings.url, 'api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]'),
 			username: self.settings.username,
 			password: self.settings.password
-		}).selectMany(function (response) {
+		}).selectMany(function(response) {
 			return Rx.Observable.zip(
 				allViewDetails(response.views, response.primaryView.name, self.settings),
-				function (views) {
+				function(views) {
 					return {
 						items: response.jobs.map(jobDetails),
 						primaryView: response.primaryView.name,
@@ -64,14 +64,14 @@ define([
 	}
 
 	function allViewDetails(views, primaryView, settings) {
-		var updatedViews = views.map(function (view) {
+		var updatedViews = views.map(function(view) {
 			return {
 				name: view.name,
 				url: (view.name === primaryView && view.url.indexOf(primaryView) < 0) ?
 					joinUrl(view.url, 'view/' + primaryView) : view.url
 			};
 		});
-		return Rx.Observable.zipArray(updatedViews.map(function (view) {
+		return Rx.Observable.zipArray(updatedViews.map(function(view) {
 			return viewDetails(view, settings);
 		}));
 	}
@@ -82,10 +82,10 @@ define([
 			username: settings.username,
 			password: settings.password,
 			timeout: 90000
-		}).select(function (viewResponse) {
+		}).select(function(viewResponse) {
 			return {
 				name: view.name,
-				items: viewResponse.jobs.map(function (job) {
+				items: viewResponse.jobs.map(function(job) {
 					return job.name;
 				})
 			};

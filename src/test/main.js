@@ -1,51 +1,51 @@
 window.chrome = {
 	browserAction: {
-		setBadgeText: function () {},
-		setBadgeBackgroundColor: function () {}
+		setBadgeText: function() {},
+		setBadgeBackgroundColor: function() {}
 	},
 	tabs : {
-		create: function () {},
-		query: function (queryInfo, callback) {}
+		create: function() {},
+		query: function(queryInfo, callback) {}
 	},
 	runtime: {
-		sendMessage: function () {},
+		sendMessage: function() {},
 		onMessage: {
-			addListener: function () {}
+			addListener: function() {}
 		},
-		connect: function () {
+		connect: function() {
 			'use strict';
 			return {
 				onMessage: {
-					addListener: function () {}
+					addListener: function() {}
 				}
 			};
 		},
 		onConnect: {
-			addListener: function () {}
+			addListener: function() {}
 		}
 	},
 	extension: {
-		sendMessage: function () {},
+		sendMessage: function() {},
 		onMessage: {
-			addListener: function () {}
+			addListener: function() {}
 		},
 		onConnect: {
-			addListener: function () {}
+			addListener: function() {}
 		},
-		connect: function () {},
-		getURL: function (path) {}
+		connect: function() {},
+		getURL: function(path) {}
 	},
 	cookies: {
-		remove: function () {}
+		remove: function() {}
 	}
 };
 
-window.Notification = function () {
+window.Notification = function() {
 	'use strict';
 
 	return {
-		show: function () {},
-		close: function () {}
+		show: function() {},
+		close: function() {}
 	};
 };
 

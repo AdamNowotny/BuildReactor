@@ -5,10 +5,10 @@ import configurationTemplate from 'settings/configuration/view.html';
 
 define([
 	'settings/app'
-], function (app) {
+], function(app) {
 	'use strict';
 
-	return app.config(function ($routeProvider) {
+	return app.config(function($routeProvider) {
 		$routeProvider
 		.when('/service/:serviceName', {
 			templateUrl: serviceSettingsView,
@@ -39,10 +39,10 @@ define([
 		.otherwise({
 			redirectTo: '/new'
 		});
-	}).config(function ($locationProvider) {
+	}).config(function($locationProvider) {
 		$locationProvider.html5Mode(false);
 	}).config([
-		'$compileProvider', function ($compileProvider)	{
+		'$compileProvider', function($compileProvider)	{
 			$compileProvider
 				.aHrefSanitizationWhitelist(/^\s*(https?|chrome-extension):/)
 				.imgSrcSanitizationWhitelist(/^\s*(chrome-extension):/);

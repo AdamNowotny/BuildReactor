@@ -4,17 +4,17 @@ define([
 	'core/services/request',
 	'rx',
 	'text!core/services/teamcity/buildTypes.fixture.json'
-], function (TeamCity, TeamcityBuild, request, Rx, buildTypesFixture) {
+], function(TeamCity, TeamcityBuild, request, Rx, buildTypesFixture) {
 
 	'use strict';
 
-	describe('core/services/teamcity/buildService', function () {
+	describe('core/services/teamcity/buildService', function() {
 
 		var settings;
 		var service;
 		var buildTypesJson;
 
-		beforeEach(function () {
+		beforeEach(function() {
 			buildTypesJson = JSON.parse(buildTypesFixture);
 			settings = {
 				typeName: 'TeamCity',
@@ -27,11 +27,11 @@ define([
 			service = new TeamCity(settings);
 		});
 
-		it('should set Build factory method', function () {
+		it('should set Build factory method', function() {
 			expect(service.Build).toBe(TeamcityBuild);
 		});
 
-		it('should expose interface', function () {
+		it('should expose interface', function() {
 			expect(service.settings).toBe(settings);
 			expect(service.updateAll).toBeDefined();
 			expect(service.start).toBeDefined();
@@ -41,10 +41,10 @@ define([
 			expect(service.events).toBeDefined();
 		});
 
-		describe('availableBuilds', function () {
+		describe('availableBuilds', function() {
 
-			it('should modify url for guest user', function () {
-				spyOn(request, 'json').andCallFake(function (options) {
+			it('should modify url for guest user', function() {
+				spyOn(request, 'json').andCallFake(function(options) {
 					expect(options.username).not.toBeDefined();
 					expect(options.password).not.toBeDefined();
 					expect(options.url).toBe('http://example.com/guestAuth/app/rest/buildTypes');
@@ -55,10 +55,10 @@ define([
 				expect(request.json).toHaveBeenCalled();
 			});
 
-			it('should modify url if username and password specified', function () {
+			it('should modify url if username and password specified', function() {
 				settings.username = 'USERNAME';
 				settings.password = 'PASSWORD';
-				spyOn(request, 'json').andCallFake(function (options) {
+				spyOn(request, 'json').andCallFake(function(options) {
 					expect(options.username).toBe('USERNAME');
 					expect(options.password).toBe('PASSWORD');
 					expect(options.url).toBe('http://example.com/httpAuth/app/rest/buildTypes');
@@ -69,15 +69,15 @@ define([
 				expect(request.json).toHaveBeenCalled();
 			});
 
-			it('should return available builds', function () {
+			it('should return available builds', function() {
 				var builds = Rx.Observable.returnValue(buildTypesJson);
 				spyOn(request, 'json').andReturn(builds);
 
 				expect(service.availableBuilds()).toBe(builds);
 			});
 
-			it('should parse response', function () {
-				spyOn(request, 'json').andCallFake(function (options) {
+			it('should parse response', function() {
+				spyOn(request, 'json').andCallFake(function(options) {
 					var response = options.parser(buildTypesJson);
 					var projects = response.items;
 					expect(projects[0].id).toBe('bt297');

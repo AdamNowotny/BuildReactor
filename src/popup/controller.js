@@ -1,15 +1,15 @@
 define([
 	'popup/app',
 	'common/core'
-], function (app, core) {
+], function(app, core) {
 	'use strict';
 
-	app.controller('PopupCtrl', function ($scope) {
+	app.controller('PopupCtrl', function($scope) {
 
 		$scope.navbarStyle = 'navbar-inverse';
 		
-		core.views.subscribe(function (config) {
-			$scope.$evalAsync(function () {
+		core.views.subscribe(function(config) {
+			$scope.$evalAsync(function() {
 				$scope.viewConfig = config;
 				$scope.navbarStyle = (config.theme === 'light') ? 'navbar-default' : 'navbar-inverse';
 			});

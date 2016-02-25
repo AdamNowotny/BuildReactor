@@ -1,7 +1,7 @@
 /* global chrome: false */
 define([
 	'core/services/serviceController'
-], function (serviceController) {
+], function(serviceController) {
 	
 	'use strict';
 
@@ -16,41 +16,41 @@ define([
 		var failedBuildsCount = 0;
 		var offlineBuildsCount = 0;
 		var eventHandlers = {
-			'servicesInitializing': function () {
+			'servicesInitializing': function() {
 				servicesStarted = false;
 				failedBuildsCount = 0;
 				offlineBuildsCount = 0;
 				updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
 			},
-			'servicesInitialized': function () {
+			'servicesInitialized': function() {
 				servicesStarted = true;
 				updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
 			},
-			'buildBroken': function (event) {
+			'buildBroken': function(event) {
 				if (event.details && event.details.isDisabled) {
 					return;
 				}
 				failedBuildsCount++;
 				updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
 			},
-			'buildFixed': function (event) {
+			'buildFixed': function(event) {
 				if (event.details && event.details.isDisabled) {
 					return;
 				}
 				failedBuildsCount = Math.max(failedBuildsCount - 1, 0);
 				updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
 			},
-			'buildOffline': function () {
+			'buildOffline': function() {
 				offlineBuildsCount++;
 				updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
 			},
-			'buildOnline': function () {
+			'buildOnline': function() {
 				offlineBuildsCount--;
 				updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
 			}
 		};
 		updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
-		return serviceController.events.doAction(function (event) {
+		return serviceController.events.doAction(function(event) {
 			var handler = eventHandlers[event.eventName];
 			if (handler) {
 				handler(event);

@@ -24,10 +24,6 @@
 
         # modify recommended rules
         "no-unused-vars": [1, {"vars": "all", "args": "none"}],
-        "no-extra-parens": [2, "functions"],
-
-        # possible errors
-        "no-unexpected-multiline": 2,
 
         # best practices
         "accessor-pairs": 2,
@@ -44,7 +40,6 @@
         "no-caller": 2,
         "no-div-regex": 2,
         "no-else-return": 1,
-        "no-empty-label": 2,
         "no-empty-pattern": 2,
         "no-eq-null": 2,
         "no-eval": 2,
@@ -86,31 +81,29 @@
         "yoda": 2,
 
         # strict
-        "strict": [1, "global"],
+        "strict": [1, "never"],
 
         # variables
-        "init-declarations": [1, "always"],
-        "no-catch-shadow": 2,
-        "no-label-var": 2,
+        "no-shadow": 1,
         "no-shadow-restricted-names": 2,
-#        "no-shadow": 1,
         "no-undef-init": 2,
         "no-undefined": 1,
         "no-use-before-define": 1,
 
         # node and commonjs
         "callback-return": 2,
-        "global-require": 1,
+        "global-require": 2,
         "handle-callback-err": 2,
         "no-mixed-requires": 2,
         "no-new-require": 2,
         "no-path-concat": 2,
         "no-process-exit": 2,
+        "no-restricted-imports": 2,
         "no-restricted-modules": 2,
         "no-sync": 2,
 
         # stylistic issues
-        "array-bracket-spacing": 1,
+        "array-bracket-spacing": 2,
         "block-spacing": 2,
         "brace-style": [2, "1tbs", { "allowSingleLine": true }],
 #        "camelcase": 2,
@@ -153,7 +146,6 @@
         "space-before-function-paren": [1, "never"],
         "space-in-parens": 2,
         "space-infix-ops": 2,
-        "space-return-throw-case": 2,
         "space-unary-ops": 2,
         "spaced-comment": 2,
         "wrap-regex": 2,

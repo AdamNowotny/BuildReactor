@@ -9,16 +9,16 @@ define([
 		'jquery',
 		'rx.aggregates'
 	],
-	function (BuildService, BambooPlan, Rx, request, projectsFixture, projects2Fixture, projects3Fixture, $) {
+	function(BuildService, BambooPlan, Rx, request, projectsFixture, projects2Fixture, projects3Fixture, $) {
 
 		'use strict';
 
-		describe('core/services/bamboo/BuildService', function () {
+		describe('core/services/bamboo/BuildService', function() {
 
 			var service;
 			var settings;
 
-			beforeEach(function () {
+			beforeEach(function() {
 				settings = {
 					name: 'My Bamboo CI',
 					username: 'username',
@@ -30,7 +30,7 @@ define([
 				service = new BuildService(settings);
 			});
 
-			it('should expose interface', function () {
+			it('should expose interface', function() {
 				expect(service.settings).toBe(settings);
 				expect(service.updateAll).toBeDefined();
 				expect(service.start).toBeDefined();
@@ -40,15 +40,15 @@ define([
 				expect(service.events).toBeDefined();
 			});
 
-			describe('availableBuilds', function () {
+			describe('availableBuilds', function() {
 
 				var projectsJson, projectsJson2, projectsJson3;
 
-				beforeEach(function () {
+				beforeEach(function() {
 					projectsJson = JSON.parse(projectsFixture);
 					projectsJson2 = JSON.parse(projects2Fixture);
 					projectsJson3 = JSON.parse(projects3Fixture);
-					spyOn(request, 'json').andCallFake(function (options) {
+					spyOn(request, 'json').andCallFake(function(options) {
 						switch (options.url + '?' + $.param(options.data)) {
 						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=0&os_authType=basic':
 						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=0':
@@ -65,8 +65,8 @@ define([
 					});
 				});
 
-				it('should pass options to request', function () {
-					request.json.andCallFake(function (options) {
+				it('should pass options to request', function() {
+					request.json.andCallFake(function(options) {
 						expect(options.username).toBe(settings.username);
 						expect(options.password).toBe(settings.password);
 						expect(options.url).toBe('http://example.com/rest/api/latest/project');
@@ -79,10 +79,10 @@ define([
 					expect(request.json).toHaveBeenCalled();
 				});
 
-				it('should set authType to guest when no credentials specified', function () {
+				it('should set authType to guest when no credentials specified', function() {
 					settings.username = null;
 					settings.password = null;
-					request.json.andCallFake(function (options) {
+					request.json.andCallFake(function(options) {
 						expect(options.data).toEqual({
 							expand: 'projects.project.plans.plan',
 							'start-index': 0,
@@ -96,12 +96,12 @@ define([
 					expect(request.json).toHaveBeenCalled();
 				});
 
-				it('should parse plans', function () {
+				it('should parse plans', function() {
 					projectsJson.projects.size = 1;
 					projectsJson.projects['max-result'] = 1;
 
 					var plans;
-					service.availableBuilds().subscribe(function (d) {
+					service.availableBuilds().subscribe(function(d) {
 						plans = d;
 					});
 
@@ -112,12 +112,12 @@ define([
 					expect(plans.items[0].isDisabled).toBe(false);
 				});
 
-				it('should parse plans when multiple requests for projects required', function () {
+				it('should parse plans when multiple requests for projects required', function() {
 					projectsJson.projects.size = 2;
 					projectsJson.projects['max-result'] = 1;
 
 					var plans;
-					service.availableBuilds().subscribe(function (d) {
+					service.availableBuilds().subscribe(function(d) {
 						plans = d;
 					});
 
@@ -128,12 +128,12 @@ define([
 					expect(plans.items[5].isDisabled).toBe(false);
 				});
 
-				it('should parse plans when multiple requests for plans within a project required', function () {
+				it('should parse plans when multiple requests for plans within a project required', function() {
 					projectsJson.projects.project[0].plans.size = 4;
 					projectsJson.projects.project[0].plans['max-result'] = 3;
 
 					var plans;
-					service.availableBuilds().subscribe(function (d) {
+					service.availableBuilds().subscribe(function(d) {
 						plans = d;
 					});
 

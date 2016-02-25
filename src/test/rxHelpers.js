@@ -1,21 +1,21 @@
 define([
 	'mout/object/deepMatches',
 	'mout/array/removeAll'
-], function (deepMatches, removeAll) {
+], function(deepMatches, removeAll) {
 
 	'use strict';
 
-	beforeEach(function () {
+	beforeEach(function() {
 		this.addMatchers({
-			toHaveEqualElements: function () {
+			toHaveEqualElements: function() {
 				var expected = Array.prototype.slice.call(arguments);
 				return areAllElementsEqual(expected, this.actual);
 			},
-			toHaveElements: function () {
+			toHaveElements: function() {
 				var expected = Array.prototype.slice.call(arguments);
 				return hasElements(expected, this.actual);
 			},
-			toHaveElementsMatchingAt: function (time, matcher) {
+			toHaveElementsMatchingAt: function(time, matcher) {
 				var i, found = 0;
 				for (i = 0; i < this.actual.length; i++) {
 					try {
@@ -28,15 +28,15 @@ define([
 				}
 				return found > 0;
 			},
-			toHaveElementsAtTimes: function () {
+			toHaveElementsAtTimes: function() {
 				var expectedTimes = Array.prototype.slice.call(arguments);
-				var actualTimes = this.actual.map(function (value) {
+				var actualTimes = this.actual.map(function(value) {
 					return value.time;
 				});
 				removeAll(actualTimes, expectedTimes);
 				return actualTimes.length === 0;
 			},
-			toHaveEvent: function (eventName, expectedCount) {
+			toHaveEvent: function(eventName, expectedCount) {
 				var i, times = 0;
 				for (i = 0; i < this.actual.length; i++) {
 					if (this.actual[i].value.value.eventName === eventName) {
@@ -45,7 +45,7 @@ define([
 				}
 				return expectedCount ? times === expectedCount : times > 0;
 			},
-			toHaveEventBefore: function (time, eventName) {
+			toHaveEventBefore: function(time, eventName) {
 				var i;
 				for (i = 0; i < this.actual.length; i++) {
 					var current = this.actual[i];

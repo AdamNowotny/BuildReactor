@@ -4,29 +4,29 @@ define([
     'core/config/serviceConfigUpdater',
     'common/arrayEquals',
     'rx.binding'
-], function (Rx, configStore, configUpdater, arrayEquals) {
+], function(Rx, configStore, configUpdater, arrayEquals) {
 
     'use strict';
 
     var key = 'services';
     var changes = new Rx.BehaviorSubject(configStore.getItem(key));
 
-    var init = function () {
+    var init = function() {
         var config = configUpdater.update(configStore.getItem(key));
         configStore.setItem(key, config);
         changes.onNext(config);
     };
 
-    var setOrder = function (serviceNames) {
+    var setOrder = function(serviceNames) {
         var oldConfig = configStore.getItem(key);
         if (oldConfig.length !== serviceNames.length) {
             throw { name: 'ArgumentInvalid', message: 'All services required'};
         }
-        var oldServiceNames = oldConfig.map(function (config) {
+        var oldServiceNames = oldConfig.map(function(config) {
             return config.name;
         });
-        var newConfigs = serviceNames.map(function (name) {
-            return oldConfig.filter(function (config) {
+        var newConfigs = serviceNames.map(function(name) {
+            return oldConfig.filter(function(config) {
                 return config.name === name;
             })[0];
         });
@@ -36,8 +36,8 @@ define([
         }
     };
 
-    var setBuildOrder = function (serviceName, builds) {
-        var newConfigs = configStore.getItem(key).map(function (serviceConfig) {
+    var setBuildOrder = function(serviceName, builds) {
+        var newConfigs = configStore.getItem(key).map(function(serviceConfig) {
             if (serviceConfig.name === serviceName) {
                 serviceConfig.projects = builds;
             }
@@ -47,8 +47,8 @@ define([
         changes.onNext(newConfigs);
     };
 
-    var enableService = function (serviceName) {
-        var newConfigs = configStore.getItem(key).map(function (config) {
+    var enableService = function(serviceName) {
+        var newConfigs = configStore.getItem(key).map(function(config) {
             if (config.name === serviceName) {
                 config.disabled = false;
             }
@@ -58,8 +58,8 @@ define([
         changes.onNext(newConfigs);
     };
 
-    var disableService = function (serviceName) {
-        var newConfigs = configStore.getItem(key).map(function (config) {
+    var disableService = function(serviceName) {
+        var newConfigs = configStore.getItem(key).map(function(config) {
             if (config.name === serviceName) {
                 config.disabled = true;
             }
@@ -69,16 +69,16 @@ define([
         changes.onNext(newConfigs);
     };
 
-    var removeService = function (serviceName) {
-        var newConfigs = configStore.getItem(key).filter(function (config) {
+    var removeService = function(serviceName) {
+        var newConfigs = configStore.getItem(key).filter(function(config) {
             return config.name !== serviceName;
         });
         configStore.setItem(key, newConfigs);
         changes.onNext(newConfigs);
     };
 
-    var renameService = function (oldName, newName) {
-        var newConfigs = configStore.getItem(key).map(function (config) {
+    var renameService = function(oldName, newName) {
+        var newConfigs = configStore.getItem(key).map(function(config) {
             if (config.name === oldName) {
                 config.name = newName;
             }
@@ -88,9 +88,9 @@ define([
         changes.onNext(newConfigs);
     };
 
-    var saveService = function (settings) {
+    var saveService = function(settings) {
         var isNew = true;
-        var newConfigs = configStore.getItem(key).map(function (config) {
+        var newConfigs = configStore.getItem(key).map(function(config) {
             if (config.name === settings.name) {
                 isNew = false;
                 return settings;
@@ -105,7 +105,7 @@ define([
         changes.onNext(newConfigs);
     };
 
-    var save = function (config) {
+    var save = function(config) {
         configStore.setItem(key, config);
         changes.onNext(config);
     };

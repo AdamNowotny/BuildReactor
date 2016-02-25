@@ -1,9 +1,9 @@
 /* global chrome: false */
-define(['rx'], function (Rx) {
+define(['rx'], function(Rx) {
 	
 	'use strict';
 
-	var runtimeOrExtension = function () {
+	var runtimeOrExtension = function() {
 		return chrome.runtime && chrome.runtime.sendMessage ? 'runtime' : 'extension';
 	};
 
@@ -30,7 +30,7 @@ define(['rx'], function (Rx) {
 			url: chrome.extension.getURL('dashboard.html')
 		};
 		var subject = new Rx.AsyncSubject();
-		chrome.tabs.query(queryInfo, function (tabs) {
+		chrome.tabs.query(queryInfo, function(tabs) {
 			subject.onNext(tabs.length > 0);
 			subject.onCompleted();
 		});

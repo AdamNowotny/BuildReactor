@@ -6,7 +6,7 @@ define([
 	'src/common/core.mock.views.js',
 	'rx',
 	'rx.time'
-], function (
+], function(
 	availableServicesResponse,
 	activeProjectsResponse,
 	availableProjectsResponse,
@@ -18,20 +18,20 @@ define([
 
 	var messages = new Rx.ReplaySubject(1);
 
-	var availableServices = function (callback) {
+	var availableServices = function(callback) {
 		callback(availableServicesResponse);
 	};
 
-	var availableProjects = function (settings, callback) {
+	var availableProjects = function(settings, callback) {
 		callback(availableProjectsResponse);
 	};
 
-	var log = function (parameters) {
+	var log = function(parameters) {
 		messages.onNext(parameters);
 	};
 
 	return {
-		init: function () {},
+		init: function() {},
 		availableServices: availableServices,
 		configurations: configurations,
 		views: views,

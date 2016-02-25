@@ -4,11 +4,11 @@ import 'common/directives/build/build';
 define([
 	'common/directives/module',
 	'common/core'
-], function (module, core) {
+], function(module, core) {
 
 	'use strict';
 
-	module.directive('buildGroup', function () {
+	module.directive('buildGroup', function() {
 		return {
 			restrict: 'E',
 			scope: {
@@ -16,12 +16,12 @@ define([
 				items: '='
 			},
 			templateUrl: 'common/directives/buildGroup/buildGroup.html',
-			controller: function ($scope, $element, $attrs, $transclude) {
+			controller: function($scope, $element, $attrs, $transclude) {
 
 				$scope.fullWidth = '100%';
 				$scope.itemWidth = '100%';
 
-				$scope.$watch('viewConfig', function (config) {
+				$scope.$watch('viewConfig', function(config) {
 					if (config && $scope.items) {
 						$scope.fullWidth = calculateFullWidth(config, $scope.items);
 						$scope.itemWidth = calculateWidth(config, $scope.items);
@@ -29,12 +29,12 @@ define([
 					}
 				});
 
-				var calculateWidth = function (config, items) {
+				var calculateWidth = function(config, items) {
 					var width = 100 / Math.min(items.length, config.columns);
 					return width + '%';
 				};
 
-				var calculateFullWidth = function (config, items) {
+				var calculateFullWidth = function(config, items) {
 					if (config.fullWidthGroups) {
 						return '100%';
 					}
@@ -43,12 +43,12 @@ define([
 					return allColumnsWidth + '%';
 				};
 
-				var calculateIsNewRow = function (config, items) {
+				var calculateIsNewRow = function(config, items) {
 					return config.fullWidthGroups || items.length < config.columns;
 				};
 
-				core.views.subscribe(function (config) {
-					$scope.$evalAsync(function () {
+				core.views.subscribe(function(config) {
+					$scope.$evalAsync(function() {
 						$scope.viewConfig = config;
 					});
 				});

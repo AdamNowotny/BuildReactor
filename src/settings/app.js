@@ -7,7 +7,7 @@ import 'angular-ui-utils/modules/indeterminate/indeterminate';
 
 define([
 	'html5sortable/src/html.sortable.angular'
-], function () {
+], function() {
 
 	'use strict';
 

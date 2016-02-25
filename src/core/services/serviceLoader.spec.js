@@ -1,12 +1,12 @@
-define(['core/services/serviceLoader'], function (loader) {
+define(['core/services/serviceLoader'], function(loader) {
 
 	'use strict';
 	
-	describe('core/services/serviceLoader', function () {
+	describe('core/services/serviceLoader', function() {
 
-		it('should create service', function () {
-			var CustomBuildService = function () {};
-			define('core/services/test/buildService', function () {
+		it('should create service', function() {
+			var CustomBuildService = function() {};
+			define('core/services/test/buildService', function() {
 				return CustomBuildService;
 			});
 			var settings = {
@@ -14,14 +14,14 @@ define(['core/services/serviceLoader'], function (loader) {
 			};
 			var created = false;
 
-			runs(function () {
-				loader.load(settings).subscribe(function (service) {
+			runs(function() {
+				loader.load(settings).subscribe(function(service) {
 					expect(service).toBeDefined();
 					created = true;
 				});
 			});
 
-			waitsFor(function () {
+			waitsFor(function() {
 				return created;
 			});
 		});

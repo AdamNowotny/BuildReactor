@@ -4,10 +4,10 @@ import 'angular-mocks';
 define([
 	'common/directives/buildGroup/buildGroup',
 	'common/core'
-], function (buildGroup, core) {
+], function(buildGroup, core) {
 	'use strict';
 
-	describe('buildGroup', function () {
+	describe('buildGroup', function() {
 
 		var scope;
 		var element;
@@ -16,13 +16,13 @@ define([
 			'app.directives'
 		));
 
-		beforeEach(angular.mock.inject(function ($compile, $rootScope) {
+		beforeEach(angular.mock.inject(function($compile, $rootScope) {
 			element = $compile('<build-group name="group.name" items="items"></build-group>')($rootScope);
 			$rootScope.$digest();
 			scope = element.isolateScope();
 		}));
 
-		beforeEach(function () {
+		beforeEach(function() {
 			scope.items = [{
 				name: 'service1',
 				items: []
@@ -35,7 +35,7 @@ define([
 			}];
 		});
 
-		describe('itemWidth', function () {
+		describe('itemWidth', function() {
 
 			it('should default to 100% width without config', function() {
 				expect(scope.itemWidth).toEqual('100%');
@@ -71,7 +71,7 @@ define([
 
 		});
 
-		describe('fullWidth', function () {
+		describe('fullWidth', function() {
 
 			it('should default to full page width', function() {
 				expect(scope.fullWidth).toEqual('100%');

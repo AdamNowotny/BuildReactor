@@ -2,21 +2,21 @@ define([
 	'core/services/request',
 	'rx',
 	'common/joinUrl'
-], function (request, Rx, joinUrl) {
+], function(request, Rx, joinUrl) {
 	'use strict';
 
-	var JenkinsBuild = function (id, settings) {
+	var JenkinsBuild = function(id, settings) {
 		this.id = id;
 		this.settings = settings;
 		this.update = update;
 	};
 
-	var update = function () {
+	var update = function() {
 		var self = this;
-		return job(self).zip(lastCompletedBuild(self), function (jobResponse, lastCompletedResponse) {
+		return job(self).zip(lastCompletedBuild(self), function(jobResponse, lastCompletedResponse) {
 			var changeSetItems = [];
 			if (lastCompletedResponse.changeSets) {
-				changeSetItems = [].concat.apply([], lastCompletedResponse.changeSets.map(function (changeSet) {
+				changeSetItems = [].concat.apply([], lastCompletedResponse.changeSets.map(function(changeSet) {
 					return changeSet.items;
 				}));
 			} else if (lastCompletedResponse.changeSet) {
@@ -31,7 +31,7 @@ define([
 				isRunning: jobResponse.lastBuild.number !== jobResponse.lastCompletedBuild.number,
 				isDisabled: !jobResponse.buildable,
 				tags: [],
-				changes: changeSetItems.map(function (change) {
+				changes: changeSetItems.map(function(change) {
 					return {
 						name: change.author.fullName,
 						message: change.msg
@@ -56,7 +56,7 @@ define([
 		});
 	};
 
-	var job = function (self) {
+	var job = function(self) {
 		return request.json({
 			url: joinUrl(self.settings.url, 'job/' + self.id + '/api/json'),
 			username: self.settings.username,
@@ -64,7 +64,7 @@ define([
 		});
 	};
 
-	var lastCompletedBuild = function (self) {
+	var lastCompletedBuild = function(self) {
 		return request.json({
 			url: joinUrl(self.settings.url, 'job/' + self.id + '/lastCompletedBuild/api/json'),
 			username: self.settings.username,

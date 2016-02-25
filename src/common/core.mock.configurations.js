@@ -1,4 +1,4 @@
-define(['rx'], function (Rx) {
+define(['rx'], function(Rx) {
 
 	'use strict';
 

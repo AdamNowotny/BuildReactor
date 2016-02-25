@@ -3,7 +3,7 @@ define([
 	'jquery',
 	'mout/queryString/encode',
 	'rx.async'
-], function (Rx, $, encode) {
+], function(Rx, $, encode) {
 
 	'use strict';
 
@@ -17,7 +17,7 @@ define([
 		var ajaxOptions = createAjaxOptions(options, dataType);
 		var promise = $.ajax(ajaxOptions).promise();
 		return Rx.Observable.fromPromise(promise)
-			.catchException(function (ex) {
+			.catchException(function(ex) {
 				return Rx.Observable.throwException(createAjaxError(ex, ajaxOptions));
 			})
 			.timeout(timeout, Rx.Observable.throwException(createTimeoutError(timeout, ajaxOptions)), scheduler)
@@ -72,7 +72,7 @@ define([
 	}
 
 	function createParser(parser, ajaxOptions) {
-		return function (response) {
+		return function(response) {
 			try {
 				if (parser) {
 					return Rx.Observable.returnValue(parser(response));
@@ -97,10 +97,10 @@ define([
 	}
 
 	return {
-		json: function (options) {
+		json: function(options) {
 			return send(options, 'json');
 		},
-		xml: function (options) {
+		xml: function(options) {
 			return send(options, 'xml');
 		}
 	};

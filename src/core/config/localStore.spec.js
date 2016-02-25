@@ -1,20 +1,20 @@
 define([
 	'core/config/localStore'
-], function (localStore) {
+], function(localStore) {
 
 	'use strict';
 	
-	describe('core/config/localStore', function () {
+	describe('core/config/localStore', function() {
 
 		var mockLocalStorage;
 
-		beforeEach(function () {
+		beforeEach(function() {
 			spyOn(localStorage, 'setItem');
 			spyOn(localStorage, 'getItem');
 		});
 
-		it('should get all settings from local storage', function () {
-			localStorage.getItem.andCallFake(function (key) {
+		it('should get all settings from local storage', function() {
+			localStorage.getItem.andCallFake(function(key) {
 				expect(key).toBe('key');
 				return '{ "field": "value" }';
 			});
@@ -24,7 +24,7 @@ define([
 			expect(result.field).toBe('value');
 		});
 
-		it('should store settings', function () {
+		it('should store settings', function() {
 			localStore.setItem('key', { field: 'value2' });
 
 			expect(localStorage.setItem).toHaveBeenCalledWith('key', '{"field":"value2"}');

@@ -27,13 +27,13 @@ define([
 	'settings/directives/thumbnails/thumbnails',
 	'settings/directives/topnav/topnav',
 	'settings/directives/viewSelection/viewSelection'
-], function (core, logger) {
+], function(core, logger) {
 
 	'use strict';
 
 	logger();
 	core.init();
-	angular.element(document).ready(function () {
+	angular.element(document).ready(function() {
 		angular.bootstrap(document, ['settings']);
 	});
 

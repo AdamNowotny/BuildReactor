@@ -3,22 +3,22 @@ import templateUrl from 'settings/configuration/directives/jsonEditor/jsonEditor
 define([
     'settings/app',
     'angular'
-], function (app) {
+], function(app) {
     'use strict';
 
-    app.directive('jsonEditor', function () {
+    app.directive('jsonEditor', function() {
         return {
             scope: {
                 json: '='
             },
             templateUrl: templateUrl,
-            controller: function ($scope, $element, $attrs, $transclude) {
+            controller: function($scope, $element, $attrs, $transclude) {
 
-                $scope.$watch('json', function (json) {
+                $scope.$watch('json', function(json) {
                     $scope.content = JSON.stringify(json, null, 2) || "";
                 });
 
-                $scope.$watch('content', function (content) {
+                $scope.$watch('content', function(content) {
                     try {
                         var obj = JSON.parse(content);
                         if (obj && typeof obj === "object" && obj.length > -1) {
@@ -31,7 +31,7 @@ define([
                     }
                 });
 
-                var showError = function (message) {
+                var showError = function(message) {
                     $scope.saveEnabled = !message;
                     $scope.error = message;
                 };

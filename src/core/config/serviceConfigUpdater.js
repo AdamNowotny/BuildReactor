@@ -1,4 +1,4 @@
-define(function () {
+define(function() {
     'use strict';
     
     var update = function(config) {
@@ -21,7 +21,7 @@ define(function () {
 
     var isValid = function(config) {
         var isArray = Boolean(config) && config.length > -1;
-        return isArray && config.every(function (value) {
+        return isArray && config.every(function(value) {
             return typeof value === 'object';
         });
     };

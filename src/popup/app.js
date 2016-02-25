@@ -4,7 +4,7 @@ import 'angular-ui-bootstrap';
 
 define([
 	'common/directives/buildList/buildList'
-], function () {
+], function() {
 
 	'use strict';
 
@@ -14,7 +14,7 @@ define([
 		'uib/template/tooltip/tooltip-popup.html',
 		'app.directives'
 	]).config([
-		'$compileProvider', function ($compileProvider)	{
+		'$compileProvider', function($compileProvider)	{
 			$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|chrome-extension):/);
 		}
 	]);

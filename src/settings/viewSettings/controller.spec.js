@@ -4,21 +4,21 @@ define([
 	'settings/viewSettings/controller',
 	'common/core',
 	'angularMocks'
-], function (sidebar, core) {
+], function(sidebar, core) {
 	'use strict';
 
-	describe('settings/viewSettings/controller', function () {
+	describe('settings/viewSettings/controller', function() {
 
 		var scope;
 		var controller;
 
-		beforeEach(function () {
+		beforeEach(function() {
 			spyOn(core, 'setViews');
 		});
 
 		beforeEach(angular.mock.module('settings'));
 
-		beforeEach(angular.mock.inject(function ($controller, $compile, $rootScope) {
+		beforeEach(angular.mock.inject(function($controller, $compile, $rootScope) {
 			scope = $rootScope.$new();
 			controller = $controller('ViewSettingsCtrl', { $scope: scope });
 		}));

@@ -3,28 +3,28 @@ define([
     'common/core',
     'angular',
     'settings/configuration/directives/jsonEditor/jsonEditor'
-], function (app, core, angular) {
+], function(app, core, angular) {
     'use strict';
 
-    app.controller('ConfigurationCtrl', function ($scope, $http) {
+    app.controller('ConfigurationCtrl', function($scope, $http) {
 
         $scope.includePasswords = false;
 
-        core.configurations.subscribe(function (config) {
-            $scope.$evalAsync(function () {
+        core.configurations.subscribe(function(config) {
+            $scope.$evalAsync(function() {
                 $scope.config = config;
             });
         });
 
-        $scope.$on('jsonEditor.changed', function (event, json) {
+        $scope.$on('jsonEditor.changed', function(event, json) {
             $scope.saving = true;
             core.saveConfig(json);
         });
 
-        $scope.showLocalConfig = function () {
+        $scope.showLocalConfig = function() {
             var displayConfig = angular.copy($scope.config);
             if (!$scope.includePasswords) {
-                displayConfig.forEach(function (serviceConfig) {
+                displayConfig.forEach(function(serviceConfig) {
                     delete serviceConfig.username;
                     delete serviceConfig.password;
                 });
@@ -32,7 +32,7 @@ define([
             $scope.displayConfig = displayConfig;
         };
 
-        $scope.showFromUrl = function (url) {
+        $scope.showFromUrl = function(url) {
             $http({
               method: 'GET',
               url: url

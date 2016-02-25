@@ -6,16 +6,16 @@ define([
 	'text!core/services/jenkins/availableBuilds.fixture.json',
 	'text!core/services/jenkins/availableBuilds.primaryView.fixture.json',
 	'text!core/services/jenkins/availableBuilds.incorrectUrl.fixture.json'
-], function (BuildService, JenkinsBuild, request, Rx, availableBuildsFixture, viewFixture, availableBuildsIncorrectFixture) {
+], function(BuildService, JenkinsBuild, request, Rx, availableBuildsFixture, viewFixture, availableBuildsIncorrectFixture) {
 
 	'use strict';
 
-	describe('core/services/jenkins/buildService', function () {
+	describe('core/services/jenkins/buildService', function() {
 
 		var settings;
 		var service;
 
-		beforeEach(function () {
+		beforeEach(function() {
 			settings = {
 				typeName: 'Jenkins',
 				baseUrl: 'jenkins',
@@ -27,11 +27,11 @@ define([
 			service = new BuildService(settings);
 		});
 
-		it('should set Build factory method', function () {
+		it('should set Build factory method', function() {
 			expect(service.Build).toBe(JenkinsBuild);
 		});
 
-		it('should expose interface', function () {
+		it('should expose interface', function() {
 			expect(service.settings).toBe(settings);
 			expect(service.updateAll).toBeDefined();
 			expect(service.start).toBeDefined();
@@ -41,14 +41,14 @@ define([
 			expect(service.events).toBeDefined();
 		});
 
-		describe('availableBuilds', function () {
+		describe('availableBuilds', function() {
 
 			var availableBuildsJson, jobJson, viewJson;
 			var service;
 			var scheduler;
 
 			function setupRequestSpy(availableBuildsJson, viewJson) {
-				request.json.andCallFake(function (options) {
+				request.json.andCallFake(function(options) {
 					if (options.url === 'http://ci.jenkins-ci.org/api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]') {
 						return Rx.Observable.returnValue(availableBuildsJson);
 					} else if (options.url.indexOf('/view/') > -1) {
@@ -58,7 +58,7 @@ define([
 				});
 			}
 
-			beforeEach(function () {
+			beforeEach(function() {
 				scheduler = new Rx.TestScheduler();
 				availableBuildsJson = JSON.parse(availableBuildsFixture);
 				viewJson = JSON.parse(viewFixture);
@@ -67,10 +67,10 @@ define([
 				setupRequestSpy(availableBuildsJson, viewJson);
 			});
 
-			it('should use credentials', function () {
+			it('should use credentials', function() {
 				settings.username = 'USERNAME';
 				settings.password = 'PASSWORD';
-				request.json.andCallFake(function (options) {
+				request.json.andCallFake(function(options) {
 					expect(options.username).toBe(settings.username);
 					expect(options.password).toBe(settings.password);
 					return Rx.Observable.never();
@@ -81,8 +81,8 @@ define([
 				expect(request.json).toHaveBeenCalled();
 			});
 
-			it('should get available builds from correct URL', function () {
-				request.json.andCallFake(function (options) {
+			it('should get available builds from correct URL', function() {
+				request.json.andCallFake(function(options) {
 					expect(options.url).toBe('http://ci.jenkins-ci.org/api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]');
 					return Rx.Observable.never();
 				});
@@ -92,8 +92,8 @@ define([
 				expect(request.json).toHaveBeenCalled();
 			});
 
-			it('should increase timeout for view details', function () {
-				request.json.andCallFake(function (options) {
+			it('should increase timeout for view details', function() {
+				request.json.andCallFake(function(options) {
 					if (options.url === 'http://ci.jenkins-ci.org/api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]') {
 						return Rx.Observable.returnValue(availableBuildsJson);
 					} else if (options.url.indexOf('iew/') > -1) {
@@ -108,12 +108,12 @@ define([
 				expect(request.json).toHaveBeenCalled();
 			});
 			
-			it('should return projects', function () {
-				var result = scheduler.startWithCreate(function () {
+			it('should return projects', function() {
+				var result = scheduler.startWithCreate(function() {
 					return service.availableBuilds();
 				});
 		
-				expect(result.messages).toHaveElementsMatchingAt(200, function (builds) {
+				expect(result.messages).toHaveElementsMatchingAt(200, function(builds) {
 					expect(builds.items.length).toBe(77);
 					expect(builds.items[0].id).toBe('config-provider-model');
 					expect(builds.items[0].name).toBe('config-provider-model');
@@ -123,12 +123,12 @@ define([
 				});
 			});
 
-			it('should return views', function () {
-				var result = scheduler.startWithCreate(function () {
+			it('should return views', function() {
+				var result = scheduler.startWithCreate(function() {
 					return service.availableBuilds();
 				});
 		
-				expect(result.messages).toHaveElementsMatchingAt(200, function (builds) {
+				expect(result.messages).toHaveElementsMatchingAt(200, function(builds) {
 					expect(builds.primaryView).toBe('All Failed');
 					expect(builds.views.length).toBe(8);
 					expect(builds.views[0].name).toBe('All');
@@ -138,15 +138,15 @@ define([
 				});
 			});
 
-			it('should fix url to primaryView', function () {
+			it('should fix url to primaryView', function() {
 				var availableBuildsJson = JSON.parse(availableBuildsIncorrectFixture);
 				setupRequestSpy(availableBuildsJson, viewJson);
 
-				var result = scheduler.startWithCreate(function () {
+				var result = scheduler.startWithCreate(function() {
 					return service.availableBuilds();
 				});
 		
-				expect(result.messages).toHaveElementsMatchingAt(200, function (builds) {
+				expect(result.messages).toHaveElementsMatchingAt(200, function(builds) {
 					expect(builds.primaryView).toBe('All Failed');
 					expect(builds.views.length).toBe(8);
 					return true;

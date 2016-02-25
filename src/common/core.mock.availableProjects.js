@@ -1,4 +1,4 @@
-define(function () {
+define(function() {
 
 	'use strict';
 
@@ -42,11 +42,11 @@ define(function () {
 				},
 				{
 					name: 'All disabled',
-					items: [ 'JAVADOC-BRANCH18X' ]
+					items: ['JAVADOC-BRANCH18X']
 				},
 				{
 					name: 'JavaDocs',
-					items: [ 'JAVADOC-BRANCH18X', 'JAVADOC-BRANCH19X', 'JAVADOC-TRUNK' ]
+					items: ['JAVADOC-BRANCH18X', 'JAVADOC-BRANCH19X', 'JAVADOC-TRUNK']
 				}
 			],
 			selected: [
