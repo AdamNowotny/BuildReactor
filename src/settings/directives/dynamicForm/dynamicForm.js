@@ -17,7 +17,7 @@ define([
 				$scope.isDefined = angular.isDefined;
 
 				var addMissingProperties = function(defaultConfig, config) {
-					for(var prop in defaultConfig) {
+					for (var prop in defaultConfig) {
 						if (defaultConfig.hasOwnProperty(prop) && !angular.isDefined(config[prop])) {
 							config[prop] = defaultConfig[prop];
 						}

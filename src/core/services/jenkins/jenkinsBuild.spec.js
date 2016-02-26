@@ -94,7 +94,7 @@ define([
 			lastCompletedBuildJson.result = 'unknown_status';
 
 			build.update().subscribe(function(state) {
-				expect(state.tags).toContain({name: 'Unknown', description: 'Result [unknown_status] is unknown'});
+				expect(state.tags).toContain({ name: 'Unknown', description: 'Result [unknown_status] is unknown' });
 				expect(state.isBroken).not.toBeDefined();
 			});
 

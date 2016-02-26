@@ -104,7 +104,7 @@ define([
 					tag: info.id
 				});
 				notification.onclick = function() {
-					chrome.tabs.create({'url': info.url}, function(tab) {
+					chrome.tabs.create({ 'url': info.url }, function(tab) {
 						notification.close();
 					});
 				};
@@ -152,7 +152,9 @@ define([
 			.merge(buildBroken)
 			.merge(buildFixed)
 			.subscribe(function(notification) {
-				notification && showNotification(notification);
+				if (notification) {
+					showNotification(notification);
+				}
 			});
 	}
 	

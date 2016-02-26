@@ -1,3 +1,5 @@
+/* eslint new-cap: 0 */
+
 define([
 	'core/services/request',
 	'rx',
@@ -85,7 +87,7 @@ define([
 				var actualResponse;
 				spyOn($, 'ajax').andReturn(createSuccessDeferred(response));
 
-				request.json({ url: 'http://sample.com'}).subscribe(function(d) {
+				request.json({ url: 'http://sample.com' }).subscribe(function(d) {
 					actualResponse = d;
 				});
 

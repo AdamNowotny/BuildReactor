@@ -61,9 +61,9 @@ define([
 			expect(request.json.calls[0].args[0].url).toBe('http://example.com/rest/api/latest/plan/KEY');
 			expect(request.json.calls[0].args[0].username).toBe(settings.username);
 			expect(request.json.calls[0].args[0].password).toBe(settings.password);
-			expect(request.json.calls[0].args[0].data).toEqual({os_authType: 'basic'});
+			expect(request.json.calls[0].args[0].data).toEqual({ os_authType: 'basic' });
 			expect(request.json.calls[1].args[0].url).toBe('http://example.com/rest/api/latest/result/KEY/latest');
-			expect(request.json.calls[1].args[0].data).toEqual({expand: 'changes', os_authType: 'basic'});
+			expect(request.json.calls[1].args[0].data).toEqual({ expand: 'changes', os_authType: 'basic' });
 		});
 
 		it('should parse response and return current state', function() {
@@ -134,7 +134,7 @@ define([
 			resultJson.state = 'unknown_status';
 
 			build.update().subscribe(function(state) {
-				expect(state.tags).toContain({name: 'Unknown', description: 'State [unknown_status] is unknown'});
+				expect(state.tags).toContain({ name: 'Unknown', description: 'State [unknown_status] is unknown' });
 				expect(state.isBroken).not.toBeDefined();
 			});
 

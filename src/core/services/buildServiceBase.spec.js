@@ -140,7 +140,7 @@ define([
 				service.start().subscribe();
 
 				scheduler.scheduleAbsolute(300, function() {
-					service.events.onNext({ eventName: 'someEvent'});
+					service.events.onNext({ eventName: 'someEvent' });
 				});
 				var result = scheduler.startWithCreate(function() {
 					return service.activeProjects;
@@ -157,7 +157,7 @@ define([
 				service.stop();
 
 				scheduler.scheduleAbsolute(300, function() {
-					service.events.onNext({ eventName: 'someEvent triggering state update'});
+					service.events.onNext({ eventName: 'someEvent triggering state update' });
 				});
 				var result = scheduler.startWithCreate(function() {
 					return service.activeProjects;
@@ -383,7 +383,7 @@ define([
 					});
 
 					expect(result.messages).toHaveElements(
-						onNext(500, { eventName: 'buildOffline', details: mixIn(buildState1, { error: 'error'}), source: buildState1.serviceName })
+						onNext(500, { eventName: 'buildOffline', details: mixIn(buildState1, { error: 'error' }), source: buildState1.serviceName })
 					);
 				});
 
@@ -532,7 +532,7 @@ define([
 
 				expect(function() {
 					service.start();
-				}).toThrow({name: 'ArgumentInvalid', message: 'updateInterval not defined'});
+				}).toThrow({ name: 'ArgumentInvalid', message: 'updateInterval not defined' });
 			});
 
 			it('should push serviceStarted on first finished update', function() {

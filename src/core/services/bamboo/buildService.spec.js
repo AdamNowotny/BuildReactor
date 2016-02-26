@@ -70,7 +70,7 @@ define([
 						expect(options.username).toBe(settings.username);
 						expect(options.password).toBe(settings.password);
 						expect(options.url).toBe('http://example.com/rest/api/latest/project');
-						expect(options.data).toEqual({expand: 'projects.project.plans.plan', 'start-index': 0, os_authType: 'basic'});
+						expect(options.data).toEqual({ expand: 'projects.project.plans.plan', 'start-index': 0, os_authType: 'basic' });
 						return Rx.Observable.never();
 					});
 

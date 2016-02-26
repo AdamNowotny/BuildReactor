@@ -132,7 +132,7 @@ define([
 			buildJson.status = 'unknown_status';
 
 			build.update().subscribe(function(state) {
-				expect(state.tags).toContain({name: 'Unknown', description: 'Status [unknown_status] is unknown'});
+				expect(state.tags).toContain({ name: 'Unknown', description: 'Status [unknown_status] is unknown' });
 				expect(state.isBroken).not.toBeDefined();
 			});
 		});

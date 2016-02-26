@@ -40,7 +40,7 @@ define([
 
 		$scope.setTheme = function(theme) {
 			var changed = $scope.viewConfig.theme !== theme;
-			if(changed) {
+			if (changed) {
 				$scope.viewConfig.theme = theme;
 				core.setViews(angular.copy($scope.viewConfig));
 			}

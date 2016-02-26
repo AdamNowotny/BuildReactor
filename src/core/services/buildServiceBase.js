@@ -61,8 +61,11 @@ define([
 							error: createError(ex)
 						});
 					});
-			}).select(function(state) { return self.mixInMissingState(state, self.serviceInfo); })
-			.doAction(function(state) { return self.processBuildUpdate(state); });
+			}).select(function(state) {
+				return self.mixInMissingState(state, self.serviceInfo);
+			}).doAction(function(state) {
+				return self.processBuildUpdate(state);
+			});
 	};
 
 	var createError = function(ex) {
@@ -139,7 +142,7 @@ define([
 
 	var start = function() {
 		if (!this.settings.updateInterval) {
-			throw { name: 'ArgumentInvalid', message: 'updateInterval not defined'};
+			throw { name: 'ArgumentInvalid', message: 'updateInterval not defined' };
 		}
 		if (this.poolingSubscription !== null) {
 			return Rx.Observable.empty();

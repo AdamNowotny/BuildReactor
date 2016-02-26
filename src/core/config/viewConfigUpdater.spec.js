@@ -24,7 +24,7 @@ define([
 		});
 
 		it('should add default singleGroupRows', function() {
-			var config = updater.update({ columns: 4});
+			var config = updater.update({ columns: 4 });
 
 			expect(config.singleGroupRows).toBe(false);
 		});

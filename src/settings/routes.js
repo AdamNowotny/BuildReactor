@@ -1,7 +1,7 @@
-import serviceSettingsView from 'settings/serviceSettingsView.html';
 import addServiceView from 'settings/addServiceView.html';
-import viewSettingsTemplate from 'settings/viewSettings/view.html';
 import configurationTemplate from 'settings/configuration/view.html';
+import serviceSettingsView from 'settings/serviceSettingsView.html';
+import viewSettingsTemplate from 'settings/viewSettings/view.html';
 
 define([
 	'settings/app'

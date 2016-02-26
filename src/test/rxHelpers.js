@@ -16,8 +16,8 @@ define([
 				return hasElements(expected, this.actual);
 			},
 			toHaveElementsMatchingAt: function(time, matcher) {
-				var i, found = 0;
-				for (i = 0; i < this.actual.length; i++) {
+				let found = 0;
+				for (let i = 0; i < this.actual.length; i++) {
 					try {
 						if (this.actual[i].time === time && matcher(this.actual[i].value.value)) {
 							found++;
@@ -37,8 +37,8 @@ define([
 				return actualTimes.length === 0;
 			},
 			toHaveEvent: function(eventName, expectedCount) {
-				var i, times = 0;
-				for (i = 0; i < this.actual.length; i++) {
+				let times = 0;
+				for (let i = 0; i < this.actual.length; i++) {
 					if (this.actual[i].value.value.eventName === eventName) {
 						times++;
 					}
@@ -76,9 +76,9 @@ define([
 	}
 
 	function hasElements(expected, actual) {
-		var i, j, found = 0;
-		for (i = 0; i < expected.length; i++) {
-			for (j = 0; j < actual.length; j++) {
+		let found = 0;
+		for (let i = 0; i < expected.length; i++) {
+			for (let j = 0; j < actual.length; j++) {
 				if (elementsEqual(expected[i], actual[j])) {
 					found++;
 				}
@@ -88,8 +88,8 @@ define([
 	}
 
 	function hasElementsMatching(actual, matcher) {
-		var i, found = 0;
-		for (i = 0; i < actual.length; i++) {
+		let found = 0;
+		for (let i = 0; i < actual.length; i++) {
 			if (matcher(actual[i].value.value)) {
 				found++;
 			}

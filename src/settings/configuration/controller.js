@@ -39,8 +39,7 @@ define([
             }).then(function successCallback(response) {
                 $scope.displayConfig = response.data;
                 $scope.urlError = null;
-            }, function errorCallback(response) {
-                response = response || {};
+            }, function errorCallback(response = {}) {
                 $scope.urlError = response.statusText || 'Request failed. Status = ' + response.status;
             });
         };

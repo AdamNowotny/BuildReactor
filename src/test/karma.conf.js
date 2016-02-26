@@ -1,11 +1,10 @@
 /* eslint-env node */
-var webpackConfig = require('../../webpack.config.js');
+
+const webpackConfig = require('../../webpack.config.js');
 webpackConfig.entry = {};
 webpackConfig.devtool = 'inline-source-map';
 
 module.exports = function(config) {
-    'use strict';
-
     config.set({
         basePath: '../..',
         frameworks: ['jasmine'],

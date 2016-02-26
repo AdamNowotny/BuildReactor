@@ -20,7 +20,7 @@ define([
     var setOrder = function(serviceNames) {
         var oldConfig = configStore.getItem(key);
         if (oldConfig.length !== serviceNames.length) {
-            throw { name: 'ArgumentInvalid', message: 'All services required'};
+            throw { name: 'ArgumentInvalid', message: 'All services required' };
         }
         var oldServiceNames = oldConfig.map(function(config) {
             return config.name;

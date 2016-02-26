@@ -1,5 +1,5 @@
-import angular from 'angular';
 import 'angular-mocks';
+import angular from 'angular';
 
 define([
 	'common/directives/buildGroup/buildGroup',

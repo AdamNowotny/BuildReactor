@@ -1,10 +1,11 @@
 /* eslint-env node */
-var path = require("path");
-var webpack = require("webpack");
-var WebpackErrorNotificationPlugin = require('webpack-error-notification');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
+
+const path = require("path");
+const webpack = require("webpack");
+const WebpackErrorNotificationPlugin = require('webpack-error-notification');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   context: path.join(__dirname, "src"),
@@ -33,21 +34,21 @@ module.exports = {
       template: 'settings/index.html',
       filename: 'settings.html',
       inject: 'body',
-      chunks: [ 'commons', 'settings' ],
+      chunks: ['commons', 'settings'],
       minify: false
     }),
     new HtmlWebpackPlugin({
       template: 'popup/index.html',
       filename: 'popup.html',
       inject: 'body',
-      chunks: [ 'commons', 'popup' ],
+      chunks: ['commons', 'popup'],
       minify: false
     }),
     new HtmlWebpackPlugin({
       template: 'dashboard/index.html',
       filename: 'dashboard.html',
       inject: 'body',
-      chunks: [ 'commons', 'dashboard' ],
+      chunks: ['commons', 'dashboard'],
       minify: false
     }),
     new webpack.optimize.CommonsChunkPlugin({
@@ -98,6 +99,10 @@ module.exports = {
       {
         test: /jquery\.js$/,
         loader: 'expose?$!expose?jQuery'
+      },
+      {
+        test: /(angular-mocks|angular-route|angular-ui-bootstrap|angular-ui-utils)/,
+        loader: 'imports?angular'
       }
     ]
   },

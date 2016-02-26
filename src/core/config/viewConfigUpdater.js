@@ -1,8 +1,7 @@
 define(function() {
 	'use strict';
 	
-	function update(config) {
-		config = config || {};
+	function update(config = {}) {
 		config.columns = config.columns || 2;
 		config.fullWidthGroups = (typeof config.fullWidthGroups === 'boolean') ? config.fullWidthGroups : true;
 		config.singleGroupRows = (typeof config.singleGroupRows === 'boolean') ? config.singleGroupRows : false;

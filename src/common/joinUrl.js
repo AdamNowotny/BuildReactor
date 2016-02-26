@@ -1,3 +1,5 @@
+/* eslint no-param-reassign: 0 */
+
 define([
 	'mout/string/endsWith',
 	'mout/string/startsWith'

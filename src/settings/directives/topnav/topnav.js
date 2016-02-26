@@ -1,8 +1,8 @@
 import "bootstrap/js/dropdown";
 import 'angular-ui-bootstrap';
-import template from 'settings/directives/topnav/topnav.html';
 import removeTemplate from 'settings/directives/topnav/removeModal.html';
 import renameTemplate from 'settings/directives/topnav/renameModal.html';
+import template from 'settings/directives/topnav/topnav.html';
 
 define([
 	'settings/app',

@@ -10,8 +10,7 @@ define([
 
 	'use strict';
 
-	var CCBuildService = function(settings, serviceInfo) {
-		serviceInfo = serviceInfo || CCBuildService.settings();
+	var CCBuildService = function(settings, serviceInfo = CCBuildService.settings()) {
 		mixIn(this, new BuildServiceBase(settings, serviceInfo));
 		this.availableBuilds = availableBuilds;
 		this.updateAll = updateAll;
@@ -86,7 +85,7 @@ define([
 				if (status in { 'Success': 1, 'Failure': 1, 'Exception': 1 }) {
 					state.isBroken = status in { 'Failure': 1, 'Exception': 1 };
 				} else {
-					state.tags.push({ name : 'Unknown', description : 'Status [' + status + '] is unknown'});
+					state.tags.push({ name : 'Unknown', description : 'Status [' + status + '] is unknown' });
 					delete state.isBroken;
 				}
 

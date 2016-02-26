@@ -1,5 +1,5 @@
-import ngModule from 'common/directives/module';
 import 'common/directives/buildGroup/buildGroup';
+import ngModule from 'common/directives/module';
 import templateUrl from 'common/directives/service/service.html';
 
 define([

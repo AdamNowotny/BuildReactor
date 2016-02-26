@@ -56,7 +56,7 @@ define([
 					serviceName: 'service',
 					name: 'build',
 					serviceIcon: 'src/core/services/test/icon.png'
-				}});
+				} });
 
 				expect(window.Notification).toHaveBeenCalledWith(
 					'build (service)', {
@@ -73,7 +73,7 @@ define([
 					name: 'build',
 					serviceIcon: 'src/core/services/test/icon.png',
 					changes: [{ name: 'User 1' }, { name: 'User 2' }]
-				}});
+				} });
 
 				expect(window.Notification).toHaveBeenCalledWith(
 					'build (service)', {
@@ -91,7 +91,7 @@ define([
 					group: 'group',
 					serviceIcon: 'src/core/services/test/icon.png',
 					changes: [{ name: 'User 1' }, { name: 'User 2' }]
-				}});
+				} });
 
 				expect(window.Notification).toHaveBeenCalledWith(
 					'group / build (service)', {
@@ -110,7 +110,7 @@ define([
 					changes: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function(d) {
 						return { name: 'User ' + d };
 					})
-				}});
+				} });
 
 				expect(window.Notification).toHaveBeenCalledWith(
 					'build (service)', {
@@ -127,7 +127,7 @@ define([
 					name: 'build',
 					serviceIcon: 'src/core/services/test/icon.png',
 					isDisabled: true
-				}});
+				} });
 
 				expect(window.Notification).not.toHaveBeenCalled();
 			});
@@ -148,7 +148,7 @@ define([
 					serviceName: 'service',
 					name: 'build',
 					serviceIcon: 'src/core/services/test/icon.png'
-				}});
+				} });
 
 				expect(window.Notification).toHaveBeenCalledWith(
 					'build (service)', {
@@ -165,7 +165,7 @@ define([
 					name: 'build',
 					serviceIcon: 'src/core/services/test/icon.png',
 					changes: [{ name: 'User 1' }, { name: 'User 2' }]
-				}});
+				} });
 
 				expect(window.Notification).toHaveBeenCalledWith(
 					'build (service)', {
@@ -181,7 +181,7 @@ define([
 					serviceName: 'service',
 					name: 'build',
 					isDisabled: true
-				}});
+				} });
 
 				expect(window.Notification).not.toHaveBeenCalled();
 			});
@@ -208,7 +208,7 @@ define([
 					name: 'build',
 					serviceIcon: 'src/core/services/test/icon.png',
 					tags: [{ name: 'Unstable' }]
-				}});
+				} });
 
 				expect(window.Notification).toHaveBeenCalledWith(
 					'build (service)', {
@@ -308,8 +308,8 @@ define([
 		});
 
 		it('should hide notifications about failed build if already fixed', function() {
-			buildBrokenEvents.onNext({ eventName: 'buildBroken', details: { serviceName: '1'} });
-			buildFixedEvents.onNext({ eventName: 'buildFixed', details: { serviceName: '1'} });
+			buildBrokenEvents.onNext({ eventName: 'buildBroken', details: { serviceName: '1' } });
+			buildFixedEvents.onNext({ eventName: 'buildFixed', details: { serviceName: '1' } });
 
 			expect(mockNotification.close).toHaveBeenCalled();
 		});

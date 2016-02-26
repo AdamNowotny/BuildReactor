@@ -54,8 +54,8 @@ define([
 		return groups.length ? groups : null;
 	};
 
-	var updateCheckAll = function(groups) {
-		groups && groups.forEach(function(group) {
+	var updateCheckAll = function(groups = []) {
+		groups.forEach(function(group) {
 			var selectedProjects = getSelectedProjects(group.projects);
 			group.someSelected = selectedProjects.length !== 0 && selectedProjects.length !== group.projects.length;
 			group.allSelected = selectedProjects.length === group.projects.length;
@@ -87,7 +87,7 @@ define([
 				});
 
 				$scope.$watch('viewItems', function(viewItems) {
-					$scope.projectList && $scope.projectList.forEach(function(project) {
+					($scope.projectList || []).forEach(function(project) {
 						project.isInView = !viewItems || viewItems.indexOf(project.id) > -1;
 					});
 					$scope.groups = createGroups($scope.projectList);
@@ -98,11 +98,11 @@ define([
 						return project.id;
 					});
 					updateCheckAll($scope.groups);
-					$scope.groups && $scope.$emit('projectList.change', selectedIds);
+					if ($scope.groups) $scope.$emit('projectList.change', selectedIds);
 				}, true);
 
 				$scope.$watch('filterQuery', function(query) {
-					$scope.groups && $scope.groups.forEach(function(group) {
+					($scope.groups || []).forEach(function(group) {
 						group.visibleCount = group.projects.filter(function(project) {
 							return $scope.search(project);
 						}).length;

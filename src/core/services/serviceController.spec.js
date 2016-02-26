@@ -75,7 +75,7 @@ function(controller, Rx, serviceLoader, mixIn) {
 					controller.start(Rx.Observable.returnValue([settings]));
 				});
 				scheduler.scheduleAbsolute(400, function() {
-					service.events.onNext({eventName: 'someEvent'});
+					service.events.onNext({ eventName: 'someEvent' });
 				});
 
 				var result = scheduler.startWithCreate(function() {
@@ -106,7 +106,7 @@ function(controller, Rx, serviceLoader, mixIn) {
 					controller.start(Rx.Observable.returnValue([settings, settings]));
 				});
 				scheduler.scheduleAbsolute(400, function() {
-					service.events.onNext({eventName: 'serviceStarted'});
+					service.events.onNext({ eventName: 'serviceStarted' });
 					serviceStartResponse.onCompleted();
 				});
 				var result = scheduler.startWithCreate(function() {
@@ -134,7 +134,7 @@ function(controller, Rx, serviceLoader, mixIn) {
 					controller.start(Rx.Observable.returnValue([settings]));
 				});
 				scheduler.scheduleAbsolute(500, function() {
-					service.events.onNext({eventName: 'someEvent'});
+					service.events.onNext({ eventName: 'someEvent' });
 				});
 				var result = scheduler.startWithCreate(function() {
 					return controller.events;
@@ -150,7 +150,7 @@ function(controller, Rx, serviceLoader, mixIn) {
 					controller.start(configs);
 				});
 				scheduler.scheduleAbsolute(500, function() {
-					service.events.onNext({eventName: 'someEvent'});
+					service.events.onNext({ eventName: 'someEvent' });
 				});
 				var result = scheduler.startWithCreate(function() {
 					return controller.events;
@@ -177,8 +177,8 @@ function(controller, Rx, serviceLoader, mixIn) {
 			});
 
 			it('should get project state from all services', function() {
-				var settings1 = mixIn({}, settings, { name: 'service 1'});
-				var settings2 = mixIn({}, settings, { name: 'service 2'});
+				var settings1 = mixIn({}, settings, { name: 'service 1' });
+				var settings2 = mixIn({}, settings, { name: 'service 2' });
 				var service1 = new CustomBuildService(settings1);
 				var service2 = new CustomBuildService(settings2);
 				serviceLoader.load.andCallFake(function(settings) {
@@ -191,10 +191,10 @@ function(controller, Rx, serviceLoader, mixIn) {
 					controller.start(Rx.Observable.returnValue([settings1, settings2]));
 				});
 				scheduler.scheduleAbsolute(300, function() {
-					service1.activeProjects.onNext({ name: 'service 1', items: [{ id: 'id1'}] });
+					service1.activeProjects.onNext({ name: 'service 1', items: [{ id: 'id1' }] });
 				});
 				scheduler.scheduleAbsolute(400, function() {
-					service2.activeProjects.onNext({ name: 'service 2', items: [{ id: 'id2'}] });
+					service2.activeProjects.onNext({ name: 'service 2', items: [{ id: 'id2' }] });
 				});
 				var result = scheduler.startWithCreate(function() {
 					return controller.activeProjects;
@@ -202,8 +202,8 @@ function(controller, Rx, serviceLoader, mixIn) {
 
 				expect(result.messages).toHaveEqualElements(
 					onNext(200, [{ name: 'service 1', items: [] }, { name: 'service 2', items: [] }]),
-					onNext(300, [{ name: 'service 1', items: [{ id: 'id1'}] }, { name: 'service 2', items: [] }]),
-					onNext(400, [{ name: 'service 1', items: [{ id: 'id1'}] }, { name: 'service 2', items: [{ id: 'id2'}] }])
+					onNext(300, [{ name: 'service 1', items: [{ id: 'id1' }] }, { name: 'service 2', items: [] }]),
+					onNext(400, [{ name: 'service 1', items: [{ id: 'id1' }] }, { name: 'service 2', items: [{ id: 'id2' }] }])
 				);
 			});
 

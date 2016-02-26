@@ -62,7 +62,7 @@ define([
 				serviceController.getAllTypes.andReturn(serviceTypes);
 
 				var result;
-				messageHandler({ name: 'availableServices'}, null, function(response) {
+				messageHandler({ name: 'availableServices' }, null, function(response) {
 					result = response;
 				});
 
@@ -71,32 +71,32 @@ define([
 
 			it('should handle setOrder', function() {
 				var serviceNames = ['service2', 'service1'];
-				messageHandler({ name: 'setOrder', order: serviceNames}, null, null);
+				messageHandler({ name: 'setOrder', order: serviceNames }, null, null);
 
 				expect(serviceConfiguration.setOrder).toHaveBeenCalledWith(serviceNames);
 			});
 
 			it('should handle setBuildOrder', function() {
 				var builds = ['build1', 'build2'];
-				messageHandler({ name: 'setBuildOrder', serviceName: 'service', order: builds}, null, null);
+				messageHandler({ name: 'setBuildOrder', serviceName: 'service', order: builds }, null, null);
 
 				expect(serviceConfiguration.setBuildOrder).toHaveBeenCalledWith('service', builds);
 			});
 
 			it('should handle enableService', function() {
-				messageHandler({ name: 'enableService', serviceName: 'service'}, null, null);
+				messageHandler({ name: 'enableService', serviceName: 'service' }, null, null);
 
 				expect(serviceConfiguration.enableService).toHaveBeenCalledWith('service');
 			});
 
 			it('should handle disableService', function() {
-				messageHandler({ name: 'disableService', serviceName: 'service'}, null, null);
+				messageHandler({ name: 'disableService', serviceName: 'service' }, null, null);
 
 				expect(serviceConfiguration.disableService).toHaveBeenCalledWith('service');
 			});
 
 			it('should handle removeService', function() {
-				messageHandler({ name: 'removeService', serviceName: 'service'}, null, null);
+				messageHandler({ name: 'removeService', serviceName: 'service' }, null, null);
 
 				expect(serviceConfiguration.removeService).toHaveBeenCalledWith('service');
 			});
