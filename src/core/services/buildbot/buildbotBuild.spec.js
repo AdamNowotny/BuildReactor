@@ -2,8 +2,8 @@ define([
 	'core/services/buildbot/buildbotBuild',
 	'core/services/request',
 	'rx',
-	'text!core/services/buildbot/builder.fixture.json',
-	'text!core/services/buildbot/lastCompleted.fixture.json'
+	'raw!core/services/buildbot/builder.fixture.json',
+	'raw!core/services/buildbot/lastCompleted.fixture.json'
 ], function(Build, request, Rx, builderFixture, lastCompletedBuildFixture) {
 	'use strict';
 
@@ -21,7 +21,7 @@ define([
 			builderJson = JSON.parse(builderFixture);
 			lastCompletedBuildJson = JSON.parse(lastCompletedBuildFixture);
 			var callCount = 0;
-			spyOn(request, 'json').andCallFake(function() {
+			spyOn(request, 'json').and.callFake(function() {
 				callCount++;
 				switch (callCount) {
 				case 1:
@@ -38,10 +38,10 @@ define([
 			build.update();
 
 			expect(request.json).toHaveBeenCalled();
-			expect(request.json.calls[0].args[0].url).toBe('http://example.com/json/builders/build_id');
-			expect(request.json.calls[0].args[0].username).toBe(settings.username);
-			expect(request.json.calls[0].args[0].password).toBe(settings.password);
-			expect(request.json.calls[1].args[0].url).toBe('http://example.com/json/builders/build_id/builds/-1');
+			expect(request.json.calls.argsFor(0)[0].url).toBe('http://example.com/json/builders/build_id');
+			expect(request.json.calls.argsFor(0)[0].username).toBe(settings.username);
+			expect(request.json.calls.argsFor(0)[0].password).toBe(settings.password);
+			expect(request.json.calls.argsFor(1)[0].url).toBe('http://example.com/json/builders/build_id/builds/-1');
 		});
 
 		it('should parse response and return current state', function() {

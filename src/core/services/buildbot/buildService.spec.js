@@ -3,7 +3,7 @@ define([
 	'core/services/buildbot/buildbotBuild',
 	'core/services/request',
 	'rx',
-	'text!core/services/buildbot/builders_all.fixture.json'
+	'raw!core/services/buildbot/builders_all.fixture.json'
 ], function(BuildService, BuildbotBuild, request, Rx, apiFixture) {
 
 	'use strict';
@@ -51,7 +51,7 @@ define([
 
 			it('should return available builds', function() {
 				var builds = Rx.Observable.returnValue(apiJson);
-				spyOn(request, 'json').andReturn(builds);
+				spyOn(request, 'json').and.returnValue(builds);
 
 				expect(service.availableBuilds()).toBe(builds);
 			});
@@ -59,7 +59,7 @@ define([
 			it('should use credentials', function() {
 				settings.username = 'USERNAME';
 				settings.password = 'PASSWORD';
-				spyOn(request, 'json').andCallFake(function(options) {
+				spyOn(request, 'json').and.callFake(function(options) {
 					expect(options.username).toBe(settings.username);
 					expect(options.password).toBe(settings.password);
 				});
@@ -70,7 +70,7 @@ define([
 			});
 
 			it('should get available builds from correct URL', function() {
-				spyOn(request, 'json').andCallFake(function(options) {
+				spyOn(request, 'json').and.callFake(function(options) {
 					expect(options.url).toBe('http://example.com/json/builders');
 				});
 
@@ -80,7 +80,7 @@ define([
 			});
 
 			it('should return projects', function() {
-				spyOn(request, 'json').andCallFake(function(options) {
+				spyOn(request, 'json').and.callFake(function(options) {
 					var response = options.parser(apiJson);
 					expect(response.items).toBeDefined();
 					expect(response.items.length).toBe(35);

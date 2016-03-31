@@ -2,11 +2,11 @@ define([
 	'core/services/teamcity/teamcityBuild',
 	'core/services/request',
 	'rx',
-	'text!core/services/teamcity/build.fixture.json',
-	'text!core/services/teamcity/buildList.fixture.json',
-	'text!core/services/teamcity/buildListRunning.fixture.json',
-	'text!core/services/teamcity/changes.fixture.json',
-	'text!core/services/teamcity/changes_id.fixture.json'
+	'raw!core/services/teamcity/build.fixture.json',
+	'raw!core/services/teamcity/buildList.fixture.json',
+	'raw!core/services/teamcity/buildListRunning.fixture.json',
+	'raw!core/services/teamcity/changes.fixture.json',
+	'raw!core/services/teamcity/changes_id.fixture.json'
 ], function(Build, request, Rx, buildFixture, buildListFixture, buildListRunningFixture, changesFixture, changeFixture) {
 	'use strict';
 
@@ -25,7 +25,7 @@ define([
 			buildListRunningJson = JSON.parse(buildListRunningFixture);
 			changesJson = JSON.parse(changesFixture);
 			changeJson = JSON.parse(changeFixture);
-			spyOn(request, 'json').andCallFake(function(options) {
+			spyOn(request, 'json').and.callFake(function(options) {
 				switch (options.url) {
 				case 'http://example.com/guestAuth/app/rest/changes?build=id:63887':
 					return Rx.Observable.returnValue(changesJson);
@@ -55,8 +55,8 @@ define([
 			build.update().subscribe();
 
 			expect(request.json).toHaveBeenCalled();
-			expect(request.json.calls[0].args[0].url).toBe('http://example.com/guestAuth/app/rest/builds?locator=buildType:build_id,running:any');
-			expect(request.json.calls[1].args[0].url).toBe('http://example.com/guestAuth/app/rest/builds/id:18');
+			expect(request.json.calls.argsFor(0)[0].url).toBe('http://example.com/guestAuth/app/rest/builds?locator=buildType:build_id,running:any');
+			expect(request.json.calls.argsFor(1)[0].url).toBe('http://example.com/guestAuth/app/rest/builds/id:18');
 		});
 
 		it('should make call on update specifying the branch', function() {
@@ -65,8 +65,8 @@ define([
 			build.update().subscribe();
 
 			expect(request.json).toHaveBeenCalled();
-			expect(request.json.calls[0].args[0].url).toBe('http://example.com/guestAuth/app/rest/builds?locator=buildType:build_id,running:any,branch:(refs/heads/master)');
-			expect(request.json.calls[1].args[0].url).toBe('http://example.com/guestAuth/app/rest/builds/id:18');
+			expect(request.json.calls.argsFor(0)[0].url).toBe('http://example.com/guestAuth/app/rest/builds?locator=buildType:build_id,running:any,branch:(refs/heads/master)');
+			expect(request.json.calls.argsFor(1)[0].url).toBe('http://example.com/guestAuth/app/rest/builds/id:18');
 		});
 
 		it('should add httpAuth for initial call on update for registered user', function() {
@@ -76,9 +76,9 @@ define([
 			build.update().subscribe();
 
 			expect(request.json).toHaveBeenCalled();
-			expect(request.json.calls[0].args[0].url).toBe('http://example.com/httpAuth/app/rest/builds?locator=buildType:build_id,running:any');
-			expect(request.json.calls[0].args[0].username).toBe('username');
-			expect(request.json.calls[0].args[0].password).toBe('password');
+			expect(request.json.calls.argsFor(0)[0].url).toBe('http://example.com/httpAuth/app/rest/builds?locator=buildType:build_id,running:any');
+			expect(request.json.calls.argsFor(0)[0].username).toBe('username');
+			expect(request.json.calls.argsFor(0)[0].password).toBe('password');
 		});
 
 		it('should parse response and return current state', function() {

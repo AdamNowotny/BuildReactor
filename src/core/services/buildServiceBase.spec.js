@@ -53,7 +53,7 @@ define([
 			update1Response = Rx.Observable.returnValue(buildState1);
 			update2Response = Rx.Observable.returnValue(buildState2);
 			var callCount = 0;
-			spyOn(GenericBuild.prototype, 'update').andCallFake(function() {
+			spyOn(GenericBuild.prototype, 'update').and.callFake(function() {
 				switch (this.id) {
 				case 'Build1':
 					return update1Response;
@@ -163,7 +163,7 @@ define([
 					return service.activeProjects;
 				});
 
-				expect(result.messages).not.toHaveElementsAtTimes(300);
+				expect(result.messages).not.toHaveElements(onNext(300));
 			});
 
 			it('should return empty if no projects monitored', function() {
@@ -220,7 +220,7 @@ define([
 					onNext(200, buildState2),
 					onCompleted(200)
 				);
-				expect(GenericBuild.prototype.update.callCount).toBe(settings.projects.length);
+				expect(GenericBuild.prototype.update.calls.count()).toBe(settings.projects.length);
 			});
 
 			it('should extend received build state with last known values as default', function() {
@@ -532,7 +532,7 @@ define([
 
 				expect(function() {
 					service.start();
-				}).toThrow({ name: 'ArgumentInvalid', message: 'updateInterval not defined' });
+				}).toThrowError('updateInterval not defined');
 			});
 
 			it('should push serviceStarted on first finished update', function() {

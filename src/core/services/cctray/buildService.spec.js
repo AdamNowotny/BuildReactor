@@ -4,11 +4,11 @@ define([
 	'rx',
 	'jquery',
 	'mout/object/mixIn',
-	'text!core/services/cctray/cruisecontrolnet.fixture.xml',
-	'text!core/services/cctray/go.fixture.xml',
-	'text!core/services/cctray/breakers_empty.fixture.xml',
-	'text!core/services/cctray/go_multiple_breakers.fixture.xml',
-	'text!core/services/cctray/ccnet_no_categories.fixture.xml'
+	'raw!core/services/cctray/cruisecontrolnet.fixture.xml',
+	'raw!core/services/cctray/go.fixture.xml',
+	'raw!core/services/cctray/breakers_empty.fixture.xml',
+	'raw!core/services/cctray/go_multiple_breakers.fixture.xml',
+	'raw!core/services/cctray/ccnet_no_categories.fixture.xml'
 ],
 function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreakersFixture, manyBreakersFixture, noCategoriesFixture) {
 
@@ -31,7 +31,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 				projects: ['CruiseControl.NET', 'Build-Server-Config']
 			};
 			states = [createState1(), createState2()];
-			spyOn(request, 'xml').andCallFake(function(options) {
+			spyOn(request, 'xml').and.callFake(function(options) {
 				return Rx.Observable.returnValue(states);
 			});
 			service = new BuildService(settings);
@@ -143,7 +143,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 			});
 
 			it('should set request options', function() {
-				request.xml.andCallFake(function(options) {
+				request.xml.and.callFake(function(options) {
 					expect(options.username).toBe(settings.username);
 					expect(options.password).toBe(settings.password);
 					expect(options.url).toBe('http://example.com/cc.xml');
@@ -163,7 +163,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 
 				beforeEach(function() {
 					projectsXml = $(ccnetFixture);
-					request.xml.andCallFake(function(options) {
+					request.xml.and.callFake(function(options) {
 						parsedResponse = options.parser(projectsXml);
 						return Rx.Observable.returnValue(parsedResponse);
 					});
@@ -288,7 +288,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 			it('should not fail if build update failed', function() {
 				var stateError = "Error";
 
-				request.xml.andCallFake(function(options) {
+				request.xml.and.callFake(function(options) {
 					return Rx.Observable.throwException(stateError);
 				});
 
@@ -324,7 +324,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 					isDisabled: false,
 					changes: []
 				}, oldState);
-				request.xml.andCallFake(function(options) {
+				request.xml.and.callFake(function(options) {
 					return Rx.Observable.returnValue([newState]);
 				});
 			});
@@ -335,7 +335,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 
 			it('should push buildOffline if build update failed', function() {
 				var stateError = "Error";
-				request.xml.andCallFake(function(options) {
+				request.xml.and.callFake(function(options) {
 					return Rx.Observable.throwException(stateError);
 				});
 
@@ -429,7 +429,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 
 			it('should return available builds', function() {
 				var builds = Rx.Observable.returnValue(projectsXml);
-				request.xml.andReturn(builds);
+				request.xml.and.returnValue(builds);
 
 				expect(service.availableBuilds()).toBe(builds);
 			});
@@ -437,7 +437,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 			it('should use credentials', function() {
 				settings.username = 'USERNAME';
 				settings.password = 'PASSWORD';
-				request.xml.andCallFake(function(options) {
+				request.xml.and.callFake(function(options) {
 					expect(options.username).toBe(settings.username);
 					expect(options.password).toBe(settings.password);
 				});
@@ -448,7 +448,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 			});
 
 			it('should get available builds from correct URL', function() {
-				request.xml.andCallFake(function(options) {
+				request.xml.and.callFake(function(options) {
 					expect(options.url).toBe('http://example.com/cc.xml');
 				});
 
@@ -459,7 +459,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 			});
 
 			it('should parse response with CC.NET categories', function() {
-				request.xml.andCallFake(function(options) {
+				request.xml.and.callFake(function(options) {
 					var response = options.parser(projectsXml);
 					expect(response.items.length).toBe(9);
 					expect(response.items[0].id).toBe('CruiseControl.NET');
@@ -474,7 +474,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 			});
 
 			it('should parse response without categories', function() {
-				request.xml.andCallFake(function(options) {
+				request.xml.and.callFake(function(options) {
 					var response = options.parser(noCategoriesFixture);
 					expect(response.items.length).toBe(2);
 					expect(response.items[0].id).toBe('CruiseControl.NET');
@@ -489,7 +489,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 			});
 
 			it('should parse groups for names with ::', function() {
-				request.xml.andCallFake(function(options) {
+				request.xml.and.callFake(function(options) {
 					var response = options.parser(goFixture);
 					expect(response.items[0].id).toBe('Project :: Build');
 					expect(response.items[0].name).toBe('Build');

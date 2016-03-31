@@ -2,8 +2,8 @@ define([
 	'core/services/bamboo/bambooPlan',
 	'core/services/request',
 	'rx',
-	'text!core/services/bamboo/plan.fixture.json',
-	'text!core/services/bamboo/latestPlanResult.fixture.json'
+	'raw!core/services/bamboo/plan.fixture.json',
+	'raw!core/services/bamboo/latestPlanResult.fixture.json'
 ], function(BambooPlan, request, Rx, planText, resultText) {
 
 	'use strict';
@@ -46,24 +46,24 @@ define([
 			build.update();
 
 			expect(request.json).toHaveBeenCalled();
-			expect(request.json.calls[0].args[0].url).toBe('http://example.com/rest/api/latest/plan/KEY');
-			expect(request.json.calls[0].args[0].username).toBe(settings.username);
-			expect(request.json.calls[0].args[0].password).toBe(settings.password);
-			expect(request.json.calls[0].args[0].data).toEqual({ os_authType: 'guest' });
-			expect(request.json.calls[1].args[0].url).toBe('http://example.com/rest/api/latest/result/KEY/latest');
-			expect(request.json.calls[1].args[0].data).toEqual({ expand: 'changes', os_authType: 'guest' });
+			expect(request.json.calls.argsFor(0)[0].url).toBe('http://example.com/rest/api/latest/plan/KEY');
+			expect(request.json.calls.argsFor(0)[0].username).toBe(settings.username);
+			expect(request.json.calls.argsFor(0)[0].password).toBe(settings.password);
+			expect(request.json.calls.argsFor(0)[0].data).toEqual({ os_authType: 'guest' });
+			expect(request.json.calls.argsFor(1)[0].url).toBe('http://example.com/rest/api/latest/result/KEY/latest');
+			expect(request.json.calls.argsFor(1)[0].data).toEqual({ expand: 'changes', os_authType: 'guest' });
 		});
 
 		it('should make calls on update', function() {
 			build.update();
 
 			expect(request.json).toHaveBeenCalled();
-			expect(request.json.calls[0].args[0].url).toBe('http://example.com/rest/api/latest/plan/KEY');
-			expect(request.json.calls[0].args[0].username).toBe(settings.username);
-			expect(request.json.calls[0].args[0].password).toBe(settings.password);
-			expect(request.json.calls[0].args[0].data).toEqual({ os_authType: 'basic' });
-			expect(request.json.calls[1].args[0].url).toBe('http://example.com/rest/api/latest/result/KEY/latest');
-			expect(request.json.calls[1].args[0].data).toEqual({ expand: 'changes', os_authType: 'basic' });
+			expect(request.json.calls.argsFor(0)[0].url).toBe('http://example.com/rest/api/latest/plan/KEY');
+			expect(request.json.calls.argsFor(0)[0].username).toBe(settings.username);
+			expect(request.json.calls.argsFor(0)[0].password).toBe(settings.password);
+			expect(request.json.calls.argsFor(0)[0].data).toEqual({ os_authType: 'basic' });
+			expect(request.json.calls.argsFor(1)[0].url).toBe('http://example.com/rest/api/latest/result/KEY/latest');
+			expect(request.json.calls.argsFor(1)[0].data).toEqual({ expand: 'changes', os_authType: 'basic' });
 		});
 
 		it('should parse response and return current state', function() {

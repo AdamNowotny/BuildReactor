@@ -2,10 +2,10 @@ define([
 	'core/services/travis/travisBuild',
 	'core/services/request',
 	'rx',
-	'text!core/services/travis/builds.fixture.json',
-	'text!core/services/travis/builds_running.fixture.json',
-	'text!core/services/travis/build_by_id.fixture.json',
-	'text!core/services/travis/build_by_id_running.fixture.json',
+	'raw!core/services/travis/builds.fixture.json',
+	'raw!core/services/travis/builds_running.fixture.json',
+	'raw!core/services/travis/build_by_id.fixture.json',
+	'raw!core/services/travis/build_by_id_running.fixture.json',
 	'test/rxHelpers'
 ], function(TravisBuild, request, Rx, buildFixture, buildsRunningFixture, buildDetailsFixture, buildDetailsRunningFixture) {
 
@@ -36,7 +36,7 @@ define([
 			buildsRunningJson = JSON.parse(buildsRunningFixture);
 			buildDetailsJson = JSON.parse(buildDetailsFixture);
 			buildDetailsRunningJson = JSON.parse(buildDetailsRunningFixture);
-			spyOn(request, 'json').andCallFake(function(options) {
+			spyOn(request, 'json').and.callFake(function(options) {
 				switch (options.url) {
 				case 'https://api.travis-ci.org/repositories/AdamNowotny/BuildReactor/builds.json':
 					return Rx.Observable.returnValue(isRunning ? buildsRunningJson : buildsJson);
@@ -144,7 +144,7 @@ define([
 		it('should process builds in right order when previous build results come first', function() {
 			var build1Result = new Rx.Subject();
 			var build2Result = new Rx.Subject();
-			request.json.andCallFake(function(options) {
+			request.json.and.callFake(function(options) {
 				switch (options.url) {
 				case 'https://api.travis-ci.org/repositories/AdamNowotny/BuildReactor/builds.json':
 					return Rx.Observable.returnValue(buildsRunningJson);

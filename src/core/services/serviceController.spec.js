@@ -38,7 +38,7 @@ function(controller, Rx, serviceLoader, mixIn) {
 				disabled: false
 			};
 			serviceStartResponse = Rx.Observable.returnValue([]);
-			spyOn(CustomBuildService.prototype, 'start').andCallFake(function() {
+			spyOn(CustomBuildService.prototype, 'start').and.callFake(function() {
 				this.events.onNext({ eventName: 'serviceStarted' });
 				return serviceStartResponse;
 			});
@@ -98,7 +98,7 @@ function(controller, Rx, serviceLoader, mixIn) {
 
 			it('should push servicesInitialized when all services started', function() {
 				serviceStartResponse = new Rx.Subject();
-				CustomBuildService.prototype.start.andCallFake(function() {
+				CustomBuildService.prototype.start.and.callFake(function() {
 					return serviceStartResponse;
 				});
 
@@ -234,7 +234,7 @@ function(controller, Rx, serviceLoader, mixIn) {
 			});
 
 			it('should register service', function() {
-				spyOn(CustomBuildService, 'settings').andReturn(settings);
+				spyOn(CustomBuildService, 'settings').and.returnValue(settings);
 
 				controller.registerType(CustomBuildService);
 

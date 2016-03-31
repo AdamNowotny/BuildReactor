@@ -142,7 +142,7 @@ define([
 
 	var start = function() {
 		if (!this.settings.updateInterval) {
-			throw { name: 'ArgumentInvalid', message: 'updateInterval not defined' };
+			throw new Error('updateInterval not defined');
 		}
 		if (this.poolingSubscription !== null) {
 			return Rx.Observable.empty();

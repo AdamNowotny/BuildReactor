@@ -39,7 +39,7 @@ define([
 					url: 'http://sample.com',
 					data: { param: 'value' }
 				};
-				spyOn($, 'ajax').andCallFake(function(options) {
+				spyOn($, 'ajax').and.callFake(function(options) {
 					expect(options.dataType).toBe('json');
 					expect(options.url).toBe('http://sample.com');
 					expect(options.type).toBe('GET');
@@ -54,7 +54,7 @@ define([
 			});
 
 			it('should set basic authentication', function() {
-				spyOn($, 'ajax').andCallFake(function(options) {
+				spyOn($, 'ajax').and.callFake(function(options) {
 					expect(options.headers.Authorization).toBe('Basic dXNlcm5hbWUxOnBhc3N3b3JkMTIz');
 					return successDeferred;
 				});
@@ -71,7 +71,7 @@ define([
 
 			it('should call custom parser if specified', function() {
 				var parser = jasmine.createSpy();
-				spyOn($, 'ajax').andReturn(successDeferred);
+				spyOn($, 'ajax').and.returnValue(successDeferred);
 				var settings = {
 					url: 'http://example.com',
 					parser: parser
@@ -85,7 +85,7 @@ define([
 			it('should return json response', function() {
 				var response = { data: "some data", textStatus: 'success' };
 				var actualResponse;
-				spyOn($, 'ajax').andReturn(createSuccessDeferred(response));
+				spyOn($, 'ajax').and.returnValue(createSuccessDeferred(response));
 
 				request.json({ url: 'http://sample.com' }).subscribe(function(d) {
 					actualResponse = d;
@@ -108,7 +108,7 @@ define([
 							'param_2': 'value2'
 						}
 					};
-					spyOn($, 'ajax').andReturn(createFailureDeferred(response));
+					spyOn($, 'ajax').and.returnValue(createFailureDeferred(response));
 
 					var actualError;
 					request.json(ajaxOptions).subscribe(function(d) {}, function(d) {
@@ -136,16 +136,13 @@ define([
 				it('should throw exception on timeout', function() {
 					var scheduler = new Rx.TestScheduler();
 					var ajaxOptions = { url: 'http://sample.com/', scheduler: scheduler, timeout: 20000 };
-					spyOn($, 'ajax').andReturn($.Deferred());
+					spyOn($, 'ajax').and.returnValue($.Deferred());
 
 					var result = scheduler.startWithTiming(function() {
 						return request.json(ajaxOptions);
 					}, 100, 200, 21000);
 
-					expect(result.messages[0].time).toBe(20200);
-					var actualError = result.messages[0].value.exception;
-
-					expect(actualError).toEqual({
+					expect(result.messages).toHaveElements(onError(20200, {
 						name: 'TimeoutError',
 						httpStatus: null,
 						message: 'Connection timed out after 20 seconds',
@@ -156,7 +153,7 @@ define([
 							cache: false,
 							dataType: 'json'
 						}
-					});
+					}));
 				});
 
 				it('should throw exception on connection error with message', function() {
@@ -166,7 +163,7 @@ define([
 					};
 					var actualError;
 					var ajaxOptions = { url: 'http://sample.com/' };
-					spyOn($, 'ajax').andReturn(createFailureDeferred(response));
+					spyOn($, 'ajax').and.returnValue(createFailureDeferred(response));
 
 					request.json(ajaxOptions).subscribe(function(d) {}, function(d) {
 						actualError = d;
@@ -181,7 +178,8 @@ define([
 							type: 'GET',
 							url: 'http://sample.com/',
 							cache: false,
-							dataType: 'json'
+							dataType: 'json',
+							data: undefined
 						}
 					});
 				});
@@ -192,7 +190,7 @@ define([
 						statusText: 'Unauthorized'
 					};
 					var ajaxOptions = { url: 'http://sample.com/' };
-					spyOn($, 'ajax').andReturn(createFailureDeferred(response));
+					spyOn($, 'ajax').and.returnValue(createFailureDeferred(response));
 
 					var actualError;
 					request.json(ajaxOptions).subscribe(function(d) {}, function(d) {
@@ -208,7 +206,8 @@ define([
 							type: 'GET',
 							url: 'http://sample.com/',
 							cache: false,
-							dataType: 'json'
+							dataType: 'json',
+							data: undefined
 						}
 					});
 				});
@@ -219,7 +218,7 @@ define([
 						status: 200
 					};
 					var ajaxOptions = { url: 'http://sample.com/' };
-					spyOn($, 'ajax').andReturn(createFailureDeferred(response));
+					spyOn($, 'ajax').and.returnValue(createFailureDeferred(response));
 
 					var actualError;
 					request.json(ajaxOptions).subscribe(function(d) {}, function(d) {
@@ -235,7 +234,8 @@ define([
 							type: 'GET',
 							url: 'http://sample.com/',
 							cache: false,
-							dataType: 'json'
+							dataType: 'json',
+							data: undefined
 						}
 					});
 				});
@@ -245,7 +245,7 @@ define([
 						statusText: 'OK',
 						status: 200
 					};
-					spyOn($, 'ajax').andReturn(createSuccessDeferred(response));
+					spyOn($, 'ajax').and.returnValue(createSuccessDeferred(response));
 					var ajaxOptions = {
 						url: 'http://example.com',
 						parser: function(response) {
@@ -260,7 +260,7 @@ define([
 
 					expect(actualError).toEqual({
 						name: 'ParseError',
-						message: "'undefined' is not an object (evaluating 'response.unknown.unknown')",
+						message: "undefined is not an object (evaluating 'response.unknown.unknown')",
 						httpStatus: 200,
 						url: 'http://example.com',
 						ajaxOptions: {
@@ -283,7 +283,7 @@ define([
 					url: 'http://sample.com',
 					data: { param: 'value' }
 				};
-				spyOn($, 'ajax').andCallFake(function(options) {
+				spyOn($, 'ajax').and.callFake(function(options) {
 					expect(options.dataType).toBe('xml');
 					expect(options.url).toBe('http://sample.com');
 					expect(options.type).toBe('GET');

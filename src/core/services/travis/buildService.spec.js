@@ -3,7 +3,7 @@ define([
 	'core/services/travis/travisBuild',
 	'core/services/request',
 	'rx',
-	'text!core/services/travis/repositories.fixture.json'
+	'raw!core/services/travis/repositories.fixture.json'
 ], function(BuildService, TravisBuild, request, Rx, reposFixture) {
 
 	'use strict';
@@ -41,7 +41,7 @@ define([
 
 			it('should return available builds', function() {
 				var rxJson = Rx.Observable.never();
-				spyOn(request, 'json').andReturn(rxJson);
+				spyOn(request, 'json').and.returnValue(rxJson);
 
 				var response = service.availableBuilds();
 
@@ -49,7 +49,7 @@ define([
 			});
 
 			it('should pass options to request', function() {
-				spyOn(request, 'json').andCallFake(function(options) {
+				spyOn(request, 'json').and.callFake(function(options) {
 					expect(options.data['owner_name']).toBe(settings.username);
 					expect(options.url).toBe('https://api.travis-ci.org/repos/');
 				});
@@ -61,7 +61,7 @@ define([
 
 			it('should parse response', function() {
 				var reposJson = JSON.parse(reposFixture);
-				spyOn(request, 'json').andCallFake(function(options) {
+				spyOn(request, 'json').and.callFake(function(options) {
 					var response = options.parser(reposJson);
 					expect(response.items.length).toBe(2);
 					expect(response.items[1].id).toBe('AdamNowotny/BuildReactor');

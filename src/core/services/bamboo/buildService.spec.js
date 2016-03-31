@@ -3,9 +3,9 @@ define([
 		'core/services/bamboo/bambooPlan',
 		'rx',
 		'core/services/request',
-		'text!core/services/bamboo/projects.fixture.json',
-		'text!core/services/bamboo/projects_page2.fixture.json',
-		'text!core/services/bamboo/projects_plans_page2.fixture.json',
+		'raw!core/services/bamboo/projects.fixture.json',
+		'raw!core/services/bamboo/projects_page2.fixture.json',
+		'raw!core/services/bamboo/projects_plans_page2.fixture.json',
 		'jquery',
 		'rx.aggregates'
 	],
@@ -48,7 +48,7 @@ define([
 					projectsJson = JSON.parse(projectsFixture);
 					projectsJson2 = JSON.parse(projects2Fixture);
 					projectsJson3 = JSON.parse(projects3Fixture);
-					spyOn(request, 'json').andCallFake(function(options) {
+					spyOn(request, 'json').and.callFake(function(options) {
 						switch (options.url + '?' + $.param(options.data)) {
 						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=0&os_authType=basic':
 						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=0':
@@ -66,7 +66,7 @@ define([
 				});
 
 				it('should pass options to request', function() {
-					request.json.andCallFake(function(options) {
+					request.json.and.callFake(function(options) {
 						expect(options.username).toBe(settings.username);
 						expect(options.password).toBe(settings.password);
 						expect(options.url).toBe('http://example.com/rest/api/latest/project');
@@ -82,7 +82,7 @@ define([
 				it('should set authType to guest when no credentials specified', function() {
 					settings.username = null;
 					settings.password = null;
-					request.json.andCallFake(function(options) {
+					request.json.and.callFake(function(options) {
 						expect(options.data).toEqual({
 							expand: 'projects.project.plans.plan',
 							'start-index': 0,

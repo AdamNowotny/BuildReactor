@@ -15,10 +15,10 @@ define([
 		var port;
 
 		beforeEach(function() {
-			spyOn(chromeApi, 'addMessageListener').andCallFake(function(messageListener) {
+			spyOn(chromeApi, 'addMessageListener').and.callFake(function(messageListener) {
 				messageHandler = messageListener;
 			});
-			spyOn(chromeApi, 'addConnectListener').andCallFake(function(connectListener) {
+			spyOn(chromeApi, 'addConnectListener').and.callFake(function(connectListener) {
 				connectHandler = connectListener;
 			});
 			spyOn(serviceConfiguration, 'setOrder');
@@ -48,7 +48,7 @@ define([
 					addListener: function() {}
 				}
 			};
-			spyOn(port.onDisconnect, 'addListener').andCallFake(function(onDisconnect) {
+			spyOn(port.onDisconnect, 'addListener').and.callFake(function(onDisconnect) {
 				port.disconnectHandler = onDisconnect;
 			});
 			spyOn(port, 'postMessage');
@@ -156,7 +156,7 @@ define([
 					name: 'availableProjects',
 					serviceSettings: {}
 				};
-				mockAvailableBuilds = spyOn(CustomBuildService.prototype, 'availableBuilds').andCallFake(function() {
+				mockAvailableBuilds = spyOn(CustomBuildService.prototype, 'availableBuilds').and.callFake(function() {
 					return Rx.Observable.never();
 				});
 
@@ -180,7 +180,7 @@ define([
 				var sendResponse = function(response) {
 					actualResponse = response;
 				};
-				mockAvailableBuilds.andReturn(Rx.Observable.returnValue(serviceResponse));
+				mockAvailableBuilds.and.returnValue(Rx.Observable.returnValue(serviceResponse));
 
 				messageHandler(request, null, sendResponse);
 
@@ -193,7 +193,7 @@ define([
 				var sendResponse = function(response) {
 					actualResponse = response;
 				};
-				mockAvailableBuilds.andReturn(Rx.Observable.throwException(serviceError));
+				mockAvailableBuilds.and.returnValue(Rx.Observable.throwException(serviceError));
 
 				messageHandler(request, null, sendResponse);
 
@@ -223,7 +223,7 @@ define([
 				serviceController.activeProjects.onNext('test');
 				serviceController.activeProjects.onNext('test');
 
-				expect(port.postMessage.callCount).toBe(1);
+				expect(port.postMessage.calls.count()).toBe(1);
 			});
 
 		});
@@ -249,7 +249,7 @@ define([
 				serviceConfiguration.changes.onNext('test');
 				serviceConfiguration.changes.onNext('test');
 
-				expect(port.postMessage.callCount).toBe(1);
+				expect(port.postMessage.calls.count()).toBe(1);
 			});
 
 		});
@@ -275,7 +275,7 @@ define([
 				viewConfiguration.changes.onNext({ columns: 6 });
 				viewConfiguration.changes.onNext({ columns: 7 });
 
-				expect(port.postMessage.callCount).toBe(1);
+				expect(port.postMessage.calls.count()).toBe(1);
 			});
 
 		});

@@ -3,9 +3,9 @@ define([
 	'core/services/jenkins/jenkinsBuild',
 	'core/services/request',
 	'rx',
-	'text!core/services/jenkins/availableBuilds.fixture.json',
-	'text!core/services/jenkins/availableBuilds.primaryView.fixture.json',
-	'text!core/services/jenkins/availableBuilds.incorrectUrl.fixture.json'
+	'raw!core/services/jenkins/availableBuilds.fixture.json',
+	'raw!core/services/jenkins/availableBuilds.primaryView.fixture.json',
+	'raw!core/services/jenkins/availableBuilds.incorrectUrl.fixture.json'
 ], function(BuildService, JenkinsBuild, request, Rx, availableBuildsFixture, viewFixture, availableBuildsIncorrectFixture) {
 
 	'use strict';
@@ -48,7 +48,7 @@ define([
 			var scheduler;
 
 			function setupRequestSpy(availableBuildsJson, viewJson) {
-				request.json.andCallFake(function(options) {
+				request.json.and.callFake(function(options) {
 					if (options.url === 'http://ci.jenkins-ci.org/api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]') {
 						return Rx.Observable.returnValue(availableBuildsJson);
 					} else if (options.url.indexOf('/view/') > -1) {
@@ -70,7 +70,7 @@ define([
 			it('should use credentials', function() {
 				settings.username = 'USERNAME';
 				settings.password = 'PASSWORD';
-				request.json.andCallFake(function(options) {
+				request.json.and.callFake(function(options) {
 					expect(options.username).toBe(settings.username);
 					expect(options.password).toBe(settings.password);
 					return Rx.Observable.never();
@@ -82,7 +82,7 @@ define([
 			});
 
 			it('should get available builds from correct URL', function() {
-				request.json.andCallFake(function(options) {
+				request.json.and.callFake(function(options) {
 					expect(options.url).toBe('http://ci.jenkins-ci.org/api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]');
 					return Rx.Observable.never();
 				});
@@ -93,7 +93,7 @@ define([
 			});
 
 			it('should increase timeout for view details', function() {
-				request.json.andCallFake(function(options) {
+				request.json.and.callFake(function(options) {
 					if (options.url === 'http://ci.jenkins-ci.org/api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]') {
 						return Rx.Observable.returnValue(availableBuildsJson);
 					} else if (options.url.indexOf('iew/') > -1) {
