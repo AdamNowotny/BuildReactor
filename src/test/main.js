@@ -65,5 +65,7 @@ window.Notification = function() {
 // require('angular');
 // require('angular-mocks');
 
-const testsContext = require.context("../common/directives", true, /.spec.js$/);
+// const testsContext = require.context("../common", true, /.spec.js$/);
+// testsContext.keys().forEach(testsContext);
+const testsContext = require.context("../core/", true, /.spec.js$/);
 testsContext.keys().forEach(testsContext);

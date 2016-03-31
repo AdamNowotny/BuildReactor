@@ -29,7 +29,7 @@ define([
 		it('should not show badge when services are initialized and builds are fine', function() {
 			serviceController.events.onNext({ eventName: 'servicesInitialized' });
 
-			expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('');
+			expect(chrome.browserAction.setBadgeText.calls.mostRecent().args[0].text).toBe('');
 		});
 
 		it('should not show badge when all builds are fixed', function() {
@@ -38,7 +38,7 @@ define([
 			serviceController.events.onNext({ eventName: 'buildBroken' });
 			serviceController.events.onNext({ eventName: 'buildFixed' });
 
-			expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('');
+			expect(chrome.browserAction.setBadgeText.calls.mostRecent().args[0].text).toBe('');
 		});
 
 		describe('red badge', function() {
@@ -50,7 +50,7 @@ define([
 				serviceController.events.onNext({ eventName: 'servicesInitializing' });
 				serviceController.events.onNext({ eventName: 'buildBroken' });
 
-				expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('1');
+				expect(chrome.browserAction.setBadgeText.calls.mostRecent().args[0].text).toBe('1');
 			});
 
 			it('should show red badge when a build is broken', function() {
@@ -58,14 +58,14 @@ define([
 
 				serviceController.events.onNext({ eventName: 'buildBroken' });
 
-				expect(chrome.browserAction.setBadgeBackgroundColor.mostRecentCall.args[0].color).toEqual(colors.red);
+				expect(chrome.browserAction.setBadgeBackgroundColor.calls.mostRecent().args[0].color).toEqual(colors.red);
 			});
 
 			it('should increase amount of failed builds when builds fail', function() {
 				serviceController.events.onNext({ eventName: 'buildBroken' });
 				serviceController.events.onNext({ eventName: 'buildBroken' });
 
-				expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('2');
+				expect(chrome.browserAction.setBadgeText.calls.mostRecent().args[0].text).toBe('2');
 			});
 
 			it('should decrease amount of failed builds when builds are fixed', function() {
@@ -73,13 +73,13 @@ define([
 				serviceController.events.onNext({ eventName: 'buildBroken' });
 				serviceController.events.onNext({ eventName: 'buildFixed' });
 
-				expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('1');
+				expect(chrome.browserAction.setBadgeText.calls.mostRecent().args[0].text).toBe('1');
 			});
 
 			it('should not show less than 0 failed builds', function() {
 				serviceController.events.onNext({ eventName: 'buildFixed' });
 
-				expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe(' ');
+				expect(chrome.browserAction.setBadgeText.calls.mostRecent().args[0].text).toBe(' ');
 			});
 
 			it('should ignore broken builds if build disabled', function() {
@@ -87,8 +87,8 @@ define([
 
 				serviceController.events.onNext({ eventName: 'buildBroken', details: { isDisabled: true } });
 
-				expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('');
-				expect(chrome.browserAction.setBadgeBackgroundColor.mostRecentCall.args[0].color).not.toEqual(colors.red);
+				expect(chrome.browserAction.setBadgeText.calls.mostRecent().args[0].text).toBe('');
+				expect(chrome.browserAction.setBadgeBackgroundColor.calls.mostRecent().args[0].color).not.toEqual(colors.red);
 			});
 
 			it('should ignore fixed builds if build disabled', function() {
@@ -98,7 +98,7 @@ define([
 				serviceController.events.onNext({ eventName: 'buildBroken' });
 				serviceController.events.onNext({ eventName: 'buildFixed', details: { isDisabled: true } });
 
-				expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe('2');
+				expect(chrome.browserAction.setBadgeText.calls.mostRecent().args[0].text).toBe('2');
 			});
 
 		});
@@ -108,8 +108,8 @@ define([
 			it('should show grey badge when services are reloaded', function() {
 				serviceController.events.onNext({ eventName: 'servicesInitializing' });
 
-				expect(chrome.browserAction.setBadgeText.mostRecentCall.args[0].text).toBe(' ');
-				expect(chrome.browserAction.setBadgeBackgroundColor.mostRecentCall.args[0].color).toEqual(colors.grey);
+				expect(chrome.browserAction.setBadgeText.calls.mostRecent().args[0].text).toBe(' ');
+				expect(chrome.browserAction.setBadgeBackgroundColor.calls.mostRecent().args[0].color).toEqual(colors.grey);
 			});
 
 			it('should show grey badge if build offline', function() {
@@ -117,7 +117,7 @@ define([
 
 				serviceController.events.onNext({ eventName: 'buildOffline' });
 
-				expect(chrome.browserAction.setBadgeBackgroundColor.mostRecentCall.args[0].color).toEqual(colors.grey);
+				expect(chrome.browserAction.setBadgeBackgroundColor.calls.mostRecent().args[0].color).toEqual(colors.grey);
 			});
 
 			it('should show grey badge if build offline and another failed', function() {
@@ -126,7 +126,7 @@ define([
 				serviceController.events.onNext({ eventName: 'buildBroken' });
 				serviceController.events.onNext({ eventName: 'buildOffline' });
 
-				expect(chrome.browserAction.setBadgeBackgroundColor.mostRecentCall.args[0].color).toEqual(colors.grey);
+				expect(chrome.browserAction.setBadgeBackgroundColor.calls.mostRecent().args[0].color).toEqual(colors.grey);
 			});
 
 			it('should not show grey badge if builds back online', function() {
@@ -135,7 +135,7 @@ define([
 				serviceController.events.onNext({ eventName: 'buildOffline' });
 				serviceController.events.onNext({ eventName: 'buildOnline' });
 
-				expect(chrome.browserAction.setBadgeBackgroundColor.mostRecentCall.args[0].color).not.toEqual(colors.grey);
+				expect(chrome.browserAction.setBadgeBackgroundColor.calls.mostRecent().args[0].color).not.toEqual(colors.grey);
 			});
 
 		});
