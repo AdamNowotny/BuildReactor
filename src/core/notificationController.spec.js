@@ -23,7 +23,7 @@ define([
 			servicesInitializingEvents = new Rx.Subject();
 			servicesInitializedEvents = new Rx.Subject();
 			passwordExpiredEvents = new Rx.Subject();
-			spyOn(events, 'getByName').andCallFake(function(name) {
+			spyOn(events, 'getByName').and.callFake(function(name) {
 				switch (name) {
 					case 'buildBroken':
 						return buildBrokenEvents;
@@ -44,8 +44,8 @@ define([
 				onshow: jasmine.createSpy(),
 				onclick: jasmine.createSpy()
 			};
-			spyOn(window, 'Notification').andReturn(mockNotification);
-			spyOn(chromeApi, 'isDashboardActive').andReturn(Rx.Observable.returnValue(false));
+			spyOn(window, 'Notification').and.returnValue(mockNotification);
+			spyOn(chromeApi, 'isDashboardActive').and.returnValue(Rx.Observable.returnValue(false));
 			notificationController.init({ timeout: 5000, scheduler: scheduler });
 		});
 
@@ -274,11 +274,11 @@ define([
 
 			scheduler.advanceBy(5000);
 
-			expect(window.Notification.callCount).toBe(2);
+			expect(window.Notification.calls.count()).toBe(2);
 		});
 
 		it('should not show any notifications when dashboard active', function() {
-			chromeApi.isDashboardActive.andReturn(Rx.Observable.returnValue(true));
+			chromeApi.isDashboardActive.and.returnValue(Rx.Observable.returnValue(true));
 			buildBrokenEvents.onNext({ eventName: 'buildBroken', details: {} });
 			buildFixedEvents.onNext({ eventName: 'buildFixed', details: {} });
 
@@ -297,7 +297,7 @@ define([
 		});
 
 		it('should hide notification when url shown', function() {
-			spyOn(chrome.tabs, 'create').andCallFake(function(obj, callback) {
+			spyOn(chrome.tabs, 'create').and.callFake(function(obj, callback) {
 				callback();
 			});
 
