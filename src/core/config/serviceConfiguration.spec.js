@@ -4,7 +4,8 @@ define([
 	'core/config/serviceConfigUpdater',
 	'common/arrayEquals',
 	'rx',
-	'rx.testing'
+	'rx.testing',
+	'test/rxHelpers'
 ], function(serviceConfiguration, configStore, configUpdater, arrayEquals, Rx) {
 
 	'use strict';
@@ -28,8 +29,8 @@ define([
 			var newConfig = [
 				{ name: 'updated service', disabled: false }
 			];
-			configStore.getItem.andReturn(oldConfig);
-			configUpdater.update.andReturn(newConfig);
+			configStore.getItem.and.returnValue(oldConfig);
+			configUpdater.update.and.returnValue(newConfig);
 
 			scheduler.scheduleAbsolute(300, function() {
 				serviceConfiguration.init();
@@ -39,7 +40,7 @@ define([
 			});
 
 			expect(configStore.setItem).toHaveBeenCalledWith('services', newConfig);
-			expect(changes.messages).toHaveElements(onNext(300, newConfig));
+			expect(changes.messages).toHaveElements([onNext(300, newConfig)]);
 		});
 
 		it('should disable service', function() {
@@ -47,7 +48,7 @@ define([
 				{ name: 'service1', disabled: false },
 				{ name: 'service2', disabled: false }
 			];
-			configStore.getItem.andReturn(allConfig);
+			configStore.getItem.and.returnValue(allConfig);
 
 			scheduler.scheduleAbsolute(300, function() {
 				serviceConfiguration.disableService('service2');
@@ -61,7 +62,7 @@ define([
 				{ name: 'service2', disabled: true }
 			];
 			expect(configStore.setItem).toHaveBeenCalledWith('services', result);
-			expect(changes.messages).toHaveElements(onNext(300, result));
+			expect(changes.messages).toHaveElements([onNext(300, result)]);
 		});
 
 		it('should enable service', function() {
@@ -69,7 +70,7 @@ define([
 				{ name: 'service1', disabled: false },
 				{ name: 'service2', disabled: true }
 			];
-			configStore.getItem.andReturn(allConfig);
+			configStore.getItem.and.returnValue(allConfig);
 
 			scheduler.scheduleAbsolute(300, function() {
 				serviceConfiguration.enableService('service2');
@@ -83,12 +84,12 @@ define([
 				{ name: 'service2', disabled: false }
 			];
 			expect(configStore.setItem).toHaveBeenCalledWith('services', result);
-			expect(changes.messages).toHaveElements(onNext(300, result));
+			expect(changes.messages).toHaveElements([onNext(300, result)]);
 		});
 
 		it('should remove service', function() {
 			var allConfig = [{ name: 'service1' }, { name: 'service2' }];
-			configStore.getItem.andReturn(allConfig);
+			configStore.getItem.and.returnValue(allConfig);
 
 			scheduler.scheduleAbsolute(300, function() {
 				serviceConfiguration.removeService('service1');
@@ -99,12 +100,12 @@ define([
 
 			var result = [{ name: 'service2' }];
 			expect(configStore.setItem).toHaveBeenCalledWith('services', result);
-			expect(changes.messages).toHaveElements(onNext(300, result));
+			expect(changes.messages).toHaveElements([onNext(300, result)]);
 		});
 
 		it('should rename service', function() {
 			var allConfig = [{ name: 'service1' }, { name: 'service2' }];
-			configStore.getItem.andReturn(allConfig);
+			configStore.getItem.and.returnValue(allConfig);
 
 			scheduler.scheduleAbsolute(300, function() {
 				serviceConfiguration.renameService('service1', 'service1 new');
@@ -115,12 +116,12 @@ define([
 
 			var result = [{ name: 'service1 new' }, { name: 'service2' }];
 			expect(configStore.setItem).toHaveBeenCalledWith('services', result);
-			expect(changes.messages).toHaveElements(onNext(300, result));
+			expect(changes.messages).toHaveElements([onNext(300, result)]);
 		});
 
 		it('should save existing service', function() {
 			var allConfig = [{ name: 'service', url: 'http://example1.com' }];
-			configStore.getItem.andReturn(allConfig);
+			configStore.getItem.and.returnValue(allConfig);
 			var newSettings = { name: 'service', url: 'http://example2.com' };
 
 			scheduler.scheduleAbsolute(300, function() {
@@ -132,12 +133,12 @@ define([
 
 			var result = [newSettings];
 			expect(configStore.setItem).toHaveBeenCalledWith('services', result);
-			expect(changes.messages).toHaveElements(onNext(300, result));
+			expect(changes.messages).toHaveElements([onNext(300, result)]);
 		});
 
 		it('should add new service', function() {
 			var allConfig = [{ name: 'service', url: 'http://example1.com' }];
-			configStore.getItem.andReturn(allConfig);
+			configStore.getItem.and.returnValue(allConfig);
 			var newSettings = { name: 'service-new', url: 'http://example2.com' };
 
 			scheduler.scheduleAbsolute(300, function() {
@@ -149,7 +150,7 @@ define([
 
 			var result = [allConfig[0], newSettings];
 			expect(configStore.setItem).toHaveBeenCalledWith('services', result);
-			expect(changes.messages).toHaveElements(onNext(300, result));
+			expect(changes.messages).toHaveElements([onNext(300, result)]);
 		});
 
 		describe('reordering', function() {
@@ -159,7 +160,7 @@ define([
 					{ name: 'service1' },
 					{ name: 'service2' }
 				];
-				configStore.getItem.andReturn(allConfig);
+				configStore.getItem.and.returnValue(allConfig);
 
 				scheduler.scheduleAbsolute(300, function() {
 					serviceConfiguration.setOrder(['service2', 'service1']);
@@ -168,9 +169,9 @@ define([
 					return serviceConfiguration.changes;
 				});
 
-				expect(changes.messages).toHaveElementsMatchingAt(300, function(value) {
-					return value[0].name === 'service2' && value[1].name === 'service1';
-				});
+				expect(changes.messages).toHaveElements(
+					onNext(300, { name: 'service2' }, { name: 'service1' })
+				);
 			});
 
 			it('should throw error when service count does not match', function() {
@@ -179,11 +180,11 @@ define([
 					{ name: 'service2' },
 					{ name: 'service3' }
 				];
-				configStore.getItem.andReturn(allConfig);
+				configStore.getItem.and.returnValue(allConfig);
 
 				expect(function() {
 					serviceConfiguration.setOrder(['service2', 'service1']);
-				}).toThrow({ name: 'ArgumentInvalid', message: 'All services required' });
+				}).toThrowError('All services required');
 			});
 
 			it('should not publish changes when order not changed', function() {
@@ -191,7 +192,7 @@ define([
 					{ name: 'service1' },
 					{ name: 'service2' }
 				];
-				configStore.getItem.andReturn(allConfig);
+				configStore.getItem.and.returnValue(allConfig);
 
 				scheduler.scheduleAbsolute(300, function() {
 					serviceConfiguration.setOrder(['service1', 'service2']);
@@ -200,7 +201,7 @@ define([
 					return serviceConfiguration.changes;
 				});
 
-				expect(changes.messages).not.toHaveElementsAtTimes(300);
+				expect(changes.messages.some((message) => message.time === 300)).toBe(false);
 			});
 
 		});
@@ -211,7 +212,7 @@ define([
 				var allConfig = [
 					{ name: 'service name', projects: ['build1', 'build2'] }
 				];
-				configStore.getItem.andReturn(allConfig);
+				configStore.getItem.and.returnValue(allConfig);
 
 				scheduler.scheduleAbsolute(300, function() {
 					serviceConfiguration.setBuildOrder('service name', ['build2', 'build1']);
@@ -220,7 +221,7 @@ define([
 					return serviceConfiguration.changes;
 				});
 
-				var result = configStore.setItem.mostRecentCall.args[1][0];
+				var result = configStore.setItem.calls.mostRecent().args[1][0];
 				expect(result.name).toBe('service name');
 				expect(result.projects).toEqual(['build2', 'build1']);
 			});
@@ -229,7 +230,7 @@ define([
 				var allConfig = [
 					{ name: 'service name', projects: ['build1', 'build2'] }
 				];
-				configStore.getItem.andReturn(allConfig);
+				configStore.getItem.and.returnValue(allConfig);
 
 				scheduler.scheduleAbsolute(300, function() {
 					serviceConfiguration.setBuildOrder('service name', ['build2', 'build1']);
@@ -238,9 +239,9 @@ define([
 					return serviceConfiguration.changes;
 				});
 
-				expect(changes.messages).toHaveElementsMatchingAt(300, function(value) {
-					return arrayEquals(value[0].projects, ['build2', 'build1']);
-				});
+				expect(changes.messages).toHaveElements(
+					onNext(300, { name: 'service name', projects: ['build2', 'build1'] })
+				);
 			});
 
 		});
@@ -256,7 +257,7 @@ define([
 			});
 
 			expect(configStore.setItem).toHaveBeenCalledWith('services', newSettings);
-			expect(changes.messages).toHaveElements(onNext(300, newSettings));
+			expect(changes.messages).toHaveElements([onNext(300, newSettings)]);
 		});
 
 	});

@@ -54,8 +54,8 @@ define([
 		return groups.length ? groups : null;
 	};
 
-	var updateCheckAll = function(groups = []) {
-		groups.forEach(function(group) {
+	var updateCheckAll = function(groups) {
+		(groups || []).forEach(function(group) {
 			var selectedProjects = getSelectedProjects(group.projects);
 			group.someSelected = selectedProjects.length !== 0 && selectedProjects.length !== group.projects.length;
 			group.allSelected = selectedProjects.length === group.projects.length;

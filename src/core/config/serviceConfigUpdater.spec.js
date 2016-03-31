@@ -1,8 +1,8 @@
 define([
 	'core/config/serviceConfigUpdater',
-	'text!core/config/config-v1.fixture.json',
-	'text!core/config/config-v2.fixture.json',
-	'text!core/config/config-v3.fixture.json'
+	'raw!core/config/config-v1.fixture.json',
+	'raw!core/config/config-v2.fixture.json',
+	'raw!core/config/config-v3.fixture.json'
 ], function(updater, config1Text, config2Text, config3Text) {
 	'use strict';
 

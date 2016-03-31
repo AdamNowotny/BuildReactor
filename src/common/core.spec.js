@@ -28,7 +28,7 @@ define([
 			statePort = createPort();
 			configPort = createPort();
 			viewsPort = createPort();
-			spyOn(chromeApi, 'connect').andCallFake(function(request) {
+			spyOn(chromeApi, 'connect').and.callFake(function(request) {
 				var ports = {
 					'state': statePort,
 					'configuration': configPort,
@@ -45,14 +45,14 @@ define([
 		it('should connect on init', function() {
 			core.init();
 
-			expect(chromeApi.connect.argsForCall[0]).toEqual([{ name: 'state' }]);
-			expect(chromeApi.connect.argsForCall[1]).toEqual([{ name: 'configuration' }]);
-			expect(chromeApi.connect.argsForCall[2]).toEqual([{ name: 'views' }]);
+			expect(chromeApi.connect.calls.argsFor(0)).toEqual([{ name: 'state' }]);
+			expect(chromeApi.connect.calls.argsFor(1)).toEqual([{ name: 'configuration' }]);
+			expect(chromeApi.connect.calls.argsFor(2)).toEqual([{ name: 'views' }]);
 		});
 
 		it('should pass activeProjects from port', function() {
 			var state = [{ name: 'service1' }, { name: 'service2' }];
-			statePort.onMessage.addListener.andCallFake(function(listener) {
+			statePort.onMessage.addListener.and.callFake(function(listener) {
 				listener(state);
 			});
 
@@ -63,12 +63,12 @@ define([
 				return core.activeProjects;
 			});
 
-			expect(result.messages).toHaveElements(onNext(300, state));
+			expect(result.messages).toHaveElements([onNext(300, state)]);
 		});
 
 		it('should pass configurations from port', function() {
 			var config = [{ name: 'service1' }, { name: 'service2' }];
-			configPort.onMessage.addListener.andCallFake(function(listener) {
+			configPort.onMessage.addListener.and.callFake(function(listener) {
 				listener(config);
 			});
 
@@ -79,12 +79,12 @@ define([
 				return core.configurations;
 			});
 
-			expect(result.messages).toHaveElements(onNext(300, config));
+			expect(result.messages).toHaveElements([onNext(300, config)]);
 		});
 
 		it('should pass view configurations from port', function() {
 			var config = [{ columns: 5 }];
-			viewsPort.onMessage.addListener.andCallFake(function(listener) {
+			viewsPort.onMessage.addListener.and.callFake(function(listener) {
 				listener(config);
 			});
 
@@ -95,7 +95,7 @@ define([
 				return core.views;
 			});
 
-			expect(result.messages).toHaveElements(onNext(300, config));
+			expect(result.messages).toHaveElements([onNext(300, config)]);
 		});
 
 		it('should send availableServices message', function() {
@@ -106,17 +106,18 @@ define([
 			expect(chromeApi.sendMessage).toHaveBeenCalledWith({ name: "availableServices" }, callback);
 		});
 
-		it('should send availableProjects message', function() {
-			var settings = [];
-			var callback = jasmine.createSpy();
-			chromeApi.sendMessage.andCallFake(function(message, callback) {
+		it('should send availableProjects message', () => {
+			chromeApi.sendMessage.and.callFake((message, callback) => {
 				callback('result');
 			});
+			const settings = [];
+			const callback = jasmine.createSpy();
 
 			core.availableProjects(settings, callback);
-
+			
 			expect(chromeApi.sendMessage).toHaveBeenCalled();
-			expect(chromeApi.sendMessage.mostRecentCall.args[0]).toEqual({ name: "availableProjects", serviceSettings: settings });
+			expect(chromeApi.sendMessage.calls.mostRecent().args[0])
+				.toEqual({ name: "availableProjects", serviceSettings: settings });
 			expect(callback).toHaveBeenCalled();
 		});
 

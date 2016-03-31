@@ -14,7 +14,7 @@ define([
 		});
 
 		it('should get all settings from local storage', function() {
-			localStorage.getItem.andCallFake(function(key) {
+			localStorage.getItem.and.callFake(function(key) {
 				expect(key).toBe('key');
 				return '{ "field": "value" }';
 			});

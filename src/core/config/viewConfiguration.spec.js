@@ -27,8 +27,8 @@ define([
 			var newConfig = [
 				{ columns: 4, fullWidthGroups: true }
 			];
-			configStore.getItem.andReturn(oldConfig);
-			configUpdater.update.andReturn(newConfig);
+			configStore.getItem.and.returnValue(oldConfig);
+			configUpdater.update.and.returnValue(newConfig);
 
 			scheduler.scheduleAbsolute(300, function() {
 				viewConfiguration.init();
@@ -38,13 +38,13 @@ define([
 			});
 
 			expect(configStore.setItem).toHaveBeenCalledWith('views', newConfig);
-			expect(changes.messages).toHaveElements(onNext(300, newConfig));
+			expect(changes.messages).toHaveElements([onNext(300, newConfig)]);
 		});
 
 		it('should not update view config if not an object', function() {
 			expect(function() {
 				viewConfiguration.save('undefined');
-			}).toThrow();
+			}).toThrowError();
 			expect(configStore.setItem).not.toHaveBeenCalled();
 		});
 
@@ -61,14 +61,14 @@ define([
 			});
 
 			expect(configStore.setItem).toHaveBeenCalledWith('views', viewConfig);
-			expect(changes.messages).toHaveElements(onNext(300, viewConfig));
+			expect(changes.messages).toHaveElements([onNext(300, viewConfig)]);
 		});
 		
 		it('should not publish changes if config unchanged', function() {
 			var viewConfig = {
 				columns: 2
 			};
-			configStore.getItem.andReturn(viewConfig);
+			configStore.getItem.and.returnValue(viewConfig);
 			
 			scheduler.scheduleAbsolute(300, function() {
 				viewConfiguration.save(viewConfig);
