@@ -1,15 +1,13 @@
 /* eslint no-console: 0 */
 
 define([
-	'core/config/serviceConfiguration',
-	'core/services/serviceLoader',
 	'rx',
 	'rx.binding'
-], function(serviceConfiguration, serviceLoader, Rx) {
+], function(Rx) {
 
 	'use strict';
 
-	var types = [];
+	var types = {};
 
 	var getAllTypes = function() {
 		return types;
@@ -17,11 +15,11 @@ define([
 
 	var registerType = function(Service) {
 		var settings = Service.settings();
-		types.push(settings);
+		types[settings.baseUrl] = Service;
 	};
 
 	var clear = function() {
-		types = [];
+		types = {};
 	};
 
 	var services = [];
@@ -50,15 +48,21 @@ define([
 	});
 
 	function loadServices(settingsList) {
-		return Rx.Observable.fromArray(settingsList)
+		return Rx
+			.Observable
+			.fromArray(settingsList)
 			.where(function(settings) {
 				return settings.disabled !== true;
-			}).selectMany(function(settings) {
-				return serviceLoader.load(settings);
-			}).doAction(function(service) {
+			})
+			.select(function(settings) {
+				const Service = types[settings.baseUrl];
+				return new Service(settings);
+			})
+			.doAction(function(service) {
 				services.push(service);
 				eventsSubscriptions.push(service.events.subscribe(events));
-			}).toArray();
+			})
+			.toArray();
 	}
 
 	function startServices(settingsList) {
@@ -102,10 +106,7 @@ define([
 	var configChangesSubscription;
 
 	var start = function(configChanges) {
-		// configChangesSubscription && configChangesSubscription.dispose();
-		// configChangesSubscription = configChanges.subscribe(function (allConfig) {
-		serviceConfiguration.changes.subscribeOn(Rx.Scheduler.timeout).subscribe(function(allConfig) {
-			console.log('config', allConfig);
+		configChanges.subscribe(function(allConfig) {
 			settingsSubject.onNext(allConfig);
 		}, function(e) {
 			console.log('error', e);

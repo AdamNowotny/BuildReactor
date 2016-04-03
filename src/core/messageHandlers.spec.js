@@ -1,12 +1,11 @@
 define([
 	'core/messageHandlers',
-	'core/services/serviceLoader',
 	'core/services/serviceController',
 	'core/config/serviceConfiguration',
 	'core/config/viewConfiguration',
 	'rx',
 	'common/chromeApi'
-], function(messageHandlers, serviceLoader, serviceController, serviceConfiguration, viewConfiguration, Rx, chromeApi) {
+], function(messageHandlers, serviceController, serviceConfiguration, viewConfiguration, Rx, chromeApi) {
 	'use strict';
 
 	describe('messageHandlers', function() {
@@ -58,15 +57,19 @@ define([
 		describe('messages', function() {
 
 			it('should handle availableServices', function() {
-				var serviceTypes = [{ typeName: 'snap' }];
-				serviceController.getAllTypes.andReturn(serviceTypes);
+				var serviceTypes = [{
+					settings: function() {
+						return { typeName: 'snap' };
+					}
+				}];
+				serviceController.getAllTypes.and.returnValue(serviceTypes);
 
 				var result;
 				messageHandler({ name: 'availableServices' }, null, function(response) {
 					result = response;
 				});
 
-				expect(result).toEqual(serviceTypes);
+				expect(result).toEqual([{ typeName: 'snap' }]);
 			});
 
 			it('should handle setOrder', function() {
@@ -148,24 +151,16 @@ define([
 
 			beforeEach(function() {
 				service = new CustomBuildService();
-				spyOn(serviceLoader, 'load').andCallFake(function() {
-					return Rx.Observable.returnValue(new CustomBuildService());
-				});
+				serviceController.getAllTypes.and.returnValue({ custom: CustomBuildService });
 				sendResponse = jasmine.createSpy();
 				request = {
 					name: 'availableProjects',
-					serviceSettings: {}
+					serviceSettings: { baseUrl: 'custom' }
 				};
 				mockAvailableBuilds = spyOn(CustomBuildService.prototype, 'availableBuilds').and.callFake(function() {
 					return Rx.Observable.never();
 				});
 
-			});
-
-			it('should create service', function() {
-				messageHandler(request, null, sendResponse);
-
-				expect(serviceLoader.load).toHaveBeenCalled();
 			});
 
 			it('should call service', function() {

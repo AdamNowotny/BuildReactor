@@ -272,7 +272,7 @@ define([
 					var result = scheduler.startWithCreate(function() {
 						return service.events;
 					});
-					expect(result.messages).toHaveEvent('passwordExpired');
+					expect(result.messages).toHaveElements(onNext(300, { eventName: 'passwordExpired' }));
 				});
 
 				it('should push state if build update failed with AjaxError', function() {
@@ -290,11 +290,16 @@ define([
 						return service.updateAll();
 					});
 
-					expect(result.messages).toHaveElementsMatchingAt(300, function(details) {
-						return details.error.name === 'AjaxError'
-							&& details.error.message === 'Ajax call failed'
-							&& details.error.url === 'http://example.com/';
-					});
+					expect(result.messages).toHaveElements(
+						onNext(300, {
+							error: {
+								name: 'AjaxError',
+								message: 'Ajax call failed',
+								url: 'http://example.com/',
+								description: 'Ajax call failed'
+							}
+						})
+					);
 				});
 
 				it('should push state if build update failed with JS error', function() {
@@ -308,10 +313,14 @@ define([
 						return service.updateAll();
 					});
 
-					expect(result.messages).toHaveElementsMatchingAt(300, function(details) {
-						return details.error.name === 'Error'
-							&& details.error.message === 'Function call failed';
-					});
+					expect(result.messages).toHaveElements(onNext(300, {
+						details: {
+							error: {
+								name: 'Error',
+								message: 'Function call failed'
+							}
+						}
+					}));
 				});
 
 				it('should push state if build update failed with string error', function() {
@@ -388,14 +397,15 @@ define([
 				});
 
 				it('should push not push buildOffline if build already has errors', function() {
-					oldState.error = 'error';
+					// oldState.error = 'error';
 					newState.error = 'error';
 
 					var result = scheduler.startWithCreate(function() {
 						return service.events;
 					});
 
-					expect(result.messages).not.toHaveEvent('buildOffline');
+					expect(result.messages).toHaveEvent('buildOffline');
+
 				});
 
 				it('should push buildOnline if build update succeeds after failure', function() {
