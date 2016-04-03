@@ -12,6 +12,7 @@ define([
 
 	describe('core/services/jenkins/buildService', function() {
 
+		var onNext = Rx.ReactiveTest.onNext;
 		var settings;
 		var service;
 
@@ -112,15 +113,14 @@ define([
 				var result = scheduler.startWithCreate(function() {
 					return service.availableBuilds();
 				});
-		
-				expect(result.messages).toHaveElementsMatchingAt(200, function(builds) {
-					expect(builds.items.length).toBe(77);
-					expect(builds.items[0].id).toBe('config-provider-model');
-					expect(builds.items[0].name).toBe('config-provider-model');
-					expect(builds.items[0].group).toBe(null);
-					expect(builds.items[0].isDisabled).toBe(false);
-					return true;
-				});
+
+				expect(result.messages).toHaveElements(onNext(200));
+				const messageValue = result.messages[0].value.value;
+				expect(messageValue.items.length).toBe(77);
+				expect(messageValue.items[0].id).toBe('config-provider-model');
+				expect(messageValue.items[0].name).toBe('config-provider-model');
+				expect(messageValue.items[0].group).toBe(null);
+				expect(messageValue.items[0].isDisabled).toBe(false);
 			});
 
 			it('should return views', function() {
@@ -128,14 +128,13 @@ define([
 					return service.availableBuilds();
 				});
 		
-				expect(result.messages).toHaveElementsMatchingAt(200, function(builds) {
-					expect(builds.primaryView).toBe('All Failed');
-					expect(builds.views.length).toBe(8);
-					expect(builds.views[0].name).toBe('All');
-					expect(builds.views[0].items.length).toBe(16);
-					expect(builds.views[0].items[0]).toBe('core_selenium-test');
-					return true;
-				});
+				expect(result.messages).toHaveElements(onNext(200));
+				const messageValue = result.messages[0].value.value;
+				expect(messageValue.primaryView).toBe('All Failed');
+				expect(messageValue.views.length).toBe(8);
+				expect(messageValue.views[0].name).toBe('All');
+				expect(messageValue.views[0].items.length).toBe(16);
+				expect(messageValue.views[0].items[0]).toBe('core_selenium-test');
 			});
 
 			it('should fix url to primaryView', function() {
@@ -146,11 +145,10 @@ define([
 					return service.availableBuilds();
 				});
 		
-				expect(result.messages).toHaveElementsMatchingAt(200, function(builds) {
-					expect(builds.primaryView).toBe('All Failed');
-					expect(builds.views.length).toBe(8);
-					return true;
-				});
+				expect(result.messages).toHaveElements(onNext(200));
+				const messageValue = result.messages[0].value.value;
+				expect(messageValue.primaryView).toBe('All Failed');
+				expect(messageValue.views.length).toBe(8);
 			});
 
 		});

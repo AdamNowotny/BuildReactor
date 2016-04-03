@@ -40,7 +40,7 @@ define([
 			});
 
 			expect(configStore.setItem).toHaveBeenCalledWith('services', newConfig);
-			expect(changes.messages).toHaveElements([onNext(300, newConfig)]);
+			expect(changes.messages).toHaveElements(onNext(300, newConfig));
 		});
 
 		it('should disable service', function() {
@@ -62,7 +62,7 @@ define([
 				{ name: 'service2', disabled: true }
 			];
 			expect(configStore.setItem).toHaveBeenCalledWith('services', result);
-			expect(changes.messages).toHaveElements([onNext(300, result)]);
+			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
 
 		it('should enable service', function() {
@@ -84,7 +84,7 @@ define([
 				{ name: 'service2', disabled: false }
 			];
 			expect(configStore.setItem).toHaveBeenCalledWith('services', result);
-			expect(changes.messages).toHaveElements([onNext(300, result)]);
+			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
 
 		it('should remove service', function() {
@@ -100,7 +100,7 @@ define([
 
 			var result = [{ name: 'service2' }];
 			expect(configStore.setItem).toHaveBeenCalledWith('services', result);
-			expect(changes.messages).toHaveElements([onNext(300, result)]);
+			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
 
 		it('should rename service', function() {
@@ -116,7 +116,7 @@ define([
 
 			var result = [{ name: 'service1 new' }, { name: 'service2' }];
 			expect(configStore.setItem).toHaveBeenCalledWith('services', result);
-			expect(changes.messages).toHaveElements([onNext(300, result)]);
+			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
 
 		it('should save existing service', function() {
@@ -133,7 +133,7 @@ define([
 
 			var result = [newSettings];
 			expect(configStore.setItem).toHaveBeenCalledWith('services', result);
-			expect(changes.messages).toHaveElements([onNext(300, result)]);
+			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
 
 		it('should add new service', function() {
@@ -150,7 +150,7 @@ define([
 
 			var result = [allConfig[0], newSettings];
 			expect(configStore.setItem).toHaveBeenCalledWith('services', result);
-			expect(changes.messages).toHaveElements([onNext(300, result)]);
+			expect(changes.messages).toHaveElements(onNext(300, result));
 		});
 
 		describe('reordering', function() {
@@ -257,7 +257,7 @@ define([
 			});
 
 			expect(configStore.setItem).toHaveBeenCalledWith('services', newSettings);
-			expect(changes.messages).toHaveElements([onNext(300, newSettings)]);
+			expect(changes.messages).toHaveElements(onNext(300, newSettings));
 		});
 
 	});

@@ -13,6 +13,7 @@ define([
 
 	describe('core/services/travis/travisBuild', function() {
 
+		var onNext = Rx.ReactiveTest.onNext;
 		var settings;
 		var build;
 		var buildsJson,
@@ -170,9 +171,9 @@ define([
 				return build.update();
 			});
 
-			expect(result.messages).toHaveElementsMatchingAt(400, function(build) {
-				return build.webUrl === 'https://travis-ci.org/AdamNowotny/BuildReactor/builds/6305554';
-			});
+			expect(result.messages).toHaveElements(onNext(400, {
+				webUrl: 'https://travis-ci.org/AdamNowotny/BuildReactor/builds/6305554'
+			}));
 		});
 
 	});

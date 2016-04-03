@@ -38,7 +38,7 @@ define([
 			});
 
 			expect(configStore.setItem).toHaveBeenCalledWith('views', newConfig);
-			expect(changes.messages).toHaveElements([onNext(300, newConfig)]);
+			expect(changes.messages).toHaveElements(onNext(300, newConfig));
 		});
 
 		it('should not update view config if not an object', function() {
@@ -61,7 +61,7 @@ define([
 			});
 
 			expect(configStore.setItem).toHaveBeenCalledWith('views', viewConfig);
-			expect(changes.messages).toHaveElements([onNext(300, viewConfig)]);
+			expect(changes.messages).toHaveElements(onNext(300, viewConfig));
 		});
 		
 		it('should not publish changes if config unchanged', function() {

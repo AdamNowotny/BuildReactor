@@ -133,7 +133,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 						isRunning: false,
 						isDisabled: false,
 						serviceName: settings.name,
-						serviceIcon: 'src/core/services/cctray/icon.png',
+						serviceIcon: 'core/services/cctray/icon.png',
 						tags: [],
 						changes: []
 					};

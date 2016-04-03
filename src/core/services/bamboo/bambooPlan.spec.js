@@ -26,7 +26,7 @@ define([
 			planJson = JSON.parse(planText);
 			resultJson = JSON.parse(resultText);
 			var callCount = 0;
-			spyOn(request, 'json').andCallFake(function() {
+			spyOn(request, 'json').and.callFake(function() {
 				callCount++;
 				switch (callCount) {
 				case 1:
