@@ -1,5 +1,5 @@
-import 'common/directives/buildGroup/buildGroup.html';
 import 'common/directives/build/build';
+import templateUrl from 'common/directives/buildGroup/buildGroup.html';
 
 define([
 	'common/directives/module',
@@ -15,7 +15,7 @@ define([
 				name: '=',
 				items: '='
 			},
-			templateUrl: 'common/directives/buildGroup/buildGroup.html',
+			templateUrl: templateUrl,
 			controller: function($scope, $element, $attrs, $transclude) {
 
 				$scope.fullWidth = '100%';

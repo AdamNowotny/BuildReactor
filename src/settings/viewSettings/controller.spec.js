@@ -2,8 +2,7 @@ import angular from 'angular';
 
 define([
 	'settings/viewSettings/controller',
-	'common/core',
-	'angularMocks'
+	'common/core'
 ], function(sidebar, core) {
 	'use strict';
 

@@ -18,7 +18,6 @@ define([
 			},
 			templateUrl: template,
 			controller: function($scope, $element, $attrs, $transclude) {
-
 				$scope.sortableCallback = function(startModel, destModel, start, end) {
 					var items = destModel.map(function(service) {
 						return service.name;

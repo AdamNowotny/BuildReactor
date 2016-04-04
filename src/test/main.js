@@ -1,3 +1,8 @@
+import 'jquery';
+import 'html5sortable/src/html.sortable.src';
+import 'angular';
+import 'angular-mocks';
+
 window.chrome = {
 	browserAction: {
 		setBadgeText: function() {},
@@ -49,23 +54,5 @@ window.Notification = function() {
 	};
 };
 
-// needed for RxJS to work in PhantomJS
-// if (!Function.prototype.bind) {
-// 	Function.prototype.bind = function (context) {
-// 		'use strict';
-// 		var self = this;
-// 		return function () {
-// 			return self.apply(context, arguments);
-// 		};
-// 	};
-// }
-
-// require('rx.testing');
-// // require('babel-core/polyfill');
-// require('angular');
-// require('angular-mocks');
-
-// const testsContext = require.context("../common", true, /.spec.js$/);
-// testsContext.keys().forEach(testsContext);
-const testsContext = require.context("../core/", true, /.spec.js$/);
+const testsContext = require.context("..", true, /.spec.js$/);
 testsContext.keys().forEach(testsContext);

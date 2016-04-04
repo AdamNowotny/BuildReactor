@@ -63,7 +63,7 @@ define([
 				return core.activeProjects;
 			});
 
-			expect(result.messages).toHaveElements([onNext(300, state)]);
+			expect(result.messages).toHaveElements(onNext(300, state));
 		});
 
 		it('should pass configurations from port', function() {
@@ -79,7 +79,7 @@ define([
 				return core.configurations;
 			});
 
-			expect(result.messages).toHaveElements([onNext(300, config)]);
+			expect(result.messages).toHaveElements(onNext(300, config));
 		});
 
 		it('should pass view configurations from port', function() {
@@ -95,7 +95,7 @@ define([
 				return core.views;
 			});
 
-			expect(result.messages).toHaveElements([onNext(300, config)]);
+			expect(result.messages).toHaveElements(onNext(300, config));
 		});
 
 		it('should send availableServices message', function() {

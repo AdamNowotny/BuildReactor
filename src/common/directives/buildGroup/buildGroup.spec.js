@@ -1,4 +1,3 @@
-import 'angular-mocks';
 import angular from 'angular';
 
 define([

@@ -1,8 +1,7 @@
 import angular from 'angular';
 
 define([
-	'settings/directives/dynamicForm/dynamicForm',
-	'settings/directives/dynamicForm/dynamicForm.html'
+	'settings/directives/dynamicForm/dynamicForm'
 ], function(sidebar) {
 	'use strict';
 
@@ -11,7 +10,7 @@ define([
 		var scope;
 		var element;
 
-		beforeEach(angular.mock.module('settings', 'src/settings/directives/dynamicForm/dynamicForm.html'));
+		beforeEach(angular.mock.module('settings'));
 
 		beforeEach(angular.mock.inject(function($compile, $rootScope) {
 			element = $compile('<section dynamic-form service="service" config="config"></section>')($rootScope);

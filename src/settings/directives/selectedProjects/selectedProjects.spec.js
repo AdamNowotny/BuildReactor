@@ -2,9 +2,7 @@ import angular from 'angular';
 
 define([
 	'settings/directives/selectedProjects/selectedProjects',
-	'common/core',
-	'angularMocks',
-	'settings/directives/selectedProjects/selectedProjects.html'
+	'common/core'
 ], function(sidebar, core) {
 	'use strict';
 
@@ -13,11 +11,13 @@ define([
 		var scope;
 		var element;
 
+		beforeEach(angular.mock.module(
+			'settings'
+		));
+
 		beforeEach(function() {
 			spyOn(core, 'setBuildOrder');
 		});
-
-		beforeEach(angular.mock.module('settings', 'src/settings/directives/selectedProjects/selectedProjects.html'));
 
 		beforeEach(angular.mock.inject(function($compile, $rootScope) {
 			element = $compile('<section selected-projects projects="projects" service-name="service name"></section>')($rootScope);
