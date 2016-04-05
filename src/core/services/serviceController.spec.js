@@ -193,8 +193,8 @@ function(controller, Rx, mixIn) {
 
 				expect(result.messages).toHaveElements([
 					onNext(200, [{ name: 'service 1', items: [] }, { name: 'service 2', items: [] }]),
-					// onNext(300, [{ name: 'service 1', items: [{ id: 'id1' }] }, { name: 'service 2', items: [] }]),
-					// onNext(400, [{ name: 'service 1', items: [{ id: 'id1' }] }, { name: 'service 2', items: [{ id: 'id2' }] }])
+					onNext(300, [{ name: 'service 1', items: [{ id: 'id1' }] }, { name: 'service 2', items: [] }]),
+					onNext(400, [{ name: 'service 1', items: [{ id: 'id1' }] }, { name: 'service 2', items: [{ id: 'id2' }] }])
 				]);
 			});
 

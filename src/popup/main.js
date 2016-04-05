@@ -1,7 +1,7 @@
-import 'jquery';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/scss/font-awesome.scss';
 import './main.scss';
+import 'jquery';
 import 'popup/app';
 import 'popup/controller';
 import angular from 'angular';

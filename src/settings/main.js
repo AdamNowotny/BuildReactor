@@ -3,38 +3,32 @@ import 'font-awesome/scss/font-awesome.scss';
 import './main.scss';
 import 'jquery';
 import 'html5sortable/src/html.sortable.src';
+import 'settings/app';
+import 'settings/controller';
+import 'settings/routes';
+import 'settings/serviceSettingsCtrl';
+import 'settings/addServiceCtrl';
+import 'settings/viewSettings/controller';
+import 'settings/configuration/controller';
+import 'settings/directives/alert/alert';
+import 'settings/directives/dynamicForm/dynamicForm';
+import 'settings/directives/filterQuery/filterQuery';
+import 'settings/directives/focusIf/focusIf';
+import 'settings/directives/projectList/projectList';
+import 'settings/directives/selectedProjects/selectedProjects';
+import 'settings/directives/serviceNamePanel/serviceNamePanel';
+import 'settings/directives/sidebar/sidebar';
+import 'settings/directives/onOffSwitch/onOffSwitch';
+import 'settings/directives/thumbnails/thumbnails';
+import 'settings/directives/topnav/topnav';
+import 'settings/directives/viewSelection/viewSelection';
 import angular from 'angular';
+import core from 'common/core';
+import logger from 'common/coreLogger';
 
-define([
-	'common/core',
-	'common/coreLogger',
-	'settings/app',
-	'settings/controller',
-	'settings/routes',
-	'settings/serviceSettingsCtrl',
-	'settings/addServiceCtrl',
-	'settings/viewSettings/controller',
-	'settings/configuration/controller',
-	'settings/directives/alert/alert',
-	'settings/directives/dynamicForm/dynamicForm',
-	'settings/directives/filterQuery/filterQuery',
-	'settings/directives/focusIf/focusIf',
-	'settings/directives/projectList/projectList',
-	'settings/directives/selectedProjects/selectedProjects',
-	'settings/directives/serviceNamePanel/serviceNamePanel',
-	'settings/directives/sidebar/sidebar',
-	'settings/directives/onOffSwitch/onOffSwitch',
-	'settings/directives/thumbnails/thumbnails',
-	'settings/directives/topnav/topnav',
-	'settings/directives/viewSelection/viewSelection'
-], function(core, logger) {
+logger();
+core.init();
 
-	'use strict';
-
-	logger();
-	core.init();
-	angular.element(document).ready(function() {
-		angular.bootstrap(document, ['settings']);
-	});
-
+angular.element(document).ready(() => {
+	angular.bootstrap(document, ['settings']);
 });
