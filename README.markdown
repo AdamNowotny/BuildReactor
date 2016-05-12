@@ -28,6 +28,7 @@ Below are the supported CI servers.
  * [GoCD](https://github.com/gocd/gocd)
  * [Jenkins](http://jenkins-ci.org/) (Hudson)
  * [Snap](http://snap-ci.com/)
+ * [Solano CI](https://www.solanolabs.com/) (using cctray format)
  * [TeamCity](http://www.jetbrains.com/teamcity/)
  * [Travis-CI](http://travis-ci.org/)
 
