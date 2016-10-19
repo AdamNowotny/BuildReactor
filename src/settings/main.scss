@@ -3,17 +3,17 @@
 @import "../common/directives/service/_service.scss";
 @import "../common/directives/buildGroup/_buildGroup.scss";
 @import "../common/directives/build/_build.scss";
+@import "add/directives/serviceNamePanel/_serviceNamePanel.scss";
+@import "add/directives/thumbnails/_thumbnails.scss";
 @import "configuration/directives/jsonEditor/_jsonEditor.scss";
 @import "directives/alert/_alert.scss";
+@import "directives/onOffSwitch/_onOffSwitch.scss";
+@import "directives/sidebar/_sidebar.scss";
+@import "directives/topnav/_topnav.scss";
 @import "service/directives/dynamicForm/_dynamicForm.scss";
 @import "service/directives/filterQuery/_filterQuery.scss";
-@import "directives/onOffSwitch/_onOffSwitch.scss";
 @import "service/directives/projectList/_projectList.scss";
 @import "service/directives/selectedProjects/_selectedProjects.scss";
-@import "add/directives/serviceNamePanel/_serviceNamePanel.scss";
-@import "directives/sidebar/_sidebar.scss";
-@import "add/directives/thumbnails/_thumbnails.scss";
-@import "directives/topnav/_topnav.scss";
 @import "service/directives/viewSelection/_viewSelection.scss";
 
 html, body {
