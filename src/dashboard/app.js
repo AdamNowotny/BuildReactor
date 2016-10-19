@@ -5,8 +5,8 @@ import angular from 'angular';
 
 export default angular.module('dashboard', [
 	'ngRoute',
-	'uib/template/tooltip/tooltip-popup.html',
 	'ui.bootstrap.tooltip',
+	'uib/template/tooltip/tooltip-popup.html',
 	'app.directives'
 ]).config([
 	'$compileProvider', function($compileProvider)	{

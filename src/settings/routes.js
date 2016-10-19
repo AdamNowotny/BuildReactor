@@ -1,8 +1,8 @@
-import addServiceView from 'settings/addServiceView.html';
+import addServiceView from 'settings/add/view.html';
 import app from 'settings/app';
 import configurationTemplate from 'settings/configuration/view.html';
-import serviceSettingsView from 'settings/serviceSettingsView.html';
-import viewSettingsTemplate from 'settings/viewSettings/view.html';
+import serviceSettingsView from 'settings/service/view.html';
+import viewSettingsTemplate from 'settings/view/view.html';
 
 export default app.config(($routeProvider) => {
 	$routeProvider
