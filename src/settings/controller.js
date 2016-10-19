@@ -2,11 +2,11 @@ import angular from 'angular';
 import app from 'settings/app';
 import core from 'common/core';
 
-export default app.controller('SettingsCtrl', function($scope, $route) {
+export default app.controller('SettingsCtrl', ($scope, $route) => {
 	$scope.serviceId = null;
 	$scope.serviceTypeId = null;
 
-	var update = function() {
+	const update = function() {
 		if ($scope.view === 'service') {
 			updateForExistingService();
 		} else if ($scope.view === 'new') {
@@ -14,14 +14,14 @@ export default app.controller('SettingsCtrl', function($scope, $route) {
 		}
 	};
 
-	var updateForExistingService = function() {
+	const updateForExistingService = function() {
 		if ($scope.serviceTypes && $scope.serviceConfigs && $scope.serviceId) {
-			$scope.config = find($scope.serviceConfigs, 'name', $scope.serviceId);
+			$scope.config = find($scope.serviceConfigs, 'name', $scope.serviceId) || {};
 			$scope.service = find($scope.serviceTypes, 'baseUrl', $scope.config.baseUrl);
 		}
 	};
-	
-	var updateForNewService = function() {
+
+	const updateForNewService = function() {
 		if ($scope.serviceTypes && $scope.serviceId && $scope.serviceTypeId) {
 			$scope.service = find($scope.serviceTypes, 'baseUrl', $scope.serviceTypeId);
 			$scope.config = angular.copy($scope.service.defaultConfig);

@@ -1,8 +1,6 @@
 /* global chrome: false */
-define(['rx'], function(Rx) {
+define(['rx'], (Rx) => {
 	
-	'use strict';
-
 	function sendMessage(message, callback) {
 		return callback
 			? chrome.runtime.sendMessage(message, callback)
@@ -12,7 +10,7 @@ define(['rx'], function(Rx) {
 	function addMessageListener(onMessage) {
 		chrome.runtime.onMessage.addListener(onMessage);
 	}
-	
+
 	function addConnectListener(onConnect) {
 		chrome.runtime.onConnect.addListener(onConnect);
 	}
@@ -34,10 +32,10 @@ define(['rx'], function(Rx) {
 	}
 
 	return {
-		sendMessage: sendMessage,
-		addMessageListener: addMessageListener,
-		addConnectListener: addConnectListener,
-		connect: connect,
-		isDashboardActive: isDashboardActive
+		sendMessage,
+		addMessageListener,
+		addConnectListener,
+		connect,
+		isDashboardActive
 	};
 });
