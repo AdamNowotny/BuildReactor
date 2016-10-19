@@ -1,3 +1,4 @@
+import 'settings/configuration/directives/jsonEditor/jsonEditor';
 import angular from 'angular';
 import app from 'settings/app';
 import core from 'common/core';
