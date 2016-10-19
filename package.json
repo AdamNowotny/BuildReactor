@@ -22,13 +22,15 @@
     }
   ],
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 6.8"
   },
   "scripts": {
     "lint": "node_modules/.bin/eslint src --ext .js --quiet",
     "dist": "node_modules/.bin/webpack",
+    "auto-dist": "node_modules/.bin/webpack --watch",
     "test": "npm run lint && npm run karma",
     "karma": "node_modules/.bin/karma start ./src/test/karma.conf.js",
+    "auto-test": "node_modules/.bin/karma start --no-single-run ./src/test/karma.conf.js",
     "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js"
   },
   "dependencies": {
