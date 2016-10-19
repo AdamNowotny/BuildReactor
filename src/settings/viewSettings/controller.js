@@ -1,3 +1,4 @@
+import 'common/directives/buildList/buildList';
 import angular from 'angular';
 import app from 'settings/app';
 import core from 'common/core';
