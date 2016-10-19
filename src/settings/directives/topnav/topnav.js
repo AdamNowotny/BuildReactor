@@ -1,5 +1,6 @@
-import "bootstrap/js/dropdown";
+import 'bootstrap/js/dropdown';
 import 'angular-ui-bootstrap';
+import 'settings/directives/onOffSwitch/onOffSwitch';
 import 'settings/directives/topnav/removeModalCtrl';
 import 'settings/directives/topnav/renameModalCtrl';
 import app from 'settings/app';

@@ -1,7 +1,7 @@
 import angular from 'angular';
 
 define([
-	'settings/directives/selectedProjects/selectedProjects',
+	'settings/service/directives/selectedProjects/selectedProjects',
 	'common/core'
 ], function(sidebar, core) {
 	'use strict';
@@ -29,7 +29,7 @@ define([
 			scope.projects = ['name1', 'name2'];
 
 			scope.sortableCallback(['name2', 'name1'], ['name2', 'name1'], 0, 1);
-			
+
 			expect(core.setBuildOrder).toHaveBeenCalledWith('service name', ['name2', 'name1']);
 		});
 

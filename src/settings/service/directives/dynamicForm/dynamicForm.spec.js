@@ -1,7 +1,7 @@
 import angular from 'angular';
 
 define([
-	'settings/directives/dynamicForm/dynamicForm'
+	'settings/service/directives/dynamicForm/dynamicForm'
 ], function(sidebar) {
 	'use strict';
 

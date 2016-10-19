@@ -1,3 +1,9 @@
+import 'settings/directives/alert/alert';
+import 'settings/service/directives/dynamicForm/dynamicForm';
+import 'settings/service/directives/filterQuery/filterQuery';
+import 'settings/service/directives/projectList/projectList';
+import 'settings/service/directives/selectedProjects/selectedProjects';
+import 'settings/service/directives/viewSelection/viewSelection';
 import app from 'settings/app';
 import core from 'common/core';
 
@@ -31,7 +37,7 @@ export default app.controller('ServiceSettingsCtrl', function($scope, $location)
 		reset();
 		$scope.projectsError = errorResponse;
 	};
-	
+
 	var showProjects = function(projects) {
 		$scope.projectsError = null;
 		$scope.projects = {
@@ -43,7 +49,7 @@ export default app.controller('ServiceSettingsCtrl', function($scope, $location)
 			selected: projects.primaryView
 		};
 	};
-	
+
 	$scope.show = function() {
 		reset();
 		$scope.isLoading = true;

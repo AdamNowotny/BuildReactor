@@ -1,3 +1,5 @@
+import 'settings/add/directives/serviceNamePanel/serviceNamePanel';
+import 'settings/add/directives/thumbnails/thumbnails';
 import app from 'settings/app';
 
 export default app.controller('AddServiceCtrl', function($scope, $routeParams, $location) {

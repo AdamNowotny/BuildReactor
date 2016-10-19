@@ -4,7 +4,7 @@ import 'angular-ui-utils/modules/highlight/highlight';
 import 'angular-ui-utils/modules/indeterminate/indeterminate';
 import angular from 'angular';
 import app from 'settings/app';
-import template from 'settings/directives/projectList/projectList.html';
+import template from 'settings/service/directives/projectList/projectList.html';
 
 var getGroupNamesFromProjects = function(projects) {
 	return projects.filter(function(project) {

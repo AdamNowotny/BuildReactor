@@ -1,3 +1,9 @@
+import 'settings/service/controller';
+import 'settings/add/controller';
+import 'settings/view/controller';
+import 'settings/configuration/controller';
+import 'settings/directives/sidebar/sidebar';
+import 'settings/directives/topnav/topnav';
 import angular from 'angular';
 import app from 'settings/app';
 import core from 'common/core';

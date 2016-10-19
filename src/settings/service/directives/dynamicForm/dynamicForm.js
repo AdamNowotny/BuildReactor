@@ -1,6 +1,6 @@
 import angular from 'angular';
 import app from 'settings/app';
-import template from 'settings/directives/dynamicForm/dynamicForm.html';
+import template from 'settings/service/directives/dynamicForm/dynamicForm.html';
 
 export default app.directive('dynamicForm', function() {
 	return {

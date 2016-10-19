@@ -1,4 +1,5 @@
 import 'settings/configuration/directives/jsonEditor/jsonEditor';
+import 'settings/directives/alert/alert';
 import angular from 'angular';
 import app from 'settings/app';
 import core from 'common/core';

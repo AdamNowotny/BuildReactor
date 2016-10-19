@@ -1,5 +1,5 @@
 import app from 'settings/app';
-import template from 'settings/directives/filterQuery/filterQuery.html';
+import template from 'settings/service/directives/filterQuery/filterQuery.html';
 
 const KEY_ESC = 27;
 
@@ -15,7 +15,7 @@ export default app.directive('filterQuery', function() {
 					$scope.query = '';
 				}
 			};
-			
+
 			$scope.$watch('query', function(query) {
 				$scope.$emit('filterQuery.changed', query);
 			});

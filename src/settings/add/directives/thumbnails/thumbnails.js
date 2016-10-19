@@ -1,5 +1,5 @@
 import app from 'settings/app';
-import template from 'settings/directives/thumbnails/thumbnails.html';
+import template from 'settings/add/directives/thumbnails/thumbnails.html';
 
 export default app.directive('thumbnails', function() {
 	return {

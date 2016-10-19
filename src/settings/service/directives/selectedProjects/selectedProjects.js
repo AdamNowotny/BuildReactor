@@ -1,7 +1,7 @@
 import 'html5sortable/src/html.sortable.angular';
 import app from 'settings/app';
 import core from 'common/core';
-import template from 'settings/directives/selectedProjects/selectedProjects.html';
+import template from 'settings/service/directives/selectedProjects/selectedProjects.html';
 
 export default app.directive('selectedProjects', function() {
 	return {
