@@ -6,7 +6,7 @@ define([
 	'common/tags',
 	'common/chromeApi',
 	'rx.time'
-], function (events, Rx, interpolate, tags, chromeApi) {
+], function(events, Rx, interpolate, tags, chromeApi) {
 
 	'use strict';
 	
@@ -43,9 +43,9 @@ define([
 		}
 
 		function whenDashboardInactive(event) {
-			return chromeApi.isDashboardActive().where(function (active) {
+			return chromeApi.isDashboardActive().where(function(active) {
 				return !active;
-			}).select(function (active) {
+			}).select(function(active) {
 				return event;
 			});
 		}
@@ -54,18 +54,18 @@ define([
 
 			function createId(eventDetails) {
 				return eventDetails.group ?
-					interpolate('{{0}}_{{1}}_{{2}}', [ eventDetails.serviceName, eventDetails.group, eventDetails.name ]) :
-					interpolate('{{0}}_{{1}}', [ eventDetails.serviceName, eventDetails.name ]);
+					interpolate('{{0}}_{{1}}_{{2}}', [eventDetails.serviceName, eventDetails.group, eventDetails.name]) :
+					interpolate('{{0}}_{{1}}', [eventDetails.serviceName, eventDetails.name]);
 			}
 
 			function createTitle(eventDetails) {
 				return eventDetails.group ?
-					interpolate('{{0}} / {{1}} ({{2}})', [ eventDetails.group, eventDetails.name, eventDetails.serviceName ]) :
-					interpolate('{{0}} ({{1}})', [ eventDetails.name, eventDetails.serviceName ]);
+					interpolate('{{0}} / {{1}} ({{2}})', [eventDetails.group, eventDetails.name, eventDetails.serviceName]) :
+					interpolate('{{0}} ({{1}})', [eventDetails.name, eventDetails.serviceName]);
 			}
 
 			function createChangesMessage(changes) {
-				return !changes ? message : message + changes.reduce(function (agg, change, i) {
+				return changes ? message + changes.reduce(function(agg, change, i) {
 					if (i === 4) {
 						return agg + ', ...';
 					}
@@ -73,7 +73,7 @@ define([
 						return agg;
 					}
 					return agg ? agg + ', ' + change.name : ' by ' + change.name;
-				}, '');
+				}, '') : message;
 			}
 
 			var info = {
@@ -91,34 +91,34 @@ define([
 			if (visibleNotifications[info.id]) {
 				visibleNotifications[info.id].dispose();
 			}
-			visibleNotifications[info.id] = createNotification(info).subscribe(undefined, undefined, function () {
+			visibleNotifications[info.id] = createNotification(info).subscribe(undefined, undefined, function() {
 				delete visibleNotifications[info.id];
 			});
 		}
 
 		function createNotification(info) {
-			return Rx.Observable.create(function (observer) {
+			return Rx.Observable.create(function(observer) {
 				var notification = new Notification(info.title, {
 					icon: info.icon,
 					body: info.text,
 					tag: info.id
 				});
-				notification.onclick = function () {
-					chrome.tabs.create({'url': info.url}, function (tab) {
+				notification.onclick = function() {
+					chrome.tabs.create({ 'url': info.url }, function(tab) {
 						notification.close();
 					});
 				};
-				notification.onclose = function () {
+				notification.onclose = function() {
 					observer.onCompleted();
 				};
 				if (info.timeout) {
-					notification.onshow = function () {
-						Rx.Observable.timer(info.timeout, scheduler).subscribe(function () {
+					notification.onshow = function() {
+						Rx.Observable.timer(info.timeout, scheduler).subscribe(function() {
 							notification.close();
 						});
 					};
 				}
-				return function () {
+				return function() {
 					notification.close();
 				};
 			});
@@ -141,18 +141,20 @@ define([
 		var passwordExpired = events.getByName('passwordExpired')
 			.select(createPasswordExpiredMessage);
 
-		events.getByName('servicesInitializing').subscribe(function () {
+		events.getByName('servicesInitializing').subscribe(function() {
 			reloading = true;
 		});
-		events.getByName('servicesInitialized').subscribe(function () {
+		events.getByName('servicesInitialized').subscribe(function() {
 			reloading = false;
 		});
 
 		passwordExpired
 			.merge(buildBroken)
 			.merge(buildFixed)
-			.subscribe(function (notification) {
-				notification && showNotification(notification);
+			.subscribe(function(notification) {
+				if (notification) {
+					showNotification(notification);
+				}
 			});
 	}
 	

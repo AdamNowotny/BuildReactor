@@ -4,24 +4,24 @@ define([
 	'rx',
 	'jquery',
 	'mout/object/mixIn',
-	'text!core/services/cctray/cruisecontrolnet.fixture.xml',
-	'text!core/services/cctray/go.fixture.xml',
-	'text!core/services/cctray/breakers_empty.fixture.xml',
-	'text!core/services/cctray/go_multiple_breakers.fixture.xml',
-	'text!core/services/cctray/ccnet_no_categories.fixture.xml'
+	'raw!core/services/cctray/cruisecontrolnet.fixture.xml',
+	'raw!core/services/cctray/go.fixture.xml',
+	'raw!core/services/cctray/breakers_empty.fixture.xml',
+	'raw!core/services/cctray/go_multiple_breakers.fixture.xml',
+	'raw!core/services/cctray/ccnet_no_categories.fixture.xml'
 ],
-function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreakersFixture, manyBreakersFixture, noCategoriesFixture) {
+function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreakersFixture, manyBreakersFixture, noCategoriesFixture) {
 
 	'use strict';
 
-	describe('core/services/cctray/buildService', function () {
+	describe('core/services/cctray/buildService', function() {
 
 		var service;
 		var	settings;
 		var events;
 		var states;
 
-		beforeEach(function () {
+		beforeEach(function() {
 			settings = {
 				name: 'Build Server',
 				username: null,
@@ -31,7 +31,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				projects: ['CruiseControl.NET', 'Build-Server-Config']
 			};
 			states = [createState1(), createState2()];
-			spyOn(request, 'xml').andCallFake(function (options) {
+			spyOn(request, 'xml').and.callFake(function(options) {
 				return Rx.Observable.returnValue(states);
 			});
 			service = new BuildService(settings);
@@ -93,12 +93,12 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 		}
 
 		function getEvents(eventName) {
-			return events.filter(function (event) {
+			return events.filter(function(event) {
 				return event.eventName === eventName;
 			});
 		}
 
-		it('should expose interface', function () {
+		it('should expose interface', function() {
 			expect(service.settings).toBe(settings);
 			expect(service.updateAll).toBeDefined();
 			expect(service.start).toBeDefined();
@@ -108,22 +108,22 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 			expect(service.events).toBeDefined();
 		});
 
-		describe('updateAll', function () {
+		describe('updateAll', function() {
 
 			var eventsSubscription;
 
-			beforeEach(function () {
+			beforeEach(function() {
 				service = new BuildService(settings);
 				events = [];
 				eventsSubscription = service.events.subscribe(rememberEvent);
 			});
 
-			afterEach(function () {
+			afterEach(function() {
 				eventsSubscription.dispose();
 			});
 
-			it('should set default last build status', function () {
-				var getDefaultState = function (id) {
+			it('should set default last build status', function() {
+				var getDefaultState = function(id) {
 					return {
 						id: id,
 						name: id,
@@ -133,17 +133,17 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 						isRunning: false,
 						isDisabled: false,
 						serviceName: settings.name,
-						serviceIcon: 'src/core/services/cctray/icon.png',
+						serviceIcon: 'core/services/cctray/icon.png',
 						tags: [],
 						changes: []
 					};
-				}; 
+				};
 
 				expect(service.latestBuildStates['CruiseControl.NET']).toEqual(getDefaultState('CruiseControl.NET'));
 			});
 
-			it('should set request options', function () {
-				request.xml.andCallFake(function (options) {
+			it('should set request options', function() {
+				request.xml.and.callFake(function(options) {
 					expect(options.username).toBe(settings.username);
 					expect(options.password).toBe(settings.password);
 					expect(options.url).toBe('http://example.com/cc.xml');
@@ -156,20 +156,20 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				expect(request.xml).toHaveBeenCalled();
 			});
 
-			describe('response parsing', function () {
+			describe('response parsing', function() {
 
 				var projectsXml;
 				var parsedResponse;
 
-				beforeEach(function () {
+				beforeEach(function() {
 					projectsXml = $(ccnetFixture);
-					request.xml.andCallFake(function (options) {
+					request.xml.and.callFake(function(options) {
 						parsedResponse = options.parser(projectsXml);
 						return Rx.Observable.returnValue(parsedResponse);
 					});
 				});
 
-				it('should parse xml into project array', function () {
+				it('should parse xml into project array', function() {
 					service.updateAll();
 
 					expect(request.xml).toHaveBeenCalled();
@@ -187,7 +187,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 					});
 				});
 
-				it('should parse xml if build broken with failure', function () {
+				it('should parse xml if build broken with failure', function() {
 					projectsXml.find('Project').attr('lastBuildStatus', 'Failure');
 
 					service.updateAll();
@@ -196,7 +196,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 					expect(parsedResponse[0].isBroken).toBe(true);
 				});
 
-				it('should parse changes', function () {
+				it('should parse changes', function() {
 					projectsXml = $(goFixture);
 
 					service.updateAll();
@@ -205,7 +205,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 					expect(parsedResponse[3].changes).toEqual([{ name: 'DOMAIN\\Adam.Nowotny' }]);
 				});
 
-				it('should parse changes if breakers message empty', function () {
+				it('should parse changes if breakers message empty', function() {
 					projectsXml = $(noBreakersFixture);
 
 					service.updateAll();
@@ -214,7 +214,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 					expect(parsedResponse[10].changes).toEqual([]);
 				});
 
-				it('should parse changes when more breakers listed', function () {
+				it('should parse changes when more breakers listed', function() {
 					projectsXml = $(manyBreakersFixture);
 
 					service.updateAll();
@@ -227,7 +227,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 					]);
 				});
 
-				it('should parse xml if build broken with failure', function () {
+				it('should parse xml if build broken with failure', function() {
 					projectsXml.find('Project').attr('lastBuildStatus', 'Failure');
 
 					service.updateAll();
@@ -236,7 +236,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 					expect(parsedResponse[0].isBroken).toBe(true);
 				});
 
-				it('should parse xml if build running', function () {
+				it('should parse xml if build running', function() {
 					projectsXml.find('Project').attr('activity', 'Building');
 
 					service.updateAll();
@@ -245,7 +245,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 					expect(parsedResponse[0].isRunning).toBe(true);
 				});
 
-				it('should parse xml if build pending', function () {
+				it('should parse xml if build pending', function() {
 					projectsXml.find('Project').attr('lastBuildStatus', 'Pending');
 
 					service.updateAll();
@@ -254,7 +254,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 					expect(parsedResponse[0].isWaiting).toBe(true);
 				});
 
-				it('should ignore if status unknown and broken previously', function () {
+				it('should ignore if status unknown and broken previously', function() {
 					service.latestBuildStates['CruiseControl.NET'].isBroken = true;
 					projectsXml.find('Project').attr('lastBuildStatus', 'Unknown');
 
@@ -266,7 +266,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 
 			});
 
-			it('should remember new build state', function () {
+			it('should remember new build state', function() {
 				service.updateAll().subscribe();
 
 				var states = service.latestBuildStates;
@@ -274,29 +274,29 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				expect(states['Build-Server-Config']).toEqual(extendState(createState2()));
 			});
 
-			it('should push update when no builds selected', function () {
+			it('should push update when no builds selected', function() {
 				settings.projects = [];
 
 				var completed = false;
-				service.updateAll().subscribe(function () {
+				service.updateAll().subscribe(function() {
 					completed = true;
 				});
 
 				expect(completed).toBe(true);
 			});
 
-			it('should not fail if build update failed', function () {
+			it('should not fail if build update failed', function() {
 				var stateError = "Error";
 
-				request.xml.andCallFake(function (options) {
+				request.xml.and.callFake(function(options) {
 					return Rx.Observable.throwException(stateError);
 				});
 
 				var sequenceFailed = false;
 				var response;
-				service.updateAll().subscribe(function (state) {
+				service.updateAll().subscribe(function(state) {
 					response = state;
-				}, function () {
+				}, function() {
 					sequenceFailed = true;
 				});
 
@@ -306,13 +306,13 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 
 		});
 
-		describe('build events', function () {
+		describe('build events', function() {
 
 			var oldState;
 			var newState;
 			var eventsSubscription;
 
-			beforeEach(function () {
+			beforeEach(function() {
 				service = new BuildService(settings);
 				events = [];
 				eventsSubscription = service.events.subscribe(rememberEvent);
@@ -324,18 +324,18 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 					isDisabled: false,
 					changes: []
 				}, oldState);
-				request.xml.andCallFake(function (options) {
+				request.xml.and.callFake(function(options) {
 					return Rx.Observable.returnValue([newState]);
 				});
 			});
 
-			afterEach(function () {
+			afterEach(function() {
 				eventsSubscription.dispose();
 			});
 
-			it('should push buildOffline if build update failed', function () {
+			it('should push buildOffline if build update failed', function() {
 				var stateError = "Error";
-				request.xml.andCallFake(function (options) {
+				request.xml.and.callFake(function(options) {
 					return Rx.Observable.throwException(stateError);
 				});
 
@@ -345,7 +345,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				expect(getLastEvent('buildOffline').details.error).toEqual(stateError);
 			});
 
-			it('should push buildBroken if build broken', function () {
+			it('should push buildBroken if build broken', function() {
 				oldState.isBroken = false;
 				newState.isBroken = true;
 
@@ -355,7 +355,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				expect(getLastEvent('buildBroken').details).toEqual(newState);
 			});
 
-			it('should not push buildBroken if build already broken', function () {
+			it('should not push buildBroken if build already broken', function() {
 				oldState.isBroken = true;
 				newState.isBroken = true;
 
@@ -364,10 +364,9 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				expect(eventPushed('buildBroken')).toBe(false);
 			});
 
-			it('should push buildFixed if build was fixed', function () {
+			it('should push buildFixed if build was fixed', function() {
 				oldState.isBroken = true;
 				newState.isBroken = false;
-
 
 				service.updateAll().subscribe();
 
@@ -375,7 +374,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				expect(getLastEvent('buildFixed').details).toEqual(newState);
 			});
 
-			it('should not push buildFixed if build was not broken', function () {
+			it('should not push buildFixed if build was not broken', function() {
 				oldState.isBroken = false;
 				newState.isBroken = false;
 
@@ -384,7 +383,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				expect(eventPushed('buildFixed')).toBe(false);
 			});
 
-			it('should push buildStarted if build started', function () {
+			it('should push buildStarted if build started', function() {
 				oldState.isRunning = false;
 				newState.isRunning = true;
 
@@ -394,7 +393,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				expect(getLastEvent('buildStarted').details).toEqual(newState);
 			});
 
-			it('should not push buildStarted if build already running', function () {
+			it('should not push buildStarted if build already running', function() {
 				oldState.isRunning = true;
 				newState.isRunning = true;
 
@@ -403,7 +402,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				expect(eventPushed('buildStarted')).toBe(false);
 			});
 
-			it('should push buildFinished if build finished', function () {
+			it('should push buildFinished if build finished', function() {
 				oldState.isRunning = true;
 				newState.isRunning = false;
 
@@ -413,7 +412,7 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				expect(getLastEvent('buildFinished').details).toEqual(newState);
 			});
 
-			it('should not push buildFinished if build was not running', function () {
+			it('should not push buildFinished if build was not running', function() {
 				oldState.isRunning = false;
 				newState.isRunning = false;
 
@@ -424,21 +423,21 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 
 		});
 
-		describe('availableBuilds', function () {
+		describe('availableBuilds', function() {
 
 			var projectsXml = $(ccnetFixture);
 
-			it('should return available builds', function () {
+			it('should return available builds', function() {
 				var builds = Rx.Observable.returnValue(projectsXml);
-				request.xml.andReturn(builds);
+				request.xml.and.returnValue(builds);
 
 				expect(service.availableBuilds()).toBe(builds);
 			});
 
-			it('should use credentials', function () {
+			it('should use credentials', function() {
 				settings.username = 'USERNAME';
 				settings.password = 'PASSWORD';
-				request.xml.andCallFake(function (options) {
+				request.xml.and.callFake(function(options) {
 					expect(options.username).toBe(settings.username);
 					expect(options.password).toBe(settings.password);
 				});
@@ -448,8 +447,8 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				expect(request.xml).toHaveBeenCalled();
 			});
 
-			it('should get available builds from correct URL', function () {
-				request.xml.andCallFake(function (options) {
+			it('should get available builds from correct URL', function() {
+				request.xml.and.callFake(function(options) {
 					expect(options.url).toBe('http://example.com/cc.xml');
 				});
 
@@ -459,8 +458,8 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				expect(request.xml).toHaveBeenCalled();
 			});
 
-			it('should parse response with CC.NET categories', function () {
-				request.xml.andCallFake(function (options) {
+			it('should parse response with CC.NET categories', function() {
+				request.xml.and.callFake(function(options) {
 					var response = options.parser(projectsXml);
 					expect(response.items.length).toBe(9);
 					expect(response.items[0].id).toBe('CruiseControl.NET');
@@ -474,8 +473,8 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				expect(request.xml).toHaveBeenCalled();
 			});
 
-			it('should parse response without categories', function () {
-				request.xml.andCallFake(function (options) {
+			it('should parse response without categories', function() {
+				request.xml.and.callFake(function(options) {
 					var response = options.parser(noCategoriesFixture);
 					expect(response.items.length).toBe(2);
 					expect(response.items[0].id).toBe('CruiseControl.NET');
@@ -489,8 +488,8 @@ function (BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreake
 				expect(request.xml).toHaveBeenCalled();
 			});
 
-			it('should parse groups for names with ::', function () {
-				request.xml.andCallFake(function (options) {
+			it('should parse groups for names with ::', function() {
+				request.xml.and.callFake(function(options) {
 					var response = options.parser(goFixture);
 					expect(response.items[0].id).toBe('Project :: Build');
 					expect(response.items[0].name).toBe('Build');

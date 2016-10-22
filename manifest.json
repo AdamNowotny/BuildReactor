@@ -1,6 +1,6 @@
 {
 	"name": "BuildReactor",
-	"version": "0.12.0",
+	"version": "0.13.0",
 	"manifest_version": 2,
 	"description": "Developer notifications and dashboard",
 	"icons": {
@@ -11,18 +11,16 @@
 	"browser_action": {
 		"default_title": "BuildReactor",
 		"default_icon": "img/icon-19.png",
-		"default_popup": "src/popup/index.html"
+		"default_popup": "popup.html"
 	},
 	"background": {
 		"scripts": [
-			"bower_components/requirejs/require.js",
-			"src/common/main.js",
-			"src/core/main.js"
+			"background.js"
 		]
 	},
 	"homepage_url": "https://github.com/AdamNowotny/BuildReactor",
 	"offline_enabled": false,
-	"options_page": "src/settings/index.html",
+	"options_page": "settings.html",
 	"permissions": [
 		"http://*/*",
 		"https://*/*",
@@ -30,27 +28,27 @@
 		"tabs"
 	],
 	"web_accessible_resources": [
-		"src/core/services/bamboo/icon.png",
-		"src/core/services/bamboo/logo.png",
-		"src/core/services/buildbot/icon.png",
-		"src/core/services/buildbot/logo.png",
-		"src/core/services/cctray/icon.png",
-		"src/core/services/cctray/logo.png",
-		"src/core/services/cruisecontrol/icon.png",
-		"src/core/services/cruisecontrol/logo.png",
-		"src/core/services/cruisecontrol.net/icon.png",
-		"src/core/services/cruisecontrol.net/logo.png",
-		"src/core/services/cruisecontrol.rb/icon.png",
-		"src/core/services/cruisecontrol.rb/logo.png",
-		"src/core/services/go/icon.png",
-		"src/core/services/go/logo.png",
-		"src/core/services/jenkins/icon.png",
-		"src/core/services/jenkins/logo.png",
-		"src/core/services/snap/icon.png",
-		"src/core/services/snap/logo.png",
-		"src/core/services/teamcity/icon.png",
-		"src/core/services/teamcity/logo.png",
-		"src/core/services/travis/icon.png",
-		"src/core/services/travis/logo.png"
+		"core/services/bamboo/icon.png",
+		"core/services/bamboo/logo.png",
+		"core/services/buildbot/icon.png",
+		"core/services/buildbot/logo.png",
+		"core/services/cctray/icon.png",
+		"core/services/cctray/logo.png",
+		"core/services/cruisecontrol/icon.png",
+		"core/services/cruisecontrol/logo.png",
+		"core/services/cruisecontrol.net/icon.png",
+		"core/services/cruisecontrol.net/logo.png",
+		"core/services/cruisecontrol.rb/icon.png",
+		"core/services/cruisecontrol.rb/logo.png",
+		"core/services/go/icon.png",
+		"core/services/go/logo.png",
+		"core/services/jenkins/icon.png",
+		"core/services/jenkins/logo.png",
+		"core/services/snap/icon.png",
+		"core/services/snap/logo.png",
+		"core/services/teamcity/icon.png",
+		"core/services/teamcity/logo.png",
+		"core/services/travis/icon.png",
+		"core/services/travis/logo.png"
 	]
 }

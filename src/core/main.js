@@ -20,7 +20,7 @@ require([
 	'core/services/snap/buildService',
 	'core/services/teamcity/buildService',
 	'core/services/travis/buildService'
-], function (
+], function(
 	localStore,
 	backgroundLogger,
 	badgeController,

@@ -1,9 +1,11 @@
+/* eslint no-console: 0 */
+
 define([
 	'rx',
 	'mout/object/mixIn',
 	'rx.time',
 	'rx.binding'
-], function (Rx, mixIn) {
+], function(Rx, mixIn) {
 	'use strict';
 
 	function BuildServiceBase(settings, serviceInfo, scheduler) {
@@ -23,8 +25,8 @@ define([
 		this.activeProjects = new Rx.BehaviorSubject(createState(this));
 	}
 
-	var getInitialStates = function (settings, serviceInfo) {
-		var createDefaultState = function (id, settings) {
+	var getInitialStates = function(settings, serviceInfo) {
+		var createDefaultState = function(id, settings) {
 			return {
 				id: id,
 				name: id,
@@ -41,29 +43,32 @@ define([
 		};
 
 		var states = {};
-		settings.projects.forEach(function (buildId) {
+		settings.projects.forEach(function(buildId) {
 			states[buildId] = createDefaultState(buildId, settings);
 		});
 		return states;
 	};
 
-	var updateAll = function () {
+	var updateAll = function() {
 		var self = this;
 		return Rx.Observable.fromArray(this.settings.projects)
 			.select(function getBuildById(buildId) {
 				return new self.Build(buildId, self.settings);
 			}).selectMany(function updateBuild(build) {
-				return build.update().catchException(function (ex) {
+				return build.update().catchException(function(ex) {
 						return Rx.Observable.returnValue({
 							id: build.id,
 							error: createError(ex)
 						});
 					});
-			}).select(function (state) { return self.mixInMissingState(state, self.serviceInfo); })
-			.doAction(function (state) { return self.processBuildUpdate(state); });
+			}).select(function(state) {
+				return self.mixInMissingState(state, self.serviceInfo);
+			}).doAction(function(state) {
+				return self.processBuildUpdate(state);
+			});
 	};
 
-	var createError = function (ex) {
+	var createError = function(ex) {
 		var error;
 		if (ex && ex.message) {
 			error = {
@@ -80,7 +85,7 @@ define([
 		return error;
 	};
 
-	var mixInMissingState = function (state, serviceInfo) {
+	var mixInMissingState = function(state, serviceInfo) {
 		var previous = this.latestBuildStates[state.id];
 		var defaults = {
 			name: previous.name,
@@ -96,7 +101,7 @@ define([
 		return mixIn(defaults, state);
 	};
 
-	var processBuildUpdate = function (newState) {
+	var processBuildUpdate = function(newState) {
 		newState.changes = getUniqueChanges(newState.changes);
 		var lastState = this.latestBuildStates[newState.id];
 		this.latestBuildStates[newState.id] = newState;
@@ -123,34 +128,34 @@ define([
 		}
 	};
 
-	var getUniqueChanges = function (allChanges) {
-		return !allChanges ? [] : allChanges.reduce(function (changes, value) {
-			var alreadyAdded = changes.filter(function (change) {
+	var getUniqueChanges = function(allChanges) {
+		return allChanges ? allChanges.reduce(function(changes, value) {
+			var alreadyAdded = changes.filter(function(change) {
 				return change.name === value.name;
 			}).length > 0;
 			if (!alreadyAdded) {
 				changes.push(value);
 			}
 			return changes;
-		}, []);
+		}, []) : [];
 	};
 
-	var start = function () {
+	var start = function() {
 		if (!this.settings.updateInterval) {
-			throw { name: 'ArgumentInvalid', message: 'updateInterval not defined'};
+			throw new Error('updateInterval not defined');
 		}
 		if (this.poolingSubscription !== null) {
 			return Rx.Observable.empty();
 		}
 		var self = this;
 		var updateInterval = this.settings.updateInterval * 1000;
-		this.eventsSubscription = this.events.subscribe(function (event) {
+		this.eventsSubscription = this.events.subscribe(function(event) {
 			self.activeProjects.onNext(createState(self));
 		});
 		var updates = new Rx.Subject();
 		var initialize = updates
 			.take(1)
-			.doAction(function (states) {
+			.doAction(function(states) {
 				self.events.onNext({
 					eventName: 'serviceStarted',
 					source: self.settings.name,
@@ -158,10 +163,10 @@ define([
 				});
 			});
 		this.poolingSubscription = Rx.Observable.timer(0, updateInterval, this.scheduler)
-			.selectMany(function () {
+			.selectMany(function() {
 				return self.updateAll().toArray();
 			})
-			.catchException(function (ex) {
+			.catchException(function(ex) {
 				console.error('*** Pooling subscription error ***', ex, ex.message);
 				self.events.onNext({
 					eventName: 'UnknownError',
@@ -174,7 +179,7 @@ define([
 		return initialize;
 	};
 
-	var stop = function () {
+	var stop = function() {
 		if (this.poolingSubscription && !this.poolingSubscription.isStopped) {
 			this.poolingSubscription.dispose();
 			this.poolingSubscription = null;
@@ -186,10 +191,10 @@ define([
 		}
 	};
 
-	var createState = function (self) {
+	var createState = function(self) {
 		return {
 			name: self.settings.name,
-			items: self.settings.projects.map(function (buildId) {
+			items: self.settings.projects.map(function(buildId) {
 					return self.latestBuildStates[buildId];
 				})
 		};

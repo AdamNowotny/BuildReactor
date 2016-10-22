@@ -1,10 +1,16 @@
-require.config({
-	baseUrl: 'src',
-});
+import 'bootstrap/dist/css/bootstrap.css';
+import 'font-awesome/scss/font-awesome.scss';
+import './main.scss';
+import 'jquery';
+import 'dashboard/app';
+import 'dashboard/controller';
+import angular from 'angular';
+import core from 'common/core';
+import logger from 'common/coreLogger';
 
-require(['common/main'], function (common) {
-	'use strict';
-	require(['common-ui/main'], function (common) {
-		require(['dashboard/main-app']);
-	});
+core.init();
+logger();
+
+angular.element(document).ready(() => {
+	angular.bootstrap(document, ['dashboard']);
 });

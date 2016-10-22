@@ -1,13 +1,13 @@
 define([
 	'core/services/request',
 	'rx'
-], function (request, Rx) {
+], function(request, Rx) {
 	'use strict';
 
 	var RESULT = { SUCCESS: 0, FAILURE: 1, ERRORED: null, UNKNOWN: null };
 	var STATE = { STARTED: 'started', FINISHED: 'finished', CREATED: 'created' };
 
-	var TravisBuild = function (id, settings) {
+	var TravisBuild = function(id, settings) {
 		this.id = id;
 		var nameAndGroup = id.split('/');
 		this.name = nameAndGroup[1];
@@ -15,47 +15,47 @@ define([
 		this.update = update;
 	};
 
-	var update = function () {
+	var update = function() {
 		var self = this;
 		return request.json({
 			url: 'https://api.travis-ci.org/repositories/' + this.id + '/builds.json'
-		}).selectMany(function (builds) {
+		}).selectMany(function(builds) {
 			if (isRunning(builds[0])) {
 				return Rx.Observable.zip(
 					getBuildDetails(builds[0].id),
 					getBuildDetails(builds[1].id),
-					function (runningBuild, previousBuild) {
+					function(runningBuild, previousBuild) {
 						return createRunningBuild(self, runningBuild, previousBuild);
 					});
 			} else {
 				return getBuildDetails(builds[0].id)
-					.map(function (buildDetails) {
+					.map(function(buildDetails) {
 						return createBuild(self, buildDetails);
 					});
 			}
 		});
 	};
 
-	var getBuildDetails = function (buildId) {
+	var getBuildDetails = function(buildId) {
 		return request.json({
 			url: 'https://api.travis-ci.org/builds/' + buildId
 		});
 	};
 
-	var isRunning = function (build) {
+	var isRunning = function(build) {
 		return build.state === STATE.STARTED || build.state === STATE.CREATED;
 	};
 
-	var isBroken = function (build) {
+	var isBroken = function(build) {
 		return build.result === RESULT.FAILURE || isErrored(build);
 	};
 
-	var isErrored = function (build) {
-		return build.state === STATE.FINISHED &&
-			build.result === RESULT.ERRORED;
+	var isErrored = function(build) {
+		return build.state === STATE.FINISHED
+			&& build.result === RESULT.ERRORED;
 	};
 
-	var createBuild = function (self, response) {
+	var createBuild = function(self, response) {
 		var result = {
 			id: self.id,
 			name: self.name,
@@ -71,7 +71,7 @@ define([
 		return result;
 	};
 
-	var createRunningBuild = function (self, runningBuild, previousBuild) {
+	var createRunningBuild = function(self, runningBuild, previousBuild) {
 		var result = {
 			id: self.id,
 			name: self.name,

@@ -3,22 +3,22 @@ define([
 	'core/services/travis/travisBuild',
 	'core/services/request',
 	'mout/object/mixIn'
-], function (BuildServiceBase, TravisBuild, request, mixIn) {
+], function(BuildServiceBase, TravisBuild, request, mixIn) {
 
 	'use strict';
 
-	var TravisBuildService = function (settings) {
+	var TravisBuildService = function(settings) {
 		mixIn(this, new BuildServiceBase(settings, TravisBuildService.settings()));
 		this.Build = TravisBuild;
 		this.availableBuilds = availableBuilds;
 	};
 
-	TravisBuildService.settings = function () {
+	TravisBuildService.settings = function() {
 		return {
 			typeName: 'Travis',
 			baseUrl: 'travis',
-			icon: 'src/core/services/travis/icon.png',
-			logo: 'src/core/services/travis/logo.png',
+			icon: 'core/services/travis/icon.png',
+			logo: 'core/services/travis/logo.png',
 			defaultConfig: {
 				baseUrl: 'travis',
 				name: '',
@@ -29,13 +29,13 @@ define([
 		};
 	};
 
-	var availableBuilds = function () {
+	var availableBuilds = function() {
 		return request.json({
 			url: 'https://api.travis-ci.org/repos/',
 			data: { 'owner_name': this.settings.username },
-			parser: function (response) {
+			parser: function(response) {
 				return {
-					items: response.map(function (repo) {
+					items: response.map(function(repo) {
 						return {
 							id: repo.slug,
 							name: repo.slug.split('/')[1],

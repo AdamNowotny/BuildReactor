@@ -1,18 +1,14 @@
-define([
-	'settings/app',
-	'common-ui/core'
-], function (app, core) {
-	'use strict';
+import 'angular-ui-bootstrap';
+import app from 'settings/app';
 
-	app.controller('RemoveModalCtrl', function ($scope, $modalInstance, serviceName) {
-		$scope.serviceName = serviceName;
+export default app.controller('RemoveModalCtrl', ($scope, $uibModalInstance, serviceName) => {
+	$scope.serviceName = serviceName;
 
-		$scope.remove = function () {
-			$modalInstance.close($scope.serviceName);
-		};
+	$scope.remove = function() {
+		$uibModalInstance.close($scope.serviceName);
+	};
 
-		$scope.cancel = function () {
-			$modalInstance.dismiss('cancel');
-		};
-	});
+	$scope.cancel = function() {
+		$uibModalInstance.dismiss('cancel');
+	};
 });

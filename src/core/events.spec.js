@@ -3,20 +3,20 @@ define([
 	'core/services/serviceController',
 	'rx',
 	'rx.testing'
-], function (events, serviceController, Rx) {
+], function(events, serviceController, Rx) {
 	'use strict';
 
 	var onNext = Rx.ReactiveTest.onNext;
 	var scheduler;
 
-	beforeEach(function () {
+	beforeEach(function() {
 		scheduler = new Rx.TestScheduler();
 	});
 
-	describe('events', function () {
+	describe('events', function() {
 
-		it('should publish on serviceController.events', function () {
-			scheduler.scheduleAbsolute(300, function () {
+		it('should publish on serviceController.events', function() {
+			scheduler.scheduleAbsolute(300, function() {
 				serviceController.events.onNext({
 					eventName: 'eventName',
 					details: {
@@ -27,7 +27,7 @@ define([
 					}
 				});
 			});
-			var result = scheduler.startWithCreate(function () {
+			var result = scheduler.startWithCreate(function() {
 				return events.getByName('eventName');
 			});
 
@@ -42,8 +42,8 @@ define([
 			}));
 		});
 
-		it('should only publish on subscribed events', function () {
-			scheduler.scheduleAbsolute(300, function () {
+		it('should only publish on subscribed events', function() {
+			scheduler.scheduleAbsolute(300, function() {
 				serviceController.events.onNext({
 					eventName: 'eventName',
 					details: {
@@ -54,7 +54,7 @@ define([
 					}
 				});
 			});
-			var result = scheduler.startWithCreate(function () {
+			var result = scheduler.startWithCreate(function() {
 				return events.getByName('otherEventName');
 			});
 

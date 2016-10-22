@@ -3,19 +3,20 @@ define([
 	'core/services/jenkins/jenkinsBuild',
 	'core/services/request',
 	'rx',
-	'text!core/services/jenkins/availableBuilds.fixture.json',
-	'text!core/services/jenkins/availableBuilds.primaryView.fixture.json',
-	'text!core/services/jenkins/availableBuilds.incorrectUrl.fixture.json',
-], function (BuildService, JenkinsBuild, request, Rx, availableBuildsFixture, viewFixture, availableBuildsIncorrectFixture) {
+	'raw!core/services/jenkins/availableBuilds.fixture.json',
+	'raw!core/services/jenkins/availableBuilds.primaryView.fixture.json',
+	'raw!core/services/jenkins/availableBuilds.incorrectUrl.fixture.json'
+], function(BuildService, JenkinsBuild, request, Rx, availableBuildsFixture, viewFixture, availableBuildsIncorrectFixture) {
 
 	'use strict';
 
-	describe('core/services/jenkins/buildService', function () {
+	describe('core/services/jenkins/buildService', function() {
 
+		var onNext = Rx.ReactiveTest.onNext;
 		var settings;
 		var service;
 
-		beforeEach(function () {
+		beforeEach(function() {
 			settings = {
 				typeName: 'Jenkins',
 				baseUrl: 'jenkins',
@@ -27,11 +28,11 @@ define([
 			service = new BuildService(settings);
 		});
 
-		it('should set Build factory method', function () {
+		it('should set Build factory method', function() {
 			expect(service.Build).toBe(JenkinsBuild);
 		});
 
-		it('should expose interface', function () {
+		it('should expose interface', function() {
 			expect(service.settings).toBe(settings);
 			expect(service.updateAll).toBeDefined();
 			expect(service.start).toBeDefined();
@@ -41,14 +42,14 @@ define([
 			expect(service.events).toBeDefined();
 		});
 
-		describe('availableBuilds', function () {
+		describe('availableBuilds', function() {
 
 			var availableBuildsJson, jobJson, viewJson;
 			var service;
 			var scheduler;
 
 			function setupRequestSpy(availableBuildsJson, viewJson) {
-				request.json.andCallFake(function (options) {
+				request.json.and.callFake(function(options) {
 					if (options.url === 'http://ci.jenkins-ci.org/api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]') {
 						return Rx.Observable.returnValue(availableBuildsJson);
 					} else if (options.url.indexOf('/view/') > -1) {
@@ -58,7 +59,7 @@ define([
 				});
 			}
 
-			beforeEach(function () {
+			beforeEach(function() {
 				scheduler = new Rx.TestScheduler();
 				availableBuildsJson = JSON.parse(availableBuildsFixture);
 				viewJson = JSON.parse(viewFixture);
@@ -67,10 +68,10 @@ define([
 				setupRequestSpy(availableBuildsJson, viewJson);
 			});
 
-			it('should use credentials', function () {
+			it('should use credentials', function() {
 				settings.username = 'USERNAME';
 				settings.password = 'PASSWORD';
-				request.json.andCallFake(function (options) {
+				request.json.and.callFake(function(options) {
 					expect(options.username).toBe(settings.username);
 					expect(options.password).toBe(settings.password);
 					return Rx.Observable.never();
@@ -81,8 +82,8 @@ define([
 				expect(request.json).toHaveBeenCalled();
 			});
 
-			it('should get available builds from correct URL', function () {
-				request.json.andCallFake(function (options) {
+			it('should get available builds from correct URL', function() {
+				request.json.and.callFake(function(options) {
 					expect(options.url).toBe('http://ci.jenkins-ci.org/api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]');
 					return Rx.Observable.never();
 				});
@@ -92,8 +93,8 @@ define([
 				expect(request.json).toHaveBeenCalled();
 			});
 
-			it('should increase timeout for view details', function () {
-				request.json.andCallFake(function (options) {
+			it('should increase timeout for view details', function() {
+				request.json.and.callFake(function(options) {
 					if (options.url === 'http://ci.jenkins-ci.org/api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]') {
 						return Rx.Observable.returnValue(availableBuildsJson);
 					} else if (options.url.indexOf('iew/') > -1) {
@@ -108,49 +109,46 @@ define([
 				expect(request.json).toHaveBeenCalled();
 			});
 			
-			it('should return projects', function () {
-				var result = scheduler.startWithCreate(function () {
+			it('should return projects', function() {
+				var result = scheduler.startWithCreate(function() {
+					return service.availableBuilds();
+				});
+
+				expect(result.messages).toHaveElements(onNext(200));
+				const messageValue = result.messages[0].value.value;
+				expect(messageValue.items.length).toBe(77);
+				expect(messageValue.items[0].id).toBe('config-provider-model');
+				expect(messageValue.items[0].name).toBe('config-provider-model');
+				expect(messageValue.items[0].group).toBe(null);
+				expect(messageValue.items[0].isDisabled).toBe(false);
+			});
+
+			it('should return views', function() {
+				var result = scheduler.startWithCreate(function() {
 					return service.availableBuilds();
 				});
 		
-				expect(result.messages).toHaveElementsMatchingAt(200, function (builds) {
-					expect(builds.items.length).toBe(77);
-					expect(builds.items[0].id).toBe('config-provider-model');
-					expect(builds.items[0].name).toBe('config-provider-model');
-					expect(builds.items[0].group).toBe(null);
-					expect(builds.items[0].isDisabled).toBe(false);
-					return true;
-				});
+				expect(result.messages).toHaveElements(onNext(200));
+				const messageValue = result.messages[0].value.value;
+				expect(messageValue.primaryView).toBe('All Failed');
+				expect(messageValue.views.length).toBe(8);
+				expect(messageValue.views[0].name).toBe('All');
+				expect(messageValue.views[0].items.length).toBe(16);
+				expect(messageValue.views[0].items[0]).toBe('core_selenium-test');
 			});
 
-			it('should return views', function () {
-				var result = scheduler.startWithCreate(function () {
-					return service.availableBuilds();
-				});
-		
-				expect(result.messages).toHaveElementsMatchingAt(200, function (builds) {
-					expect(builds.primaryView).toBe('All Failed');
-					expect(builds.views.length).toBe(8);
-					expect(builds.views[0].name).toBe('All');
-					expect(builds.views[0].items.length).toBe(16);
-					expect(builds.views[0].items[0]).toBe('core_selenium-test');
-					return true;
-				});
-			});
-
-			it('should fix url to primaryView', function () {
+			it('should fix url to primaryView', function() {
 				var availableBuildsJson = JSON.parse(availableBuildsIncorrectFixture);
 				setupRequestSpy(availableBuildsJson, viewJson);
 
-				var result = scheduler.startWithCreate(function () {
+				var result = scheduler.startWithCreate(function() {
 					return service.availableBuilds();
 				});
 		
-				expect(result.messages).toHaveElementsMatchingAt(200, function (builds) {
-					expect(builds.primaryView).toBe('All Failed');
-					expect(builds.views.length).toBe(8);
-					return true;
-				});
+				expect(result.messages).toHaveElements(onNext(200));
+				const messageValue = result.messages[0].value.value;
+				expect(messageValue.primaryView).toBe('All Failed');
+				expect(messageValue.views.length).toBe(8);
 			});
 
 		});

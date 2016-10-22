@@ -1,10 +1,10 @@
-define(function () {
+define(function() {
 
 	'use strict';
 
-	var contains = function (tagName, tags) {
-		return tags && tags.reduce(function (agg, value) {
-			return agg || value.name === tagName; 
+	var contains = function(tagName, tags) {
+		return tags && tags.reduce(function(agg, value) {
+			return agg || value.name === tagName;
 		}, false);
 	};
 

@@ -1,28 +1,20 @@
 define([
-	'core/services/serviceLoader',
 	'core/services/serviceController',
 	'core/config/serviceConfiguration',
 	'core/config/viewConfiguration',
 	'common/chromeApi',
 	'rx'
-], function (serviceLoader, serviceController, serviceConfiguration, viewConfiguration, chromeApi, Rx) {
+], function(serviceController, serviceConfiguration, viewConfiguration, chromeApi, Rx) {
 
 	'use strict';
 
 	function onMessage(request, sender, sendResponse) {
 		switch (request.name) {
 		case 'availableServices':
-			sendResponse(serviceController.getAllTypes());
+			availableServices(sendResponse);
 			break;
 		case 'availableProjects':
-			serviceLoader.load(request.serviceSettings).subscribe(function (service) {
-				service.availableBuilds().subscribe(function (projects) {
-					projects.selected = request.serviceSettings.projects;
-					sendResponse({ projects: projects });
-				}, function (error) {
-					sendResponse({ error: error });
-				});
-			});
+			availableProjects(sendResponse, request.serviceSettings);
 			return true;
 		case 'setOrder':
 			serviceConfiguration.setOrder(request.order);
@@ -51,32 +43,51 @@ define([
 		case 'setViews':
 			viewConfiguration.save(request.views);
 			break;
+		default:
+			break;
 		}
+		return false;
 	}
 
-	var onConnect = function (port) {
+	const availableServices = (sendResponse) => {
+		const types = serviceController.getAllTypes();
+		const settingList = Object.keys(types).map((k) => types[k]).map((t) => t.settings());
+		return sendResponse(settingList);
+	};
+
+	const availableProjects = (sendResponse, settings) => {
+		const Service = serviceController.getAllTypes()[settings.baseUrl];
+		new Service(settings).availableBuilds().subscribe(function(projects) {
+			projects.selected = settings.projects;
+			sendResponse({ projects });
+		}, function(error) {
+			sendResponse({ error });
+		});
+	};
+
+	var onConnect = function(port) {
 		switch (port.name) {
 		case 'state':
-			var stateSubscription = serviceController.activeProjects.subscribe(function (servicesState) {
+			var stateSubscription = serviceController.activeProjects.subscribe(function(servicesState) {
 				port.postMessage(servicesState);
 			});
-			port.onDisconnect.addListener(function (port) {
+			port.onDisconnect.addListener(function(port) {
 				stateSubscription.dispose();
 			});
 			break;
 		case 'configuration':
-			var configSubscription = serviceConfiguration.changes.subscribe(function (config) {
+			var configSubscription = serviceConfiguration.changes.subscribe(function(config) {
 				port.postMessage(config);
 			});
-			port.onDisconnect.addListener(function (port) {
+			port.onDisconnect.addListener(function(port) {
 				configSubscription.dispose();
 			});
 			break;
 		case 'views':
-			var viewSubscription = viewConfiguration.changes.subscribe(function (config) {
+			var viewSubscription = viewConfiguration.changes.subscribe(function(config) {
 				port.postMessage(config);
 			});
-			port.onDisconnect.addListener(function (port) {
+			port.onDisconnect.addListener(function(port) {
 				viewSubscription.dispose();
 			});
 			break;
@@ -84,7 +95,7 @@ define([
 	};
 
 	return {
-		init: function () {
+		init: function() {
 			chromeApi.addConnectListener(onConnect);
 			chromeApi.addMessageListener(onMessage);
 		}

@@ -1,25 +1,25 @@
+/* eslint no-console: 0 */
+
 define([
-	'core/config/serviceConfiguration',
-	'core/services/serviceLoader',
 	'rx',
 	'rx.binding'
-], function (serviceConfiguration, serviceLoader, Rx) {
+], function(Rx) {
 
 	'use strict';
 
-	var types = [];
+	var types = {};
 
-	var getAllTypes = function () {
+	var getAllTypes = function() {
 		return types;
 	};
 
-	var registerType = function (Service) {
+	var registerType = function(Service) {
 		var settings = Service.settings();
-		types.push(settings);
+		types[settings.baseUrl] = Service;
 	};
 
-	var clear = function () {
-		types = [];
+	var clear = function() {
+		types = {};
 	};
 
 	var services = [];
@@ -31,14 +31,14 @@ define([
 	var activeProjectsSubject = new Rx.ReplaySubject(1);
 	var activeProjectsSubscription;
 
-	settingsSubject.subscribe(function (settingsList) {
+	settingsSubject.subscribe(function(settingsList) {
 		events.onNext({
 			eventName: 'servicesInitializing',
 			source: 'serviceController',
 			details: settingsList
 		});
 		removeAll();
-		startServices(settingsList).subscribe(function () {
+		startServices(settingsList).subscribe(function() {
 			events.onNext({
 				eventName: 'servicesInitialized',
 				source: 'serviceController',
@@ -48,40 +48,46 @@ define([
 	});
 
 	function loadServices(settingsList) {
-		return Rx.Observable.fromArray(settingsList)
-			.where(function (settings) {
+		return Rx
+			.Observable
+			.fromArray(settingsList)
+			.where(function(settings) {
 				return settings.disabled !== true;
-			}).selectMany(function (settings) {
-				return serviceLoader.load(settings);
-			}).doAction(function (service) {
+			})
+			.select(function(settings) {
+				const Service = types[settings.baseUrl];
+				return new Service(settings);
+			})
+			.doAction(function(service) {
 				services.push(service);
 				eventsSubscriptions.push(service.events.subscribe(events));
-			}).toArray();
+			})
+			.toArray();
 	}
 
 	function startServices(settingsList) {
-		return loadServices(settingsList).doAction(function (services) {
+		return loadServices(settingsList).doAction(function(services) {
 				servicesSubject.onNext(services);
-			}).selectMany(function (services) {
+			}).selectMany(function(services) {
 				return Rx.Observable.fromArray(services)
-					.selectMany(function (service) {
+					.selectMany(function(service) {
 						return service.start();
 					});
 			}).toArray();
 	}
 
 	function removeAll() {
-		services.forEach(function (service) {
+		services.forEach(function(service) {
 			service.stop();
 		});
-		eventsSubscriptions.forEach(function (subscription) {
+		eventsSubscriptions.forEach(function(subscription) {
 			subscription.dispose();
 		});
 		services = [];
 		eventsSubscriptions = [];
 	}
 
-	servicesSubject.subscribe(function (services) {
+	servicesSubject.subscribe(function(services) {
 		if (activeProjectsSubscription) {
 			activeProjectsSubscription.dispose();
 		}
@@ -90,24 +96,21 @@ define([
 			return;
 		}
 		activeProjectsSubscription = Rx.Observable
-			.combineLatest(services.map(function (service) {
+			.combineLatest(services.map(function(service) {
 				return service.activeProjects;
-			}), function () {
+			}), function() {
 				var states = Array.prototype.slice.call(arguments, 0);
 				return states;
 			}).subscribe(activeProjectsSubject);
 	});
 	var configChangesSubscription;
 
-	var start = function (configChanges) {
-		// configChangesSubscription && configChangesSubscription.dispose();
-		// configChangesSubscription = configChanges.subscribe(function (allConfig) {
-		serviceConfiguration.changes.subscribeOn(Rx.Scheduler.timeout).subscribe(function (allConfig) {
-			console.log('config', allConfig);
+	var start = function(configChanges) {
+		configChanges.subscribe(function(allConfig) {
 			settingsSubject.onNext(allConfig);
-		}, function (e) {
+		}, function(e) {
 			console.log('error', e);
-		}, function (e) {
+		}, function(e) {
 			console.log('completed', e);
 		});
 	};

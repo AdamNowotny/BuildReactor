@@ -1,22 +1,22 @@
 define([
 	'core/services/cctray/buildService',
 	'mout/object/mixIn'
-], function (CCTrayBuildService, mixIn) {
+], function(CCTrayBuildService, mixIn) {
 
 	'use strict';
 
-	var GoBuildService = function (settings) {
+	var GoBuildService = function(settings) {
 		mixIn(this, new CCTrayBuildService(settings, GoBuildService.settings()));
 		this.cctrayLocation = 'cctray.xml';
 	};
 	
-	GoBuildService.settings = function () {
+	GoBuildService.settings = function() {
 		return {
 			typeName: 'GoCD',
 			baseUrl: 'go',
 			urlHint: 'URL, e.g. http://example-go.thoughtworks.com/',
-			icon: 'src/core/services/go/icon.png',
-			logo: 'src/core/services/go/logo.png',
+			icon: 'core/services/go/icon.png',
+			logo: 'core/services/go/logo.png',
 			defaultConfig: {
 				baseUrl: 'go',
 				name: '',

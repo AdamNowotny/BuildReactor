@@ -1,24 +1,18 @@
-define([
-	'settings/app'
-], function (app) {
-	'use strict';
+import app from 'settings/app';
+import template from 'settings/directives/onOffSwitch/onOffSwitch.html';
 
-	app.directive('onOffSwitch', function ($modal) {
-		return {
-			scope: {
-				onOff: '=onOff'
-			},
-			templateUrl: 'src/settings/directives/onOffSwitch/onOffSwitch.html',
-			controller: function ($scope, $element, $attrs, $transclude) {
-				$scope.$watch('onOff', function (onOff) {
-					$scope.switch = onOff ? 'on' : 'off';
-				});
+export default app.directive('onOffSwitch', () => ({
+	scope: {
+		onOff: '=onOff'
+	},
+	templateUrl: template,
+	controller($scope, $element, $attrs, $transclude) {
+		$scope.$watch('onOff', (onOff) => {
+			$scope.switch = onOff ? 'on' : 'off';
+		});
 
-				$scope.userSwitch = function (oldValue) {
-					var newValue = (oldValue === 'off');
-					$scope.$emit('onOffSwitch.change', newValue);
-				};
-			}
+		$scope.userSwitch = function(newValue) {
+			$scope.$emit('onOffSwitch.change', newValue === 'on');
 		};
-	});
-});
+	}
+}));

@@ -1,19 +1,12 @@
-define([
-	'popup/app',
-	'common-ui/core'
-], function (app, core) {
-	'use strict';
+import app from 'popup/app';
+import core from 'common/core';
 
-	app.controller('PopupCtrl', function ($scope) {
-
-		$scope.navbarStyle = 'navbar-inverse';
-		
-		core.views.subscribe(function (config) {
-			$scope.$evalAsync(function () {
-				$scope.viewConfig = config;
-				$scope.navbarStyle = (config.theme === 'light') ? 'navbar-default' : 'navbar-inverse';
-			});
+export default app.controller('PopupCtrl', ($scope) => {
+	$scope.navbarStyle = 'navbar-inverse';
+	core.views.subscribe((config) => {
+		$scope.$evalAsync(() => {
+			$scope.viewConfig = config;
+			$scope.navbarStyle = (config.theme === 'light') ? 'navbar-default' : 'navbar-inverse';
 		});
-
 	});
 });

@@ -1,8 +1,8 @@
-@import "../common-ui/_angular-ui.scss";
-@import "../common-ui/directives/buildList/_buildList.scss";
-@import "../common-ui/directives/service/_service.scss";
-@import "../common-ui/directives/buildGroup/_buildGroup.scss";
-@import "../common-ui/directives/build/_build.scss";
+@import "../common/_angular-ui.scss";
+@import "../common/directives/buildList/_buildList.scss";
+@import "../common/directives/service/_service.scss";
+@import "../common/directives/buildGroup/_buildGroup.scss";
+@import "../common/directives/build/_build.scss";
 
 body {
   margin-left: .3em;

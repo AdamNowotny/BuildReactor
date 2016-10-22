@@ -1,7 +1,6 @@
-_build
+dist
 node_modules
 .DS_Store
-components
 bower_components
 web.config
 docs/report

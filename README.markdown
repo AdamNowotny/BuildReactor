@@ -65,45 +65,22 @@ Installation
 ------------
 
 1. Install [Node.js](http://nodejs.org/) to build the extension.
-2. `npm install -g bower grunt-cli` 
-3. Go to project directory `/git/BuildReactor/` and run:
+3. Go to project directory and run:
  - `npm install`
- - `bower update`
- - `grunt`
-4. Open Chrome Extension manager and `Load unpacked extension..` from `_build/BuildReactor` folder.
+ - `npm run dist`
+4. Open Chrome Extension manager and `Load unpacked extension..` from `dist/BuildReactor` folder.
 
+Use `npm run auto-dist` to continually build whenever some file changes. You will still need to reload the extension in Chrome.
 
-`grunt` - full build
-
-`grunt dist` - create distribution package without running tests
-
-Reloading the extension in Chrome is required every time you make a change.
+See other scripts useful for development in package.json.
 
 Testing
 -------
 
-`grunt test` - run Karma using Chrome (edit `karma.conf.js` to change) and watch for changes
+`npm test` - run Karma unit tests using PhantomJS
+`npm run auto-test` test and watch for changes
 
 Once running you can also open `localhost:9876/base/options.html` or any other HTML file in the browser to test using sample data. This does not require you to load as Chrome Extension.
-
-Dependencies
-============
-
-The packaged version uses:
- * [AngularJS](angularjs.org)
- * [Font Awesome](http://fortawesome.github.com/Font-Awesome/)
- * [jQuery](http://jquery.com/)
- * [Mout](http://moutjs.com/)
- * [Require-JS](http://requirejs.org/)
- * [RxJS](http://reactive-extensions.github.com/RxJS/)
- * [Twitter bootstrap](http://twitter.github.com/bootstrap/)
-
-The build and tests use:
- * [Bower](http://twitter.github.com/bower/)
- * [Grunt](http://gruntjs.com/)
- * [Plato](https://github.com/jsoverson/plato)
- * [Karma](http://karma-runner.github.io/)
- * [Travis-CI](http://travis-ci.org/)
 
 Legal
 =====

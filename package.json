@@ -1,7 +1,7 @@
 {
   "name": "BuildReactor",
   "description": "Developer notifications and dashboard",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "homepage": "https://github.com/AdamNowotny/BuildReactor",
   "author": {
     "name": "Adam Nowotny",
@@ -22,31 +22,60 @@
     }
   ],
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 6.8"
   },
   "scripts": {
-    "test": "bower update && grunt ci --verbose"
+    "lint": "node_modules/.bin/eslint src --ext .js --quiet",
+    "dist": "node_modules/.bin/webpack",
+    "auto-dist": "node_modules/.bin/webpack --watch",
+    "test": "npm run lint && npm run karma",
+    "karma": "node_modules/.bin/karma start ./src/test/karma.conf.js",
+    "auto-test": "node_modules/.bin/karma start --no-single-run ./src/test/karma.conf.js",
+    "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-route": "^1.5.8",
+    "angular-ui-bootstrap": "^2.1.4",
+    "angular-ui-utils": "^0.1.1",
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.6.3",
+    "html5sortable": "^0.3.1",
+    "jquery": "^2.2.0",
+    "mout": "^0.11.1",
+    "rx": "^2.3.4"
+  },
   "devDependencies": {
-    "bower": "^1.3.2",
-    "grunt": "^0.4.4",
-    "grunt-cli": "^0.1.13",
-    "grunt-contrib-clean": "^0.5.0",
-    "grunt-contrib-compress": "^0.8.0",
-    "grunt-contrib-copy": "^0.5.0",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-requirejs": "^0.4.3",
-    "grunt-contrib-watch": "0.6.1",
-    "grunt-karma": "^0.8.2",
-    "grunt-plato": "^1.0.0",
-    "grunt-sass": "^1.0.0",
-    "grunt-version": "^0.3.0",
-    "karma": "^0.12.6",
-    "karma-chrome-launcher": "^0.1.3",
-    "karma-jasmine": "^0.1.5",
-    "karma-ng-html2js-preprocessor": "^0.1.0",
-    "karma-phantomjs-launcher": "^0.1.4",
-    "karma-requirejs": "^0.2.1"
+    "angular-mocks": "^1.5.8",
+    "babel-core": "^6.17.0",
+    "babel-eslint": "^7.0.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.16.0",
+    "copy-webpack-plugin": "^3.0.1",
+    "css-loader": "^0.25.0",
+    "eslint": "^3.8.1",
+    "exports-loader": "^0.6.3",
+    "expose-loader": "^0.7.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "html-loader": "^0.4.4",
+    "html-webpack-plugin": "^2.22.0",
+    "imports-loader": "^0.6.5",
+    "jasmine-core": "^2.5.2",
+    "karma": "^1.3.0",
+    "karma-jasmine": "^1.0.2",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^1.8.0",
+    "ngtemplate-loader": "^1.3.1",
+    "node-sass": "^3.10.1",
+    "phantomjs-prebuilt": "^2.1.13",
+    "raw-loader": "^0.5.1",
+    "sass-loader": "^4.0.2",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.2",
+    "webpack-error-notification": "^0.1.6"
   }
 }

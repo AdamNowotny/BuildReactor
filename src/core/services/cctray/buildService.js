@@ -6,12 +6,11 @@ define([
 	'mout/object/mixIn',
 	'common/joinUrl',
 	'mout/array/contains'
-], function (BuildServiceBase, request, $, Rx, mixIn, joinUrl, contains) {
+], function(BuildServiceBase, request, $, Rx, mixIn, joinUrl, contains) {
 
 	'use strict';
 
-	var CCBuildService = function (settings, serviceInfo) {
-		serviceInfo = serviceInfo || CCBuildService.settings();
+	var CCBuildService = function(settings, serviceInfo = CCBuildService.settings()) {
 		mixIn(this, new BuildServiceBase(settings, serviceInfo));
 		this.availableBuilds = availableBuilds;
 		this.updateAll = updateAll;
@@ -19,13 +18,13 @@ define([
 		this.serviceInfo = serviceInfo;
 	};
 
-	CCBuildService.settings = function () {
+	CCBuildService.settings = function() {
 		return {
 			typeName: 'CCTray Generic',
 			baseUrl: 'cctray',
 			urlHint: 'URL, e.g. http://cruisecontrol.instance.com/cctray.xml',
-			icon: 'src/core/services/cctray/icon.png',
-			logo: 'src/core/services/cctray/logo.png',
+			icon: 'core/services/cctray/icon.png',
+			logo: 'core/services/cctray/logo.png',
 			defaultConfig: {
 				baseUrl: 'cctray',
 				name: '',
@@ -38,36 +37,36 @@ define([
 		};
 	};
 
-	var updateAll = function () {
+	var updateAll = function() {
 		var self = this;
 		return request.xml({
 			url: joinUrl(this.settings.url, this.cctrayLocation),
 			username: this.settings.username,
 			password: this.settings.password,
 			parser: parseProjects
-		}).catchException(function (ex) {
+		}).catchException(function(ex) {
 			return Rx.Observable.fromArray(self.settings.projects)
-				.select(function (buildId) {
+				.select(function(buildId) {
 					return {
 						id: buildId,
 						error: ex
 					};
 				}).toArray();
-		}).selectMany(function (projects) {
+		}).selectMany(function(projects) {
 			return Rx.Observable.fromArray(projects);
-		}).where(function (build) {
+		}).where(function(build) {
 			return contains(self.settings.projects, build.id);
-		}).select(function (state) {
+		}).select(function(state) {
 			return self.mixInMissingState(state, self.serviceInfo);
-		}).doAction(function (state) {
+		}).doAction(function(state) {
 			return self.processBuildUpdate(state);
 		}).defaultIfEmpty([]);
 	};
 
-	var parseProjects = function (projectsXml) {
+	var parseProjects = function(projectsXml) {
 		return $(projectsXml)
 			.find('Project')
-			.map(function (i, d) {
+			.map(function(i, d) {
 				var status = $(d).attr('lastBuildStatus');
 				var breakers = $(d).find('message[kind=Breakers]').attr('text');
 				var name = $(d).attr('name');
@@ -79,14 +78,14 @@ define([
 					isRunning: $(d).attr('activity') === 'Building',
 					isWaiting: status === 'Pending',
 					tags: [],
-					changes: !breakers ? [] : breakers.split(', ').map(function (breaker) {
+					changes: breakers ? breakers.split(', ').map(function(breaker) {
 						return { name: breaker };
-					})
+					}) : []
 				};
 				if (status in { 'Success': 1, 'Failure': 1, 'Exception': 1 }) {
 					state.isBroken = status in { 'Failure': 1, 'Exception': 1 };
 				} else {
-					state.tags.push({ name : 'Unknown', description : 'Status [' + status + '] is unknown'});
+					state.tags.push({ name : 'Unknown', description : 'Status [' + status + '] is unknown' });
 					delete state.isBroken;
 				}
 
@@ -95,7 +94,7 @@ define([
 			.toArray();
 	};
 
-	var categoriseFromName = function (i, d) {
+	var categoriseFromName = function(i, d) {
 		if (!d.group && d.name.split(' :: ').length > 1) {
 			var nameParts = d.name.split(' :: ');
 			d.group = nameParts[0];
@@ -104,7 +103,7 @@ define([
 		return d;
 	};
 
-	var availableBuilds = function () {
+	var availableBuilds = function() {
 		return request.xml({
 			url: joinUrl(this.settings.url, this.cctrayLocation),
 			username: this.settings.username,
@@ -117,7 +116,7 @@ define([
 		return {
 			items: $(projectsXml)
 				.find('Project')
-				.map(function (i, project) {
+				.map(function(i, project) {
 					return {
 						id: $(project).attr('name'),
 						name: $(project).attr('name'),

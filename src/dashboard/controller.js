@@ -1,16 +1,10 @@
-define([
-	'dashboard/app',
-	'common-ui/core'
-], function (app, core) {
-	'use strict';
+import app from 'dashboard/app';
+import core from 'common/core';
 
-	app.controller('DashboardCtrl', function ($scope) {
-
-		core.views.subscribe(function (config) {
-			$scope.$evalAsync(function () {
-				$scope.viewConfig = config;
-			});
+export default app.controller('DashboardCtrl', ($scope) => {
+	core.views.subscribe((config) => {
+		$scope.$evalAsync(() => {
+			$scope.viewConfig = config;
 		});
-
 	});
 });

@@ -1,46 +1,46 @@
-define([
-	'settings/app'
-], function (app) {
-	'use strict';
+import addServiceView from 'settings/add/view.html';
+import app from 'settings/app';
+import configurationTemplate from 'settings/configuration/view.html';
+import serviceSettingsView from 'settings/service/view.html';
+import viewSettingsTemplate from 'settings/view/view.html';
 
-	return app.config(function ($routeProvider) {
-		$routeProvider
-		.when('/service/:serviceName', {
-			templateUrl: 'src/settings/serviceSettingsView.html',
-			controller: 'ServiceSettingsCtrl',
-			view: 'service'
-		})
-		.when('/new', {
-			templateUrl: 'src/settings/addServiceView.html',
-			controller: 'AddServiceCtrl',
-			reloadOnSearch: false,
-			view: 'new'
-		})
-		.when('/new/:serviceTypeId/:serviceName', {
-			templateUrl: 'src/settings/serviceSettingsView.html',
-			controller: 'ServiceSettingsCtrl',
-			view: 'new'
-		})
-		.when('/view', {
-			templateUrl: 'src/settings/viewSettings/view.html',
-			controller: 'ViewSettingsCtrl',
-			view: 'view'
-		})
-		.when('/configuration', {
-			templateUrl: 'src/settings/configuration/view.html',
-			controller: 'ConfigurationCtrl',
-			view: 'configuration'
-		})
-		.otherwise({
-			redirectTo: '/new'
-		});
-	}).config(function ($locationProvider) {
-		$locationProvider.html5Mode(false);
-	}).config([
-		'$compileProvider', function ($compileProvider)	{
-			$compileProvider
-				.aHrefSanitizationWhitelist(/^\s*(https?|chrome-extension):/)
-				.imgSrcSanitizationWhitelist(/^\s*(chrome-extension):/);
-		}
-	]);
-});
+export default app.config(($routeProvider) => {
+	$routeProvider
+	.when('/service/:serviceName', {
+		templateUrl: serviceSettingsView,
+		controller: 'ServiceSettingsCtrl',
+		view: 'service'
+	})
+	.when('/new', {
+		templateUrl: addServiceView,
+		controller: 'AddServiceCtrl',
+		reloadOnSearch: false,
+		view: 'new'
+	})
+	.when('/new/:serviceTypeId/:serviceName', {
+		templateUrl: serviceSettingsView,
+		controller: 'ServiceSettingsCtrl',
+		view: 'new'
+	})
+	.when('/view', {
+		templateUrl: viewSettingsTemplate,
+		controller: 'ViewSettingsCtrl',
+		view: 'view'
+	})
+	.when('/configuration', {
+		templateUrl: configurationTemplate,
+		controller: 'ConfigurationCtrl',
+		view: 'configuration'
+	})
+	.otherwise({
+		redirectTo: '/new'
+	});
+}).config(($locationProvider) => {
+	$locationProvider.html5Mode(false);
+}).config([
+	'$compileProvider', function($compileProvider)	{
+		$compileProvider
+			.aHrefSanitizationWhitelist(/^\s*(https?|chrome-extension):/)
+			.imgSrcSanitizationWhitelist(/^\s*(chrome-extension):/);
+	}
+]);

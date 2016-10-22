@@ -1,27 +1,24 @@
-define([
-	'settings/app',
-	'common-ui/core'
-], function (app, core) {
-	'use strict';
+import 'angular-ui-bootstrap';
+import app from 'settings/app';
+import core from 'common/core';
 
-	app.controller('RenameModalCtrl', function ($scope, $modalInstance, serviceName) {
-		$scope.service = { name: serviceName };
+export default app.controller('RenameModalCtrl', function($scope, $uibModalInstance, serviceName) {
+	$scope.service = { name: serviceName };
 
-		core.configurations.subscribe(function (configs) {
-			$scope.services = configs;
-		});
-
-		$scope.$watch('service.name', function (name) {
-			$scope.exists = $scope.services ? $scope.services.filter(function (service) {
-				return service.name === name;
-			}).length > 0 : false;
-		});
-
-		$scope.rename = function () {
-			$modalInstance.close($scope.service.name);
-		};
-		$scope.cancel = function () {
-			$modalInstance.dismiss('cancel');
-		};
+	core.configurations.subscribe(function(configs) {
+		$scope.services = configs;
 	});
+
+	$scope.$watch('service.name', function(name) {
+		$scope.exists = $scope.services ? $scope.services.filter(function(service) {
+			return service.name === name;
+		}).length > 0 : false;
+	});
+
+	$scope.rename = function() {
+		$uibModalInstance.close($scope.service.name);
+	};
+	$scope.cancel = function() {
+		$uibModalInstance.dismiss('cancel');
+	};
 });

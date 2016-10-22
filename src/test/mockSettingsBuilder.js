@@ -1,8 +1,8 @@
-define(function () {
+define(function() {
 
 	'use strict';
 	
-	var MockSettingsBuilder = function () {
+	var MockSettingsBuilder = function() {
 		this.settings = {
 			baseUrl: 'mocks',
 			url: 'http://www.example.com/',
@@ -11,7 +11,7 @@ define(function () {
 			logo: 'mocks/icon.png',
 			disabled: false
 		};
-		this.create = function () {
+		this.create = function() {
 			return {
 				baseUrl: this.settings.baseUrl,
 				url: this.settings.url,
@@ -21,23 +21,23 @@ define(function () {
 				disabled: this.settings.disabled
 			};
 		};
-		this.withName = function (name) {
+		this.withName = function(name) {
 			this.settings.name = name;
 			return this;
 		};
-		this.withBaseUrl = function (url) {
+		this.withBaseUrl = function(url) {
 			this.settings.baseUrl = url;
 			return this;
 		};
-		this.withIcon = function (icon) {
+		this.withIcon = function(icon) {
 			this.settings.icon = icon;
 			return this;
 		};
-		this.withLogo = function (logo) {
+		this.withLogo = function(logo) {
 			this.settings.logo = logo;
 			return this;
 		};
-		this.isDisabled = function () {
+		this.isDisabled = function() {
 			this.settings.disabled = true;
 			return this;
 		};
