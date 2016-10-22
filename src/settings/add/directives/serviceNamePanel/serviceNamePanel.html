@@ -1,5 +1,5 @@
 <div class="panel-footer">
-	<form class="service-add-form form-inline" action="">
+	<form class="service-add-form form-inline" ng-submit="add()">
 		<div class="form-actions">
 			<div class="form-group">
 				<input type="text"
@@ -14,7 +14,6 @@
 			<div class="form-group">
 				<button type="submit"
 					class="btn btn-primary"
-					ng-click="add()"
 					ng-disabled="!serviceName || exists">Add</button>
 			</div>
 		</div>

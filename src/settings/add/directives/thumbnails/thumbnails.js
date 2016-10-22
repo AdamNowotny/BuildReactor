@@ -8,7 +8,7 @@ export default app.directive('thumbnails', function() {
 			selected: '='
 		},
 		templateUrl: template,
-		controller: function($scope, $element, $attrs, $transclude) {
+		controller($scope, $element, $attrs, $transclude) {
 			$scope.select = function(serviceTypeId) {
 				$scope.selected = serviceTypeId;
 				$scope.$emit('thumbnails.selected', serviceTypeId);
