@@ -9,36 +9,39 @@ define([
 
 	'use strict';
 
-	describe('common/core', function() {
+	describe('common/core', () => {
 
-		var onNext = Rx.ReactiveTest.onNext;
-		var scheduler;
-		var statePort, configPort, viewsPort;
+		const onNext = Rx.ReactiveTest.onNext;
+		let scheduler;
+		let configPort, logsPort, statePort, viewsPort;
 
-		var createPort = function() {
+		const createPort = function() {
 			return {
 				onMessage: {
-					addListener: function() {}
+					addListener: () => {}
 				}
 			};
 		};
 
-		beforeEach(function() {
+		beforeEach(() => {
 			scheduler = new Rx.TestScheduler();
-			statePort = createPort();
 			configPort = createPort();
+			logsPort = createPort();
+			statePort = createPort();
 			viewsPort = createPort();
-			spyOn(chromeApi, 'connect').and.callFake(function(request) {
-				var ports = {
-					'state': statePort,
+			spyOn(chromeApi, 'connect').and.callFake((request) => {
+				const ports = {
 					'configuration': configPort,
+					'logs': logsPort,
+					'state': statePort,
 					'views': viewsPort
 				};
 				return ports[request.name];
 			});
 			spyOn(chromeApi, 'sendMessage');
-			spyOn(statePort.onMessage, 'addListener');
 			spyOn(configPort.onMessage, 'addListener');
+			spyOn(logsPort.onMessage, 'addListener');
+			spyOn(statePort.onMessage, 'addListener');
 			spyOn(viewsPort.onMessage, 'addListener');
 		});
 
@@ -98,6 +101,20 @@ define([
 			expect(result.messages).toHaveElements(onNext(300, config));
 		});
 
+		it('should pass logs from background page', () => {
+			const error = { name: 'error', message: 'log message' };
+			logsPort.onMessage.addListener.and.callFake((listener) => {
+				listener(error);
+			});
+
+			scheduler.scheduleAbsolute(300, () => {
+				core.init();
+			});
+			const result = scheduler.startWithCreate(() => core.messages);
+
+			expect(result.messages).toHaveElements(onNext(300, error));
+		});
+
 		it('should send availableServices message', function() {
 			var callback = function() {};
 
@@ -114,7 +131,7 @@ define([
 			const callback = jasmine.createSpy();
 
 			core.availableProjects(settings, callback);
-			
+
 			expect(chromeApi.sendMessage).toHaveBeenCalled();
 			expect(chromeApi.sendMessage.calls.mostRecent().args[0])
 				.toEqual({ name: "availableProjects", serviceSettings: settings });

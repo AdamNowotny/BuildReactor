@@ -19,12 +19,16 @@ define([
 		viewConfigPort.onMessage.addListener(function(message) {
 			views.onNext(message);
 		});
+		const logsPort = chromeApi.connect({ name: 'logs' });
+		logsPort.onMessage.addListener(function(message) {
+			messages.onNext(message);
+		});
 	};
 
-	var activeProjects = new Rx.ReplaySubject(1);
-	var configurations = new Rx.ReplaySubject(1);
-	var views = new Rx.ReplaySubject(1);
-	var messages = new Rx.ReplaySubject(1);
+	const activeProjects = new Rx.ReplaySubject(1);
+	const configurations = new Rx.ReplaySubject(1);
+	const views = new Rx.ReplaySubject(1);
+	const messages = new Rx.ReplaySubject(1);
 
 	var availableServices = function(callback) {
 		var message = { name: 'availableServices' };
@@ -36,7 +40,7 @@ define([
 		var message = { name: 'availableProjects', serviceSettings: settings };
 		messages.onNext(message);
 		chromeApi.sendMessage(message, function(response) {
-			messages.onNext({ name: 'availableProjects', response: response, serviceSettings: settings });
+			messages.onNext({ name: 'availableProjects', response, serviceSettings: settings });
 			callback(response);
 		});
 	};

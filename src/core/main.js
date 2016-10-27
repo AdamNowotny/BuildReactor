@@ -1,8 +1,8 @@
 require([
 	'core/config/localStore',
-	'core/backgroundLogger',
+	'core/logger',
 	'core/badgeController',
-	'core/messageHandlers',
+	'core/chromeListeners',
 	'core/notificationController',
 	'core/config/serviceConfiguration',
 	'core/config/viewConfiguration',
@@ -22,15 +22,15 @@ require([
 	'core/services/travis/buildService'
 ], function(
 	localStore,
-	backgroundLogger,
+	logger,
 	badgeController,
-	messageHandlers,
+	chromeListeners,
 	notificationController,
 	serviceConfiguration,
 	viewConfiguration,
 	serviceController,
 	passwordExpiredHandler,
-	
+
 	BambooService,
 	BuildBotService,
 	CctrayService,
@@ -43,14 +43,13 @@ require([
 	TeamCityService,
 	TravisService
 ) {
-	'use strict';
 
 	serviceConfiguration.init();
 	viewConfiguration.init();
-	backgroundLogger();
+	logger.default.init();
 	badgeController();
 	notificationController.init({ timeout: 5000 });
-	messageHandlers.init();
+	chromeListeners.default.init();
 
 	serviceController.clear();
 	serviceController.registerType(BambooService);

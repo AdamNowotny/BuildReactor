@@ -1,14 +1,14 @@
 define([
-	'core/messageHandlers',
+	'core/chromeListeners',
 	'core/services/serviceController',
 	'core/config/serviceConfiguration',
 	'core/config/viewConfiguration',
 	'rx',
 	'common/chromeApi'
-], function(messageHandlers, serviceController, serviceConfiguration, viewConfiguration, Rx, chromeApi) {
+], function(chromeListeners, serviceController, serviceConfiguration, viewConfiguration, Rx, chromeApi) {
 	'use strict';
 
-	describe('messageHandlers', function() {
+	describe('chromeListeners', function() {
 
 		var messageHandler, connectHandler;
 		var port;
@@ -30,7 +30,7 @@ define([
 			spyOn(serviceConfiguration, 'save');
 			spyOn(viewConfiguration, 'save');
 			spyOn(serviceController, 'getAllTypes');
-			messageHandlers.init();
+			chromeListeners.default.init();
 		});
 
 		afterEach(function() {
