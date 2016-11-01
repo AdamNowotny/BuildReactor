@@ -34,11 +34,29 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label class="col-md-6 control-label">Show status</label>
+			<div class="col-md-6">
+				<ul class="nav nav-pills">
+					<li role="presentation" ng-class="{ active: viewConfig.showRelease }" ng-click="setField('showRelease', true)"><a>On</a></li>
+					<li role="presentation" ng-class="{ active: !viewConfig.showRelease }" ng-click="setField('showRelease', false)"><a>Off</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-6 control-label">Show times</label>
+			<div class="col-md-6">
+				<ul class="nav nav-pills">
+					<li role="presentation" ng-class="{ active: viewConfig.showFinishedDate }" ng-click="setField('showFinishedDate', true)"><a>On</a></li>
+					<li role="presentation" ng-class="{ active: !viewConfig.showFinishedDate }" ng-click="setField('showFinishedDate', false)"><a>Off</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="form-group">
 			<label class="col-md-6 control-label">Theme</label>
 			<div class="col-md-6">
 				<ul class="nav nav-pills">
 					<li role="presentation" ng-class="{ active: viewConfig.theme === 'dark' }" ng-click="setField('theme', 'dark')"><a>Dark</a></li>
-					<li role="presentation" ng-class="{ active: viewConfig.theme === 'light' }" ng-click="setField('theme', 'light')""><a>Light</a></li>
+					<li role="presentation" ng-class="{ active: viewConfig.theme === 'light' }" ng-click="setField('theme', 'light')"><a>Light</a></li>
 				</ul>
 			</div>
 		</div>

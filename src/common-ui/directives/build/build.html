@@ -10,7 +10,23 @@
 			<span ng-show="build.isDisabled" class="label label-default">Disabled</span>
 		</span>
 		<span class="build-name">{{ build.name }}</span>
-		<div class="changes-container" ng-show="viewConfig.showCommits">
+
+		<div class="changes-container" ng-show="viewConfig.showRelease && !build.error">
+			<span>
+				<span class="change-message">{{ build.statusText}}</span>
+			</span>
+		</div>
+		<div class="changes-container" ng-show="viewConfig.showFinishedDate && !build.error && !build.isRunning">
+			<span>
+				<span class="change-message">Finished: {{ build.finishDate | date : 'short' }}</span>
+			</span>
+		</div>
+		<div class="changes-container" ng-show="viewConfig.showFinishedDate && !build.error && build.isRunning">
+			<span>
+				<span class="change-message">Started: {{ build.startDate | date : 'short' }}</span>
+			</span>
+		</div>
+		<div class="changes-container" ng-show="viewConfig.showCommits && !build.error">
 			<span class="changes" ng-class="{ active: $index === changeIndex }" title="{{ change.name + ': ' + change.message }}" ng-repeat="change in build.changes">
 				<span class="change-name">{{ change.name }}</span>
 				<span class="change-message" ng-if="change.message">: {{ change.message }}</span>

@@ -1,0 +1,569 @@
+/* Include this file in your html if you are using the CSP mode. */
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak],
+.ng-cloak, .x-ng-cloak,
+.ng-hide {
+  display: none !important; }
+
+ng\:form {
+  display: block; }
+
+.ng-animate-block-transitions {
+  transition: 0s all !important;
+  -webkit-transition: 0s all !important; }
+
+/* show the element during a show/hide animation when the
+ * animation is ongoing, but the .ng-hide class is active */
+.ng-hide-add-active, .ng-hide-remove {
+  display: block !important; }
+
+.nav, .pagination, .carousel a {
+  cursor: pointer; }
+
+.modal {
+  display: block; }
+
+.build-list .no-services-message {
+  color: #F90;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 1em;
+  text-align: center; }
+
+.service {
+  margin-bottom: 10px; }
+  .service .service-name {
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 5px;
+    text-align: center; }
+
+.theme-dark .service .service-name {
+  color: #F90; }
+
+.theme-light .service .service-name {
+  color: #000; }
+
+.build-group .group-name {
+  clear: both;
+  display: block;
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: .5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+.build-group .group-items {
+  float: left; }
+
+.theme-dark .build-group .group-name {
+  color: #fff;
+  margin-bottom: -.3em;
+  padding-left: 3px; }
+
+.theme-light .build-group .group-name {
+  border-bottom: 1px solid #999;
+  color: #000; }
+
+.build {
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-bottom: 5px;
+  float: left;
+  width: 100%; }
+  .build a {
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+    padding: 5px 10px 5px 5px;
+    position: relative;
+    white-space: nowrap; }
+  .build a,
+  .build a:hover,
+  .build a:visited {
+    color: white;
+    display: block;
+    text-decoration: none;
+    width: 100%; }
+  .build .build-name {
+    font-weight: bold;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+  .build .tooltip {
+    white-space: normal; }
+  .build .labels {
+    margin-top: -1px;
+    max-width: 50%;
+    overflow: hidden; }
+  .build .label {
+    margin-left: .5em; }
+  .build .changes-container {
+    height: 1.5em;
+    overflow: hidden;
+    position: relative;
+    text-align: left; }
+    .build .changes-container .changes {
+      display: block;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      text-overflow: ellipsis;
+      transform: translateY(90%);
+      transition: opacity 1s, transform 2s;
+      width: 100%; }
+      .build .changes-container .changes.active {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 2s, transform 2s; }
+
+.theme-dark .build a {
+  background-color: #360; }
+
+.theme-dark .build.disabled a {
+  background-color: #888; }
+
+.theme-dark .build.disabled .build-name {
+  color: black; }
+
+.theme-dark .build.disabled.broken a {
+  background-color: #888; }
+
+.theme-dark .build.offline a,
+.theme-dark .build.offline.broken a,
+.theme-dark .build.offline.building a,
+.theme-dark .build.offline.broken.building a {
+  background-color: #888; }
+
+.theme-dark .build.offline.disabled .build-name,
+.theme-dark .build.offline.disabled.broken .build-name {
+  color: black; }
+
+.theme-dark .build.offline .build-name {
+  color: #360; }
+
+.theme-dark .build.offline.broken .build-name {
+  color: #900; }
+
+.theme-dark .build.building a {
+  background-color: #566600; }
+
+.theme-dark .build.building .label-warning {
+  color: #360; }
+
+.theme-dark .build.building .changes {
+  color: black; }
+
+.theme-dark .build.broken a {
+  background-color: #900; }
+
+.theme-dark .build.broken.building a {
+  background-color: #992300; }
+
+.theme-dark .build .label-warning {
+  background-color: #f89406; }
+
+.theme-dark .build .label-default {
+  background-color: #444; }
+
+.theme-light .build a {
+  background-color: #5cb85c; }
+
+.theme-light .build.disabled a {
+  background-color: #999; }
+
+.theme-light .build.disabled .build-name {
+  color: #fff; }
+
+.theme-light .build.disabled.broken a {
+  background-color: #999; }
+
+.theme-light .build.offline a,
+.theme-light .build.offline.broken a,
+.theme-light .build.offline.building a,
+.theme-light .build.offline.broken.building a {
+  background-color: #999; }
+
+.theme-light .build.offline.disabled .build-name,
+.theme-light .build.offline.disabled.broken .build-name {
+  color: #fff; }
+
+.theme-light .build.offline .build-name {
+  color: #fff; }
+
+.theme-light .build.offline.broken .build-name {
+  color: #fff; }
+
+.theme-light .build.broken a {
+  background-color: #d9534f; }
+
+.theme-light .build.broken .label-warning {
+  background-color: #f89406; }
+
+.theme-light .build.broken.building a {
+  background-color: #d9534f; }
+
+.theme-light .build.broken.building .build-name {
+  color: #fff; }
+
+.theme-light .build .label-warning,
+.theme-light .build.disabled .label-warning,
+.theme-light .build.offline .label-warning {
+  background-color: #d9534f; }
+
+.theme-light .build .label-default {
+  background-color: #444; }
+
+.panel-footer {
+  bottom: 0;
+  position: absolute;
+  text-align: center;
+  width: 100%; }
+  .panel-footer .form-actions, .panel-footer form {
+    margin-bottom: 0;
+    margin-top: 0; }
+
+.thumbnails {
+  padding: 10px;
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  bottom: 55px;
+  left: 0;
+  right: 0; }
+  .thumbnails .thumbnail {
+    display: inline-block;
+    height: 140px;
+    margin: 5px 0px 5px 5px;
+    text-align: center;
+    width: 150px; }
+    .thumbnails .thumbnail.active {
+      background-color: #D1D5E4; }
+    .thumbnails .thumbnail:hover {
+      text-decoration: none; }
+  .thumbnails .thumbnail-image {
+    height: 110px;
+    line-height: 130px; }
+    .thumbnails .thumbnail-image img {
+      max-width: 140px; }
+  .thumbnails .caption {
+    padding: 0;
+    font-weight: bold; }
+
+.jsoneditor {
+  bottom: 10px;
+  left: 10px;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 10px; }
+
+.jsoneditor textarea {
+  bottom: 42px;
+  position: absolute;
+  width: 100%;
+  top: 0; }
+
+.jsoneditor .editor-button {
+  bottom: 0;
+  position: absolute;
+  text-align: center;
+  width: 100%; }
+
+.jsoneditor .editor-error {
+  color: #737373;
+  padding-left: 1em;
+  position: absolute;
+  top: 8px; }
+
+.alert-saved {
+  bottom: 10px;
+  border: 1px solid green;
+  font-size: larger;
+  opacity: 0.75;
+  margin: 0;
+  padding-left: 30px;
+  position: fixed;
+  right: 10px;
+  z-index: 2000;
+  -webkit-transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .alert-saved.alert-hide {
+    opacity: 0;
+    -webkit-transition: all 500ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+    -webkit-transform: translate(200px, 0); }
+
+/*************************************
+* AngularJS + CSS3 Radio Buttons v.01 (modified)
+* Author: iamtyce.com
+* Source: http://bit.ly/Nh4U6g
+*************************************/
+.toggle-bg {
+  background: #d9534f;
+  border-radius: 2em;
+  border: 0.12em solid #d43f3a;
+  display: block;
+  /* ...So that we can set a height and width */
+  float: left;
+  /* ...So that it doesn't take up the full width of the page */
+  height: 1.9em;
+  /* You can change this later if you want */
+  position: relative;
+  /* Required to allow the switch to move around */
+  width: 3.2em;
+  /* This can be changed later as well */
+  -moz-transition-duration: 0.2s;
+  -o-transition-duration: 0.2s;
+  -webkit-transition-duration: 0.2s;
+  transition-duration: 0.2s;
+  position: relative; }
+
+.toggle-bg:hover {
+  border-color: #d9d9d9; }
+
+.toggle-bg.on {
+  background: #5cb85c;
+  border-color: #4cae4c; }
+
+.toggle-bg input {
+  margin: 0;
+  padding: 0;
+  width: 4.8em;
+  height: 100%;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  cursor: pointer;
+  z-index: 2;
+  /* We want the input to be over the span.switch, which we'll give a z-index of 1 */
+  /*IE*/
+  zoom: 1;
+  filter: alpha(opacity=0);
+  /* initial toggle position */
+  /* final relative toggle position */ }
+
+.toggle-bg input:checked ~ .switch {
+  left: 0; }
+
+.toggle-bg input ~ :checked ~ .switch {
+  left: 1.18em; }
+
+.toggle-bg input:checked {
+  z-index: 0; }
+
+.switch {
+  background: white;
+  border-radius: 2em;
+  border: 0.1em solid #d9d9d9;
+  display: block;
+  float: left;
+  height: 1.8em;
+  width: 1.8em;
+  left: -.1em;
+  position: relative;
+  -moz-transition-duration: 0.2s;
+  -o-transition-duration: 0.2s;
+  -webkit-transition-duration: 0.2s;
+  transition-duration: 0.2s;
+  z-index: 1;
+  /* Remember, it must be below the invisible inputs */ }
+
+.toggle-alternate {
+  clear: both;
+  width: 4.7em; }
+
+.toggle-alternate input {
+  width: 6.24em; }
+
+.toggle-alternate input ~ :checked ~ .switch {
+  left: 2.75em; }
+
+.toggle-alternate label {
+  font-weight: 300;
+  font-size: .9em;
+  text-transform: uppercase;
+  position: absolute;
+  top: 0.40em; }
+
+.toggle-bg label.on {
+  left: .75em;
+  color: white;
+  text-shadow: 0 0.1em 0 #00dc61; }
+
+.toggle-bg label.off {
+  right: .55em;
+  color: white;
+  font-weight: bold; }
+
+.scrollable {
+  overflow: auto;
+  height: 100%;
+  width: 100%; }
+
+.sidebar-nav {
+  border-right: 1px solid #BBB;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  text-align: center;
+  top: 50px;
+  width: 240px; }
+  .sidebar-nav .scrollable {
+    padding: 10px;
+    box-sizing: border-box; }
+  .sidebar-nav .sortable-placeholder {
+    background-color: #FFE;
+    height: 70px;
+    width: 100%; }
+  .sidebar-nav .handle {
+    display: none;
+    left: 3px;
+    position: absolute;
+    top: 23px; }
+  .sidebar-nav .nav-pills li a {
+    height: 70px; }
+  .sidebar-nav .nav-pills li img.pill-icon {
+    margin-top: 0;
+    margin-bottom: 0;
+    float: left; }
+  .sidebar-nav .nav-pills li i.pill-icon {
+    margin-top: 6px;
+    float: left; }
+  .sidebar-nav .nav-pills li .pill-name {
+    padding-top: 18px;
+    float: right;
+    text-align: right;
+    width: 125px; }
+  .sidebar-nav .nav-pills li.muted span {
+    color: #999; }
+  .sidebar-nav .nav-pills .active.muted span {
+    color: #CCC; }
+  .sidebar-nav .nav-pill:hover .handle {
+    display: inline; }
+  .sidebar-nav .actions {
+    font-weight: bold; }
+
+.navbar {
+  padding-right: 15px; }
+  .navbar .on-off-switch {
+    margin-top: 10px; }
+  .navbar .navbar-brand {
+    text-align: center;
+    width: 240px; }
+    .navbar .navbar-brand > img {
+      display: inline; }
+    .navbar .navbar-brand .logo {
+      vertical-align: top;
+      width: 20px; }
+    .navbar .navbar-brand .version {
+      display: block;
+      font-size: 0.7em;
+      padding-top: -3px; }
+
+.modal-header {
+  background-color: #333333; }
+  .modal-header span, .modal-header h4 {
+    color: #ffffff; }
+
+.settings-form fieldset {
+  padding-left: 10px;
+  padding-right: 10px; }
+  .settings-form fieldset .number {
+    width: 50%; }
+
+.filter-query {
+  box-sizing: border-box;
+  height: 30px;
+  margin: 0 20px 5px 0;
+  position: relative;
+  width: 100%; }
+  .filter-query input {
+    box-sizing: border-box;
+    height: 30px;
+    left: 0;
+    position: absolute;
+    width: 100%; }
+  .filter-query i {
+    cursor: pointer;
+    position: absolute;
+    right: 3px;
+    top: 2px; }
+
+.project-selection-container .panel-group {
+  margin-bottom: 10px; }
+
+.project-selection-container .filter-count {
+  float: right; }
+
+.project-selection-container .check-all {
+  margin-right: 5px; }
+
+.project-selection-container .panel-title {
+  font-weight: bold; }
+
+.project-selection-container .panel-body {
+  padding: 0 10px 0 35px; }
+
+.project-selection-container .project-name {
+  font-weight: normal; }
+
+.ui-match {
+  font-weight: bold; }
+
+.selected-projects {
+  margin: 10px; }
+  .selected-projects .sortable-placeholder {
+    background-color: #FFE;
+    height: 41px; }
+  .selected-projects .handle {
+    display: none;
+    left: 3px;
+    position: absolute;
+    top: 10px; }
+  .selected-projects .list-group-item:hover {
+    background-color: transparent; }
+    .selected-projects .list-group-item:hover .handle {
+      display: inline; }
+
+.view-selection {
+  text-align: right; }
+
+html, body {
+  height: 100%; }
+
+body {
+  padding-top: 55px; }
+
+a {
+  cursor: pointer; }
+
+.content-container {
+  bottom: 0;
+  left: 241px;
+  position: absolute;
+  right: 0;
+  top: 60px; }
+  .content-container .alert-danger {
+    clear: both;
+    margin: 10px; }
+
+.settings-container {
+  box-sizing: border-box;
+  float: left;
+  width: 50%; }
+
+.settings-buttons {
+  text-align: center; }
+
+.project-selection-container {
+  box-sizing: border-box;
+  float: left;
+  padding: 0 10px;
+  width: 50%; }
+
+.theme-dark {
+  background-color: #000; }
+
+.theme-light {
+  background-color: #fff; }

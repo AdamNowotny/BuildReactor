@@ -21,7 +21,7 @@ define([
 				};
 			}
 			var isRunning = !!buildListResponse.build[0].running;
-			var lastCompleted = buildListResponse.build[isRunning ? 1 : 0];
+			var lastCompleted = buildListResponse.build[0];
 			return buildDetailsRequest(self, lastCompleted.href).selectMany(function (buildDetailsResponse) {
 				var state = createState(self.id, buildDetailsResponse);
 				var result = Rx.Observable.returnValue(state);
@@ -44,11 +44,16 @@ define([
 			id: id,
 			name: buildResponse.buildType.name,
 			group: buildResponse.buildType.projectName,
+			statusText: buildResponse.statusText,
+			startDate: buildResponse.startDate,
+			finishDate: buildResponse.finishDate,
 			webUrl: buildResponse.webUrl,
 			isBroken: buildResponse.status in { 'FAILURE': 1, 'ERROR': 1 },
 			tags: [],
 			changes: []
 		};
+		console.log(buildResponse);
+
 		if (!(buildResponse.status in { 'SUCCESS': 1, 'FAILURE': 1, 'ERROR': 1 })) {
 			state.tags.push({ name : 'Unknown', description : 'Status [' + buildResponse.status + '] is unknown'});
 			delete state.isBroken;

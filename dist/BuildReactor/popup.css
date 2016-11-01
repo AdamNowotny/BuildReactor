@@ -1,0 +1,241 @@
+/* Include this file in your html if you are using the CSP mode. */
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak],
+.ng-cloak, .x-ng-cloak,
+.ng-hide {
+  display: none !important; }
+
+ng\:form {
+  display: block; }
+
+.ng-animate-block-transitions {
+  transition: 0s all !important;
+  -webkit-transition: 0s all !important; }
+
+/* show the element during a show/hide animation when the
+ * animation is ongoing, but the .ng-hide class is active */
+.ng-hide-add-active, .ng-hide-remove {
+  display: block !important; }
+
+.nav, .pagination, .carousel a {
+  cursor: pointer; }
+
+.modal {
+  display: block; }
+
+.build-list .no-services-message {
+  color: #F90;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 1em;
+  text-align: center; }
+
+.service {
+  margin-bottom: 10px; }
+  .service .service-name {
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 5px;
+    text-align: center; }
+
+.theme-dark .service .service-name {
+  color: #F90; }
+
+.theme-light .service .service-name {
+  color: #000; }
+
+.build-group .group-name {
+  clear: both;
+  display: block;
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: .5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+.build-group .group-items {
+  float: left; }
+
+.theme-dark .build-group .group-name {
+  color: #fff;
+  margin-bottom: -.3em;
+  padding-left: 3px; }
+
+.theme-light .build-group .group-name {
+  border-bottom: 1px solid #999;
+  color: #000; }
+
+.build {
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-bottom: 5px;
+  float: left;
+  width: 100%; }
+  .build a {
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+    padding: 5px 10px 5px 5px;
+    position: relative;
+    white-space: nowrap; }
+  .build a,
+  .build a:hover,
+  .build a:visited {
+    color: white;
+    display: block;
+    text-decoration: none;
+    width: 100%; }
+  .build .build-name {
+    font-weight: bold;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+  .build .tooltip {
+    white-space: normal; }
+  .build .labels {
+    margin-top: -1px;
+    max-width: 50%;
+    overflow: hidden; }
+  .build .label {
+    margin-left: .5em; }
+  .build .changes-container {
+    height: 1.5em;
+    overflow: hidden;
+    position: relative;
+    text-align: left; }
+    .build .changes-container .changes {
+      display: block;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      text-overflow: ellipsis;
+      transform: translateY(90%);
+      transition: opacity 1s, transform 2s;
+      width: 100%; }
+      .build .changes-container .changes.active {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 2s, transform 2s; }
+
+.theme-dark .build a {
+  background-color: #360; }
+
+.theme-dark .build.disabled a {
+  background-color: #888; }
+
+.theme-dark .build.disabled .build-name {
+  color: black; }
+
+.theme-dark .build.disabled.broken a {
+  background-color: #888; }
+
+.theme-dark .build.offline a,
+.theme-dark .build.offline.broken a,
+.theme-dark .build.offline.building a,
+.theme-dark .build.offline.broken.building a {
+  background-color: #888; }
+
+.theme-dark .build.offline.disabled .build-name,
+.theme-dark .build.offline.disabled.broken .build-name {
+  color: black; }
+
+.theme-dark .build.offline .build-name {
+  color: #360; }
+
+.theme-dark .build.offline.broken .build-name {
+  color: #900; }
+
+.theme-dark .build.building a {
+  background-color: #566600; }
+
+.theme-dark .build.building .label-warning {
+  color: #360; }
+
+.theme-dark .build.building .changes {
+  color: black; }
+
+.theme-dark .build.broken a {
+  background-color: #900; }
+
+.theme-dark .build.broken.building a {
+  background-color: #992300; }
+
+.theme-dark .build .label-warning {
+  background-color: #f89406; }
+
+.theme-dark .build .label-default {
+  background-color: #444; }
+
+.theme-light .build a {
+  background-color: #5cb85c; }
+
+.theme-light .build.disabled a {
+  background-color: #999; }
+
+.theme-light .build.disabled .build-name {
+  color: #fff; }
+
+.theme-light .build.disabled.broken a {
+  background-color: #999; }
+
+.theme-light .build.offline a,
+.theme-light .build.offline.broken a,
+.theme-light .build.offline.building a,
+.theme-light .build.offline.broken.building a {
+  background-color: #999; }
+
+.theme-light .build.offline.disabled .build-name,
+.theme-light .build.offline.disabled.broken .build-name {
+  color: #fff; }
+
+.theme-light .build.offline .build-name {
+  color: #fff; }
+
+.theme-light .build.offline.broken .build-name {
+  color: #fff; }
+
+.theme-light .build.broken a {
+  background-color: #d9534f; }
+
+.theme-light .build.broken .label-warning {
+  background-color: #f89406; }
+
+.theme-light .build.broken.building a {
+  background-color: #d9534f; }
+
+.theme-light .build.broken.building .build-name {
+  color: #fff; }
+
+.theme-light .build .label-warning,
+.theme-light .build.disabled .label-warning,
+.theme-light .build.offline .label-warning {
+  background-color: #d9534f; }
+
+.theme-light .build .label-default {
+  background-color: #444; }
+
+body {
+  margin-left: .3em;
+  margin-right: .3em;
+  margin-top: 45px;
+  min-width: 350px; }
+
+.label .error-message {
+  display: none; }
+
+.navbar {
+  padding-right: 1em;
+  min-height: 40px; }
+
+.navbar-right li {
+  float: right; }
+
+.navbar-nav > li > a {
+  padding-top: 5px;
+  padding-bottom: 0; }
+
+.theme-dark {
+  background-color: #000; }
+
+.theme-light {
+  background-color: #fff; }
