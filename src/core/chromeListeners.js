@@ -7,7 +7,7 @@ import viewConfiguration from 'core/config/viewConfiguration';
 
 const onMessage = (request, sender, sendResponse) => {
 		try {
-			onMessageHandler(request, sender, sendResponse);
+			return onMessageHandler(request, sender, sendResponse);
 		} catch (ex) {
 			logger.messages.onNext({
 				name: 'error',
@@ -16,6 +16,7 @@ const onMessage = (request, sender, sendResponse) => {
 				stack: ex.stack
 			});
 		}
+		return false;
 };
 
 function onMessageHandler(request, sender, sendResponse) {
