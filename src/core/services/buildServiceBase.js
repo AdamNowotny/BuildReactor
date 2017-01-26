@@ -3,8 +3,8 @@
 define([
 	'rx',
 	'mout/object/mixIn',
-	'rx.time',
-	'rx.binding'
+	'rx/dist/rx.time',
+	'rx/dist/rx.binding'
 ], function(Rx, mixIn) {
 	'use strict';
 
@@ -55,15 +55,15 @@ define([
 			.select(function getBuildById(buildId) {
 				return new self.Build(buildId, self.settings);
 			}).selectMany(function updateBuild(build) {
-				return build.update().catchException(function(ex) {
-						return Rx.Observable.returnValue({
+				return build.update().catch(function(ex) {
+						return Rx.Observable.return({
 							id: build.id,
 							error: createError(ex)
 						});
 					});
 			}).select(function(state) {
 				return self.mixInMissingState(state, self.serviceInfo);
-			}).doAction(function(state) {
+			}).do(function(state) {
 				return self.processBuildUpdate(state);
 			});
 	};
@@ -155,7 +155,7 @@ define([
 		var updates = new Rx.Subject();
 		var initialize = updates
 			.take(1)
-			.doAction(function(states) {
+			.do(function(states) {
 				self.events.onNext({
 					eventName: 'serviceStarted',
 					source: self.settings.name,
@@ -166,14 +166,21 @@ define([
 			.selectMany(function() {
 				return self.updateAll().toArray();
 			})
-			.catchException(function(ex) {
+			.do((state) => {
+				self.events.onNext({
+					eventName: 'serviceUpdated',
+					source: self.settings.name,
+					details: state
+				});
+			})
+			.catch(function(ex) {
 				console.error('*** Pooling subscription error ***', ex, ex.message);
 				self.events.onNext({
 					eventName: 'UnknownError',
 					details: { message: ex.message, error: ex },
 					source: self.settings.name
 				});
-				return Rx.Observable.throwException(ex);
+				return Rx.Observable.throw(ex);
 			})
 			.subscribe(updates);
 		return initialize;

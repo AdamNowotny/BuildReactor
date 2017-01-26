@@ -29,6 +29,8 @@
 	],
 	"web_accessible_resources": [
 		"core/services/*/*.png",
-		"core/services/*/*.svg"
+		"core/services/*/*.svg",
+		"services/*/*.png",
+		"services/*/*.svg"
 	]
 }

@@ -1,8 +1,8 @@
-/* eslint no-console: 0 */
+import events from 'core/events';
 
 define([
 	'rx',
-	'rx.binding'
+	'rx/dist/rx.binding'
 ], function(Rx) {
 
 	'use strict';
@@ -24,33 +24,13 @@ define([
 
 	var services = [];
 	var eventsSubscriptions = [];
-	var events = new Rx.Subject();
 
-	var settingsSubject = new Rx.ReplaySubject(1);
 	var servicesSubject = new Rx.ReplaySubject(1);
 	var activeProjectsSubject = new Rx.ReplaySubject(1);
 	var activeProjectsSubscription;
 
-	settingsSubject.subscribe(function(settingsList) {
-		events.onNext({
-			eventName: 'servicesInitializing',
-			source: 'serviceController',
-			details: settingsList
-		});
-		removeAll();
-		startServices(settingsList).subscribe(function() {
-			events.onNext({
-				eventName: 'servicesInitialized',
-				source: 'serviceController',
-				details: settingsList
-			});
-		});
-	});
-
 	function loadServices(settingsList) {
-		return Rx
-			.Observable
-			.fromArray(settingsList)
+		return Rx.Observable.fromArray(settingsList)
 			.where(function(settings) {
 				return settings.disabled !== true;
 			})
@@ -58,15 +38,17 @@ define([
 				const Service = types[settings.baseUrl];
 				return new Service(settings);
 			})
-			.doAction(function(service) {
+			.do(function(service) {
 				services.push(service);
-				eventsSubscriptions.push(service.events.subscribe(events));
+				eventsSubscriptions.push(service.events.subscribe((event) => {
+					events.push(event);
+				}));
 			})
 			.toArray();
 	}
 
 	function startServices(settingsList) {
-		return loadServices(settingsList).doAction(function(services) {
+		return loadServices(settingsList).do(function(services) {
 				servicesSubject.onNext(services);
 			}).selectMany(function(services) {
 				return Rx.Observable.fromArray(services)
@@ -103,24 +85,30 @@ define([
 				return states;
 			}).subscribe(activeProjectsSubject);
 	});
-	var configChangesSubscription;
 
-	var start = function(configChanges) {
-		configChanges.subscribe(function(allConfig) {
-			settingsSubject.onNext(allConfig);
-		}, function(e) {
-			console.log('error', e);
-		}, function(e) {
-			console.log('completed', e);
+	const start = function(configChanges) {
+		configChanges.subscribe((settingsList) => {
+			events.push({
+				eventName: 'servicesInitializing',
+				source: 'serviceController',
+				details: settingsList
+			});
+			removeAll();
+			startServices(settingsList).subscribe(() => {
+				events.push({
+					eventName: 'servicesInitialized',
+					source: 'serviceController',
+					details: settingsList
+				});
+			});
 		});
 	};
 
 	return {
-		events: events,
 		activeProjects: activeProjectsSubject,
-		start: start,
-		getAllTypes: getAllTypes,
-		registerType: registerType,
-		clear: clear
+		start,
+		getAllTypes,
+		registerType,
+		clear
 	};
 });

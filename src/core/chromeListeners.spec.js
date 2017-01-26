@@ -1,11 +1,14 @@
 import Rx from 'rx';
 import chromeApi from 'common/chromeApi';
 import chromeListeners from 'core/chromeListeners';
+import events from 'core/events';
 import serviceConfiguration from 'core/config/serviceConfiguration';
 import serviceController from 'core/services/serviceController';
 import viewConfiguration from 'core/config/viewConfiguration';
 
 describe('chromeListeners', function() {
+
+	const eventsSubject = new Rx.Subject();
 
 	var messageHandler, connectHandler;
 	var port;
@@ -17,6 +20,7 @@ describe('chromeListeners', function() {
 		spyOn(chromeApi, 'addConnectListener').and.callFake(function(connectListener) {
 			connectHandler = connectListener;
 		});
+		spyOn(events, 'getByName').and.callFake(() => eventsSubject);
 		spyOn(serviceConfiguration, 'setOrder');
 		spyOn(serviceConfiguration, 'setBuildOrder');
 		spyOn(serviceConfiguration, 'enableService');
@@ -172,7 +176,7 @@ describe('chromeListeners', function() {
 			var sendResponse = function(response) {
 				actualResponse = response;
 			};
-			mockAvailableBuilds.and.returnValue(Rx.Observable.returnValue(serviceResponse));
+			mockAvailableBuilds.and.returnValue(Rx.Observable.return(serviceResponse));
 
 			const returnValue = messageHandler(request, null, sendResponse);
 
@@ -186,7 +190,7 @@ describe('chromeListeners', function() {
 			var sendResponse = function(response) {
 				actualResponse = response;
 			};
-			mockAvailableBuilds.and.returnValue(Rx.Observable.throwException(serviceError));
+			mockAvailableBuilds.and.returnValue(Rx.Observable.throw(serviceError));
 
 			const returnValue = messageHandler(request, null, sendResponse);
 
@@ -196,26 +200,26 @@ describe('chromeListeners', function() {
 
 	});
 
-	describe('activeProjects', function() {
+	describe('activeProjects', () => {
 
-		it('should subscribe to state sequence on connect', function() {
+		it('should subscribe to state sequence on connect', () => {
 			port = openPort('state');
 			connectHandler(port);
 
-			var projects = [{ name: 'service 1', items: [] }];
-			serviceController.activeProjects.onNext(projects);
+			const projects = [{ name: 'service 1', items: [] }];
+			eventsSubject.onNext({ details: projects });
 
 			expect(port.postMessage).toHaveBeenCalledWith(projects);
 		});
 
-		it('should unsubscribe from state changes on disconnect', function() {
+		it('should unsubscribe from state changes on disconnect', () => {
 			port = openPort('state');
 			connectHandler(port);
 			port.disconnectHandler(port);
 
-			serviceController.activeProjects.onNext('test');
-			serviceController.activeProjects.onNext('test');
-			serviceController.activeProjects.onNext('test');
+			eventsSubject.onNext({ details: [] });
+			eventsSubject.onNext({ details: [] });
+			eventsSubject.onNext({ details: [] });
 
 			expect(port.postMessage.calls.count()).toBe(1);
 		});

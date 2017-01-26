@@ -2,7 +2,7 @@ define([
 	'rx',
 	'core/config/localStore',
 	'core/config/viewConfigUpdater',
-	'rx.binding'
+	'rx/dist/rx.binding'
 ], function(Rx, configStore, configUpdater) {
 
 	'use strict';

@@ -7,7 +7,7 @@ define([
 		'raw!core/services/bamboo/projects_page2.fixture.json',
 		'raw!core/services/bamboo/projects_plans_page2.fixture.json',
 		'jquery',
-		'rx.aggregates'
+		'rx/dist/rx.aggregates'
 	],
 	function(BuildService, BambooPlan, Rx, request, projectsFixture, projects2Fixture, projects3Fixture, $) {
 
@@ -52,13 +52,13 @@ define([
 						switch (options.url + '?' + $.param(options.data)) {
 						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=0&os_authType=basic':
 						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=0':
-							return Rx.Observable.returnValue(projectsJson);
+							return Rx.Observable.return(projectsJson);
 						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=1&os_authType=basic':
 						case 'http://example.com/rest/api/latest/project?expand=projects.project.plans.plan&start-index=1':
-							return Rx.Observable.returnValue(projectsJson2);
+							return Rx.Observable.return(projectsJson2);
 						case 'http://example.com/rest/api/latest/project/PROJECT1?expand=plans.plan&start-index=3&os_authType=basic':
 						case 'http://example.com/rest/api/latest/project/PROJECT1?expand=plans.plan&start-index=3':
-							return Rx.Observable.returnValue(projectsJson3);
+							return Rx.Observable.return(projectsJson3);
 						default:
 							throw new Error('Unknown URL: ' + options.url);
 						}

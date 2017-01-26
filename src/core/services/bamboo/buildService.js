@@ -1,12 +1,13 @@
+import joinUrl from 'common/joinUrl';
+
 define([
 	'core/services/buildServiceBase',
 	'core/services/request',
 	'core/services/bamboo/bambooPlan',
 	'mout/object/mixIn',
-	'common/joinUrl',
 	'common/sortBy',
 	'rx'
-], function(BuildServiceBase, request, BambooPlan, mixIn, joinUrl, sortBy, Rx) {
+], function(BuildServiceBase, request, BambooPlan, mixIn, sortBy, Rx) {
 
 	'use strict';
 
@@ -89,14 +90,14 @@ define([
 
 	var allProjects = function(self) {
 		return projectsFromIndex(self, 0).selectMany(function(response) {
-			var result = Rx.Observable.returnValue(response);
+			var result = Rx.Observable.return(response);
 			var pageSize = response.projects['max-result'];
 			var totalSize = response.projects['size'];
 			var pageIndexes = getPageIndexes(pageSize, totalSize);
 			var moreProjects = Rx.Observable.fromArray(pageIndexes).selectMany(function(index) {
 				return projectsFromIndex(self, index);
 			});
-			return Rx.Observable.returnValue(response).concat(moreProjects);
+			return Rx.Observable.return(response).concat(moreProjects);
 		}).selectMany(function(projectResponse) {
 			return Rx.Observable.fromArray(projectResponse.projects.project);
 		});

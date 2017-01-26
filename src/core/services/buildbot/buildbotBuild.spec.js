@@ -25,9 +25,9 @@ define([
 				callCount++;
 				switch (callCount) {
 				case 1:
-					return Rx.Observable.returnValue(builderJson);
+					return Rx.Observable.return(builderJson);
 				case 2:
-					return Rx.Observable.returnValue(lastCompletedBuildJson);
+					return Rx.Observable.return(lastCompletedBuildJson);
 				}
 				return null;
 			});
@@ -66,7 +66,7 @@ define([
 
 			expect(request.json).toHaveBeenCalled();
 		});
-		
+
 		it('should not set isBroken on successful build', function() {
 			lastCompletedBuildJson.text = [];
 

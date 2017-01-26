@@ -1,8 +1,9 @@
+import joinUrl from 'common/joinUrl';
+
 define([
 	'core/services/request',
-	'rx',
-	'common/joinUrl'
-], function(request, Rx, joinUrl) {
+	'rx'
+], function(request, Rx) {
 
 	'use strict';
 

@@ -1,23 +1,24 @@
-define([
-	'core/services/serviceController',
-	'rx'
-], function(serviceController, Rx) {
-	'use strict';
+import Rx from 'rx';
 
-	var getByName = function(name) {
-		return serviceController.events.where(function(event) {
-			return event.eventName === name;
-		}).select(function(event) {
-			return event;
-		});
-	};
+let events = new Rx.Subject();
 
-	var publish = function(event) {
-		serviceController.events.onNext(event);
-	};
+const getByName = function(name) {
+	return events.where((event) => event.eventName === name);
+};
 
-	return {
-		getByName: getByName,
-		publish: publish
-	};
-});
+const push = function(event) {
+	events.onNext(event);
+};
+
+const reset = () => {
+	events.onCompleted();
+	events.dispose();
+	events = new Rx.Subject();
+};
+
+export default {
+	all: events,
+	getByName,
+	push,
+	reset
+};

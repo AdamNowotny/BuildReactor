@@ -1,7 +1,11 @@
+/* eslint no-console: 0 */
 import 'jquery';
 import 'html5sortable/src/html.sortable.src';
 import 'angular';
 import 'angular-mocks';
+import Rx from 'rx';
+
+Rx.config.longStackSupport = true;
 
 window.chrome = {
 	browserAction: {
@@ -44,7 +48,6 @@ window.chrome = {
 		remove: function() {}
 	}
 };
-
 window.Notification = function() {
 	'use strict';
 

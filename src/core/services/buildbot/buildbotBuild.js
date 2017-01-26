@@ -1,9 +1,10 @@
+import joinUrl from 'common/joinUrl';
+
 define([
 	'core/services/request',
 	'rx',
-	'common/joinUrl',
 	'mout/array/contains'
-], function(request, Rx, joinUrl, contains) {
+], function(request, Rx, contains) {
 	'use strict';
 
 	var BuildBotBuild = function(id, settings) {

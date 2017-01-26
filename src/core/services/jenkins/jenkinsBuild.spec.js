@@ -28,9 +28,9 @@ define([
 				callCount++;
 				switch (callCount) {
 				case 1:
-					return Rx.Observable.returnValue(jobJson);
+					return Rx.Observable.return(jobJson);
 				case 2:
-					return Rx.Observable.returnValue(lastCompletedBuildJson);
+					return Rx.Observable.return(lastCompletedBuildJson);
 				}
 				return null;
 			});
@@ -179,7 +179,7 @@ define([
 
 		it('should set changes for changeSets', function() {
 			lastCompletedBuildJson = workflowFixtureJson;
-			
+
 			build.update().subscribe(function(state) {
 				expect(state.changes[0]).toEqual({ name : '<fullName1>', message : '<msg1>' });
 				expect(state.changes[1]).toEqual({ name : '<fullName2>', message : '<msg2>' });
@@ -194,7 +194,7 @@ define([
 		it('should set changes to empty array', function() {
 			delete lastCompletedBuildJson.changeSet;
 			delete lastCompletedBuildJson.changeSets;
-			
+
 			build.update().subscribe(function(state) {
 				expect(state.changes).toEqual([]);
 			});

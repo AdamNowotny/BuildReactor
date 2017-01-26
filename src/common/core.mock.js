@@ -35,7 +35,7 @@ define([
 		availableServices: availableServices,
 		configurations: configurations,
 		views: views,
-		activeProjects: Rx.Observable.returnValue(activeProjectsResponse),
+		activeProjects: Rx.Observable.return(activeProjectsResponse),
 		availableProjects: availableProjects,
 		enableService: log,
 		disableService: log,

@@ -28,21 +28,21 @@ define([
 			spyOn(request, 'json').and.callFake(function(options) {
 				switch (options.url) {
 				case 'http://example.com/guestAuth/app/rest/changes?build=id:63887':
-					return Rx.Observable.returnValue(changesJson);
+					return Rx.Observable.return(changesJson);
 				case 'http://example.com/guestAuth/app/rest/changes/id:68396':
-					return Rx.Observable.returnValue(changeJson);
+					return Rx.Observable.return(changeJson);
 				case 'http://example.com/guestAuth/app/rest/changes/id:43196':
-					return Rx.Observable.returnValue(changeJson);
+					return Rx.Observable.return(changeJson);
 				case 'http://example.com/guestAuth/app/rest/builds?locator=buildType:build_id,running:any,branch:(refs/heads/master)':
-					return Rx.Observable.returnValue(buildListRunningJson);
+					return Rx.Observable.return(buildListRunningJson);
 				case 'http://example.com/guestAuth/app/rest/builds?locator=buildType:build_id,running:any':
-					return Rx.Observable.returnValue(buildListJson);
+					return Rx.Observable.return(buildListJson);
 				case 'http://example.com/httpAuth/app/rest/builds?locator=buildType:build_id,running:any':
-					return Rx.Observable.returnValue(buildListJson);
+					return Rx.Observable.return(buildListJson);
 				case 'http://example.com/guestAuth/app/rest/builds/id:18':
-					return Rx.Observable.returnValue(buildJson);
+					return Rx.Observable.return(buildJson);
 				case 'http://example.com/httpAuth/app/rest/builds/id:18':
-					return Rx.Observable.returnValue(buildJson);
+					return Rx.Observable.return(buildJson);
 				default:
 					throw 'Unknown URL ' + options.url;
 				}

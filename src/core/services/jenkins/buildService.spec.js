@@ -1,18 +1,20 @@
+import Rx from 'rx/dist/rx.testing';
+
 define([
 	'core/services/jenkins/buildService',
 	'core/services/jenkins/jenkinsBuild',
 	'core/services/request',
-	'rx',
 	'raw!core/services/jenkins/availableBuilds.fixture.json',
 	'raw!core/services/jenkins/availableBuilds.primaryView.fixture.json',
 	'raw!core/services/jenkins/availableBuilds.incorrectUrl.fixture.json'
-], function(BuildService, JenkinsBuild, request, Rx, availableBuildsFixture, viewFixture, availableBuildsIncorrectFixture) {
+], function(BuildService, JenkinsBuild, request, availableBuildsFixture, viewFixture, availableBuildsIncorrectFixture) {
 
 	'use strict';
 
 	describe('core/services/jenkins/buildService', function() {
 
 		var onNext = Rx.ReactiveTest.onNext;
+		var onCompleted = Rx.ReactiveTest.onCompleted;
 		var settings;
 		var service;
 
@@ -51,9 +53,9 @@ define([
 			function setupRequestSpy(availableBuildsJson, viewJson) {
 				request.json.and.callFake(function(options) {
 					if (options.url === 'http://ci.jenkins-ci.org/api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]') {
-						return Rx.Observable.returnValue(availableBuildsJson);
+						return Rx.Observable.return(availableBuildsJson);
 					} else if (options.url.indexOf('/view/') > -1) {
-						return Rx.Observable.returnValue(viewJson);
+						return Rx.Observable.return(viewJson);
 					}
 					throw 'Unknown url: ' + options.url;
 				});
@@ -96,10 +98,10 @@ define([
 			it('should increase timeout for view details', function() {
 				request.json.and.callFake(function(options) {
 					if (options.url === 'http://ci.jenkins-ci.org/api/json?tree=jobs[name,buildable],primaryView[name],views[name,url]') {
-						return Rx.Observable.returnValue(availableBuildsJson);
+						return Rx.Observable.return(availableBuildsJson);
 					} else if (options.url.indexOf('iew/') > -1) {
 						expect(options.timeout).toBe(90000);
-						return Rx.Observable.returnValue(viewJson);
+						return Rx.Observable.return(viewJson);
 					}
 					throw 'Unknown url: ' + options.url;
 				});
@@ -108,13 +110,12 @@ define([
 
 				expect(request.json).toHaveBeenCalled();
 			});
-			
+
 			it('should return projects', function() {
-				var result = scheduler.startWithCreate(function() {
+				var result = scheduler.startScheduler(function() {
 					return service.availableBuilds();
 				});
 
-				expect(result.messages).toHaveElements(onNext(200));
 				const messageValue = result.messages[0].value.value;
 				expect(messageValue.items.length).toBe(77);
 				expect(messageValue.items[0].id).toBe('config-provider-model');
@@ -124,11 +125,10 @@ define([
 			});
 
 			it('should return views', function() {
-				var result = scheduler.startWithCreate(function() {
+				var result = scheduler.startScheduler(function() {
 					return service.availableBuilds();
 				});
-		
-				expect(result.messages).toHaveElements(onNext(200));
+
 				const messageValue = result.messages[0].value.value;
 				expect(messageValue.primaryView).toBe('All Failed');
 				expect(messageValue.views.length).toBe(8);
@@ -141,11 +141,10 @@ define([
 				var availableBuildsJson = JSON.parse(availableBuildsIncorrectFixture);
 				setupRequestSpy(availableBuildsJson, viewJson);
 
-				var result = scheduler.startWithCreate(function() {
+				var result = scheduler.startScheduler(function() {
 					return service.availableBuilds();
 				});
-		
-				expect(result.messages).toHaveElements(onNext(200));
+
 				const messageValue = result.messages[0].value.value;
 				expect(messageValue.primaryView).toBe('All Failed');
 				expect(messageValue.views.length).toBe(8);

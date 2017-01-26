@@ -79,5 +79,5 @@ define(['rx'], function(Rx) {
 		}
 	];
 
-	return Rx.Observable.returnValue(settings);
+	return Rx.Observable.return(settings);
 });

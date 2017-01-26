@@ -23,7 +23,7 @@ module.exports = {
   },
 
   resolve: {
-    modulesDirectories: ["node_modules", "node_modules/rx/dist"],
+    modulesDirectories: ["node_modules"],
     extensions: ['', '.js'],
     root: path.join(__dirname, "src")
   },
@@ -60,7 +60,8 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: '../manifest.json' },
       { from: '../img', to: 'img' },
-      { from: 'core/services/*/*.{png,svg}' }
+      { from: 'core/services/*/*.{png,svg}' },
+      { from: 'services/*/*.{png,svg}' }
     ]),
     new ExtractTextPlugin("[name].css")
   ],

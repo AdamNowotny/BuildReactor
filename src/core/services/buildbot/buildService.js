@@ -1,10 +1,11 @@
+import joinUrl from 'common/joinUrl';
+
 define([
 	'core/services/buildServiceBase',
 	'core/services/request',
 	'core/services/buildbot/buildbotBuild',
-	'mout/object/mixIn',
-	'common/joinUrl'
-], function(BuildServiceBase, request, BuildBotBuild, mixIn, joinUrl) {
+	'mout/object/mixIn'
+], function(BuildServiceBase, request, BuildBotBuild, mixIn) {
 
 	'use strict';
 

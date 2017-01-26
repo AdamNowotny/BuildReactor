@@ -1,8 +1,9 @@
+import joinUrl from 'common/joinUrl';
+
 define([
 	'core/services/request',
-	'rx',
-	'common/joinUrl'
-], function(request, Rx, joinUrl) {
+	'rx'
+], function(request, Rx) {
 	'use strict';
 
 	var TeamcityBuild = function(id, settings) {
@@ -24,7 +25,7 @@ define([
 			var lastCompleted = buildListResponse.build[isRunning ? 1 : 0];
 			return buildDetailsRequest(self, lastCompleted.href).selectMany(function(buildDetailsResponse) {
 				var state = createState(self.id, buildDetailsResponse);
-				var result = Rx.Observable.returnValue(state);
+				var result = Rx.Observable.return(state);
 				return result.zip(changesRequest(self, buildDetailsResponse.changes.href), function(state, changes) {
 					state.changes = changes;
 					return state;

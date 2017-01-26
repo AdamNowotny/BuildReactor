@@ -18,13 +18,13 @@
         # "2" - fails build on rule failure
         # "1" - warning (should still be shown in your text editor)
         # "0" - ignore rule
-        
+
         # some rules allow configuration in which case you'd use [2, param] form
         # where the "param" are options from above url
 
         # eslint:recommended overrides, defaults at
         # https://github.com/eslint/eslint/blob/master/conf/eslint.json
-        
+
         "no-alert": 2,
         "no-array-constructor": 2,
         "no-bitwise": 2,
@@ -94,12 +94,12 @@
         "no-useless-constructor": 2,
         "no-void": 2,
         "no-var": 1,
-        "no-warning-comments": 2,
+        "no-warning-comments": 1,
         "no-with": 2,
 
         "array-bracket-spacing": 2,
         "array-callback-return": 2,
-        "arrow-body-style": 2,
+        "arrow-body-style": 1,
         "arrow-parens": 2,
         "arrow-spacing": 2,
         "accessor-pairs": 2,
@@ -141,7 +141,6 @@
         "operator-linebreak": [1, "before"],
         "prefer-arrow-callback": 1,
         "prefer-const": 1,
-        "prefer-reflect": 1,
         "prefer-rest-params": 1,
         "prefer-spread": 1,
         "prefer-template": 1,

@@ -1,10 +1,11 @@
+import configUpdater from 'core/config/serviceConfigUpdater';
+
 define([
     'rx',
     'core/config/localStore',
-    'core/config/serviceConfigUpdater',
     'common/arrayEquals',
-    'rx.binding'
-], function(Rx, configStore, configUpdater, arrayEquals) {
+    'rx/dist/rx.binding'
+], function(Rx, configStore, arrayEquals) {
 
     'use strict';
 

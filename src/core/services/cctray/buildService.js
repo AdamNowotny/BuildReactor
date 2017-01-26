@@ -1,12 +1,13 @@
+import joinUrl from 'common/joinUrl';
+
 define([
 	'core/services/buildServiceBase',
 	'core/services/request',
 	'jquery',
 	'rx',
 	'mout/object/mixIn',
-	'common/joinUrl',
 	'mout/array/contains'
-], function(BuildServiceBase, request, $, Rx, mixIn, joinUrl, contains) {
+], function(BuildServiceBase, request, $, Rx, mixIn, contains) {
 
 	'use strict';
 
@@ -44,7 +45,7 @@ define([
 			username: this.settings.username,
 			password: this.settings.password,
 			parser: parseProjects
-		}).catchException(function(ex) {
+		}).catch(function(ex) {
 			return Rx.Observable.fromArray(self.settings.projects)
 				.select(function(buildId) {
 					return {
@@ -58,7 +59,7 @@ define([
 			return contains(self.settings.projects, build.id);
 		}).select(function(state) {
 			return self.mixInMissingState(state, self.serviceInfo);
-		}).doAction(function(state) {
+		}).do(function(state) {
 			return self.processBuildUpdate(state);
 		}).defaultIfEmpty([]);
 	};

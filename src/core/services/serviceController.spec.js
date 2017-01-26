@@ -1,11 +1,13 @@
+import Rx from 'rx/dist/rx.testing';
+import events from 'core/events';
+
 define([
 	'core/services/serviceController',
-	'rx',
 	'mout/object/mixIn',
 	'test/rxHelpers',
-	'rx.binding'
+	'rx/dist/rx.binding'
 ],
-function(controller, Rx, mixIn) {
+function(controller, mixIn) {
 
 	'use strict';
 
@@ -39,7 +41,7 @@ function(controller, Rx, mixIn) {
 				projects: [],
 				disabled: false
 			};
-			serviceStartResponse = Rx.Observable.returnValue([]);
+			serviceStartResponse = Rx.Observable.return([]);
 			spyOn(CustomBuildService.prototype, 'start').and.callFake(function() {
 				this.events.onNext({ eventName: 'serviceStarted' });
 				return serviceStartResponse;
@@ -53,7 +55,7 @@ function(controller, Rx, mixIn) {
 		describe('start/stop', function() {
 
 			it('should start services', function() {
-				controller.start(Rx.Observable.returnValue([settings]));
+				controller.start(Rx.Observable.return([settings]));
 
 				expect(CustomBuildService.prototype.start).toHaveBeenCalled();
 			});
@@ -61,98 +63,106 @@ function(controller, Rx, mixIn) {
 			it('should not start disabled services', function() {
 				settings.disabled = true;
 
-				controller.start(Rx.Observable.returnValue([settings]));
+				controller.start(Rx.Observable.return([settings]));
 
 				expect(CustomBuildService.prototype.start).not.toHaveBeenCalled();
 			});
 
 			it('should subscribe to service events', function() {
-				scheduler.scheduleAbsolute(300, function() {
-					controller.start(Rx.Observable.returnValue([settings]));
-				});
-				scheduler.scheduleAbsolute(400, function() {
-					service.events.onNext({ eventName: 'someEvent' });
-				});
+				spyOn(events, 'push');
+				controller.start(Rx.Observable.return([settings]));
+				service.events.onNext({ eventName: 'someEvent' });
 
-				var result = scheduler.startWithCreate(function() {
-					return controller.events;
+				expect(events.push).toHaveBeenCalledWith({
+					eventName: 'someEvent'
 				});
-
-				expect(result.messages).toHaveEvent('someEvent');
 			});
 
 			it('should push servicesInitializing when configuration is reset', function() {
-				scheduler.scheduleAbsolute(300, function() {
-					controller.start(Rx.Observable.returnValue([settings]));
-				});
-				var result = scheduler.startWithCreate(function() {
-					return controller.events;
-				});
+				spyOn(events, 'push');
 
-				expect(result.messages).toHaveEvent('servicesInitializing');
+				controller.start(Rx.Observable.return([settings]));
+
+				expect(events.push).toHaveBeenCalledWith({
+					eventName: 'servicesInitializing',
+					source: 'serviceController',
+					details: [{
+						baseUrl: 'test',
+						url: 'http://www.example.com/',
+						name: 'service name',
+						projects: [],
+						disabled: false
+					}]
+				});
 			});
 
 			it('should push servicesInitialized when all services started', function() {
+				spyOn(events, 'push');
 				serviceStartResponse = new Rx.Subject();
-				CustomBuildService.prototype.start.and.callFake(function() {
-					return serviceStartResponse;
-				});
+				CustomBuildService.prototype.start.and.callFake(() =>
+					serviceStartResponse
+				);
 
-				scheduler.scheduleAbsolute(300, function() {
-					controller.start(Rx.Observable.returnValue([settings, settings]));
-				});
-				scheduler.scheduleAbsolute(400, function() {
-					service.events.onNext({ eventName: 'serviceStarted' });
-					serviceStartResponse.onCompleted();
-				});
-				var result = scheduler.startWithCreate(function() {
-					return controller.events;
-				});
+				controller.start(Rx.Observable.return([settings, settings]));
 
-				expect(result.messages).toHaveElements(onNext(400, { eventName: 'servicesInitialized' }));
+				service.events.onNext({ eventName: 'serviceStarted' });
+				serviceStartResponse.onCompleted();
+
+				expect(events.push).toHaveBeenCalledWith({
+					eventName: 'servicesInitialized',
+					source: 'serviceController',
+					details: [{
+						baseUrl: 'test',
+						url: 'http://www.example.com/',
+						name: 'service name',
+						projects: [],
+						disabled: false
+					}, {
+						baseUrl: 'test',
+						url: 'http://www.example.com/',
+						name: 'service name',
+						projects: [],
+						disabled: false
+					}]
+				});
 			});
 
-			it('should push servicesInitialized when no services configured', function() {
-				scheduler.scheduleAbsolute(300, function() {
-					controller.start(Rx.Observable.returnValue([settings]));
-				});
-				var result = scheduler.startWithCreate(function() {
-					return controller.events;
-				});
+			it('should push servicesInitialized when no services configured', () => {
+				spyOn(events, 'push');
 
-				expect(result.messages).toHaveEvent('servicesInitialized');
+				controller.start(Rx.Observable.return([settings]));
+
+				expect(events.push).toHaveBeenCalledWith({
+					eventName: 'servicesInitialized',
+					source: 'serviceController',
+					details: [{
+						baseUrl: 'test',
+						url: 'http://www.example.com/',
+						name: 'service name',
+						projects: [],
+						disabled: false
+					}]
+				});
+				expect(CustomBuildService.prototype.stop).toHaveBeenCalled();
 			});
 
 			it('should unsubscribe from events and stop old services', function() {
-				var configs = Rx.Observable.fromArray([[settings], [settings]]);
-				scheduler.scheduleAbsolute(300, function() {
-					controller.start(Rx.Observable.returnValue([settings]));
-				});
-				scheduler.scheduleAbsolute(500, function() {
-					service.events.onNext({ eventName: 'someEvent' });
-				});
-				var result = scheduler.startWithCreate(function() {
-					return controller.events;
-				});
+				spyOn(events, 'push');
+
+				controller.start(Rx.Observable.return([settings]));
 
 				expect(CustomBuildService.prototype.stop).toHaveBeenCalled();
-				expect(result.messages).toHaveEvent('someEvent', 1);
 			});
 
-			it('should unsubscribe from events and stop old services if empty settings passed', function() {
-				var configs = Rx.Observable.fromArray([[settings], []]);
-				scheduler.scheduleAbsolute(300, function() {
-					controller.start(configs);
-				});
-				scheduler.scheduleAbsolute(500, function() {
-					service.events.onNext({ eventName: 'someEvent' });
-				});
-				var result = scheduler.startWithCreate(function() {
-					return controller.events;
-				});
+			it('should unsubscribe from events and stop old services if empty settings passed', () => {
+				spyOn(events, 'push');
+
+				const configs = Rx.Observable.fromArray([[settings], []]);
+				controller.start(configs);
+				service.events.onNext({ eventName: 'someEvent' });
 
 				expect(CustomBuildService.prototype.stop).toHaveBeenCalled();
-				expect(result.messages).not.toHaveEvent('someEvent');
+				expect(events.push).not.toHaveBeenCalledWith({ eventName: 'someEvent' });
 			});
 
 		});
@@ -160,9 +170,9 @@ function(controller, Rx, mixIn) {
 		describe('activeProjects', function() {
 
 			it('should push state on subscribe', function() {
-				controller.start(Rx.Observable.returnValue([settings]));
+				controller.start(Rx.Observable.return([settings]));
 
-				var result = scheduler.startWithCreate(function() {
+				var result = scheduler.startScheduler(function() {
 					return controller.activeProjects;
 				});
 
@@ -174,20 +184,20 @@ function(controller, Rx, mixIn) {
 				var settings2 = mixIn({}, settings, { name: 'service 2' });
 				// serviceLoader.load.and.callFake(function(settings) {
 				// 	return settings.name === 'service 1' ?
-				// 		Rx.Observable.returnValue(service1) :
-				// 		Rx.Observable.returnValue(service2);
+				// 		Rx.Observable.return(service1) :
+				// 		Rx.Observable.return(service2);
 				// });
 
-				scheduler.scheduleAbsolute(200, function() {
-					controller.start(Rx.Observable.returnValue([settings1, settings2]));
+				scheduler.scheduleAbsolute(null, 200, function() {
+					controller.start(Rx.Observable.return([settings1, settings2]));
 				});
-				scheduler.scheduleAbsolute(300, function() {
+				scheduler.scheduleAbsolute(null, 300, function() {
 					service.activeProjects.onNext({ name: 'service 1', items: [{ id: 'id1' }] });
 				});
-				scheduler.scheduleAbsolute(400, function() {
+				scheduler.scheduleAbsolute(null, 400, function() {
 					service.activeProjects.onNext({ name: 'service 2', items: [{ id: 'id2' }] });
 				});
-				var result = scheduler.startWithCreate(function() {
+				var result = scheduler.startScheduler(function() {
 					return controller.activeProjects;
 				});
 
@@ -199,11 +209,11 @@ function(controller, Rx, mixIn) {
 			});
 
 			it('should push empty list of projects when services disabled', function() {
-				scheduler.scheduleAbsolute(300, function() {
+				scheduler.scheduleAbsolute(null, 300, function() {
 					settings.disabled = true;
-					controller.start(Rx.Observable.returnValue([settings]));
+					controller.start(Rx.Observable.return([settings]));
 				});
-				var result = scheduler.startWithCreate(function() {
+				var result = scheduler.startScheduler(function() {
 					return controller.activeProjects;
 				});
 

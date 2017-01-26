@@ -1,10 +1,11 @@
+import joinUrl from 'common/joinUrl';
+
 define([
 	'core/services/buildServiceBase',
 	'core/services/request',
 	'core/services/teamcity/teamcityBuild',
-	'mout/object/mixIn',
-	'common/joinUrl'
-], function(BuildServiceBase, request, TravisBuild, mixIn, joinUrl) {
+	'mout/object/mixIn'
+], function(BuildServiceBase, request, TravisBuild, mixIn) {
 
 	'use strict';
 

@@ -1,9 +1,12 @@
-import 'rx';
+import Rx from 'rx';
 import chromeApi from 'common/chromeApi';
+import events from 'core/events';
 import logger from 'core/logger';
 import serviceConfiguration from 'core/config/serviceConfiguration';
 import serviceController from 'core/services/serviceController';
 import viewConfiguration from 'core/config/viewConfiguration';
+
+const stateUpdated = new Rx.BehaviorSubject([]);
 
 const onMessage = (request, sender, sendResponse) => {
 		try {
@@ -76,13 +79,13 @@ const availableProjects = (sendResponse, settings) => {
 	});
 };
 
-var onConnect = function(port) {
+const onConnect = (port) => {
 	switch (port.name) {
 	case 'state':
-		var stateSubscription = serviceController.activeProjects.subscribe(function(servicesState) {
-			port.postMessage(servicesState);
+		var stateSubscription = stateUpdated.subscribe((state) => {
+			port.postMessage(state.details);
 		});
-		port.onDisconnect.addListener(function(port) {
+		port.onDisconnect.addListener(() => {
 			stateSubscription.dispose();
 		});
 		break;
@@ -114,8 +117,9 @@ var onConnect = function(port) {
 };
 
 export default {
-	init: function() {
+	init() {
 		chromeApi.addConnectListener(onConnect);
 		chromeApi.addMessageListener(onMessage);
+		events.getByName('stateUpdated').subscribe(stateUpdated);
 	}
 };

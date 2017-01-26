@@ -32,7 +32,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 			};
 			states = [createState1(), createState2()];
 			spyOn(request, 'xml').and.callFake(function(options) {
-				return Rx.Observable.returnValue(states);
+				return Rx.Observable.return(states);
 			});
 			service = new BuildService(settings);
 			events = [];
@@ -147,7 +147,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 					expect(options.username).toBe(settings.username);
 					expect(options.password).toBe(settings.password);
 					expect(options.url).toBe('http://example.com/cc.xml');
-					return Rx.Observable.returnValue(states);
+					return Rx.Observable.return(states);
 				});
 
 				service.cctrayLocation = 'cc.xml';
@@ -165,7 +165,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 					projectsXml = $(ccnetFixture);
 					request.xml.and.callFake(function(options) {
 						parsedResponse = options.parser(projectsXml);
-						return Rx.Observable.returnValue(parsedResponse);
+						return Rx.Observable.return(parsedResponse);
 					});
 				});
 
@@ -289,7 +289,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 				var stateError = "Error";
 
 				request.xml.and.callFake(function(options) {
-					return Rx.Observable.throwException(stateError);
+					return Rx.Observable.throw(stateError);
 				});
 
 				var sequenceFailed = false;
@@ -325,7 +325,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 					changes: []
 				}, oldState);
 				request.xml.and.callFake(function(options) {
-					return Rx.Observable.returnValue([newState]);
+					return Rx.Observable.return([newState]);
 				});
 			});
 
@@ -336,7 +336,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 			it('should push buildOffline if build update failed', function() {
 				var stateError = "Error";
 				request.xml.and.callFake(function(options) {
-					return Rx.Observable.throwException(stateError);
+					return Rx.Observable.throw(stateError);
 				});
 
 				service.updateAll().subscribe();
@@ -428,7 +428,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 			var projectsXml = $(ccnetFixture);
 
 			it('should return available builds', function() {
-				var builds = Rx.Observable.returnValue(projectsXml);
+				var builds = Rx.Observable.return(projectsXml);
 				request.xml.and.returnValue(builds);
 
 				expect(service.availableBuilds()).toBe(builds);

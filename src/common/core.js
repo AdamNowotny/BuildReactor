@@ -1,7 +1,7 @@
 define([
 	'common/chromeApi',
 	'rx',
-	'rx.binding'
+	'rx/dist/rx.binding'
 ], function(chromeApi, Rx) {
 
 	'use strict';

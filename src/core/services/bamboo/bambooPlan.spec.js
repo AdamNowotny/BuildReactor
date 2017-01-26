@@ -30,9 +30,9 @@ define([
 				callCount++;
 				switch (callCount) {
 				case 1:
-					return Rx.Observable.returnValue(planJson);
+					return Rx.Observable.return(planJson);
 				case 2:
-					return Rx.Observable.returnValue(resultJson);
+					return Rx.Observable.return(resultJson);
 				}
 				return null;
 			});

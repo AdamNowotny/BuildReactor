@@ -25,6 +25,12 @@
 			<input type="text" class="form-control" placeholder="Branch, f.e. refs/heads/release" ng-model="config.branch">
 		</div>
 	</div>
+	<div class="form-group" ng-show="isDefined(config.token)">
+		<div class="input-group">
+			<span class="input-group-addon"><i class="fa fa-ticket fa-fw"></i></span>
+			<input type="text" class="form-control" placeholder="Token" ng-model="config.token">
+		</div>
+	</div>
 	<div class="form-group number" ng-show="isDefined(config.updateInterval)">
 		<label for="update-interval">Update interval</label>
 		<div class="input-append input-group" data-name="updateInterval">

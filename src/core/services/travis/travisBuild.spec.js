@@ -1,19 +1,21 @@
+import Rx from 'rx/dist/rx.testing';
+
 define([
 	'core/services/travis/travisBuild',
 	'core/services/request',
-	'rx',
 	'raw!core/services/travis/builds.fixture.json',
 	'raw!core/services/travis/builds_running.fixture.json',
 	'raw!core/services/travis/build_by_id.fixture.json',
 	'raw!core/services/travis/build_by_id_running.fixture.json',
 	'test/rxHelpers'
-], function(TravisBuild, request, Rx, buildFixture, buildsRunningFixture, buildDetailsFixture, buildDetailsRunningFixture) {
+], function(TravisBuild, request, buildFixture, buildsRunningFixture, buildDetailsFixture, buildDetailsRunningFixture) {
 
 	'use strict';
 
 	describe('core/services/travis/travisBuild', function() {
 
 		var onNext = Rx.ReactiveTest.onNext;
+		var onCompleted = Rx.ReactiveTest.onCompleted;
 		var settings;
 		var build;
 		var buildsJson,
@@ -40,11 +42,11 @@ define([
 			spyOn(request, 'json').and.callFake(function(options) {
 				switch (options.url) {
 				case 'https://api.travis-ci.org/repositories/AdamNowotny/BuildReactor/builds.json':
-					return Rx.Observable.returnValue(isRunning ? buildsRunningJson : buildsJson);
+					return Rx.Observable.return(isRunning ? buildsRunningJson : buildsJson);
 				case 'https://api.travis-ci.org/builds/6305554':
-					return Rx.Observable.returnValue(buildDetailsRunningJson);
+					return Rx.Observable.return(buildDetailsRunningJson);
 				case 'https://api.travis-ci.org/builds/6305490':
-					return Rx.Observable.returnValue(buildDetailsJson);
+					return Rx.Observable.return(buildDetailsJson);
 				default:
 					throw 'Unknown URL ' + options.url;
 				}
@@ -148,7 +150,7 @@ define([
 			request.json.and.callFake(function(options) {
 				switch (options.url) {
 				case 'https://api.travis-ci.org/repositories/AdamNowotny/BuildReactor/builds.json':
-					return Rx.Observable.returnValue(buildsRunningJson);
+					return Rx.Observable.return(buildsRunningJson);
 				case 'https://api.travis-ci.org/builds/6305554':
 					return build1Result;
 				case 'https://api.travis-ci.org/builds/6305490':
@@ -158,22 +160,25 @@ define([
 				}
 			});
 
-			scheduler.scheduleAbsolute(300, function() {
+			scheduler.scheduleAbsolute(null, 300, function() {
 				build2Result.onNext(buildDetailsJson);
 				build2Result.onCompleted();
 			});
-			scheduler.scheduleAbsolute(400, function() {
+			scheduler.scheduleAbsolute(null, 400, function() {
 				build1Result.onNext(buildDetailsRunningJson);
 				build1Result.onCompleted();
 			});
 
-			var result = scheduler.startWithCreate(function() {
+			var result = scheduler.startScheduler(function() {
 				return build.update();
 			});
 
-			expect(result.messages).toHaveElements(onNext(400, {
-				webUrl: 'https://travis-ci.org/AdamNowotny/BuildReactor/builds/6305554'
-			}));
+			expect(result.messages).toHaveEqualElements(
+				onNext(400, {
+					webUrl: 'https://travis-ci.org/AdamNowotny/BuildReactor/builds/6305554'
+				}),
+				onCompleted(400)
+			);
 		});
 
 	});

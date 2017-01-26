@@ -1,11 +1,12 @@
+import joinUrl from 'common/joinUrl';
+
 define([
 	'core/services/buildServiceBase',
 	'core/services/request',
 	'core/services/jenkins/jenkinsBuild',
 	'mout/object/mixIn',
-	'common/joinUrl',
 	'rx'
-], function(BuildServiceBase, request, JenkinsBuild, mixIn, joinUrl, Rx) {
+], function(BuildServiceBase, request, JenkinsBuild, mixIn, Rx) {
 
 	'use strict';
 
@@ -71,7 +72,7 @@ define([
 					joinUrl(view.url, 'view/' + primaryView) : view.url
 			};
 		});
-		return Rx.Observable.zipArray(updatedViews.map(function(view) {
+		return Rx.Observable.zip(updatedViews.map(function(view) {
 			return viewDetails(view, settings);
 		}));
 	}

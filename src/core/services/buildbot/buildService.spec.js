@@ -50,7 +50,7 @@ define([
 			});
 
 			it('should return available builds', function() {
-				var builds = Rx.Observable.returnValue(apiJson);
+				var builds = Rx.Observable.return(apiJson);
 				spyOn(request, 'json').and.returnValue(builds);
 
 				expect(service.availableBuilds()).toBe(builds);

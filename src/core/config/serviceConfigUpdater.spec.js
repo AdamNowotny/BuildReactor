@@ -1,9 +1,10 @@
+import updater from 'core/config/serviceConfigUpdater';
+
 define([
-	'core/config/serviceConfigUpdater',
 	'raw!core/config/config-v1.fixture.json',
 	'raw!core/config/config-v2.fixture.json',
 	'raw!core/config/config-v3.fixture.json'
-], function(updater, config1Text, config2Text, config3Text) {
+], function(config1Text, config2Text, config3Text) {
 	'use strict';
 
 	describe('core/config/serviceConfigUpdater', function() {
@@ -32,42 +33,6 @@ define([
 			var updated = updater.update(["a", "b"]);
 
 			expect(updated).toEqual([]);
-		});
-
-		it('should remove fields that dont belong to service instance', function() {
-			var config = updater.update([{
-				typeName: "GoCD",
-				baseUrl: "go",
-				icon: "go/icon.png",
-				logo: "go/logo.png",
-				branch: 'refs/heads/master',
-				projects: [
-					"ansible :: SetupAgents",
-					"ansible :: UpdateServers"
-				],
-				url: "http://ci.sample.com:8153/go",
-				urlHint: "URL, e.g. http://example-go.thoughtworks.com/",
-				username: "",
-				password: "",
-				updateInterval: 60,
-				name: "GoCD sample",
-				disabled: false
-			}]);
-
-			expect(config).toEqual([{
-				baseUrl: "go",
-				projects: [
-					"ansible :: SetupAgents",
-					"ansible :: UpdateServers"
-				],
-				url: "http://ci.sample.com:8153/go",
-				branch: 'refs/heads/master',
-				username: "",
-				password: "",
-				updateInterval: 60,
-				name: "GoCD sample",
-				disabled: false
-			}]);
 		});
 
 	});

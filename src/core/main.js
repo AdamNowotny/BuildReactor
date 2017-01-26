@@ -1,68 +1,46 @@
-require([
-	'core/config/localStore',
-	'core/logger',
-	'core/badgeController',
-	'core/chromeListeners',
-	'core/notificationController',
-	'core/config/serviceConfiguration',
-	'core/config/viewConfiguration',
-	'core/services/serviceController',
-	'core/services/passwordExpiredHandler',
+import BambooService from 'core/services/bamboo/buildService';
+import BuildBotService from 'core/services/buildbot/buildService';
+import BuildKiteService from 'services/buildkite/buildkite';
+import CctrayService from 'core/services/cctray/buildService';
+import CruiseControlNetService from 'core/services/cruisecontrol.net/buildService';
+import CruiseControlRBService from 'core/services/cruisecontrol.rb/buildService';
+import CruiseControlService from 'core/services/cruisecontrol/buildService';
+import GoService from 'core/services/go/buildService';
+import JenkinsService from 'core/services/jenkins/buildService';
+import SnapService from 'core/services/snap/buildService';
+import TeamCityService from 'core/services/teamcity/buildService';
+import TravisService from 'core/services/travis/buildService';
+import badgeController from 'core/badgeController';
+import chromeListeners from 'core/chromeListeners';
+import logger from 'core/logger';
+import notificationController from 'core/notificationController';
+import passwordExpiredHandler from 'core/passwordExpiredHandler';
+import serviceConfiguration from 'core/config/serviceConfiguration';
+import serviceController from 'core/services/serviceController';
+import serviceView from 'core/services/serviceView';
+import viewConfiguration from 'core/config/viewConfiguration';
 
-	'core/services/bamboo/buildService',
-	'core/services/buildbot/buildService',
-	'core/services/cctray/buildService',
-	'core/services/cruisecontrol/buildService',
-	'core/services/cruisecontrol.net/buildService',
-	'core/services/cruisecontrol.rb/buildService',
-	'core/services/go/buildService',
-	'core/services/jenkins/buildService',
-	'core/services/snap/buildService',
-	'core/services/teamcity/buildService',
-	'core/services/travis/buildService'
-], function(
-	localStore,
-	logger,
-	badgeController,
-	chromeListeners,
-	notificationController,
-	serviceConfiguration,
-	viewConfiguration,
-	serviceController,
-	passwordExpiredHandler,
+serviceConfiguration.init();
+viewConfiguration.init();
+logger.init();
+badgeController.init();
+notificationController.init({ timeout: 5000 });
+serviceView.init();
+chromeListeners.init();
+passwordExpiredHandler.init();
 
-	BambooService,
-	BuildBotService,
-	CctrayService,
-	CruiseControlService,
-	CruiseControlNetService,
-	CruiseControlRBService,
-	GoService,
-	JenkinsService,
-	SnapService,
-	TeamCityService,
-	TravisService
-) {
+serviceController.clear();
+serviceController.registerType(BambooService);
+serviceController.registerType(BuildBotService);
+serviceController.registerType(BuildKiteService);
+serviceController.registerType(CctrayService);
+serviceController.registerType(CruiseControlService);
+serviceController.registerType(CruiseControlNetService);
+serviceController.registerType(CruiseControlRBService);
+serviceController.registerType(GoService);
+serviceController.registerType(JenkinsService);
+serviceController.registerType(SnapService);
+serviceController.registerType(TeamCityService);
+serviceController.registerType(TravisService);
 
-	serviceConfiguration.init();
-	viewConfiguration.init();
-	logger.default.init();
-	badgeController();
-	notificationController.init({ timeout: 5000 });
-	chromeListeners.default.init();
-
-	serviceController.clear();
-	serviceController.registerType(BambooService);
-	serviceController.registerType(BuildBotService);
-	serviceController.registerType(CctrayService);
-	serviceController.registerType(CruiseControlService);
-	serviceController.registerType(CruiseControlNetService);
-	serviceController.registerType(CruiseControlRBService);
-	serviceController.registerType(GoService);
-	serviceController.registerType(JenkinsService);
-	serviceController.registerType(SnapService);
-	serviceController.registerType(TeamCityService);
-	serviceController.registerType(TravisService);
-
-	serviceController.start(serviceConfiguration.changes);
-});
+serviceController.start(serviceConfiguration.changes);
