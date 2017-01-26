@@ -1,5 +1,6 @@
 import Rx from 'rx';
 import builds from 'services/buildkite/buildkiteBuilds';
+import sortBy from 'common/sortBy';
 
 class BuildKite {
     constructor(settings, scheduler) {
@@ -39,6 +40,7 @@ class BuildKite {
         const scheduler = this.scheduler;
         this.updatesSubscription = Rx.Observable.timer(0, interval, scheduler)
             .selectMany(() => this.updateAll(this.settings))
+            .select((items) => sortBy('id', items))
             .do((items) => this.events.onNext({
                 eventName: 'serviceUpdated',
                 source: this.settings.name,

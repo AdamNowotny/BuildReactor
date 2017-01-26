@@ -1,13 +1,13 @@
 import joinUrl from 'common/joinUrl';
+import sortBy from 'common/sortBy';
 
 define([
 	'core/services/buildServiceBase',
 	'core/services/request',
 	'core/services/bamboo/bambooPlan',
 	'mout/object/mixIn',
-	'common/sortBy',
 	'rx'
-], function(BuildServiceBase, request, BambooPlan, mixIn, sortBy, Rx) {
+], function(BuildServiceBase, request, BambooPlan, mixIn, Rx) {
 
 	'use strict';
 

@@ -101,6 +101,30 @@ describe('services/buildkite/buildkite', () => {
             );
         });
 
+        it('should sort items by id', () => {
+            builds.getLatest.returns(Rx.Observable.return({
+                items: [{ id: 'id2' }, { id: 'id1' }]
+            }));
+
+            scheduler.scheduleAbsolute(null, 300, () => {
+                service.start().subscribe();
+            });
+            scheduler.scheduleAbsolute(null, 500, () => {
+                service.stop();
+            });
+
+            const result = scheduler.startScheduler(() => service.events);
+
+            sinon.assert.calledWith(builds.getLatest, settings);
+            expect(result.messages).toHaveElements(
+                onNext(301, {
+                    eventName: 'serviceStarted',
+                    source: settings.name,
+                    details: [{ id: 'id1' }, { id: 'id2' }]
+                })
+            );
+        });
+
         it('should push serviceStopped event', () => {
             scheduler.scheduleAbsolute(null, 300, () => {
                 service.stop();
