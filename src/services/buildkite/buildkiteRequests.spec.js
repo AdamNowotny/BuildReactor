@@ -126,7 +126,7 @@ describe('services/buildkite/buildkiteRequests', () => {
                     url: `https://api.buildkite.com/v2/organizations/${org}/pipelines/${pipeline}/builds`,
                     query: {
                         access_token: token,
-                        per_page: 2,
+                        per_page: 1,
                         branch: 'master'
                     }
                 });
