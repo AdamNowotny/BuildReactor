@@ -5,12 +5,14 @@ import sinon from 'sinon';
 
 describe('core/services/serviceView', () => {
 
-	const eventsSubject = new Rx.Subject();
+	const serviceUpdatedSubject = new Rx.Subject();
+	const servicesInitializingSubject = new Rx.Subject();
 
 	beforeEach(() => {
 		sinon.stub(events, 'getByName');
 		sinon.stub(events, 'push');
-		events.getByName.returns(eventsSubject);
+		events.getByName.onCall(0).returns(serviceUpdatedSubject);
+		events.getByName.onCall(1).returns(servicesInitializingSubject);
 		serviceView.init();
 		events.push.reset();
 	});
@@ -22,7 +24,7 @@ describe('core/services/serviceView', () => {
     });
 
 	it('should update state on serviceUpdated', () => {
-		eventsSubject.onNext({
+		serviceUpdatedSubject.onNext({
 			eventName: 'serviceUpdated',
 			source: 'service1',
 			details: [{ id: 'abc' }]
@@ -36,6 +38,21 @@ describe('core/services/serviceView', () => {
 				name: 'service1',
 				items: [{ id: 'abc' }]
 			}]
+		});
+	});
+
+	it('should reset state on servicesInitializing', () => {
+		servicesInitializingSubject.onNext({
+			eventName: 'servicesInitializing',
+			source: 'serviceController',
+			details: []
+		});
+
+		sinon.assert.calledOnce(events.push);
+		sinon.assert.calledWith(events.push, {
+			eventName: 'stateUpdated',
+			source: 'serviceView',
+			details: []
 		});
 	});
 

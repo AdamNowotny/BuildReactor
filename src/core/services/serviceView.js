@@ -1,12 +1,17 @@
 import Rx from 'rx';
 import events from 'core/events';
 
-let rxServiceUpdated;
+let rxServiceUpdated, rxServicesInit;
 
 const init = () => {
     const latestState = new Map();
     rxServiceUpdated = events.getByName('serviceUpdated').subscribe((ev) => {
         latestState.set(ev.source, { name: ev.source, items: ev.details });
+        pushStateUpdated();
+    });
+
+    rxServicesInit = events.getByName('servicesInitializing').subscribe((ev) => {
+        latestState.clear();
         pushStateUpdated();
     });
 
@@ -21,6 +26,7 @@ const init = () => {
 
 const dispose = () => {
     rxServiceUpdated.dispose();
+    rxServicesInit.dispose();
 };
 
 // [
