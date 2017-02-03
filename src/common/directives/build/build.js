@@ -20,7 +20,7 @@ define([
 				var commentChangeInterval = 7000;
 				$scope.changeIndex = 0;
 
-				var changesLength = $scope.build.changes ? $scope.build.changes.length : 0;
+				var changesLength = $scope.build && $scope.build.changes ? $scope.build.changes.length : 0;
 				if (changesLength > 1) {
 					$interval(function() {
 						$scope.changeIndex = ($scope.changeIndex + 1) % changesLength;
@@ -32,9 +32,14 @@ define([
 						return classes;
 				};
 
+
 				core.views.subscribe(function(config) {
 					$scope.$evalAsync(function() {
 						$scope.viewConfig = config;
+						$scope.commitsVisible = true;
+						if ($scope.build && !config.showCommitsWhenGreen) {
+							$scope.commitsVisible = $scope.build.isBroken || $scope.build.isRunning;
+						}
 					});
 				});
 

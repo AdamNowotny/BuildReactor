@@ -49,6 +49,10 @@
         overflow: hidden;
         position: relative;
         text-align: left;
+        visibility: hidden;
+        &.visible {
+            visibility: visible;
+        }
         .changes {
             display: block;
             opacity: 0;

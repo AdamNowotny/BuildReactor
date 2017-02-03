@@ -3,32 +3,32 @@ import configStore from 'core/config/localStore';
 import configUpdater from 'core/config/viewConfigUpdater';
 import viewConfiguration from 'core/config/viewConfiguration';
 
-describe('core/config/viewConfiguration', function() {
+describe('core/config/viewConfiguration', () => {
 
-	var onNext = Rx.ReactiveTest.onNext;
-	var scheduler;
+	const onNext = Rx.ReactiveTest.onNext;
+	let scheduler;
 
-	beforeEach(function() {
+	beforeEach(() => {
 		spyOn(configStore, 'setItem');
 		spyOn(configStore, 'getItem');
 		spyOn(configUpdater, 'update');
 		scheduler = new Rx.TestScheduler();
 	});
 
-	it('should update view config on init', function() {
-		var oldConfig = [
+	it('should update view config on init', () => {
+		const oldConfig = [
 			{ columns: 4 }
 		];
-		var newConfig = [
+		const newConfig = [
 			{ columns: 4, fullWidthGroups: true }
 		];
 		configStore.getItem.and.returnValue(oldConfig);
 		configUpdater.update.and.returnValue(newConfig);
 
-		scheduler.scheduleAbsolute(null, 300, function() {
+		scheduler.scheduleAbsolute(null, 300, () => {
 			viewConfiguration.init();
 		});
-		var changes = scheduler.startScheduler(function() {
+		const changes = scheduler.startScheduler(() => {
 			return viewConfiguration.changes;
 		});
 
@@ -36,22 +36,22 @@ describe('core/config/viewConfiguration', function() {
 		expect(changes.messages).toHaveElements(onNext(300, newConfig));
 	});
 
-	it('should not update view config if not an object', function() {
-		expect(function() {
+	it('should not update view config if not an object', () => {
+		expect(() => {
 			viewConfiguration.save('undefined');
 		}).toThrowError();
 		expect(configStore.setItem).not.toHaveBeenCalled();
 	});
 
-	it('should publish changes on save', function() {
-		var viewConfig = {
+	it('should publish changes on save', () => {
+		const viewConfig = {
 			columns: 2
 		};
 
-		scheduler.scheduleAbsolute(null, 300, function() {
+		scheduler.scheduleAbsolute(null, 300, () => {
 			viewConfiguration.save(viewConfig);
 		});
-		var changes = scheduler.startScheduler(function() {
+		const changes = scheduler.startScheduler(() => {
 			return viewConfiguration.changes;
 		});
 
@@ -62,16 +62,16 @@ describe('core/config/viewConfiguration', function() {
 		);
 	});
 
-	it('should not publish changes if config unchanged', function() {
-		var viewConfig = {
+	it('should not publish changes if config unchanged', () => {
+		const viewConfig = {
 			columns: 2
 		};
 		configStore.getItem.and.returnValue(viewConfig);
 
-		scheduler.scheduleAbsolute(null, 300, function() {
+		scheduler.scheduleAbsolute(null, 300, () => {
 			viewConfiguration.save(viewConfig);
 		});
-		var changes = scheduler.startScheduler(function() {
+		const changes = scheduler.startScheduler(() => {
 			return viewConfiguration.changes;
 		});
 

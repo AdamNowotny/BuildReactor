@@ -1,9 +1,10 @@
+import configUpdater from 'core/config/viewConfigUpdater';
+
 define([
 	'rx',
 	'core/config/localStore',
-	'core/config/viewConfigUpdater',
 	'rx/dist/rx.binding'
-], function(Rx, configStore, configUpdater) {
+], function(Rx, configStore) {
 
 	'use strict';
 
