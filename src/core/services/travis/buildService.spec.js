@@ -32,7 +32,6 @@ define([
 			expect(service.updateAll).toBeDefined();
 			expect(service.start).toBeDefined();
 			expect(service.stop).toBeDefined();
-			expect(service.activeProjects).toBeDefined();
 			expect(service.availableBuilds).toBeDefined();
 			expect(service.events).toBeDefined();
 		});

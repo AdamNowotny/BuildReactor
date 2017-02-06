@@ -22,7 +22,6 @@ define([
 		this.poolingSubscription = null;
 		this.mixInMissingState = mixInMissingState;
 		this.processBuildUpdate = processBuildUpdate;
-		this.activeProjects = new Rx.BehaviorSubject(createState(this));
 	}
 
 	var getInitialStates = function(settings, serviceInfo) {
@@ -149,9 +148,6 @@ define([
 		}
 		var self = this;
 		var updateInterval = this.settings.updateInterval * 1000;
-		this.eventsSubscription = this.events.subscribe(function(event) {
-			self.activeProjects.onNext(createState(self));
-		});
 		var updates = new Rx.Subject();
 		var initialize = updates
 			.take(1)
@@ -192,19 +188,6 @@ define([
 			this.poolingSubscription = null;
 			this.events.onNext({ eventName: 'serviceStopped', source: this.settings.name });
 		}
-		if (this.eventsSubscription) {
-			this.eventsSubscription.dispose();
-			this.eventsSubscription = null;
-		}
-	};
-
-	var createState = function(self) {
-		return {
-			name: self.settings.name,
-			items: self.settings.projects.map(function(buildId) {
-					return self.latestBuildStates[buildId];
-				})
-		};
 	};
 
 	return BuildServiceBase;

@@ -25,7 +25,6 @@ describe('services/buildkite/buildkite', () => {
 
         if (service) {
             service.events.dispose();
-            service.activeProjects.dispose();
         }
         service = new BuildKite(settings, scheduler);
     });
@@ -39,7 +38,6 @@ describe('services/buildkite/buildkite', () => {
         expect(service.settings).toBe(settings);
         expect(service.start).toBeDefined();
         expect(service.stop).toBeDefined();
-        expect(service.activeProjects).toBeDefined();
         expect(service.availableBuilds).toBeDefined();
         expect(service.events).toBeDefined();
     });

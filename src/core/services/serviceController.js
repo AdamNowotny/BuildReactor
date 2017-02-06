@@ -25,10 +25,6 @@ define([
 	var services = [];
 	var eventsSubscriptions = [];
 
-	var servicesSubject = new Rx.ReplaySubject(1);
-	var activeProjectsSubject = new Rx.ReplaySubject(1);
-	var activeProjectsSubscription;
-
 	function loadServices(settingsList) {
 		return Rx.Observable.fromArray(settingsList)
 			.where(function(settings) {
@@ -48,14 +44,12 @@ define([
 	}
 
 	function startServices(settingsList) {
-		return loadServices(settingsList).do(function(services) {
-				servicesSubject.onNext(services);
-			}).selectMany(function(services) {
-				return Rx.Observable.fromArray(services)
-					.selectMany(function(service) {
-						return service.start();
-					});
-			}).toArray();
+		return loadServices(settingsList).selectMany(function(services) {
+			return Rx.Observable.fromArray(services)
+				.selectMany(function(service) {
+					return service.start();
+				});
+		}).toArray();
 	}
 
 	function removeAll() {
@@ -68,23 +62,6 @@ define([
 		services = [];
 		eventsSubscriptions = [];
 	}
-
-	servicesSubject.subscribe(function(services) {
-		if (activeProjectsSubscription) {
-			activeProjectsSubscription.dispose();
-		}
-		if (services.length === 0) {
-			activeProjectsSubject.onNext([]);
-			return;
-		}
-		activeProjectsSubscription = Rx.Observable
-			.combineLatest(services.map(function(service) {
-				return service.activeProjects;
-			}), function() {
-				var states = Array.prototype.slice.call(arguments, 0);
-				return states;
-			}).subscribe(activeProjectsSubject);
-	});
 
 	const start = function(configChanges) {
 		configChanges.subscribe((settingsList) => {
@@ -105,7 +82,6 @@ define([
 	};
 
 	return {
-		activeProjects: activeProjectsSubject,
 		start,
 		getAllTypes,
 		registerType,

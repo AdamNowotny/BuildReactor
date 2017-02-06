@@ -6,10 +6,6 @@ class BuildKite {
     constructor(settings, scheduler) {
         this.settings = settings;
         this.events = new Rx.Subject();
-        this.activeProjects = new Rx.BehaviorSubject({
-            name: this.settings.name,
-            items: []
-        });
         this.scheduler = scheduler;
         this.updates = new Rx.Subject();
     }

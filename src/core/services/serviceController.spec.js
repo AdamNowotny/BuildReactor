@@ -167,61 +167,6 @@ function(controller, mixIn) {
 
 		});
 
-		describe('activeProjects', function() {
-
-			it('should push state on subscribe', function() {
-				controller.start(Rx.Observable.return([settings]));
-
-				var result = scheduler.startScheduler(function() {
-					return controller.activeProjects;
-				});
-
-				expect(result.messages).toHaveEqualElements(onNext(200, [service.initialActiveProjects]));
-			});
-
-			xit('should get project state from all services', function() {
-				var settings1 = mixIn({}, settings, { name: 'service 1' });
-				var settings2 = mixIn({}, settings, { name: 'service 2' });
-				// serviceLoader.load.and.callFake(function(settings) {
-				// 	return settings.name === 'service 1' ?
-				// 		Rx.Observable.return(service1) :
-				// 		Rx.Observable.return(service2);
-				// });
-
-				scheduler.scheduleAbsolute(null, 200, function() {
-					controller.start(Rx.Observable.return([settings1, settings2]));
-				});
-				scheduler.scheduleAbsolute(null, 300, function() {
-					service.activeProjects.onNext({ name: 'service 1', items: [{ id: 'id1' }] });
-				});
-				scheduler.scheduleAbsolute(null, 400, function() {
-					service.activeProjects.onNext({ name: 'service 2', items: [{ id: 'id2' }] });
-				});
-				var result = scheduler.startScheduler(function() {
-					return controller.activeProjects;
-				});
-
-				expect(result.messages).toHaveElements([
-					onNext(200, [{ name: 'service 1', items: [] }, { name: 'service 2', items: [] }]),
-					onNext(300, [{ name: 'service 1', items: [{ id: 'id1' }] }, { name: 'service 2', items: [] }]),
-					onNext(400, [{ name: 'service 1', items: [{ id: 'id1' }] }, { name: 'service 2', items: [{ id: 'id2' }] }])
-				]);
-			});
-
-			it('should push empty list of projects when services disabled', function() {
-				scheduler.scheduleAbsolute(null, 300, function() {
-					settings.disabled = true;
-					controller.start(Rx.Observable.return([settings]));
-				});
-				var result = scheduler.startScheduler(function() {
-					return controller.activeProjects;
-				});
-
-				expect(result.messages).toHaveElements(onNext(300, []));
-			});
-
-		});
-
 		describe('registrations', function() {
 
 			beforeEach(function() {
