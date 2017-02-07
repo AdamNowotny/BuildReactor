@@ -44,17 +44,26 @@ define([
 	}
 
 	function startServices(settingsList) {
-		return loadServices(settingsList).selectMany(function(services) {
-			return Rx.Observable.fromArray(services)
-				.selectMany(function(service) {
-					return service.start();
-				});
-		}).toArray();
+		return loadServices(settingsList)
+			.selectMany((serviceList) => Rx.Observable.fromArray(serviceList)
+				.selectMany((service) => service.start()
+					.do((items) => {
+						events.push({
+							eventName: 'serviceStarted',
+							source: service.settings.name,
+							details: items
+						});
+					})
+				)).toArray();
 	}
 
 	function removeAll() {
-		services.forEach(function(service) {
+		services.forEach((service) => {
 			service.stop();
+			events.push({
+				eventName: 'serviceStopped',
+				source: service.settings.name
+			});
 		});
 		eventsSubscriptions.forEach(function(subscription) {
 			subscription.dispose();

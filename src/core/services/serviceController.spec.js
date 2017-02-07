@@ -24,6 +24,7 @@ function(controller, mixIn) {
 				items: []
 			};
 			this.activeProjects = new Rx.BehaviorSubject(this.initialActiveProjects);
+			this.settings = settings;
 		}
 		CustomBuildService.prototype.start = function() {};
 		CustomBuildService.prototype.stop = function() {};

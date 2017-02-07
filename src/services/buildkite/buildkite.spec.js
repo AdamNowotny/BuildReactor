@@ -73,32 +73,6 @@ describe('services/buildkite/buildkite', () => {
             );
         });
 
-        it('should push serviceStarted event', () => {
-            builds.getLatest.returns(Rx.Observable.return({
-                items: [{ id: 'id' }]
-            }));
-
-            scheduler.scheduleAbsolute(null, 300, () => {
-                service.start().subscribe();
-            });
-            scheduler.scheduleAbsolute(null, 500, () => {
-                service.stop();
-            });
-
-            const result = scheduler.startScheduler(() => service.events);
-
-            sinon.assert.calledWith(builds.getLatest, settings);
-            expect(result.messages).toHaveElements(
-                onNext(301, {
-                    eventName: 'serviceStarted',
-                    source: settings.name,
-                    details: [{
-                        id: 'id'
-                    }]
-                })
-            );
-        });
-
         it('should sort items by id', () => {
             builds.getLatest.returns(Rx.Observable.return({
                 items: [{ id: 'id2' }, { id: 'id1' }]
@@ -116,24 +90,9 @@ describe('services/buildkite/buildkite', () => {
             sinon.assert.calledWith(builds.getLatest, settings);
             expect(result.messages).toHaveElements(
                 onNext(301, {
-                    eventName: 'serviceStarted',
+                    eventName: 'serviceUpdated',
                     source: settings.name,
                     details: [{ id: 'id1' }, { id: 'id2' }]
-                })
-            );
-        });
-
-        it('should push serviceStopped event', () => {
-            scheduler.scheduleAbsolute(null, 300, () => {
-                service.stop();
-            });
-
-            const result = scheduler.startScheduler(() => service.events);
-
-            expect(result.messages).toHaveEqualElements(
-                onNext(300, {
-                    eventName: 'serviceStopped',
-                    source: settings.name
                 })
             );
         });
@@ -184,13 +143,6 @@ describe('services/buildkite/buildkite', () => {
                         source: settings.name,
                         details: []
                     }
-                },
-                {
-                    time: 2000,
-                    message: {
-                        eventName: 'serviceStopped',
-                        source: settings.name
-                    }
                 }
             ]);
         });
@@ -217,13 +169,6 @@ describe('services/buildkite/buildkite', () => {
                         eventName: 'serviceUpdateFailed',
                         source: settings.name,
                         details: null
-                    }
-                },
-                {
-                    time: 1000,
-                    message: {
-                        eventName: 'serviceStopped',
-                        source: settings.name
                     }
                 }
             ]);

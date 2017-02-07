@@ -51,20 +51,13 @@ class BuildKite {
         this.updatesSubscription = Rx.Observable.timer(0, interval, scheduler)
             .selectMany(() => this.updateAll(this.settings))
             .subscribe(this.updates);
-        return this.updates
-            .take(1)
-            .do((items) => this.events.onNext({
-                eventName: 'serviceStarted',
-                source: this.settings.name,
-                details: items
-            }));
+        return this.updates.take(1);
     }
 
     stop() {
         if (this.updatesSubscription) {
             this.updatesSubscription.dispose();
         }
-        this.events.onNext({ eventName: 'serviceStopped', source: this.settings.name });
     }
 
     availableBuilds() {

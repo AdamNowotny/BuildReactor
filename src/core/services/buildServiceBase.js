@@ -149,15 +149,6 @@ define([
 		var self = this;
 		var updateInterval = this.settings.updateInterval * 1000;
 		var updates = new Rx.Subject();
-		var initialize = updates
-			.take(1)
-			.do(function(states) {
-				self.events.onNext({
-					eventName: 'serviceStarted',
-					source: self.settings.name,
-					details: states
-				});
-			});
 		this.poolingSubscription = Rx.Observable.timer(0, updateInterval, this.scheduler)
 			.selectMany(function() {
 				return self.updateAll().toArray();
@@ -179,14 +170,13 @@ define([
 				return Rx.Observable.throw(ex);
 			})
 			.subscribe(updates);
-		return initialize;
+		return updates.take(1);
 	};
 
 	var stop = function() {
 		if (this.poolingSubscription && !this.poolingSubscription.isStopped) {
 			this.poolingSubscription.dispose();
 			this.poolingSubscription = null;
-			this.events.onNext({ eventName: 'serviceStopped', source: this.settings.name });
 		}
 	};
 
