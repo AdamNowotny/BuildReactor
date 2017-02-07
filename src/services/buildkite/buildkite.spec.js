@@ -195,6 +195,40 @@ describe('services/buildkite/buildkite', () => {
             ]);
         });
 
+        it('should push serviceUpdateFailed on exception', () => {
+            builds.getLatest.returns(Rx.Observable.throw({ message: 'some error' }));
+            scheduler.scheduleAbsolute(null, 1000, () => {
+                service.stop();
+            });
+
+            const events = [];
+            service.events.subscribe((message) => {
+                events.push({
+                    time: scheduler.clock,
+                    message
+                });
+            });
+            scheduler.startScheduler(() => service.start());
+
+            expect(events).toEqual([
+                {
+                    time: 101,
+                    message: {
+                        eventName: 'serviceUpdateFailed',
+                        source: settings.name,
+                        details: null
+                    }
+                },
+                {
+                    time: 1000,
+                    message: {
+                        eventName: 'serviceStopped',
+                        source: settings.name
+                    }
+                }
+            ]);
+        });
+
         it('should add serviceIcon and serviceName to buildUpdated', () => {
 
         });

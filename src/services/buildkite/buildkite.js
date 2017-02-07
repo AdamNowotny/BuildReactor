@@ -28,7 +28,21 @@ class BuildKite {
 
     updateAll(settings) {
         return builds.getLatest(settings)
-            .select((result) => result.items);
+            .select((result) => result.items)
+            .select((items) => sortBy('id', items))
+            .do((items) => this.events.onNext({
+                eventName: 'serviceUpdated',
+                source: this.settings.name,
+                details: items
+            }))
+            .catch((ex) => {
+                this.events.onNext({
+                    eventName: 'serviceUpdateFailed',
+                    source: this.settings.name,
+                    details: null
+                });
+                return Rx.Observable.return([]);
+            });
     }
 
     start() {
@@ -36,12 +50,6 @@ class BuildKite {
         const scheduler = this.scheduler;
         this.updatesSubscription = Rx.Observable.timer(0, interval, scheduler)
             .selectMany(() => this.updateAll(this.settings))
-            .select((items) => sortBy('id', items))
-            .do((items) => this.events.onNext({
-                eventName: 'serviceUpdated',
-                source: this.settings.name,
-                details: items
-            }))
             .subscribe(this.updates);
         return this.updates
             .take(1)
