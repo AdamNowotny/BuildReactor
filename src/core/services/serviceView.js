@@ -1,7 +1,7 @@
 import Rx from 'rx';
 import events from 'core/events';
 
-let rxServiceUpdated, rxServicesInit;
+let rxServiceUpdateFailed, rxServiceUpdated, rxServicesInit;
 
 const init = () => {
     const latestState = new Map();
@@ -10,7 +10,18 @@ const init = () => {
         pushStateUpdated();
     });
 
+    rxServiceUpdateFailed = events.getByName('serviceUpdateFailed').subscribe((ev) => {
+        const oldItems = latestState.get(ev.source).items;
+        const items = oldItems.map((item) => {
+            item.error = { message: 'Service update failed' };
+            return item;
+        });
+        latestState.set(ev.source, { name: ev.source, items });
+        pushStateUpdated();
+    });
+
     rxServicesInit = events.getByName('servicesInitializing').subscribe((ev) => {
+        // TODO: create initial state
         latestState.clear();
         pushStateUpdated();
     });
@@ -26,6 +37,7 @@ const init = () => {
 
 const dispose = () => {
     rxServiceUpdated.dispose();
+    rxServiceUpdateFailed.dispose();
     rxServicesInit.dispose();
 };
 
