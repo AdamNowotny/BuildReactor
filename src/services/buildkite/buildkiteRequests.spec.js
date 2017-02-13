@@ -38,7 +38,6 @@ describe('services/buildkite/buildkiteRequests', () => {
             const result = scheduler.startScheduler(() => buildkiteRequests.organizations());
 
             expect(result.messages).toHaveEqualElements(
-                onNext(200, []),
                 onCompleted(200)
             );
         });
@@ -53,7 +52,8 @@ describe('services/buildkite/buildkiteRequests', () => {
             const result = scheduler.startScheduler(() => buildkiteRequests.organizations());
 
             expect(result.messages).toHaveEqualElements(
-                onNext(200, [{ org: 1 }, { org: 2 }]),
+                onNext(200, { org: 1 }),
+                onNext(200, { org: 2 }),
                 onCompleted(200)
             );
         });
@@ -91,7 +91,6 @@ describe('services/buildkite/buildkiteRequests', () => {
             );
 
             expect(result.messages).toHaveEqualElements(
-                onNext(200, []),
                 onCompleted(200)
             );
         });
@@ -108,14 +107,15 @@ describe('services/buildkite/buildkiteRequests', () => {
             );
 
             expect(result.messages).toHaveEqualElements(
-                onNext(200, [{ org: 1 }, { org: 2 }]),
+                onNext(200, { org: 1 }),
+                onNext(200, { org: 2 }),
                 onCompleted(200)
             );
         });
 
     });
 
-    describe('builds', () => {
+    describe('latestBuild', () => {
 
         const org = 'organization';
         const pipeline = 'pipeline';
@@ -133,7 +133,7 @@ describe('services/buildkite/buildkiteRequests', () => {
                 return Rx.Observable.return({ body: [] });
             });
 
-            scheduler.startScheduler(() => buildkiteRequests.builds(org, pipeline, token));
+            scheduler.startScheduler(() => buildkiteRequests.latestBuild(org, pipeline, token));
 
             expect(request.get).toHaveBeenCalled();
         });
@@ -144,16 +144,15 @@ describe('services/buildkite/buildkiteRequests', () => {
             );
 
             const result = scheduler.startScheduler(() =>
-                buildkiteRequests.builds(org, pipeline, token)
+                buildkiteRequests.latestBuild(org, pipeline, token)
             );
 
             expect(result.messages).toHaveEqualElements(
-                onNext(200, []),
                 onCompleted(200)
             );
         });
 
-        it('should return sequence if builds present', () => {
+        it('should return first build if builds present', () => {
             spyOn(request, 'get').and.returnValue(Rx.Observable.return({
                 body: [
                     { build: 1 }, { build: 2 }
@@ -161,11 +160,68 @@ describe('services/buildkite/buildkiteRequests', () => {
             }));
 
             const result = scheduler.startScheduler(() =>
-                buildkiteRequests.builds(org, pipeline, token)
+                buildkiteRequests.latestBuild(org, pipeline, token)
             );
 
             expect(result.messages).toHaveEqualElements(
-                onNext(200, [{ build: 1 }, { build: 2 }]),
+                onNext(200, { build: 1 }),
+                onCompleted(200)
+            );
+        });
+
+    });
+
+    describe('latestFinishedBuild', () => {
+
+        const org = 'organization';
+        const pipeline = 'pipeline';
+
+        it('should pass request parameters', () => {
+            spyOn(request, 'get').and.callFake((data) => {
+                expect(data).toEqual({
+                    url: `https://api.buildkite.com/v2/organizations/${org}/pipelines/${pipeline}/builds`,
+                    query: {
+                        access_token: token,
+                        per_page: 1,
+                        branch: 'master',
+                        'state[]': ['failed', 'passed']
+                    }
+                });
+                return Rx.Observable.return({ body: [] });
+            });
+
+            scheduler.startScheduler(() => buildkiteRequests.latestFinishedBuild(org, pipeline, token));
+
+            expect(request.get).toHaveBeenCalled();
+        });
+
+        it('should return empty sequence if no builds', () => {
+            spyOn(request, 'get').and.returnValue(
+                Rx.Observable.return({ body: [] })
+            );
+
+            const result = scheduler.startScheduler(() =>
+                buildkiteRequests.latestFinishedBuild(org, pipeline, token)
+            );
+
+            expect(result.messages).toHaveEqualElements(
+                onCompleted(200)
+            );
+        });
+
+        it('should return first build if builds present', () => {
+            spyOn(request, 'get').and.returnValue(Rx.Observable.return({
+                body: [
+                    { build: 1 }, { build: 2 }
+                ]
+            }));
+
+            const result = scheduler.startScheduler(() =>
+                buildkiteRequests.latestFinishedBuild(org, pipeline, token)
+            );
+
+            expect(result.messages).toHaveEqualElements(
+                onNext(200, { build: 1 }),
                 onCompleted(200)
             );
         });

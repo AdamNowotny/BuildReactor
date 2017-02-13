@@ -6,15 +6,12 @@ import sortBy from 'common/sortBy';
 const getAll = (settings) => {
     const token = settings.token;
     return requests.organizations(token)
-        .selectMany((orgs) => Rx.Observable.fromArray(orgs)
-            .selectMany((org) => requests.pipelines(org.pipelines_url, token)
-                .selectMany(Rx.Observable.fromArray)
-                .select((pipeline) => parsePipeline(org, pipeline))
-            )
-            .toArray()
-            .select((items) => sortBy('id', items))
-            .select((items) => ({ items }))
-        );
+        .selectMany((org) => requests.pipelines(org.pipelines_url, token)
+            .select((pipeline) => parsePipeline(org, pipeline))
+        )
+        .toArray()
+        .select((items) => sortBy('id', items))
+        .select((items) => ({ items }));
 };
 
 const parsePipeline = (org, pipeline) => ({
@@ -29,9 +26,20 @@ const getLatest = (settings) => {
     const projects = settings.projects;
     return Rx.Observable.fromArray(projects)
         .select((project) => createKey(project))
-        .selectMany((key) => requests.builds(key.org, key.pipeline, token)
-            .selectMany((builds) => Rx.Observable.fromArray(builds))
-            .select((item) => parser.parseBuild(item, key)))
+        .selectMany((key) => requests.latestBuild(key.org, key.pipeline, token)
+            .select((latestBuild) => parser.parseBuild(latestBuild, key))
+            .selectMany((build) => {
+                if (build.isRunning || build.isWaiting) {
+                    return requests.latestFinishedBuild(key.org, key.pipeline, token)
+                        .select((finishedBuild) => parser.parseBuild(finishedBuild, key))
+                        .select((finishedBuild) => {
+                            build.isBroken = finishedBuild.isBroken;
+                            return build;
+                        });
+                } else {
+                    return Rx.Observable.return(build);
+                }
+            }))
         .reduce((result, x, idx, source) => result.concat(x), [])
         .select((items) => ({ items }));
 };

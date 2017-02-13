@@ -15,7 +15,8 @@ describe('services/buildkite/buildkiteBuilds', () => {
         scheduler = new Rx.TestScheduler();
         sinon.stub(requests, 'organizations');
         sinon.stub(requests, 'pipelines');
-        sinon.stub(requests, 'builds');
+        sinon.stub(requests, 'latestBuild');
+        sinon.stub(requests, 'latestFinishedBuild');
         sinon.stub(parser, 'parseBuild');
 
         settings = {
@@ -27,14 +28,15 @@ describe('services/buildkite/buildkiteBuilds', () => {
     afterEach(() => {
         requests.organizations.restore();
         requests.pipelines.restore();
-        requests.builds.restore();
+        requests.latestBuild.restore();
+        requests.latestFinishedBuild.restore();
         parser.parseBuild.restore();
     });
 
     describe('getAll', () => {
 
         it('should pass token to organizations', () => {
-            requests.organizations.returns(Rx.Observable.return([]));
+            requests.organizations.returns(Rx.Observable.empty());
 
             builds.getAll(settings);
 
@@ -43,7 +45,7 @@ describe('services/buildkite/buildkiteBuilds', () => {
         });
 
         it('should return empty items if no organizations', () => {
-            requests.organizations.returns(Rx.Observable.return([]));
+            requests.organizations.returns(Rx.Observable.empty());
 
             const result = scheduler.startScheduler(() => builds.getAll(settings));
 
@@ -54,10 +56,10 @@ describe('services/buildkite/buildkiteBuilds', () => {
         });
 
         it('should pass url and token to pipelines', () => {
-            requests.organizations.returns(Rx.Observable.return([
+            requests.organizations.returns(Rx.Observable.return(
                 { name: 'name', pipelines_url: 'url' }
-            ]));
-            requests.pipelines.returns(Rx.Observable.return([]));
+            ));
+            requests.pipelines.returns(Rx.Observable.empty());
 
             scheduler.startScheduler(() => builds.getAll(settings));
 
@@ -67,10 +69,10 @@ describe('services/buildkite/buildkiteBuilds', () => {
 
 
         it('should return sorted pipelines for organizations', () => {
-            requests.organizations.returns(Rx.Observable.return([
+            requests.organizations.returns(Rx.Observable.return(
                 { slug: 'org', name: 'org_name', pipelines_url: 'url' }
-            ]));
-            requests.pipelines.returns(Rx.Observable.return([
+            ));
+            requests.pipelines.returns(Rx.Observable.fromArray([
                 { slug: "slug2", name: 'pipeline2' },
                 { slug: "slug1", name: 'pipeline1' }
             ]));
@@ -102,17 +104,17 @@ describe('services/buildkite/buildkiteBuilds', () => {
     describe('getLatest', () => {
 
         it('should pass org, pipeline and token to builds', () => {
-            requests.builds.returns(Rx.Observable.return([]));
+            requests.latestBuild.returns(Rx.Observable.empty());
 
             scheduler.startScheduler(() => builds.getLatest(settings));
 
-            sinon.assert.calledTwice(requests.builds);
-            sinon.assert.calledWith(requests.builds, 'org', 'pipeline1', settings.token);
-            sinon.assert.calledWith(requests.builds, 'org', 'pipeline2', settings.token);
+            sinon.assert.calledTwice(requests.latestBuild);
+            sinon.assert.calledWith(requests.latestBuild, 'org', 'pipeline1', settings.token);
+            sinon.assert.calledWith(requests.latestBuild, 'org', 'pipeline2', settings.token);
         });
 
         it('should return empty items if no builds', () => {
-            requests.builds.returns(Rx.Observable.return([]));
+            requests.latestBuild.returns(Rx.Observable.empty());
 
             const result = scheduler.startScheduler(() => builds.getLatest(settings));
 
@@ -125,11 +127,11 @@ describe('services/buildkite/buildkiteBuilds', () => {
         it('should return parsed builds', () => {
             const build1 = { pipeline: { name: 'pipeline1' } };
             const build2 = { pipeline: { name: 'pipeline2' } };
-            requests.builds
+            requests.latestBuild
                 .withArgs('org', 'pipeline1', settings.token)
-                .returns(Rx.Observable.return([build1]))
+                .returns(Rx.Observable.return(build1))
                 .withArgs('org', 'pipeline2', settings.token)
-                .returns(Rx.Observable.return([build2]));
+                .returns(Rx.Observable.return(build2));
 
             parser.parseBuild
                 .withArgs(build1, { org: 'org', pipeline: 'pipeline1' })
@@ -145,6 +147,62 @@ describe('services/buildkite/buildkiteBuilds', () => {
             );
             expect(result.messages[0].value.value.items[0].name).toBe('pipeline1');
             expect(result.messages[0].value.value.items[1].name).toBe('pipeline2');
+        });
+
+        it('should return parsed running build', () => {
+            settings.projects = ['org/pipeline'];
+            const build = { state: 'running', pipeline: { name: 'pipeline' } };
+            const finishedBuild = { state: 'failed', pipeline: { name: 'pipeline' } };
+            requests.latestBuild.returns(Rx.Observable.return(build));
+            requests.latestFinishedBuild.returns(Rx.Observable.return(finishedBuild));
+
+            parser.parseBuild
+                .withArgs(build, { org: 'org', pipeline: 'pipeline' })
+                .returns({ isRunning: true, isBroken: false, id: 'org/pipeline', name: 'pipeline' })
+                .withArgs(finishedBuild, { org: 'org', pipeline: 'pipeline' })
+                .returns({ isRunning: false, isBroken: true, id: 'org/pipeline', name: 'pipeline' });
+
+            const result = scheduler.startScheduler(() => builds.getLatest(settings));
+
+            expect(result.messages).toHaveEqualElements(
+                onNext(200, {
+                    items: [{
+                        isRunning: true,
+                        isBroken: true,
+                        id: 'org/pipeline',
+                        name: 'pipeline'
+                    }]
+                }),
+                onCompleted(200)
+            );
+        });
+
+        it('should return parsed waiting build', () => {
+            settings.projects = ['org/pipeline'];
+            const build = { state: 'scheduled', pipeline: { name: 'pipeline' } };
+            const finishedBuild = { state: 'failed', pipeline: { name: 'pipeline' } };
+            requests.latestBuild.returns(Rx.Observable.return(build));
+            requests.latestFinishedBuild.returns(Rx.Observable.return(finishedBuild));
+
+            parser.parseBuild
+                .withArgs(build, { org: 'org', pipeline: 'pipeline' })
+                .returns({ isWaiting: true, isBroken: false, id: 'org/pipeline', name: 'pipeline' })
+                .withArgs(finishedBuild, { org: 'org', pipeline: 'pipeline' })
+                .returns({ isWaiting: false, isBroken: true, id: 'org/pipeline', name: 'pipeline' });
+
+            const result = scheduler.startScheduler(() => builds.getLatest(settings));
+
+            expect(result.messages).toHaveEqualElements(
+                onNext(200, {
+                    items: [{
+                        isWaiting: true,
+                        isBroken: true,
+                        id: 'org/pipeline',
+                        name: 'pipeline'
+                    }]
+                }),
+                onCompleted(200)
+            );
         });
 
     });
