@@ -1,7 +1,6 @@
 import 'test/rxHelpers';
 import Rx from 'rx/dist/rx.testing';
 import builds from 'services/buildkite/buildkiteBuilds';
-import parser from 'services/buildkite/parser';
 import requests from 'services/buildkite/buildkiteRequests';
 import sinon from 'sinon';
 
@@ -17,11 +16,10 @@ describe('services/buildkite/buildkiteBuilds', () => {
         sinon.stub(requests, 'pipelines');
         sinon.stub(requests, 'latestBuild');
         sinon.stub(requests, 'latestFinishedBuild');
-        sinon.stub(parser, 'parseBuild');
 
         settings = {
             token: 'token',
-            projects: ['org/pipeline1', 'org/pipeline2']
+            projects: ['org/pipeline']
         };
     });
 
@@ -30,7 +28,6 @@ describe('services/buildkite/buildkiteBuilds', () => {
         requests.pipelines.restore();
         requests.latestBuild.restore();
         requests.latestFinishedBuild.restore();
-        parser.parseBuild.restore();
     });
 
     describe('getAll', () => {
@@ -104,6 +101,7 @@ describe('services/buildkite/buildkiteBuilds', () => {
     describe('getLatest', () => {
 
         it('should pass org, pipeline and token to builds', () => {
+            settings.projects = ['org/pipeline1', 'org/pipeline2'];
             requests.latestBuild.returns(Rx.Observable.empty());
 
             scheduler.startScheduler(() => builds.getLatest(settings));
@@ -125,19 +123,20 @@ describe('services/buildkite/buildkiteBuilds', () => {
         });
 
         it('should return parsed builds', () => {
-            const build1 = { pipeline: { name: 'pipeline1' } };
-            const build2 = { pipeline: { name: 'pipeline2' } };
+            settings.projects = ['org/pipeline1', 'org/pipeline2'];
+            const build1 = {
+                web_url: 'https://buildkite.com/org/pipeline1/builds/15',
+                pipeline: { name: 'pipeline1' },
+            };
+            const build2 = {
+                web_url: 'https://buildkite.com/org/pipeline2/builds/2',
+                pipeline: { name: 'pipeline2' },
+            };
             requests.latestBuild
                 .withArgs('org', 'pipeline1', settings.token)
                 .returns(Rx.Observable.return(build1))
                 .withArgs('org', 'pipeline2', settings.token)
                 .returns(Rx.Observable.return(build2));
-
-            parser.parseBuild
-                .withArgs(build1, { org: 'org', pipeline: 'pipeline1' })
-                .returns({ id: 'org/pipeline1', name: 'pipeline1' })
-                .withArgs(build2, { org: 'org', pipeline: 'pipeline2' })
-                .returns({ id: 'org/pipeline2', name: 'pipeline2' });
 
             const result = scheduler.startScheduler(() => builds.getLatest(settings));
 
@@ -145,64 +144,104 @@ describe('services/buildkite/buildkiteBuilds', () => {
                 onNext(200),
                 onCompleted(200)
             );
-            expect(result.messages[0].value.value.items[0].name).toBe('pipeline1');
-            expect(result.messages[0].value.value.items[1].name).toBe('pipeline2');
+            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
+                id: 'org/pipeline1',
+                name: 'pipeline1',
+                group: 'org',
+                webUrl: 'https://buildkite.com/org/pipeline1/builds/15',
+                isDisabled: false,
+                isBroken: false,
+                isRunning: false
+            }));
+            expect(result.messages[0].value.value.items[1]).toEqual(jasmine.objectContaining({
+                id: 'org/pipeline2',
+                name: 'pipeline2',
+                group: 'org',
+                webUrl: 'https://buildkite.com/org/pipeline2/builds/2',
+                isDisabled: false,
+                isBroken: false,
+                isRunning: false
+            }));
         });
 
-        it('should return parsed running build', () => {
-            settings.projects = ['org/pipeline'];
-            const build = { state: 'running', pipeline: { name: 'pipeline' } };
-            const finishedBuild = { state: 'failed', pipeline: { name: 'pipeline' } };
-            requests.latestBuild.returns(Rx.Observable.return(build));
-            requests.latestFinishedBuild.returns(Rx.Observable.return(finishedBuild));
-
-            parser.parseBuild
-                .withArgs(build, { org: 'org', pipeline: 'pipeline' })
-                .returns({ isRunning: true, isBroken: false, id: 'org/pipeline', name: 'pipeline' })
-                .withArgs(finishedBuild, { org: 'org', pipeline: 'pipeline' })
-                .returns({ isRunning: false, isBroken: true, id: 'org/pipeline', name: 'pipeline' });
+        it('should return failed build', () => {
+            requests.latestBuild.returns(Rx.Observable.return({ state: 'failed' }));
 
             const result = scheduler.startScheduler(() => builds.getLatest(settings));
 
-            expect(result.messages).toHaveEqualElements(
-                onNext(200, {
-                    items: [{
-                        isRunning: true,
-                        isBroken: true,
-                        id: 'org/pipeline',
-                        name: 'pipeline'
-                    }]
-                }),
-                onCompleted(200)
-            );
+            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
+                isBroken: true
+            }));
         });
 
-        it('should return parsed waiting build', () => {
-            settings.projects = ['org/pipeline'];
-            const build = { state: 'scheduled', pipeline: { name: 'pipeline' } };
-            const finishedBuild = { state: 'failed', pipeline: { name: 'pipeline' } };
-            requests.latestBuild.returns(Rx.Observable.return(build));
-            requests.latestFinishedBuild.returns(Rx.Observable.return(finishedBuild));
-
-            parser.parseBuild
-                .withArgs(build, { org: 'org', pipeline: 'pipeline' })
-                .returns({ isWaiting: true, isBroken: false, id: 'org/pipeline', name: 'pipeline' })
-                .withArgs(finishedBuild, { org: 'org', pipeline: 'pipeline' })
-                .returns({ isWaiting: false, isBroken: true, id: 'org/pipeline', name: 'pipeline' });
+        it('should return running build', () => {
+            requests.latestBuild.returns(Rx.Observable.return({ state: 'running' }));
+            requests.latestFinishedBuild.returns(Rx.Observable.return({ state: 'failed' }));
 
             const result = scheduler.startScheduler(() => builds.getLatest(settings));
 
-            expect(result.messages).toHaveEqualElements(
-                onNext(200, {
-                    items: [{
-                        isWaiting: true,
-                        isBroken: true,
-                        id: 'org/pipeline',
-                        name: 'pipeline'
-                    }]
-                }),
-                onCompleted(200)
-            );
+            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
+                isBroken: true,
+                isRunning: true
+            }));
+        });
+
+        it('should return waiting build', () => {
+            requests.latestBuild.returns(Rx.Observable.return({ state: 'scheduled' }));
+            requests.latestFinishedBuild.returns(Rx.Observable.return({ state: 'failed' }));
+
+            const result = scheduler.startScheduler(() => builds.getLatest(settings));
+
+            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
+                isBroken: true,
+                isRunning: false,
+                isWaiting: true
+            }));
+        });
+
+        it('should parse canceled as tags', () => {
+            requests.latestBuild.returns(Rx.Observable.return({ state: 'canceled' }));
+            requests.latestFinishedBuild.returns(Rx.Observable.return({ state: 'passed' }));
+
+            const result = scheduler.startScheduler(() => builds.getLatest(settings));
+
+            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
+                tags: [{ name: 'Canceled', type: 'warning' }]
+            }));
+        });
+
+        it('should parse canceling as tags', () => {
+            requests.latestBuild.returns(Rx.Observable.return({ state: 'canceling' }));
+            requests.latestFinishedBuild.returns(Rx.Observable.return({ state: 'failed' }));
+
+            const result = scheduler.startScheduler(() => builds.getLatest(settings));
+
+            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
+                tags: [{ name: 'Canceled', type: 'warning' }]
+            }));
+        });
+
+        it('should parse not_run as tags', () => {
+            requests.latestBuild.returns(Rx.Observable.return({ state: 'not_run' }));
+
+            const result = scheduler.startScheduler(() => builds.getLatest(settings));
+
+            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
+                tags: [{ name: 'Not built', type: 'warning' }]
+            }));
+        });
+
+        it('should parse changes', () => {
+            requests.latestBuild.returns(Rx.Observable.return({
+                message: 'message',
+                creator: { name: 'creator name' }
+            }));
+
+            const result = scheduler.startScheduler(() => builds.getLatest(settings));
+
+            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
+                changes: [{ name: 'creator name', message: 'message' }]
+            }));
         });
 
     });
