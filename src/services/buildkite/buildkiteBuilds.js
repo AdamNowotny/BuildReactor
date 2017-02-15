@@ -33,7 +33,9 @@ const getLatest = (settings) => {
                 } else {
                     return Rx.Observable.return(parseBuild(latestBuild, key));
                 }
-            }))
+            })
+            .catch((ex) => Rx.Observable.return(createError(key, ex)))
+        )
         .reduce((result, x, idx, source) => result.concat(x), [])
         .select((items) => ({ items }));
 };
@@ -41,10 +43,20 @@ const getLatest = (settings) => {
 const createKey = (stringId) => {
     const idArray = stringId.split('/');
     return {
+        id: stringId,
         org: idArray[0],
         pipeline: idArray[1]
     };
 };
+
+const createError = (key, ex) => ({
+    id: key.id,
+    name: key.pipeline,
+    group: key.org,
+    error: {
+        message: ex.message
+    }
+});
 
 const parseBuild = (latestBuild, key, finishedBuild) => {
     const org = key.org;

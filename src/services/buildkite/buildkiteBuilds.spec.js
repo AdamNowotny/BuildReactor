@@ -164,6 +164,41 @@ describe('services/buildkite/buildkiteBuilds', () => {
             }));
         });
 
+        it('should return error if updating build fails', () => {
+            settings.projects = ['org/pipeline1', 'org/pipeline2'];
+            const build2 = {
+                web_url: 'https://buildkite.com/org/pipeline2/builds/2',
+                pipeline: { name: 'pipeline2' },
+            };
+            requests.latestBuild
+                .withArgs('org', 'pipeline1', settings.token)
+                .returns(Rx.Observable.throw({ message: 'error message' }))
+                .withArgs('org', 'pipeline2', settings.token)
+                .returns(Rx.Observable.return(build2));
+
+            const result = scheduler.startScheduler(() => builds.getLatest(settings));
+
+            expect(result.messages).toHaveEqualElements(
+                onNext(200),
+                onCompleted(200)
+            );
+            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
+                id: 'org/pipeline1',
+                name: 'pipeline1',
+                group: 'org',
+                error: { message: 'error message' }
+            }));
+            expect(result.messages[0].value.value.items[1]).toEqual(jasmine.objectContaining({
+                id: 'org/pipeline2',
+                name: 'pipeline2',
+                group: 'org',
+                webUrl: 'https://buildkite.com/org/pipeline2/builds/2',
+                isDisabled: false,
+                isBroken: false,
+                isRunning: false
+            }));
+        });
+
         it('should return failed build', () => {
             requests.latestBuild.returns(Rx.Observable.return({ state: 'failed' }));
 
