@@ -19,7 +19,7 @@ describe('build', () => {
 
 	describe('commitsVisible', () => {
 
-		it('show commits when build green', () => {
+		it('do not show commits when build green', () => {
 			core.views.onNext({ showCommitsWhenGreen: false });
 
 			scope.build = {
@@ -49,6 +49,18 @@ describe('build', () => {
 			scope.build = {
 				isBroken: false,
 				isRunning: true
+			};
+			scope.$digest();
+
+			expect(scope.commitsVisible).toBe(true);
+		});
+
+		it('show commits when build waiting', () => {
+			core.views.onNext({ showCommitsWhenGreen: false });
+
+			scope.build = {
+				isBroken: false,
+				isWaiting: true
 			};
 			scope.$digest();
 

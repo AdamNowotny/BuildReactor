@@ -32,7 +32,9 @@ module.directive('build', ($interval) => ({
 				$scope.viewConfig = config;
 				$scope.commitsVisible = true;
 				if ($scope.build && !config.showCommitsWhenGreen) {
-					$scope.commitsVisible = $scope.build.isBroken || $scope.build.isRunning;
+					$scope.commitsVisible = Boolean($scope.build.isBroken
+						|| $scope.build.isRunning
+						|| $scope.build.isWaiting);
 				}
 			});
 		});
