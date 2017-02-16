@@ -71,14 +71,43 @@ describe('core/services/serviceView', () => {
 		servicesInitializingSubject.onNext({
 			eventName: 'servicesInitializing',
 			source: 'serviceController',
-			details: []
+			details: [{
+				name: 'service1',
+				projects: ['project1', 'project2']
+			}]
 		});
 
 		sinon.assert.calledOnce(events.push);
 		sinon.assert.calledWith(events.push, {
 			eventName: 'stateUpdated',
 			source: 'serviceView',
-			details: []
+			details: [{
+				name: 'service1',
+				items: [
+					{
+						id: 'project1',
+						name: 'project1',
+						group: null,
+						webUrl: null,
+						isBroken: false,
+						isRunning: false,
+						isDisabled: false,
+						tags: [],
+						changes: []
+					},
+					{
+						id: 'project2',
+						name: 'project2',
+						group: null,
+						webUrl: null,
+						isBroken: false,
+						isRunning: false,
+						isDisabled: false,
+						tags: [],
+						changes: []
+					}
+				]
+			}]
 		});
 	});
 

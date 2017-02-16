@@ -21,8 +21,11 @@ const init = () => {
     });
 
     rxServicesInit = events.getByName('servicesInitializing').subscribe((ev) => {
-        // TODO: create initial state
         latestState.clear();
+        ev.details.forEach((settings) => {
+            const initialState = createInitialStates(settings);
+            latestState.set(settings.name, { name: settings.name, items: initialState });
+        });
         pushStateUpdated();
     });
 
@@ -41,22 +44,18 @@ const dispose = () => {
     rxServicesInit.dispose();
 };
 
-// [
-//   name,
-//   items: [{
-//     id: id,
-//     name: id,
-//     group: null,
-//     webUrl: null,
-//     isBroken: false,
-//     isRunning: false,
-//     isDisabled: false,
-//     serviceName: settings.name,
-//     serviceIcon: serviceInfo.icon,
-//     tags: [],
-//     changes: []
-//   }]
-// ]
+const createInitialStates = (settings) => settings.projects.map((id) => ({
+    id,
+    name: id,
+    group: null,
+    webUrl: null,
+    isBroken: false,
+    isRunning: false,
+    isDisabled: false,
+    tags: [],
+    changes: []
+}));
+
 export default {
     init,
     dispose

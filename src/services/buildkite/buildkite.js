@@ -7,7 +7,6 @@ class BuildKite {
         this.settings = settings;
         this.events = new Rx.Subject();
         this.scheduler = scheduler;
-        this.updates = new Rx.Subject();
     }
 
     static settings() {
@@ -46,12 +45,12 @@ class BuildKite {
     }
 
     start() {
+        const updates = new Rx.Subject();
         const interval = this.settings.updateInterval * 1000;
-        const scheduler = this.scheduler;
-        this.updatesSubscription = Rx.Observable.timer(0, interval, scheduler)
+        this.updatesSubscription = Rx.Observable.timer(0, interval, this.scheduler)
             .selectMany(() => this.updateAll(this.settings))
-            .subscribe(this.updates);
-        return this.updates.take(1);
+            .subscribe(updates);
+        return updates.take(1);
     }
 
     stop() {
