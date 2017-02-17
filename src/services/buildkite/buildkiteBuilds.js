@@ -53,9 +53,7 @@ const createError = (key, ex) => ({
     id: key.id,
     name: key.pipeline,
     group: key.org,
-    error: {
-        message: ex.message
-    }
+    error: ex
 });
 
 const parseBuild = (latestBuild, key, finishedBuild) => {
