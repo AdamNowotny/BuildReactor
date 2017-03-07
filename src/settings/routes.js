@@ -40,7 +40,7 @@ export default app.config(($routeProvider) => {
 }).config([
 	'$compileProvider', function($compileProvider)	{
 		$compileProvider
-			.aHrefSanitizationWhitelist(/^\s*(https?|chrome-extension):/)
-			.imgSrcSanitizationWhitelist(/^\s*(chrome-extension):/);
+			.aHrefSanitizationWhitelist(/^\s*(https?|chrome-extension|moz-extension):/)
+			.imgSrcSanitizationWhitelist(/^\s*(chrome-extension|moz-extension):/);
 	}
 ]);
