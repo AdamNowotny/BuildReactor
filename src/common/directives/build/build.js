@@ -27,7 +27,7 @@ module.directive('build', ($interval) => ({
 		};
 
 
-		core.views.subscribe((config) => {
+		let rxViews = core.views.subscribe((config) => {
 			$scope.$evalAsync(() => {
 				$scope.viewConfig = config;
 				$scope.commitsVisible = true;
@@ -39,5 +39,9 @@ module.directive('build', ($interval) => ({
 			});
 		});
 
+		$scope.$on("$destroy", () => {
+			rxViews.dispose();
+			rxViews = null;
+		});
 	}
 }));

@@ -47,10 +47,15 @@ define([
 					return config.fullWidthGroups || items.length < config.columns;
 				};
 
-				core.views.subscribe(function(config) {
+				let rxViews = core.views.subscribe(function(config) {
 					$scope.$evalAsync(function() {
 						$scope.viewConfig = config;
 					});
+				});
+
+				$scope.$on("$destroy", () => {
+					rxViews.dispose();
+					rxViews = null;
 				});
 
 			}

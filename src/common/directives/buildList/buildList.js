@@ -12,21 +12,27 @@ define([
 		return {
 			restrict: 'E',
 			scope: {},
-			templateUrl: templateUrl,
+			templateUrl,
 			replace: true,
-			controller: function($scope, $element, $attrs, $transclude) {
+			controller($scope, $element, $attrs, $transclude) {
 
 				$scope.start = function() {
 					$scope.services = [];
-					core.activeProjects.subscribe(function(services) {
-						$scope.$evalAsync(function() {
+					let rxActiveProjects = core.activeProjects.subscribe((services) => {
+						$scope.$evalAsync(() => {
 							$scope.services = services;
 						});
 					});
+
+					$scope.$on("$destroy", () => {
+						rxActiveProjects.dispose();
+						rxActiveProjects = null;
+					});
+
 				};
 
 			},
-			link: function(scope, element, attrs, controller) {
+			link(scope, element, attrs, controller) {
 				scope.start();
 			}
 		};
