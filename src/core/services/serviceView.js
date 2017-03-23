@@ -18,7 +18,7 @@ const init = () => {
         return newItems.map((newBuild) => {
             const oldBuild = oldItems
                 .filter((build) => build.id === newBuild.id)[0];
-            return Object.assign({}, oldBuild, newBuild);
+            return Object.assign({}, oldBuild, { error: null }, newBuild);
         });
     };
 

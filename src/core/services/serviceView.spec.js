@@ -43,7 +43,8 @@ describe('core/services/serviceView', () => {
                 details: [{
                     name: 'service1',
                     items: [{
-                        id: 'abc'
+                        id: 'abc',
+                        error: null
                     }]
                 }]
             });
@@ -73,7 +74,8 @@ describe('core/services/serviceView', () => {
                 source: 'service1',
                 details: {
                     id: 'abc',
-                    isBroken: true
+                    isBroken: true,
+                    error: null
                 }
             });
         });
@@ -102,7 +104,8 @@ describe('core/services/serviceView', () => {
                 source: 'service1',
                 details: {
                     id: 'abc',
-                    isBroken: false
+                    isBroken: false,
+                    error: null
                 }
             });
         });
@@ -179,17 +182,17 @@ describe('core/services/serviceView', () => {
                 source: 'service1',
                 details: [{
                     id: 'abc',
-                    error: null
+                    isBroken: true
                 }]
             });
 
-            sinon.assert.calledThrice(events.push);
-            sinon.assert.calledWith(events.push, {
+            expect(events.push.lastCall.args[0]).toEqual({
                 eventName: 'buildOnline',
                 source: 'service1',
                 details: {
                     id: 'abc',
-                    error: null
+                    error: null,
+                    isBroken: true
                 }
             });
         });
@@ -250,6 +253,7 @@ describe('core/services/serviceView', () => {
                 details: {
                     id: 'abc',
                     isBroken: true,
+                    error: null,
                     changes: [
                         {
                             name: 'name1',
