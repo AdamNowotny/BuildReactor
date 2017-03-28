@@ -1,10 +1,10 @@
 /* global chrome: false */
 define(['rx'], (Rx) => {
-	
+
 	function sendMessage(message, callback) {
-		return callback
-			? chrome.runtime.sendMessage(message, callback)
-			: chrome.runtime.sendMessage(message);
+		return callback ?
+			chrome.runtime.sendMessage(message, callback) :
+			chrome.runtime.sendMessage(message);
 	}
 
 	function addMessageListener(onMessage) {

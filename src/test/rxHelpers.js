@@ -57,9 +57,9 @@ function areAllElementsEqual(expected, actual) {
             const expectedString = JSON.stringify(expected[i].value.value || expected[i].value.error);
             result = {
                 pass: false,
-                message: 'Element not equal.\n'
-                    + `Actual  : (@${actual[i].time}) ${actualString},\n`
-                    + `Expected: (@${expected[i].time}) ${expectedString}`
+                message: 'Element not equal.\n' +
+                    `Actual  : (@${actual[i].time}) ${actualString},\n` +
+                    `Expected: (@${expected[i].time}) ${expectedString}`
             };
         }
     }

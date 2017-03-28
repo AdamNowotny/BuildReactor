@@ -124,8 +124,7 @@ const createUniqueChanges = (allChanges) => {
             changes.push(value);
         }
         return changes;
-    }, [])
-    : [];
+    }, []) : [];
 };
 
 export default {

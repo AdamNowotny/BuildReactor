@@ -51,8 +51,7 @@ define([
 	};
 
 	var isErrored = function(build) {
-		return build.state === STATE.FINISHED
-			&& build.result === RESULT.ERRORED;
+		return build.state === STATE.FINISHED && build.result === RESULT.ERRORED;
 	};
 
 	var createBuild = function(self, response) {

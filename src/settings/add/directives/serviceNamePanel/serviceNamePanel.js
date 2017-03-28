@@ -16,9 +16,9 @@ export default app.directive('serviceNamePanel', () => ({
 			};
 
 			$scope.$watch('serviceName', (name) => {
-				$scope.exists = $scope.services
-				? $scope.services.filter((service) => service.name === name).length > 0
-				:	false;
+				$scope.exists = $scope.services ?
+				$scope.services.filter((service) => service.name === name).length > 0 :
+				false;
 			});
 
 			core.configurations.subscribe((configs) => {

@@ -70,9 +70,11 @@ const parseBuild = (latestBuild, key, finishedBuild) => {
         isWaiting: latestBuild.state === 'scheduled',
         isDisabled: false,
         tags: createTags(latestBuild),
-        changes: latestBuild.creator
-            ? [{ name: latestBuild.creator.name, message: latestBuild.message }]
-            : []
+        changes: latestBuild.creator ?
+            [{
+                name: latestBuild.creator.name,
+                message: latestBuild.message
+            }] : []
     };
 };
 
