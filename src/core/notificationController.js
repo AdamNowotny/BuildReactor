@@ -19,14 +19,14 @@ function init(options) {
 
 	function createBuildBrokenMessage(event) {
 		if (tags.contains('Unstable', event.details.tags)) {
-			return createNotificationInfo(event.details, 'Unstable, broken', options.timeout);
+			return createNotificationInfo(event, 'Unstable, broken', options.timeout);
 		} else {
-			return createNotificationInfo(event.details, 'Broken');
+			return createNotificationInfo(event, 'Broken');
 		}
 	}
 
 	function createBuildFixedMessage(event) {
-		return createNotificationInfo(event.details, 'Fixed', options.timeout);
+		return createNotificationInfo(event, 'Fixed', options.timeout);
 	}
 
 	function isBuildEnabled(event) {
@@ -45,18 +45,18 @@ function init(options) {
 		});
 	}
 
-	function createNotificationInfo(eventDetails, message, timeout) {
+	function createNotificationInfo(event, message, timeout) {
 
 		function createId(eventDetails) {
 			return eventDetails.group ?
-				`${eventDetails.serviceName}_${eventDetails.group}_${eventDetails.name}` :
-				`${eventDetails.serviceName}_${eventDetails.name}`;
+				`${event.source}_${eventDetails.group}_${eventDetails.name}` :
+				`${event.source}_${eventDetails.name}`;
 		}
 
 		function createTitle(eventDetails) {
 			return eventDetails.group ?
-				`${eventDetails.group} / ${eventDetails.name} (${eventDetails.serviceName})` :
-				`${eventDetails.name} (${eventDetails.serviceName})`;
+				`${eventDetails.group} / ${eventDetails.name} (${event.source})` :
+				`${eventDetails.name} (${event.source})`;
 		}
 
 		function createChangesMessage(changes) {
@@ -72,12 +72,12 @@ function init(options) {
 		}
 
 		var info = {
-			id: createId(eventDetails),
-			title: createTitle(eventDetails),
-			url: eventDetails.webUrl,
-			icon: eventDetails.serviceIcon,
+			id: createId(event.details),
+			title: createTitle(event.details),
+			url: event.details.webUrl,
+			icon: event.details.serviceIcon,
 			timeout: timeout ? timeout : undefined,
-			text:  createChangesMessage(eventDetails.changes)
+			text: createChangesMessage(event.details.changes)
 		};
 		return info;
 	}
