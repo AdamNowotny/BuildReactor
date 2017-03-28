@@ -36,16 +36,16 @@ const getLatest = (settings) => {
             })
             .catch((ex) => Rx.Observable.return(createError(key, ex)))
         )
-        .reduce((result, x, idx, source) => result.concat(x), [])
+        .toArray()
         .select((items) => ({ items }));
 };
 
 const createKey = (stringId) => {
-    const idArray = stringId.split('/');
+    const [org, pipeline] = stringId.split('/');
     return {
         id: stringId,
-        org: idArray[0],
-        pipeline: idArray[1]
+        org,
+        pipeline
     };
 };
 

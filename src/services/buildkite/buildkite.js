@@ -2,6 +2,11 @@ import Rx from 'rx';
 import builds from 'services/buildkite/buildkiteBuilds';
 import sortBy from 'common/sortBy';
 
+// requires API token with permissions:
+// - read_builds
+// - read_organizations
+// - read_pipelines
+
 class BuildKite {
     constructor(settings, scheduler) {
         this.settings = settings;

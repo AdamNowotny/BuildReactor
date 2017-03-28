@@ -81,10 +81,12 @@ const init = () => {
     rxServicesInit = events.getByName('servicesInitializing').subscribe((ev) => {
         // TODO: suspend triggering buildBroken and buildFixed until servicesInitialized
         latestState.clear();
-        ev.details.forEach((settings) => {
-            const initialState = createInitialStates(settings);
-            latestState.set(settings.name, { name: settings.name, items: initialState });
-        });
+        ev.details
+            .filter((settings) => !settings.disabled)
+            .forEach((settings) => {
+                const initialState = createInitialStates(settings);
+                latestState.set(settings.name, { name: settings.name, items: initialState });
+            });
         pushStateUpdated();
     });
 

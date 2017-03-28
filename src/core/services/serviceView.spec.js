@@ -295,49 +295,70 @@ describe('core/services/serviceView', () => {
         });
     });
 
-    it('should reset state on servicesInitializing', () => {
-        servicesInitializingSubject.onNext({
-            eventName: 'servicesInitializing',
-            source: 'serviceController',
-            details: [{
-                name: 'service1',
-                projects: ['project1', 'project2']
-            }]
+    describe('servicesInitializing', () => {
+
+        it('should reset state on servicesInitializing', () => {
+            servicesInitializingSubject.onNext({
+                eventName: 'servicesInitializing',
+                source: 'serviceController',
+                details: [{
+                    name: 'service1',
+                    projects: ['project1', 'project2']
+                }]
+            });
+
+            sinon.assert.calledOnce(events.push);
+            sinon.assert.calledWith(events.push, {
+                eventName: 'stateUpdated',
+                source: 'serviceView',
+                details: [{
+                    name: 'service1',
+                    items: [{
+                            id: 'project1',
+                            name: 'project1',
+                            group: null,
+                            webUrl: null,
+                            isBroken: false,
+                            isRunning: false,
+                            isDisabled: false,
+                            tags: [],
+                            changes: [],
+                            error: null
+                        },
+                        {
+                            id: 'project2',
+                            name: 'project2',
+                            group: null,
+                            webUrl: null,
+                            isBroken: false,
+                            isRunning: false,
+                            isDisabled: false,
+                            tags: [],
+                            changes: [],
+                            error: null
+                        }
+                    ]
+                }]
+            });
         });
 
-        sinon.assert.calledOnce(events.push);
-        sinon.assert.calledWith(events.push, {
-            eventName: 'stateUpdated',
-            source: 'serviceView',
-            details: [{
-                name: 'service1',
-                items: [{
-                        id: 'project1',
-                        name: 'project1',
-                        group: null,
-                        webUrl: null,
-                        isBroken: false,
-                        isRunning: false,
-                        isDisabled: false,
-                        tags: [],
-                        changes: [],
-                        error: null
-                    },
-                    {
-                        id: 'project2',
-                        name: 'project2',
-                        group: null,
-                        webUrl: null,
-                        isBroken: false,
-                        isRunning: false,
-                        isDisabled: false,
-                        tags: [],
-                        changes: [],
-                        error: null
-                    }
-                ]
-            }]
+        it('should ignore disabled services on servicesInitializing', () => {
+            servicesInitializingSubject.onNext({
+                eventName: 'servicesInitializing',
+                source: 'serviceController',
+                details: [{
+                    name: 'service1',
+                    projects: ['project1', 'project2'],
+                    disabled: true
+                }]
+            });
+
+            sinon.assert.calledOnce(events.push);
+            sinon.assert.calledWith(events.push, {
+                eventName: 'stateUpdated',
+                source: 'serviceView',
+                details: []
+            });
         });
     });
-
 });
