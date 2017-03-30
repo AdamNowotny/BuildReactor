@@ -1,4 +1,5 @@
 import Rx from 'rx/dist/rx.testing';
+import eventProcessor from 'core/services/buildEventProcessor';
 import events from 'core/events';
 import serviceView from 'core/services/serviceView';
 import sinon from 'sinon';
@@ -12,6 +13,7 @@ describe('core/services/serviceView', () => {
     beforeEach(() => {
         sinon.stub(events, 'getByName');
         sinon.stub(events, 'push');
+        sinon.stub(eventProcessor, 'process');
         events.getByName.onCall(0).returns(serviceUpdatedSubject);
         events.getByName.onCall(1).returns(serviceUpdateFailedSubject);
         events.getByName.onCall(2).returns(servicesInitializingSubject);
@@ -22,6 +24,7 @@ describe('core/services/serviceView', () => {
     afterEach(() => {
         serviceView.dispose();
         events.push.restore();
+        eventProcessor.process.restore();
         events.getByName.restore();
     });
 
@@ -50,15 +53,7 @@ describe('core/services/serviceView', () => {
             });
         });
 
-        it('should push buildBroken', () => {
-            serviceUpdatedSubject.onNext({
-                eventName: 'serviceUpdated',
-                source: 'service1',
-                details: [{
-                    id: 'abc',
-                    isBroken: false
-                }]
-            });
+        it('should process build events when old state unknown', () => {
             serviceUpdatedSubject.onNext({
                 eventName: 'serviceUpdated',
                 source: 'service1',
@@ -68,78 +63,23 @@ describe('core/services/serviceView', () => {
                 }]
             });
 
-            sinon.assert.calledThrice(events.push);
-            sinon.assert.calledWith(events.push, {
-                eventName: 'buildBroken',
-                source: 'service1',
-                details: {
-                    id: 'abc',
-                    isBroken: true,
-                    error: null
+            sinon.assert.calledWith(eventProcessor.process, {
+                oldState: {
+                    name: 'service1',
+                    items: []
+                },
+                newState: {
+                    name: 'service1',
+                    items: [{
+                        id: 'abc',
+                        isBroken: true,
+                        error: null
+                    }]
                 }
             });
         });
 
-        it('should push buildFixed', () => {
-            serviceUpdatedSubject.onNext({
-                eventName: 'serviceUpdated',
-                source: 'service1',
-                details: [{
-                    id: 'abc',
-                    isBroken: true
-                }]
-            });
-            serviceUpdatedSubject.onNext({
-                eventName: 'serviceUpdated',
-                source: 'service1',
-                details: [{
-                    id: 'abc',
-                    isBroken: false
-                }]
-            });
-
-            sinon.assert.calledThrice(events.push);
-            sinon.assert.calledWith(events.push, {
-                eventName: 'buildFixed',
-                source: 'service1',
-                details: {
-                    id: 'abc',
-                    isBroken: false,
-                    error: null
-                }
-            });
-        });
-
-        it('should push buildOffline', () => {
-            serviceUpdatedSubject.onNext({
-                eventName: 'serviceUpdated',
-                source: 'service1',
-                details: [{
-                    id: 'abc',
-                    error: null
-                }]
-            });
-            serviceUpdatedSubject.onNext({
-                eventName: 'serviceUpdated',
-                source: 'service1',
-                details: [{
-                    id: 'abc',
-                    error: { message: 'error' }
-                }]
-            });
-
-            sinon.assert.calledThrice(events.push);
-            sinon.assert.calledWith(events.push, {
-                eventName: 'buildOffline',
-                source: 'service1',
-                details: {
-                    id: 'abc',
-                    error: { message: 'error' }
-                }
-            });
-        });
-
-        it('should push buildOffline with previous state', () => {
+        it('should process build events and mix in old values', () => {
             serviceUpdatedSubject.onNext({
                 eventName: 'serviceUpdated',
                 source: 'service1',
@@ -157,109 +97,22 @@ describe('core/services/serviceView', () => {
                 }]
             });
 
-            sinon.assert.calledWith(events.push, {
-                eventName: 'buildOffline',
-                source: 'service1',
-                details: {
-                    id: 'abc',
-                    error: { message: 'error' },
-                    isBroken: true
-                }
-            });
-        });
-
-        it('should push buildOnline', () => {
-            serviceUpdatedSubject.onNext({
-                eventName: 'serviceUpdated',
-                source: 'service1',
-                details: [{
-                    id: 'abc',
-                    error: { message: 'error' }
-                }]
-            });
-            serviceUpdatedSubject.onNext({
-                eventName: 'serviceUpdated',
-                source: 'service1',
-                details: [{
-                    id: 'abc',
-                    isBroken: true
-                }]
-            });
-
-            expect(events.push.lastCall.args[0]).toEqual({
-                eventName: 'buildOnline',
-                source: 'service1',
-                details: {
-                    id: 'abc',
-                    error: null,
-                    isBroken: true
-                }
-            });
-        });
-
-        it('should push passwordExpired', () => {
-            serviceUpdatedSubject.onNext({
-                eventName: 'serviceUpdated',
-                source: 'service1',
-                details: [{
-                    id: 'abc',
-                    error: { name: 'UnauthorisedError' }
-                }]
-            });
-
-            sinon.assert.calledTwice(events.push);
-            sinon.assert.calledWith(events.push, {
-                eventName: 'passwordExpired',
-                source: 'service1',
-                details: {
-                    id: 'abc',
-                    error: { name: 'UnauthorisedError' }
-                }
-            });
-        });
-
-        it('should push unique changes', () => {
-            serviceUpdatedSubject.onNext({
-                eventName: 'serviceUpdated',
-                source: 'service1',
-                details: [{
-                    id: 'abc',
-                    isBroken: false
-                }]
-            });
-            serviceUpdatedSubject.onNext({
-                eventName: 'serviceUpdated',
-                source: 'service1',
-                details: [{
-                    id: 'abc',
-                    isBroken: true,
-                    changes: [
-                        {
-                            name: 'name1',
-                            message: 'message'
-                        },
-                        {
-                            name: 'name1',
-                            message: 'message'
-                        }
-                    ]
-                }]
-            });
-
-            sinon.assert.calledThrice(events.push);
-            sinon.assert.calledWith(events.push, {
-                eventName: 'buildBroken',
-                source: 'service1',
-                details: {
-                    id: 'abc',
-                    isBroken: true,
-                    error: null,
-                    changes: [
-                        {
-                            name: 'name1',
-                            message: 'message'
-                        }
-                    ]
+            sinon.assert.calledWith(eventProcessor.process, {
+                oldState: {
+                    name: 'service1',
+                    items: [{
+                        id: 'abc',
+                        isBroken: true,
+                        error: null
+                    }]
+                },
+                newState: {
+                    name: 'service1',
+                    items: [{
+                        id: 'abc',
+                        error: { message: 'error' },
+                        isBroken: true
+                    }]
                 }
             });
         });
