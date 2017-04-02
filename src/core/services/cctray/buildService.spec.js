@@ -121,26 +121,6 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 				eventsSubscription.dispose();
 			});
 
-			it('should set default last build status', function() {
-				var getDefaultState = function(id) {
-					return {
-						id: id,
-						name: id,
-						group: null,
-						webUrl: null,
-						isBroken: false,
-						isRunning: false,
-						isDisabled: false,
-						serviceName: settings.name,
-						serviceIcon: 'core/services/cctray/icon.png',
-						tags: [],
-						changes: []
-					};
-				};
-
-				expect(service.latestBuildStates['CruiseControl.NET']).toEqual(getDefaultState('CruiseControl.NET'));
-			});
-
 			it('should set request options', function() {
 				request.xml.and.callFake(function(options) {
 					expect(options.username).toBe(settings.username);
@@ -253,24 +233,6 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 					expect(parsedResponse[0].isWaiting).toBe(true);
 				});
 
-				it('should ignore if status unknown and broken previously', function() {
-					service.latestBuildStates['CruiseControl.NET'].isBroken = true;
-					projectsXml.find('Project').attr('lastBuildStatus', 'Unknown');
-
-					service.updateAll();
-
-					expect(request.xml).toHaveBeenCalled();
-					expect(parsedResponse[0].isBroken).not.toBeDefined();
-				});
-
-			});
-
-			it('should remember new build state', function() {
-				service.updateAll().subscribe();
-
-				var states = service.latestBuildStates;
-				expect(states['CruiseControl.NET']).toEqual(extendState(createState1()));
-				expect(states['Build-Server-Config']).toEqual(extendState(createState2()));
 			});
 
 			it('should push update when no builds selected', function() {
@@ -301,123 +263,6 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 
 				expect(sequenceFailed).toBe(false);
 				expect(response.error).toEqual(stateError);
-			});
-
-		});
-
-		describe('build events', function() {
-
-			var oldState;
-			var newState;
-			var eventsSubscription;
-
-			beforeEach(function() {
-				service = new BuildService(settings);
-				events = [];
-				eventsSubscription = service.events.subscribe(rememberEvent);
-				oldState = service.latestBuildStates['CruiseControl.NET'];
-				newState = mixIn({
-					id: 'CruiseControl.NET',
-					isBroken: false,
-					isRunning: false,
-					isDisabled: false,
-					changes: []
-				}, oldState);
-				request.xml.and.callFake(function(options) {
-					return Rx.Observable.return([newState]);
-				});
-			});
-
-			afterEach(function() {
-				eventsSubscription.dispose();
-			});
-
-			it('should push buildOffline if build update failed', function() {
-				var stateError = "Error";
-				request.xml.and.callFake(function(options) {
-					return Rx.Observable.throw(stateError);
-				});
-
-				service.updateAll().subscribe();
-
-				expect(eventPushed('buildOffline')).toBe(true);
-				expect(getLastEvent('buildOffline').details.error).toEqual(stateError);
-			});
-
-			it('should push buildBroken if build broken', function() {
-				oldState.isBroken = false;
-				newState.isBroken = true;
-
-				service.updateAll().subscribe();
-
-				expect(eventPushed('buildBroken')).toBe(true);
-				expect(getLastEvent('buildBroken').details).toEqual(newState);
-			});
-
-			it('should not push buildBroken if build already broken', function() {
-				oldState.isBroken = true;
-				newState.isBroken = true;
-
-				service.updateAll().subscribe();
-
-				expect(eventPushed('buildBroken')).toBe(false);
-			});
-
-			it('should push buildFixed if build was fixed', function() {
-				oldState.isBroken = true;
-				newState.isBroken = false;
-
-				service.updateAll().subscribe();
-
-				expect(eventPushed('buildFixed')).toBe(true);
-				expect(getLastEvent('buildFixed').details).toEqual(newState);
-			});
-
-			it('should not push buildFixed if build was not broken', function() {
-				oldState.isBroken = false;
-				newState.isBroken = false;
-
-				service.updateAll().subscribe();
-
-				expect(eventPushed('buildFixed')).toBe(false);
-			});
-
-			it('should push buildStarted if build started', function() {
-				oldState.isRunning = false;
-				newState.isRunning = true;
-
-				service.updateAll().subscribe();
-
-				expect(eventPushed('buildStarted')).toBe(true);
-				expect(getLastEvent('buildStarted').details).toEqual(newState);
-			});
-
-			it('should not push buildStarted if build already running', function() {
-				oldState.isRunning = true;
-				newState.isRunning = true;
-
-				service.updateAll().subscribe();
-
-				expect(eventPushed('buildStarted')).toBe(false);
-			});
-
-			it('should push buildFinished if build finished', function() {
-				oldState.isRunning = true;
-				newState.isRunning = false;
-
-				service.updateAll().subscribe();
-
-				expect(eventPushed('buildFinished')).toBe(true);
-				expect(getLastEvent('buildFinished').details).toEqual(newState);
-			});
-
-			it('should not push buildFinished if build was not running', function() {
-				oldState.isRunning = false;
-				newState.isRunning = false;
-
-				service.updateAll().subscribe();
-
-				expect(eventPushed('buildFinished')).toBe(false);
 			});
 
 		});

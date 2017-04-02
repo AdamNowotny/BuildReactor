@@ -87,22 +87,6 @@ describe('core/services/buildServiceBase', function() {
 		};
 	}
 
-	var createDefaultState = function(id) {
-		return {
-			id: id,
-			name: id,
-			group: null,
-			webUrl: null,
-			isBroken: false,
-			isRunning: false,
-			isDisabled: false,
-			serviceName: settings.name,
-			serviceIcon: serviceInfo.icon,
-			tags: [],
-			changes: []
-		};
-	};
-
 	describe('updateAll', function() {
 
 		it('should update builds', function() {
@@ -118,27 +102,6 @@ describe('core/services/buildServiceBase', function() {
 			expect(GenericBuild.prototype.update.calls.count()).toBe(settings.projects.length);
 		});
 
-		it('should extend received build state with last known values as default', function() {
-			delete buildState1.isDisabled;
-			delete buildState1.serviceName;
-			delete buildState1.serviceIcon;
-
-			var result = scheduler.startScheduler(function() {
-				return service.updateAll();
-			});
-
-			var state = createStateForId('Build1');
-			var defaultState = createDefaultState('Build1');
-			state.isDisabled = defaultState.isDisabled;
-			state.serviceName = defaultState.serviceName;
-			state.serviceIcon = defaultState.serviceIcon;
-			expect(result.messages).toHaveEqualElements(
-				onNext(200, state),
-				onNext(200, buildState2),
-				onCompleted(200)
-			);
-		});
-
 		it('should complete when no builds selected', function() {
 			settings.projects = [];
 			service = new CustomBuildService(settings);
@@ -151,24 +114,6 @@ describe('core/services/buildServiceBase', function() {
 		});
 
 		describe('error handling', function() {
-
-			it('should push passwordExpired if build update failed with 401', function() {
-				update1Response = new Rx.Subject();
-				var error = {
-					name: 'UnauthorisedError',
-					message: 'Your password expired',
-					httpStatus: 401
-				};
-
-				scheduler.scheduleAbsolute(null, 300, function() {
-					service.updateAll().subscribe();
-					update1Response.onError(error);
-				});
-				var result = scheduler.startScheduler(function() {
-					return service.events;
-				});
-				expect(result.messages).toHaveElements(onNext(300, { eventName: 'passwordExpired' }));
-			});
 
 			it('should push state if build update failed with AjaxError', function() {
 				update2Response = new Rx.Subject();
@@ -223,14 +168,9 @@ describe('core/services/buildServiceBase', function() {
 					return service.updateAll();
 				});
 
-				expect(result.messages).toHaveEqualElements(
-					onNext(200, buildState1),
-					onNext(300, mixIn(createDefaultState('Build2'), { error : {
-						name : 'UnknownError',
-						message : '"error"'
-					} })),
-					onCompleted(300)
-				);
+				const errorDetails = result.messages[1].value.value.error;
+				expect(errorDetails.name).toBe('UnknownError');
+				expect(errorDetails.message).toBe('"error"');
 			});
 
 			it('should push state if build update failed with object error', function() {
@@ -244,177 +184,9 @@ describe('core/services/buildServiceBase', function() {
 					return service.updateAll();
 				});
 
-				expect(result.messages).toHaveEqualElements(
-					onNext(200, buildState1),
-					onNext(300, mixIn(createDefaultState('Build2'), { error : {
-						name : 'UnknownError',
-						message : '{"errorCode":111}'
-					} })),
-					onCompleted(300)
-				);
-			});
-
-		});
-
-		describe('build events', function() {
-
-			var oldState, newState;
-
-			beforeEach(function() {
-				update1Response = new Rx.Subject();
-				oldState = createStateForId('Build1');
-				newState = createStateForId('Build1');
-				scheduler.scheduleAbsolute(null, 200, function() {
-					service.latestBuildStates['Build1'] = oldState;
-					service.updateAll().subscribe();
-				});
-				scheduler.scheduleAbsolute(null, 500, function() {
-					update1Response.onNext(newState);
-				});
-			});
-
-			it('should push buildOffline if build update failed', function() {
-				newState.error = 'error';
-
-				var result = scheduler.startScheduler(function() {
-					return service.events;
-				});
-
-				expect(result.messages).toHaveElements(
-					onNext(500, { eventName: 'buildOffline', details: mixIn(buildState1, { error: 'error' }), source: buildState1.serviceName })
-				);
-			});
-
-			it('should push not push buildOffline if build already has errors', function() {
-				// oldState.error = 'error';
-				newState.error = 'error';
-
-				var result = scheduler.startScheduler(function() {
-					return service.events;
-				});
-
-				expect(result.messages).toHaveEvent('buildOffline');
-
-			});
-
-			it('should push buildOnline if build update succeeds after failure', function() {
-				oldState.error = { message: 'Ajax error', httpStatus: 500 };
-
-				var result = scheduler.startScheduler(function() {
-					return service.events;
-				});
-
-				expect(result.messages).toHaveElements(
-					onNext(500, { eventName: 'buildOnline', details: newState, source: newState.serviceName })
-				);
-			});
-
-			it('should push buildBroken if build broken', function() {
-				oldState.isBroken = false;
-				newState.isBroken = true;
-
-				var result = scheduler.startScheduler(function() {
-					return service.events;
-				});
-
-				expect(result.messages).toHaveElements(
-					onNext(500, { eventName: 'buildBroken', details: newState, source: newState.serviceName })
-				);
-			});
-
-			it('should not push buildBroken if build already broken', function() {
-				oldState.isBroken = true;
-				newState.isBroken = true;
-
-				var result = scheduler.startScheduler(function() {
-					return service.events;
-				});
-
-				expect(result.messages).not.toHaveEvent('buildBroken');
-			});
-
-			it('should push buildFixed if build was fixed', function() {
-				oldState.isBroken = true;
-				newState.isBroken = false;
-
-				var result = scheduler.startScheduler(function() {
-					return service.events;
-				});
-
-				expect(result.messages).toHaveElements(
-					onNext(500, { eventName: 'buildFixed', details: newState, source: newState.serviceName })
-				);
-			});
-
-			it('should not push buildFixed if build was not broken', function() {
-				oldState.isBroken = false;
-				newState.isBroken = false;
-
-				var result = scheduler.startScheduler(function() {
-					return service.events;
-				});
-
-				expect(result.messages).not.toHaveEvent('buildFixed');
-			});
-
-			it('should push buildStarted if build started', function() {
-				oldState.isRunning = false;
-				newState.isRunning = true;
-
-				var result = scheduler.startScheduler(function() {
-					return service.events;
-				});
-
-				expect(result.messages).toHaveElements(
-					onNext(500, { eventName: 'buildStarted', details: newState, source: newState.serviceName })
-				);
-			});
-
-			it('should not push buildStarted if build already running', function() {
-				oldState.isRunning = true;
-				newState.isRunning = true;
-
-				var result = scheduler.startScheduler(function() {
-					return service.events;
-				});
-
-				expect(result.messages).not.toHaveEvent('buildStarted');
-			});
-
-			it('should push buildFinished if build finished', function() {
-				oldState.isRunning = true;
-				newState.isRunning = false;
-
-				var result = scheduler.startScheduler(function() {
-					return service.events;
-				});
-
-				expect(result.messages).toHaveElements(
-					onNext(500, { eventName: 'buildFinished', details: newState, source: newState.serviceName })
-				);
-			});
-
-			it('should not push buildFinished if build was not running', function() {
-				oldState.isRunning = false;
-				newState.isRunning = false;
-
-				var result = scheduler.startScheduler(function() {
-					return service.events;
-				});
-
-				expect(result.messages).not.toHaveEvent('buildFinished');
-			});
-
-			it('should push buildBroken with changes and remove duplicate entries', function() {
-				oldState.isBroken = false;
-				newState.isBroken = true;
-				newState.changes = [{ name: 'name1' }, { name: 'name2' }, { name: 'name1' }];
-
-				var result = scheduler.startScheduler(function() {
-					return service.events;
-				});
-
-				expect(result.messages[0].value.value.details.changes).toEqual([{ name: 'name1' }, { name: 'name2' }]);
+				const errorDetails = result.messages[1].value.value.error;
+				expect(errorDetails.name).toBe('UnknownError');
+				expect(errorDetails.message).toBe('{"errorCode":111}');
 			});
 
 		});

@@ -57,10 +57,6 @@ define([
 			return Rx.Observable.fromArray(projects);
 		}).where(function(build) {
 			return contains(self.settings.projects, build.id);
-		}).select(function(state) {
-			return self.mixInMissingState(state, self.serviceInfo);
-		}).do(function(state) {
-			return self.processBuildUpdate(state);
 		}).defaultIfEmpty([]);
 	};
 
@@ -87,7 +83,6 @@ define([
 					state.isBroken = status in { 'Failure': 1, 'Exception': 1 };
 				} else {
 					state.tags.push({ name : 'Unknown', description : 'Status [' + status + '] is unknown' });
-					delete state.isBroken;
 				}
 
 				return state;

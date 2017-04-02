@@ -17,36 +17,8 @@ define([
 		this.start = start;
 		this.stop = stop;
 		this.events = new Rx.Subject();
-		this.builds = {};
-		this.latestBuildStates = getInitialStates(settings, this.serviceInfo);
 		this.poolingSubscription = null;
-		this.mixInMissingState = mixInMissingState;
-		this.processBuildUpdate = processBuildUpdate;
 	}
-
-	var getInitialStates = function(settings, serviceInfo) {
-		var createDefaultState = function(id, settings) {
-			return {
-				id: id,
-				name: id,
-				group: null,
-				webUrl: null,
-				isBroken: false,
-				isRunning: false,
-				isDisabled: false,
-				serviceName: settings.name,
-				serviceIcon: serviceInfo.icon,
-				tags: [],
-				changes: []
-			};
-		};
-
-		var states = {};
-		settings.projects.forEach(function(buildId) {
-			states[buildId] = createDefaultState(buildId, settings);
-		});
-		return states;
-	};
 
 	var updateAll = function() {
 		var self = this;
@@ -60,10 +32,6 @@ define([
 							error: createError(ex)
 						});
 					});
-			}).select(function(state) {
-				return self.mixInMissingState(state, self.serviceInfo);
-			}).do(function(state) {
-				return self.processBuildUpdate(state);
 			});
 	};
 
@@ -82,61 +50,6 @@ define([
 			error = { name: 'UnknownError', message: JSON.stringify(ex) };
 		}
 		return error;
-	};
-
-	var mixInMissingState = function(state, serviceInfo) {
-		var previous = this.latestBuildStates[state.id];
-		var defaults = {
-			name: previous.name,
-			group: previous.group,
-			webUrl: previous.webUrl,
-			isBroken: previous.isBroken,
-			isRunning: previous.isRunning,
-			isDisabled: previous.isDisabled,
-			serviceName: this.settings.name,
-			serviceIcon: serviceInfo.icon,
-			tags: []
-		};
-		return mixIn(defaults, state);
-	};
-
-	var processBuildUpdate = function(newState) {
-		newState.changes = getUniqueChanges(newState.changes);
-		var lastState = this.latestBuildStates[newState.id];
-		this.latestBuildStates[newState.id] = newState;
-		if (!lastState.error && newState.error) {
-			this.events.onNext({ eventName: 'buildOffline', details: newState, source: newState.serviceName });
-		}
-		if (lastState.error && !newState.error) {
-			this.events.onNext({ eventName: 'buildOnline', details: newState, source: newState.serviceName });
-		}
-		if (!lastState.isBroken && newState.isBroken) {
-			this.events.onNext({ eventName: 'buildBroken', details: newState, source: newState.serviceName });
-		}
-		if (lastState.isBroken && !newState.isBroken) {
-			this.events.onNext({ eventName: 'buildFixed', details: newState, source: newState.serviceName });
-		}
-		if (!lastState.isRunning && newState.isRunning) {
-			this.events.onNext({ eventName: 'buildStarted', details: newState, source: newState.serviceName });
-		}
-		if (lastState.isRunning && !newState.isRunning) {
-			this.events.onNext({ eventName: 'buildFinished', details: newState, source: newState.serviceName });
-		}
-		if (newState.error && newState.error.name === 'UnauthorisedError') {
-			this.events.onNext({ eventName: 'passwordExpired', details: newState, source: newState.serviceName });
-		}
-	};
-
-	var getUniqueChanges = function(allChanges) {
-		return allChanges ? allChanges.reduce(function(changes, value) {
-			var alreadyAdded = changes.filter(function(change) {
-				return change.name === value.name;
-			}).length > 0;
-			if (!alreadyAdded) {
-				changes.push(value);
-			}
-			return changes;
-		}, []) : [];
 	};
 
 	var start = function() {
