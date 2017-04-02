@@ -53,6 +53,30 @@ describe('core/services/serviceView', () => {
             });
         });
 
+        it('should sort services and builds on serviceUpdated', () => {
+            serviceUpdatedSubject.onNext({
+                eventName: 'serviceUpdated',
+                source: 'service1',
+                details: [
+                    { id: 'zzz' },
+                    { id: 'abc' },
+                ]
+            });
+
+            sinon.assert.calledOnce(events.push);
+            sinon.assert.calledWith(events.push, {
+                eventName: 'stateUpdated',
+                source: 'serviceView',
+                details: [{
+                    name: 'service1',
+                    items: [
+                        { id: 'abc', error: null },
+                        { id: 'zzz', error: null }
+                    ]
+                }]
+            });
+        });
+
         it('should process build events when old state unknown', () => {
             serviceUpdatedSubject.onNext({
                 eventName: 'serviceUpdated',

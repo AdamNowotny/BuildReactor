@@ -1,5 +1,6 @@
 import eventProcessor from 'core/services/buildEventProcessor';
 import events from 'core/events';
+import sortBy from 'common/sortBy';
 
 let rxServiceUpdateFailed, rxServiceUpdated, rxServicesInit;
 
@@ -48,7 +49,12 @@ const init = () => {
         events.push({
             eventName: 'stateUpdated',
             source: 'serviceView',
-            details: [...latestState.values()]
+            details: [...latestState.values()].map((s) => (
+                {
+                    name: s.name,
+                    items: sortBy('id', s.items)
+                }
+            ))
         });
     };
 };
@@ -71,17 +77,6 @@ const createInitialStates = (settings) => settings.projects.map((id) => ({
     changes: [],
     error: null
 }));
-
-const createUniqueChanges = (allChanges) => {
-    return allChanges ? allChanges.reduce((changes, value) => {
-        const alreadyAdded = changes
-            .filter((change) => change.name === value.name).length > 0;
-        if (!alreadyAdded) {
-            changes.push(value);
-        }
-        return changes;
-    }, []) : [];
-};
 
 export default {
     init,
