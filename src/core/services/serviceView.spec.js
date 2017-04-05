@@ -53,7 +53,7 @@ describe('core/services/serviceView', () => {
             });
         });
 
-        it('should sort services and builds on serviceUpdated', () => {
+        it('should sort builds on serviceUpdated', () => {
             serviceUpdatedSubject.onNext({
                 eventName: 'serviceUpdated',
                 source: 'service1',

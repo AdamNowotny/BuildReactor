@@ -65,13 +65,13 @@ describe('services/buildkite/buildkiteBuilds', () => {
         });
 
 
-        it('should return sorted pipelines for organizations', () => {
+        it('should return pipelines for organizations', () => {
             requests.organizations.returns(Rx.Observable.return(
                 { slug: 'org', name: 'org_name', pipelines_url: 'url' }
             ));
             requests.pipelines.returns(Rx.Observable.fromArray([
-                { slug: "slug2", name: 'pipeline2' },
-                { slug: "slug1", name: 'pipeline1' }
+                { slug: "slug1", name: 'pipeline1' },
+                { slug: "slug2", name: 'pipeline2' }
             ]));
 
             const result = scheduler.startScheduler(() => builds.getAll(settings));

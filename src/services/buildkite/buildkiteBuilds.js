@@ -1,6 +1,5 @@
 import Rx from 'rx';
 import requests from 'services/buildkite/buildkiteRequests';
-import sortBy from 'common/sortBy';
 
 const getAll = (settings) => {
     const token = settings.token;
@@ -9,7 +8,6 @@ const getAll = (settings) => {
             .select((pipeline) => parsePipeline(org, pipeline))
         )
         .toArray()
-        .select((items) => sortBy('id', items))
         .select((items) => ({ items }));
 };
 

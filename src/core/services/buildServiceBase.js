@@ -2,10 +2,9 @@
 
 define([
 	'rx',
-	'mout/object/mixIn',
 	'rx/dist/rx.time',
 	'rx/dist/rx.binding'
-], function(Rx, mixIn) {
+], function(Rx) {
 	'use strict';
 
 	function BuildServiceBase(settings, serviceInfo, scheduler) {
