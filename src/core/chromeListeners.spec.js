@@ -3,7 +3,7 @@ import chromeApi from 'common/chromeApi';
 import chromeListeners from 'core/chromeListeners';
 import events from 'core/events';
 import serviceConfiguration from 'core/config/serviceConfiguration';
-import serviceTypes from 'core/services/serviceTypes';
+import serviceController from 'core/services/serviceController';
 import viewConfiguration from 'core/config/viewConfiguration';
 
 describe('chromeListeners', function() {
@@ -30,7 +30,7 @@ describe('chromeListeners', function() {
 		spyOn(serviceConfiguration, 'saveService');
 		spyOn(serviceConfiguration, 'save');
 		spyOn(viewConfiguration, 'save');
-		spyOn(serviceTypes, 'getAll');
+		spyOn(serviceController, 'getAllTypes');
 		chromeListeners.init();
 	});
 
@@ -58,13 +58,12 @@ describe('chromeListeners', function() {
 	describe('messages', function() {
 
 		it('should handle availableServices', function() {
-			var types = [{
+			var serviceTypes = [{
 				settings: function() {
 					return { typeName: 'snap' };
 				}
 			}];
-
-			serviceTypes.getAll.and.returnValue(types);
+			serviceController.getAllTypes.and.returnValue(serviceTypes);
 
 			var result;
 			messageHandler({ name: 'availableServices' }, null, function(response) {
@@ -153,7 +152,7 @@ describe('chromeListeners', function() {
 
 		beforeEach(function() {
 			service = new CustomBuildService();
-			serviceTypes.getAll.and.returnValue({ custom: CustomBuildService });
+			serviceController.getAllTypes.and.returnValue({ custom: CustomBuildService });
 			sendResponse = jasmine.createSpy();
 			request = {
 				name: 'availableProjects',

@@ -3,7 +3,7 @@ import chromeApi from 'common/chromeApi';
 import events from 'core/events';
 import logger from 'core/logger';
 import serviceConfiguration from 'core/config/serviceConfiguration';
-import serviceTypes from 'core/services/serviceTypes';
+import serviceController from 'core/services/serviceController';
 import viewConfiguration from 'core/config/viewConfiguration';
 
 const stateUpdated = new Rx.BehaviorSubject([]);
@@ -64,13 +64,13 @@ function onMessageHandler(request, sender, sendResponse) {
 }
 
 const availableServices = (sendResponse) => {
-	const types = serviceTypes.getAll();
+	const types = serviceController.getAllTypes();
 	const settingList = Object.keys(types).map((k) => types[k]).map((t) => t.settings());
 	return sendResponse(settingList);
 };
 
 const availableProjects = (sendResponse, settings) => {
-	const Service = serviceTypes.getAll()[settings.baseUrl];
+	const Service = serviceController.getAllTypes()[settings.baseUrl];
 	new Service(settings).availableBuilds().subscribe(function(projects) {
 		projects.selected = settings.projects;
 		sendResponse({ projects });

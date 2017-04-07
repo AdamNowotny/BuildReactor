@@ -1,74 +1,99 @@
-import 'rx/dist/rx.binding';
-import Rx from 'rx';
 import events from 'core/events';
-import serviceTypes from 'core/services/serviceTypes';
 
-let services = [];
-let eventsSubscriptions = [];
+define([
+	'rx',
+	'rx/dist/rx.binding'
+], function(Rx) {
 
-function loadServices(settingsList) {
-	return Rx.Observable.fromArray(settingsList)
-		.where((settings) => settings.disabled !== true)
-		.select((settings) => {
-			const Service = serviceTypes.getAll()[settings.baseUrl];
-			return new Service(settings);
-		})
-		.do((service) => {
-			services.push(service);
-			eventsSubscriptions.push(service.events.subscribe((event) => {
-				events.push(event);
-			}));
-		})
-		.toArray();
-}
+	'use strict';
 
-function startServices(settingsList) {
-	return loadServices(settingsList)
-		.selectMany((serviceList) => Rx.Observable.fromArray(serviceList)
-			.selectMany((service) => service.start()
-				.do((items) => {
-					events.push({
-						eventName: 'serviceStarted',
-						source: service.settings.name,
-						details: items
-					});
-				})
-			)).toArray();
-}
+	var types = {};
 
-function removeAll() {
-	services.forEach((service) => {
-		service.stop();
-		events.push({
-			eventName: 'serviceStopped',
-			source: service.settings.name
-		});
-	});
-	eventsSubscriptions.forEach((subscription) => {
-		subscription.dispose();
-	});
-	services = [];
-	eventsSubscriptions = [];
-}
+	var getAllTypes = function() {
+		return types;
+	};
 
-const start = function(configChanges) {
-	configChanges.subscribe((settingsList) => {
-		events.push({
-			eventName: 'servicesInitializing',
-			source: 'serviceController',
-			details: settingsList
-		});
-		removeAll();
-		startServices(settingsList).subscribe(() => {
+	var registerType = function(Service) {
+		var settings = Service.settings();
+		types[settings.baseUrl] = Service;
+	};
+
+	var clear = function() {
+		types = {};
+	};
+
+	var services = [];
+	var eventsSubscriptions = [];
+
+	function loadServices(settingsList) {
+		return Rx.Observable.fromArray(settingsList)
+			.where(function(settings) {
+				return settings.disabled !== true;
+			})
+			.select(function(settings) {
+				const Service = types[settings.baseUrl];
+				return new Service(settings);
+			})
+			.do(function(service) {
+				services.push(service);
+				eventsSubscriptions.push(service.events.subscribe((event) => {
+					events.push(event);
+				}));
+			})
+			.toArray();
+	}
+
+	function startServices(settingsList) {
+		return loadServices(settingsList)
+			.selectMany((serviceList) => Rx.Observable.fromArray(serviceList)
+				.selectMany((service) => service.start()
+					.do((items) => {
+						events.push({
+							eventName: 'serviceStarted',
+							source: service.settings.name,
+							details: items
+						});
+					})
+				)).toArray();
+	}
+
+	function removeAll() {
+		services.forEach((service) => {
+			service.stop();
 			events.push({
-				eventName: 'servicesInitialized',
+				eventName: 'serviceStopped',
+				source: service.settings.name
+			});
+		});
+		eventsSubscriptions.forEach(function(subscription) {
+			subscription.dispose();
+		});
+		services = [];
+		eventsSubscriptions = [];
+	}
+
+	const start = function(configChanges) {
+		configChanges.subscribe((settingsList) => {
+			events.push({
+				eventName: 'servicesInitializing',
 				source: 'serviceController',
 				details: settingsList
 			});
+			removeAll();
+			startServices(settingsList).subscribe(() => {
+				events.push({
+					eventName: 'servicesInitialized',
+					source: 'serviceController',
+					details: settingsList
+				});
+			});
 		});
-	});
-};
+	};
 
-export default {
-	start
-};
+	return {
+		start,
+		getAllTypes,
+		registerType,
+		clear
+	};
+});
