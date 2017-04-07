@@ -3,6 +3,7 @@ import Rx from 'rx/dist/rx.testing';
 import chromeApi from 'common/chromeApi';
 import events from 'core/events';
 import notificationController from 'core/notificationController';
+import serviceController from 'core/services/serviceController';
 
 describe('notificationController', function() {
 
@@ -41,9 +42,11 @@ describe('notificationController', function() {
         };
         spyOn(window, 'Notification').and.returnValue(mockNotification);
         spyOn(chromeApi, 'isDashboardActive').and.returnValue(Rx.Observable.return(false));
+        spyOn(serviceController, 'typeInfoFor').and
+            .returnValue({ icon: 'src/core/services/test/icon.png' });
         notificationController.init({
             timeout: 5000,
-            scheduler: scheduler
+            scheduler
         });
     });
 
@@ -54,8 +57,7 @@ describe('notificationController', function() {
                 eventName: 'buildBroken',
                 source: 'service',
                 details: {
-                    name: 'build',
-                    serviceIcon: 'src/core/services/test/icon.png'
+                    name: 'build'
                 }
             });
 
@@ -74,7 +76,6 @@ describe('notificationController', function() {
                 source: 'service',
                 details: {
                     name: 'build',
-                    serviceIcon: 'src/core/services/test/icon.png',
                     changes: [{
                         name: 'User 1'
                     }, {
@@ -99,7 +100,6 @@ describe('notificationController', function() {
                 details: {
                     name: 'build',
                     group: 'group',
-                    serviceIcon: 'src/core/services/test/icon.png',
                     changes: [{
                         name: 'User 1'
                     }, {
@@ -123,7 +123,6 @@ describe('notificationController', function() {
                 source: 'service',
                 details: {
                     name: 'build',
-                    serviceIcon: 'src/core/services/test/icon.png',
                     changes: [1, 2, 3, 4, 5, 6, 7, 8, 9].map((d) => ({
                         name: `User ${d}`
                     }))
@@ -145,7 +144,6 @@ describe('notificationController', function() {
                 source: 'service',
                 details: {
                     name: 'build',
-                    serviceIcon: 'src/core/services/test/icon.png',
                     isDisabled: true
                 }
             });
@@ -172,8 +170,7 @@ describe('notificationController', function() {
                 eventName: 'buildFixed',
                 source: 'service',
                 details: {
-                    name: 'build',
-                    serviceIcon: 'src/core/services/test/icon.png'
+                    name: 'build'
                 }
             });
 
@@ -192,7 +189,6 @@ describe('notificationController', function() {
                 source: 'service',
                 details: {
                     name: 'build',
-                    serviceIcon: 'src/core/services/test/icon.png',
                     changes: [{
                         name: 'User 1'
                     }, {
@@ -249,7 +245,6 @@ describe('notificationController', function() {
                 source: 'service',
                 details: {
                     name: 'build',
-                    serviceIcon: 'src/core/services/test/icon.png',
                     tags: [{
                         name: 'Unstable'
                     }]
@@ -290,8 +285,7 @@ describe('notificationController', function() {
             eventName: 'passwordExpired',
             source: 'service',
             details: {
-                name: 'build',
-                serviceIcon: 'src/core/services/test/icon.png'
+                name: 'build'
             }
         });
 

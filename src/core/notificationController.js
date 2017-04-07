@@ -3,16 +3,17 @@ import 'rx/dist/rx.time';
 import Rx from 'rx';
 import chromeApi from 'common/chromeApi';
 import events from 'core/events';
+import serviceController from 'core/services/serviceController';
 import tags from 'common/tags';
 
 function init(options) {
 
 	function createPasswordExpiredMessage(event) {
 		return {
-			id: event.source + '_disabled',
+			id: `${event.source}_disabled`,
 			title: event.source,
 			url: 'settings.html',
-			icon: event.details.serviceIcon,
+			icon: serviceController.typeInfoFor(event.source).icon,
 			text: 'Password expired. Service has been disabled.'
 		};
 	}
@@ -29,20 +30,11 @@ function init(options) {
 		return createNotificationInfo(event, 'Fixed', options.timeout);
 	}
 
-	function isBuildEnabled(event) {
-		return !event.details.isDisabled;
-	}
-
-	function isInitialized(event) {
-		return !reloading;
-	}
-
 	function whenDashboardInactive(event) {
-		return chromeApi.isDashboardActive().where(function(active) {
-			return !active;
-		}).select(function(active) {
-			return event;
-		});
+		return chromeApi
+			.isDashboardActive()
+			.where((active) => !active)
+			.select(() => event);
 	}
 
 	function createNotificationInfo(event, message, timeout) {
@@ -60,22 +52,22 @@ function init(options) {
 		}
 
 		function createChangesMessage(changes) {
-			return changes ? message + changes.reduce(function(agg, change, i) {
+			return changes ? message + changes.reduce((agg, change, i) => {
 				if (i === 4) {
-					return agg + ', ...';
+					return `${agg}, ...`;
 				}
 				if (i > 4) {
 					return agg;
 				}
-				return agg ? agg + ', ' + change.name : ' by ' + change.name;
+				return agg ? `${agg}, ${change.name}` : ` by ${change.name}`;
 			}, '') : message;
 		}
 
-		var info = {
+		const info = {
 			id: createId(event.details),
 			title: createTitle(event.details),
 			url: event.details.webUrl,
-			icon: event.details.serviceIcon,
+			icon: serviceController.typeInfoFor(event.source).icon,
 			timeout: timeout ? timeout : undefined,
 			text: createChangesMessage(event.details.changes)
 		};
@@ -92,14 +84,14 @@ function init(options) {
 	}
 
 	function createNotification(info) {
-		return Rx.Observable.create(function(observer) {
-			var notification = new Notification(info.title, {
+		return Rx.Observable.create((observer) => {
+			const notification = new Notification(info.title, {
 				icon: info.icon,
 				body: info.text,
 				tag: info.id
 			});
 			notification.onclick = function() {
-				chrome.tabs.create({ 'url': info.url }, function(tab) {
+				chrome.tabs.create({ 'url': info.url }, (tab) => {
 					notification.close();
 				});
 			};
@@ -108,7 +100,7 @@ function init(options) {
 			};
 			if (info.timeout) {
 				notification.onshow = function() {
-					Rx.Observable.timer(info.timeout, scheduler).subscribe(function() {
+					Rx.Observable.timer(info.timeout, scheduler).subscribe(() => {
 						notification.close();
 					});
 				};
@@ -119,38 +111,35 @@ function init(options) {
 		});
 	}
 
-	var scheduler = options.scheduler || Rx.Scheduler.timeout;
-	var visibleNotifications = {};
-	var reloading = false;
+	const scheduler = options.scheduler || Rx.Scheduler.timeout;
+	const visibleNotifications = {};
+	let reloading = false;
 
-	var buildBroken = events.getByName('buildBroken')
-		.where(isInitialized)
-		.where(isBuildEnabled)
+	const buildBroken = events.getByName('buildBroken')
+		.where((event) => !reloading)
+		.where((event) => !event.details.isDisabled)
 		.selectMany(whenDashboardInactive)
 		.select(createBuildBrokenMessage);
-	var buildFixed = events.getByName('buildFixed')
-		.where(isInitialized)
-		.where(isBuildEnabled)
+	const buildFixed = events.getByName('buildFixed')
+		.where((event) => !reloading)
+		.where((event) => !event.details.isDisabled)
 		.selectMany(whenDashboardInactive)
 		.select(createBuildFixedMessage);
-	var passwordExpired = events.getByName('passwordExpired')
+	const passwordExpired = events.getByName('passwordExpired')
 		.select(createPasswordExpiredMessage);
 
-	events.getByName('servicesInitializing').subscribe(function() {
+	events.getByName('servicesInitializing').subscribe(() => {
 		reloading = true;
 	});
-	events.getByName('servicesInitialized').subscribe(function() {
+	events.getByName('servicesInitialized').subscribe(() => {
 		reloading = false;
 	});
 
 	passwordExpired
 		.merge(buildBroken)
 		.merge(buildFixed)
-		.subscribe(function(notification) {
-			if (notification) {
-				showNotification(notification);
-			}
-		});
+		.where((ev) => ev)
+		.subscribe((ev) => showNotification(ev));
 }
 
 export default {
