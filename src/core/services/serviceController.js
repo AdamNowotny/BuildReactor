@@ -2,18 +2,21 @@ import 'rx/dist/rx.binding';
 import Rx from 'rx';
 import events from 'core/events';
 
-var types = {};
+let types = {};
 
-var getAllTypes = function() {
-	return types;
+const getAllTypes = function() {
+	const settingList = Object.keys(types)
+		.map((k) => types[k])
+		.map((t) => t.settings());
+	return settingList;
 };
 
-var registerType = function(Service) {
-	var settings = Service.settings();
+const registerType = function(Service) {
+	const settings = Service.settings();
 	types[settings.baseUrl] = Service;
 };
 
-var clear = function() {
+const clear = function() {
 	types = {};
 };
 
@@ -22,16 +25,18 @@ const typeInfoFor = (name) => {
 	return types[service.settings.baseUrl].settings();
 };
 
+const createService = (settings) => {
+	const Service = types[settings.baseUrl];
+	return new Service(settings);
+};
+
 var services = [];
 var eventsSubscriptions = [];
 
 function loadServices(settingsList) {
 	return Rx.Observable.fromArray(settingsList)
 		.where((settings) => settings.disabled !== true)
-		.select(function(settings) {
-			const Service = types[settings.baseUrl];
-			return new Service(settings);
-		})
+		.select((settings) => createService(settings))
 		.do(function(service) {
 			services.push(service);
 			eventsSubscriptions.push(service.events.subscribe((event) => {
@@ -93,5 +98,6 @@ export default {
 	getAllTypes,
 	registerType,
 	typeInfoFor,
+	createService,
 	clear
 };

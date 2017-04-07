@@ -160,20 +160,20 @@ describe('core/services/serviceController', () => {
 
 	});
 
-	describe('registrations', function() {
+	describe('registrations', () => {
 
-		beforeEach(function() {
+		beforeEach(() => {
 			controller.clear();
 		});
 
-		afterEach(function() {
+		afterEach(() => {
 			controller.clear();
 		});
 
-		it('should return empty array if no services registered', function() {
-			var types = controller.getAllTypes();
+		it('should return empty array if no services registered', () => {
+			const types = controller.getAllTypes();
 
-			expect(types).toEqual({});
+			expect(types).toEqual([]);
 		});
 
 		it('should register service', function() {
@@ -184,20 +184,20 @@ describe('core/services/serviceController', () => {
 			expect(CustomBuildService.settings).toHaveBeenCalled();
 		});
 
-		it('should return registered services', function() {
+		it('should return registered services', () => {
 			controller.registerType(CustomBuildService);
 
-			var types = controller.getAllTypes();
+			const types = controller.getAllTypes();
 
-			expect(types).toEqual({ test: CustomBuildService });
+			expect(types).toEqual([CustomBuildService.settings()]);
 		});
 
-		it('should clear registrations', function() {
+		it('should clear registrations', () => {
 			controller.registerType(CustomBuildService);
 
 			controller.clear();
 
-			expect(controller.getAllTypes()).toEqual({});
+			expect(controller.getAllTypes()).toEqual([]);
 		});
 	});
 });

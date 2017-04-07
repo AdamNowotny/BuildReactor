@@ -6,7 +6,7 @@ import serviceConfiguration from 'core/config/serviceConfiguration';
 import serviceController from 'core/services/serviceController';
 import viewConfiguration from 'core/config/viewConfiguration';
 
-describe('chromeListeners', function() {
+describe('chromeListeners', () => {
 
 	const eventsSubject = new Rx.Subject();
 
@@ -31,6 +31,7 @@ describe('chromeListeners', function() {
 		spyOn(serviceConfiguration, 'save');
 		spyOn(viewConfiguration, 'save');
 		spyOn(serviceController, 'getAllTypes');
+		spyOn(serviceController, 'createService');
 		chromeListeners.init();
 	});
 
@@ -55,18 +56,13 @@ describe('chromeListeners', function() {
 		return port;
 	}
 
-	describe('messages', function() {
+	describe('messages', () => {
 
-		it('should handle availableServices', function() {
-			var serviceTypes = [{
-				settings: function() {
-					return { typeName: 'snap' };
-				}
-			}];
-			serviceController.getAllTypes.and.returnValue(serviceTypes);
+		it('should handle availableServices', () => {
+			serviceController.getAllTypes.and.returnValue([{ typeName: 'snap' }]);
 
-			var result;
-			messageHandler({ name: 'availableServices' }, null, function(response) {
+			let result;
+			messageHandler({ name: 'availableServices' }, null, (response) => {
 				result = response;
 			});
 
@@ -140,34 +136,28 @@ describe('chromeListeners', function() {
 
 	});
 
-	describe('availableProjects', function() {
+	describe('availableProjects', () => {
 
-		var CustomBuildService = function() {};
-		CustomBuildService.prototype.availableBuilds = function() {};
+		let request;
+		let mockAvailableBuilds;
 
-		var service;
-		var sendResponse;
-		var request;
-		var mockAvailableBuilds;
-
-		beforeEach(function() {
-			service = new CustomBuildService();
-			serviceController.getAllTypes.and.returnValue({ custom: CustomBuildService });
-			sendResponse = jasmine.createSpy();
+		beforeEach(() => {
 			request = {
 				name: 'availableProjects',
 				serviceSettings: { baseUrl: 'custom' }
 			};
-			mockAvailableBuilds = spyOn(CustomBuildService.prototype, 'availableBuilds').and.callFake(function() {
-				return Rx.Observable.never();
+			mockAvailableBuilds = jasmine.createSpy().and.returnValue(
+				Rx.Observable.never()
+			);
+			serviceController.createService.and.returnValue({
+				availableBuilds: mockAvailableBuilds
 			});
-
 		});
 
-		it('should call service', function() {
-			messageHandler(request, null, sendResponse);
+		it('should call service', () => {
+			messageHandler(request, null, () => {});
 
-			expect(service.availableBuilds).toHaveBeenCalled();
+			expect(mockAvailableBuilds).toHaveBeenCalled();
 		});
 
 		it('should send response back', function() {
