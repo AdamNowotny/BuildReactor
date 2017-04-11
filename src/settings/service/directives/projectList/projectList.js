@@ -71,10 +71,10 @@ export default app.directive('projectList', function($sce, highlightFilter) {
 			$scope.groups = null;
 			$scope.selected = [];
 
-			$scope.$watch('projects', function(projects) {
+			$scope.$watch('projects', (projects) => {
 				$scope.selected = $scope.selected || [];
-				$scope.projectList = angular.copy($scope.projects);
-				$scope.projectList.forEach(function(project) {
+				$scope.projectList = angular.copy($scope.projects) || [];
+				$scope.projectList.forEach((project) => {
 					project.isSelected = $scope.selected.indexOf(project.id) > -1;
 					project.isInView = !$scope.viewItems || $scope.viewItems.indexOf(project.id) > -1;
 				});

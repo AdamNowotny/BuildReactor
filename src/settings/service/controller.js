@@ -11,10 +11,11 @@ export default app.controller('ServiceSettingsCtrl', function($scope, $location)
 
 	var config;
 
-	var reset = function() {
+	const reset = function() {
 		$scope.projects = {
 			all: [],
-			selected: null
+			selected: null,
+			loaded: false
 		};
 		$scope.views = {
 			all: [],
@@ -42,7 +43,8 @@ export default app.controller('ServiceSettingsCtrl', function($scope, $location)
 		$scope.projectsError = null;
 		$scope.projects = {
 			all: projects.items,
-			selected: projects.selected
+			selected: projects.selected,
+			loaded: true
 		};
 		$scope.views = {
 			all: projects.views || [],
