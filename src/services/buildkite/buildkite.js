@@ -1,72 +1,106 @@
 import Rx from 'rx';
-import builds from 'services/buildkite/buildkiteBuilds';
-import sortBy from 'common/sortBy';
+import requests from 'services/buildkite/buildkiteRequests';
 
-// requires API token with permissions:
-// - read_builds
-// - read_organizations
-// - read_pipelines
+const getAll = (settings) => {
+    const token = settings.token;
+    return requests.organizations(token)
+        .selectMany((org) => requests.pipelines(org.pipelines_url, token)
+            .select((pipeline) => parsePipeline(org, pipeline))
+        )
+        .toArray()
+        .select((items) => ({ items }));
+};
 
-class BuildKite {
-    constructor(settings, scheduler) {
-        this.settings = settings;
-        this.events = new Rx.Subject();
-        this.scheduler = scheduler;
+const parsePipeline = (org, pipeline) => ({
+    id: `${org.slug}/${pipeline.slug}`,
+    name: pipeline.name,
+    group: org.name,
+    isDisabled: false
+});
+
+const getLatest = (settings) => {
+    const token = settings.token;
+    const projects = settings.projects;
+    return Rx.Observable.fromArray(projects)
+        .select((project) => createKey(project))
+        .selectMany((key) => requests.latestBuild(key.org, key.pipeline, token)
+            .selectMany((latestBuild) => {
+                if (['running', 'scheduled', 'canceled', 'canceling'].includes(latestBuild.state)) {
+                    return requests.latestFinishedBuild(key.org, key.pipeline, token)
+                        .select((finishedBuild) => parseBuild(latestBuild, key, finishedBuild));
+                } else {
+                    return Rx.Observable.return(parseBuild(latestBuild, key));
+                }
+            })
+            .catch((ex) => Rx.Observable.return(createError(key, ex)))
+        )
+        .toArray()
+        .select((items) => ({ items }));
+};
+
+const createKey = (stringId) => {
+    const [org, pipeline] = stringId.split('/');
+    return {
+        id: stringId,
+        org,
+        pipeline
+    };
+};
+
+const createError = (key, ex) => ({
+    id: key.id,
+    name: key.pipeline,
+    group: key.org,
+    error: ex
+});
+
+const parseBuild = (latestBuild, key, finishedBuild) => {
+    const org = key.org;
+    const pipeline = key.pipeline;
+    const primaryBuild = (finishedBuild || latestBuild);
+    return {
+        id: `${org}/${pipeline}`,
+        name: pipeline,
+        group: org,
+        webUrl: latestBuild.web_url,
+        isBroken: primaryBuild.state === 'failed',
+        isRunning: latestBuild.state === 'running',
+        isWaiting: latestBuild.state === 'scheduled',
+        isDisabled: false,
+        tags: createTags(latestBuild),
+        changes: latestBuild.creator ?
+            [{
+                name: latestBuild.creator.name,
+                message: latestBuild.message
+            }] : []
+    };
+};
+
+const createTags = (build) => {
+    const tags = [];
+    if (['canceled', 'canceling'].includes(build.state)) {
+        tags.push({ name: 'Canceled', type: 'warning' });
     }
+    if (build.state === 'not_run') {
+        tags.push({ name: 'Not built', type: 'warning' });
+    }
+    return tags;
+};
 
-    static settings() {
-        return {
-            typeName: 'BuildKite',
+export default {
+    getAll,
+    getLatest,
+    getInfo: () => ({
+        typeName: 'BuildKite',
+        baseUrl: 'buildkite',
+        icon: 'services/buildkite/icon.png',
+        logo: 'services/buildkite/logo.svg',
+        defaultConfig: {
             baseUrl: 'buildkite',
-            icon: 'services/buildkite/icon.png',
-            logo: 'services/buildkite/logo.svg',
-            defaultConfig: {
-                baseUrl: 'buildkite',
-                name: '',
-                projects: [],
-                token: '',
-                updateInterval: 60
-            }
-        };
-    }
-
-    updateAll(settings) {
-        return builds.getLatest(settings)
-            .select((result) => result.items)
-            .select((items) => sortBy('id', items))
-            .do((items) => this.events.onNext({
-                eventName: 'serviceUpdated',
-                source: this.settings.name,
-                details: items
-            }))
-            .catch((ex) => {
-                this.events.onNext({
-                    eventName: 'serviceUpdateFailed',
-                    source: this.settings.name,
-                    details: null
-                });
-                return Rx.Observable.return([]);
-            });
-    }
-
-    start() {
-        const updates = new Rx.Subject();
-        const interval = this.settings.updateInterval * 1000;
-        this.updatesSubscription = Rx.Observable.timer(0, interval, this.scheduler)
-            .selectMany(() => this.updateAll(this.settings))
-            .subscribe(updates);
-        return updates.take(1);
-    }
-
-    stop() {
-        if (this.updatesSubscription) {
-            this.updatesSubscription.dispose();
+            name: '',
+            projects: [],
+            token: '',
+            updateInterval: 60
         }
-    }
-
-    availableBuilds() {
-        return builds.getAll(this.settings);
-    }
-}
-
-export default BuildKite;
+    })
+};

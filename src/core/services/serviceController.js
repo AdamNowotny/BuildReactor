@@ -30,14 +30,14 @@ const createService = (settings) => {
 	return new Service(settings);
 };
 
-var services = [];
-var eventsSubscriptions = [];
+let services = [];
+let eventsSubscriptions = [];
 
 function loadServices(settingsList) {
 	return Rx.Observable.fromArray(settingsList)
 		.where((settings) => settings.disabled !== true)
 		.select((settings) => createService(settings))
-		.do(function(service) {
+		.do((service) => {
 			services.push(service);
 			eventsSubscriptions.push(service.events.subscribe((event) => {
 				events.push(event);
