@@ -154,7 +154,7 @@ describe('core/services/serviceView', () => {
         serviceUpdateFailedSubject.onNext({
             eventName: 'serviceUpdateFailed',
             source: 'service1',
-            details: null
+            details: { message: 'some error' }
         });
 
         sinon.assert.calledWith(events.push, {
@@ -165,7 +165,8 @@ describe('core/services/serviceView', () => {
                 items: [{
                     id: 'abc',
                     error: {
-                        message: 'Service update failed'
+                        message: 'Service update failed',
+                        description: 'some error'
                     }
                 }]
             }]

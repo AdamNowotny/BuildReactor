@@ -27,7 +27,10 @@ const init = () => {
     rxServiceUpdateFailed = events.getByName('serviceUpdateFailed').subscribe((ev) => {
         const oldItems = latestState.get(ev.source).items;
         const items = oldItems.map((item) => {
-            item.error = { message: 'Service update failed' };
+            item.error = {
+                message: 'Service update failed',
+                description: ev.details ? ev.details.message : null
+            };
             return item;
         });
         latestState.set(ev.source, { name: ev.source, items });

@@ -26,7 +26,7 @@ const create = (serviceType) => class PoolingService {
                 this.events.onNext({
                     eventName: 'serviceUpdateFailed',
                     source: this.settings.name,
-                    details: null
+                    details: ex
                 });
                 return Rx.Observable.return([]);
             });

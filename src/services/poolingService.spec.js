@@ -185,7 +185,7 @@ describe('services/poolingService', () => {
                     message: {
                         eventName: 'serviceUpdateFailed',
                         source: settings.name,
-                        details: null
+                        details: { message: 'some error' }
                     }
                 }
             ]);
