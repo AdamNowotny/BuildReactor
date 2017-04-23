@@ -15,7 +15,7 @@ const create = (serviceType) => class PoolingService {
 
     updateAll(settings) {
         return serviceType.getLatest(settings)
-            .select((result) => result.items)
+            .toArray()
             .select((items) => sortBy('id', items))
             .do((items) => this.events.onNext({
                 eventName: 'serviceUpdated',
@@ -48,7 +48,9 @@ const create = (serviceType) => class PoolingService {
     }
 
     availableBuilds() {
-        return serviceType.getAll(this.settings);
+        return serviceType.getAll(this.settings)
+            .toArray()
+            .select((items) => ({ items }));
     }
 };
 

@@ -59,13 +59,12 @@ describe('services/buildkite/buildkite', () => {
             sinon.assert.calledWith(requests.organizations, settings.token);
         });
 
-        it('should return empty items if no organizations', () => {
+        it('should return empty sequence if no organizations', () => {
             requests.organizations.returns(Rx.Observable.empty());
 
             const result = scheduler.startScheduler(() => buildkite.getAll(settings));
 
             expect(result.messages).toHaveEqualElements(
-                onNext(200, { items: [] }),
                 onCompleted(200)
             );
         });
@@ -96,20 +95,16 @@ describe('services/buildkite/buildkite', () => {
 
             expect(result.messages).toHaveEqualElements(
                 onNext(200, {
-                    items: [
-                        {
-                            id: 'org/slug1',
-                            name: 'pipeline1',
-                            group: 'org_name',
-                            isDisabled: false
-                        },
-                        {
-                            id: 'org/slug2',
-                            name: 'pipeline2',
-                            group: 'org_name',
-                            isDisabled: false
-                        }
-                    ]
+                    id: 'org/slug1',
+                    name: 'pipeline1',
+                    group: 'org_name',
+                    isDisabled: false
+                }),
+                onNext(200, {
+                    id: 'org/slug2',
+                    name: 'pipeline2',
+                    group: 'org_name',
+                    isDisabled: false
                 }),
                 onCompleted(200)
             );
@@ -129,13 +124,12 @@ describe('services/buildkite/buildkite', () => {
             sinon.assert.calledWith(requests.latestBuild, 'org', 'pipeline2', settings.token);
         });
 
-        it('should return empty items if no builds', () => {
+        it('should return empty sequence if no builds', () => {
             requests.latestBuild.returns(Rx.Observable.empty());
 
             const result = scheduler.startScheduler(() => buildkite.getLatest(settings));
 
             expect(result.messages).toHaveEqualElements(
-                onNext(200, { items: [] }),
                 onCompleted(200)
             );
         });
@@ -159,27 +153,26 @@ describe('services/buildkite/buildkite', () => {
             const result = scheduler.startScheduler(() => buildkite.getLatest(settings));
 
             expect(result.messages).toHaveEqualElements(
-                onNext(200),
+                onNext(200, {
+                    id: 'org/pipeline1',
+                    name: 'pipeline1',
+                    group: 'org',
+                    webUrl: 'https://buildkite.com/org/pipeline1/builds/15',
+                    isDisabled: false,
+                    isBroken: false,
+                    isRunning: false
+                }),
+                onNext(200, {
+                    id: 'org/pipeline2',
+                    name: 'pipeline2',
+                    group: 'org',
+                    webUrl: 'https://buildkite.com/org/pipeline2/builds/2',
+                    isDisabled: false,
+                    isBroken: false,
+                    isRunning: false
+                }),
                 onCompleted(200)
             );
-            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
-                id: 'org/pipeline1',
-                name: 'pipeline1',
-                group: 'org',
-                webUrl: 'https://buildkite.com/org/pipeline1/builds/15',
-                isDisabled: false,
-                isBroken: false,
-                isRunning: false
-            }));
-            expect(result.messages[0].value.value.items[1]).toEqual(jasmine.objectContaining({
-                id: 'org/pipeline2',
-                name: 'pipeline2',
-                group: 'org',
-                webUrl: 'https://buildkite.com/org/pipeline2/builds/2',
-                isDisabled: false,
-                isBroken: false,
-                isRunning: false
-            }));
         });
 
         it('should return error if updating build fails', () => {
@@ -197,24 +190,23 @@ describe('services/buildkite/buildkite', () => {
             const result = scheduler.startScheduler(() => buildkite.getLatest(settings));
 
             expect(result.messages).toHaveEqualElements(
-                onNext(200),
+                onNext(200, {
+                    id: 'org/pipeline1',
+                    name: 'pipeline1',
+                    group: 'org',
+                    error: { message: 'error message' }
+                }),
+                onNext(200, {
+                    id: 'org/pipeline2',
+                    name: 'pipeline2',
+                    group: 'org',
+                    webUrl: 'https://buildkite.com/org/pipeline2/builds/2',
+                    isDisabled: false,
+                    isBroken: false,
+                    isRunning: false
+                }),
                 onCompleted(200)
             );
-            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
-                id: 'org/pipeline1',
-                name: 'pipeline1',
-                group: 'org',
-                error: { message: 'error message' }
-            }));
-            expect(result.messages[0].value.value.items[1]).toEqual(jasmine.objectContaining({
-                id: 'org/pipeline2',
-                name: 'pipeline2',
-                group: 'org',
-                webUrl: 'https://buildkite.com/org/pipeline2/builds/2',
-                isDisabled: false,
-                isBroken: false,
-                isRunning: false
-            }));
         });
 
         it('should return failed build', () => {
@@ -222,7 +214,7 @@ describe('services/buildkite/buildkite', () => {
 
             const result = scheduler.startScheduler(() => buildkite.getLatest(settings));
 
-            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
+            expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                 isBroken: true
             }));
         });
@@ -233,7 +225,7 @@ describe('services/buildkite/buildkite', () => {
 
             const result = scheduler.startScheduler(() => buildkite.getLatest(settings));
 
-            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
+            expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                 isBroken: true,
                 isRunning: true
             }));
@@ -245,7 +237,7 @@ describe('services/buildkite/buildkite', () => {
 
             const result = scheduler.startScheduler(() => buildkite.getLatest(settings));
 
-            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
+            expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                 isBroken: true,
                 isRunning: false,
                 isWaiting: true
@@ -258,7 +250,7 @@ describe('services/buildkite/buildkite', () => {
 
             const result = scheduler.startScheduler(() => buildkite.getLatest(settings));
 
-            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
+            expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                 tags: [{ name: 'Canceled', type: 'warning' }]
             }));
         });
@@ -269,7 +261,7 @@ describe('services/buildkite/buildkite', () => {
 
             const result = scheduler.startScheduler(() => buildkite.getLatest(settings));
 
-            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
+            expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                 tags: [{ name: 'Canceled', type: 'warning' }]
             }));
         });
@@ -279,7 +271,7 @@ describe('services/buildkite/buildkite', () => {
 
             const result = scheduler.startScheduler(() => buildkite.getLatest(settings));
 
-            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
+            expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                 tags: [{ name: 'Not built', type: 'warning' }]
             }));
         });
@@ -292,7 +284,7 @@ describe('services/buildkite/buildkite', () => {
 
             const result = scheduler.startScheduler(() => buildkite.getLatest(settings));
 
-            expect(result.messages[0].value.value.items[0]).toEqual(jasmine.objectContaining({
+            expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                 changes: [{ name: 'creator name', message: 'message' }]
             }));
         });

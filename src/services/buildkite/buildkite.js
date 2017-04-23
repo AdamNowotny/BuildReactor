@@ -1,15 +1,10 @@
 import Rx from 'rx';
 import requests from 'services/buildkite/buildkiteRequests';
 
-const getAll = (settings) => {
-    const token = settings.token;
-    return requests.organizations(token)
-        .selectMany((org) => requests.pipelines(org.pipelines_url, token)
-            .select((pipeline) => parsePipeline(org, pipeline))
-        )
-        .toArray()
-        .select((items) => ({ items }));
-};
+const getAll = (settings) => requests.organizations(settings.token)
+    .selectMany((org) => requests.pipelines(org.pipelines_url, settings.token)
+        .select((pipeline) => parsePipeline(org, pipeline))
+    );
 
 const parsePipeline = (org, pipeline) => ({
     id: `${org.slug}/${pipeline.slug}`,
@@ -18,25 +13,19 @@ const parsePipeline = (org, pipeline) => ({
     isDisabled: false
 });
 
-const getLatest = (settings) => {
-    const token = settings.token;
-    const projects = settings.projects;
-    return Rx.Observable.fromArray(projects)
-        .select((project) => createKey(project))
-        .selectMany((key) => requests.latestBuild(key.org, key.pipeline, token)
-            .selectMany((latestBuild) => {
-                if (['running', 'scheduled', 'canceled', 'canceling'].includes(latestBuild.state)) {
-                    return requests.latestFinishedBuild(key.org, key.pipeline, token)
-                        .select((finishedBuild) => parseBuild(latestBuild, key, finishedBuild));
-                } else {
-                    return Rx.Observable.return(parseBuild(latestBuild, key));
-                }
-            })
-            .catch((ex) => Rx.Observable.return(createError(key, ex)))
-        )
-        .toArray()
-        .select((items) => ({ items }));
-};
+const getLatest = (settings) => Rx.Observable.fromArray(settings.projects)
+    .select((project) => createKey(project))
+    .selectMany((key) => requests.latestBuild(key.org, key.pipeline, settings.token)
+        .selectMany((latestBuild) => {
+            if (['running', 'scheduled', 'canceled', 'canceling'].includes(latestBuild.state)) {
+                return requests.latestFinishedBuild(key.org, key.pipeline, settings.token)
+                    .select((finishedBuild) => parseBuild(latestBuild, key, finishedBuild));
+            } else {
+                return Rx.Observable.return(parseBuild(latestBuild, key));
+            }
+        })
+        .catch((ex) => Rx.Observable.return(createError(key, ex)))
+    );
 
 const createKey = (stringId) => {
     const [org, pipeline] = stringId.split('/');

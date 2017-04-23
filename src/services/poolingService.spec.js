@@ -60,14 +60,17 @@ describe('services/poolingService', () => {
     });
 
     it('should return availableBuilds', () => {
-        const allBuilds = Rx.Observable.return([]);
+        const allBuilds = Rx.Observable.empty();
         serviceType.getAll.returns(allBuilds);
 
-        const result = service.availableBuilds();
+        const result = scheduler.startScheduler(() => service.availableBuilds());
 
-        expect(result).toBe(allBuilds);
         sinon.assert.calledOnce(serviceType.getAll);
         sinon.assert.calledWith(serviceType.getAll, settings);
+        expect(result.messages).toHaveEqualElements(
+            onNext(200, { items: [] }),
+            onCompleted(200)
+        );
     });
 
     describe('start', () => {
@@ -91,9 +94,9 @@ describe('services/poolingService', () => {
         });
 
         it('should sort items by id', () => {
-            serviceType.getLatest.returns(Rx.Observable.return({
-                items: [{ id: 'id2' }, { id: 'id1' }]
-            }));
+            serviceType.getLatest.returns(Rx.Observable.fromArray(
+                [{ id: 'id2' }, { id: 'id1' }]
+            ));
 
             scheduler.scheduleAbsolute(null, 300, () => {
                 service.start().subscribe();
@@ -115,7 +118,7 @@ describe('services/poolingService', () => {
         });
 
         it('should not update builds after stop', () => {
-            serviceType.getLatest.returns(Rx.Observable.return({ items: [] }));
+            serviceType.getLatest.returns(Rx.Observable.empty());
             scheduler.scheduleAbsolute(null, 200, () => {
                 service.stop();
             });
@@ -127,7 +130,7 @@ describe('services/poolingService', () => {
         });
 
         it('should push serviceUpdated on every update', () => {
-            serviceType.getLatest.returns(Rx.Observable.return({ items: [] }));
+            serviceType.getLatest.returns(Rx.Observable.empty());
             scheduler.scheduleAbsolute(null, 2000, () => {
                 service.stop();
             });
