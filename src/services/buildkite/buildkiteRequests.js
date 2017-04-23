@@ -1,5 +1,5 @@
 import Rx from 'rx';
-import request from 'services/buildkite/jsonRequest';
+import request from 'services/jsonRequest';
 
 const organizations = (token) => request
     .get({

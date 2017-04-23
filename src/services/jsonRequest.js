@@ -1,6 +1,6 @@
 import 'rx/dist/rx.binding';
 import Rx from 'rx';
-import errors from 'services/buildkite/errors';
+import errors from 'services/errors';
 import superagent from 'superagent';
 
 const requestCallback = (options, callback) => {

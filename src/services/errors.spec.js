@@ -1,4 +1,4 @@
-import errors from 'services/buildkite/errors';
+import errors from 'services/errors';
 
 describe('services/buildkite/errors', () => {
 
