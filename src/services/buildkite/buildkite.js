@@ -1,6 +1,11 @@
 import Rx from 'rx';
 import requests from 'services/buildkite/buildkiteRequests';
 
+// requires API token with permissions:
+// - read_builds
+// - read_organizations
+// - read_pipelines
+
 const getAll = (settings) => requests.organizations(settings.token)
     .selectMany((org) => requests.pipelines(org.pipelines_url, settings.token)
         .select((pipeline) => parsePipeline(org, pipeline))

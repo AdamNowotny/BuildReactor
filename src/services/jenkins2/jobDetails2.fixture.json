@@ -1,0 +1,25 @@
+{
+    "_class": "org.jenkinsci.plugins.workflow.job.WorkflowJob",
+    "buildable": true,
+    "inQueue": false,
+    "lastBuild": {
+        "_class": "org.jenkinsci.plugins.workflow.job.WorkflowRun",
+        "building": false,
+        "number": 14,
+        "url": "https://ci.jenkins.io/job/Infrastructure/job/patron/14/",
+        "changeSets": [{
+            "_class": "hudson.plugins.git.GitChangeSetList",
+            "items": [{
+                "_class": "hudson.plugins.git.GitChangeSet",
+                "author": {
+                    "fullName": "user2"
+                },
+                "msg": "fixed artifact location"
+            }]
+        }]
+    },
+    "lastCompletedBuild": {
+        "_class": "org.jenkinsci.plugins.workflow.job.WorkflowRun",
+        "result": "SUCCESS"
+    }
+}

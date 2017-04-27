@@ -18,7 +18,7 @@ define([
 
     JenkinsBuildService.settings = function() {
         return {
-            typeName: 'Jenkins',
+            typeName: 'Jenkins 1.x',
             baseUrl: 'jenkins',
             urlHint: 'URL, e.g. http://ci.jenkins-ci.org/',
             icon: 'core/services/jenkins/icon.png',

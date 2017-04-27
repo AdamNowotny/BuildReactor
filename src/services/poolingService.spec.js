@@ -59,18 +59,42 @@ describe('services/poolingService', () => {
         sinon.assert.calledOnce(serviceType.getInfo);
     });
 
-    it('should return availableBuilds', () => {
-        const allBuilds = Rx.Observable.empty();
-        serviceType.getAll.returns(allBuilds);
+    describe('availableBuilds', () => {
 
-        const result = scheduler.startScheduler(() => service.availableBuilds());
+        it('should return availableBuilds', () => {
+            const allBuilds = Rx.Observable.empty();
+            serviceType.getAll.returns(allBuilds);
 
-        sinon.assert.calledOnce(serviceType.getAll);
-        sinon.assert.calledWith(serviceType.getAll, settings);
-        expect(result.messages).toHaveEqualElements(
-            onNext(200, { items: [] }),
-            onCompleted(200)
-        );
+            const result = scheduler.startScheduler(() => service.availableBuilds());
+
+            sinon.assert.calledOnce(serviceType.getAll);
+            sinon.assert.calledWith(serviceType.getAll, settings);
+            expect(result.messages).toHaveEqualElements(
+                onNext(200, { items: [] }),
+                onCompleted(200)
+            );
+        });
+
+        it('should sort availableBuilds', () => {
+            const allBuilds = Rx.Observable.fromArray([
+                { name: 'zzz' },
+                { name: 'aaa' }
+            ]);
+            serviceType.getAll.returns(allBuilds);
+
+            const result = scheduler.startScheduler(() => service.availableBuilds());
+
+            sinon.assert.calledOnce(serviceType.getAll);
+            sinon.assert.calledWith(serviceType.getAll, settings);
+            expect(result.messages).toHaveEqualElements(
+                onNext(200, { items: [
+                    { name: 'aaa' },
+                    { name: 'zzz' }
+                ] }),
+                onCompleted(200)
+            );
+        });
+
     });
 
     describe('start', () => {

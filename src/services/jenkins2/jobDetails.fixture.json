@@ -1,0 +1,33 @@
+{
+    "_class": "org.jenkinsci.plugins.workflow.job.WorkflowJob",
+    "buildable": true,
+    "inQueue": false,
+    "lastBuild": {
+        "_class": "org.jenkinsci.plugins.workflow.job.WorkflowRun",
+        "building": false,
+        "number": 358,
+        "url": "https://ci.jenkins.io/job/Core/job/jenkins/job/master/358/",
+        "changeSets": [{
+            "_class": "hudson.plugins.git.GitChangeSetList",
+            "items": [{
+                    "_class": "hudson.plugins.git.GitChangeSet",
+                    "author": {
+                        "fullName": "user1"
+                    },
+                    "msg": "[maven-release-plugin] prepare release jenkins-2.56"
+                },
+                {
+                    "_class": "hudson.plugins.git.GitChangeSet",
+                    "author": {
+                        "fullName": "user1"
+                    },
+                    "msg": "[maven-release-plugin] prepare for next development iteration"
+                }
+            ]
+        }]
+    },
+    "lastCompletedBuild": {
+        "_class": "org.jenkinsci.plugins.workflow.job.WorkflowRun",
+        "result": "ABORTED"
+    }
+}

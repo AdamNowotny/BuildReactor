@@ -50,7 +50,7 @@ const create = (serviceType) => class PoolingService {
     availableBuilds() {
         return serviceType.getAll(this.settings)
             .toArray()
-            .select((items) => ({ items }));
+            .select((items) => ({ items: sortBy('name', items) }));
     }
 };
 
