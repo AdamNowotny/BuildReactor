@@ -125,7 +125,7 @@ describe('services/jenkins2/jenkins2', () => {
             );
         });
 
-        fit('should return parsed builds', () => {
+        it('should return parsed builds', () => {
             settings.projects = ['folder/project1/branch', 'folder/project2'];
             requests.jobDetails.returns(Rx.Observable.return(jobDetails));
             requests.jobDetails

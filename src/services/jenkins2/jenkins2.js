@@ -56,21 +56,23 @@ export default {
         .selectMany((id) => requests.jobDetails({ id, settings })
             .select((job) => {
                 const [folder, project, branch] = id.split('/');
+                const lastBuild = job.lastBuild || {};
+                const lastCompletedBuild = job.lastCompletedBuild || {};
                 const state = {
                     id,
                     name: (branch) ?
                         `${project} (${branch})` :
                         `${project}`,
                     group: folder,
-                    webUrl: job.lastBuild.url,
-                    isRunning: job.lastBuild.building,
+                    webUrl: lastBuild.url,
+                    isRunning: lastBuild.building,
                     isDisabled: !job.buildable,
                     isWaiting: job.inQueue,
-                    tags: createTags(job.lastCompletedBuild),
-                    changes: createChanges(job.lastBuild)
+                    tags: createTags(lastCompletedBuild),
+                    changes: createChanges(lastBuild.changeSets)
                 };
-                if (jobResults.statusKnown.includes(job.lastCompletedBuild.result)) {
-                    state.isBroken = jobResults.broken.includes(job.lastCompletedBuild.result);
+                if (jobResults.statusKnown.includes(lastCompletedBuild.result)) {
+                    state.isBroken = jobResults.broken.includes(lastCompletedBuild.result);
                 }
                 return state;
             })
@@ -103,9 +105,9 @@ const createTags = (lastCompletedBuild) => {
     return tags;
 };
 
-const createChanges = (lastBuild) => ([]
+const createChanges = (changeSets = []) => ([]
     .concat(
-        ...lastBuild.changeSets.map((changeSet) => changeSet.items)
+        ...changeSets.map((changeSet) => changeSet.items)
     ).map((change) => ({
         name: change.author.fullName,
         message: change.msg

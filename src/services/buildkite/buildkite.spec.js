@@ -38,6 +38,7 @@ describe('services/buildkite/buildkite', () => {
             baseUrl: 'buildkite',
             icon: 'services/buildkite/icon.png',
             logo: 'services/buildkite/logo.svg',
+            tokenHelp: 'Permissions needed: read_builds, read_organizations, read_pipelines',
             defaultConfig: {
                 baseUrl: 'buildkite',
                 name: '',
