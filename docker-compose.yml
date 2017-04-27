@@ -1,0 +1,8 @@
+version: '2'
+services:
+  build-reactor:
+    image: node:6.10
+    volumes:
+      - .:/code:z
+    working_dir: /code
+    command: /bin/bash
