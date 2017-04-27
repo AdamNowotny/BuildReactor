@@ -34,7 +34,7 @@ define([
 				tags: [],
 				changes: changeSetItems.map(function(change) {
 					return {
-						name: change.author.fullName,
+						name: change.author ? change.author.fullName : null,
 						message: change.msg
 					};
 				})
