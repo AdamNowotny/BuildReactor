@@ -1,9 +1,25 @@
+sudo: required
+
+services:
+  - docker
+
 language: node_js
 node_js:
-  - "6.8"
+  - "6"
+cache: yarn
+
+before_script:
+  - docker-compose up --build -d
+script:
+  - yarn test
+after_script:
+  - docker-compose down
+
 branches:
   only:
     - master
-    - webpack
+git:
+  depth: 3
+
 notifications:
   email: false
