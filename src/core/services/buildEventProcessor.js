@@ -14,6 +14,22 @@ const process = ({ oldState, newState }) => {
         }
         if (oldState && oldState.items.length) {
             const oldBuild = oldState.items.filter((build) => build.id === newBuild.id)[0];
+            if (!oldBuild.isRunning && newBuild.isRunning) {
+                events.push({
+                    eventName: 'buildStarted',
+                    source: newState.name,
+                    details: newBuild
+                });
+            }
+            if (oldBuild.isRunning && !newBuild.isRunning && oldBuild.isBroken === newBuild.isBroken) {
+                events.push({
+                    eventName: 'buildFinished',
+                    source: newState.name,
+                    details: newBuild,
+                    broken: !oldBuild.isBroken && newBuild.isBroken,
+                    fixed: oldBuild.isBroken && !newBuild.isBroken
+                });
+            }
             if (!oldBuild.isBroken && newBuild.isBroken) {
                 events.push({
                     eventName: 'buildBroken',

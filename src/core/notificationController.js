@@ -18,16 +18,23 @@ function init(options) {
 		};
 	}
 
+	function createBuildFinishedMessage(event) {
+		if (event.broken) {
+			return createBuildBrokenMessage(event);
+		} else if (event.fixed) {
+			return createNotificationInfo(event, 'Fixed', options.timeout);
+		} else {
+			return null;
+			// return createNotificationInfo(event, 'Finished', options.timeout);
+		}
+	}
+
 	function createBuildBrokenMessage(event) {
 		if (tags.contains('Unstable', event.details.tags)) {
 			return createNotificationInfo(event, 'Unstable, broken', options.timeout);
 		} else {
 			return createNotificationInfo(event, 'Broken');
 		}
-	}
-
-	function createBuildFixedMessage(event) {
-		return createNotificationInfo(event, 'Fixed', options.timeout);
 	}
 
 	function whenDashboardInactive(event) {
@@ -115,16 +122,16 @@ function init(options) {
 	const visibleNotifications = {};
 	let reloading = false;
 
-	const buildBroken = events.getByName('buildBroken')
+	// const buildStarted = events.getByName('buildStarted')
+	// 	.where((event) => !reloading)
+	// 	.where((event) => !event.details.isDisabled)
+	// 	.selectMany(whenDashboardInactive)
+	// 	.select((ev) => createNotificationInfo(ev, 'Started', options.timeout));
+	const buildFinished = events.getByName('buildFinished')
 		.where((event) => !reloading)
 		.where((event) => !event.details.isDisabled)
 		.selectMany(whenDashboardInactive)
-		.select(createBuildBrokenMessage);
-	const buildFixed = events.getByName('buildFixed')
-		.where((event) => !reloading)
-		.where((event) => !event.details.isDisabled)
-		.selectMany(whenDashboardInactive)
-		.select(createBuildFixedMessage);
+		.select(createBuildFinishedMessage);
 	const passwordExpired = events.getByName('passwordExpired')
 		.select(createPasswordExpiredMessage);
 
@@ -136,8 +143,8 @@ function init(options) {
 	});
 
 	passwordExpired
-		.merge(buildBroken)
-		.merge(buildFixed)
+		// .merge(buildStarted)
+		.merge(buildFinished)
 		.where((ev) => ev)
 		.subscribe((ev) => showNotification(ev));
 }
