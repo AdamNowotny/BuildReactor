@@ -15,59 +15,69 @@ describe('core/services/buildEventProcessor', () => {
 
     describe('serviceUpdated', () => {
 
-        it('should push buildBroken', () => {
+        it('should push buildFinished for broken build', () => {
             const oldState = {
                 name: 'service1',
                 items: [{
                     id: 'abc',
-                    isBroken: false
+                    isBroken: false,
+                    isRunning: true
                 }]
             };
             const newState = {
                 name: 'service1',
                 items: [{
                     id: 'abc',
-                    isBroken: true
+                    isBroken: true,
+                    isRunning: false
                 }]
             };
 
             eventProcessor.process({ oldState, newState });
 
             sinon.assert.calledWith(events.push, {
-                eventName: 'buildBroken',
+                eventName: 'buildFinished',
                 source: 'service1',
                 details: {
                     id: 'abc',
-                    isBroken: true
-                }
+                    isBroken: true,
+                    isRunning: false
+                },
+                broken: true,
+                fixed: false
             });
         });
 
-        it('should push buildFixed', () => {
+        it('should push buildFinished for fixed build', () => {
             const oldState = {
                 name: 'service1',
                 items: [{
                     id: 'abc',
-                    isBroken: true
+                    isBroken: true,
+                    isRunning: true
                 }]
             };
             const newState = {
                 name: 'service1',
                 items: [{
                     id: 'abc',
-                    isBroken: false
+                    isBroken: false,
+                    isRunning: false
                 }]
             };
 
             eventProcessor.process({ oldState, newState });
 
             sinon.assert.calledWith(events.push, {
-                eventName: 'buildFixed',
+                eventName: 'buildFinished',
                 source: 'service1',
                 details: {
                     id: 'abc',
-                    isBroken: false
-                }
+                    isBroken: false,
+                    isRunning: false
+                },
+                broken: false,
+                fixed: true
             });
         });
 
@@ -154,7 +164,8 @@ describe('core/services/buildEventProcessor', () => {
                 name: 'service1',
                 items: [{
                     id: 'abc',
-                    isBroken: false
+                    isBroken: false,
+                    isRunning: true
                 }]
             };
             const newState = {
@@ -162,6 +173,7 @@ describe('core/services/buildEventProcessor', () => {
                 items: [{
                     id: 'abc',
                     isBroken: true,
+                    isRunning: false,
                     changes: [
                         {
                             name: 'name1',
@@ -178,18 +190,21 @@ describe('core/services/buildEventProcessor', () => {
             eventProcessor.process({ oldState, newState });
 
             sinon.assert.calledWith(events.push, {
-                eventName: 'buildBroken',
+                eventName: 'buildFinished',
                 source: 'service1',
                 details: {
                     id: 'abc',
                     isBroken: true,
+                    isRunning: false,
                     changes: [
                         {
                             name: 'name1',
                             message: 'message'
                         }
                     ]
-                }
+                },
+                broken: true,
+                fixed: false
             });
         });
 

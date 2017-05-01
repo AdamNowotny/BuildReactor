@@ -1,5 +1,6 @@
 import 'settings/service/controller';
 import 'settings/add/controller';
+import 'settings/notifications/controller';
 import 'settings/view/controller';
 import 'settings/configuration/controller';
 import 'settings/directives/sidebar/sidebar';

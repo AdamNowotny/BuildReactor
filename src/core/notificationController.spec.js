@@ -7,6 +7,7 @@ import serviceController from 'core/services/serviceController';
 
 describe('notificationController', () => {
 
+    let configChanges;
     let buildFinishedEvents, buildStartedEvents;
     let servicesInitializedEvents, servicesInitializingEvents;
     let passwordExpiredEvents;
@@ -14,6 +15,16 @@ describe('notificationController', () => {
     let scheduler;
 
     beforeEach(() => {
+        configChanges = new Rx.BehaviorSubject({
+            notifications: {
+                enabled: true,
+                buildStarted: true,
+                buildBroken: true,
+                buildFixed: true,
+                buildFinished: true,
+                showWhenDashboardActive: false
+            }
+        });
         buildStartedEvents = new Rx.Subject();
         buildFinishedEvents = new Rx.Subject();
         servicesInitializingEvents = new Rx.Subject();
@@ -31,8 +42,9 @@ describe('notificationController', () => {
                     return servicesInitializedEvents;
                 case 'passwordExpired':
                     return passwordExpiredEvents;
+                default:
+                    return null;
             }
-            return null;
         });
         scheduler = new Rx.TestScheduler();
         mockNotification = {
@@ -46,8 +58,153 @@ describe('notificationController', () => {
             .returnValue({ icon: 'src/core/services/test/icon.png' });
         notificationController.init({
             timeout: 5000,
-            scheduler
+            scheduler,
+            configuration: configChanges
         });
+    });
+
+    describe('build started', () => {
+
+        it('should show message', () => {
+            buildStartedEvents.onNext({
+                eventName: 'buildStarted',
+                source: 'service',
+                details: {
+                    name: 'build'
+                }
+            });
+
+            expect(window.Notification).toHaveBeenCalledWith(
+                'build (service) started', {
+                    icon: 'src/core/services/test/icon.png',
+                    body: '',
+                    tag: 'service_build'
+                }
+            );
+        });
+
+        it('should show who started the build when changes available', () => {
+            buildStartedEvents.onNext({
+                eventName: 'buildStarted',
+                source: 'service',
+                details: {
+                    name: 'build',
+                    changes: [{
+                        name: 'User 1'
+                    }, {
+                        name: 'User 2'
+                    }]
+                }
+            });
+
+            expect(window.Notification).toHaveBeenCalledWith(
+                'build (service) started', {
+                    icon: 'src/core/services/test/icon.png',
+                    body: 'User 1\nUser 2',
+                    tag: 'service_build'
+                }
+            );
+        });
+
+        it('should not show message when notifications disabled', () => {
+            configChanges.onNext({ notifications: { enabled: false } });
+            buildStartedEvents.onNext({
+                eventName: 'buildStarted',
+                source: 'service',
+                details: {
+                    name: 'build'
+                }
+            });
+
+            expect(window.Notification).not.toHaveBeenCalled();
+        });
+
+        it('should not show message when buildStarted notifications disabled', () => {
+            configChanges.onNext({ notifications: { enabled: true, buildStarted: false } });
+            buildStartedEvents.onNext({
+                eventName: 'buildStarted',
+                source: 'service',
+                details: {
+                    name: 'build'
+                }
+            });
+
+            expect(window.Notification).not.toHaveBeenCalled();
+        });
+
+    });
+
+    describe('build finished', () => {
+
+        it('should show message', () => {
+            buildFinishedEvents.onNext({
+                eventName: 'buildFinished',
+                source: 'service',
+                details: {
+                    name: 'build'
+                }
+            });
+
+            expect(window.Notification).toHaveBeenCalledWith(
+                'build (service) finished', {
+                    icon: 'src/core/services/test/icon.png',
+                    body: '',
+                    tag: 'service_build'
+                }
+            );
+        });
+
+        it('should show who started the build when changes available', () => {
+            buildFinishedEvents.onNext({
+                eventName: 'buildFinished',
+                source: 'service',
+                details: {
+                    name: 'build',
+                    changes: [{
+                        name: 'User 1',
+                        message: 'message 1'
+                    }, {
+                        name: 'User 2',
+                        message: 'message 2'
+                    }]
+                }
+            });
+
+            expect(window.Notification).toHaveBeenCalledWith(
+                'build (service) finished', {
+                    icon: 'src/core/services/test/icon.png',
+                    body: 'User 1: message 1\nUser 2: message 2',
+                    tag: 'service_build'
+                }
+            );
+        });
+
+        it('should not show message when notifications disabled', () => {
+            configChanges.onNext({ notifications: { enabled: false } });
+            buildFinishedEvents.onNext({
+                eventName: 'buildFinished',
+                source: 'service',
+                details: {
+                    name: 'build'
+                }
+            });
+
+            expect(window.Notification).not.toHaveBeenCalled();
+        });
+
+        it('should not show message when buildFinished notifications disabled', () => {
+            configChanges.onNext({ notifications: { enabled: true, buildFinished: false } });
+            buildFinishedEvents.onNext({
+                eventName: 'buildFinished',
+                source: 'service',
+                details: {
+                    name: 'build'
+                }
+            });
+
+            expect(window.Notification).not.toHaveBeenCalled();
+        });
+
     });
 
     describe('build broken', () => {
@@ -63,12 +220,40 @@ describe('notificationController', () => {
             });
 
             expect(window.Notification).toHaveBeenCalledWith(
-                'build (service)', {
+                'build (service) broken', {
                     icon: 'src/core/services/test/icon.png',
-                    body: 'Broken',
+                    body: '',
                     tag: 'service_build'
                 }
             );
+        });
+
+        it('should not show message when notifications disabled', () => {
+            configChanges.onNext({ notifications: { enabled: false } });
+            buildFinishedEvents.onNext({
+                eventName: 'buildFinished',
+                source: 'service',
+                details: {
+                    name: 'build'
+                },
+                broken: true
+            });
+
+            expect(window.Notification).not.toHaveBeenCalled();
+        });
+
+        it('should not show message when buildFinished notifications disabled', () => {
+            configChanges.onNext({ notifications: { enabled: true, buildBroken: false } });
+            buildFinishedEvents.onNext({
+                eventName: 'buildFinished',
+                source: 'service',
+                details: {
+                    name: 'build'
+                },
+                broken: true
+            });
+
+            expect(window.Notification).not.toHaveBeenCalled();
         });
 
         it('should show who broke the build when changes available', () => {
@@ -87,9 +272,9 @@ describe('notificationController', () => {
             });
 
             expect(window.Notification).toHaveBeenCalledWith(
-                'build (service)', {
+                'build (service) broken', {
                     icon: 'src/core/services/test/icon.png',
-                    body: 'Broken by User 1, User 2',
+                    body: 'User 1\nUser 2',
                     tag: 'service_build'
                 }
             );
@@ -112,31 +297,32 @@ describe('notificationController', () => {
             });
 
             expect(window.Notification).toHaveBeenCalledWith(
-                'group / build (service)', {
+                'group / build (service) broken', {
                     icon: 'src/core/services/test/icon.png',
-                    body: 'Broken by User 1, User 2',
+                    body: 'User 1\nUser 2',
                     tag: 'service_group_build'
                 }
             );
         });
 
-        it('should show max 4 users who broke the build', () => {
+        it('should show max 2 users who broke the build', () => {
             buildFinishedEvents.onNext({
                 eventName: 'buildFinished',
                 source: 'service',
                 details: {
                     name: 'build',
                     changes: [1, 2, 3, 4, 5, 6, 7, 8, 9].map((d) => ({
-                        name: `User ${d}`
+                        name: `User ${d}`,
+                        message: `message ${d}`
                     }))
                 },
                 broken: true
             });
 
             expect(window.Notification).toHaveBeenCalledWith(
-                'build (service)', {
+                'build (service) broken', {
                     icon: 'src/core/services/test/icon.png',
-                    body: 'Broken by User 1, User 2, User 3, User 4, ...',
+                    body: 'User 1: message 1\nUser 2: message 2\n...',
                     tag: 'service_build'
                 }
             );
@@ -182,13 +368,42 @@ describe('notificationController', () => {
             });
 
             expect(window.Notification).toHaveBeenCalledWith(
-                'build (service)', {
+                'build (service) fixed', {
                     icon: 'src/core/services/test/icon.png',
-                    body: 'Fixed',
+                    body: '',
                     tag: 'service_build'
                 }
             );
         });
+
+        it('should not show message when notifications disabled', () => {
+            configChanges.onNext({ notifications: { enabled: false } });
+            buildStartedEvents.onNext({
+                eventName: 'buildFinished',
+                source: 'service',
+                details: {
+                    name: 'build'
+                },
+                fixed: true
+            });
+
+            expect(window.Notification).not.toHaveBeenCalled();
+        });
+
+        it('should not show message when buildFixed notifications disabled', () => {
+            configChanges.onNext({ notifications: { enabled: true, buildFixed: false } });
+            buildFinishedEvents.onNext({
+                eventName: 'buildFinished',
+                source: 'service',
+                details: {
+                    name: 'build'
+                },
+                fixed: true
+            });
+
+            expect(window.Notification).not.toHaveBeenCalled();
+        });
+
 
         it('should show who fixed the build when changes available', () => {
             buildFinishedEvents.onNext({
@@ -206,9 +421,9 @@ describe('notificationController', () => {
             });
 
             expect(window.Notification).toHaveBeenCalledWith(
-                'build (service)', {
+                'build (service) fixed', {
                     icon: 'src/core/services/test/icon.png',
-                    body: 'Fixed by User 1, User 2',
+                    body: 'User 1\nUser 2',
                     tag: 'service_build'
                 }
             );
@@ -263,9 +478,9 @@ describe('notificationController', () => {
             });
 
             expect(window.Notification).toHaveBeenCalledWith(
-                'build (service)', {
+                'build (service) unstable', {
                     icon: 'src/core/services/test/icon.png',
-                    body: 'Unstable, broken',
+                    body: '',
                     tag: 'service_build'
                 }
             );
@@ -366,15 +581,29 @@ describe('notificationController', () => {
             details: {},
             broken: true
         });
-        buildFinishedEvents.onNext({
-            eventName: 'buildFinished',
-            details: {},
-            fixed: true
-        });
 
         scheduler.advanceBy(5000);
 
         expect(window.Notification).not.toHaveBeenCalled();
+    });
+
+    it('should show notifications when dashboard ignored', () => {
+        configChanges.onNext({
+            notifications: {
+                enabled: true,
+                showWhenDashboardActive: true,
+                buildFinished: true
+            }
+        });
+        chromeApi.isDashboardActive.and.returnValue(Rx.Observable.return(true));
+        buildFinishedEvents.onNext({
+            eventName: 'buildFinished',
+            details: {}
+        });
+
+        scheduler.advanceBy(5000);
+
+        expect(window.Notification).toHaveBeenCalled();
     });
 
     it('should show url when notification clicked', () => {

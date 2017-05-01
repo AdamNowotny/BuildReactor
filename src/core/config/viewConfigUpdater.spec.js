@@ -11,7 +11,15 @@ describe('core/config/viewConfigUpdater', () => {
 			singleGroupRows: false,
 			showCommits: true,
 			showCommitsWhenGreen: false,
-			theme: 'dark'
+			theme: 'dark',
+			notifications: {
+				enabled: true,
+				showWhenDashboardActive: false,
+				buildStarted: false,
+				buildFinished: false,
+				buildBroken: true,
+				buildFixed: true
+			}
 		});
 	});
 
@@ -43,5 +51,11 @@ describe('core/config/viewConfigUpdater', () => {
 		const config = updater.update({ columns: 4 });
 
 		expect(config.theme).toBe('dark');
+	});
+
+	it('should add default notifications config', () => {
+		const config = updater.update({ columns: 4 });
+
+		expect(config.notifications).not.toBeNull();
 	});
 });

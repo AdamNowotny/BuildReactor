@@ -17,7 +17,7 @@ describe('core/passwordExpiredHandler', () => {
 	});
 
 	it('should not disable service if event is not passwordExpired', () => {
-		events.push({ eventName: 'buildBroken', details: {}, source: 'service name' });
+		events.push({ eventName: 'someEvent', source: 'service name' });
 
 		expect(serviceConfiguration.disableService).not.toHaveBeenCalled();
 	});

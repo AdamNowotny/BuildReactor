@@ -26,7 +26,7 @@ serviceConfiguration.init();
 viewConfiguration.init();
 logger.init();
 badgeController.init();
-notificationController.init({ timeout: 5000 });
+notificationController.init({ timeout: 5000, configuration: viewConfiguration.changes });
 serviceView.init();
 chromeListeners.init();
 passwordExpiredHandler.init();

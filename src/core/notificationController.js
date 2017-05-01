@@ -8,147 +8,161 @@ import tags from 'common/tags';
 
 function init(options) {
 
-	function createPasswordExpiredMessage(event) {
-		return {
-			id: `${event.source}_disabled`,
-			title: event.source,
-			url: 'settings.html',
-			icon: serviceController.typeInfoFor(event.source).icon,
-			text: 'Password expired. Service has been disabled.'
-		};
-	}
+    let config = {};
+    options.configuration.subscribe((newConfig) => {
+        config = newConfig;
+    });
 
-	function createBuildFinishedMessage(event) {
-		if (event.broken) {
-			return createBuildBrokenMessage(event);
-		} else if (event.fixed) {
-			return createNotificationInfo(event, 'Fixed', options.timeout);
-		} else {
-			return null;
-			// return createNotificationInfo(event, 'Finished', options.timeout);
-		}
-	}
+    function createPasswordExpiredMessage(event) {
+        return {
+            id: `${event.source}_disabled`,
+            title: event.source,
+            url: 'settings.html',
+            icon: serviceController.typeInfoFor(event.source).icon,
+            text: 'Password expired. Service has been disabled.'
+        };
+    }
 
-	function createBuildBrokenMessage(event) {
-		if (tags.contains('Unstable', event.details.tags)) {
-			return createNotificationInfo(event, 'Unstable, broken', options.timeout);
-		} else {
-			return createNotificationInfo(event, 'Broken');
-		}
-	}
+    function createBuildFinishedMessage(event) {
+        if (event.broken && config.notifications.buildBroken) {
+            return createBuildBrokenMessage(event);
+        } else if (event.fixed && config.notifications.buildFixed) {
+            return createNotificationInfo(event, 'fixed', options.timeout);
+        } else if (config.notifications.buildFinished) {
+            return createNotificationInfo(event, 'finished', options.timeout);
+        }
+        return null;
+    }
 
-	function whenDashboardInactive(event) {
-		return chromeApi
-			.isDashboardActive()
-			.where((active) => !active)
-			.select(() => event);
-	}
+    function createBuildBrokenMessage(event) {
+        if (tags.contains('Unstable', event.details.tags)) {
+            return createNotificationInfo(event, 'unstable', options.timeout);
+        } else {
+            return createNotificationInfo(event, 'broken');
+        }
+    }
 
-	function createNotificationInfo(event, message, timeout) {
+    function whenDashboardInactive(event) {
+        return config.notifications.showWhenDashboardActive ?
+            Rx.Observable.return(event) :
+            chromeApi
+                .isDashboardActive()
+                .where((active) => !active)
+                .select(() => event);
+    }
 
-		function createId(eventDetails) {
-			return eventDetails.group ?
-				`${event.source}_${eventDetails.group}_${eventDetails.name}` :
-				`${event.source}_${eventDetails.name}`;
-		}
+    function createNotificationInfo(event, message, timeout) {
 
-		function createTitle(eventDetails) {
-			return eventDetails.group ?
-				`${eventDetails.group} / ${eventDetails.name} (${event.source})` :
-				`${eventDetails.name} (${event.source})`;
-		}
+        function createId(eventDetails) {
+            return eventDetails.group ?
+                `${event.source}_${eventDetails.group}_${eventDetails.name}` :
+                `${event.source}_${eventDetails.name}`;
+        }
 
-		function createChangesMessage(changes) {
-			return changes ? message + changes.reduce((agg, change, i) => {
-				if (i === 4) {
-					return `${agg}, ...`;
-				}
-				if (i > 4) {
-					return agg;
-				}
-				return agg ? `${agg}, ${change.name}` : ` by ${change.name}`;
-			}, '') : message;
-		}
+        function createTitle(eventDetails) {
+            const fullBuildName = eventDetails.group ?
+                `${eventDetails.group} / ${eventDetails.name} (${event.source})` :
+                `${eventDetails.name} (${event.source})`;
+            return `${fullBuildName} ${message}`;
+        }
 
-		const info = {
-			id: createId(event.details),
-			title: createTitle(event.details),
-			url: event.details.webUrl,
-			icon: serviceController.typeInfoFor(event.source).icon,
-			timeout: timeout ? timeout : undefined,
-			text: createChangesMessage(event.details.changes)
-		};
-		return info;
-	}
+        function createChangesMessage(changes = []) {
+            return changes.reduce((agg, change, i) => {
+                if (i === 2) {
+                    return `${agg}\n...`;
+                }
+                if (i > 2) {
+                    return agg;
+                }
+                const changeMessage = change.message ?
+                    `${change.name}: ${change.message}` :
+                    change.name;
+                return agg ? `${agg}\n${changeMessage}` : changeMessage;
+            }, '');
+        }
 
-	function showNotification(info) {
-		if (visibleNotifications[info.id]) {
-			visibleNotifications[info.id].dispose();
-		}
-		visibleNotifications[info.id] = createNotification(info).subscribe(() => {}, () => {}, function() {
-			delete visibleNotifications[info.id];
-		});
-	}
+        const info = {
+            id: createId(event.details),
+            title: createTitle(event.details),
+            url: event.details.webUrl,
+            icon: serviceController.typeInfoFor(event.source).icon,
+            timeout: timeout ? timeout : undefined,
+            text: createChangesMessage(event.details.changes)
+        };
+        return info;
+    }
 
-	function createNotification(info) {
-		return Rx.Observable.create((observer) => {
-			const notification = new Notification(info.title, {
-				icon: info.icon,
-				body: info.text,
-				tag: info.id
-			});
-			notification.onclick = function() {
-				chrome.tabs.create({ 'url': info.url }, (tab) => {
-					notification.close();
-				});
-			};
-			notification.onclose = function() {
-				observer.onCompleted();
-			};
-			if (info.timeout) {
-				notification.onshow = function() {
-					Rx.Observable.timer(info.timeout, scheduler).subscribe(() => {
-						notification.close();
-					});
-				};
-			}
-			return function() {
-				notification.close();
-			};
-		});
-	}
+    function showNotification(info) {
+        if (!info) return;
+        if (visibleNotifications[info.id]) {
+            visibleNotifications[info.id].dispose();
+        }
+        visibleNotifications[info.id] = createNotification(info).subscribe(() => {}, () => {}, () => {
+            delete visibleNotifications[info.id];
+        });
+    }
 
-	const scheduler = options.scheduler || Rx.Scheduler.timeout;
-	const visibleNotifications = {};
-	let reloading = false;
+    function createNotification(info) {
+        return Rx.Observable.create((observer) => {
+            const notification = new Notification(info.title, {
+                icon: info.icon,
+                body: info.text,
+                tag: info.id
+            });
+            notification.onclick = function() {
+                chrome.tabs.create({ 'url': info.url }, (tab) => {
+                    notification.close();
+                });
+            };
+            notification.onclose = function() {
+                observer.onCompleted();
+            };
+            if (info.timeout) {
+                notification.onshow = function() {
+                    Rx.Observable.timer(info.timeout, scheduler).subscribe(() => {
+                        notification.close();
+                    });
+                };
+            }
+            return function() {
+                notification.close();
+            };
+        });
+    }
 
-	// const buildStarted = events.getByName('buildStarted')
-	// 	.where((event) => !reloading)
-	// 	.where((event) => !event.details.isDisabled)
-	// 	.selectMany(whenDashboardInactive)
-	// 	.select((ev) => createNotificationInfo(ev, 'Started', options.timeout));
-	const buildFinished = events.getByName('buildFinished')
-		.where((event) => !reloading)
-		.where((event) => !event.details.isDisabled)
-		.selectMany(whenDashboardInactive)
-		.select(createBuildFinishedMessage);
-	const passwordExpired = events.getByName('passwordExpired')
-		.select(createPasswordExpiredMessage);
+    const scheduler = options.scheduler || Rx.Scheduler.timeout;
+    const visibleNotifications = {};
+    let reloading = false;
 
-	events.getByName('servicesInitializing').subscribe(() => {
-		reloading = true;
-	});
-	events.getByName('servicesInitialized').subscribe(() => {
-		reloading = false;
-	});
+    const buildStarted = events.getByName('buildStarted')
+        .where((event) => config.notifications.enabled)
+        .where((event) => config.notifications.buildStarted)
+        .where((event) => !reloading)
+        .where((event) => !event.details.isDisabled)
+        .selectMany(whenDashboardInactive)
+        .select((ev) => createNotificationInfo(ev, 'started', options.timeout));
+    const buildFinished = events.getByName('buildFinished')
+        .where((event) => config.notifications.enabled)
+        .where((event) => !reloading)
+        .where((event) => !event.details.isDisabled)
+        .selectMany(whenDashboardInactive)
+        .select(createBuildFinishedMessage);
+    const passwordExpired = events.getByName('passwordExpired')
+        .select(createPasswordExpiredMessage);
 
-	passwordExpired
-		// .merge(buildStarted)
-		.merge(buildFinished)
-		.where((ev) => ev)
-		.subscribe((ev) => showNotification(ev));
+    events.getByName('servicesInitializing').subscribe(() => {
+        reloading = true;
+    });
+    events.getByName('servicesInitialized').subscribe(() => {
+        reloading = false;
+    });
+
+    passwordExpired
+        .merge(buildStarted)
+        .merge(buildFinished)
+        .subscribe((ev) => showNotification(ev));
 }
 
 export default {
-	init
+    init
 };

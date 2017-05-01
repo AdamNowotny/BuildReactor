@@ -23,18 +23,15 @@ function init() {
 		servicesStarted = true;
 		updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
 	});
-	events.getByName('buildBroken').subscribe((event) => {
+	events.getByName('buildFinished').subscribe((event) => {
 		if (event.details && event.details.isDisabled) {
 			return;
 		}
-		failedBuildsCount++;
-		updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
-	});
-	events.getByName('buildFixed').subscribe((event) => {
-		if (event.details && event.details.isDisabled) {
-			return;
+		if (event.broken) {
+			failedBuildsCount++;
+		} else if (event.fixed) {
+			failedBuildsCount = Math.max(failedBuildsCount - 1, 0);
 		}
-		failedBuildsCount = Math.max(failedBuildsCount - 1, 0);
 		updateBadge(failedBuildsCount, servicesStarted, offlineBuildsCount);
 	});
 	events.getByName('buildOffline').subscribe(() => {
