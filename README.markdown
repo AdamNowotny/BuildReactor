@@ -4,8 +4,8 @@ BuildReactor [![Build Status](https://secure.travis-ci.org/AdamNowotny/BuildReac
 Developer notifications and dashboard (Google Chrome extension)
  * Gives you overview of all your builds in one place
  * Supports multiple continuous integration servers
- * Shows only relevant notifications to minimise distractions
- * Fullscreen mode let's you setup information radiator for your team within minutes, not hours or days
+ * Configurable notifications
+ * Fullscreen mode let's you setup information radiator for your team within minutes
  * Works on Windows, Mac and Linux
 
 Links
@@ -37,27 +37,27 @@ Screenshots
 
 Notifications
 -------------
-<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/notifications-640x400.jpg" alt="BuildReactor notifications">
+<img src="docs/notifications-640x400.jpg" alt="BuildReactor notifications">
 
 Popup and chrome badge
 ----------------------
-<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/popup-640x400.jpg" alt="BuildReactor popup">
+<img src="docs/popup-640x400.jpg" alt="BuildReactor popup">
 
 Options page - adding new service
 ---------------------------------
-<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/settings-new-1280x800.jpg" alt="BuildReactor options page">
+<img src="docs/settings-new-1280x800.jpg" alt="BuildReactor options page">
 
 Options page - service settings
 -------------------------------
-<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/settings-1280x800.jpg" alt="BuildReactor options page">
+<img src="docs/settings-1280x800.jpg" alt="BuildReactor options page">
 
 Options page - view configuration
 ---------------------------------
-<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/settings-view-1280x800.jpg" alt="BuildReactor view configuration page">
+<img src="docs/settings-view-1280x800.jpg" alt="BuildReactor view configuration page">
 
 Dashboard page
 -------------------------------
-<img src="https://github.com/AdamNowotny/BuildReactor/raw/master/docs/dashboard-1280x800.jpg" alt="BuildReactor dashboard">
+<img src="docs/dashboard-1280x800.jpg" alt="BuildReactor dashboard">
 
 Developer setup
 ===============
@@ -65,23 +65,27 @@ Developer setup
 Installation
 ------------
 
-1. Install [Node.js](http://nodejs.org/) to build the extension.
+1. Install [Node.js](http://nodejs.org/) to build the extension or use docker image:
+ - `docker-compose run build-reactor`
 3. Go to project directory and run:
- - `npm install`
- - `npm run dist`
+ - `yarn`
+ - `yarn run dist`
 4. Open Chrome Extension manager and `Load unpacked extension..` from `dist/BuildReactor` folder.
 
-Use `npm run auto-dist` to continually build whenever some file changes. You will still need to reload the extension in Chrome.
+Use `yarn run auto-dist` to continually build whenever some file changes. You will still need to reload the extension in Chrome.
 
-See other scripts useful for development in package.json.
+See other scripts useful for development in [package.json](package.json).
 
 Testing
 -------
 
-`npm test` - run Karma unit tests using PhantomJS
-`npm run auto-test` test and watch for changes
+`yarn test` - run Karma unit tests using PhantomJS
+`yarn run auto-test` test and watch for changes
 
-Once running you can also open `localhost:9876/base/options.html` or any other HTML file in the browser to test using sample data. This does not require you to load as Chrome Extension.
+Development
+-----------
+
+[Adding new services](docs/adding-new-services.markdown)
 
 Legal
 =====
