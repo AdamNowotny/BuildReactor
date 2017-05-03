@@ -2,9 +2,8 @@ import joinUrl from 'common/joinUrl';
 
 define([
 	'core/services/request',
-	'rx',
-	'mout/array/contains'
-], function(request, Rx, contains) {
+	'rx'
+], function(request, Rx) {
 	'use strict';
 
 	var BuildBotBuild = function(id, settings) {
@@ -21,7 +20,7 @@ define([
 				name: self.id,
 				group: builderResponse.category,
 				webUrl: joinUrl(self.settings.url, "builders/" + self.id),
-				isBroken: contains(lastCompletedResponse.text, 'failed'),
+				isBroken: lastCompletedResponse.text.includes('failed'),
 				isRunning: builderResponse.state === "building",
 				isDisabled: builderResponse.state === "offline",
 				changes: lastCompletedResponse.blame.map(function(item) {

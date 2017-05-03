@@ -4,15 +4,13 @@ define([
 	'core/services/buildServiceBase',
 	'core/services/request',
 	'jquery',
-	'rx',
-	'mout/object/mixIn',
-	'mout/array/contains'
-], function(BuildServiceBase, request, $, Rx, mixIn, contains) {
+	'rx'
+], function(BuildServiceBase, request, $, Rx) {
 
 	'use strict';
 
 	var CCBuildService = function(settings, serviceInfo = CCBuildService.settings()) {
-		mixIn(this, new BuildServiceBase(settings, serviceInfo));
+		Object.assign(this, new BuildServiceBase(settings, serviceInfo));
 		this.availableBuilds = availableBuilds;
 		this.updateAll = updateAll;
 		this.cctrayLocation = '';
@@ -56,7 +54,7 @@ define([
 		}).selectMany(function(projects) {
 			return Rx.Observable.fromArray(projects);
 		}).where(function(build) {
-			return contains(self.settings.projects, build.id);
+			return self.settings.projects.includes(build.id);
 		}).defaultIfEmpty([]);
 	};
 

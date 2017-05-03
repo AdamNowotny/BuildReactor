@@ -3,14 +3,13 @@ define([
 	'core/services/request',
 	'rx',
 	'jquery',
-	'mout/object/mixIn',
 	'raw!core/services/cctray/cruisecontrolnet.fixture.xml',
 	'raw!core/services/cctray/go.fixture.xml',
 	'raw!core/services/cctray/breakers_empty.fixture.xml',
 	'raw!core/services/cctray/go_multiple_breakers.fixture.xml',
 	'raw!core/services/cctray/ccnet_no_categories.fixture.xml'
 ],
-function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreakersFixture, manyBreakersFixture, noCategoriesFixture) {
+function(BuildService, request, Rx, $, ccnetFixture, goFixture, noBreakersFixture, manyBreakersFixture, noCategoriesFixture) {
 
 	'use strict';
 
@@ -69,7 +68,7 @@ function(BuildService, request, Rx, $, mixIn, ccnetFixture, goFixture, noBreaker
 		}
 
 		function extendState(state) {
-			return mixIn(state, {
+			return Object.assign(state, {
 				isDisabled: false,
 				serviceName: 'Build Server',
 				serviceIcon: 'src/core/services/cctray/icon.png',

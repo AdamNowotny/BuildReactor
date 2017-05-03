@@ -1,15 +1,14 @@
 define([
-	'core/services/cctray/buildService',
-	'mout/object/mixIn'
-], function(CCTrayBuildService, mixIn) {
+	'core/services/cctray/buildService'
+], function(CCTrayBuildService) {
 
 	'use strict';
 
 	var CCBuildService = function(settings) {
-		mixIn(this, new CCTrayBuildService(settings, CCBuildService.settings()));
+		Object.assign(this, new CCTrayBuildService(settings, CCBuildService.settings()));
 		this.cctrayLocation = 'cctray.xml';
 	};
-	
+
 	CCBuildService.settings = function() {
 		return {
 			typeName: 'CruiseControl',

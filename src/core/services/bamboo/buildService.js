@@ -5,14 +5,13 @@ define([
 	'core/services/buildServiceBase',
 	'core/services/request',
 	'core/services/bamboo/bambooPlan',
-	'mout/object/mixIn',
 	'rx'
-], function(BuildServiceBase, request, BambooPlan, mixIn, Rx) {
+], function(BuildServiceBase, request, BambooPlan, Rx) {
 
 	'use strict';
 
 	var BambooBuildService = function(settings) {
-		mixIn(this, new BuildServiceBase(settings, BambooBuildService.settings()));
+		Object.assign(this, new BuildServiceBase(settings, BambooBuildService.settings()));
 		this.Build = BambooPlan;
 		this.availableBuilds = availableBuilds;
 	};

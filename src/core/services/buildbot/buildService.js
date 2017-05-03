@@ -3,14 +3,13 @@ import joinUrl from 'common/joinUrl';
 define([
 	'core/services/buildServiceBase',
 	'core/services/request',
-	'core/services/buildbot/buildbotBuild',
-	'mout/object/mixIn'
-], function(BuildServiceBase, request, BuildBotBuild, mixIn) {
+	'core/services/buildbot/buildbotBuild'
+], function(BuildServiceBase, request, BuildBotBuild) {
 
 	'use strict';
 
 	var BuildBotBuildService = function(settings) {
-		mixIn(this, new BuildServiceBase(settings, BuildBotBuildService.settings()));
+		Object.assign(this, new BuildServiceBase(settings, BuildBotBuildService.settings()));
 		this.Build = BuildBotBuild;
 		this.availableBuilds = availableBuilds;
 	};

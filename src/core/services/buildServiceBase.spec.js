@@ -1,6 +1,5 @@
 import BuildServiceBase from 'core/services/buildServiceBase';
 import Rx from 'rx/dist/rx.testing';
-import mixIn from 'mout/object/mixIn';
 
 var onNext = Rx.ReactiveTest.onNext;
 var onCompleted = Rx.ReactiveTest.onCompleted;
@@ -61,7 +60,7 @@ describe('core/services/buildServiceBase', function() {
 	});
 
 	function CustomBuildService() {
-		mixIn(this, new BuildServiceBase(settings, serviceInfo, scheduler));
+		Object.assign(this, new BuildServiceBase(settings, serviceInfo, scheduler));
 		this.Build = GenericBuild;
 	}
 

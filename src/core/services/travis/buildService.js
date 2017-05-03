@@ -1,14 +1,13 @@
 define([
 	'core/services/buildServiceBase',
 	'core/services/travis/travisBuild',
-	'core/services/request',
-	'mout/object/mixIn'
-], function(BuildServiceBase, TravisBuild, request, mixIn) {
+	'core/services/request'
+], function(BuildServiceBase, TravisBuild, request) {
 
 	'use strict';
 
 	var TravisBuildService = function(settings) {
-		mixIn(this, new BuildServiceBase(settings, TravisBuildService.settings()));
+		Object.assign(this, new BuildServiceBase(settings, TravisBuildService.settings()));
 		this.Build = TravisBuild;
 		this.availableBuilds = availableBuilds;
 	};

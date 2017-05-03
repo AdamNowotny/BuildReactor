@@ -3,14 +3,13 @@ import joinUrl from 'common/joinUrl';
 define([
 	'core/services/buildServiceBase',
 	'core/services/request',
-	'core/services/teamcity/teamcityBuild',
-	'mout/object/mixIn'
-], function(BuildServiceBase, request, TravisBuild, mixIn) {
+	'core/services/teamcity/teamcityBuild'
+], function(BuildServiceBase, request, TravisBuild) {
 
 	'use strict';
 
 	var TeamcityBuildService = function(settings) {
-		mixIn(this, new BuildServiceBase(settings, TeamcityBuildService.settings()));
+		Object.assign(this, new BuildServiceBase(settings, TeamcityBuildService.settings()));
 		this.Build = TravisBuild;
 		this.availableBuilds = availableBuilds;
 	};

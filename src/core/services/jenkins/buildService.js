@@ -4,14 +4,13 @@ define([
     'core/services/buildServiceBase',
     'core/services/request',
     'core/services/jenkins/jenkinsBuild',
-    'mout/object/mixIn',
     'rx'
-], function(BuildServiceBase, request, JenkinsBuild, mixIn, Rx) {
+], function(BuildServiceBase, request, JenkinsBuild, Rx) {
 
     'use strict';
 
     var JenkinsBuildService = function(settings) {
-        mixIn(this, new BuildServiceBase(settings, JenkinsBuildService.settings()));
+        Object.assign(this, new BuildServiceBase(settings, JenkinsBuildService.settings()));
         this.Build = JenkinsBuild;
         this.availableBuilds = availableBuilds;
     };

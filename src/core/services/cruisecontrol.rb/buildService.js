@@ -1,15 +1,14 @@
 define([
-	'core/services/cctray/buildService',
-	'mout/object/mixIn'
-], function(CCTrayBuildService, mixIn) {
+	'core/services/cctray/buildService'
+], function(CCTrayBuildService) {
 
 	'use strict';
 
 	var CcrbBuildService = function(settings) {
-		mixIn(this, new CCTrayBuildService(settings, CcrbBuildService.settings()));
+		Object.assign(this, new CCTrayBuildService(settings, CcrbBuildService.settings()));
 		this.cctrayLocation = 'XmlStatusReport.aspx';
 	};
-	
+
 	CcrbBuildService.settings = function() {
 		return {
 			typeName: 'CruiseControl.rb',
