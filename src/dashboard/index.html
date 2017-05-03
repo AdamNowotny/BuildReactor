@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" ng-csp>
-	<head>
-		<title>BuildReactor dashboard</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	</head>
-	<body ng-controller="DashboardCtrl" class="theme-{{ viewConfig.theme }}">
-		<build-list services="services"></build-list>
-	</body>
+
+<head>
+    <title>BuildReactor dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body ng-controller="DashboardCtrl" class="theme-{{ viewConfig.theme }}">
+    <build-list services="services" view-config="viewConfig"></build-list>
+</body>
+
 </html>

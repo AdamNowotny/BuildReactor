@@ -1,105 +1,106 @@
+import 'common/directives/buildGroup/buildGroup';
 import angular from 'angular';
 
-define([
-	'common/directives/buildGroup/buildGroup',
-	'common/core'
-], function(buildGroup, core) {
-	'use strict';
+describe('buildGroup', () => {
 
-	describe('buildGroup', function() {
+    let scope;
 
-		var scope;
-		var element;
+    beforeEach(angular.mock.module(
+        'app.directives'
+    ));
 
-		beforeEach(angular.mock.module(
-			'app.directives'
-		));
+    beforeEach(angular.mock.inject(($compile, $rootScope) => {
+        const element = $compile('<build-group name="group.name" items="items"></build-group>')($rootScope);
+        $rootScope.$digest();
+        scope = element.isolateScope();
+    }));
 
-		beforeEach(angular.mock.inject(function($compile, $rootScope) {
-			element = $compile('<build-group name="group.name" items="items"></build-group>')($rootScope);
-			$rootScope.$digest();
-			scope = element.isolateScope();
-		}));
+    beforeEach(() => {
+        scope.items = [{
+            name: 'service1',
+            items: []
+        }, {
+            name: 'service2',
+            items: []
+        }, {
+            name: 'service3',
+            items: []
+        }];
+    });
 
-		beforeEach(function() {
-			scope.items = [{
-				name: 'service1',
-				items: []
-			}, {
-				name: 'service2',
-				items: []
-			}, {
-				name: 'service3',
-				items: []
-			}];
-		});
+    describe('itemWidth', () => {
 
-		describe('itemWidth', function() {
+        it('should default to 100% width without config', () => {
+            expect(scope.itemWidth).toEqual('100%');
+        });
 
-			it('should default to 100% width without config', function() {
-				expect(scope.itemWidth).toEqual('100%');
-			});
+        it('should calculate width for fixed columns', () => {
+            scope.viewConfig = {
+                columns: 4
+            };
+            scope.$digest();
 
-			it('should calculate width for fixed columns', function() {
-				core.views.onNext({ columns: 4 });
-				scope.$digest();
-				
-				expect(scope.itemWidth).toEqual('33.333333333333336%');
-			});
+            expect(scope.itemWidth).toEqual('33.333333333333336%');
+        });
 
-			it('should calculate width for fixed columns with many builds', function() {
-				core.views.onNext({ columns: 2, fullWidthGroups: false });
-				scope.$digest();
-				
-				expect(scope.itemWidth).toEqual('50%');
-			});
+        it('should calculate width for fixed columns with many builds', () => {
+            scope.viewConfig = {
+                columns: 2,
+                fullWidthGroups: false
+            };
+            scope.$digest();
 
-			it('should calculate width for full-width', function() {
-				core.views.onNext({ columns: 4, fullWidthGroups: true });
-				scope.$digest();
-				
-				expect(scope.itemWidth).toEqual('33.333333333333336%');
-			});
+            expect(scope.itemWidth).toEqual('50%');
+        });
 
-			it('should calculate width for full-width with many builds', function() {
-				core.views.onNext({ columns: 2, fullWidthGroups: true });
-				scope.$digest();
-				
-				expect(scope.itemWidth).toEqual('50%');
-			});
+        it('should calculate width for full-width', () => {
+            scope.viewConfig = {
+                columns: 4,
+                fullWidthGroups: true
+            };
+            scope.$digest();
 
-		});
+            expect(scope.itemWidth).toEqual('33.333333333333336%');
+        });
 
-		describe('fullWidth', function() {
+        it('should calculate width for full-width with many builds', () => {
+            scope.viewConfig = {
+                columns: 2,
+                fullWidthGroups: true
+            };
+            scope.$digest();
 
-			it('should default to full page width', function() {
-				expect(scope.fullWidth).toEqual('100%');
-			});
+            expect(scope.itemWidth).toEqual('50%');
+        });
 
-			it('should calculate width if builds take less than 100%', function() {
-				core.views.onNext({ columns: 6, fullWidthGroups: false });
-				scope.$digest();
-				
-				expect(scope.fullWidth).toEqual('50%');
-			});
+    });
 
-			it('should assume full width if more builds than columns', function() {
-				core.views.onNext({ columns: 2, fullWidthGroups: false });
-				scope.$digest();
-				
-				expect(scope.fullWidth).toEqual('100%');
-			});
+    describe('fullWidth', () => {
 
-			it('should use new row if more builds then columns', function() {
-				core.views.onNext({ columns: 2, fullWidthGroups: true });
-				scope.$digest();
-				
-				expect(scope.fullWidth).toEqual('100%');
-				expect(scope.isNewRow).toEqual(true);
-			});
+        it('should default to full page width', () => {
+            expect(scope.fullWidth).toEqual('100%');
+        });
 
-		});
+        it('should calculate width if builds take less than 100%', () => {
+            scope.viewConfig = {
+                columns: 6,
+                fullWidthGroups: false
+            };
+            scope.$digest();
 
-	});
+            expect(scope.fullWidth).toEqual('50%');
+        });
+
+        it('should assume full width if more builds than columns', () => {
+            scope.viewConfig = {
+                columns: 2,
+                fullWidthGroups: false
+            };
+            scope.$digest();
+
+            expect(scope.fullWidth).toEqual('100%');
+        });
+
+    });
 
 });
