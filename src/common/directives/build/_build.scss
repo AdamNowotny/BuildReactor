@@ -72,12 +72,15 @@
         }
     }
 
-    .color-blind-marker-broken {
+    .color-blind-markers {
         position: absolute;
         top: 1em;
         right: 1em;
-        opacity: 0.5;
-        display: none;
+
+        i {
+            opacity: 0.5;
+            display: none;
+        }
     }
 
 }
@@ -88,6 +91,10 @@
     }
 
     &.broken .color-blind-marker-broken {
+        display: inline;
+    }
+
+    &.offline .color-blind-marker-offline {
         display: inline;
     }
 }

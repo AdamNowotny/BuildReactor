@@ -51,11 +51,20 @@
 				</div>
 			</div>
 			<div class="form-group" ng-class="{ 'text-muted': !config.notifications.enabled }">
-				<label class="col-md-6 control-label">Build finished</label>
+				<label class="col-md-6 control-label">Build successful</label>
 				<div class="col-md-6">
 					<ul class="nav nav-pills">
-						<li role="presentation" ng-class="{ active: config.notifications.buildFinished }" ng-click="setField('buildFinished', true)"><a>On</a></li>
-						<li role="presentation" ng-class="{ active: !config.notifications.buildFinished }" ng-click="setField('buildFinished', false)"><a>Off</a></li>
+						<li role="presentation" ng-class="{ active: config.notifications.buildSuccessful }" ng-click="setField('buildSuccessful', true)"><a>On</a></li>
+						<li role="presentation" ng-class="{ active: !config.notifications.buildSuccessful }" ng-click="setField('buildSuccessful', false)"><a>Off</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="form-group" ng-class="{ 'text-muted': !config.notifications.enabled }">
+				<label class="col-md-6 control-label">Build still failing</label>
+				<div class="col-md-6">
+					<ul class="nav nav-pills">
+						<li role="presentation" ng-class="{ active: config.notifications.buildStillFailing }" ng-click="setField('buildStillFailing', true)"><a>On</a></li>
+						<li role="presentation" ng-class="{ active: !config.notifications.buildStillFailing }" ng-click="setField('buildStillFailing', false)"><a>Off</a></li>
 					</ul>
 				</div>
 			</div>
