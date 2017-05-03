@@ -37,7 +37,9 @@
     .labels {
         margin-top: -1px;
         max-width: 50%;
+        right: 1em;
         overflow: hidden;
+        position: absolute;
     }
 
     .label {
@@ -68,6 +70,25 @@
                 transition: opacity 2s, transform 2s;
             }
         }
+    }
+
+    .color-blind-marker-broken {
+        position: absolute;
+        top: 1em;
+        right: 1em;
+        opacity: 0.5;
+        display: none;
+    }
+
+}
+
+.color-blind {
+    .labels {
+        right: 40px;
+    }
+
+    &.broken .color-blind-marker-broken {
+        display: inline;
     }
 }
 

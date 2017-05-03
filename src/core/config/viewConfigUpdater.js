@@ -11,6 +11,7 @@ export default {
             (typeof config.showCommitsWhenGreen === 'boolean') ?
             config.showCommitsWhenGreen : false;
         config.theme = config.theme || 'dark';
+        config.colorBlindMode = config.colorBlindMode || true;
         config.notifications = config.notifications || {
             enabled: true,
             showWhenDashboardActive: false,

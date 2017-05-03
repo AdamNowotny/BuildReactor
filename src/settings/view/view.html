@@ -47,7 +47,16 @@
             <div class="col-md-6">
                 <ul class="nav nav-pills">
                     <li role="presentation" ng-class="{ active: viewConfig.theme === 'dark' }" ng-click="setField('theme', 'dark')"><a>Dark</a></li>
-                    <li role="presentation" ng-class="{ active: viewConfig.theme === 'light' }" ng-click="setField('theme', 'light')" "><a>Light</a></li>
+                    <li role="presentation" ng-class="{ active: viewConfig.theme === 'light' }" ng-click="setField('theme', 'light')"><a>Light</a></li>
+				</ul>
+			</div>
+		</div>
+        <div class="form-group">
+            <label class="col-md-6 control-label">Color-blind mode</label>
+            <div class="col-md-6">
+                <ul class="nav nav-pills">
+                    <li role="presentation" ng-class="{ active: viewConfig.colorBlindMode }" ng-click="setField('colorBlindMode', true)"><a>On</a></li>
+                    <li role="presentation" ng-class="{ active: !viewConfig.colorBlindMode }" ng-click="setField('colorBlindMode', false)"><a>Off</a></li>
 				</ul>
 			</div>
 		</div>

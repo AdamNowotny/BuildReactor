@@ -12,6 +12,7 @@ describe('core/config/viewConfigUpdater', () => {
 			showCommits: true,
 			showCommitsWhenGreen: false,
 			theme: 'dark',
+			colorBlindMode: true,
 			notifications: {
 				enabled: true,
 				showWhenDashboardActive: false,
@@ -57,5 +58,11 @@ describe('core/config/viewConfigUpdater', () => {
 		const config = updater.update({ columns: 4 });
 
 		expect(config.notifications).not.toBeNull();
+	});
+
+	it('should add default colorBlindMode setting', () => {
+		const config = updater.update({ columns: 4 });
+
+		expect(config.colorBlindMode).toBe(true);
 	});
 });
