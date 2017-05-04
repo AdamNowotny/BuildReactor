@@ -37,7 +37,7 @@ function create(ex, options = null) {
     if (ex.response && ex.response.notFound) {
         return new NotFoundError(ex);
     }
-    if (ex.response && (ex.response.unauthorized)) {
+    if (ex.response && (ex.response.unauthorized || ex.response.forbidden)) {
         return new UnauthorisedError(ex);
     }
     return new AjaxError(ex);

@@ -73,7 +73,7 @@ describe('services/buildkite/errors', () => {
         expect(error.url).toBe('https://sample.com/');
     });
 
-    it('should create UnauthorisedError', () => {
+    it('should create UnauthorisedError for 401', () => {
         const ex = {
             status: 401,
             response: {
@@ -90,6 +90,26 @@ describe('services/buildkite/errors', () => {
         expect(error.name).toBe('UnauthorisedError');
         expect(error.message).toBe('error message');
         expect(error.status).toBe(401);
+        expect(error.url).toBe('https://sample.com/');
+    });
+
+    it('should create UnauthorisedError for 403', () => {
+        const ex = {
+            status: 403,
+            response: {
+                forbidden: true,
+                error: {
+                    message: 'error message',
+                    url: 'https://sample.com/'
+                }
+            }
+        };
+
+        const error = errors.create(ex);
+
+        expect(error.name).toBe('UnauthorisedError');
+        expect(error.message).toBe('error message');
+        expect(error.status).toBe(403);
         expect(error.url).toBe('https://sample.com/');
     });
 
