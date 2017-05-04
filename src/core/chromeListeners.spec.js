@@ -174,17 +174,21 @@ describe('chromeListeners', () => {
 			expect(returnValue).toBe(true);
 		});
 
-		it('should send error back', function() {
-			var serviceError = {};
-			var actualResponse;
-			var sendResponse = function(response) {
+		it('should send error back', () => {
+			const serviceError = {
+				name: 'name',
+				message: 'message',
+				stack: 'stack'
+			};
+			let actualResponse;
+			const sendResponse = function(response) {
 				actualResponse = response;
 			};
 			mockAvailableBuilds.and.returnValue(Rx.Observable.throw(serviceError));
 
 			const returnValue = messageHandler(request, null, sendResponse);
 
-			expect(actualResponse.error).toBe(serviceError);
+			expect(actualResponse.error).toEqual(serviceError);
 			expect(returnValue).toBe(true);
 		});
 

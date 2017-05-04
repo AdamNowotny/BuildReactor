@@ -70,7 +70,13 @@ const availableProjects = (sendResponse, settings) => {
 			projects.selected = settings.projects;
 			sendResponse({ projects });
 		}, (error) => {
-			sendResponse({ error });
+			sendResponse({
+				error: {
+					name: error.name,
+					message: error.message,
+					stack: error.stack
+				}
+			});
 		});
 };
 
