@@ -26,19 +26,24 @@ function init(options) {
     function createBuildFinishedMessage(event) {
         if (event.broken && config.notifications.buildBroken) {
             return createBuildBrokenMessage(event);
-        } else if (event.fixed && config.notifications.buildFixed) {
-            return createNotificationInfo(event, 'fixed', options.timeout);
-        } else if (config.notifications.buildFinished) {
-            return createNotificationInfo(event, 'finished', options.timeout);
+        }
+        if (event.fixed && config.notifications.buildFixed) {
+            return createNotificationInfo(event, 'Build fixed', options.timeout);
+        }
+        if (!event.details.isBroken && config.notifications.buildSuccessful) {
+            return createNotificationInfo(event, 'Build successful', options.timeout);
+        }
+        if (event.details.isBroken && config.notifications.buildStillFailing) {
+            return createNotificationInfo(event, 'Build still failing', options.timeout);
         }
         return null;
     }
 
     function createBuildBrokenMessage(event) {
         if (tags.contains('Unstable', event.details.tags)) {
-            return createNotificationInfo(event, 'unstable', options.timeout);
+            return createNotificationInfo(event, 'Build unstable', options.timeout);
         } else {
-            return createNotificationInfo(event, 'broken');
+            return createNotificationInfo(event, 'Build broken');
         }
     }
 
@@ -51,7 +56,7 @@ function init(options) {
                 .select(() => event);
     }
 
-    function createNotificationInfo(event, message, timeout) {
+    function createNotificationInfo(event, title, timeout) {
 
         function createId(eventDetails) {
             return eventDetails.group ?
@@ -59,14 +64,14 @@ function init(options) {
                 `${event.source}_${eventDetails.name}`;
         }
 
-        function createTitle(eventDetails) {
-            const fullBuildName = eventDetails.group ?
-                `${eventDetails.group} / ${eventDetails.name} (${event.source})` :
-                `${eventDetails.name} (${event.source})`;
-            return `${fullBuildName} ${message}`;
+        function createBuildName(eventDetails) {
+            return eventDetails.group ?
+                `${eventDetails.group} / ${eventDetails.name}` :
+                `${eventDetails.name}`;
         }
 
         function createChangesMessage(changes = []) {
+            if (changes.length === 0) return '';
             return changes.reduce((agg, change, i) => {
                 if (i === 2) {
                     return `${agg}\n...`;
@@ -78,16 +83,17 @@ function init(options) {
                     `${change.name}: ${change.message}` :
                     change.name;
                 return agg ? `${agg}\n${changeMessage}` : changeMessage;
-            }, '');
+            }, '\n');
         }
 
         const info = {
             id: createId(event.details),
-            title: createTitle(event.details),
+            title: `${title} (${event.source})`,
             url: event.details.webUrl,
             icon: serviceController.typeInfoFor(event.source).icon,
             timeout: timeout ? timeout : undefined,
-            text: createChangesMessage(event.details.changes)
+            text: createBuildName(event.details) +
+                createChangesMessage(event.details.changes)
         };
         return info;
     }
@@ -140,7 +146,7 @@ function init(options) {
         .where((event) => !reloading)
         .where((event) => !event.details.isDisabled)
         .selectMany(whenDashboardInactive)
-        .select((ev) => createNotificationInfo(ev, 'started', options.timeout));
+        .select((ev) => createNotificationInfo(ev, 'Build started', options.timeout));
     const buildFinished = events.getByName('buildFinished')
         .where((event) => config.notifications.enabled)
         .where((event) => !reloading)

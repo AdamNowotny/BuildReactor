@@ -15,10 +15,11 @@ export default {
         config.notifications = config.notifications || {
             enabled: true,
             showWhenDashboardActive: false,
-            buildStarted: false,
-            buildFinished: false,
             buildBroken: true,
-            buildFixed: true
+            buildFixed: true,
+            buildStarted: false,
+            buildSuccessful: false,
+            buildStillFailing: false
         };
         return config;
     }

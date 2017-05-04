@@ -57,5 +57,7 @@ window.Notification = function() {
 	};
 };
 
+console.warn('New test run ----------------------------------------');
+
 const testsContext = require.context("..", true, /.spec.js$/);
 testsContext.keys().forEach(testsContext);

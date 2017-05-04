@@ -15,70 +15,152 @@ describe('core/services/buildEventProcessor', () => {
 
     describe('serviceUpdated', () => {
 
-        it('should push buildFinished for broken build', () => {
-            const oldState = {
-                name: 'service1',
-                items: [{
-                    id: 'abc',
-                    isBroken: false,
-                    isRunning: true
-                }]
-            };
-            const newState = {
-                name: 'service1',
-                items: [{
-                    id: 'abc',
-                    isBroken: true,
-                    isRunning: false
-                }]
-            };
+        describe('buildFinished', () => {
 
-            eventProcessor.process({ oldState, newState });
+            it('should push buildFinished when broken', () => {
+                const oldState = {
+                    name: 'service1',
+                    items: [{
+                        id: 'abc',
+                        isBroken: false,
+                        isRunning: true
+                    }]
+                };
+                const newState = {
+                    name: 'service1',
+                    items: [{
+                        id: 'abc',
+                        isBroken: true,
+                        isRunning: false
+                    }]
+                };
 
-            sinon.assert.calledWith(events.push, {
-                eventName: 'buildFinished',
-                source: 'service1',
-                details: {
-                    id: 'abc',
-                    isBroken: true,
-                    isRunning: false
-                },
-                broken: true,
-                fixed: false
+                eventProcessor.process({
+                    oldState,
+                    newState
+                });
+
+                sinon.assert.calledWith(events.push, {
+                    eventName: 'buildFinished',
+                    source: 'service1',
+                    details: {
+                        id: 'abc',
+                        isBroken: true,
+                        isRunning: false
+                    },
+                    broken: true,
+                    fixed: false
+                });
             });
-        });
 
-        it('should push buildFinished for fixed build', () => {
-            const oldState = {
-                name: 'service1',
-                items: [{
-                    id: 'abc',
-                    isBroken: true,
-                    isRunning: true
-                }]
-            };
-            const newState = {
-                name: 'service1',
-                items: [{
-                    id: 'abc',
-                    isBroken: false,
-                    isRunning: false
-                }]
-            };
+            it('should push buildFinished when fixed', () => {
+                const oldState = {
+                    name: 'service1',
+                    items: [{
+                        id: 'abc',
+                        isBroken: true,
+                        isRunning: true
+                    }]
+                };
+                const newState = {
+                    name: 'service1',
+                    items: [{
+                        id: 'abc',
+                        isBroken: false,
+                        isRunning: false
+                    }]
+                };
 
-            eventProcessor.process({ oldState, newState });
+                eventProcessor.process({
+                    oldState,
+                    newState
+                });
 
-            sinon.assert.calledWith(events.push, {
-                eventName: 'buildFinished',
-                source: 'service1',
-                details: {
-                    id: 'abc',
-                    isBroken: false,
-                    isRunning: false
-                },
-                broken: false,
-                fixed: true
+                sinon.assert.calledWith(events.push, {
+                    eventName: 'buildFinished',
+                    source: 'service1',
+                    details: {
+                        id: 'abc',
+                        isBroken: false,
+                        isRunning: false
+                    },
+                    broken: false,
+                    fixed: true
+                });
             });
+
+            it('should push buildFinished when successful', () => {
+                const oldState = {
+                    name: 'service1',
+                    items: [{
+                        id: 'abc',
+                        isBroken: false,
+                        isRunning: true
+                    }]
+                };
+                const newState = {
+                    name: 'service1',
+                    items: [{
+                        id: 'abc',
+                        isBroken: false,
+                        isRunning: false
+                    }]
+                };
+
+                eventProcessor.process({
+                    oldState,
+                    newState
+                });
+
+                sinon.assert.calledWith(events.push, {
+                    eventName: 'buildFinished',
+                    source: 'service1',
+                    details: {
+                        id: 'abc',
+                        isBroken: false,
+                        isRunning: false
+                    },
+                    broken: false,
+                    fixed: false
+                });
+            });
+
+            it('should push buildFinished when still failing', () => {
+                const oldState = {
+                    name: 'service1',
+                    items: [{
+                        id: 'abc',
+                        isBroken: true,
+                        isRunning: true
+                    }]
+                };
+                const newState = {
+                    name: 'service1',
+                    items: [{
+                        id: 'abc',
+                        isBroken: true,
+                        isRunning: false
+                    }]
+                };
+
+                eventProcessor.process({
+                    oldState,
+                    newState
+                });
+
+                sinon.assert.calledWith(events.push, {
+                    eventName: 'buildFinished',
+                    source: 'service1',
+                    details: {
+                        id: 'abc',
+                        isBroken: true,
+                        isRunning: false
+                    },
+                    broken: false,
+                    fixed: false
+                });
+            });
+
         });
 
         it('should push buildOffline', () => {
@@ -93,18 +175,25 @@ describe('core/services/buildEventProcessor', () => {
                 name: 'service1',
                 items: [{
                     id: 'abc',
-                    error: { message: 'error' }
+                    error: {
+                        message: 'error'
+                    }
                 }]
             };
 
-            eventProcessor.process({ oldState, newState });
+            eventProcessor.process({
+                oldState,
+                newState
+            });
 
             sinon.assert.calledWith(events.push, {
                 eventName: 'buildOffline',
                 source: 'service1',
                 details: {
                     id: 'abc',
-                    error: { message: 'error' }
+                    error: {
+                        message: 'error'
+                    }
                 }
             });
         });
@@ -114,7 +203,9 @@ describe('core/services/buildEventProcessor', () => {
                 name: 'service1',
                 items: [{
                     id: 'abc',
-                    error: { message: 'error' }
+                    error: {
+                        message: 'error'
+                    }
                 }]
             };
             const newState = {
@@ -125,7 +216,10 @@ describe('core/services/buildEventProcessor', () => {
                 }]
             };
 
-            eventProcessor.process({ oldState, newState });
+            eventProcessor.process({
+                oldState,
+                newState
+            });
 
             sinon.assert.calledWith(events.push, {
                 eventName: 'buildOnline',
@@ -143,18 +237,24 @@ describe('core/services/buildEventProcessor', () => {
                 name: 'service1',
                 items: [{
                     id: 'abc',
-                    error: { name: 'UnauthorisedError' }
+                    error: {
+                        name: 'UnauthorisedError'
+                    }
                 }]
             };
 
-            eventProcessor.process({ newState: state });
+            eventProcessor.process({
+                newState: state
+            });
 
             sinon.assert.calledWith(events.push, {
                 eventName: 'passwordExpired',
                 source: 'service1',
                 details: {
                     id: 'abc',
-                    error: { name: 'UnauthorisedError' }
+                    error: {
+                        name: 'UnauthorisedError'
+                    }
                 }
             });
         });
@@ -174,8 +274,7 @@ describe('core/services/buildEventProcessor', () => {
                     id: 'abc',
                     isBroken: true,
                     isRunning: false,
-                    changes: [
-                        {
+                    changes: [{
                             name: 'name1',
                             message: 'message'
                         },
@@ -187,7 +286,10 @@ describe('core/services/buildEventProcessor', () => {
                 }]
             };
 
-            eventProcessor.process({ oldState, newState });
+            eventProcessor.process({
+                oldState,
+                newState
+            });
 
             sinon.assert.calledWith(events.push, {
                 eventName: 'buildFinished',
@@ -196,12 +298,10 @@ describe('core/services/buildEventProcessor', () => {
                     id: 'abc',
                     isBroken: true,
                     isRunning: false,
-                    changes: [
-                        {
-                            name: 'name1',
-                            message: 'message'
-                        }
-                    ]
+                    changes: [{
+                        name: 'name1',
+                        message: 'message'
+                    }]
                 },
                 broken: true,
                 fixed: false
