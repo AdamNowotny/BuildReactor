@@ -24,9 +24,9 @@ describe('services/jenkins2/jenkins2Requests', () => {
             spyOn(request, 'get').and.callFake((data) => {
                 expect(data).toEqual({
                     url: 'http://example.com/api/json?tree=' +
-                    'jobs[_class,name,url,buildable,inQueue,fullName,' +
-                        'jobs[_class,name,url,buildable,inQueue,fullName,' +
-                            'jobs[_class,name,url,buildable,inQueue,fullName]' +
+                    'jobs[_class,name,url,buildable,fullName,' +
+                        'jobs[_class,name,url,buildable,fullName,' +
+                            'jobs[_class,name,url,buildable,fullName]' +
                         ']' +
                     ']',
                     username: settings.username,
@@ -88,7 +88,10 @@ describe('services/jenkins2/jenkins2Requests', () => {
                 expect(data).toEqual({
                     url: 'http://example.com/job/folder/job/project/job/branch/api/json?tree=' +
                         'buildable,inQueue,' +
-                        'lastBuild[url,building,number,changeSets[items[author[fullName],msg]]],' +
+                        'lastBuild[url,building,number,' +
+                            'changeSets[items[author[fullName],msg]],' +
+                            'changeSet[items[author[fullName],msg]]' +
+                        '],' +
                         'lastCompletedBuild[result]',
                     username: settings.username,
                     password: settings.password
@@ -108,7 +111,10 @@ describe('services/jenkins2/jenkins2Requests', () => {
                 expect(data).toEqual({
                     url: 'http://example.com/job/folder/job/project/api/json?tree=' +
                         'buildable,inQueue,' +
-                        'lastBuild[url,building,number,changeSets[items[author[fullName],msg]]],' +
+                        'lastBuild[url,building,number,' +
+                            'changeSets[items[author[fullName],msg]],' +
+                            'changeSet[items[author[fullName],msg]]' +
+                        '],' +
                         'lastCompletedBuild[result]',
                     username: settings.username,
                     password: settings.password
@@ -118,6 +124,28 @@ describe('services/jenkins2/jenkins2Requests', () => {
 
             scheduler.startScheduler(() =>
                 jenkins2Requests.jobDetails({ id: 'folder/project', settings }));
+
+            expect(request.get).toHaveBeenCalled();
+        });
+
+        it('should pass request parameters for freestyle and Jenkins 1.x projects', () => {
+            spyOn(request, 'get').and.callFake((data) => {
+                expect(data).toEqual({
+                    url: 'http://example.com/job/project/api/json?tree=' +
+                        'buildable,inQueue,' +
+                        'lastBuild[url,building,number,' +
+                            'changeSets[items[author[fullName],msg]],' +
+                            'changeSet[items[author[fullName],msg]]' +
+                        '],' +
+                        'lastCompletedBuild[result]',
+                    username: settings.username,
+                    password: settings.password
+                });
+                return Rx.Observable.return({ body: [] });
+            });
+
+            scheduler.startScheduler(() =>
+                jenkins2Requests.jobDetails({ id: 'project', settings }));
 
             expect(request.get).toHaveBeenCalled();
         });

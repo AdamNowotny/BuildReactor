@@ -41,5 +41,12 @@
             "buildable": true,
             "inQueue": false
         }]
+    }, {
+        "_class": "hudson.model.FreeStyleProject",
+        "fullName": "freestyle-project",
+        "name": "freestyle-project",
+        "url": "https://jenkins.sample/jenkins/job/freestyle-project/",
+        "buildable": true,
+        "inQueue": false
     }]
 }

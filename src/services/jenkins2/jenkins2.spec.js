@@ -1,17 +1,21 @@
 import 'test/rxHelpers';
 import Rx from 'rx/dist/rx.testing';
 import jenkins from 'services/jenkins2/jenkins2';
+import jobDetails1xFixture from 'raw!services/jenkins2/jobDetails-1x.fixture.json';
 import jobDetails2Fixture from 'raw!services/jenkins2/jobDetails2.fixture.json';
 import jobDetailsFixture from 'raw!services/jenkins2/jobDetails.fixture.json';
-import jobsFixture from 'raw!services/jenkins2/jobs.fixture.json';
+import jobs1xFixture from 'raw!services/jenkins2/jobs-1x.fixture.json';
+import jobs2xFixture from 'raw!services/jenkins2/jobs-2x.fixture.json';
 import requests from 'services/jenkins2/jenkins2Requests';
 import sinon from 'sinon';
 
 describe('services/jenkins2/jenkins2', () => {
 
-    const jobsResponse = JSON.parse(jobsFixture);
+    const jobs1xResponse = JSON.parse(jobs1xFixture);
+    const jobs2xResponse = JSON.parse(jobs2xFixture);
     const jobDetails = JSON.parse(jobDetailsFixture);
     const jobDetails2 = JSON.parse(jobDetails2Fixture);
+    const jobDetails1xResponse = JSON.parse(jobDetails1xFixture);
     const onNext = Rx.ReactiveTest.onNext;
     const onCompleted = Rx.ReactiveTest.onCompleted;
     let scheduler;
@@ -73,8 +77,8 @@ describe('services/jenkins2/jenkins2', () => {
             );
         });
 
-        it('should return jobs', () => {
-            requests.jobs.returns(Rx.Observable.fromArray(jobsResponse.jobs));
+        it('should return Jenkins 2.x jobs', () => {
+            requests.jobs.returns(Rx.Observable.fromArray(jobs2xResponse.jobs));
 
             const result = scheduler.startScheduler(() => jenkins.getAll(settings));
 
@@ -96,6 +100,34 @@ describe('services/jenkins2/jenkins2', () => {
                     name: 'patron',
                     group: 'Infrastructure',
                     isDisabled: false
+                }),
+                onNext(200, {
+                    id: 'freestyle-project',
+                    name: 'freestyle-project',
+                    group: null,
+                    isDisabled: false
+                }),
+                onCompleted(200)
+            );
+        });
+
+        it('should return Jenkins 1.x jobs', () => {
+            requests.jobs.returns(Rx.Observable.fromArray(jobs1xResponse.jobs));
+
+            const result = scheduler.startScheduler(() => jenkins.getAll(settings));
+
+            expect(result.messages).toHaveEqualElements(
+                onNext(200, {
+                    id: 'Job1',
+                    name: 'Job1',
+                    group: null,
+                    isDisabled: false
+                }),
+                onNext(200, {
+                    id: 'Job2',
+                    name: 'Job2',
+                    group: null,
+                    isDisabled: true
                 }),
                 onCompleted(200)
             );
@@ -125,14 +157,9 @@ describe('services/jenkins2/jenkins2', () => {
             );
         });
 
-        it('should return parsed builds', () => {
-            settings.projects = ['folder/project1/branch', 'folder/project2'];
+        it('should return parsed 2.x builds with branches', () => {
+            settings.projects = ['folder/project1/branch'];
             requests.jobDetails.returns(Rx.Observable.return(jobDetails));
-            requests.jobDetails
-                .withArgs({ id: 'folder/project1/branch', settings })
-                .returns(Rx.Observable.return(jobDetails))
-                .withArgs({ id: 'folder/project2', settings })
-                .returns(Rx.Observable.return(jobDetails2));
 
             const result = scheduler.startScheduler(() => jenkins.getLatest(settings));
 
@@ -151,6 +178,16 @@ describe('services/jenkins2/jenkins2', () => {
                         { name: 'user1', message: '[maven-release-plugin] prepare for next development iteration' }
                     ]
                 }),
+                onCompleted(200)
+            );
+        });
+        it('should return parsed 2.x builds in folders', () => {
+            settings.projects = ['folder/project2'];
+            requests.jobDetails.returns(Rx.Observable.return(jobDetails2));
+
+            const result = scheduler.startScheduler(() => jenkins.getLatest(settings));
+
+            expect(result.messages).toHaveEqualElements(
                 onNext(200, {
                     id: 'folder/project2',
                     name: 'project2',
@@ -163,6 +200,32 @@ describe('services/jenkins2/jenkins2', () => {
                     tags: [],
                     changes: [
                         { name: 'user2', message: 'fixed artifact location' },
+                    ]
+                }),
+                onCompleted(200)
+            );
+        });
+
+        it('should return parsed 1.x and freestyle builds', () => {
+            settings.projects = ['project'];
+            requests.jobDetails.returns(Rx.Observable.return(jobDetails1xResponse));
+
+            const result = scheduler.startScheduler(() => jenkins.getLatest(settings));
+
+            expect(result.messages).toHaveEqualElements(
+                onNext(200, {
+                    id: 'project',
+                    name: 'project',
+                    group: null,
+                    webUrl: 'https://ci.jenkins.io/job/project/123/',
+                    isBroken: false,
+                    isRunning: false,
+                    isDisabled: false,
+                    isWaiting: false,
+                    tags: [],
+                    changes: [
+                        { name: 'user1', message: 'message 1' },
+                        { name: 'user2', message: 'message 2' },
                     ]
                 }),
                 onCompleted(200)

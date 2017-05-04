@@ -1,0 +1,16 @@
+{
+    "jobs": [
+        {
+            "name": "Job1",
+            "url": "https://jenkins.sample/job/job1/",
+            "buildable": true,
+            "inQueue": false
+        },
+        {
+            "name": "Job2",
+            "url": "https://jenkins.sample/job/job2/",
+            "buildable": false,
+            "inQueue": false
+        }
+    ]
+}

@@ -6,9 +6,9 @@ export default {
     jobs: ({ url, settings }) => request
         .get({
             url: joinUrl(url, '/api/json?tree=' +
-                'jobs[_class,name,url,buildable,inQueue,fullName,' +
-                    'jobs[_class,name,url,buildable,inQueue,fullName,' +
-                        'jobs[_class,name,url,buildable,inQueue,fullName]' +
+                'jobs[_class,name,url,buildable,fullName,' +
+                    'jobs[_class,name,url,buildable,fullName,' +
+                        'jobs[_class,name,url,buildable,fullName]' +
                     ']' +
                 ']'),
             username: settings.username,
@@ -18,15 +18,16 @@ export default {
         .selectMany(Rx.Observable.fromArray),
 
     jobDetails: ({ id, settings }) => {
-        const [folder, project, branch] = id.split('/');
-        const jobUrl = (branch) ?
-            joinUrl(settings.url, `/job/${folder}/job/${project}/job/${branch}`) :
-            joinUrl(settings.url, `/job/${folder}/job/${project}`);
+        const jobPath = `/job/${id.split('/').join('/job/')}`;
+        const jobUrl = joinUrl(settings.url, jobPath);
         return request.get({
-            url: joinUrl(jobUrl, '/api/json?tree=' +
+            url: `${jobUrl}/api/json?tree=` +
                 'buildable,inQueue,' +
-                'lastBuild[url,building,number,changeSets[items[author[fullName],msg]]],' +
-                'lastCompletedBuild[result]'),
+                'lastBuild[url,building,number,' +
+                    'changeSets[items[author[fullName],msg]],' +
+                    'changeSet[items[author[fullName],msg]]' +
+                '],' +
+                'lastCompletedBuild[result]',
             username: settings.username,
             password: settings.password
         })
