@@ -11,6 +11,7 @@ export default {
             typeName: 'Jenkins 2.x',
             baseUrl: 'jenkins2',
             urlHint: 'URL, e.g. http://ci.jenkins-ci.org/',
+            urlHelp: 'Jenkins server or view URL',
             icon: 'core/services/jenkins/icon.png',
             logo: 'core/services/jenkins/logo.png',
             defaultConfig: {
