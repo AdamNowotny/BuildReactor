@@ -42,7 +42,7 @@ export default app.directive('topnav', ($uibModal, $location) => ({
 				}
 			}).result.then((serviceName) => {
 				core.removeService(serviceName);
-				$location.path('/new/').replace();
+				$location.path('#!/new').replace();
 			});
 		};
 
@@ -55,7 +55,7 @@ export default app.directive('topnav', ($uibModal, $location) => ({
 				}
 			}).result.then((serviceName) => {
 				core.renameService($scope.service.name, serviceName);
-				$location.path(`/service/${serviceName}`).replace();
+				$location.path(`#!/service/${serviceName}/`).replace();
 			});
 		};
 

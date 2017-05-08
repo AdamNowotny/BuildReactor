@@ -42,7 +42,7 @@ export default app.config(($routeProvider) => {
 		redirectTo: '/new'
 	});
 }).config(($locationProvider) => {
-	$locationProvider.html5Mode(true);
+	$locationProvider.html5Mode(false);
 }).config([
 	'$compileProvider', function($compileProvider)	{
 		$compileProvider
