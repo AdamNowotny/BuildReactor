@@ -3,7 +3,6 @@ import 'settings/service/directives/dynamicForm/dynamicForm';
 import 'settings/service/directives/filterQuery/filterQuery';
 import 'settings/service/directives/projectList/projectList';
 import 'settings/service/directives/selectedProjects/selectedProjects';
-import 'settings/service/directives/viewSelection/viewSelection';
 import app from 'settings/app';
 import core from 'common/core';
 

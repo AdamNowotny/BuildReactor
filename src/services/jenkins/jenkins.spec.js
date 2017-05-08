@@ -1,15 +1,15 @@
 import 'test/rxHelpers';
 import Rx from 'rx/dist/rx.testing';
-import jenkins from 'services/jenkins2/jenkins2';
-import jobDetails1xFixture from 'raw!services/jenkins2/jobDetails-1x.fixture.json';
-import jobDetails2Fixture from 'raw!services/jenkins2/jobDetails2.fixture.json';
-import jobDetailsFixture from 'raw!services/jenkins2/jobDetails.fixture.json';
-import jobs1xFixture from 'raw!services/jenkins2/jobs-1x.fixture.json';
-import jobs2xFixture from 'raw!services/jenkins2/jobs-2x.fixture.json';
-import requests from 'services/jenkins2/jenkins2Requests';
+import jenkins from 'services/jenkins/jenkins';
+import jobDetails1xFixture from 'raw!services/jenkins/jobDetails-1x.fixture.json';
+import jobDetails2Fixture from 'raw!services/jenkins/jobDetails2.fixture.json';
+import jobDetailsFixture from 'raw!services/jenkins/jobDetails.fixture.json';
+import jobs1xFixture from 'raw!services/jenkins/jobs-1x.fixture.json';
+import jobs2xFixture from 'raw!services/jenkins/jobs-2x.fixture.json';
+import requests from 'services/jenkins/jenkinsRequests';
 import sinon from 'sinon';
 
-describe('services/jenkins2/jenkins2', () => {
+describe('services/jenkins/jenkins', () => {
 
     const jobs1xResponse = JSON.parse(jobs1xFixture);
     const jobs2xResponse = JSON.parse(jobs2xFixture);
@@ -39,14 +39,14 @@ describe('services/jenkins2/jenkins2', () => {
         const result = jenkins.getInfo();
 
         expect(result).toEqual({
-            typeName: 'Jenkins 2.x',
-            baseUrl: 'jenkins2',
+            typeName: 'Jenkins',
+            baseUrl: 'jenkins',
             urlHint: 'URL, e.g. http://ci.jenkins-ci.org/',
             urlHelp: 'Jenkins server or view URL',
-            icon: 'core/services/jenkins/icon.png',
-            logo: 'core/services/jenkins/logo.png',
+            icon: 'services/jenkins/icon.png',
+            logo: 'services/jenkins/logo.png',
             defaultConfig: {
-                baseUrl: 'jenkins2',
+                baseUrl: 'jenkins',
                 name: '',
                 projects: [],
                 url: '',

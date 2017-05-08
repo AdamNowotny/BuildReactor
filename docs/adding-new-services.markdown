@@ -4,7 +4,7 @@ To add support for a new type of service in BuildReactor you need to implement t
 
 For examples look at implementations in the services folder:
 - [BuildKite](../src/services/buildkite/buildkite.js)
-- [Jenkins](../src/services/jenkins2/jenkins2.js)
+- [Jenkins](../src/services/jenkins/jenkins.js)
 
 Configuration
 -------------

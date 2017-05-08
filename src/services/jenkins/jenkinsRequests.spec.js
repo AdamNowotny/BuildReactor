@@ -1,8 +1,8 @@
 import Rx from 'rx/dist/rx.testing';
-import jenkins2Requests from 'services/jenkins2/jenkins2Requests';
+import jenkinsRequests from 'services/jenkins/jenkinsRequests';
 import request from 'services/jsonRequest';
 
-describe('services/jenkins2/jenkins2Requests', () => {
+describe('services/jenkins/jenkinsRequests', () => {
 
     const onNext = Rx.ReactiveTest.onNext;
     const onCompleted = Rx.ReactiveTest.onCompleted;
@@ -36,7 +36,7 @@ describe('services/jenkins2/jenkins2Requests', () => {
             });
 
             scheduler.startScheduler(() =>
-                jenkins2Requests.jobs({ url: settings.url, settings })
+                jenkinsRequests.jobs({ url: settings.url, settings })
             );
 
             expect(request.get).toHaveBeenCalled();
@@ -48,7 +48,7 @@ describe('services/jenkins2/jenkins2Requests', () => {
             );
 
             const result = scheduler.startScheduler(() =>
-                jenkins2Requests.jobs({ url: settings.url, settings })
+                jenkinsRequests.jobs({ url: settings.url, settings })
             );
 
             expect(result.messages).toHaveEqualElements(
@@ -67,7 +67,7 @@ describe('services/jenkins2/jenkins2Requests', () => {
             }));
 
             const result = scheduler.startScheduler(() =>
-                jenkins2Requests.jobs({ url: settings.url, settings })
+                jenkinsRequests.jobs({ url: settings.url, settings })
             );
 
             expect(result.messages).toHaveEqualElements(
@@ -100,7 +100,7 @@ describe('services/jenkins2/jenkins2Requests', () => {
             });
 
             scheduler.startScheduler(() =>
-                jenkins2Requests.jobDetails({ id, settings })
+                jenkinsRequests.jobDetails({ id, settings })
             );
 
             expect(request.get).toHaveBeenCalled();
@@ -123,7 +123,7 @@ describe('services/jenkins2/jenkins2Requests', () => {
             });
 
             scheduler.startScheduler(() =>
-                jenkins2Requests.jobDetails({ id: 'folder/project', settings }));
+                jenkinsRequests.jobDetails({ id: 'folder/project', settings }));
 
             expect(request.get).toHaveBeenCalled();
         });
@@ -145,7 +145,7 @@ describe('services/jenkins2/jenkins2Requests', () => {
             });
 
             scheduler.startScheduler(() =>
-                jenkins2Requests.jobDetails({ id: 'project', settings }));
+                jenkinsRequests.jobDetails({ id: 'project', settings }));
 
             expect(request.get).toHaveBeenCalled();
         });
@@ -156,7 +156,7 @@ describe('services/jenkins2/jenkins2Requests', () => {
             );
 
             const result = scheduler.startScheduler(() =>
-                jenkins2Requests.jobDetails({ id, settings })
+                jenkinsRequests.jobDetails({ id, settings })
             );
 
             expect(result.messages).toHaveEqualElements(

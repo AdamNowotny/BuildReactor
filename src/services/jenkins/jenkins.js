@@ -1,5 +1,5 @@
 import Rx from 'rx';
-import requests from 'services/jenkins2/jenkins2Requests';
+import requests from 'services/jenkins/jenkinsRequests';
 
 const WorkflowMultiBranchProject = 'org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject';
 const OrganizationFolder = 'jenkins.branch.OrganizationFolder';
@@ -8,14 +8,14 @@ const Folder = 'com.cloudbees.hudson.plugins.folder.Folder';
 export default {
     getInfo() {
         return {
-            typeName: 'Jenkins 2.x',
-            baseUrl: 'jenkins2',
+            typeName: 'Jenkins',
+            baseUrl: 'jenkins',
             urlHint: 'URL, e.g. http://ci.jenkins-ci.org/',
             urlHelp: 'Jenkins server or view URL',
-            icon: 'core/services/jenkins/icon.png',
-            logo: 'core/services/jenkins/logo.png',
+            icon: 'services/jenkins/icon.png',
+            logo: 'services/jenkins/logo.png',
             defaultConfig: {
-                baseUrl: 'jenkins2',
+                baseUrl: 'jenkins',
                 name: '',
                 projects: [],
                 url: '',
