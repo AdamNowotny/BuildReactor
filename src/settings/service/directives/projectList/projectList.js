@@ -6,123 +6,91 @@ import angular from 'angular';
 import app from 'settings/app';
 import template from 'settings/service/directives/projectList/projectList.html';
 
-var getGroupNamesFromProjects = function(projects) {
-	return projects.filter(function(project) {
-			return project.isInView;
-		}).map(function(item) {
-			return item.group;
-		}).reduce(function(agg, group) {
-			if (agg.indexOf(group) < 0) {
-				agg.push(group);
-			}
-			return agg;
-		}, []) || null;
+export default app.directive('projectList', ($sce, highlightFilter) => ({
+    scope: {
+        projects: '=projects',
+        selected: '=',
+        filterQuery: '=filter'
+    },
+    templateUrl: template,
+    controller($scope, $element, $attrs, $transclude) {
+        $scope.groups = [];
+        $scope.selected = [];
+
+        $scope.$watch('projects', (projects) => {
+            $scope.selected = $scope.selected || [];
+            $scope.projectList = angular.copy($scope.projects) || [];
+            $scope.projectList.forEach((project) => {
+                project.isSelected = $scope.selected.includes(project.id);
+            });
+            $scope.groups = createGroups($scope.projectList);
+            highlightNames($scope.projectList, $scope.filterQuery);
+        });
+
+        $scope.$watch('projectList', (projects) => {
+            const selectedIds = projects.filter((project) => project.isSelected)
+                .map((project) => project.id);
+            updateCheckAll($scope.groups);
+            if ($scope.groups.length) $scope.$emit('projectList.change', selectedIds);
+        }, true);
+
+        $scope.$watch('filterQuery', (query) => {
+            $scope.groups.forEach((group) => {
+                group.visibleCount = group.projects
+                    .filter((project) => $scope.search(project))
+                    .length;
+            });
+            highlightNames($scope.projectList, $scope.filterQuery);
+        });
+
+        $scope.search = function(project) {
+            return project.name.toLowerCase().indexOf($scope.filterQuery.toLowerCase()) > -1;
+        };
+
+        $scope.checkAll = function(group) {
+            group.projects.forEach((project) => {
+                project.isSelected = group.allSelected;
+            });
+        };
+
+        const highlightNames = function(projects, highlightText) {
+            projects.forEach((project) => {
+                const nameHtml = highlightFilter(project.name, highlightText);
+                project.nameHtml = $sce.trustAsHtml(nameHtml);
+            });
+        };
+
+    }
+}));
+
+const getGroupNamesFromProjects = (projects) => projects
+    .map((item) => item.group)
+    .reduce((agg, group) => {
+        return agg.includes(group) ? agg : [...agg, group];
+    }, []);
+
+const createGroups = function(projects) {
+    const groupNames = getGroupNamesFromProjects(projects);
+    return groupNames.map((groupName) => {
+        const groupProjects = projects.filter((project) => project.group === groupName);
+        const selectedProjects = groupProjects.filter((project) => project.isSelected);
+        return {
+            name: groupName,
+            projects: groupProjects,
+            expanded: selectedProjects.length > 0 || groupNames.length === 1,
+            visibleCount: groupProjects.length,
+            projectsCount: groupProjects.length,
+            allSelected: selectedProjects.length === groupProjects.length,
+            someSelected: selectedProjects.length !== 0 && selectedProjects.length !== groupProjects.length,
+            visible: groupProjects.length !== 0
+        };
+    });
 };
 
-var getVisibleProjectsForGroup = function(projects, groupName) {
-	return projects.filter(function(project) {
-		return project.isInView && project.group === groupName;
-	});
+const updateCheckAll = function(groups) {
+    groups.forEach((group) => {
+        const selectedProjects = group.projects.filter((project) => project.isSelected);
+        group.someSelected = selectedProjects.length !== 0 && selectedProjects.length !== group.projects.length;
+        group.allSelected = selectedProjects.length === group.projects.length;
+    });
 };
-
-var getSelectedProjects = function(projects) {
-	return projects.filter(function(project) {
-		return project.isSelected;
-	});
-};
-
-var createGroups = function(projects) {
-	var groupNames = getGroupNamesFromProjects(projects);
-	var groups = groupNames.map(function(groupName) {
-		var groupProjects = getVisibleProjectsForGroup(projects, groupName);
-		var selectedProjects = getSelectedProjects(groupProjects);
-		return {
-			name: groupName,
-			projects: groupProjects,
-			expanded: selectedProjects.length > 0 || groupNames.length === 1,
-			visibleCount: groupProjects.length,
-			projectsCount: groupProjects.length,
-			allSelected: selectedProjects.length === groupProjects.length,
-			someSelected: selectedProjects.length !== 0 && selectedProjects.length !== groupProjects.length,
-			visible: groupProjects.length !== 0
-		};
-	});
-	return groups.length ? groups : null;
-};
-
-var updateCheckAll = function(groups) {
-	(groups || []).forEach(function(group) {
-		var selectedProjects = getSelectedProjects(group.projects);
-		group.someSelected = selectedProjects.length !== 0 && selectedProjects.length !== group.projects.length;
-		group.allSelected = selectedProjects.length === group.projects.length;
-	});
-};
-
-export default app.directive('projectList', function($sce, highlightFilter) {
-	return {
-		scope: {
-			projects: '=projects',
-			selected: '=',
-			viewItems: '=',
-			filterQuery: '=filter'
-		},
-		templateUrl: template,
-		controller: function($scope, $element, $attrs, $transclude) {
-			$scope.groups = null;
-			$scope.selected = [];
-
-			$scope.$watch('projects', (projects) => {
-				$scope.selected = $scope.selected || [];
-				$scope.projectList = angular.copy($scope.projects) || [];
-				$scope.projectList.forEach((project) => {
-					project.isSelected = $scope.selected.indexOf(project.id) > -1;
-					project.isInView = !$scope.viewItems || $scope.viewItems.indexOf(project.id) > -1;
-				});
-				$scope.groups = createGroups($scope.projectList);
-				highlightNames($scope.projectList, $scope.filterQuery);
-			});
-
-			$scope.$watch('viewItems', function(viewItems) {
-				($scope.projectList || []).forEach(function(project) {
-					project.isInView = !viewItems || viewItems.indexOf(project.id) > -1;
-				});
-				$scope.groups = createGroups($scope.projectList);
-			});
-
-			$scope.$watch('projectList', function(projects) {
-				var selectedIds = getSelectedProjects(projects).map(function(project) {
-					return project.id;
-				});
-				updateCheckAll($scope.groups);
-				if ($scope.groups) $scope.$emit('projectList.change', selectedIds);
-			}, true);
-
-			$scope.$watch('filterQuery', function(query) {
-				($scope.groups || []).forEach(function(group) {
-					group.visibleCount = group.projects.filter(function(project) {
-						return $scope.search(project);
-					}).length;
-				});
-				highlightNames($scope.projectList, $scope.filterQuery);
-			});
-
-			$scope.search = function(project) {
-				return project.name.toLowerCase().indexOf($scope.filterQuery.toLowerCase()) > -1;
-			};
-
-			$scope.checkAll = function(group) {
-				group.projects.forEach(function(project) {
-					project.isSelected = group.allSelected;
-				});
-			};
-
-			var highlightNames = function(projects, highlightText) {
-				projects.forEach(function(project) {
-					var nameHtml = highlightFilter(project.name, highlightText);
-					project.nameHtml = $sce.trustAsHtml(nameHtml);
-				});
-			};
-
-		}
-	};
-});

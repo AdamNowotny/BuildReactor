@@ -4,51 +4,6 @@ define(function() {
 
 	return {
 		projects: {
-			primaryView: 'All',
-			views: [
-				{
-					name: 'All',
-					items: [
-						'JAVADOC-BRANCH18X',
-						'JAVADOC-BRANCH19X',
-						'JAVADOC-TRUNK',
-						'JU-CORE',
-						'FUNC-APPTEST',
-						'FUNC-BUILDPERF',
-						'FUNC-LBR',
-						'FUNC-PERF',
-						'NIGHTLY-BRANCH18X',
-						'NIGHTLY-BRANCH19X',
-						'NIGHTLY-TRUNK',
-						'BUNDLED-FORM',
-						'BUNDLED-HTMLEXT',
-						'BUNDLED-HTML',
-						'BUNDLED-HTMLWIDGETS',
-						'BUNDLED-LOGIC',
-						'BUNDLED-MDS',
-						'BUNDLED-FLAG',
-						'BUNDLED-REPORT',
-						'BUNDLED-RPC',
-						'BUNDLED-RESTWS',
-						'BUNDLED-SXS',
-						'BUNDLED-XFORMS',
-						'DEMO-DEVTEST01',
-						'DEMO-DEVTEST01A',
-						'DEMO-LATEST',
-						'DEMO-NIGHTLY',
-						'DEMO-DEMODB',
-						'APPT-APPT'
-					]
-				},
-				{
-					name: 'All disabled',
-					items: ['JAVADOC-BRANCH18X']
-				},
-				{
-					name: 'JavaDocs',
-					items: ['JAVADOC-BRANCH18X', 'JAVADOC-BRANCH19X', 'JAVADOC-TRUNK']
-				}
-			],
 			selected: [
 				'JAVADOC-BRANCH18X',
 				'JU-CORE',

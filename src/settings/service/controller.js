@@ -6,90 +6,70 @@ import 'settings/service/directives/selectedProjects/selectedProjects';
 import app from 'settings/app';
 import core from 'common/core';
 
-export default app.controller('ServiceSettingsCtrl', function($scope, $location) {
+export default app.controller('ServiceSettingsCtrl', ($scope, $location) => {
 
-	var config;
+    let config;
 
-	const reset = function() {
-		$scope.projects = {
-			all: [],
-			selected: null,
-			loaded: false
-		};
-		$scope.views = {
-			all: [],
-			selected: null,
-			selectedItems: null
-		};
-		$scope.projectsError = null;
-		$scope.isLoading = false;
-		$scope.filterQuery = '';
-	};
+    const reset = function() {
+        $scope.projects = {
+            all: [],
+            selected: null,
+            loaded: false
+        };
+        $scope.projectsError = null;
+        $scope.isLoading = false;
+        $scope.filterQuery = '';
+    };
 
-	var getItemsForView = function(views, viewName) {
-		var view = views.filter(function(view) {
-			return view.name === viewName;
-		});
-		return view.length ? view[0].items : null;
-	};
+    const showError = function(errorResponse) {
+        reset();
+        $scope.projectsError = errorResponse;
+    };
 
-	var showError = function(errorResponse) {
-		reset();
-		$scope.projectsError = errorResponse;
-	};
+    const showProjects = function(projects) {
+        $scope.projectsError = null;
+        $scope.projects = {
+            all: projects.items,
+            selected: projects.selected,
+            loaded: true
+        };
+    };
 
-	var showProjects = function(projects) {
-		$scope.projectsError = null;
-		$scope.projects = {
-			all: projects.items,
-			selected: projects.selected,
-			loaded: true
-		};
-		$scope.views = {
-			all: projects.views || [],
-			selected: projects.primaryView
-		};
-	};
+    $scope.show = function() {
+        reset();
+        $scope.isLoading = true;
+        core.availableProjects(config, (response) => {
+            $scope.$evalAsync(() => {
+                $scope.isLoading = false;
+                if (response.error) {
+                    showError(response.error);
+                } else {
+                    showProjects(response.projects);
+                }
+            });
+        });
+    };
 
-	$scope.show = function() {
-		reset();
-		$scope.isLoading = true;
-		core.availableProjects(config, function(response) {
-			$scope.$evalAsync(function() {
-				$scope.isLoading = false;
-				if (response.error) {
-					showError(response.error);
-				} else {
-					showProjects(response.projects);
-				}
-			});
-		});
-	};
+    $scope.save = function() {
+        core.saveService(config);
+        $scope.saving = true;
+        $scope.projects.selected = config.projects;
+        $location.path(`/service/${config.name}`);
+    };
 
-	$scope.$watch('views.selected', function(viewName) {
-		$scope.views.selectedItems = getItemsForView($scope.views.all, viewName);
-	});
+    $scope.$on('dynamicForm.changed', (event, updatedConfig) => {
+        config = updatedConfig;
+    });
 
-	$scope.save = function() {
-		core.saveService(config);
-		$scope.saving = true;
-		$scope.projects.selected = config.projects;
-		$location.path('/service/' + config.name);
-	};
+    $scope.$on('filterQuery.changed', (event, query) => {
+        $scope.filterQuery = query;
+    });
 
-	$scope.$on('dynamicForm.changed', function(event, updatedConfig) {
-		config = updatedConfig;
-	});
+    $scope.$on('projectList.change', (event, selectedProjects) => {
+        if (config) {
+            config.projects = selectedProjects;
+        }
+    });
 
-	$scope.$on('filterQuery.changed', function(event, query) {
-		$scope.filterQuery = query;
-	});
-
-	$scope.$on('projectList.change', function(event, selectedProjects) {
-		if (config) {
-			config.projects = selectedProjects;
-		}
-	});
-
-	reset();
+    reset();
 });
