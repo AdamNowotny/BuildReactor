@@ -1,7 +1,7 @@
 BuildReactor [![Build Status](https://secure.travis-ci.org/AdamNowotny/BuildReactor.png)](http://travis-ci.org/AdamNowotny/BuildReactor) [![Dependency Status](https://gemnasium.com/AdamNowotny/BuildReactor.png)](https://gemnasium.com/AdamNowotny/BuildReactor)
 ============
 
-Developer notifications and dashboard (Google Chrome extension)
+Developer notifications and dashboard for CI servers
  * Gives you overview of all your builds in one place
  * Supports multiple continuous integration servers
  * Configurable notifications
@@ -10,7 +10,9 @@ Developer notifications and dashboard (Google Chrome extension)
 
 Links
 -----
-[Chrome Web Store](http://goo.gl/BX01T) - latest stable version
+[Chrome Web Store](https://chrome.google.com/webstore/detail/buildreactor/agfdekbncfakhgofmaacjfkpbhjhpjmp)
+
+[Mozilla Add-ons](https://addons.mozilla.org/en-GB/firefox/addon/buildreactor-extension/)
 
 [Twitter](https://twitter.com/BuildReactor)
 
@@ -21,14 +23,11 @@ Supported services
 
 Below are the supported CI servers.
 
+ * Servers using [XML cctray format](http://confluence.public.thoughtworks.org/display/CI/Multiple+Project+Summary+Reporting+Standard)
  * [Atlassian Bamboo](http://www.atlassian.com/software/bamboo/)
  * [BuildBot](http://buildbot.net/)
- * [CircleCI](https://circleci.com) (using cctray format)
- * Servers using [XML cctray format](http://confluence.public.thoughtworks.org/display/CI/Multiple+Project+Summary+Reporting+Standard) like [CruiseControl](http://cruisecontrol.sourceforge.net/), [CruiseControl.NET](http://www.cruisecontrolnet.org/), [CruiseControl.rb](http://cruisecontrolrb.thoughtworks.com/)
- * [GoCD](https://github.com/gocd/gocd)
- * [Jenkins](http://jenkins-ci.org/) (Hudson)
- * [Snap](http://snap-ci.com/)
- * [Solano CI](https://www.solanolabs.com/) (using cctray format)
+ * [BuildKite](https://buildkite.com/)
+ * [Jenkins](http://jenkins.io/)
  * [TeamCity](http://www.jetbrains.com/teamcity/)
  * [Travis-CI](http://travis-ci.org/)
 
@@ -80,7 +79,8 @@ Testing
 -------
 
 `yarn test` - run Karma unit tests using PhantomJS
-`yarn run auto-test` test and watch for changes
+
+`yarn run auto-test` - test and watch for changes
 
 Development
 -----------

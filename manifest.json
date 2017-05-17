@@ -2,7 +2,7 @@
 	"name": "BuildReactor",
 	"version": "1.0.0",
 	"manifest_version": 2,
-	"description": "Developer notifications and dashboard",
+	"description": "Developer notifications and dashboard for CI servers",
 	"icons": {
 		"16": "img/icon-16.png",
 		"48": "img/icon-48.png",
