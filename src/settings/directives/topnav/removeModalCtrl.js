@@ -1,4 +1,4 @@
-import 'angular-ui-bootstrap';
+import 'angular-ui-bootstrap/src/modal/index-nocss';
 import app from 'settings/app';
 
 export default app.controller('RemoveModalCtrl', ($scope, $uibModalInstance, serviceName) => {

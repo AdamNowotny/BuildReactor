@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/scss/font-awesome.scss';
+import '../common/_angular-ui.scss';
 import './main.scss';
 import 'jquery';
 import 'html5sortable/src/html.sortable.src';

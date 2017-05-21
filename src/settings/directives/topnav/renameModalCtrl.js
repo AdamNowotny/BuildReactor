@@ -1,18 +1,18 @@
-import 'angular-ui-bootstrap';
+import 'angular-ui-bootstrap/src/modal/index-nocss';
 import app from 'settings/app';
 import core from 'common/core';
 
-export default app.controller('RenameModalCtrl', function($scope, $uibModalInstance, serviceName) {
+export default app.controller('RenameModalCtrl', ($scope, $uibModalInstance, serviceName) => {
 	$scope.service = { name: serviceName };
 
-	core.configurations.subscribe(function(configs) {
+	core.configurations.subscribe((configs) => {
 		$scope.services = configs;
 	});
 
-	$scope.$watch('service.name', function(name) {
-		$scope.exists = $scope.services ? $scope.services.filter(function(service) {
-			return service.name === name;
-		}).length > 0 : false;
+	$scope.$watch('service.name', (name) => {
+		$scope.exists = $scope.services ?
+			$scope.services.filter((service) => service.name === name).length > 0 :
+			false;
 	});
 
 	$scope.rename = function() {

@@ -1,4 +1,5 @@
 /* Include this file in your html if you are using the CSP mode. */
+@import "../../node_modules/angular-ui-bootstrap/dist/ui-bootstrap-csp.css";
 
 @charset "UTF-8";
 
@@ -25,6 +26,6 @@ ng\:form {
 
 .nav, .pagination, .carousel a { cursor: pointer; }
 
-.modal { 
+.modal {
         display: block;
 }

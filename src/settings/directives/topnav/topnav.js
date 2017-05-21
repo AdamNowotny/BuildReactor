@@ -1,5 +1,4 @@
-import 'bootstrap/js/dropdown';
-import 'angular-ui-bootstrap';
+import 'angular-ui-bootstrap/src/dropdown/index-nocss';
 import 'settings/directives/onOffSwitch/onOffSwitch';
 import 'settings/directives/topnav/removeModalCtrl';
 import 'settings/directives/topnav/renameModalCtrl';
@@ -17,7 +16,7 @@ export default app.directive('topnav', ($uibModal, $location) => ({
 	templateUrl: template,
 	controller($scope, $element, $attrs, $transclude) {
 
-		$scope.$watch('service', function(selectedService) {
+		$scope.$watch('service', (selectedService) => {
 			$scope.isEnabled = selectedService && !selectedService.disabled;
 		});
 

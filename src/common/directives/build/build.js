@@ -1,4 +1,4 @@
-import 'angular-ui-bootstrap/src/tooltip/tooltip';
+import 'angular-ui-bootstrap/src/tooltip/index-nocss.js';
 import module from 'common/directives/module';
 import templateUrl from 'common/directives/build/build.html';
 
