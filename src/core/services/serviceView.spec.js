@@ -1,6 +1,7 @@
 import Rx from 'rx/dist/rx.testing';
 import eventProcessor from 'core/services/buildEventProcessor';
 import events from 'core/events';
+import serviceConfiguration from 'core/config/serviceConfiguration';
 import serviceView from 'core/services/serviceView';
 import sinon from 'sinon';
 
@@ -9,6 +10,7 @@ describe('core/services/serviceView', () => {
     const serviceUpdatedSubject = new Rx.Subject();
     const serviceUpdateFailedSubject = new Rx.Subject();
     const servicesInitializingSubject = new Rx.Subject();
+    const configChangesSubject = new Rx.Subject();
 
     beforeEach(() => {
         sinon.stub(events, 'getByName');
@@ -17,6 +19,8 @@ describe('core/services/serviceView', () => {
         events.getByName.onCall(0).returns(serviceUpdatedSubject);
         events.getByName.onCall(1).returns(serviceUpdateFailedSubject);
         events.getByName.onCall(2).returns(servicesInitializingSubject);
+        events.getByName.onCall(3).returns(configChangesSubject);
+        serviceConfiguration.changes.onNext([{ name: 'service1', projects: [] }]);
         serviceView.init();
         events.push.reset();
     });
@@ -53,27 +57,38 @@ describe('core/services/serviceView', () => {
             });
         });
 
-        it('should sort builds on serviceUpdated', () => {
+        it('should keep sort order for services on serviceUpdated', () => {
+            const config = [
+                { name: 'service 2', projects: [] },
+                { name: 'service 1', projects: [] }
+            ];
+            serviceConfiguration.changes.onNext(config);
+
             serviceUpdatedSubject.onNext({
                 eventName: 'serviceUpdated',
-                source: 'service1',
-                details: [
-                    { id: 'zzz' },
-                    { id: 'abc' },
-                ]
+                source: 'service 1',
+                details: []
+            });
+            serviceUpdatedSubject.onNext({
+                eventName: 'serviceUpdated',
+                source: 'service 2',
+                details: []
             });
 
-            sinon.assert.calledOnce(events.push);
+            sinon.assert.calledTwice(events.push);
             sinon.assert.calledWith(events.push, {
                 eventName: 'stateUpdated',
                 source: 'serviceView',
-                details: [{
-                    name: 'service1',
-                    items: [
-                        { id: 'abc', error: null },
-                        { id: 'zzz', error: null }
-                    ]
-                }]
+                details: [
+                    {
+                        name: 'service 2',
+                        items: []
+                    },
+                    {
+                        name: 'service 1',
+                        items: []
+                    }
+                ]
             });
         });
 
@@ -221,6 +236,7 @@ describe('core/services/serviceView', () => {
         });
 
         it('should ignore disabled services on servicesInitializing', () => {
+            serviceConfiguration.changes.onNext([{ name: 'service1', disabled: true }]);
             servicesInitializingSubject.onNext({
                 eventName: 'servicesInitializing',
                 source: 'serviceController',

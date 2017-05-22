@@ -1,11 +1,17 @@
 import eventProcessor from 'core/services/buildEventProcessor';
 import events from 'core/events';
+import serviceConfiguration from 'core/config/serviceConfiguration';
 import sortBy from 'common/sortBy';
 
 let rxServiceUpdateFailed, rxServiceUpdated, rxServicesInit;
 
 const init = () => {
     const latestState = new Map();
+    let latestConfig = [];
+
+    serviceConfiguration.changes.subscribe((config) => {
+        latestConfig = config;
+    });
 
     rxServiceUpdated = events.getByName('serviceUpdated').subscribe((ev) => {
         const oldState = latestState.get(ev.source) || { name: ev.source, items: [] };
@@ -52,12 +58,14 @@ const init = () => {
         events.push({
             eventName: 'stateUpdated',
             source: 'serviceView',
-            details: [...latestState.values()].map((s) => (
-                {
-                    name: s.name,
-                    items: sortBy('id', s.items)
-                }
-            ))
+            details: latestConfig
+                .filter((config) => !config.disabled)
+                .filter((config) => latestState.has(config.name))
+                .map((service) => latestState.get(service.name))
+                .map((state) => ({
+                    name: state.name,
+                    items: sortBy('id', state.items)
+                }))
         });
     };
 };
