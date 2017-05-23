@@ -1,7 +1,6 @@
 import Rx from 'rx/dist/rx.testing';
 import eventProcessor from 'core/services/buildEventProcessor';
 import events from 'core/events';
-import serviceConfiguration from 'core/config/serviceConfiguration';
 import serviceView from 'core/services/serviceView';
 import sinon from 'sinon';
 
@@ -10,7 +9,6 @@ describe('core/services/serviceView', () => {
     const serviceUpdatedSubject = new Rx.Subject();
     const serviceUpdateFailedSubject = new Rx.Subject();
     const servicesInitializingSubject = new Rx.Subject();
-    const configChangesSubject = new Rx.Subject();
 
     beforeEach(() => {
         sinon.stub(events, 'getByName');
@@ -19,9 +17,15 @@ describe('core/services/serviceView', () => {
         events.getByName.onCall(0).returns(serviceUpdatedSubject);
         events.getByName.onCall(1).returns(serviceUpdateFailedSubject);
         events.getByName.onCall(2).returns(servicesInitializingSubject);
-        events.getByName.onCall(3).returns(configChangesSubject);
-        serviceConfiguration.changes.onNext([{ name: 'service1', projects: [] }]);
         serviceView.init();
+        servicesInitializingSubject.onNext({
+            eventName: 'servicesInitializing',
+            source: 'serviceController',
+            details: [{
+                name: 'service1',
+                projects: ['abc']
+            }]
+        });
         events.push.reset();
     });
 
@@ -39,7 +43,8 @@ describe('core/services/serviceView', () => {
                 eventName: 'serviceUpdated',
                 source: 'service1',
                 details: [{
-                    id: 'abc'
+                    id: 'abc',
+                    group: 'group'
                 }]
             });
 
@@ -51,18 +56,35 @@ describe('core/services/serviceView', () => {
                     name: 'service1',
                     items: [{
                         id: 'abc',
-                        error: null
+                        name: "abc",
+                        changes: [],
+                        error: null,
+                        group: 'group',
+                        isBroken: false,
+                        isDisabled: false,
+                        isRunning: false,
+                        tags: [],
+                        webUrl: null
                     }]
                 }]
             });
         });
 
         it('should keep sort order for services on serviceUpdated', () => {
-            const config = [
-                { name: 'service 2', projects: [] },
-                { name: 'service 1', projects: [] }
-            ];
-            serviceConfiguration.changes.onNext(config);
+            servicesInitializingSubject.onNext({
+                eventName: 'servicesInitializing',
+                source: 'serviceController',
+                details: [
+                    {
+                        name: 'service 2',
+                        projects: []
+                    },
+                    {
+                        name: 'service 1',
+                        projects: []
+                    }
+                ]
+            });
 
             serviceUpdatedSubject.onNext({
                 eventName: 'serviceUpdated',
@@ -75,7 +97,7 @@ describe('core/services/serviceView', () => {
                 details: []
             });
 
-            sinon.assert.calledTwice(events.push);
+            sinon.assert.calledThrice(events.push);
             sinon.assert.calledWith(events.push, {
                 eventName: 'stateUpdated',
                 source: 'serviceView',
@@ -92,29 +114,72 @@ describe('core/services/serviceView', () => {
             });
         });
 
-        it('should process build events when old state unknown', () => {
+        it('should keep sort order for builds on serviceUpdated', () => {
+            servicesInitializingSubject.onNext({
+                eventName: 'servicesInitializing',
+                source: 'serviceController',
+                details: [
+                    {
+                        name: 'service1',
+                        projects: ['a', 'c', 'b']
+                    }
+                ]
+            });
             serviceUpdatedSubject.onNext({
                 eventName: 'serviceUpdated',
                 source: 'service1',
-                details: [{
-                    id: 'abc',
-                    isBroken: true
-                }]
+                details: [
+                    { id: 'c' },
+                    { id: 'a' },
+                    { id: 'b' }
+                ]
             });
 
-            sinon.assert.calledWith(eventProcessor.process, {
-                oldState: {
+            sinon.assert.calledTwice(events.push);
+            sinon.assert.calledWith(events.push, {
+                eventName: 'stateUpdated',
+                source: 'serviceView',
+                details: [{
                     name: 'service1',
-                    items: []
-                },
-                newState: {
-                    name: 'service1',
-                    items: [{
-                        id: 'abc',
-                        isBroken: true,
-                        error: null
-                    }]
-                }
+                    items: [
+                        {
+                            id: "a",
+                            name: "a",
+                            changes: [],
+                            error: null,
+                            group: null,
+                            isBroken: false,
+                            isDisabled: false,
+                            isRunning: false,
+                            tags: [],
+                            webUrl: null
+                        },
+                        {
+                            id: "c",
+                            name: "c",
+                            changes: [],
+                            error: null,
+                            group: null,
+                            isBroken: false,
+                            isDisabled: false,
+                            isRunning: false,
+                            tags: [],
+                            webUrl: null
+                        },
+                        {
+                            id: "b",
+                            name: "b",
+                            changes: [],
+                            error: null,
+                            group: null,
+                            isBroken: false,
+                            isDisabled: false,
+                            isRunning: false,
+                            tags: [],
+                            webUrl: null
+                        }
+                    ]
+                }]
             });
         });
 
@@ -141,21 +206,72 @@ describe('core/services/serviceView', () => {
                     name: 'service1',
                     items: [{
                         id: 'abc',
+                        name: "abc",
                         isBroken: true,
-                        error: null
+                        error: null,
+                        changes: [],
+                        group: null,
+                        isDisabled: false,
+                        isRunning: false,
+                        tags: [],
+                        webUrl: null
                     }]
                 },
                 newState: {
                     name: 'service1',
                     items: [{
                         id: 'abc',
+                        name: "abc",
                         error: { message: 'error' },
-                        isBroken: true
+                        isBroken: true,
+                        changes: [],
+                        group: null,
+                        isDisabled: false,
+                        isRunning: false,
+                        tags: [],
+                        webUrl: null
                     }]
                 }
             });
         });
+    });
 
+    it('should clear error on if update successful', () => {
+        serviceUpdatedSubject.onNext({
+            eventName: 'serviceUpdated',
+            source: 'service1',
+            details: [{
+                id: 'abc',
+                error: { message: 'some error' }
+            }]
+        });
+        serviceUpdatedSubject.onNext({
+            eventName: 'serviceUpdated',
+            source: 'service1',
+            details: [{
+                id: 'abc'
+            }]
+        });
+
+        sinon.assert.calledWith(events.push, {
+            eventName: 'stateUpdated',
+            source: 'serviceView',
+            details: [{
+                name: 'service1',
+                items: [{
+                    id: 'abc',
+                    name: "abc",
+                    error: null,
+                    changes: [],
+                    group: null,
+                    isBroken: false,
+                    isDisabled: false,
+                    isRunning: false,
+                    tags: [],
+                    webUrl: null
+                }]
+            }]
+        });
     });
 
     it('should mark builds as offline on serviceUpdateFailed', () => {
@@ -179,10 +295,18 @@ describe('core/services/serviceView', () => {
                 name: 'service1',
                 items: [{
                     id: 'abc',
+                    name: "abc",
                     error: {
                         message: 'Service update failed',
                         description: 'some error'
-                    }
+                    },
+                    changes: [],
+                    group: null,
+                    isBroken: false,
+                    isDisabled: false,
+                    isRunning: false,
+                    tags: [],
+                    webUrl: null
                 }]
             }]
         });
@@ -236,7 +360,6 @@ describe('core/services/serviceView', () => {
         });
 
         it('should ignore disabled services on servicesInitializing', () => {
-            serviceConfiguration.changes.onNext([{ name: 'service1', disabled: true }]);
             servicesInitializingSubject.onNext({
                 eventName: 'servicesInitializing',
                 source: 'serviceController',
