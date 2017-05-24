@@ -1,32 +1,30 @@
-import 'html5sortable/src/html.sortable.angular';
+import 'angular-legacy-sortablejs-maintained';
 import app from 'settings/app';
 import core from 'common/core';
 import template from 'settings/directives/sidebar/sidebar.html';
 
-export default app.directive('sidebar', function() {
-	return {
-		scope: {
-			services: '=',
-			configs: '=',
-			currentService: '=',
-			currentConfig: '=',
-			view: '='
-		},
-		templateUrl: template,
-		controller: function($scope, $element, $attrs, $transclude) {
-			$scope.sortableCallback = function(startModel, destModel, start, end) {
-				var items = destModel.map(function(service) {
-					return service.name;
-				});
-				core.setOrder(items);
-			};
+export default app.directive('sidebar', () => {
+    return {
+        scope: {
+            services: '=',
+            configs: '=',
+            currentService: '=',
+            currentConfig: '=',
+            view: '='
+        },
+        templateUrl: template,
+        controller($scope, $element, $attrs, $transclude) {
 
-			$scope.$watch('services', function(services) {
-				$scope.serviceIcons = {};
-				(services || []).forEach(function(service) {
-					$scope.serviceIcons[service.baseUrl] = service.icon;
-				});
-			});
-		}
-	};
+            $scope.sortableConfig = {
+                onUpdate: (data) => core.setOrder(data.models.map((service) => service.name))
+            };
+
+            $scope.$watch('services', (services) => {
+                $scope.serviceIcons = {};
+                (services || []).forEach((service) => {
+                    $scope.serviceIcons[service.baseUrl] = service.icon;
+                });
+            });
+        }
+    };
 });

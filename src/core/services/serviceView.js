@@ -30,10 +30,7 @@ const init = () => {
         latestState.clear();
         ev.details
             .filter((settings) => !settings.disabled)
-            .forEach((settings) => {
-                const initialState = createInitialStates(settings);
-                updateState(settings.name, initialState);
-            });
+            .forEach((settings) => updateState(settings.name, createInitialStates(settings)));
         pushStateUpdated();
     });
 

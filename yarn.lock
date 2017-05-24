@@ -62,6 +62,10 @@ angular-animate@^1.5.8:
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/angular-animate/-/angular-animate-1.6.4.tgz#d3eb906d39834f2dfbdd982e6b8d7a3b4d9001d2"
 
+angular-legacy-sortablejs-maintained@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/angular-legacy-sortablejs-maintained/-/angular-legacy-sortablejs-maintained-0.5.2.tgz#f057e84530952ede19a99bc9fdeb3c430767a1fd"
+
 angular-mocks@^1.5.8:
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/angular-mocks/-/angular-mocks-1.6.4.tgz#47fdf50921cf24fb489f100a8cf2ad99d0538f40"
@@ -2268,12 +2272,6 @@ html-webpack-plugin@^2.22.0:
     pretty-error "^2.0.2"
     toposort "^1.0.0"
 
-html5sortable@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/html5sortable/-/html5sortable-0.3.1.tgz#240e9a436bbfefde9e10fbcd5a761469dea7d78c"
-  dependencies:
-    jquery "^2.1.4"
-
 htmlparser2@~3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/htmlparser2/-/htmlparser2-3.3.0.tgz#cc70d05a59f6542e43f0e685c982e14c924a9efe"
@@ -2617,7 +2615,7 @@ jodid25519@^1.0.0:
   dependencies:
     jsbn "~0.1.0"
 
-jquery@^2.1.4, jquery@^2.2.0:
+jquery@^2.2.0:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
 
@@ -4340,6 +4338,10 @@ sort-keys@^1.0.0:
   resolved "https://registry.yarnpkg.com/sort-keys/-/sort-keys-1.1.2.tgz#441b6d4d346798f1b4e49e8920adfba0e543f9ad"
   dependencies:
     is-plain-obj "^1.0.0"
+
+sortablejs@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/sortablejs/-/sortablejs-1.5.1.tgz#efae13b84c677f3b3d3f4f8e46c7e05fc6acb525"
 
 source-list-map@^0.1.7, source-list-map@~0.1.7:
   version "0.1.8"

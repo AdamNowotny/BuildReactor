@@ -1,20 +1,19 @@
-import 'html5sortable/src/html.sortable.angular';
+import 'angular-legacy-sortablejs-maintained';
 import app from 'settings/app';
 import core from 'common/core';
 import template from 'settings/service/directives/selectedProjects/selectedProjects.html';
 
-export default app.directive('selectedProjects', function() {
-	return {
-		scope: {
-			projects: '=',
-			serviceName: '@'
-		},
-		templateUrl: template,
-		controller: function($scope, $element, $attrs, $transclude) {
+export default app.directive('selectedProjects', () => ({
+    scope: {
+        projects: '=',
+        serviceName: '@'
+    },
+    templateUrl: template,
+    controller($scope, $element, $attrs, $transclude) {
 
-			$scope.sortableCallback = function(startModel, destModel, start, end) {
-				core.setBuildOrder($scope.serviceName, destModel);
-			};
-		}
-	};
-});
+        $scope.sortableConfig = {
+            onUpdate: (data) => core.setBuildOrder($scope.serviceName, data.models)
+        };
+
+    }
+}));
