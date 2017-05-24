@@ -1,38 +1,35 @@
+import 'settings/service/directives/selectedProjects/selectedProjects';
 import angular from 'angular';
+import core from 'common/core';
+import sinon from 'sinon';
 
-define([
-	'settings/service/directives/selectedProjects/selectedProjects',
-	'common/core'
-], function(sidebar, core) {
-	'use strict';
+describe('selectedProjects', () => {
 
-	describe('selectedProjects', function() {
+    let scope;
+    let element;
 
-		var scope;
-		var element;
+    beforeEach(angular.mock.module('settings'));
 
-		beforeEach(angular.mock.module(
-			'settings'
-		));
+    beforeEach(() => {
+        sinon.stub(core, 'setBuildOrder');
+    });
 
-		beforeEach(function() {
-			spyOn(core, 'setBuildOrder');
-		});
+    afterEach(() => {
+        core.setBuildOrder.restore();
+    });
 
-		beforeEach(angular.mock.inject(function($compile, $rootScope) {
-			element = $compile('<section selected-projects projects="projects" service-name="service name"></section>')($rootScope);
-			$rootScope.$digest();
-			scope = element.isolateScope();
-		}));
+    beforeEach(angular.mock.inject(($compile, $rootScope) => {
+        element = $compile('<section selected-projects projects="projects" service-name="service name"></section>')($rootScope);
+        $rootScope.$digest();
+        scope = element.isolateScope();
+    }));
 
-		it('should call setBuildOrder when order changed', function() {
-			scope.projects = ['name1', 'name2'];
+    it('should call setBuildOrder when order changed', () => {
+        scope.projects = ['name1', 'name2'];
 
-			scope.sortableCallback(['name2', 'name1'], ['name2', 'name1'], 0, 1);
+        scope.sortableConfig.onUpdate({ models: ['name2', 'name1'] });
 
-			expect(core.setBuildOrder).toHaveBeenCalledWith('service name', ['name2', 'name1']);
-		});
-
-	});
+        sinon.assert.calledWith(core.setBuildOrder, 'service name', ['name2', 'name1']);
+    });
 
 });

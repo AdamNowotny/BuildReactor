@@ -1,41 +1,37 @@
+import 'settings/directives/sidebar/sidebar';
 import angular from 'angular';
+import core from 'common/core';
+import sinon from 'sinon';
 
-define([
-	'settings/directives/sidebar/sidebar',
-	'common/core'
-], function(sidebar, core) {
-	'use strict';
+describe('settings/directives/sidebar/sidebar', () => {
 
-	describe('settings/directives/sidebar/sidebar', function() {
+    let scope;
+    let element;
 
-		var scope;
-		var element;
+    beforeEach(angular.mock.module('settings'));
 
-		beforeEach(angular.mock.module(
-			'settings'
-		));
+    beforeEach(() => {
+        sinon.stub(core, 'setOrder');
+    });
 
-		beforeEach(function() {
-			spyOn(core, 'setOrder');
-		});
+    afterEach(() => {
+        core.setOrder.restore();
+    });
 
-		beforeEach(angular.mock.inject(function($compile, $rootScope) {
-			element = $compile('<section sidebar services="services" configs="[]" new="false"></section>')($rootScope);
-			$rootScope.$digest();
-			scope = element.isolateScope();
-		}));
+    beforeEach(angular.mock.inject(($compile, $rootScope) => {
+        element = $compile('<section sidebar services="services" configs="[]" new="false"></section>')($rootScope);
+        $rootScope.$digest();
+        scope = element.isolateScope();
+    }));
 
-		it('should call setOrder when order changed', function() {
-			var service1 = { name: 'name1' };
-			var service2 = { name: 'name2' };
-			core.configurations.onNext([{ name: 'name1' }, { name: 'name2' }]);
+    it('should call setOrder when order changed', () => {
+        const service1 = { name: 'service1' };
+        const service2 = { name: 'service2' };
+        core.configurations.onNext([[service1, service2]]);
 
-			var model = [service2, service1];
-			scope.sortableCallback(model, model, 0, 1);
-			
-			expect(core.setOrder).toHaveBeenCalled();
-		});
+        scope.sortableConfig.onUpdate({ models: [service2, service1] });
 
-	});
+        sinon.assert.calledWith(core.setOrder, ['service2', 'service1']);
+    });
 
 });
