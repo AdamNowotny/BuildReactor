@@ -100,6 +100,15 @@ describe('services/jsonRequest', () => {
 
             expect(stub.timeout).toBe(60000);
         });
+
+        it('should set request headers', () => {
+            scheduler.startScheduler(() => request.get({
+                url: 'https://sample.com/',
+                headers: { Accept: 'application/json' }
+            }));
+
+            expect(stub.headers).toEqual({ Accept: 'application/json' });
+        });
     });
 
 });

@@ -12,6 +12,11 @@ class StubSuperagent {
         return this;
     }
 
+    set(headers) {
+        this.headers = headers;
+        return this;
+    }
+
     end(callback) {
         callback(this.error, this.response);
     }

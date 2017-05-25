@@ -20,7 +20,11 @@ const pipelines = (url, token) => request
 const latestBuild = (org, pipeline, token) => request
     .get({
         url: `https://api.buildkite.com/v2/organizations/${org}/pipelines/${pipeline}/builds`,
-        query: { access_token: token, per_page: 1, branch: 'master' }
+        query: {
+            access_token: token,
+            per_page: 1,
+            branch: 'master'
+        }
     })
     .select((response) => response.body)
     .selectMany((builds) => Rx.Observable.fromArray(builds))

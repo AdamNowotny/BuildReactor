@@ -7,7 +7,6 @@ import CruiseControlService from 'core/services/cruisecontrol/buildService';
 import GoService from 'core/services/go/buildService';
 import SnapService from 'core/services/snap/buildService';
 import TeamCityService from 'core/services/teamcity/buildService';
-import TravisService from 'core/services/travis/buildService';
 import badgeController from 'core/badgeController';
 import buildkite from 'services/buildkite/buildkite';
 import chromeListeners from 'core/chromeListeners';
@@ -19,6 +18,7 @@ import poolingService from 'services/poolingService';
 import serviceConfiguration from 'core/config/serviceConfiguration';
 import serviceController from 'core/services/serviceController';
 import serviceView from 'core/services/serviceView';
+import travis from 'services/travis/travis';
 import viewConfiguration from 'core/config/viewConfiguration';
 
 serviceConfiguration.init();
@@ -42,6 +42,6 @@ serviceController.registerType(GoService);
 serviceController.registerType(poolingService.create(jenkins));
 serviceController.registerType(SnapService);
 serviceController.registerType(TeamCityService);
-serviceController.registerType(TravisService);
+serviceController.registerType(poolingService.create(travis));
 
 serviceController.start(serviceConfiguration.changes);

@@ -1,0 +1,93 @@
+import Rx from 'rx';
+import requests from 'services/travis/travisRequests';
+
+export default {
+    getInfo: () => ({
+        typeName: 'Travis',
+        baseUrl: 'travis',
+        icon: 'services/travis/icon.png',
+        logo: 'services/travis/logo.png',
+        tokenHelp: 'Permissions needed: read_builds, read_organizations, read_pipelines',
+        urlHelp: 'Public: https://api.travis-ci.org, Private: https://api.travis-ci.com or custom url',
+        defaultConfig: {
+            baseUrl: 'travis',
+            name: '',
+            url: '',
+            projects: [],
+            token: '',
+            updateInterval: 60
+        }
+    }),
+    getAll: (settings) => requests.repositories(settings)
+        .where((repo) => repo.active)
+        .select((repo) => ({
+            id: repo.slug,
+            name: repo.name,
+            group: repo.slug.split('/')[0],
+            isDisabled: false
+        })),
+    getLatest: (settings) => Rx.Observable.fromArray(settings.projects)
+        .select(createKey)
+        .selectMany((key) => requests.builds(key.id, settings)
+            .select((build) => ({
+                id: key.id,
+                name: key.repo,
+                group: key.org,
+                webUrl: `https://travis-ci.org/${key.id}/builds/${build.id}`,
+                isBroken: BUILD_STATES.BROKEN_KNOWN.includes(build.state) ?
+                    BUILD_STATES.BROKEN.includes(build.state) :
+                    BUILD_STATES.BROKEN.includes(build.previous_state),
+                isRunning: build.state === 'started',
+                isWaiting: build.state === 'created',
+                isDisabled: false,
+                tags: createTags(build),
+                changes: createChanges(build)
+            }))
+            .catch((ex) => Rx.Observable.return({
+                id: key.id,
+                name: key.repo,
+                group: key.org,
+                error: ex
+            }))
+        )
+};
+
+const BUILD_STATES = {
+    SUPPORTED: ['created', 'started', 'passed', 'failed', 'errored'],
+    BROKEN_KNOWN: ['passed', 'failed', 'errored'],
+    BROKEN: ['failed', 'errored']
+};
+
+const createKey = (stringId) => {
+    const [org, repo] = stringId.split('/');
+    return {
+        id: stringId,
+        org,
+        repo
+    };
+};
+
+const createTags = (build) => {
+    const tags = [];
+    if (['errored'].includes(build.state)) {
+        tags.push({ name: 'Errored', type: 'warning' });
+    }
+    if (!BUILD_STATES.SUPPORTED.includes(build.state)) {
+        tags.push({
+            name: 'Unknown',
+            type: 'warning',
+            description: `Result [${build.state}] is unknown`
+        });
+    }
+    return tags;
+};
+
+const createChanges = (build) => {
+    if (!(build.commit && build.commit.author)) {
+        return [];
+    }
+    return [{
+        name: build.commit.author.name,
+        message: build.commit.message
+    }];
+};

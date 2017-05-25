@@ -6,7 +6,7 @@
                     Offline    <span class="error-message">({{ build.error.message }})</span>
                 </span>
                 <span ng-repeat="tag in build.tags">
-                    <span class="label" ng-class="getLabelClasses(build)" uib-tooltip="{{ build.description }}">{{ tag.name }}</span>
+                    <span class="label" ng-class="getLabelClasses(tag)" uib-tooltip="{{ build.description }}">{{ tag.name }}</span>
                 </span>
                 <span ng-show="build.isDisabled" class="label label-default">Disabled</span>
             </span>

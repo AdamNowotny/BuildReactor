@@ -8,6 +8,9 @@ const requestCallback = (options, callback) => {
     if (options.username) {
         request = request.auth(options.username, options.password);
     }
+    if (options.headers) {
+        request = request.set(options.headers);
+    }
     request
         .query(options.query)
         .timeout(options.timeout || 60000)

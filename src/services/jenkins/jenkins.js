@@ -25,7 +25,6 @@ export default {
             }
         };
     },
-
     /* eslint no-underscore-dangle: off */
     getAll: (settings) => requests.jobs({ url: settings.url, settings })
         .selectMany((job) => {
@@ -59,7 +58,6 @@ export default {
                     });
             }
         }),
-
     getLatest: (settings) => Rx.Observable.fromArray(settings.projects)
         .selectMany((id) => requests.jobDetails({ id, settings })
             .select((job) => {
@@ -85,8 +83,8 @@ export default {
                     tags: createTags(lastCompletedBuild),
                     changes: createChanges(lastBuild)
                 };
-                if (jobResults.statusKnown.includes(lastCompletedBuild.result)) {
-                    state.isBroken = jobResults.broken.includes(lastCompletedBuild.result);
+                if (JOB_RESULTS.BROKEN_KNOWN.includes(lastCompletedBuild.result)) {
+                    state.isBroken = JOB_RESULTS.BROKEN.includes(lastCompletedBuild.result);
                 }
                 return state;
             })
@@ -94,10 +92,10 @@ export default {
         )
 };
 
-const jobResults = {
-    supported: ['SUCCESS', 'FAILURE', 'UNSTABLE', 'ABORTED', 'NOT_BUILT'],
-    statusKnown: ['SUCCESS', 'FAILURE', 'UNSTABLE'],
-    broken: ['FAILURE', 'UNSTABLE']
+const JOB_RESULTS = {
+    SUPPORTED: ['SUCCESS', 'FAILURE', 'UNSTABLE', 'ABORTED', 'NOT_BUILT'],
+    BROKEN_KNOWN: ['SUCCESS', 'FAILURE', 'UNSTABLE'],
+    BROKEN: ['FAILURE', 'UNSTABLE']
 };
 
 const createTags = (lastCompletedBuild) => {
@@ -110,7 +108,7 @@ const createTags = (lastCompletedBuild) => {
     if (resultName[lastCompletedBuild.result]) {
         tags.push({ name: resultName[lastCompletedBuild.result], type: 'warning' });
     }
-    if (!jobResults.supported.includes(lastCompletedBuild.result)) {
+    if (!JOB_RESULTS.SUPPORTED.includes(lastCompletedBuild.result)) {
         tags.push({
             name: 'Unknown',
             description: `Result [${lastCompletedBuild.result}] is unknown`
