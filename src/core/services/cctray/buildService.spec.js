@@ -216,11 +216,13 @@ function(BuildService, request, Rx, $, ccnetFixture, goFixture, noBreakersFixtur
 
 				it('should parse xml if build running', function() {
 					projectsXml.find('Project').attr('activity', 'Building');
+					projectsXml.find('Project').attr('lastBuildStatus', 'Unknown');
 
 					service.updateAll();
 
 					expect(request.xml).toHaveBeenCalled();
 					expect(parsedResponse[0].isRunning).toBe(true);
+					expect(parsedResponse[0].tags).toEqual([]);
 				});
 
 				it('should parse xml if build pending', function() {
