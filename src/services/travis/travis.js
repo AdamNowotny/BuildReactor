@@ -1,4 +1,5 @@
 import Rx from 'rx';
+import joinUrl from 'common/joinUrl';
 import requests from 'services/travis/travisRequests';
 
 export default {
@@ -7,12 +8,31 @@ export default {
         baseUrl: 'travis',
         icon: 'services/travis/icon.png',
         logo: 'services/travis/logo.png',
-        tokenHelp: 'Permissions needed: read_builds, read_organizations, read_pipelines',
-        urlHelp: 'Public: https://api.travis-ci.org, Private: https://api.travis-ci.com or custom url',
+        fields: [
+            {
+                type: 'url',
+                name: 'API URL',
+                config: 'apiUrl',
+                help: 'Public: https://api.travis-ci.org, Private: https://api.travis-ci.com or custom url'
+            },
+            {
+                type: 'url',
+                name: 'Web URL',
+                config: 'webUrl',
+                help: 'Public: https://travis-ci.org, Private: https://travis-ci.com or custom url'
+            },
+            {
+                type: 'token',
+                name: 'Token',
+                config: 'token',
+                help: 'More info at <a href="https://developer.travis-ci.com/authentication">https://developer.travis-ci.com/authentication</a>'
+            }
+        ],
         defaultConfig: {
             baseUrl: 'travis',
             name: '',
-            url: '',
+            apiUrl: 'https://api.travis-ci.org/',
+            webUrl: 'https://travis-ci.org/',
             projects: [],
             token: '',
             updateInterval: 60
@@ -33,7 +53,7 @@ export default {
                 id: key.id,
                 name: key.repo,
                 group: key.org,
-                webUrl: `https://travis-ci.org/${key.id}/builds/${build.id}`,
+                webUrl: joinUrl(settings.webUrl, `${key.id}/builds/${build.id}`),
                 isBroken: BUILD_STATES.BROKEN_KNOWN.includes(build.state) ?
                     BUILD_STATES.BROKEN.includes(build.state) :
                     BUILD_STATES.BROKEN.includes(build.previous_state),

@@ -4,7 +4,7 @@ import request from 'services/jsonRequest';
 
 const repositories = (settings) => request
     .get({
-        url: joinUrl(settings.url, `/repos`),
+        url: joinUrl(settings.apiUrl, `/repos`),
         headers: {
             'Travis-API-Version': 3,
             'Authorization': `token ${settings.token}`
@@ -15,7 +15,7 @@ const repositories = (settings) => request
 
 const builds = (id, settings) => request
     .get({
-        url: joinUrl(settings.url, `/repo/${encodeURIComponent(id)}/builds`),
+        url: joinUrl(settings.apiUrl, `/repo/${encodeURIComponent(id)}/builds`),
         query: {
             limit: 1,
             include: 'build.commit'

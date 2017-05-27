@@ -1,4 +1,19 @@
 <fieldset>
+	<div ng-repeat="field in service.fields">
+		<div class="form-group">
+			<label for="url">{{ field.name }}</label>
+			<div class="input-group" ng-if="field.type == 'url'">
+				<span class="input-group-addon"><i class="fa fa-globe fa-fw"></i></span>
+				<input type="text" name="url" class="form-control" ng-required placeholder="{{ field.placeholder }}" ng-model="config[field.config]">
+			</div>
+			<div class="input-group" ng-if="field.type == 'token'">
+				<span class="input-group-addon"><i class="fa fa-ticket fa-fw"></i></span>
+				<input type="text" class="form-control" placeholder="Token" ng-model="config[field.config]">
+			</div>
+			<p class="help-block" ng-bind-html="field.help"></p>
+		</div>
+	</div>
+
 	<div class="form-group" ng-show="isDefined(config.url)">
 		<div class="input-group">
 			<span class="input-group-addon"><i class="fa fa-globe fa-fw"></i></span>
@@ -24,13 +39,6 @@
 			<span class="input-group-addon"><i class="fa fa-code-fork fa-fw"></i></span>
 			<input type="text" class="form-control" placeholder="Branch, f.e. refs/heads/release" ng-model="config.branch">
 		</div>
-	</div>
-	<div class="form-group" ng-show="isDefined(config.token)">
-		<div class="input-group">
-			<span class="input-group-addon"><i class="fa fa-ticket fa-fw"></i></span>
-			<input type="text" class="form-control" placeholder="Token" ng-model="config.token">
-		</div>
-		<p class="help-block">{{ service.tokenHelp }}</p>
 	</div>
 	<div class="form-group number" ng-show="isDefined(config.updateInterval)">
 		<label for="update-interval">Update interval</label>

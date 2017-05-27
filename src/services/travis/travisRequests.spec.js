@@ -7,7 +7,7 @@ describe('services/travis/travisRequests', () => {
     const onNext = Rx.ReactiveTest.onNext;
     const onCompleted = Rx.ReactiveTest.onCompleted;
     const settings = {
-        url: 'https://api.travis-ci.org',
+        apiUrl: 'https://api.travis-ci.org',
         token: 'TOKEN'
     };
 
@@ -22,7 +22,7 @@ describe('services/travis/travisRequests', () => {
         it('should pass request parameters', () => {
             spyOn(request, 'get').and.callFake((data) => {
                 expect(data).toEqual({
-                    url: `${settings.url}/repos`,
+                    url: `${settings.apiUrl}/repos`,
                     headers: {
                         'Travis-API-Version': 3,
                         'Authorization': `token ${settings.token}`
@@ -75,7 +75,7 @@ describe('services/travis/travisRequests', () => {
         it('should pass request parameters', () => {
             spyOn(request, 'get').and.callFake((data) => {
                 expect(data).toEqual({
-                    url: `${settings.url}/repo/owner%2Frepo/builds`,
+                    url: `${settings.apiUrl}/repo/owner%2Frepo/builds`,
                     query: {
                         limit: 1,
                         include: 'build.commit'

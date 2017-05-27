@@ -11,7 +11,8 @@ describe('services/travis/travis', () => {
     let scheduler;
     const settings = {
         token: 'token',
-        projects: ['org/pipeline']
+        projects: ['org/pipeline'],
+        webUrl: 'https://travis-ci.org/'
     };
     beforeEach(() => {
         scheduler = new Rx.TestScheduler();
@@ -32,12 +33,31 @@ describe('services/travis/travis', () => {
             baseUrl: 'travis',
             icon: 'services/travis/icon.png',
             logo: 'services/travis/logo.png',
-            tokenHelp: 'Permissions needed: read_builds, read_organizations, read_pipelines',
-            urlHelp: 'Public: https://api.travis-ci.org, Private: https://api.travis-ci.com or custom url',
+            fields: [
+                {
+                    type: 'url',
+                    name: 'API URL',
+                    config: 'apiUrl',
+                    help: 'Public: https://api.travis-ci.org, Private: https://api.travis-ci.com or custom url'
+                },
+                {
+                    type: 'url',
+                    name: 'Web URL',
+                    config: 'webUrl',
+                    help: 'Public: https://travis-ci.org, Private: https://travis-ci.com or custom url'
+                },
+                {
+                    type: 'token',
+                    name: 'Token',
+                    config: 'token',
+                    help: 'More info at <a href="https://developer.travis-ci.com/authentication">https://developer.travis-ci.com/authentication</a>'
+                }
+            ],
             defaultConfig: {
                 baseUrl: 'travis',
                 name: '',
-                url: '',
+                apiUrl: 'https://api.travis-ci.org/',
+                webUrl: 'https://travis-ci.org/',
                 projects: [],
                 token: '',
                 updateInterval: 60
