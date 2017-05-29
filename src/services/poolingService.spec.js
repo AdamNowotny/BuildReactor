@@ -50,13 +50,37 @@ describe('services/poolingService', () => {
         expect(service.events).toBeDefined();
     });
 
-    it('should return service info', () => {
-        serviceType.getInfo.returns({ typeName: 'typeName' });
+    describe('settings', () => {
 
-        const result = PoolingService.settings();
+        it('should return service info', () => {
+            serviceType.getInfo.returns({ typeName: 'typeName' });
 
-        expect(result).toEqual({ typeName: 'typeName' });
-        sinon.assert.calledOnce(serviceType.getInfo);
+            const result = PoolingService.settings();
+
+            expect(result).toEqual({ typeName: 'typeName' });
+            sinon.assert.calledOnce(serviceType.getInfo);
+        });
+
+        it('should add updateInterval to fields', () => {
+            serviceType.getInfo.returns({
+                typeName: 'typeName',
+                fields: [
+                    { type: 'url', name: 'URL', config: 'url' }
+                ],
+            });
+
+            const result = PoolingService.settings();
+
+            expect(result).toEqual({
+                typeName: 'typeName',
+                fields: [
+                    { type: 'url', name: 'URL', config: 'url' },
+                    { type: 'updateInterval', header: 'Update interval', config: 'updateInterval' }
+                ],
+            });
+            sinon.assert.calledOnce(serviceType.getInfo);
+        });
+
     });
 
     describe('availableBuilds', () => {

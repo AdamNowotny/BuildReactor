@@ -18,9 +18,13 @@ define([
 		return {
 			typeName: 'BuildBot',
 			baseUrl: 'buildbot',
-			urlHint: 'URL, e.g. http://buildbot.buildbot.net/',
 			icon: 'core/services/buildbot/icon.png',
 			logo: 'core/services/buildbot/logo.png',
+			fields: [
+                { type: 'url', name: 'Server URL, e.g. http://buildbot.buildbot.net/' },
+				{ type: 'username' },
+                { type: 'password' }
+            ],
 			defaultConfig: {
 				baseUrl: 'buildbot',
 				name: '',

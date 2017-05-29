@@ -13,9 +13,13 @@ define([
 		return {
 			typeName: 'Snap',
 			baseUrl: 'snap',
-			urlHint: 'copy CCTRAY link from Snap',
 			icon: 'core/services/snap/icon.png',
 			logo: 'core/services/snap/logo.png',
+			fields: [
+                { type: 'url', help: 'Copy CCTRAY link from Snap' },
+				{ type: 'username' },
+                { type: 'password' }
+            ],
 			defaultConfig: {
 				baseUrl: 'snap',
 				name: '',

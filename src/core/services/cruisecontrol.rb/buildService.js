@@ -13,7 +13,6 @@ define([
 		return {
 			typeName: 'CruiseControl.rb',
 			baseUrl: 'cruisecontrol.rb',
-			urlHint: 'URL, e.g. http://cruisecontrolrb.thoughtworks.com/',
 			icon: 'core/services/cruisecontrol.rb/icon.png',
 			logo: 'core/services/cruisecontrol.rb/logo.png',
 			defaultConfig: {

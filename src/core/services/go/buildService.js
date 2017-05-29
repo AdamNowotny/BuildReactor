@@ -13,7 +13,6 @@ define([
 		return {
 			typeName: 'GoCD',
 			baseUrl: 'go',
-			urlHint: 'URL, e.g. http://example-go.thoughtworks.com/',
 			icon: 'core/services/go/icon.png',
 			logo: 'core/services/go/logo.png',
 			defaultConfig: {

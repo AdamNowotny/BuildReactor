@@ -13,7 +13,6 @@ define([
 		return {
 			typeName: 'CruiseControl',
 			baseUrl: 'cruisecontrol',
-			urlHint: 'URL, e.g. http://cruisecontrol.instance.com/',
 			icon: 'core/services/cruisecontrol/icon.png',
 			logo: 'core/services/cruisecontrol/logo.png',
 			defaultConfig: {

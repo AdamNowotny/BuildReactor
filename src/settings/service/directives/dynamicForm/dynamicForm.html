@@ -1,51 +1,37 @@
 <fieldset>
 	<div ng-repeat="field in service.fields">
 		<div class="form-group">
-			<label for="url">{{ field.name }}</label>
 			<div class="input-group" ng-if="field.type == 'url'">
 				<span class="input-group-addon"><i class="fa fa-globe fa-fw"></i></span>
-				<input type="text" name="url" class="form-control" ng-required placeholder="{{ field.placeholder }}" ng-model="config[field.config]">
+				<input type="text" name="url" class="form-control" ng-required placeholder="{{ field.name || 'Server URL' }}" ng-model="config[field.config || 'url']">
 			</div>
 			<div class="input-group" ng-if="field.type == 'token'">
 				<span class="input-group-addon"><i class="fa fa-ticket fa-fw"></i></span>
-				<input type="text" class="form-control" placeholder="Token" ng-model="config[field.config]">
+				<input type="text" class="form-control" placeholder="{{ field.name || 'Token' }}" ng-model="config[field.config || 'token']">
+			</div>
+			<div class="input-group" ng-if="field.type == 'username'">
+				<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+				<input type="text" class="form-control" placeholder="{{ field.name || 'Username' }}" ng-model="config[field.config || 'username']">
+			</div>
+			<div class="input-group" ng-if="field.type == 'password'">
+				<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+				<input type="password" class="form-control" placeholder="{{ field.name || 'Password' }}" ng-model="config[field.config || 'password']">
+			</div>
+			<div class="form-group" ng-if="field.type == 'branch'">
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-code-fork fa-fw"></i></span>
+					<input type="text" class="form-control" placeholder="Branch, f.e. refs/heads/release" ng-model="config.branch">
+				</div>
+			</div>
+			<div class="form-group number" ng-if="field.type == 'updateInterval'">
+				<label for="update-interval">Update interval</label>
+				<div class="input-append input-group" data-name="updateInterval">
+					<span class="input-group-addon"><i class="fa fa-repeat fa-fw"></i></span>
+					<input type="number" name="update-interval" class="form-control input-mini" min="1" ng-model="config[field.config || 'updateInterval']">
+					<span class="input-group-addon">sec</span>
+				</div>
 			</div>
 			<p class="help-block" ng-bind-html="field.help"></p>
-		</div>
-	</div>
-
-	<div class="form-group" ng-show="isDefined(config.url)">
-		<div class="input-group">
-			<span class="input-group-addon"><i class="fa fa-globe fa-fw"></i></span>
-			<input type="text" class="form-control" ng-required placeholder="{{ service.urlHint }}" ng-model="config.url">
-		</div>
-		<p class="help-block">{{ service.urlHelp }}</p>
-	</div>
-
-	<div class="form-group" ng-show="isDefined(config.username)">
-		<div class="input-group">
-			<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-			<input type="text" class="form-control" placeholder="Username" ng-model="config.username">
-		</div>
-	</div>
-	<div class="form-group" ng-show="isDefined(config.password)">
-		<div class="input-group">
-			<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-			<input type="password" class="form-control" placeholder="Password" ng-model="config.password">
-		</div>
-	</div>
-	<div class="form-group" ng-show="isDefined(config.branch)">
-		<div class="input-group">
-			<span class="input-group-addon"><i class="fa fa-code-fork fa-fw"></i></span>
-			<input type="text" class="form-control" placeholder="Branch, f.e. refs/heads/release" ng-model="config.branch">
-		</div>
-	</div>
-	<div class="form-group number" ng-show="isDefined(config.updateInterval)">
-		<label for="update-interval">Update interval</label>
-		<div class="input-append input-group" data-name="updateInterval">
-			<span class="input-group-addon"><i class="fa fa-repeat fa-fw"></i></span>
-			<input type="number" name="update-interval" class="form-control input-mini" min="1" ng-model="config.updateInterval">
-			<span class="input-group-addon">sec</span>
 		</div>
 	</div>
 </fieldset>

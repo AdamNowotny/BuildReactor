@@ -20,10 +20,17 @@ define([
 		return {
 			typeName: 'Atlassian Bamboo',
 			baseUrl: 'bamboo',
-			urlHint: 'URL, e.g. http://ci.openmrs.org/',
-			urlHelp: 'For Bamboo OnDemand use https://[your_account].atlassian.net/builds',
 			icon: 'core/services/bamboo/icon.png',
 			logo: 'core/services/bamboo/logo.png',
+			fields: [
+                {
+					type: 'url',
+					name: 'Server URL, e.g. http://ci.openmrs.org/',
+					help: 'For Bamboo OnDemand use https://[your_account].atlassian.net/builds'
+				},
+				{ type: 'username' },
+                { type: 'password' }
+            ],
 			defaultConfig: {
 				baseUrl: 'bamboo',
 				name: '',

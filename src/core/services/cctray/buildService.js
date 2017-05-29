@@ -21,7 +21,6 @@ define([
 		return {
 			typeName: 'CCTray Generic',
 			baseUrl: 'cctray',
-			urlHint: 'URL, e.g. http://cruisecontrol.instance.com/cctray.xml',
 			icon: 'core/services/cctray/icon.png',
 			logo: 'core/services/cctray/logo.png',
 			defaultConfig: {

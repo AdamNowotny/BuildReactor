@@ -5,6 +5,7 @@ To add support for a new type of service in BuildReactor you need to implement t
 For examples look at implementations in the services folder:
 - [BuildKite](../src/services/buildkite/buildkite.js)
 - [Jenkins](../src/services/jenkins/jenkins.js)
+- [Travis](../src/services/travis/travis.js)
 
 Configuration
 -------------
@@ -24,12 +25,24 @@ const getInfo = () => ({
         token: '',
         updateInterval: 60
     }
+    fields: [ // optional
+        {
+            type: 'url', // available types: url, token, username, password
+            name: 'Server URL', // label displayed above the field (optional)
+            config: 'url', // configuration property used to store the value (optional)
+            help: 'Help text for url' // additional field description (optional)
+        },
+        { type: 'username' },
+        { type: 'password' }
+    ]
 });
 ```
 
-Properties defined in `defaultConfig` determine which fields will be available when configuring service instance, for full list refer to [dynamicForm.html](../src/settings/service/directives/dynamicForm/dynamicForm.html)
+`defaultConfig` contains the initial configuration that is applied when new service instace is added.
 
 Both `baseUrl` fields are required and should be the same as folder name in _/services/_ where you created your implementation.
+
+`fields` specifies which UI elements will be available when configuring service instance. It is optional as by default the form uses the properties of the `defaultConfig` object to determine which fields should be shown. For details refer to [dynamicForm.html](../src/settings/service/directives/dynamicForm/dynamicForm.html)
 
 List of available builds
 ------------------------
@@ -45,7 +58,7 @@ const getAll = (settings) => Rx.Observable.fromArray([{
     isDisabled: false // some servers report projects as not buildable/disabled
 }]);
 ```
-The order of builds in the sequence is not important as they will be ordered by the ID before being displayed.
+The order of builds in the sequence is not important as they will be ordered according to `settings.projects`.
 
 Latest status
 -------------

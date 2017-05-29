@@ -23,8 +23,6 @@ export default {
             },
             {
                 type: 'token',
-                name: 'Token',
-                config: 'token',
                 help: 'More info at <a href="https://developer.travis-ci.com/authentication">https://developer.travis-ci.com/authentication</a>'
             }
         ],

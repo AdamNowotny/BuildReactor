@@ -41,10 +41,13 @@ describe('services/jenkins/jenkins', () => {
         expect(result).toEqual({
             typeName: 'Jenkins',
             baseUrl: 'jenkins',
-            urlHint: 'URL, e.g. http://ci.jenkins-ci.org/',
-            urlHelp: 'Jenkins server or view URL',
             icon: 'services/jenkins/icon.png',
             logo: 'services/jenkins/logo.png',
+            fields: [
+                { type: 'url', name: 'Jenkins server or view URL, e.g. http://ci.jenkins-ci.org/' },
+                { type: 'username' },
+                { type: 'password' }
+            ],
             defaultConfig: {
                 baseUrl: 'jenkins',
                 name: '',

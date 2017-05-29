@@ -10,7 +10,13 @@ const create = (serviceType) => class PoolingService {
     }
 
     static settings() {
-        return serviceType.getInfo();
+        const serviceInfo = serviceType.getInfo();
+        if (serviceInfo.fields) {
+            serviceInfo.fields.push(
+                { type: 'updateInterval', header: 'Update interval', config: 'updateInterval' }
+            );
+        }
+        return serviceInfo;
     }
 
     updateAll(settings) {

@@ -30,6 +30,31 @@ describe('dynamicForm', () => {
         expect(scope.config.username).toBe('guest');
     });
 
+    it('should generate fields if not specified', () => {
+        scope.service = {
+            defaultConfig: {
+                url: '',
+                username: '',
+                password: '',
+                token: '',
+                updateInterval: 60
+            }
+        };
+        scope.config = {
+            url: 'http://localhost/'
+        };
+
+        scope.$digest();
+
+        expect(scope.service.fields).toEqual([
+            jasmine.objectContaining({ type: 'url' }),
+            jasmine.objectContaining({ type: 'username' }),
+            jasmine.objectContaining({ type: 'password' }),
+            jasmine.objectContaining({ type: 'token' }),
+            jasmine.objectContaining({ type: 'updateInterval' })
+        ]);
+    });
+
     it('should emit dynamicForm.changed on config change', () => {
         scope.config = {
             url: ''

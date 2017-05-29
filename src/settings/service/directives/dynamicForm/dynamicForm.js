@@ -18,12 +18,39 @@ export default app.directive('dynamicForm', ($sce) => ({
         $scope.$watch('service', (service) => {
             if (service) {
                 $scope.config = Object.assign(service.defaultConfig, $scope.config);
-                ($scope.service.fields || [])
-                    .filter((field) => field.help)
-                    .forEach((field) => {
-                        field.help = $sce.trustAsHtml(field.help);
-                    });
+                if ($scope.service.fields && $scope.service.fields.length) {
+                    $scope.service.fields
+                        .filter((field) => field.help)
+                        .forEach((field) => {
+                            field.help = $sce.trustAsHtml(field.help);
+                        });
+                } else {
+                    $scope.service.fields = createFieldsFromConfig($scope.config);
+                }
             }
         });
     }
 }));
+
+const createFieldsFromConfig = (config) => {
+    const fields = [];
+    if (config.hasOwnProperty('url')) {
+        fields.push({ type: 'url' });
+    }
+    if (config.hasOwnProperty('username')) {
+        fields.push({ type: 'username' });
+    }
+    if (config.hasOwnProperty('password')) {
+        fields.push({ type: 'password' });
+    }
+    if (config.hasOwnProperty('token')) {
+        fields.push({ type: 'token' });
+    }
+    if (config.hasOwnProperty('branch')) {
+        fields.push({ type: 'branch' });
+    }
+    if (config.hasOwnProperty('updateInterval')) {
+        fields.push({ type: 'updateInterval' });
+    }
+    return fields;
+};

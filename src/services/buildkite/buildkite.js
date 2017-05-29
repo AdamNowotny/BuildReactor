@@ -8,12 +8,7 @@ export default {
         icon: 'services/buildkite/icon.png',
         logo: 'services/buildkite/logo.svg',
         fields: [
-            {
-                type: 'token',
-                name: 'Token',
-                config: 'token',
-                help: 'Permissions needed: read_builds, read_organizations, read_pipelines'
-            }
+            { type: 'token', help: 'Permissions needed: read_builds, read_organizations, read_pipelines' }
         ],
         defaultConfig: {
             baseUrl: 'buildkite',
