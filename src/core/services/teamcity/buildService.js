@@ -23,7 +23,8 @@ define([
 			fields: [
                 { type: 'url', config: 'url', placeholder: 'Server URL, e.g. http://teamcity.jetbrains.com/' },
                 { type: 'username' },
-                { type: 'password' }
+                { type: 'password' },
+                { type: 'branch' }
             ],
 			defaultConfig: {
 				baseUrl: 'teamcity',
