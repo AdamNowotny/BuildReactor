@@ -59,14 +59,14 @@ describe('chromeListeners', () => {
 	describe('messages', () => {
 
 		it('should handle availableServices', () => {
-			serviceController.getAllTypes.and.returnValue([{ typeName: 'snap' }]);
+			serviceController.getAllTypes.and.returnValue([{ typeName: 'cctray' }]);
 
 			let result;
 			messageHandler({ name: 'availableServices' }, null, (response) => {
 				result = response;
 			});
 
-			expect(result).toEqual([{ typeName: 'snap' }]);
+			expect(result).toEqual([{ typeName: 'cctray' }]);
 		});
 
 		it('should handle setOrder', function() {

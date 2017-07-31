@@ -4,7 +4,6 @@ import CruiseControlNetService from 'core/services/cruisecontrol.net/buildServic
 import CruiseControlRBService from 'core/services/cruisecontrol.rb/buildService';
 import CruiseControlService from 'core/services/cruisecontrol/buildService';
 import GoService from 'core/services/go/buildService';
-import SnapService from 'core/services/snap/buildService';
 import TeamCityService from 'core/services/teamcity/buildService';
 import badgeController from 'core/badgeController';
 import bamboo from 'services/bamboo/bamboo';
@@ -40,7 +39,6 @@ serviceController.registerType(CruiseControlNetService);
 serviceController.registerType(CruiseControlRBService);
 serviceController.registerType(GoService);
 serviceController.registerType(poolingService.create(jenkins));
-serviceController.registerType(SnapService);
 serviceController.registerType(TeamCityService);
 serviceController.registerType(poolingService.create(travis));
 
