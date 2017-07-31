@@ -3,6 +3,7 @@ Adding new services
 To add support for a new type of service in BuildReactor you need to implement three methods described below and register the service.
 
 For examples look at implementations in the services folder:
+- [Bamboo](../src/services/bamboo/bamboo.js)
 - [BuildKite](../src/services/buildkite/buildkite.js)
 - [Jenkins](../src/services/jenkins/jenkins.js)
 - [Travis](../src/services/travis/travis.js)
