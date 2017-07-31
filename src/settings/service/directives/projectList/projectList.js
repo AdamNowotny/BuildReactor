@@ -3,6 +3,7 @@ import 'angular-ui-utils/modules/highlight/highlight';
 import 'angular-ui-utils/modules/indeterminate/indeterminate';
 import angular from 'angular';
 import app from 'settings/app';
+import sortBy from 'common/sortBy';
 import template from 'settings/service/directives/projectList/projectList.html';
 
 export default app.directive('projectList', ($sce, highlightFilter) => ({
@@ -62,11 +63,9 @@ export default app.directive('projectList', ($sce, highlightFilter) => ({
     }
 }));
 
-const getGroupNamesFromProjects = (projects) => projects
-    .map((item) => item.group)
-    .reduce((agg, group) => {
-        return agg.includes(group) ? agg : [...agg, group];
-    }, []);
+const getGroupNamesFromProjects = (projects) =>
+    [...new Set(projects.map((item) => item.group))]
+    .sort();
 
 const createGroups = function(projects) {
     const groupNames = getGroupNamesFromProjects(projects);
