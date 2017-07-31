@@ -11,6 +11,9 @@ const requestCallback = (options, callback) => {
     if (options.headers) {
         request = request.set(options.headers);
     }
+    if (options.type) {
+        request = request.accept(options.type);
+    }
     request
         .query(options.query)
         .timeout(options.timeout || 60000)

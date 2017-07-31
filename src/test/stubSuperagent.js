@@ -17,6 +17,11 @@ class StubSuperagent {
         return this;
     }
 
+    accept(type) {
+        this.accept = type;
+        return this;
+    }
+
     end(callback) {
         callback(this.error, this.response);
     }

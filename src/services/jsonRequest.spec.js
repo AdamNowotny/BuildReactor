@@ -109,6 +109,15 @@ describe('services/jsonRequest', () => {
 
             expect(stub.headers).toEqual({ Accept: 'application/json' });
         });
+
+        it('should setup json type', () => {
+            scheduler.startScheduler(() => request.get({
+                url: 'https://sample.com/',
+                type: 'json'
+            }));
+
+            expect(stub.accept).toEqual('json');
+        });
     });
 
 });
