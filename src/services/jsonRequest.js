@@ -1,6 +1,7 @@
 import 'rx/dist/rx.binding';
 import Rx from 'rx';
 import errors from 'services/errors';
+import { parseString } from 'xml2js';
 import superagent from 'superagent';
 
 const requestCallback = (options, callback) => {
@@ -13,6 +14,16 @@ const requestCallback = (options, callback) => {
     }
     if (options.type) {
         request = request.accept(options.type);
+        if (options.type === 'xml') {
+            request = request.parse((response) => {
+                let result;
+                parseString(response.text, (err, json) => {
+                    if (err) throw err;
+                    result = json;
+                });
+                return result;
+            });
+        }
     }
     request
         .query(options.query)

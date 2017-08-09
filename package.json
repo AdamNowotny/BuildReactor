@@ -46,7 +46,8 @@
     "mout": "^0.11.1",
     "rx": "^4.1.0",
     "sortablejs": "^1.5.1",
-    "superagent": "^2.3.0"
+    "superagent": "^3.5.2",
+    "xml2js": "^0.4.17"
   },
   "devDependencies": {
     "angular-mocks": "^1.5.8",

@@ -118,6 +118,27 @@ describe('services/jsonRequest', () => {
 
             expect(stub.accept).toEqual('json');
         });
+
+        it('should setup xml type', () => {
+            stub.expect('https://sample.com/').respondText('<some><xml>value</xml></some>');
+
+            const result = scheduler.startScheduler(() => request.get({
+                url: 'https://sample.com/',
+                type: 'xml'
+            }));
+
+            expect(stub.accept).toEqual('xml');
+            expect(result.messages).toHaveEqualElements(
+                onNext(200, {
+                    body: {
+                        some: {
+                            xml: ['value']
+                        }
+                    }
+                }),
+                onCompleted(200)
+            );
+        });
     });
 
 });
