@@ -1,10 +1,10 @@
 import 'test/rxHelpers';
 import Rx from 'rx/dist/rx.testing';
-import ccxml from 'services/ccxml/ccxml';
-import requests from 'services/ccxml/ccxmlRequests';
+import cctray from 'services/cctray/cctray';
+import requests from 'services/cctray/cctrayRequests';
 import sinon from 'sinon';
 
-describe('services/ccxml/ccxml', () => {
+describe('services/cctray/cctray', () => {
 
     const onNext = Rx.ReactiveTest.onNext;
     const onCompleted = Rx.ReactiveTest.onCompleted;
@@ -34,13 +34,13 @@ describe('services/ccxml/ccxml', () => {
     );
 
     it('returns service info', () => {
-        const result = ccxml.getInfo();
+        const result = cctray.getInfo();
 
         expect(result).toEqual({
             typeName: 'CCTray XML',
-            baseUrl: 'ccxml',
-            icon: 'services/ccxml/icon.png',
-            logo: 'services/ccxml/logo.png',
+            baseUrl: 'cctray',
+            icon: 'services/cctray/icon.png',
+            logo: 'services/cctray/logo.png',
             fields: [
                 {
                     type: 'url',
@@ -51,7 +51,7 @@ describe('services/ccxml/ccxml', () => {
                 { type: 'password' }
             ],
             defaultConfig: {
-                baseUrl: 'ccxml',
+                baseUrl: 'cctray',
                 name: '',
                 projects: [],
                 url: '',
@@ -67,7 +67,7 @@ describe('services/ccxml/ccxml', () => {
         it('should pass settings to projects', () => {
             requests.projects.returns(Rx.Observable.empty());
 
-            ccxml.getAll(settings);
+            cctray.getAll(settings);
 
             sinon.assert.calledOnce(requests.projects);
             sinon.assert.calledWith(requests.projects, settings);
@@ -76,7 +76,7 @@ describe('services/ccxml/ccxml', () => {
         it('should return empty sequence if no projects', () => {
             requests.projects.returns(Rx.Observable.empty());
 
-            const result = scheduler.startScheduler(() => ccxml.getAll(settings));
+            const result = scheduler.startScheduler(() => cctray.getAll(settings));
 
             expect(result.messages).toHaveEqualElements(
                 onCompleted(200)
@@ -89,7 +89,7 @@ describe('services/ccxml/ccxml', () => {
                 { $: { name: 'name2' } }
             ]);
 
-            const result = scheduler.startScheduler(() => ccxml.getAll(settings));
+            const result = scheduler.startScheduler(() => cctray.getAll(settings));
 
             expect(result.messages).toHaveEqualElements(
                 onNext(200, {
@@ -113,7 +113,7 @@ describe('services/ccxml/ccxml', () => {
                 { $: { name: 'name', category: 'category' } }
             ]);
 
-            const result = scheduler.startScheduler(() => ccxml.getAll(settings));
+            const result = scheduler.startScheduler(() => cctray.getAll(settings));
 
             expect(result.messages).toHaveEqualElements(
                 onNext(200, {
@@ -131,7 +131,7 @@ describe('services/ccxml/ccxml', () => {
                 { $: { name: 'group :: name' } }
             ]);
 
-            const result = scheduler.startScheduler(() => ccxml.getAll(settings));
+            const result = scheduler.startScheduler(() => cctray.getAll(settings));
 
             expect(result.messages).toHaveEqualElements(
                 onNext(200, {
@@ -151,7 +151,7 @@ describe('services/ccxml/ccxml', () => {
         it('should pass settings to projects', () => {
             requests.projects.returns(Rx.Observable.empty());
 
-            scheduler.startScheduler(() => ccxml.getLatest(settings));
+            scheduler.startScheduler(() => cctray.getLatest(settings));
 
             sinon.assert.calledOnce(requests.projects);
             sinon.assert.calledWith(requests.projects, settings);
@@ -160,7 +160,7 @@ describe('services/ccxml/ccxml', () => {
         it('should return empty sequence if no projects', () => {
             requests.projects.returns(Rx.Observable.empty());
 
-            const result = scheduler.startScheduler(() => ccxml.getLatest(settings));
+            const result = scheduler.startScheduler(() => cctray.getLatest(settings));
 
             expect(result.messages).toHaveEqualElements(
                 onCompleted(200)
@@ -186,7 +186,7 @@ describe('services/ccxml/ccxml', () => {
                 }
             ]);
 
-            const result = scheduler.startScheduler(() => ccxml.getLatest(settings));
+            const result = scheduler.startScheduler(() => cctray.getLatest(settings));
 
             expect(result.messages).toHaveEqualElements(
                 onNext(200, {
@@ -217,7 +217,7 @@ describe('services/ccxml/ccxml', () => {
                 { $: { name: 'group :: name', lastBuildStatus: 'Success' } }
             ]);
 
-            const result = scheduler.startScheduler(() => ccxml.getLatest(settings));
+            const result = scheduler.startScheduler(() => cctray.getLatest(settings));
 
             expect(result.messages).toHaveEqualElements(
                 onNext(200, {
@@ -238,7 +238,7 @@ describe('services/ccxml/ccxml', () => {
                     { $: { name: '', lastBuildStatus: 'Failure' } }
                 ]);
 
-                const result = scheduler.startScheduler(() => ccxml.getLatest(settings));
+                const result = scheduler.startScheduler(() => cctray.getLatest(settings));
 
                 expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                     isBroken: true
@@ -250,7 +250,7 @@ describe('services/ccxml/ccxml', () => {
                     { $: { name: '', lastBuildStatus: 'Successful' } }
                 ]);
 
-                const result = scheduler.startScheduler(() => ccxml.getLatest(settings));
+                const result = scheduler.startScheduler(() => cctray.getLatest(settings));
 
                 expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                     isBroken: false
@@ -262,7 +262,7 @@ describe('services/ccxml/ccxml', () => {
                     { $: { name: '', lastBuildStatus: 'Unknown', activity: 'Building' } }
                 ]);
 
-                const result = scheduler.startScheduler(() => ccxml.getLatest(settings));
+                const result = scheduler.startScheduler(() => cctray.getLatest(settings));
 
                 expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                     isRunning: true
@@ -274,7 +274,7 @@ describe('services/ccxml/ccxml', () => {
                     { $: { name: '', lastBuildStatus: 'Pending' } }
                 ]);
 
-                const result = scheduler.startScheduler(() => ccxml.getLatest(settings));
+                const result = scheduler.startScheduler(() => cctray.getLatest(settings));
 
                 expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                     isWaiting: true
@@ -286,7 +286,7 @@ describe('services/ccxml/ccxml', () => {
                     { $: { name: '', lastBuildStatus: 'unknown_state' } }
                 ]);
 
-                const result = scheduler.startScheduler(() => ccxml.getLatest(settings));
+                const result = scheduler.startScheduler(() => cctray.getLatest(settings));
 
                 expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                     tags: [{ name: 'Unknown', description: 'Status [unknown_state] not supported' }]
@@ -313,7 +313,7 @@ describe('services/ccxml/ccxml', () => {
                 it('should parse changes', () => {
                     createChange({ text: 'username', kind: 'Breakers' });
 
-                    const result = scheduler.startScheduler(() => ccxml.getLatest(settings));
+                    const result = scheduler.startScheduler(() => cctray.getLatest(settings));
 
                     expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                         changes: [{ name: 'username' }]
@@ -323,7 +323,7 @@ describe('services/ccxml/ccxml', () => {
                 it('should parse only Breakers message', () => {
                     createChange({ text: 'username', kind: 'NotBreakers' });
 
-                    const result = scheduler.startScheduler(() => ccxml.getLatest(settings));
+                    const result = scheduler.startScheduler(() => cctray.getLatest(settings));
 
                     expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                         changes: []
@@ -333,7 +333,7 @@ describe('services/ccxml/ccxml', () => {
                 it('should parse multiple changes', () => {
                     createChange({ text: 'user1, user2', kind: 'Breakers' });
 
-                    const result = scheduler.startScheduler(() => ccxml.getLatest(settings));
+                    const result = scheduler.startScheduler(() => cctray.getLatest(settings));
 
                     expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                         changes: [
@@ -346,7 +346,7 @@ describe('services/ccxml/ccxml', () => {
                 it('should ignore changes when empty', () => {
                     createChange({ text: '', kind: 'Breakers' });
 
-                    const result = scheduler.startScheduler(() => ccxml.getLatest(settings));
+                    const result = scheduler.startScheduler(() => cctray.getLatest(settings));
 
                     expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                         changes: []

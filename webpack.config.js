@@ -73,7 +73,18 @@ module.exports = {
         include: path.join(__dirname, 'src'),
         loader: 'babel-loader',
         query: {
-          presets: ["es2015"]
+          presets: [
+            ["env", {
+              "targets": {
+                "chrome": "40",
+                "firefox": "50"
+              },
+              "debug": true
+            }]
+          ],
+          "plugins": [
+            ["transform-object-rest-spread", { "useBuiltIns": true }]
+          ]
         }
       },
       {

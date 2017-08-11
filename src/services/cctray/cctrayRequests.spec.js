@@ -1,8 +1,8 @@
 import Rx from 'rx/dist/rx.testing';
-import bambooRequests from 'services/ccxml/ccxmlRequests';
+import cctrayRequests from 'services/cctray/cctrayRequests';
 import request from 'services/jsonRequest';
 
-describe('services/ccxml/ccxmlRequests', () => {
+describe('services/cctray/cctrayRequests', () => {
 
     const onNext = Rx.ReactiveTest.onNext;
     const onCompleted = Rx.ReactiveTest.onCompleted;
@@ -32,7 +32,7 @@ describe('services/ccxml/ccxmlRequests', () => {
                 return Rx.Observable.never();
             });
 
-            scheduler.startScheduler(() => bambooRequests.projects(settings));
+            scheduler.startScheduler(() => cctrayRequests.projects(settings));
 
             expect(request.get).toHaveBeenCalled();
         });
@@ -42,7 +42,7 @@ describe('services/ccxml/ccxmlRequests', () => {
                 Rx.Observable.return({ body: { Projects: { Project: [] } } })
             );
 
-            const result = scheduler.startScheduler(() => bambooRequests.projects(settings));
+            const result = scheduler.startScheduler(() => cctrayRequests.projects(settings));
 
             expect(result.messages).toHaveEqualElements(
                 onNext(200, { Projects: { Project: [] } }),

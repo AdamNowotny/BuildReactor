@@ -1,12 +1,21 @@
 import Rx from 'rx';
-import requests from 'services/ccxml/ccxmlRequests';
+import requests from 'services/cctray/cctrayRequests';
 
 export default {
     getInfo: () => ({
         typeName: 'CCTray XML',
-        baseUrl: 'ccxml',
-        icon: 'services/ccxml/icon.png',
-        logo: 'services/ccxml/logo.png',
+        baseUrl: 'cctray',
+        icon: 'services/cctray/icon.png',
+        logo: 'services/cctray/logo.png',
+        defaultConfig: {
+            baseUrl: 'cctray',
+            name: '',
+            projects: [],
+            url: '',
+            username: '',
+            password: '',
+            updateInterval: 60
+        },
         fields: [
             {
                 type: 'url',
@@ -15,16 +24,7 @@ export default {
             },
             { type: 'username' },
             { type: 'password' }
-        ],
-        defaultConfig: {
-            baseUrl: 'ccxml',
-            name: '',
-            projects: [],
-            url: '',
-            username: '',
-            password: '',
-            updateInterval: 60
-        }
+        ]
     }),
     getAll: (settings) => requests.projects(settings)
         .select((body) => body.Projects.Project)
