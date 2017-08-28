@@ -7,7 +7,7 @@ import viewSettingsTemplate from 'settings/view/view.html';
 
 export default app.config(($routeProvider) => {
 	$routeProvider
-	.when('/service/:serviceName', {
+	.when('/service/:serviceName*', {
 		templateUrl: serviceSettingsView,
 		controller: 'ServiceSettingsCtrl',
 		view: 'service'
