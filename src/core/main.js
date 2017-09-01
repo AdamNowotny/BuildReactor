@@ -1,7 +1,7 @@
-import BuildBotService from 'core/services/buildbot/buildService';
 import TeamCityService from 'core/services/teamcity/buildService';
 import badgeController from 'core/badgeController';
 import bamboo from 'services/bamboo/bamboo';
+import buildbot from 'services/buildbot/buildbot';
 import buildkite from 'services/buildkite/buildkite';
 import cc from 'services/cruisecontrol/cruisecontrol';
 import ccnet from 'services/cruisecontrol.net/cruisecontrol.net';
@@ -31,7 +31,7 @@ passwordExpiredHandler.init();
 
 serviceController.clear();
 serviceController.registerType(poolingService.create(bamboo));
-serviceController.registerType(BuildBotService);
+serviceController.registerType(poolingService.create(buildbot));
 serviceController.registerType(poolingService.create(buildkite));
 serviceController.registerType(poolingService.create(cctray));
 serviceController.registerType(poolingService.create(cc));
