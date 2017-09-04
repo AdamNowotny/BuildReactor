@@ -6,7 +6,7 @@
   "author": {
     "name": "Adam Nowotny",
     "email": "adam.nowotny@gmail.com",
-    "url": "https://profiles.google.com/adam.nowotny"
+    "url": "https://github.com/AdamNowotny"
   },
   "repository": {
     "type": "git",
@@ -42,8 +42,6 @@
     "angular-ui-utils": "^0.1.1",
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.6.3",
-    "jquery": "^2.2.0",
-    "mout": "^0.11.1",
     "rx": "^4.1.0",
     "sortablejs": "^1.5.1",
     "superagent": "^3.5.2",
@@ -55,12 +53,11 @@
     "babel-eslint": "^7.0.0",
     "babel-loader": "^6.2.5",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "copy-webpack-plugin": "^3.0.1",
     "css-loader": "^0.28.1",
     "eslint": "^3.8.1",
-    "exports-loader": "^0.6.3",
-    "expose-loader": "^0.7.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "html-loader": "^0.4.4",

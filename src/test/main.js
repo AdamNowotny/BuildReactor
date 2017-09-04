@@ -1,5 +1,4 @@
 /* eslint no-console: 0 */
-import 'jquery';
 import 'angular';
 import 'angular-mocks';
 import Rx from 'rx';

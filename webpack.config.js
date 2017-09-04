@@ -109,10 +109,6 @@ module.exports = {
         loader: `ngtemplate?relativeTo=${path.resolve(__dirname, 'src')}/!html`
       },
       {
-        test: /jquery\.js$/,
-        loader: 'expose?$!expose?jQuery'
-      },
-      {
         test: /(angular-mocks|angular-route|angular-ui-bootstrap|angular-ui-utils|angular-animate)/,
         loader: 'imports?angular'
       }
