@@ -18,7 +18,7 @@ describe('services/buildbot/buildbotRequests', () => {
             password: 'password',
             url: 'http://example.com/',
             updateInterval: 10000,
-            projects: ['PROJECT1-PLAN1', 'PROJECT2-PLAN2']
+            projects: ['project1', 'project2']
         };
     });
 

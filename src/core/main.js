@@ -1,4 +1,3 @@
-import TeamCityService from 'core/services/teamcity/buildService';
 import badgeController from 'core/badgeController';
 import bamboo from 'services/bamboo/bamboo';
 import buildbot from 'services/buildbot/buildbot';
@@ -17,6 +16,7 @@ import poolingService from 'services/poolingService';
 import serviceConfiguration from 'core/config/serviceConfiguration';
 import serviceController from 'core/services/serviceController';
 import serviceView from 'core/services/serviceView';
+import teamcity from 'services/teamcity/teamcity';
 import travis from 'services/travis/travis';
 import viewConfiguration from 'core/config/viewConfiguration';
 
@@ -39,7 +39,7 @@ serviceController.registerType(poolingService.create(ccnet));
 serviceController.registerType(poolingService.create(ccrb));
 serviceController.registerType(poolingService.create(go));
 serviceController.registerType(poolingService.create(jenkins));
-serviceController.registerType(TeamCityService);
+serviceController.registerType(poolingService.create(teamcity));
 serviceController.registerType(poolingService.create(travis));
 
 serviceController.start(serviceConfiguration.changes);
