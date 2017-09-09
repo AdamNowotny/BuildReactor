@@ -1,6 +1,6 @@
 import Rx from 'rx/dist/rx.testing';
 import bambooRequests from 'services/bamboo/bambooRequests';
-import request from 'services/jsonRequest';
+import request from 'services/request';
 
 describe('services/bamboo/bambooRequests', () => {
 

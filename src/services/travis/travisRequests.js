@@ -1,6 +1,6 @@
 import Rx from 'rx';
 import joinUrl from 'common/joinUrl';
-import request from 'services/jsonRequest';
+import request from 'services/request';
 
 const repositories = (settings) => request
     .get({

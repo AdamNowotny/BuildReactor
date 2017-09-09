@@ -1,4 +1,4 @@
-import request from 'services/jsonRequest';
+import request from 'services/request';
 
 export default {
     projects: (settings) => request

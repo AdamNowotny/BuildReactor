@@ -1,5 +1,5 @@
 import Rx from 'rx/dist/rx.testing';
-import request from 'services/jsonRequest';
+import request from 'services/request';
 import teamcityRequests from 'services/teamcity/teamcityRequests';
 
 describe('services/teamcity/teamcityRequests', () => {

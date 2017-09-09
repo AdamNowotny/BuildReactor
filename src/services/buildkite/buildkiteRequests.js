@@ -1,5 +1,5 @@
 import Rx from 'rx';
-import request from 'services/jsonRequest';
+import request from 'services/request';
 
 const organizations = (token) => request
     .get({

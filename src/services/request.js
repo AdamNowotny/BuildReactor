@@ -1,6 +1,6 @@
 import 'rx/dist/rx.binding';
 import Rx from 'rx';
-import errors from 'services/errors';
+import errors from 'services/requestErrors';
 import { parseString } from 'xml2js';
 import superagent from 'superagent';
 

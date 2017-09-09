@@ -1,5 +1,5 @@
 import joinUrl from 'common/joinUrl';
-import request from 'services/jsonRequest';
+import request from 'services/request';
 
 const allBuilds = (settings) => request
     .get({

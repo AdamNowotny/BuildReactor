@@ -1,6 +1,6 @@
-import errors from 'services/errors';
+import errors from 'services/requestErrors';
 
-describe('services/buildkite/errors', () => {
+describe('services/requestErrors', () => {
 
     it('should create AjaxError', () => {
         const ex = {
