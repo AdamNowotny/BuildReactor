@@ -42,7 +42,7 @@ export default {
                 id: key.id,
                 name: key.pipeline,
                 group: key.org,
-                error: ex
+                error: { message: ex.message }
             })))
         )
 };

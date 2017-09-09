@@ -45,7 +45,7 @@ export default {
                 id: key,
                 name: key,
                 group: null,
-                error: ex
+                error: { message: ex.message }
             })))
         )
 };

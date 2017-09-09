@@ -34,9 +34,7 @@ const init = () => {
         pushStateUpdated();
     });
 
-    const getState = (serviceName) => {
-        return JSON.parse(JSON.stringify(latestState.get(serviceName)));
-    };
+    const getState = (serviceName) => JSON.parse(JSON.stringify(latestState.get(serviceName)));
 
     const updateState = (serviceName, items) => {
         if (latestState.has(serviceName)) {

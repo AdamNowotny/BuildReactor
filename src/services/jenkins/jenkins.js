@@ -141,6 +141,6 @@ const createError = (id, ex) => {
             `${project} (${branch})` :
             `${project}`,
         group: folder,
-        error: ex
+        error: { message: ex.message }
     };
 };

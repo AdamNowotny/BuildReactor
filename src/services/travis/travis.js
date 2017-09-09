@@ -65,7 +65,7 @@ export default {
                 id: key.id,
                 name: key.repo,
                 group: key.org,
-                error: ex
+                error: { message: ex.message }
             }))
         )
 };
