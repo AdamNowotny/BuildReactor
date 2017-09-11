@@ -1,6 +1,6 @@
 import Rx from 'rx/dist/rx.testing';
 import buildkiteRequests from 'services/buildkite/buildkiteRequests';
-import request from 'services/request';
+import request from 'core/services/request';
 
 describe('services/buildkite/buildkiteRequests', () => {
 

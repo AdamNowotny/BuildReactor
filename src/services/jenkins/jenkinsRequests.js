@@ -1,6 +1,6 @@
 import Rx from 'rx';
 import joinUrl from 'common/joinUrl';
-import request from 'services/request';
+import request from 'core/services/request';
 
 export default {
     jobs: ({ url, settings }) => request

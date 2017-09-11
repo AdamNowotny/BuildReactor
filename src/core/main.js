@@ -12,7 +12,7 @@ import jenkins from 'services/jenkins/jenkins';
 import logger from 'core/logger';
 import notificationController from 'core/notificationController';
 import passwordExpiredHandler from 'core/passwordExpiredHandler';
-import poolingService from 'services/poolingService';
+import poolingService from 'core/services/poolingService';
 import serviceConfiguration from 'core/config/serviceConfiguration';
 import serviceController from 'core/services/serviceController';
 import serviceView from 'core/services/serviceView';

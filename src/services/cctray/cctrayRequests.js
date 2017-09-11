@@ -1,4 +1,4 @@
-import request from 'services/request';
+import request from 'core/services/request';
 
 export default {
     projects: (settings) => request

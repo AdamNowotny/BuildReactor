@@ -1,6 +1,6 @@
-import errors from 'services/requestErrors';
+import errors from 'core/services/requestErrors';
 
-describe('services/requestErrors', () => {
+describe('core/services/requestErrors', () => {
 
     it('should create AjaxError', () => {
         const ex = {

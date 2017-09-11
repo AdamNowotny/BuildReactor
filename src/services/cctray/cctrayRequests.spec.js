@@ -1,6 +1,6 @@
 import Rx from 'rx/dist/rx.testing';
 import cctrayRequests from 'services/cctray/cctrayRequests';
-import request from 'services/request';
+import request from 'core/services/request';
 
 describe('services/cctray/cctrayRequests', () => {
 

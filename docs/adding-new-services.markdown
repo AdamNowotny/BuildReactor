@@ -66,7 +66,7 @@ Latest status
 
 `getLatest` function accepts service settings with array of build IDs to monitor.
 
-The example below uses [/src/services/request.js](../src/services/request.js) to make HTTP request for each build in `settings.projects` array and then parse the body of each response.
+The example below uses [/src/core/services/request.js](../src/core/services/request.js) to make HTTP request for each build in `settings.projects` array and then parse the body of each response.
 
 Example:
 ```js

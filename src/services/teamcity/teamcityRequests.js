@@ -1,5 +1,5 @@
 import joinUrl from 'common/joinUrl';
-import request from 'services/request';
+import request from 'core/services/request';
 
 const authType = (settings) => (settings.username ? 'httpAuth' : 'guestAuth');
 const branchParam = (settings) => (settings.branch ? `,branch:(${settings.branch})` : '');

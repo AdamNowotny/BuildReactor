@@ -1,6 +1,6 @@
 import Rx from 'rx/dist/rx.testing';
 import buildbotRequests from 'services/buildbot/buildbotRequests';
-import request from 'services/request';
+import request from 'core/services/request';
 
 describe('services/buildbot/buildbotRequests', () => {
 

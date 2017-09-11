@@ -1,8 +1,8 @@
 import Rx from 'rx';
-import poolingService from 'services/poolingService';
+import poolingService from 'core/services/poolingService';
 import sinon from 'sinon';
 
-describe('services/poolingService', () => {
+describe('core/services/poolingService', () => {
 
     const onNext = Rx.ReactiveTest.onNext;
     const onCompleted = Rx.ReactiveTest.onCompleted;

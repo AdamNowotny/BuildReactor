@@ -1,5 +1,5 @@
 import Rx from 'rx/dist/rx.testing';
-import request from 'services/request';
+import request from 'core/services/request';
 import travisRequests from 'services/travis/travisRequests';
 
 describe('services/travis/travisRequests', () => {

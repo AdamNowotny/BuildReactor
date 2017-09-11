@@ -1,10 +1,10 @@
 import Rx from 'rx/dist/rx.testing';
 import StubSuperagent from 'test/stubSuperagent.js';
-import errors from 'services/requestErrors';
-import request from 'services/request';
+import errors from 'core/services/requestErrors';
+import request from 'core/services/request';
 import superagent from 'superagent';
 
-describe('services/request', () => {
+describe('core/services/request', () => {
 
     const onNext = Rx.ReactiveTest.onNext;
     const onCompleted = Rx.ReactiveTest.onCompleted;

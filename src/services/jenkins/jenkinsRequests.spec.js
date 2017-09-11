@@ -1,6 +1,6 @@
 import Rx from 'rx/dist/rx.testing';
 import jenkinsRequests from 'services/jenkins/jenkinsRequests';
-import request from 'services/request';
+import request from 'core/services/request';
 
 describe('services/jenkins/jenkinsRequests', () => {
 

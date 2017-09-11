@@ -1,6 +1,6 @@
 import Rx from 'rx';
 import joinUrl from 'common/joinUrl';
-import request from 'services/request';
+import request from 'core/services/request';
 
 const projects = (settings) => request
     .get({
