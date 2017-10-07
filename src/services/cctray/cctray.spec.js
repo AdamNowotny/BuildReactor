@@ -299,13 +299,15 @@ describe('services/cctray/cctray', () => {
                     setupResponse([
                         {
                             $: {},
-                            messages: {
-                                message: [
-                                    {
-                                        $: change
-                                    }
-                                ]
-                            }
+                            messages: [
+                                {
+                                    message: [
+                                        {
+                                            $: change
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ]);
                 };

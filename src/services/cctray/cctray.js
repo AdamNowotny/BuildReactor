@@ -41,9 +41,6 @@ export default {
         .selectMany((body) => Rx.Observable.fromArray(body.Projects.Project))
         .select((project) => {
             const status = project.$.lastBuildStatus;
-            const breakers = project.messages ? project.messages.message
-                .filter((message) => message.$.kind === 'Breakers')
-                .map((message) => message.$.text)[0] : null;
             const state = {
                 id: project.$.name,
                 name: project.$.name,
@@ -54,9 +51,7 @@ export default {
                 isBroken: false,
                 isDisabled: false,
                 tags: [],
-                changes: breakers ?
-                    breakers.split(', ').map((username) => ({ name: username })) :
-                    []
+                changes: createChanges(project)
             };
             if (status in { 'Success': 1, 'Failure': 1, 'Exception': 1 }) {
                 state.isBroken = status in { 'Failure': 1, 'Exception': 1 };
@@ -68,6 +63,17 @@ export default {
             return state;
         })
         .select(categoriseFromName)
+};
+
+const createChanges = (project) => {
+    const breakers = (project.messages && project.messages.length && typeof project.messages[0] === 'object') ?
+        project.messages[0].message
+            .filter((message) => message.$.kind === 'Breakers')
+            .map((message) => message.$.text)[0] :
+        null;
+    return breakers ?
+        breakers.split(', ').map((username) => ({ name: username })) :
+        [];
 };
 
 var categoriseFromName = function(d) {
