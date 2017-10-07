@@ -2,37 +2,39 @@
 /* eslint no-alert: 0 */
 import core from 'common/core';
 
-const init = function() {
-	core.activeProjects.subscribe(function(state) {
-		console.log(new Date().toJSON(), 'core.activeProjects', state);
-	}, function() {
-		console.error(new Date().toJSON(), 'core.activeProjects stream error', arguments);
-	}, function() {
-		console.warn(new Date().toJSON(), 'core.activeProjects stream completed', arguments);
+const init = ({ debug }) => {
+	core.activeProjects.subscribe((state) => {
+		if (debug) {
+			console.log(new Date().toJSON(), 'core.activeProjects', state);
+		}
+	}, (...args) => {
+		console.error(new Date().toJSON(), 'core.activeProjects stream error', args);
+	}, (...args) => {
+		console.warn(new Date().toJSON(), 'core.activeProjects stream completed', args);
 	});
 
-	core.configurations.subscribe(function(state) {
+	core.configurations.subscribe((state) => {
 		console.log(new Date().toJSON(), 'core.configurations', state);
-	}, function() {
-		console.error(new Date().toJSON(), 'core.configurations stream error', arguments);
-	}, function() {
-		console.warn(new Date().toJSON(), 'core.configurations stream completed', arguments);
+	}, (...args) => {
+		console.error(new Date().toJSON(), 'core.configurations stream error', args);
+	}, (...args) => {
+		console.warn(new Date().toJSON(), 'core.configurations stream completed', args);
 	});
 
-	core.views.subscribe(function(state) {
+	core.views.subscribe((state) => {
 		console.log(new Date().toJSON(), 'core.views', state);
-	}, function() {
-		console.error(new Date().toJSON(), 'core.views stream error', arguments);
-	}, function() {
-		console.warn(new Date().toJSON(), 'core.views stream completed', arguments);
+	}, (...args) => {
+		console.error(new Date().toJSON(), 'core.views stream error', args);
+	}, (...args) => {
+		console.warn(new Date().toJSON(), 'core.views stream completed', args);
 	});
 
-	core.messages.subscribe(function(state) {
+	core.messages.subscribe((state) => {
 		console.log(new Date().toJSON(), 'core.messages', state);
-	}, function() {
-		console.error(new Date().toJSON(), 'core.messages stream error', arguments);
-	}, function() {
-		console.warn(new Date().toJSON(), 'core.messages stream completed', arguments);
+	}, (...args) => {
+		console.error(new Date().toJSON(), 'core.messages stream error', args);
+	}, (...args) => {
+		console.warn(new Date().toJSON(), 'core.messages stream completed', args);
 	});
 
 	window.onerror = function(message, url, line) {

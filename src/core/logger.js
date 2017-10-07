@@ -6,33 +6,35 @@ import viewConfiguration from 'core/config/viewConfiguration';
 
 const messages = new Rx.Subject();
 
-const init = () => {
+const init = ({ debug }) => {
 	events.all.subscribe((event) => {
-		console.log(new Date().toJSON(),
-			'events.all',
-			`${event.source}.${event.eventName}`,
-			event.details
-		);
+		if (debug) {
+			console.log(new Date().toJSON(),
+				'events.all',
+				`${event.source}.${event.eventName}`,
+				event.details
+			);
+		}
 	}, (...args) => {
 		console.error(new Date().toJSON(), 'events stream error', args);
 	}, (...args) => {
 		console.warn(new Date().toJSON(), 'events stream completed', args);
 	});
 
-	serviceConfiguration.changes.subscribe(function(config) {
+	serviceConfiguration.changes.subscribe((config) => {
 		console.log(new Date().toJSON(), 'serviceConfiguration.changes', config);
-	}, function() {
-		console.error(new Date().toJSON(), 'serviceConfiguration.changes stream error', arguments);
-	}, function() {
-		console.warn(new Date().toJSON(), 'serviceConfiguration.changes stream completed', arguments);
+	}, (...args) => {
+		console.error(new Date().toJSON(), 'serviceConfiguration.changes stream error', args);
+	}, (...args) => {
+		console.warn(new Date().toJSON(), 'serviceConfiguration.changes stream completed', args);
 	});
 
-	viewConfiguration.changes.subscribe(function(config) {
+	viewConfiguration.changes.subscribe((config) => {
 		console.log(new Date().toJSON(), 'viewConfiguration.changes', config);
-	}, function() {
-		console.error(new Date().toJSON(), 'viewConfiguration.changes stream error', arguments);
-	}, function() {
-		console.warn(new Date().toJSON(), 'viewConfiguration.changes stream completed', arguments);
+	}, (...args) => {
+		console.error(new Date().toJSON(), 'viewConfiguration.changes stream error', args);
+	}, (...args) => {
+		console.warn(new Date().toJSON(), 'viewConfiguration.changes stream completed', args);
 	});
 
 	messages.subscribe((message) => {

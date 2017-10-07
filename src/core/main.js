@@ -22,7 +22,7 @@ import viewConfiguration from 'core/config/viewConfiguration';
 
 serviceConfiguration.init();
 viewConfiguration.init();
-logger.init();
+logger.init({ debug: false });
 badgeController.init();
 notificationController.init({ timeout: 5000, configuration: viewConfiguration.changes });
 serviceView.init();

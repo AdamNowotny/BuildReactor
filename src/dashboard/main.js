@@ -9,7 +9,7 @@ import core from 'common/core';
 import logger from 'common/coreLogger';
 
 core.init();
-logger.init();
+logger.init({ debug: false });
 
 angular.element(document).ready(() => {
 	angular.bootstrap(document, ['dashboard']);
