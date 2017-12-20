@@ -111,6 +111,24 @@ describe('services/jenkins/jenkins', () => {
                     group: null,
                     isDisabled: false
                 }),
+                onNext(200, {
+                    id: 'job23/master',
+                    name: 'master',
+                    group: 'job23',
+                    isDisabled: false
+                }),
+                onNext(200, {
+                    id: 'job23/myFeatureBranch',
+                    name: 'myFeatureBranch',
+                    group: 'job23',
+                    isDisabled: false
+                }),
+                onNext(200, {
+                    id: 'job23/myOtherFeatureBranch',
+                    name: 'myOtherFeatureBranch',
+                    group: 'job23',
+                    isDisabled: true
+                }),
                 onCompleted(200)
             );
         });
