@@ -51,6 +51,14 @@ export default {
                             group: job.name,
                             isDisabled: !jobDetails.buildable
                         }));
+                case WorkflowMultiBranchProject:
+                    return Rx.Observable.fromArray(job.jobs)
+                        .select((jobDetails) => ({
+                            id: jobDetails.fullName,
+                            name: `${jobDetails.name}`,
+                            group: job.name,
+                            isDisabled: !jobDetails.buildable
+                        }));
                 default:
                     // FreeStyleProject or jenkins 1.x project
                     return Rx.Observable.return({

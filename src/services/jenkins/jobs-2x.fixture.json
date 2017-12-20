@@ -48,5 +48,33 @@
         "url": "https://jenkins.sample/jenkins/job/freestyle-project/",
         "buildable": true,
         "inQueue": false
+    }, {
+      "_class": "org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject",
+      "fullName": "job23",
+      "name": "job23",
+      "url": "https://jenkins.sample/job/job23/",
+      "jobs": [
+        {
+          "_class": "org.jenkinsci.plugins.workflow.job.WorkflowJob",
+          "fullName": "job23/master",
+          "name": "master",
+          "url": "https://jenkins.sample/job/job23/job/master/",
+          "buildable": true
+        },
+        {
+          "_class": "org.jenkinsci.plugins.workflow.job.WorkflowJob",
+          "fullName": "job23/myFeatureBranch",
+          "name": "myFeatureBranch",
+          "url": "https://jenkins.sample/job/job23/job/myFeatureBranch/",
+          "buildable": true
+        },
+        {
+          "_class": "org.jenkinsci.plugins.workflow.job.WorkflowJob",
+          "fullName": "job23/myOtherFeatureBranch",
+          "name": "myOtherFeatureBranch",
+          "url": "https://jenkins.sample/job/job23/job/myOtherFeatureBranch/",
+          "buildable": false
+        }
+      ]
     }]
 }
