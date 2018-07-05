@@ -60,7 +60,6 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: '../manifest.json' },
       { from: '../img', to: 'img' },
-      { from: 'core/services/*/*.{png,svg}' },
       { from: 'services/*/*.{png,svg}' }
     ]),
     new ExtractTextPlugin("[name].css")

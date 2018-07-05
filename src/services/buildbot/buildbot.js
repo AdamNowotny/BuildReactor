@@ -6,8 +6,8 @@ export default {
     getInfo: () => ({
         typeName: 'BuildBot',
         baseUrl: 'buildbot',
-        icon: 'core/services/buildbot/icon.png',
-        logo: 'core/services/buildbot/logo.png',
+        icon: 'services/buildbot/icon.png',
+        logo: 'services/buildbot/logo.png',
         fields: [
             { type: 'url', name: 'Server URL, e.g. https://build.webkit.org/' },
             { type: 'username' },

@@ -5,8 +5,8 @@ export default {
     getInfo: () => ({
         typeName: 'TeamCity',
         baseUrl: 'teamcity',
-        icon: 'core/services/teamcity/icon.png',
-        logo: 'core/services/teamcity/logo.png',
+        icon: 'services/teamcity/icon.png',
+        logo: 'services/teamcity/logo.png',
         fields: [
             { type: 'url', name: 'Server URL, e.g. http://teamcity.jetbrains.com/' },
             { type: 'username' },

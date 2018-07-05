@@ -56,7 +56,7 @@ describe('notificationController', () => {
         spyOn(window, 'Notification').and.returnValue(mockNotification);
         spyOn(chromeApi, 'isDashboardActive').and.returnValue(Rx.Observable.return(false));
         spyOn(serviceController, 'typeInfoFor').and
-            .returnValue({ icon: 'src/core/services/test/icon.png' });
+            .returnValue({ icon: 'src/services/test/icon.png' });
         notificationController.init({
             timeout: 5000,
             scheduler,
@@ -77,7 +77,7 @@ describe('notificationController', () => {
 
             expect(window.Notification).toHaveBeenCalledWith(
                 'Build started (service)', {
-                    icon: 'src/core/services/test/icon.png',
+                    icon: 'src/services/test/icon.png',
                     body: 'build',
                     tag: 'service_build'
                 }
@@ -100,7 +100,7 @@ describe('notificationController', () => {
 
             expect(window.Notification).toHaveBeenCalledWith(
                 'Build started (service)', {
-                    icon: 'src/core/services/test/icon.png',
+                    icon: 'src/services/test/icon.png',
                     body: 'build\n\nUser 1\nUser 2',
                     tag: 'service_build'
                 }
@@ -149,7 +149,7 @@ describe('notificationController', () => {
 
             expect(window.Notification).toHaveBeenCalledWith(
                 'Build successful (service)', {
-                    icon: 'src/core/services/test/icon.png',
+                    icon: 'src/services/test/icon.png',
                     body: 'build',
                     tag: 'service_build'
                 }
@@ -174,7 +174,7 @@ describe('notificationController', () => {
 
             expect(window.Notification).toHaveBeenCalledWith(
                 'Build successful (service)', {
-                    icon: 'src/core/services/test/icon.png',
+                    icon: 'src/services/test/icon.png',
                     body: 'build\n\nUser 1: message 1\nUser 2: message 2',
                     tag: 'service_build'
                 }
@@ -223,7 +223,7 @@ describe('notificationController', () => {
 
             expect(window.Notification).toHaveBeenCalledWith(
                 'Build still failing (service)', {
-                    icon: 'src/core/services/test/icon.png',
+                    icon: 'src/services/test/icon.png',
                     body: 'build',
                     tag: 'service_build'
                 }
@@ -249,7 +249,7 @@ describe('notificationController', () => {
 
             expect(window.Notification).toHaveBeenCalledWith(
                 'Build still failing (service)', {
-                    icon: 'src/core/services/test/icon.png',
+                    icon: 'src/services/test/icon.png',
                     body: 'build\n\nUser 1: message 1\nUser 2: message 2',
                     tag: 'service_build'
                 }
@@ -300,7 +300,7 @@ describe('notificationController', () => {
 
             expect(window.Notification).toHaveBeenCalledWith(
                 'Build broken (service)', {
-                    icon: 'src/core/services/test/icon.png',
+                    icon: 'src/services/test/icon.png',
                     body: 'build',
                     tag: 'service_build'
                 }
@@ -352,7 +352,7 @@ describe('notificationController', () => {
 
             expect(window.Notification).toHaveBeenCalledWith(
                 'Build broken (service)', {
-                    icon: 'src/core/services/test/icon.png',
+                    icon: 'src/services/test/icon.png',
                     body: 'build\n\nUser 1\nUser 2',
                     tag: 'service_build'
                 }
@@ -377,7 +377,7 @@ describe('notificationController', () => {
 
             expect(window.Notification).toHaveBeenCalledWith(
                 'Build broken (service)', {
-                    icon: 'src/core/services/test/icon.png',
+                    icon: 'src/services/test/icon.png',
                     body: 'group / build\n\nUser 1\nUser 2',
                     tag: 'service_group_build'
                 }
@@ -400,7 +400,7 @@ describe('notificationController', () => {
 
             expect(window.Notification).toHaveBeenCalledWith(
                 'Build broken (service)', {
-                    icon: 'src/core/services/test/icon.png',
+                    icon: 'src/services/test/icon.png',
                     body: 'build\n\nUser 1: message 1\nUser 2: message 2\n...',
                     tag: 'service_build'
                 }
@@ -448,7 +448,7 @@ describe('notificationController', () => {
 
             expect(window.Notification).toHaveBeenCalledWith(
                 'Build fixed (service)', {
-                    icon: 'src/core/services/test/icon.png',
+                    icon: 'src/services/test/icon.png',
                     body: 'build',
                     tag: 'service_build'
                 }
@@ -501,7 +501,7 @@ describe('notificationController', () => {
 
             expect(window.Notification).toHaveBeenCalledWith(
                 'Build fixed (service)', {
-                    icon: 'src/core/services/test/icon.png',
+                    icon: 'src/services/test/icon.png',
                     body: 'build\n\nUser 1\nUser 2',
                     tag: 'service_build'
                 }
@@ -558,7 +558,7 @@ describe('notificationController', () => {
 
             expect(window.Notification).toHaveBeenCalledWith(
                 'Build unstable (service)', {
-                    icon: 'src/core/services/test/icon.png',
+                    icon: 'src/services/test/icon.png',
                     body: 'build',
                     tag: 'service_build'
                 }
@@ -597,7 +597,7 @@ describe('notificationController', () => {
 
         expect(window.Notification).toHaveBeenCalledWith(
             'service', {
-                icon: 'src/core/services/test/icon.png',
+                icon: 'src/services/test/icon.png',
                 body: 'Password expired. Service has been disabled.',
                 tag: 'service_disabled'
             }
