@@ -1,0 +1,21 @@
+stages:
+  - test
+  - dist
+  - deploy
+
+image: node:6.10
+
+test:
+  stage: test
+  script: "yarn test"
+
+dist:
+  stage: dist
+  script: "yarn run dist"
+
+deploy:
+  stage: deploy
+  when: manual
+  script: echo 'deploy test'
+  environment:
+    name: production
