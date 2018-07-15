@@ -3,15 +3,20 @@ stages:
   - dist
   - deploy
 
-image: node:6.10
+image: node:latest
+
+before_script:
+  - npm install
 
 test:
   stage: test
-  script: "yarn test"
+  script:
+    - yarn test
 
 dist:
   stage: dist
-  script: "yarn run dist"
+  script:
+    - yarn run dist
 
 deploy:
   stage: deploy
