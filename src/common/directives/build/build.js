@@ -12,14 +12,21 @@ module.directive('build', ($interval) => ({
     controller($scope, $element, $attrs, $transclude) {
 
         const commentChangeInterval = 7000;
+        let intervalPromise;
         $scope.changeIndex = 0;
 
         const changesLength = $scope.build && $scope.build.changes ? $scope.build.changes.length : 0;
         if (changesLength > 1) {
-            $interval(() => {
+            intervalPromise = $interval(() => {
                 $scope.changeIndex = ($scope.changeIndex + 1) % changesLength;
             }, commentChangeInterval);
         }
+
+        $scope.$on('$destroy', function() {
+            if (intervalPromise) {
+                $interval.cancel(intervalPromise);
+            }
+        });
 
         $scope.getLabelClasses = (tag) => {
             const tagType = tag.type || 'default';
