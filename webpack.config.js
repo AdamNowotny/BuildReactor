@@ -2,12 +2,14 @@
 
 const path = require("path");
 const webpack = require("webpack");
-const WebpackErrorNotificationPlugin = require('webpack-error-notification');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
+  mode: 'development',
+  devtool: '', // disable JS eval
   context: path.join(__dirname, "src"),
   entry: {
     background: "./core/main.js",
@@ -21,15 +23,11 @@ module.exports = {
     filename: "[name].js",
     chunkFilename: "[id].chunk.js"
   },
-
   resolve: {
-    modulesDirectories: ["node_modules"],
-    extensions: ['', '.js'],
-    root: path.join(__dirname, "src")
+    modules: ["src", "node_modules"],
   },
-
   plugins: [
-    new WebpackErrorNotificationPlugin(/* strategy */),
+    new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       template: 'settings/index.html',
       filename: 'settings.html',
@@ -51,22 +49,27 @@ module.exports = {
       chunks: ['commons', 'dashboard'],
       minify: false
     }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: "commons",
-      filename: "commons.js",
-      minChunks: 3, // Modules must be shared between 3 entries
-      chunks: ["settings", "dashboard", "popup"]
-    }),
     new CopyWebpackPlugin([
       { from: '../manifest.json' },
       { from: '../img', to: 'img' },
       { from: 'services/*/*.{png,svg}' }
     ]),
-    new ExtractTextPlugin("[name].css")
+    new MiniCssExtractPlugin()
   ],
 
+  optimization: {
+    namedModules: true,
+    splitChunks: {
+        chunks: 'all',
+        name: 'commons',
+        minChunks: 2
+    },
+    noEmitOnErrors: true,
+    concatenateModules: true
+  },
+
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         include: path.join(__dirname, 'src'),
@@ -88,28 +91,33 @@ module.exports = {
       },
       {
         test: /\.?css$/,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          { loader: 'css-loader' },
+          { loader: 'sass-loader' }
+        ]
       },
       {
-        test: /\.(png|jpg)$/,
-        loader: "url?limit=10000&name=/img/[name].[ext]"
-      },
-      {
-        test: /\.(svg)/,
-        loader: 'url?limit=10000&name=/img/[name].[ext]'
+        test: /\.(svg|png|jpg)/,
+        loader: 'url-loader?limit=10000&name=img/[name].[ext]'
       },
       {
         test: /\.(ttf|eot|otf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "file?name=/fonts/[name].[ext]"
+        loader: "file-loader?name=fonts/[name].[ext]"
       },
       {
         test: /\.html$/,
         exclude: /index\.html$/,
-        loader: `ngtemplate?relativeTo=${path.resolve(__dirname, 'src')}/!html`
+        use: [
+          { loader:'ngtemplate-loader?relativeTo=' + (path.resolve(__dirname, './src')) },
+          { loader: 'html-loader' }
+        ]
       },
       {
         test: /(angular-mocks|angular-route|angular-ui-bootstrap|angular-ui-utils|angular-animate)/,
-        loader: 'imports?angular'
+        loader: 'imports-loader?angular'
       }
     ]
   },

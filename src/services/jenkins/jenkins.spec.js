@@ -1,21 +1,16 @@
 import 'test/rxHelpers';
 import Rx from 'rx/dist/rx.testing';
 import jenkins from 'services/jenkins/jenkins';
-import jobDetails1xFixture from 'raw!services/jenkins/jobDetails-1x.fixture.json';
-import jobDetails2Fixture from 'raw!services/jenkins/jobDetails2.fixture.json';
-import jobDetailsFixture from 'raw!services/jenkins/jobDetails.fixture.json';
-import jobs1xFixture from 'raw!services/jenkins/jobs-1x.fixture.json';
-import jobs2xFixture from 'raw!services/jenkins/jobs-2x.fixture.json';
+import jobDetails from 'services/jenkins/jobDetails.fixture.json';
+import jobDetails1xResponse from 'services/jenkins/jobDetails-1x.fixture.json';
+import jobDetails2 from 'services/jenkins/jobDetails2.fixture.json';
+import jobs1xResponse from 'services/jenkins/jobs-1x.fixture.json';
+import jobs2xResponse from 'services/jenkins/jobs-2x.fixture.json';
 import requests from 'services/jenkins/jenkinsRequests';
 import sinon from 'sinon';
 
 describe('services/jenkins/jenkins', () => {
 
-    const jobs1xResponse = JSON.parse(jobs1xFixture);
-    const jobs2xResponse = JSON.parse(jobs2xFixture);
-    const jobDetails = JSON.parse(jobDetailsFixture);
-    const jobDetails2 = JSON.parse(jobDetails2Fixture);
-    const jobDetails1xResponse = JSON.parse(jobDetails1xFixture);
     const onNext = Rx.ReactiveTest.onNext;
     const onCompleted = Rx.ReactiveTest.onCompleted;
     let scheduler;

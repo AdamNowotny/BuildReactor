@@ -1,9 +1,5 @@
 {
-    "ecmaVersion": "6",
     "parser": "babel-eslint",
-    "ecmaFeatures": {
-        "impliedStrict": true
-    },
     "env": {
         "es6": true,
         "browser": true,

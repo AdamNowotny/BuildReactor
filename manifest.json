@@ -1,36 +1,37 @@
 {
-	"name": "BuildReactor",
-	"version": "1.2.0",
-	"manifest_version": 2,
-	"description": "Developer notifications and dashboard for CI servers",
-	"icons": {
-		"16": "img/icon-16.png",
-		"48": "img/icon-48.png",
-		"128": "img/icon-128.png"
-	},
-	"browser_action": {
-		"default_title": "BuildReactor",
-		"default_icon": "img/icon-19.png",
-		"default_popup": "popup.html"
-	},
-	"background": {
-		"scripts": [
-			"background.js"
-		]
-	},
-	"homepage_url": "https://github.com/AdamNowotny/BuildReactor",
-	"options_ui": {
-		"page": "settings.html",
-		"open_in_tab": true
-	},
-	"permissions": [
-		"http://*/*",
-		"https://*/*",
-		"notifications",
-		"tabs"
-	],
-	"web_accessible_resources": [
-		"services/*/*.png",
-		"services/*/*.svg"
-	]
+    "name": "BuildReactor",
+    "version": "1.2.0",
+    "manifest_version": 2,
+    "description": "Developer notifications and dashboard for CI servers",
+    "icons": {
+        "16": "img/icon-16.png",
+        "48": "img/icon-48.png",
+        "128": "img/icon-128.png"
+    },
+    "browser_action": {
+        "default_title": "BuildReactor",
+        "default_icon": "img/icon-19.png",
+        "default_popup": "popup.html"
+    },
+    "background": {
+        "scripts": [
+            "commons.chunk.js",
+            "background.js"
+        ]
+    },
+    "homepage_url": "https://github.com/AdamNowotny/BuildReactor",
+    "options_ui": {
+        "page": "settings.html",
+        "open_in_tab": true
+    },
+    "permissions": [
+        "http://*/*",
+        "https://*/*",
+        "notifications",
+        "tabs"
+    ],
+    "web_accessible_resources": [
+        "services/*/*.png",
+        "services/*/*.svg"
+    ]
 }
