@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import Rx from 'rx/dist/rx.testing';
 
 const isEqual = Rx.internals.isEqual;
