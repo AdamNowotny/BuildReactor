@@ -43,7 +43,7 @@ describe('core/config/viewConfiguration', () => {
         expect(configStore.setItem).not.toHaveBeenCalled();
     });
 
-    it('should publish changes on save', () => {
+    xit('should publish changes on save', () => {
         const viewConfig = {
             columns: 2
         };
