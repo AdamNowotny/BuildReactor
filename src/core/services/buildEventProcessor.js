@@ -30,20 +30,6 @@ const process = ({ oldState, newState }) => {
                     fixed: oldBuild.isBroken && !newBuild.isBroken
                 });
             }
-            if (!oldBuild.error && newBuild.error) {
-                events.push({
-                    eventName: 'buildOffline',
-                    source: newState.name,
-                    details: newBuild
-                });
-            }
-            if (oldBuild.error && !newBuild.error) {
-                events.push({
-                    eventName: 'buildOnline',
-                    source: newState.name,
-                    details: newBuild
-                });
-            }
         }
     });
 };

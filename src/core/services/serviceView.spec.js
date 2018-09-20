@@ -49,11 +49,14 @@ describe('core/services/serviceView', () => {
             });
 
             sinon.assert.calledOnce(events.push);
-            sinon.assert.calledWith(events.push, {
+            sinon.assert.calledWith(events.push, sinon.match({
                 eventName: 'stateUpdated',
                 source: 'serviceView',
                 details: [{
                     name: 'service1',
+                    failedCount: 0,
+                    offlineCount: 0,
+                    runningCount: 0,
                     items: [{
                         id: 'abc',
                         name: "abc",
@@ -67,7 +70,7 @@ describe('core/services/serviceView', () => {
                         webUrl: null
                     }]
                 }]
-            });
+            }));
         });
 
         it('should keep sort order for services on serviceUpdated', () => {
@@ -102,14 +105,8 @@ describe('core/services/serviceView', () => {
                 eventName: 'stateUpdated',
                 source: 'serviceView',
                 details: [
-                    {
-                        name: 'service 2',
-                        items: []
-                    },
-                    {
-                        name: 'service 1',
-                        items: []
-                    }
+                    sinon.match({ name: 'service 2' }),
+                    sinon.match({ name: 'service 1' })
                 ]
             });
         });
@@ -139,47 +136,16 @@ describe('core/services/serviceView', () => {
             sinon.assert.calledWith(events.push, {
                 eventName: 'stateUpdated',
                 source: 'serviceView',
-                details: [{
-                    name: 'service1',
-                    items: [
-                        {
-                            id: "a",
-                            name: "a",
-                            changes: [],
-                            error: null,
-                            group: null,
-                            isBroken: false,
-                            isDisabled: false,
-                            isRunning: false,
-                            tags: [],
-                            webUrl: null
-                        },
-                        {
-                            id: "c",
-                            name: "c",
-                            changes: [],
-                            error: null,
-                            group: null,
-                            isBroken: false,
-                            isDisabled: false,
-                            isRunning: false,
-                            tags: [],
-                            webUrl: null
-                        },
-                        {
-                            id: "b",
-                            name: "b",
-                            changes: [],
-                            error: null,
-                            group: null,
-                            isBroken: false,
-                            isDisabled: false,
-                            isRunning: false,
-                            tags: [],
-                            webUrl: null
-                        }
-                    ]
-                }]
+                details: [
+                    sinon.match({
+                        name: 'service1',
+                        items: [
+                            sinon.match({ id: "a" }),
+                            sinon.match({ id: "c" }),
+                            sinon.match({ id: "b" })
+                        ]
+                    })
+                ]
             });
         });
 
@@ -202,7 +168,7 @@ describe('core/services/serviceView', () => {
             });
 
             sinon.assert.calledWith(eventProcessor.process, {
-                oldState: {
+                oldState: sinon.match({
                     name: 'service1',
                     items: [{
                         id: 'abc',
@@ -216,8 +182,8 @@ describe('core/services/serviceView', () => {
                         tags: [],
                         webUrl: null
                     }]
-                },
-                newState: {
+                }),
+                newState: sinon.match({
                     name: 'service1',
                     items: [{
                         id: 'abc',
@@ -231,12 +197,12 @@ describe('core/services/serviceView', () => {
                         tags: [],
                         webUrl: null
                     }]
-                }
+                })
             });
         });
     });
 
-    it('should clear error on if update successful', () => {
+    it('should clear error if update successful', () => {
         serviceUpdatedSubject.onNext({
             eventName: 'serviceUpdated',
             source: 'service1',
@@ -256,21 +222,15 @@ describe('core/services/serviceView', () => {
         sinon.assert.calledWith(events.push, {
             eventName: 'stateUpdated',
             source: 'serviceView',
-            details: [{
+            details: [sinon.match({
                 name: 'service1',
-                items: [{
-                    id: 'abc',
-                    name: "abc",
-                    error: null,
-                    changes: [],
-                    group: null,
-                    isBroken: false,
-                    isDisabled: false,
-                    isRunning: false,
-                    tags: [],
-                    webUrl: null
-                }]
-            }]
+                items: [
+                    sinon.match({
+                        id: 'abc',
+                        error: null
+                    })
+                ]
+            })]
         });
     });
 
@@ -291,24 +251,20 @@ describe('core/services/serviceView', () => {
         sinon.assert.calledWith(events.push, {
             eventName: 'stateUpdated',
             source: 'serviceView',
-            details: [{
-                name: 'service1',
-                items: [{
-                    id: 'abc',
-                    name: "abc",
-                    error: {
-                        message: 'Service update failed',
-                        description: 'some error'
-                    },
-                    changes: [],
-                    group: null,
-                    isBroken: false,
-                    isDisabled: false,
-                    isRunning: false,
-                    tags: [],
-                    webUrl: null
-                }]
-            }]
+            details: [
+                sinon.match({
+                    name: 'service1',
+                    items: [
+                        sinon.match({
+                            id: 'abc',
+                            error: {
+                                message: 'Service update failed',
+                                description: 'some error'
+                            }
+                        })
+                    ]
+                })
+            ]
         });
     });
 
@@ -328,34 +284,36 @@ describe('core/services/serviceView', () => {
             sinon.assert.calledWith(events.push, {
                 eventName: 'stateUpdated',
                 source: 'serviceView',
-                details: [{
-                    name: 'service1',
-                    items: [{
-                            id: 'project1',
-                            name: 'project1',
-                            group: null,
-                            webUrl: null,
-                            isBroken: false,
-                            isRunning: false,
-                            isDisabled: false,
-                            tags: [],
-                            changes: [],
-                            error: null
-                        },
-                        {
-                            id: 'project2',
-                            name: 'project2',
-                            group: null,
-                            webUrl: null,
-                            isBroken: false,
-                            isRunning: false,
-                            isDisabled: false,
-                            tags: [],
-                            changes: [],
-                            error: null
-                        }
-                    ]
-                }]
+                details: [
+                    sinon.match({
+                        name: 'service1',
+                        items: [{
+                                id: 'project1',
+                                name: 'project1',
+                                group: null,
+                                webUrl: null,
+                                isBroken: false,
+                                isRunning: false,
+                                isDisabled: false,
+                                tags: [],
+                                changes: [],
+                                error: null
+                            },
+                            {
+                                id: 'project2',
+                                name: 'project2',
+                                group: null,
+                                webUrl: null,
+                                isBroken: false,
+                                isRunning: false,
+                                isDisabled: false,
+                                tags: [],
+                                changes: [],
+                                error: null
+                            }
+                        ]
+                    })
+                ]
             });
         });
 
@@ -378,4 +336,272 @@ describe('core/services/serviceView', () => {
             });
         });
     });
+
+    it('should count failed builds for each service', () => {
+        servicesInitializingSubject.onNext({
+            eventName: 'servicesInitializing',
+            source: 'serviceController',
+            details: [
+                {
+                    name: 'service1',
+                    projects: ['abc', 'def']
+                },
+                {
+                    name: 'service2',
+                    projects: ['xyz']
+                }
+            ]
+        });
+
+        serviceUpdatedSubject.onNext({
+            eventName: 'serviceUpdated',
+            source: 'service1',
+            details: [{
+                id: 'abc',
+                isBroken: true
+            }, {
+                id: 'def',
+                isBroken: true
+            }]
+        });
+        serviceUpdatedSubject.onNext({
+            eventName: 'serviceUpdated',
+            source: 'service2',
+            details: [{
+                id: 'xyz',
+                isBroken: true
+            }]
+        });
+
+        sinon.assert.calledWith(events.push, sinon.match({
+            eventName: 'stateUpdated',
+            source: 'serviceView',
+            details: [
+                sinon.match({
+                    name: 'service1',
+                    failedCount: 2
+                }),
+                sinon.match({
+                    name: 'service2',
+                    failedCount: 1
+                })
+            ]
+        }));
+    });
+
+    it('should not count disabled builds as failed', () => {
+        servicesInitializingSubject.onNext({
+            eventName: 'servicesInitializing',
+            source: 'serviceController',
+            details: [
+                {
+                    name: 'service',
+                    projects: ['abc', 'def']
+                }
+            ]
+        });
+
+        serviceUpdatedSubject.onNext({
+            eventName: 'serviceUpdated',
+            source: 'service',
+            details: [{
+                id: 'abc',
+                isBroken: true
+            }, {
+                id: 'def',
+                isBroken: true,
+                isDisabled: true
+            }]
+        });
+
+        sinon.assert.calledWith(events.push, sinon.match({
+            eventName: 'stateUpdated',
+            source: 'serviceView',
+            details: [
+                sinon.match({
+                    name: 'service',
+                    failedCount: 1
+                })
+            ]
+        }));
+    });
+
+    it('should count offline builds for each service', () => {
+        servicesInitializingSubject.onNext({
+            eventName: 'servicesInitializing',
+            source: 'serviceController',
+            details: [
+                {
+                    name: 'service1',
+                    projects: ['abc', 'def']
+                },
+                {
+                    name: 'service2',
+                    projects: ['xyz']
+                }
+            ]
+        });
+
+        serviceUpdatedSubject.onNext({
+            eventName: 'serviceUpdated',
+            source: 'service1',
+            details: [{
+                id: 'abc',
+                error: {}
+            }, {
+                id: 'def',
+                error: {}
+            }]
+        });
+        serviceUpdatedSubject.onNext({
+            eventName: 'serviceUpdated',
+            source: 'service2',
+            details: [{
+                id: 'xyz',
+                error: {}
+            }]
+        });
+
+        sinon.assert.calledWith(events.push, sinon.match({
+            eventName: 'stateUpdated',
+            source: 'serviceView',
+            details: [
+                sinon.match({
+                    name: 'service1',
+                    offlineCount: 2
+                }),
+                sinon.match({
+                    name: 'service2',
+                    offlineCount: 1
+                })
+            ]
+        }));
+    });
+
+    it('should not count disabled builds as offline', () => {
+        servicesInitializingSubject.onNext({
+            eventName: 'servicesInitializing',
+            source: 'serviceController',
+            details: [
+                {
+                    name: 'service',
+                    projects: ['abc', 'def']
+                }
+            ]
+        });
+
+        serviceUpdatedSubject.onNext({
+            eventName: 'serviceUpdated',
+            source: 'service',
+            details: [{
+                id: 'abc',
+                error: {}
+            }, {
+                id: 'def',
+                error: {},
+                isDisabled: true
+            }]
+        });
+
+        sinon.assert.calledWith(events.push, sinon.match({
+            eventName: 'stateUpdated',
+            source: 'serviceView',
+            details: [
+                sinon.match({
+                    name: 'service',
+                    offlineCount: 1
+                })
+            ]
+        }));
+    });
+
+    it('should count running builds for each service', () => {
+        servicesInitializingSubject.onNext({
+            eventName: 'servicesInitializing',
+            source: 'serviceController',
+            details: [
+                {
+                    name: 'service1',
+                    projects: ['abc', 'def']
+                },
+                {
+                    name: 'service2',
+                    projects: ['xyz']
+                }
+            ]
+        });
+
+        serviceUpdatedSubject.onNext({
+            eventName: 'serviceUpdated',
+            source: 'service1',
+            details: [{
+                id: 'abc',
+                isRunning: true
+            }, {
+                id: 'def',
+                isRunning: true
+            }]
+        });
+        serviceUpdatedSubject.onNext({
+            eventName: 'serviceUpdated',
+            source: 'service2',
+            details: [{
+                id: 'xyz',
+                isRunning: true
+            }]
+        });
+
+        sinon.assert.calledWith(events.push, sinon.match({
+            eventName: 'stateUpdated',
+            source: 'serviceView',
+            details: [
+                sinon.match({
+                    name: 'service1',
+                    runningCount: 2
+                }),
+                sinon.match({
+                    name: 'service2',
+                    runningCount: 1
+                })
+            ]
+        }));
+    });
+
+    it('should not count disabled builds as running', () => {
+        servicesInitializingSubject.onNext({
+            eventName: 'servicesInitializing',
+            source: 'serviceController',
+            details: [
+                {
+                    name: 'service',
+                    projects: ['abc', 'def']
+                }
+            ]
+        });
+
+        serviceUpdatedSubject.onNext({
+            eventName: 'serviceUpdated',
+            source: 'service',
+            details: [{
+                id: 'abc',
+                isRunning: true
+            }, {
+                id: 'def',
+                isRunning: true,
+                isDisabled: true
+            }]
+        });
+
+        sinon.assert.calledWith(events.push, sinon.match({
+            eventName: 'stateUpdated',
+            source: 'serviceView',
+            details: [
+                sinon.match({
+                    name: 'service',
+                    runningCount: 1
+                })
+            ]
+        }));
+    });
+
 });

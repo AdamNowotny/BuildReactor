@@ -37,16 +37,21 @@ const init = () => {
     const getState = (serviceName) => JSON.parse(JSON.stringify(latestState.get(serviceName)));
 
     const updateState = (serviceName, items) => {
+        var updatedItems = items;
         if (latestState.has(serviceName)) {
             const orderedItems = getState(serviceName).items;
-            const updatedItems = orderedItems.map((oldItem) => {
+            updatedItems = orderedItems.map((oldItem) => {
                 const newItem = items.filter((item) => item.id === oldItem.id)[0];
                 return Object.assign(oldItem, { error: null }, newItem);
             });
-            latestState.set(serviceName, { name: serviceName, items: updatedItems });
-        } else {
-            latestState.set(serviceName, { name: serviceName, items });
         }
+        latestState.set(serviceName, {
+            name: serviceName,
+            failedCount: updatedItems.filter((i) => i.isBroken && !i.isDisabled).length,
+            offlineCount: updatedItems.filter((i) => i.error && !i.isDisabled).length,
+            runningCount: updatedItems.filter((i) => i.isRunning && !i.isDisabled).length,
+            items: updatedItems
+        });
     };
 
     const pushStateUpdated = () => {
