@@ -12,7 +12,9 @@ export default app.directive('selectedProjects', () => ({
     controller($scope, $element, $attrs, $transclude) {
 
         $scope.sortableConfig = {
-            onUpdate: (data) => core.setBuildOrder($scope.serviceName, data.models)
+            onUpdate: (data) => core.setBuildOrder($scope.serviceName, data.models),
+            handle: '.handle',
+            forceFallback: true
         };
 
     }

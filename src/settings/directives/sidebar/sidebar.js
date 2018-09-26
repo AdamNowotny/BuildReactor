@@ -16,7 +16,8 @@ export default app.directive('sidebar', () => {
         controller($scope, $element, $attrs, $transclude) {
 
             $scope.sortableConfig = {
-                onUpdate: (data) => core.setOrder(data.models.map((service) => service.name))
+                onUpdate: (data) => core.setOrder(data.models.map((service) => service.name)),
+                forceFallback: true
             };
 
             $scope.$watch('services', (services) => {
