@@ -1,4 +1,6 @@
 /* eslint-env node */
+/* eslint no-process-env: 0 */
+process.env.CHROME_BIN = require('puppeteer').executablePath();
 
 const webpackConfig = require('../../webpack.config.js');
 webpackConfig.entry = '';
@@ -30,11 +32,18 @@ module.exports = function(config) {
         logLevel: config.LOG_INFO,
         // enable / disable watching file and executing tests whenever any file changes
         autoWatch: true,
-        browsers: ['ChromeHeadless'],
-        // If browser does not capture in given timeout [ms], kill it
-        captureTimeout: 60000,
-        // Continuous Integration mode
-        // if true, it capture browsers, run tests and exit
+        browsers: ['Chrome_without_security'],
+        // required for running ChromeHeadless in docker
+        customLaunchers: {
+          Chrome_without_security: {
+            base: 'ChromeHeadless',
+            flags: [
+              '--disable-web-security',
+              '--disable-gpu',
+              '--no-sandbox'
+            ],
+          },
+        },
         singleRun: true,
         webpack: webpackConfig,
         webpackServer: {
