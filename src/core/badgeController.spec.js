@@ -63,6 +63,14 @@ describe('badgeController', () => {
             expect(chrome.browserAction.setBadgeBackgroundColor.calls.mostRecent().args[0].color).toEqual(colors.grey);
         });
 
+        it('should not show grey badge if no builds', () => {
+            events.push({ eventName: 'servicesInitialized' });
+
+            events.push({ eventName: 'stateUpdated', details: [] });
+
+            expect(chrome.browserAction.setBadgeText.calls.mostRecent().args[0].text).toBe('');
+        });
+
     });
 
     describe('yellow badge', () => {

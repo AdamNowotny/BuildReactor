@@ -27,9 +27,9 @@ function init() {
         updateBadge(servicesStarted, failedBuildsCount, offlineBuildsCount, runningBuildsCount);
     });
     events.getByName('stateUpdated').subscribe((state) => {
-        failedBuildsCount = state.details.reduce((a, b) => a.failedCount + b.failedCount, { failedCount: 0 }) || 0;
-        offlineBuildsCount = state.details.reduce((a, b) => a.offlineCount + b.offlineCount, { offlineCount: 0 }) || 0;
-        runningBuildsCount = state.details.reduce((a, b) => a.runningCount + b.runningCount, { runningCount: 0 }) || 0;
+        failedBuildsCount = state.details.reduce((count, item) => count + item.failedCount, 0);
+        offlineBuildsCount = state.details.reduce((count, item) => count + item.offlineCount, 0);
+        runningBuildsCount = state.details.reduce((count, item) => count + item.runningCount, 0);
         updateBadge(servicesStarted, failedBuildsCount, offlineBuildsCount, runningBuildsCount);
     });
 }
