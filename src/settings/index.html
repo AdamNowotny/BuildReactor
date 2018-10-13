@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" ng-csp>
-	<head>
-		<title>BuildReactor settings page</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	</head>
-	<body ng-controller="SettingsCtrl">
-		<section topnav current-service="config" show-actions="view == 'service'"></section>
-		<section sidebar services="serviceTypes" configs="serviceConfigs" current-service="service" current-config="config" view="view"></section>
-		<section ng-view class="content-container"></section>
-	</body>
+  <head>
+    <title>BuildReactor settings page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+  </head>
+  <body ng-controller="SettingsCtrl">
+    <section topnav current-service="config" show-actions="view == 'service'"></section>
+    <section sidebar services="serviceTypes" configs="serviceConfigs" current-service="service" current-config="config" view="view"></section>
+    <section ng-view class="content-container"></section>
+  </body>
 </html>
