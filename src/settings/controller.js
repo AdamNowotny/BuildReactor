@@ -54,8 +54,10 @@ export default app.controller('SettingsCtrl', ($scope, $route) => {
 	});
 
 	core.availableServices(function(types) {
-		$scope.serviceTypes = types;
-		update();
+		$scope.$evalAsync(function() {
+			$scope.serviceTypes = types;
+			update();
+		});
 	});
 
 	$scope.$on('$routeChangeSuccess', function(event, routeData) {
