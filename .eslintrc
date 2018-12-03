@@ -96,7 +96,6 @@
         "array-bracket-spacing": 2,
         "array-callback-return": 2,
         "arrow-body-style": 1,
-        "arrow-parens": 2,
         "arrow-spacing": 2,
         "accessor-pairs": 2,
         "block-scoped-var": 2,
