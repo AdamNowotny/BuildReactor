@@ -48,7 +48,7 @@ describe('services/travis/travis', () => {
                 },
                 {
                     type: 'token',
-                    help: 'Copy token from <a href="https://travis-ci.org/account/preferences">https://travis-ci.org/account/preferences</a>'
+                    help: 'Copy token from <a href="https://travis-ci.org/account/preferences" target="_blank">https://travis-ci.org/account/preferences</a>'
                 }
             ],
             defaultConfig: {
