@@ -129,6 +129,7 @@ describe('services/travis/travis', () => {
         });
     });
 
+    /* eslint max-statements: off */
     describe('getLatest', () => {
 
         it('should pass parameters to builds', () => {
@@ -290,6 +291,20 @@ describe('services/travis/travis', () => {
             expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
                 tags: [{ name: 'Errored', type: 'warning' }],
                 isBroken: true
+            }));
+        });
+
+        it('should mark canceled as tags', () => {
+            requests.builds.returns(Rx.Observable.return({ state: 'canceled' }));
+
+            const result = scheduler.startScheduler(() => travis.getLatest(settings));
+
+            expect(result.messages[0].value.value).toEqual(jasmine.objectContaining({
+                tags: [{
+                    name: 'Canceled',
+                    type: 'warning',
+                    description: `Build was canceled`
+                }]
             }));
         });
 

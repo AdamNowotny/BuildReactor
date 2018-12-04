@@ -71,9 +71,10 @@ export default {
 };
 
 const BUILD_STATES = {
-    SUPPORTED: ['created', 'started', 'passed', 'failed', 'errored'],
+    SUPPORTED: ['created', 'started', 'passed', 'failed', 'errored', 'canceled'],
     BROKEN_KNOWN: ['passed', 'failed', 'errored'],
-    BROKEN: ['failed', 'errored']
+    BROKEN: ['failed', 'errored'],
+    CANCELED: ['canceled']
 };
 
 const createKey = (stringId) => {
@@ -95,6 +96,13 @@ const createTags = (build) => {
             name: 'Unknown',
             type: 'warning',
             description: `Result [${build.state}] is unknown`
+        });
+    }
+    if (BUILD_STATES.CANCELED.includes(build.state)) {
+        tags.push({
+            name: 'Canceled',
+            type: 'warning',
+            description: `Build was canceled`
         });
     }
     return tags;
