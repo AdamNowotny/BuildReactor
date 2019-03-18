@@ -23,7 +23,7 @@ Supported services
 
 Below are the supported CI servers.
 
- * Servers using [XML cctray format](http://confluence.public.thoughtworks.org/display/CI/Multiple+Project+Summary+Reporting+Standard)
+ * Servers using [XML cctray format](https://github.com/robertmaldon/cc_dashboard/blob/master/README.md#multiple-project-summary-reporting-standard)
  * [Atlassian Bamboo](http://www.atlassian.com/software/bamboo/)
  * [BuildBot](http://buildbot.net/)
  * [BuildKite](https://buildkite.com/)
