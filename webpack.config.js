@@ -27,7 +27,7 @@ module.exports = {
     modules: ["src", "node_modules"],
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: 'settings/index.html',
       filename: 'settings.html',
