@@ -23,7 +23,7 @@ const latestBuild = (org, pipeline, token) => request
         query: {
             access_token: token,
             per_page: 1,
-            branch: 'master'
+            branch: 'main'
         }
     })
     .select((response) => response.body)
@@ -36,7 +36,7 @@ const latestFinishedBuild = (org, pipeline, token) => request
         query: {
             access_token: token,
             per_page: 1,
-            branch: 'master',
+            branch: 'main',
             'state[]': ['failed', 'passed']
         }
     })
