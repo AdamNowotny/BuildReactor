@@ -18,7 +18,8 @@ const builds = (id, settings) => request
         url: joinUrl(settings.apiUrl, `/repo/${encodeURIComponent(id)}/builds`),
         query: {
             limit: 1,
-            include: 'build.commit'
+            include: 'build.commit',
+            'build.event_type': 'push'
         },
         headers: {
             'Travis-API-Version': 3,

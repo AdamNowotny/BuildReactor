@@ -78,7 +78,8 @@ describe('services/travis/travisRequests', () => {
                     url: `${settings.apiUrl}/repo/owner%2Frepo/builds`,
                     query: {
                         limit: 1,
-                        include: 'build.commit'
+                        include: 'build.commit',
+                        'build.event_type': 'push'
                     },
                     headers: {
                         'Travis-API-Version': 3,
