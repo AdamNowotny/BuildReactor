@@ -2,7 +2,6 @@
 
 const path = require("path");
 const webpack = require("webpack");
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -27,7 +26,6 @@ module.exports = {
     modules: ["src", "node_modules"],
   },
   plugins: [
-    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: 'settings/index.html',
       filename: 'settings.html',
@@ -49,11 +47,13 @@ module.exports = {
       chunks: ['commons', 'dashboard'],
       minify: false
     }),
-    new CopyWebpackPlugin([
-      { from: '../manifest.json' },
-      { from: '../img', to: 'img' },
-      { from: 'services/*/*.{png,svg}' }
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: '../manifest.json' },
+        { from: '../img', to: 'img' },
+        { from: 'services/*/*.{png,svg}' }
+      ]
+    }),
     new MiniCssExtractPlugin()
   ],
 
@@ -73,51 +73,56 @@ module.exports = {
       {
         test: /\.js$/,
         include: path.join(__dirname, 'src'),
-        loader: 'babel-loader',
-        query: {
-          presets: [
-            ["env", {
-              "targets": {
-                "chrome": "40",
-                "firefox": "50"
-              },
-              "debug": true
-            }]
-          ],
-          "plugins": [
-            ["transform-object-rest-spread", { "useBuiltIns": true }]
-          ]
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              ['@babel/preset-env', { targets: "defaults" }]
+            ]
+          }
         }
       },
       {
         test: /\.?css$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader
-          },
+          { loader: MiniCssExtractPlugin.loader },
           { loader: 'css-loader' },
           { loader: 'sass-loader' }
         ]
       },
       {
-        test: /\.(svg|png|jpg)/,
-        loader: 'url-loader?limit=10000&name=img/[name].[ext]'
-      },
-      {
-        test: /\.(ttf|eot|otf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "file-loader?name=fonts/[name].[ext]"
+        test: /\.(svg|ttf|eot|otf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "file-loader",
+        options: {
+          name: 'fonts/[name].[ext]'
+        }
       },
       {
         test: /\.html$/,
         exclude: /index\.html$/,
         use: [
-          { loader:'ngtemplate-loader?relativeTo=' + (path.resolve(__dirname, './src')) },
+          { 
+            loader:'ngtemplate-loader',
+            options: {
+              relativeTo: 'src'
+            }
+          },
           { loader: 'html-loader' }
         ]
       },
       {
-        test: /(angular-mocks|angular-route|angular-ui-bootstrap|angular-ui-utils|angular-animate)/,
-        loader: 'imports-loader?angular'
+        test: /(angular-mocks|angular-route|angular-animate)/,
+        loader: 'imports-loader',
+        options: {
+          type: 'commonjs',
+          imports: [
+            {
+              syntax: 'single',
+              moduleName: 'angular',
+              name: 'angular',
+            }
+          ]
+        }
       }
     ]
   },

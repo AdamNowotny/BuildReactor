@@ -1,35 +1,29 @@
+import 'rx/dist/rx.binding';
+import Rx from 'rx';
+import configStore from 'core/config/localStore';
 import configUpdater from 'core/config/viewConfigUpdater';
 
-define([
-	'rx',
-	'core/config/localStore',
-	'rx/dist/rx.binding'
-], function(Rx, configStore) {
+var key = 'views';
+var changes = new Rx.BehaviorSubject(configStore.getItem(key));
 
-	'use strict';
+var init = function() {
+    var config = configUpdater.update(configStore.getItem(key));
+    configStore.setItem(key, config);
+    changes.onNext(config);
+};
 
-	var key = 'views';
-	var changes = new Rx.BehaviorSubject(configStore.getItem(key));
+var save = function(config) {
+    if (typeof config !== 'object' || config === null) {
+        throw new Error('view config has to be an object');
+    }
+    if (JSON.stringify(configStore.getItem(key)) !== JSON.stringify(config)) {
+        configStore.setItem(key, config);
+        changes.onNext(config);
+    }
+};
 
-	var init = function() {
-		var config = configUpdater.update(configStore.getItem(key));
-		configStore.setItem(key, config);
-		changes.onNext(config);
-	};
-
-	var save = function(config) {
-		if (typeof config !== 'object' || config === null) {
-			throw new Error('view config has to be an object');
-		}
-		if (JSON.stringify(configStore.getItem(key)) !== JSON.stringify(config)) {
-			configStore.setItem(key, config);
-			changes.onNext(config);
-		}
-	};
-
-	return {
-		init: init,
-		save: save,
-		changes: changes
-	};
-});
+export default {
+    init: init,
+    save: save,
+    changes: changes
+};
