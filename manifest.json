@@ -15,7 +15,7 @@
     },
     "background": {
         "scripts": [
-            "commons.chunk.js",
+            "commons.js",
             "background.js"
         ]
     },

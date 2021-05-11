@@ -3,19 +3,26 @@
 process.env.CHROME_BIN = require('puppeteer').executablePath();
 
 const webpackConfig = require('../../webpack.config.js');
-webpackConfig.entry = '';
+// remove entrypoints, test/main.js will be used
+webpackConfig.entry = undefined;
 webpackConfig.devtool = 'inline-source-map';
 
 module.exports = function(config) {
     config.set({
         basePath: '../..',
-        frameworks: ['jasmine'],
+        frameworks: ['jasmine', 'webpack'],
         files: [
             'src/test/main.js'
         ],
         preprocessors: {
           'src/test/main.js': ['webpack', 'sourcemap']
         },
+        plugins: [
+          'karma-webpack',
+          'karma-jasmine',
+          'karma-sourcemap-loader',
+          'karma-chrome-launcher'
+        ],
         // test results reporter to use
         // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
         reporters: ['progress'],
@@ -49,6 +56,5 @@ module.exports = function(config) {
         webpackServer: {
             noInfo: true
         }
-
     });
 };

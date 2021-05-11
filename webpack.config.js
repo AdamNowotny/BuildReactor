@@ -8,7 +8,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  devtool: '', // disable JS eval
+  devtool: false, // disable JS eval
   context: path.join(__dirname, "src"),
   entry: {
     background: "./core/main.js",
@@ -20,10 +20,28 @@ module.exports = {
     publicPath: './',
     path: path.join(__dirname, "dist/BuildReactor"),
     filename: "[name].js",
-    chunkFilename: "[id].chunk.js"
+    chunkFilename: "[id].chunk.js",
+    clean: true
   },
   resolve: {
     modules: ["src", "node_modules"],
+    fallback: {
+      stream: require.resolve("stream-browserify"),
+      timers: false,
+      util: false
+    }
+  },
+  optimization: {
+    chunkIds: 'named',
+    splitChunks: {
+      chunks: 'all',
+      name: 'commons',
+      minChunks: 2
+    },
+    emitOnErrors: false,
+    removeAvailableModules: true,
+    flagIncludedChunks: true,
+    concatenateModules: true
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -56,18 +74,6 @@ module.exports = {
     }),
     new MiniCssExtractPlugin()
   ],
-
-  optimization: {
-    namedModules: true,
-    splitChunks: {
-        chunks: 'all',
-        name: 'commons',
-        minChunks: 2
-    },
-    noEmitOnErrors: true,
-    concatenateModules: true
-  },
-
   module: {
     rules: [
       {
