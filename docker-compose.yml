@@ -1,7 +1,7 @@
 version: '2'
 services:
   app:
-    build: .
+    image: buildkite/puppeteer
     volumes:
       - .:/code:z
     working_dir: /code
