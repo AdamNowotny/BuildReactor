@@ -1,4 +1,5 @@
-BuildReactor [![Build Status](https://secure.travis-ci.org/AdamNowotny/BuildReactor.png)](http://travis-ci.org/AdamNowotny/BuildReactor) [![Dependency Status](https://gemnasium.com/AdamNowotny/BuildReactor.png)](https://gemnasium.com/AdamNowotny/BuildReactor)
+BuildReactor [![pipeline status](https://gitlab.com/adam.nowotny/BuildReactor/badges/master/pipeline.svg)](https://gitlab.com/adam.nowotny/BuildReactor/-/commits/master)
+
 ============
 
 Developer notifications and dashboard for CI servers
