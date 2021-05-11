@@ -1,5 +1,4 @@
 BuildReactor [![pipeline status](https://gitlab.com/adam.nowotny/BuildReactor/badges/master/pipeline.svg)](https://gitlab.com/adam.nowotny/BuildReactor/-/commits/master)
-
 ============
 
 Developer notifications and dashboard for CI servers
