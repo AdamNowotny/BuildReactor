@@ -99,9 +99,9 @@ module.exports = {
       },
       {
         test: /\.(svg|ttf|eot|otf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "file-loader",
-        options: {
-          name: 'fonts/[name].[ext]'
+        type: "asset",
+        generator: {
+          filename: 'fonts/[name][ext]'
         }
       },
       {
