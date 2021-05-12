@@ -20,9 +20,8 @@ build:
 test:
   stage: test
   script:
+    - mkdir dist
     - npm test
-  dependencies:
-    - build
 
 deploy:
   stage: deploy
