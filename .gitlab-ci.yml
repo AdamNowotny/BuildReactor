@@ -20,7 +20,7 @@ build:
 test:
   stage: test
   script:
-    - mkdir dist
+    - mkdir -p dist
     - npm test
 
 deploy:
