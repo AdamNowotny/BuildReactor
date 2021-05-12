@@ -1,5 +1,5 @@
 {
-  "name": "BuildReactor",
+  "name": "build-reactor",
   "description": "Developer notifications and dashboard for CI servers",
   "version": "2.0.0",
   "homepage": "https://github.com/AdamNowotny/BuildReactor",
@@ -21,9 +21,6 @@
       "url": "https://github.com/AdamNowotny/BuildReactor/blob/master/LICENSE"
     }
   ],
-  "engines": {
-    "node": ">= 6.8"
-  },
   "scripts": {
     "lint": "node_modules/.bin/eslint src --ext .js --quiet",
     "dist": "node_modules/.bin/webpack",
@@ -74,7 +71,7 @@
     "sinon": "10.0.0",
     "stream-browserify": "^3.0.0",
     "webpack": "5.36.2",
-    "webpack-cli": "^4.7.0",
-    "zip-webpack-plugin": "^4.0.1"
+    "webpack-cli": "4.7.0",
+    "zip-webpack-plugin": "4.0.1"
   }
 }

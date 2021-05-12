@@ -2,8 +2,8 @@
 
 const path = require("path");
 const webpack = require("webpack");
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ZipPlugin = require('zip-webpack-plugin');
 
@@ -18,10 +18,7 @@ module.exports = {
     dashboard: "./dashboard/main.js"
   },
   output: {
-    publicPath: './',
-    path: path.join(__dirname, "dist/BuildReactor"),
-    filename: "[name].js",
-    chunkFilename: "[id].chunk.js",
+    path: path.join(__dirname, "dist/build"),
     clean: true
   },
   resolve: {
@@ -33,7 +30,6 @@ module.exports = {
     }
   },
   optimization: {
-    chunkIds: 'named',
     splitChunks: {
       chunks: 'all',
       name: 'commons',
@@ -76,7 +72,7 @@ module.exports = {
     new MiniCssExtractPlugin(),
     new ZipPlugin({
       path: '..',
-      filename: 'BuildReactor.zip',
+      filename: 'build-reactor.zip',
     })
   ],
   module: {
@@ -137,8 +133,4 @@ module.exports = {
       }
     ]
   },
-
-  devServer: {
-    contentBase: "./src"
-  }
 };
