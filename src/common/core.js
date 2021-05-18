@@ -1,122 +1,116 @@
-define([
-	'common/chromeApi',
-	'rx',
-	'rx/dist/rx.binding'
-], function(chromeApi, Rx) {
+import 'rx/dist/rx.binding';
+import Rx from 'rx';
+import chromeApi from 'common/chromeApi';
 
-	'use strict';
-
-	var init = function() {
-		var statePort = chromeApi.connect({ name: 'state' });
-		statePort.onMessage.addListener(function(message) {
-			activeProjects.onNext(message);
-		});
-		var configPort = chromeApi.connect({ name: 'configuration' });
-		configPort.onMessage.addListener(function(message) {
-			configurations.onNext(message);
-		});
-		var viewConfigPort = chromeApi.connect({ name: 'views' });
-		viewConfigPort.onMessage.addListener(function(message) {
-			views.onNext(message);
-		});
-		const logsPort = chromeApi.connect({ name: 'logs' });
-		logsPort.onMessage.addListener(function(message) {
-			messages.onNext(message);
-		});
-	};
-
-	const activeProjects = new Rx.ReplaySubject(1);
-	const configurations = new Rx.ReplaySubject(1);
-	const views = new Rx.ReplaySubject(1);
-	const messages = new Rx.ReplaySubject(1);
-
-	var availableServices = function(callback) {
-		var message = { name: 'availableServices' };
+const init = function() {
+	const statePort = chromeApi.connect({ name: 'state' });
+	statePort.onMessage.addListener(function(message) {
+		activeProjects.onNext(message);
+	});
+	const configPort = chromeApi.connect({ name: 'configuration' });
+	configPort.onMessage.addListener(function(message) {
+		configurations.onNext(message);
+	});
+	const viewConfigPort = chromeApi.connect({ name: 'views' });
+	viewConfigPort.onMessage.addListener(function(message) {
+		views.onNext(message);
+	});
+	const logsPort = chromeApi.connect({ name: 'logs' });
+	logsPort.onMessage.addListener(function(message) {
 		messages.onNext(message);
-		chromeApi.sendMessage(message, callback);
-	};
+	});
+};
 
-	var availableProjects = function(settings, callback) {
-		var message = { name: 'availableProjects', serviceSettings: settings };
-		messages.onNext(message);
-		chromeApi.sendMessage(message, function(response) {
-			messages.onNext({ name: 'availableProjects', response, serviceSettings: settings });
-			callback(response);
-		});
-	};
+const activeProjects = new Rx.ReplaySubject(1);
+const configurations = new Rx.ReplaySubject(1);
+const views = new Rx.ReplaySubject(1);
+const messages = new Rx.ReplaySubject(1);
 
-	var setOrder = function(serviceNames) {
-		var message = { name: 'setOrder', order: serviceNames };
-		messages.onNext(message);
-		chromeApi.sendMessage(message);
-	};
+const availableServices = function(callback) {
+	const message = { name: 'availableServices' };
+	messages.onNext(message);
+	chromeApi.sendMessage(message, callback);
+};
 
-	var setBuildOrder = function(serviceName, builds) {
-		var message = { name: 'setBuildOrder', serviceName: serviceName, order: builds };
-		messages.onNext(message);
-		chromeApi.sendMessage(message);
-	};
+const availableProjects = function(settings, callback) {
+	const message = { name: 'availableProjects', serviceSettings: settings };
+	messages.onNext(message);
+	chromeApi.sendMessage(message, function(response) {
+		messages.onNext({ name: 'availableProjects', response, serviceSettings: settings });
+		callback(response);
+	});
+};
 
-	var enableService = function(name) {
-		var message = { name: 'enableService', serviceName: name };
-		messages.onNext(message);
-		chromeApi.sendMessage(message);
-	};
+const setOrder = function(serviceNames) {
+	const message = { name: 'setOrder', order: serviceNames };
+	messages.onNext(message);
+	chromeApi.sendMessage(message);
+};
 
-	var disableService = function(name) {
-		var message = { name: 'disableService', serviceName: name };
-		messages.onNext(message);
-		chromeApi.sendMessage(message);
-	};
+const setBuildOrder = function(serviceName, builds) {
+	const message = { name: 'setBuildOrder', serviceName, order: builds };
+	messages.onNext(message);
+	chromeApi.sendMessage(message);
+};
 
-	var removeService = function(name) {
-		var message = { name: 'removeService', serviceName: name };
-		messages.onNext(message);
-		chromeApi.sendMessage(message);
-	};
+const enableService = function(name) {
+	const message = { name: 'enableService', serviceName: name };
+	messages.onNext(message);
+	chromeApi.sendMessage(message);
+};
 
-	var renameService = function(oldName, newName) {
-		var message = { name: 'renameService', oldName: oldName, newName: newName };
-		messages.onNext(message);
-		chromeApi.sendMessage(message);
-	};
+const disableService = function(name) {
+	const message = { name: 'disableService', serviceName: name };
+	messages.onNext(message);
+	chromeApi.sendMessage(message);
+};
 
-	var saveService = function(settings) {
-		var message = { name: 'saveService', settings: settings };
-		messages.onNext(message);
-		chromeApi.sendMessage(message);
-	};
+const removeService = function(name) {
+	const message = { name: 'removeService', serviceName: name };
+	messages.onNext(message);
+	chromeApi.sendMessage(message);
+};
 
-	var saveConfig = function(config) {
-		var message = { name: 'saveConfig', config: config };
-		messages.onNext(message);
-		chromeApi.sendMessage(message);
-	};
+const renameService = function(oldName, newName) {
+	const message = { name: 'renameService', oldName, newName };
+	messages.onNext(message);
+	chromeApi.sendMessage(message);
+};
 
-	var setViews = function(viewConfig) {
-		var message = { name: 'setViews', views: viewConfig };
-		messages.onNext(message);
-		chromeApi.sendMessage(message);
-	};
+const saveService = function(settings) {
+	const message = { name: 'saveService', settings };
+	messages.onNext(message);
+	chromeApi.sendMessage(message);
+};
 
-	return {
-		init: init,
-		availableServices: availableServices,
-		configurations: configurations,
-		views: views,
-		activeProjects: activeProjects,
-		setOrder: setOrder,
-		setBuildOrder: setBuildOrder,
-		availableProjects: availableProjects,
-		enableService: enableService,
-		disableService: disableService,
-		removeService: removeService,
-		renameService: renameService,
-		saveService: saveService,
-		saveConfig: saveConfig,
-		setViews: setViews,
-		// for logging
-		messages: messages
-	};
+const saveConfig = function(config) {
+	const message = { name: 'saveConfig', config };
+	messages.onNext(message);
+	chromeApi.sendMessage(message);
+};
 
-});
+const setViews = function(viewConfig) {
+	const message = { name: 'setViews', views: viewConfig };
+	messages.onNext(message);
+	chromeApi.sendMessage(message);
+};
+
+export default {
+	init,
+	availableServices,
+	configurations,
+	views,
+	activeProjects,
+	setOrder,
+	setBuildOrder,
+	availableProjects,
+	enableService,
+	disableService,
+	removeService,
+	renameService,
+	saveService,
+	saveConfig,
+	setViews,
+	// for logging
+	messages
+};

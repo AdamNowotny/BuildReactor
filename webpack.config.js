@@ -9,7 +9,7 @@ const ZipPlugin = require('zip-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  devtool: false, // disable JS eval
+  devtool: 'inline-source-map',
   context: path.join(__dirname, "src"),
   entry: {
     background: "./core/main.js",
@@ -22,6 +22,7 @@ module.exports = {
     clean: true
   },
   resolve: {
+    extensions: ['.ts', '.js'],
     modules: ["src", "node_modules"],
     fallback: {
       stream: require.resolve("stream-browserify"),
@@ -88,6 +89,11 @@ module.exports = {
             ]
           }
         }
+      },
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
       },
       {
         test: /\.?css$/,
