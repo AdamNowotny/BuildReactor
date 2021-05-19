@@ -16,7 +16,6 @@ describe('notificationMessages', () => {
             buildFixed: true,
             buildSuccessful: true,
             buildStillFailing: true,
-            showWhenDashboardActive: false
         };
     });
 

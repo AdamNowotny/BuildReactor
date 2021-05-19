@@ -13,17 +13,6 @@
 				</div>
 			</legend>
 			<div class="form-group" ng-class="{ 'text-muted': !config.notifications.enabled }">
-				<label class="col-md-6 control-label">Show when dashboard active</label>
-				<div class="col-md-6">
-					<ul class="nav nav-pills">
-						<li role="presentation" ng-class="{ active: config.notifications.showWhenDashboardActive }" ng-click="setField('showWhenDashboardActive', true)">
-							<a>On</a>
-						</li>
-						<li role="presentation" ng-class="{ active: !config.notifications.showWhenDashboardActive }" ng-click="setField('showWhenDashboardActive', false)"><a>Off</a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="form-group" ng-class="{ 'text-muted': !config.notifications.enabled }">
 				<label class="col-md-6 control-label">Build broken</label>
 				<div class="col-md-6">
 					<ul class="nav nav-pills">

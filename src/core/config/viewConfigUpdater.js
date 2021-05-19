@@ -14,7 +14,6 @@ export default {
         config.colorBlindMode = config.colorBlindMode || true;
         config.notifications = config.notifications || {
             enabled: true,
-            showWhenDashboardActive: false,
             buildBroken: true,
             buildFixed: true,
             buildStarted: false,

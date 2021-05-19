@@ -12,7 +12,6 @@ window.chrome = {
     },
     tabs: {
         create: () => {},
-        query: (queryInfo, callback) => {}
     },
     runtime: {
         sendMessage: () => {},

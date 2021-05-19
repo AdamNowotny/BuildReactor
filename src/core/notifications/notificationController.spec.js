@@ -1,6 +1,5 @@
 /* global chrome: false */
 import Rx from 'rx/dist/rx.testing';
-import chromeApi from 'common/chromeApi';
 import events from 'core/events';
 import notificationController from 'core/notifications/notificationController';
 import notificationMessages from 'core/notifications/notificationMessages';
@@ -13,7 +12,7 @@ describe('notificationController', () => {
     let servicesInitializedEvents, servicesInitializingEvents;
     let passwordExpiredEvents;
     let scheduler;
-    let onClickedListener, onClosedListener;
+    let onClickedListener;
     const expectedNotification = {
         type: 'basic',
         title: 'title',
@@ -28,7 +27,6 @@ describe('notificationController', () => {
             buildFixed: true,
             buildSuccessful: true,
             buildStillFailing: true,
-            showWhenDashboardActive: false
         }
     };
 
@@ -56,16 +54,12 @@ describe('notificationController', () => {
             }
         });
         scheduler = new Rx.TestScheduler();
-        onClosedListener = jasmine.createSpy();
         spyOn(chrome.notifications.onClicked, 'addListener').and.callFake(listener => {
             onClickedListener = listener;
         });
-        spyOn(chrome.notifications.onClosed, 'addListener').and.callFake(listener => {
-            onClosedListener = listener;
-        });
+        spyOn(chrome.notifications.onClosed, 'addListener');
         spyOn(chrome.notifications, 'create').and.returnValue(jasmine.createSpy());
         spyOn(chrome.notifications, 'clear').and.returnValue(jasmine.createSpy());
-        spyOn(chromeApi, 'isDashboardActive').and.returnValue(Rx.Observable.return(false));
         const mockMessage = {
             id: 'id',
             title: 'title',
@@ -302,38 +296,6 @@ describe('notificationController', () => {
         scheduler.advanceBy(5000);
 
         expect(chrome.notifications.create.calls.count()).toBe(2);
-    });
-
-    it('should not show any notifications when dashboard active', () => {
-        chromeApi.isDashboardActive.and.returnValue(Rx.Observable.return(true));
-        buildFinishedEvents.onNext({
-            eventName: 'buildFinished',
-            details: {},
-            broken: true
-        });
-
-        scheduler.advanceBy(5000);
-
-        expect(chrome.notifications.create).not.toHaveBeenCalled();
-    });
-
-    it('should show notifications when dashboard ignored', () => {
-        configChanges.onNext({
-            notifications: {
-                enabled: true,
-                showWhenDashboardActive: true,
-                buildSuccessful: true
-            }
-        });
-        chromeApi.isDashboardActive.and.returnValue(Rx.Observable.return(true));
-        buildFinishedEvents.onNext({
-            eventName: 'buildFinished',
-            details: {}
-        });
-
-        scheduler.advanceBy(5000);
-
-        expect(chrome.notifications.create).toHaveBeenCalled();
     });
 
     it('should show url when notification clicked', () => {

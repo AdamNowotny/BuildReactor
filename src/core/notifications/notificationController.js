@@ -1,7 +1,6 @@
 /* global chrome: false */
 import 'rx/dist/rx.time';
 import Rx from 'rx';
-import chromeApi from 'common/chromeApi';
 import events from 'core/events';
 import messages from 'core/notifications/notificationMessages';
 
@@ -12,15 +11,6 @@ function init(options) {
     options.configuration.subscribe(newConfig => {
         config = newConfig;
     });
-
-    function whenDashboardInactive(event) {
-        return config.notifications.showWhenDashboardActive ?
-            Rx.Observable.return(event) :
-            chromeApi
-                .isDashboardActive()
-                .where(active => !active)
-                .select(() => event);
-    }
 
     function showNotification(info) {
         if (!info) return;
@@ -59,8 +49,7 @@ function init(options) {
         return Rx.Observable.return(event)
             .where(event => config.notifications.enabled)
             .where(event => !reloading)
-            .where(event => !event.details.isDisabled)
-            .selectMany(whenDashboardInactive);
+            .where(event => !event.details.isDisabled);
     };
 
     const buildStarted = events.getByName('buildStarted')

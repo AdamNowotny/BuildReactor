@@ -15,7 +15,6 @@ describe('core/config/viewConfigUpdater', () => {
             colorBlindMode: true,
             notifications: {
                 enabled: true,
-                showWhenDashboardActive: false,
                 buildBroken: true,
                 buildFixed: true,
                 buildStarted: false,
