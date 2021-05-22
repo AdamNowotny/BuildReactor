@@ -15,7 +15,8 @@
     },
     "background": {
         "scripts": [
-            "commons.js",
+            "lib/rx.js",
+            "shared.js",
             "background.js"
         ]
     },

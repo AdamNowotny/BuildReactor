@@ -9,7 +9,7 @@ const ZipPlugin = require('zip-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   context: path.join(__dirname, "src"),
   entry: {
     background: "./core/main.js",
@@ -33,13 +33,31 @@ module.exports = {
   optimization: {
     splitChunks: {
       chunks: 'all',
-      name: 'commons',
-      minChunks: 2
+      name: 'shared',
+      minChunks: 2,
+      cacheGroups: {
+        angular: {
+          test: /[\\/]node_modules[\\/]angular.*/,
+          name: 'lib/angular',
+          chunks: 'all',
+        },
+        bootstrap: {
+          test: /[\\/]node_modules[\\/]bootstrap.*/,
+          name: 'lib/bootstrap',
+          chunks: 'all',
+        },
+        rx: {
+          test: /[\\/]node_modules[\\/]rx.*/,
+          name: 'lib/rx',
+          chunks: 'all',
+        },
+      },
     },
     emitOnErrors: false,
     removeAvailableModules: true,
     flagIncludedChunks: true,
-    concatenateModules: true
+    concatenateModules: true,
+    minimize: false
   },
   plugins: [
     new HtmlWebpackPlugin({
