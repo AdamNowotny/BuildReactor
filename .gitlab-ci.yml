@@ -12,6 +12,7 @@ cache:
 build:
   stage: build
   script:
+    - npm install
     - npm run dist
   artifacts:
     paths:
