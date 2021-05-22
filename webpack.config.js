@@ -132,13 +132,13 @@ module.exports = {
         test: /\.html$/,
         exclude: /index\.html$/,
         use: [
-          { 
-            loader:'ngtemplate-loader',
+          {
+            loader: 'ngtemplate-loader',
             options: {
               relativeTo: 'src'
             }
           },
-          { loader: 'html-loader' }
+          { loader: 'raw-loader' }
         ]
       },
       {
