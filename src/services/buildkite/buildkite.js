@@ -8,18 +8,20 @@ export default {
         icon: 'services/buildkite/icon.png',
         logo: 'services/buildkite/logo.svg',
         fields: [
-            { type: 'token', help: 'Permissions needed: read_builds, read_organizations, read_pipelines' }
+            { type: 'token', help: 'Permissions needed: read_builds, read_organizations, read_pipelines' },
+            { type: 'branch' }
         ],
         defaultConfig: {
             baseUrl: 'buildkite',
             name: '',
             projects: [],
             token: '',
-            updateInterval: 60
+            updateInterval: 60,
+            branch: 'main'
         }
     }),
-    getAll: (settings) => requests.organizations(settings.token)
-        .selectMany((org) => requests.pipelines(org.pipelines_url, settings.token)
+    getAll: (settings) => requests.organizations(settings)
+        .selectMany((org) => requests.pipelines(org.pipelines_url, settings)
             .select((pipeline) => ({
                 id: `${org.slug}/${pipeline.slug}`,
                 name: pipeline.name,
@@ -29,10 +31,10 @@ export default {
         ),
     getLatest: (settings) => Rx.Observable.fromArray(settings.projects)
         .select((project) => createKey(project))
-        .selectMany((key) => requests.latestBuild(key.org, key.pipeline, settings.token)
+        .selectMany((key) => requests.latestBuild(key.org, key.pipeline, settings)
             .selectMany((latestBuild) => {
                 if (['running', 'scheduled', 'canceled', 'canceling'].includes(latestBuild.state)) {
-                    return requests.latestFinishedBuild(key.org, key.pipeline, settings.token)
+                    return requests.latestFinishedBuild(key.org, key.pipeline, settings)
                         .select((finishedBuild) => parseBuild(latestBuild, key, finishedBuild));
                 } else {
                     return Rx.Observable.return(parseBuild(latestBuild, key));

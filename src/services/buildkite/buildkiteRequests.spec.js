@@ -6,7 +6,7 @@ describe('services/buildkite/buildkiteRequests', () => {
 
     const onNext = Rx.ReactiveTest.onNext;
     const onCompleted = Rx.ReactiveTest.onCompleted;
-    const token = 'token';
+    const settings = { token: 'token', branch: 'main' };
 
     let scheduler;
 
@@ -20,12 +20,12 @@ describe('services/buildkite/buildkiteRequests', () => {
             spyOn(request, 'get').and.callFake((data) => {
                 expect(data).toEqual({
                     url: 'https://api.buildkite.com/v2/organizations',
-                    query: { access_token: token }
+                    query: { access_token: settings.token }
                 });
                 return Rx.Observable.return({ body: [] });
             });
 
-            scheduler.startScheduler(() => buildkiteRequests.organizations(token));
+            scheduler.startScheduler(() => buildkiteRequests.organizations(settings));
 
             expect(request.get).toHaveBeenCalled();
         });
@@ -35,7 +35,7 @@ describe('services/buildkite/buildkiteRequests', () => {
                 Rx.Observable.return({ body: [] })
             );
 
-            const result = scheduler.startScheduler(() => buildkiteRequests.organizations());
+            const result = scheduler.startScheduler(() => buildkiteRequests.organizations(settings));
 
             expect(result.messages).toHaveEqualElements(
                 onCompleted(200)
@@ -49,7 +49,7 @@ describe('services/buildkite/buildkiteRequests', () => {
                 ]
             }));
 
-            const result = scheduler.startScheduler(() => buildkiteRequests.organizations());
+            const result = scheduler.startScheduler(() => buildkiteRequests.organizations(settings));
 
             expect(result.messages).toHaveEqualElements(
                 onNext(200, { org: 1 }),
@@ -69,14 +69,14 @@ describe('services/buildkite/buildkiteRequests', () => {
                 expect(data).toEqual({
                     url,
                     query: {
-                        access_token: token,
+                        access_token: settings.token,
                         per_page: 100
                     }
                 });
                 return Rx.Observable.return({ body: [] });
             });
 
-            scheduler.startScheduler(() => buildkiteRequests.pipelines(url, token));
+            scheduler.startScheduler(() => buildkiteRequests.pipelines(url, settings));
 
             expect(request.get).toHaveBeenCalled();
         });
@@ -87,7 +87,7 @@ describe('services/buildkite/buildkiteRequests', () => {
             );
 
             const result = scheduler.startScheduler(() =>
-                buildkiteRequests.pipelines(url, token)
+                buildkiteRequests.pipelines(url, settings)
             );
 
             expect(result.messages).toHaveEqualElements(
@@ -103,7 +103,7 @@ describe('services/buildkite/buildkiteRequests', () => {
             }));
 
             const result = scheduler.startScheduler(() =>
-                buildkiteRequests.pipelines(url, token)
+                buildkiteRequests.pipelines(url, settings)
             );
 
             expect(result.messages).toHaveEqualElements(
@@ -125,15 +125,27 @@ describe('services/buildkite/buildkiteRequests', () => {
                 expect(data).toEqual({
                     url: `https://api.buildkite.com/v2/organizations/${org}/pipelines/${pipeline}/builds`,
                     query: {
-                        access_token: token,
+                        access_token: settings.token,
                         per_page: 1,
-                        branch: 'master'
+                        branch: 'main'
                     }
                 });
                 return Rx.Observable.return({ body: [] });
             });
 
-            scheduler.startScheduler(() => buildkiteRequests.latestBuild(org, pipeline, token));
+            scheduler.startScheduler(() => buildkiteRequests.latestBuild(org, pipeline, settings));
+
+            expect(request.get).toHaveBeenCalled();
+        });
+
+        it('should use master branch by default', () => {
+            const noBranchSettings = { token: 'token' };
+            spyOn(request, 'get').and.callFake((data) => {
+                expect(data.query.branch).toEqual('master');
+                return Rx.Observable.return({ body: [] });
+            });
+
+            scheduler.startScheduler(() => buildkiteRequests.latestBuild(org, pipeline, noBranchSettings));
 
             expect(request.get).toHaveBeenCalled();
         });
@@ -144,7 +156,7 @@ describe('services/buildkite/buildkiteRequests', () => {
             );
 
             const result = scheduler.startScheduler(() =>
-                buildkiteRequests.latestBuild(org, pipeline, token)
+                buildkiteRequests.latestBuild(org, pipeline, settings)
             );
 
             expect(result.messages).toHaveEqualElements(
@@ -160,7 +172,7 @@ describe('services/buildkite/buildkiteRequests', () => {
             }));
 
             const result = scheduler.startScheduler(() =>
-                buildkiteRequests.latestBuild(org, pipeline, token)
+                buildkiteRequests.latestBuild(org, pipeline, settings)
             );
 
             expect(result.messages).toHaveEqualElements(
@@ -181,16 +193,28 @@ describe('services/buildkite/buildkiteRequests', () => {
                 expect(data).toEqual({
                     url: `https://api.buildkite.com/v2/organizations/${org}/pipelines/${pipeline}/builds`,
                     query: {
-                        access_token: token,
+                        access_token: settings.token,
                         per_page: 1,
-                        branch: 'master',
+                        branch: 'main',
                         'state[]': ['failed', 'passed']
                     }
                 });
                 return Rx.Observable.return({ body: [] });
             });
 
-            scheduler.startScheduler(() => buildkiteRequests.latestFinishedBuild(org, pipeline, token));
+            scheduler.startScheduler(() => buildkiteRequests.latestFinishedBuild(org, pipeline, settings));
+
+            expect(request.get).toHaveBeenCalled();
+        });
+
+        it('should use master branch by default', () => {
+            const noBranchSettings = { token: 'token' };
+            spyOn(request, 'get').and.callFake((data) => {
+                expect(data.query.branch).toEqual('master');
+                return Rx.Observable.return({ body: [] });
+            });
+
+            scheduler.startScheduler(() => buildkiteRequests.latestFinishedBuild(org, pipeline, noBranchSettings));
 
             expect(request.get).toHaveBeenCalled();
         });
@@ -201,7 +225,7 @@ describe('services/buildkite/buildkiteRequests', () => {
             );
 
             const result = scheduler.startScheduler(() =>
-                buildkiteRequests.latestFinishedBuild(org, pipeline, token)
+                buildkiteRequests.latestFinishedBuild(org, pipeline, settings)
             );
 
             expect(result.messages).toHaveEqualElements(
@@ -217,7 +241,7 @@ describe('services/buildkite/buildkiteRequests', () => {
             }));
 
             const result = scheduler.startScheduler(() =>
-                buildkiteRequests.latestFinishedBuild(org, pipeline, token)
+                buildkiteRequests.latestFinishedBuild(org, pipeline, settings)
             );
 
             expect(result.messages).toHaveEqualElements(

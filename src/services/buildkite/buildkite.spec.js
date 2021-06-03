@@ -19,6 +19,7 @@ describe('services/buildkite/buildkite', () => {
 
         settings = {
             token: 'token',
+            branch: 'main',
             projects: ['org/pipeline']
         };
     });
@@ -39,13 +40,15 @@ describe('services/buildkite/buildkite', () => {
             icon: 'services/buildkite/icon.png',
             logo: 'services/buildkite/logo.svg',
             fields: [
-                { type: 'token', help: 'Permissions needed: read_builds, read_organizations, read_pipelines' }
+                { type: 'token', help: 'Permissions needed: read_builds, read_organizations, read_pipelines' },
+                { type: 'branch' }
             ],
             defaultConfig: {
                 baseUrl: 'buildkite',
                 name: '',
                 projects: [],
                 token: '',
+                branch: 'main',
                 updateInterval: 60
             }
         });
@@ -59,7 +62,7 @@ describe('services/buildkite/buildkite', () => {
             buildkite.getAll(settings);
 
             sinon.assert.calledOnce(requests.organizations);
-            sinon.assert.calledWith(requests.organizations, settings.token);
+            sinon.assert.calledWith(requests.organizations, settings);
         });
 
         it('should return empty sequence if no organizations', () => {
@@ -81,7 +84,7 @@ describe('services/buildkite/buildkite', () => {
             scheduler.startScheduler(() => buildkite.getAll(settings));
 
             sinon.assert.calledOnce(requests.pipelines);
-            sinon.assert.calledWith(requests.pipelines, 'url', settings.token);
+            sinon.assert.calledWith(requests.pipelines, 'url', settings);
         });
 
 
@@ -114,17 +117,18 @@ describe('services/buildkite/buildkite', () => {
         });
     });
 
+    // eslint-disable-next-line max-statements
     describe('getLatest', () => {
 
-        it('should pass org, pipeline and token to builds', () => {
+        it('should call latestBuild', () => {
             settings.projects = ['org/pipeline1', 'org/pipeline2'];
             requests.latestBuild.returns(Rx.Observable.empty());
 
             scheduler.startScheduler(() => buildkite.getLatest(settings));
 
             sinon.assert.calledTwice(requests.latestBuild);
-            sinon.assert.calledWith(requests.latestBuild, 'org', 'pipeline1', settings.token);
-            sinon.assert.calledWith(requests.latestBuild, 'org', 'pipeline2', settings.token);
+            sinon.assert.calledWith(requests.latestBuild, 'org', 'pipeline1', settings);
+            sinon.assert.calledWith(requests.latestBuild, 'org', 'pipeline2', settings);
         });
 
         it('should return empty sequence if no builds', () => {
@@ -148,9 +152,9 @@ describe('services/buildkite/buildkite', () => {
                 pipeline: { name: 'pipeline2' },
             };
             requests.latestBuild
-                .withArgs('org', 'pipeline1', settings.token)
+                .withArgs('org', 'pipeline1', settings)
                 .returns(Rx.Observable.return(build1))
-                .withArgs('org', 'pipeline2', settings.token)
+                .withArgs('org', 'pipeline2', settings)
                 .returns(Rx.Observable.return(build2));
 
             const result = scheduler.startScheduler(() => buildkite.getLatest(settings));
@@ -185,9 +189,9 @@ describe('services/buildkite/buildkite', () => {
                 pipeline: { name: 'pipeline2' },
             };
             requests.latestBuild
-                .withArgs('org', 'pipeline1', settings.token)
+                .withArgs('org', 'pipeline1', settings)
                 .returns(Rx.Observable.throw({ message: 'error message' }))
-                .withArgs('org', 'pipeline2', settings.token)
+                .withArgs('org', 'pipeline2', settings)
                 .returns(Rx.Observable.return(build2));
 
             const result = scheduler.startScheduler(() => buildkite.getLatest(settings));
