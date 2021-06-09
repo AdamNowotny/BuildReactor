@@ -1,7 +1,7 @@
 {
   "name": "build-reactor",
   "description": "Developer notifications and dashboard for CI servers",
-  "version": "2.0.0",
+  "version": "3.0.1",
   "homepage": "https://github.com/AdamNowotny/BuildReactor",
   "author": {
     "name": "Adam Nowotny",
