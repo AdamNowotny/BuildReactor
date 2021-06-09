@@ -36,27 +36,27 @@ Screenshots
 
 Notifications
 -------------
-<img src="docs/notifications-640x400.jpg" alt="BuildReactor notifications">
+<img src="docs/notifications-640x400.png" alt="BuildReactor notifications">
 
 Popup and chrome badge
 ----------------------
-<img src="docs/popup-640x400.jpg" alt="BuildReactor popup">
+<img src="docs/popup-640x400.png" alt="BuildReactor popup">
 
 Options page - adding new service
 ---------------------------------
-<img src="docs/settings-new-1280x800.jpg" alt="BuildReactor options page">
+<img src="docs/settings-new-1280x800.png" alt="BuildReactor options page">
 
 Options page - service settings
 -------------------------------
-<img src="docs/settings-1280x800.jpg" alt="BuildReactor options page">
+<img src="docs/settings-1280x800.png" alt="BuildReactor options page">
 
 Options page - view configuration
 ---------------------------------
-<img src="docs/settings-view-1280x800.jpg" alt="BuildReactor view configuration page">
+<img src="docs/settings-view-1280x800.png" alt="BuildReactor view configuration page">
 
 Dashboard page
 -------------------------------
-<img src="docs/dashboard-1280x800.jpg" alt="BuildReactor dashboard">
+<img src="docs/dashboard-1280x800.png" alt="BuildReactor dashboard">
 
 Developer setup
 ===============
