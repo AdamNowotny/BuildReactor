@@ -47,6 +47,7 @@
   "devDependencies": {
     "@babel/core": "7.14.0",
     "@babel/preset-env": "7.14.1",
+    "@types/chrome": "^0.0.268",
     "angular-mocks": "1.8.2",
     "babel-eslint": "10.1.0",
     "babel-loader": "8.2.2",
