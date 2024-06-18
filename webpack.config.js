@@ -31,35 +31,6 @@ module.exports = {
       util: false
     }
   },
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-      name: 'shared',
-      minChunks: 2,
-      cacheGroups: {
-        angular: {
-          test: /[\\/]node_modules[\\/]angular.*/,
-          name: 'lib/angular',
-          chunks: 'all',
-        },
-        bootstrap: {
-          test: /[\\/]node_modules[\\/]bootstrap.*/,
-          name: 'lib/bootstrap',
-          chunks: 'all',
-        },
-        rx: {
-          test: /[\\/]node_modules[\\/]rx.*/,
-          name: 'lib/rx',
-          chunks: 'all',
-        },
-      },
-    },
-    emitOnErrors: false,
-    removeAvailableModules: true,
-    flagIncludedChunks: true,
-    concatenateModules: true,
-    minimize: false
-  },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'settings/index.html',
