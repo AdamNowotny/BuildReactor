@@ -1,3 +1,4 @@
+import sortBy from "common/sortBy";
 import { CIService, CIServiceSettings } from "../common/types";
 import logger from "./logger";
 
@@ -20,4 +21,12 @@ const getSettings = function() {
     });
 };
 
-export default { registerType, getSettings };
+const getPipelinesFor = function(settings: CIServiceSettings) {
+    const pipelines: any = services[settings["baseUrl"]].getAll(settings);
+    logger.log(pipelines);
+    return pipelines
+            .toArray()
+            .select((items) => ({ items: sortBy('name', items) }));
+};
+
+export default { registerType, getSettings, getPipelinesFor };
