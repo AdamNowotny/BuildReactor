@@ -3,62 +3,71 @@ import Rx from 'rx';
 import errors from 'core/services/requestErrors';
 import { parseString } from 'xml2js';
 
-const fetchCallback = (options, callback) => {
-    // Construct the URL with query parameters
-    const url: URL = new URL(options.url);
-    if (options.query) {
-        Object.keys(options.query).forEach(key => url.searchParams.append(key, options.query[key]));
-    }
+interface RequestOptions {
+    url: string
+    query?: Record<string, string>
+    body?: object | string
+    headers?: HeadersInit
+    username?: string
+    password?: string
+    type?: string
+    timeout?: number
+}
 
-    // Set up fetch options
-    const fetchOptions = {
-        method: 'GET',
-        headers: options.headers || {}
-    };
+const fetchCallback = async (options: RequestOptions, callback) => {
+    try {
+        const url: URL = new URL(options.url);
+        Object.entries(options.query ?? {})
+            .forEach(([key, value]) => { url.searchParams.append(key, value); });
+        const fetchOptions = createRequest(options);
 
-    // Handle basic authentication
-    if (options.username) {
-        fetchOptions.headers['Authorization'] = 'Basic ' + btoa(`${options.username}:${options.password}`);
-    }
-
-    // Execute the fetch request
-    fetch(url, fetchOptions)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response.statusText);
-            }
-            // Parse the response based on the expected type
-            if (options.type === 'xml') {
-                return response.text().then(text => {
-                    let result;
-                    parseString(text, (err, json) => {
-                        if (err) throw err;
-                        result = json;
-                    });
-                    return result;
-                });
-            } else {
-                return response.json();
-            }
-        })
-        .then(data => {
-            callback(null, {
-                body: data,
-                headers: {}, // Fetch does not expose headers directly; handle as needed
-            });
-        })
-        .catch(err => {
-            callback(err, null);
+        const response = await fetch(url, fetchOptions);
+        console.log('request.fetch', response);
+        if (!response.ok) {
+            callback(errors.create({ response }, options), null);
+            return;
+        }
+        const data = options.type === 'xml' ?
+            await parseXml(response) :
+            await response.json();
+        callback(null, {
+            body: data,
+            headers: response.headers,
         });
+    } catch (error) {
+        callback(errors.create(error, options), null);
+    }
 };
 
-const get = (options) => Rx.Observable.fromNodeCallback(fetchCallback)(options)
-    .catch((ex) => Rx.Observable.throw(errors.create(ex, options)))
-    .select((response) => ({
-        body: response.body,
-        headers: response.headers
-    }));
+const get = (options) => Rx.Observable.fromNodeCallback(fetchCallback)(options);
 
 export default {
     get
 };
+
+function createRequest(options: RequestOptions) {
+    const fetchOptions: RequestInit = {
+        method: 'GET',
+        headers: options.headers ?? new Headers(),
+        signal: options.timeout ? AbortSignal.timeout(options.timeout) : undefined,
+    };
+
+    if (options.username) {
+        fetchOptions.headers!['Authorization'] = 'Basic ' + btoa(`${options.username}:${options.password ?? ''}`);
+    }
+    if (options.type) {
+        fetchOptions.headers!['Content-Type'] = 'application/' + options.type;
+    }
+    return fetchOptions;
+}
+
+async function parseXml(response: Response) {
+    return response.text().then(text => {
+        let result;
+        parseString(text, (err, json) => {
+            if (err) throw err;
+            result = json;
+        });
+        return result;
+    });
+}

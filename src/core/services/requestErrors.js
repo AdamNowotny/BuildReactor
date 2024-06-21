@@ -1,12 +1,8 @@
-function AjaxError(ex) {
-    this.name = "AjaxError";
+function RequestError(ex, options) {
+    this.name = "RequestError";
     this.status = ex.status;
-    if (ex.response && ex.response.error) {
-        this.message = ex.response.error.message;
-        this.url = ex.response.error.url;
-    }
-    this.message = this.message || 'Connection failed';
-    this.url = this.url || ex.url;
+    this.message = ex.message ?? 'Connection failed';
+    this.url = options.url;
 }
 
 function TimeoutError(ex, options) {
@@ -16,31 +12,32 @@ function TimeoutError(ex, options) {
     this.url = options.url;
 }
 
-function NotFoundError(ex) {
+function NotFoundError(response) {
     this.name = "NotFoundError";
-    this.status = ex.status;
-    this.message = ex.response.error.message;
-    this.url = ex.response.error.url;
+    this.status = response?.status;
+    this.message = `[${response?.status}] Not found`;
+    this.url = response?.url;
 }
 
-function UnauthorisedError(ex) {
+function UnauthorisedError(response) {
     this.name = "UnauthorisedError";
-    this.status = ex.status;
-    this.message = ex.response.error.message;
-    this.url = ex.response.error.url;
+    this.status = response?.status;
+    this.message = `[${response?.status}] Unauthorised`;
+    this.url = response?.url;
 }
 
-function create(ex, options = null) {
+function create(ex, options) {
+    console.log('requestErrors.create', ex, options);
     if (ex.timeout) {
         return new TimeoutError(ex, options);
     }
-    if (ex.response && ex.response.notFound) {
-        return new NotFoundError(ex);
+    if (ex.response && ex.response.status === 404) {
+        return new NotFoundError(ex.response, options);
     }
-    if (ex.response && (ex.response.unauthorized || ex.response.forbidden)) {
-        return new UnauthorisedError(ex);
+    if (ex.response && ([401, 403].includes(ex.response.status))) {
+        return new UnauthorisedError(ex.response, options);
     }
-    return new AjaxError(ex);
+    return new RequestError(ex, options);
 }
 
 export default {
