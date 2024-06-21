@@ -22,9 +22,9 @@
     }
   ],
   "scripts": {
-    "lint": "node_modules/.bin/eslint src --ext .js --quiet",
-    "dist": "node_modules/.bin/webpack",
-    "auto-dist": "node_modules/.bin/webpack --watch",
+    "lint": "node_modules/.bin/eslint .",
+    "dist": "NODE_OPTIONS=--openssl-legacy-provider node_modules/.bin/webpack",
+    "auto-dist": "ODE_OPTIONS=--openssl-legacy-provider node_modules/.bin/webpack --watch",
     "test": "npm run lint && npm run karma",
     "karma": "node_modules/.bin/karma start ./src/test/karma.conf.js",
     "auto-test": "node_modules/.bin/karma start --no-single-run ./src/test/karma.conf.js",
@@ -39,6 +39,7 @@
     "angular-ui-utils": "0.1.1",
     "bootstrap": "3.4.1",
     "font-awesome": "4.7.0",
+    "globals": "^15.6.0",
     "rx": "4.1.0",
     "sortablejs": "1.9.0",
     "xml2js": "0.4.23"
@@ -46,13 +47,15 @@
   "devDependencies": {
     "@babel/core": "7.14.0",
     "@babel/preset-env": "7.14.1",
+    "@eslint/js": "^9.5.0",
     "@types/chrome": "^0.0.268",
+    "@types/eslint__js": "^8.42.3",
+    "@types/rx": "^4.1.4",
     "angular-mocks": "1.8.2",
-    "babel-eslint": "10.1.0",
     "babel-loader": "8.2.2",
     "copy-webpack-plugin": "^8.1.1",
     "css-loader": "5.2.4",
-    "eslint": "5.16.0",
+    "eslint": "^8.57.0",
     "html-webpack-plugin": "5.3.1",
     "imports-loader": "1.2.0",
     "jasmine-core": "3.7.1",
@@ -70,7 +73,8 @@
     "sinon": "10.0.0",
     "stream-browserify": "^3.0.0",
     "ts-loader": "^9.5.1",
-    "typescript": "^4.4.5",
+    "typescript": "^4.9.5",
+    "typescript-eslint": "^7.13.1",
     "webpack": "5.36.2",
     "webpack-cli": "4.7.0",
     "zip-webpack-plugin": "4.0.1"

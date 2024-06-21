@@ -1,5 +1,3 @@
-/* global chrome: false */
-
 import logger from "./logger";
 import serviceRepository from "./service-repository";
 
