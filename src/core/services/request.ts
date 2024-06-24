@@ -2,6 +2,7 @@ import 'rx/dist/rx.binding';
 import Rx from 'rx';
 import errors from 'core/services/requestErrors';
 import { parseString } from 'xml2js';
+import logger from 'common/logger';
 
 interface RequestOptions {
     url: string
@@ -22,7 +23,7 @@ const fetchCallback = async (options: RequestOptions, callback) => {
         const fetchOptions = createRequest(options);
 
         const response = await fetch(url, fetchOptions);
-        console.log('request.fetch', response);
+        logger.log('request.fetch', response);
         if (!response.ok) {
             callback(errors.create({ response }, options), null);
             return;

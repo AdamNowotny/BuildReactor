@@ -8,7 +8,7 @@ describe('common/core', () => {
 
     const onNext = Rx.ReactiveTest.onNext;
     let scheduler;
-    let configPort, logsPort, statePort, viewsPort;
+    let configPort, statePort, viewsPort;
 
     const createPort = function() {
         return {
@@ -21,13 +21,11 @@ describe('common/core', () => {
     beforeEach(() => {
         scheduler = new Rx.TestScheduler();
         configPort = createPort();
-        logsPort = createPort();
         statePort = createPort();
         viewsPort = createPort();
         spyOn(chromeApi, 'connect').and.callFake((request) => {
             const ports = {
                 'configuration': configPort,
-                'logs': logsPort,
                 'state': statePort,
                 'views': viewsPort
             };
@@ -35,7 +33,6 @@ describe('common/core', () => {
         });
         spyOn(chromeApi, 'sendMessage');
         spyOn(configPort.onMessage, 'addListener');
-        spyOn(logsPort.onMessage, 'addListener');
         spyOn(statePort.onMessage, 'addListener');
         spyOn(viewsPort.onMessage, 'addListener');
     });
@@ -94,20 +91,6 @@ describe('common/core', () => {
         });
 
         expect(result.messages).toHaveElements(onNext(300, config));
-    });
-
-    xit('should pass logs from background page', () => {
-        const error = { name: 'error', message: 'log message' };
-        logsPort.onMessage.addListener.and.callFake((listener) => {
-            listener(error);
-        });
-
-        scheduler.scheduleAbsolute(null, 300, () => {
-            core.init();
-        });
-        const result = scheduler.startScheduler(() => core.messages);
-
-        expect(result.messages).toHaveElements(onNext(300, error));
     });
 
     it('should send availableServices message', function() {

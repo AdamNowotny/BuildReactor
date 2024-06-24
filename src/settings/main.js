@@ -7,9 +7,9 @@ import 'settings/controller';
 import 'settings/routes';
 import angular from 'angular';
 import core from 'common/core';
-import logger from 'common/coreLogger';
+import logger from 'common/logger';
 
-logger.init({ debug: false });
+logger.init({ prefix: 'settings' });
 core.init();
 
 angular.element(document).ready(() => {

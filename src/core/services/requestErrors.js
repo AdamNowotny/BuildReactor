@@ -1,3 +1,5 @@
+import logger from "common/logger";
+
 function RequestError(ex, options) {
     this.name = "RequestError";
     this.status = ex.status;
@@ -27,7 +29,7 @@ function UnauthorisedError(response) {
 }
 
 function create(ex, options) {
-    console.log('requestErrors.create', ex, options);
+    logger.log('requestErrors.create', ex, options);
     if (ex.timeout) {
         return new TimeoutError(ex, options);
     }

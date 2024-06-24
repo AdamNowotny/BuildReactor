@@ -1,14 +1,14 @@
-import logger from "./logger";
+import logger from "common/logger";
 import serviceRepository from "./service-repository";
 
 const availableProjects = (sendResponse, settings) => {
 	serviceRepository.getPipelinesFor(settings)
 		.subscribe((projects) => {
-            console.log('messaging.availableProjects.subscribe', projects);
+            logger.log('messaging.availableProjects.subscribe', projects);
 			projects.selected = settings.projects;
 			sendResponse({ projects });
 		}, (error) => {
-            console.log('messaging.availableProjects.error', error);
+            logger.error('messaging.availableProjects.error', error);
 			sendResponse({
 				error: {
 					name: error.name,

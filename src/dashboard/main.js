@@ -6,10 +6,10 @@ import 'dashboard/app';
 import 'dashboard/controller';
 import angular from 'angular';
 import core from 'common/core';
-import logger from 'common/coreLogger';
+import logger from 'common/logger';
 
 core.init();
-logger.init({ debug: false });
+logger.init({ prefix: 'dashboard' });
 
 angular.element(document).ready(() => {
 	angular.bootstrap(document, ['dashboard']);

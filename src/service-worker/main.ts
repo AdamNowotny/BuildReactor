@@ -11,6 +11,7 @@ import jenkins from 'services/jenkins/jenkins';
 import teamcity from 'services/teamcity/teamcity';
 import travis from 'services/travis/travis';
 
+import logger from "common/logger";
 import serviceRepository from './service-repository';
 import messaging from './messaging';
 
@@ -26,4 +27,5 @@ serviceRepository.registerType(jenkins);
 serviceRepository.registerType(teamcity);
 serviceRepository.registerType(travis);
 
+logger.init({ prefix: 'service-worker'});
 messaging.init();

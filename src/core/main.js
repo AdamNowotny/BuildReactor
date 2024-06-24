@@ -9,7 +9,7 @@ import cctray from 'services/cctray/cctray';
 import chromeListeners from 'core/chromeListeners';
 import go from 'services/go/go';
 import jenkins from 'services/jenkins/jenkins';
-import logger from 'core/logger';
+import logger from 'common/logger';
 import notificationController from 'core/notifications/notificationController';
 import passwordExpiredHandler from 'core/passwordExpiredHandler';
 import poolingService from 'core/services/poolingService';
@@ -22,7 +22,7 @@ import viewConfiguration from 'core/config/viewConfiguration';
 
 serviceConfiguration.init();
 viewConfiguration.init();
-logger.init({ debug: false });
+logger.init({ prefix: 'core' });
 badgeController.init();
 notificationController.init({ configuration: viewConfiguration.changes });
 serviceView.init();

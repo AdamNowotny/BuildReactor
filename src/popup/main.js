@@ -6,10 +6,10 @@ import 'popup/app';
 import 'popup/controller';
 import angular from 'angular';
 import core from 'common/core';
-import logger from 'common/coreLogger';
+import logger from 'common/logger';
 
 core.init();
-logger.init({ debug: false });
+logger.init({ prefix: 'popup' });
 
 angular.element(document).ready(() => {
 	angular.bootstrap(document, ['popup']);
