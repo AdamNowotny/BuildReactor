@@ -1,8 +1,0 @@
-version: '2'
-services:
-  app:
-    image: buildkite/puppeteer
-    volumes:
-      - .:/code:z
-    working_dir: /code
-    command: /bin/bash

@@ -24,7 +24,7 @@ export default tseslint.config(
     }
   },
   eslint.configs.recommended,
-  ...tseslint.configs.all
+  ...tseslint.configs.all,
   {
     rules: {
       "@typescript-eslint/no-unsafe-assignment": "off",

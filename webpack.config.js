@@ -27,6 +27,7 @@ module.exports = {
     modules: ["src", "node_modules"],
     fallback: {
       stream: require.resolve("stream-browserify"),
+      buffer: false,
       timers: false,
       util: false
     }
