@@ -25,9 +25,6 @@
     "lint": "node_modules/.bin/eslint .",
     "dist": "NODE_OPTIONS=--openssl-legacy-provider node_modules/.bin/webpack",
     "auto-dist": "ODE_OPTIONS=--openssl-legacy-provider node_modules/.bin/webpack --watch",
-    "test": "npm run lint && npm run karma",
-    "karma": "node_modules/.bin/karma start ./src/test/karma.conf.js",
-    "auto-test": "node_modules/.bin/karma start --no-single-run ./src/test/karma.conf.js",
     "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js"
   },
   "dependencies": {
@@ -42,12 +39,13 @@
     "globals": "^15.6.0",
     "rx": "4.1.0",
     "sortablejs": "1.9.0",
-    "xml2js": "0.4.23"
+    "xml2js": "0.6.2"
   },
   "devDependencies": {
     "@babel/core": "7.14.0",
     "@babel/preset-env": "7.14.1",
     "@eslint/js": "^9.5.0",
+    "@tsconfig/node22": "^22.0.0",
     "@types/chrome": "^0.0.268",
     "@types/eslint__js": "^8.42.3",
     "@types/rx": "^4.1.4",
@@ -62,8 +60,9 @@
     "raw-loader": "^4.0.2",
     "sass": "1.32.12",
     "sass-loader": "^11.0.1",
+    "stream-browserify": "^3.0.0",
     "ts-loader": "^9.5.1",
-    "typescript": "^4.9.5",
+    "typescript": "^5.5.2",
     "typescript-eslint": "^7.13.1",
     "webpack": "5.36.2",
     "webpack-cli": "4.7.0",

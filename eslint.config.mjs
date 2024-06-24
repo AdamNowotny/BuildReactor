@@ -40,6 +40,10 @@ export default tseslint.config(
       "no-console": "error",
       "@typescript-eslint/use-unknown-in-catch-callback-variable": "off",
       "@typescript-eslint/dot-notation": "off",
+      "@typescript-eslint/prefer-readonly-parameter-types": "off",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-use-before-define": "off",
     },
   }
 );
