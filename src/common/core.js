@@ -75,13 +75,13 @@ const renameService = function(oldName, newName) {
 
 const saveService = function(settings) {
 	const message = { name: 'saveService', settings };
-	messages.onNext(message);
+	logger.log('saveService', message);
 	chromeApi.sendMessage(message);
 };
 
 const saveConfig = function(config) {
 	const message = { name: 'saveConfig', config };
-	messages.onNext(message);
+	logger.log('saveConfig', config);
 	chromeApi.sendMessage(message);
 };
 
