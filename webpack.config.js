@@ -115,7 +115,7 @@ module.exports = {
         ]
       },
       {
-        test: /(angular-mocks|angular-route|angular-animate)/,
+        test: /(angular-route|angular-animate)/,
         loader: 'imports-loader',
         options: {
           type: 'commonjs',
