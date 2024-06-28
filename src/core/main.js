@@ -22,7 +22,7 @@ import viewConfiguration from 'core/config/viewConfiguration';
 
 serviceConfiguration.init();
 viewConfiguration.init();
-logger.init({ prefix: 'core' });
+logger.init({ prefix: 'core', enableEvents: true });
 badgeController.init();
 notificationController.init({ configuration: viewConfiguration.changes });
 serviceView.init();

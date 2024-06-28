@@ -27,5 +27,5 @@ serviceRepository.registerType(jenkins);
 serviceRepository.registerType(teamcity);
 serviceRepository.registerType(travis);
 
-logger.init({ prefix: 'service-worker'});
+logger.init({ prefix: 'service-worker', enableEvents: false });
 messaging.init();

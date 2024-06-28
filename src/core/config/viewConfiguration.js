@@ -4,7 +4,7 @@ import configStore from 'core/config/localStore';
 import configUpdater from 'core/config/viewConfigUpdater';
 
 var key = 'views';
-var changes = new Rx.BehaviorSubject(configStore.getItem(key));
+var changes = new Rx.BehaviorSubject();
 
 var init = function() {
     var config = configUpdater.update(configStore.getItem(key));

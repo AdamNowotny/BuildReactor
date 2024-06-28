@@ -6,17 +6,17 @@ import viewConfiguration from "core/config/viewConfiguration";
 
 let LOG_NAMESPACE = "NONE";
 
-const init = (options: { prefix: string }) => {
+const init = (options: { prefix: string, enableEvents: boolean }) => {
     LOG_NAMESPACE = options.prefix;
 
-    window.onerror = function (message, url, line) {
-        window.console.error(
-            `Unhandled error, message: [${message}], url: [${url}], line: [${line}]`
+    self.onerror = function (message, url, line) {
+        console.error(
+            `Unhandled error, message: [${JSON.stringify(message)}], url: [${url}], line: [${line}]`
         );
         return false; // don't suppress default handling
     };
 
-    logEvents();
+    if (options.enableEvents) logEvents();
 };
 
 const log = (...args) => {
