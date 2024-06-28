@@ -23,7 +23,7 @@ const handleMessage = async(request, sender, sendResponse) => {
     logger.log('messaging.handleMessage', request);
     switch (request.name) {
         case 'availableServices':
-            sendResponse(serviceRepository.getSettings());
+            availableServices(sendResponse);
             break;
         case 'availableProjects':
             logger.log('messaging.availableProjects');
@@ -41,3 +41,10 @@ const init = () => {
 };
 
 export default { init };
+
+function availableServices(sendResponse: any) {
+    const response = serviceRepository.getSettings();
+    logger.log('messaging.availableServices', response);
+    sendResponse(response);
+}
+
