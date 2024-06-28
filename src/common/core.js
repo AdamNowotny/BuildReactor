@@ -1,18 +1,17 @@
 import 'rx/dist/rx.binding';
 import Rx from 'rx';
-import chromeApi from 'common/chromeApi';
 import logger from './logger';
 
 const init = function() {
-	const statePort = chromeApi.connect({ name: 'state' });
+	const statePort = chrome.runtime.connect({ name: 'state' });
 	statePort.onMessage.addListener(function(message) {
 		activeProjects.onNext(message);
 	});
-	const configPort = chromeApi.connect({ name: 'configuration' });
+	const configPort = chrome.runtime.connect({ name: 'configuration' });
 	configPort.onMessage.addListener(function(message) {
 		configurations.onNext(message);
 	});
-	const viewConfigPort = chromeApi.connect({ name: 'views' });
+	const viewConfigPort = chrome.runtime.connect({ name: 'views' });
 	viewConfigPort.onMessage.addListener(function(message) {
 		views.onNext(message);
 	});
@@ -25,13 +24,13 @@ const views = new Rx.ReplaySubject(1);
 const availableServices = function(callback) {
 	const message = { name: 'availableServices' };
 	logger.log('availableServices', message);
-	chromeApi.sendMessage(message, callback);
+	chrome.runtime.sendMessage(message, callback);
 };
 
 const availableProjects = function(settings, callback) {
 	const message = { name: 'availableProjects', serviceSettings: settings };
 	logger.log('availableProjects', message);
-	chromeApi.sendMessage(message, function(response) {
+	chrome.runtime.sendMessage(message, function(response) {
 		logger.log('availableProjects', { response, serviceSettings: settings });
 		callback(response);
 	});
@@ -40,55 +39,55 @@ const availableProjects = function(settings, callback) {
 const setOrder = function(serviceNames) {
 	const message = { name: 'setOrder', order: serviceNames };
 	logger.log('setOrder', message);
-	chromeApi.sendMessage(message);
+	void chrome.runtime.sendMessage(message);
 };
 
 const setBuildOrder = function(serviceName, builds) {
 	const message = { name: 'setBuildOrder', serviceName, order: builds };
 	logger.log('setBuildOrder', message);
-	chromeApi.sendMessage(message);
+	void chrome.runtime.sendMessage(message);
 };
 
 const enableService = function(name) {
 	const message = { name: 'enableService', serviceName: name };
 	logger.log('enableService', message);
-	chromeApi.sendMessage(message);
+	void chrome.runtime.sendMessage(message);
 };
 
 const disableService = function(name) {
 	const message = { name: 'disableService', serviceName: name };
 	logger.log('disableService', message);
-	chromeApi.sendMessage(message);
+	void chrome.runtime.sendMessage(message);
 };
 
 const removeService = function(name) {
 	const message = { name: 'removeService', serviceName: name };
 	logger.log('removeService', message);
-	chromeApi.sendMessage(message);
+	void chrome.runtime.sendMessage(message);
 };
 
 const renameService = function(oldName, newName) {
 	const message = { name: 'renameService', oldName, newName };
 	logger.log('renameService', message);
-	chromeApi.sendMessage(message);
+	void chrome.runtime.sendMessage(message);
 };
 
 const saveService = function(settings) {
 	const message = { name: 'saveService', settings };
 	logger.log('saveService', message);
-	chromeApi.sendMessage(message);
+	void chrome.runtime.sendMessage(message);
 };
 
 const saveConfig = function(config) {
 	const message = { name: 'saveConfig', config };
 	logger.log('saveConfig', config);
-	chromeApi.sendMessage(message);
+	void chrome.runtime.sendMessage(message);
 };
 
 const setViews = function(viewConfig) {
 	const message = { name: 'setViews', views: viewConfig };
-	messages.onNext(message);
-	chromeApi.sendMessage(message);
+	logger.log('setViews', message);
+	void chrome.runtime.sendMessage(message);
 };
 
 export default {

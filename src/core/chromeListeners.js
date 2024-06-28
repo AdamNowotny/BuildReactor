@@ -1,5 +1,4 @@
 import Rx from 'rx';
-import chromeApi from 'common/chromeApi';
 import logger from 'common/logger';
 import serviceConfiguration from 'core/config/serviceConfiguration';
 import serviceController from 'core/services/serviceController';
@@ -120,8 +119,8 @@ const onConnect = (port) => {
 
 export default {
     init() {
-        chromeApi.addConnectListener(onConnect);
-        chromeApi.addMessageListener(onMessage);
+        chrome.runtime.onConnect.addListener(onConnect);
+        chrome.runtime.onMessage.addListener(onMessage);
         events.getByName('stateUpdated').subscribe(stateUpdated);
     },
 };
