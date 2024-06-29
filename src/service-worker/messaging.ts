@@ -1,5 +1,5 @@
 import logger from "common/logger";
-import serviceRepository from "./service-repository";
+import serviceRepository from "../services/service-monitor";
 
 const availableProjects = (sendResponse, settings) => {
 	serviceRepository.getPipelinesFor(settings)
@@ -43,7 +43,7 @@ const init = () => {
 export default { init };
 
 function availableServices(sendResponse: any) {
-    const response = serviceRepository.getSettings();
+    const response = serviceRepository.getTypes();
     logger.log('messaging.availableServices', response);
     sendResponse(response);
 }

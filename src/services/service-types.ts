@@ -1,5 +1,3 @@
-import Rx from 'rx';
-
 export interface CIServiceSettings {
     baseUrl: string;
     name: string;
@@ -64,7 +62,7 @@ export interface CIBuild {
 }
 
 export interface CIService {
-    getInfo(): CIServiceInfo;
-    getAll(settings: CIServiceSettings): Rx.Observable<any>;
-    getLatest(settings: CIServiceSettings): Rx.Observable<any>;
+    getInfo: () => CIServiceInfo;
+    getAll: (settings: CIServiceSettings) => Rx.Observable<any>;
+    getLatest: (settings: CIServiceSettings) => Rx.Observable<any>;
 }
