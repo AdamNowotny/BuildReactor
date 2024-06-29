@@ -12,7 +12,7 @@ export interface CIServiceSettings {
     updateInterval?: number;
 }
 
-interface CIServiceInfoField {
+interface CIServiceDefinitionField {
     type: string;
     name?: string;
     help?: string;
@@ -20,13 +20,13 @@ interface CIServiceInfoField {
     config?: string;
 }
 
-interface CIServiceInfo {
+interface CIServiceDefinition {
     typeName: string;
     baseUrl: string;
     icon: string;
     logo: string;
-    fields: CIServiceInfoField[];
-    defaultConfig: CIServiceSettings
+    fields: CIServiceDefinitionField[];
+    defaultConfig: CIServiceSettings;
 }
 
 export interface CIPipeline {
@@ -48,21 +48,26 @@ interface CIBuildChange {
 }
 
 export interface CIBuild {
-    id: string,
-    name: string,
-    group: string | null,
-    isBroken?: boolean,
-    isRunning?: boolean,
-    isWaiting?: boolean,
-    isDisabled?: boolean,
-    error?: { message: string },
-    webUrl?: string,
-    tags?: CIBuildTag[],
-    changes?: CIBuildChange[],
+    id: string;
+    name: string;
+    group: string | null;
+    isBroken?: boolean;
+    isRunning?: boolean;
+    isWaiting?: boolean;
+    isDisabled?: boolean;
+    error?: { message: string };
+    webUrl?: string;
+    tags?: CIBuildTag[];
+    changes?: CIBuildChange[];
+}
+
+export interface CIPipelineList {
+    items: CIPipeline[];
+    selected: string[];
 }
 
 export interface CIService {
-    getInfo: () => CIServiceInfo;
+    getInfo: () => CIServiceDefinition;
     getAll: (settings: CIServiceSettings) => Rx.Observable<any>;
     getLatest: (settings: CIServiceSettings) => Rx.Observable<any>;
 }
