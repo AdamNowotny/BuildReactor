@@ -57,7 +57,7 @@ const getPipelinesFor = function (
     settings: CIServiceSettings
 ): Rx.Observable<CIPipelineList> {
     const pipelines = services[settings['baseUrl']].getAll(settings);
-    logger.log('service-repository.getPipelinesFor', pipelines);
+    logger.log('service-monitor.getPipelinesFor', pipelines);
     return pipelines.toArray().select(items => ({
         items: sortBy('name', items),
         selected: settings.projects,

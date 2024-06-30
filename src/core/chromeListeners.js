@@ -1,7 +1,6 @@
 import Rx from 'rx';
 import logger from 'common/logger';
 import serviceConfiguration from 'core/config/serviceConfiguration';
-import serviceController from 'core/services/serviceController';
 import viewConfiguration from 'core/config/viewConfiguration';
 import events from './events';
 
@@ -18,12 +17,6 @@ const onMessage = (request, sender, sendResponse) => {
 
 function onMessageHandler(request, sender, sendResponse) {
     switch (request.name) {
-        case 'availableServices':
-            sendResponse(serviceController.getAllTypes());
-            break;
-        case 'availableProjects':
-            availableProjects(sendResponse, request.serviceSettings);
-            return true;
         case 'setOrder':
             serviceConfiguration.setOrder(request.order);
             break;
@@ -62,27 +55,6 @@ function onMessageHandler(request, sender, sendResponse) {
     }
     return false;
 }
-
-const availableProjects = (sendResponse, settings) => {
-    serviceController
-        .createService(settings)
-        .availableBuilds()
-        .subscribe(
-            (projects) => {
-                projects.selected = settings.projects;
-                sendResponse({ projects });
-            },
-            (error) => {
-                sendResponse({
-                    error: {
-                        name: error.name,
-                        message: error.message,
-                        stack: error.stack,
-                    },
-                });
-            }
-        );
-};
 
 const onConnect = (port) => {
     switch (port.name) {

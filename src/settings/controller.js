@@ -8,7 +8,6 @@ import 'settings/directives/topnav/topnav';
 import angular from 'angular';
 import app from 'settings/app';
 import core from 'common/core';
-import serviceMonitor from 'services/service-monitor';
 
 export default app.controller('SettingsCtrl', ($scope, $route) => {
 	$scope.serviceId = null;
@@ -54,7 +53,12 @@ export default app.controller('SettingsCtrl', ($scope, $route) => {
 		});
 	});
 
-	$scope.serviceTypes = serviceMonitor.getTypes();
+	core.availableServices(function(types) {
+		$scope.$evalAsync(function() {
+			$scope.serviceTypes = types;
+			update();
+		});
+	});
 
 	$scope.$on('$routeChangeSuccess', function(event, routeData) {
 		$scope.serviceId = routeData.params.serviceName || null;

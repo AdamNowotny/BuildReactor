@@ -52,12 +52,6 @@ const create = (serviceType) => class PoolingService {
             this.updatesSubscription.dispose();
         }
     }
-
-    availableBuilds() {
-        return serviceType.getAll(this.settings)
-            .toArray()
-            .select((items) => ({ items: sortBy('name', items) }));
-    }
 };
 
 export default {

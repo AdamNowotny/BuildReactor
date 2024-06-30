@@ -4,13 +4,6 @@ import events from 'core/events';
 
 let types = {};
 
-const getAllTypes = function() {
-	const settingList = Object.keys(types)
-		.map((k) => types[k])
-		.map((t) => t.settings());
-	return settingList;
-};
-
 const registerType = function(Service) {
 	const settings = Service.settings();
 	types[settings.baseUrl] = Service;
@@ -95,9 +88,7 @@ const start = function(configChanges) {
 
 export default {
 	start,
-	getAllTypes,
 	registerType,
 	typeInfoFor,
-	createService,
 	clear
 };
