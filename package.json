@@ -25,7 +25,9 @@
     "lint": "node_modules/.bin/eslint .",
     "dist": "NODE_OPTIONS=--openssl-legacy-provider node_modules/.bin/webpack",
     "auto-dist": "ODE_OPTIONS=--openssl-legacy-provider node_modules/.bin/webpack --watch",
-    "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js"
+    "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "test": "vitest --run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "angular": "1.8.3",
@@ -64,6 +66,7 @@
     "ts-loader": "^9.5.1",
     "typescript": "^5.5.2",
     "typescript-eslint": "^7.14.1",
+    "vitest": "^1.6.0",
     "webpack": "5.36.2",
     "webpack-cli": "5.1.4",
     "zip-webpack-plugin": "4.0.1"
