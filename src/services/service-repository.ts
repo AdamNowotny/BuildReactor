@@ -21,43 +21,45 @@ import logger from 'common/logger';
 const services: Record<string, CIService> = {};
 
 const init = () => {
-    registerType(bamboo);
-    registerType(buildbot);
-    registerType(buildkite);
-    registerType(cc);
-    registerType(ccnet);
-    registerType(ccrb);
-    registerType(cctray);
-    registerType(go);
-    registerType(jenkins);
-    registerType(teamcity);
-    registerType(travis);
+    register(bamboo);
+    register(buildbot);
+    register(buildkite);
+    register(cc);
+    register(ccnet);
+    register(ccrb);
+    register(cctray);
+    register(go);
+    register(jenkins);
+    register(teamcity);
+    register(travis);
 };
 
-const registerType = function (service: CIService) {
+const register = function (service: CIService) {
     const serviceDefinition = service.getInfo();
     services[serviceDefinition.baseUrl] = service;
 };
 
-const getTypes = function () {
-    const serviceDefinitions = Object.values(services).map(service => {
-        const serviceInfo = service.getInfo();
-        serviceInfo.fields.push({
-            type: 'updateInterval',
-            header: 'Update interval',
-            config: 'updateInterval',
-        });
-        return serviceInfo;
-    });
-    logger.log('service-monitor.getTypes', serviceDefinitions);
+const getAllDefinitions = function () {
+    const serviceDefinitions = Object.keys(services).map(getDefinition);
+    logger.log('service-repository.getAllDefinitions', serviceDefinitions);
     return serviceDefinitions;
+};
+
+const getDefinition = function (baseUrl: string) {
+    const serviceDefinition = services[baseUrl].getInfo();
+    serviceDefinition.fields.push({
+        type: 'updateInterval',
+        header: 'Update interval',
+        config: 'updateInterval',
+    });
+    return serviceDefinition;
 };
 
 const getPipelinesFor = function (
     settings: CIServiceSettings
 ): Rx.Observable<CIPipelineList> {
     const pipelines = services[settings['baseUrl']].getAll(settings);
-    logger.log('service-monitor.getPipelinesFor', pipelines);
+    logger.log('service-repository.getPipelinesFor', pipelines);
     return pipelines.toArray().select(items => ({
         items: sortBy('name', items),
         selected: settings.projects,
@@ -66,7 +68,6 @@ const getPipelinesFor = function (
 
 export default {
     init,
-    registerType,
-    getTypes,
+    getAllDefinitions,
     getPipelinesFor,
 };

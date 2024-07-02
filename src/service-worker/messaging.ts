@@ -1,14 +1,14 @@
 import logger from 'common/logger';
-import serviceMonitor from '../services/service-monitor';
+import serviceRepository from '../services/service-repository';
 
 function availableServices(sendResponse: any) {
-    const response = serviceMonitor.getTypes();
+    const response = serviceRepository.getAllDefinitions();
     logger.log('messaging.availableServices', response);
     sendResponse(response);
 }
 
 const availableProjects = (sendResponse, settings) => {
-    serviceMonitor.getPipelinesFor(settings).subscribe(
+    serviceRepository.getPipelinesFor(settings).subscribe(
         projects => {
             logger.log('messaging.availableProjects', projects);
             sendResponse({ projects });

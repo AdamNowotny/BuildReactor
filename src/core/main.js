@@ -19,7 +19,7 @@ import serviceView from 'core/services/serviceView';
 import teamcity from 'services/teamcity/teamcity';
 import travis from 'services/travis/travis';
 import viewConfiguration from 'core/config/viewConfiguration';
-import serviceMonitor from 'services/service-monitor';
+import serviceRepository from 'services/service-repository';
 import messaging from 'service-worker/messaging';
 
 serviceConfiguration.init();
@@ -47,5 +47,5 @@ serviceController.registerType(poolingService.create(travis));
 serviceController.start(serviceConfiguration.changes);
 
 // transitioning from background page to service worker
-serviceMonitor.init();
+serviceRepository.init();
 messaging.init();
