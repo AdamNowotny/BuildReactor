@@ -1,7 +1,24 @@
 import logger from 'common/logger';
 import Rx from 'rx';
+import type { CIBuild } from 'services/service-types';
 
-const onChanged = new Rx.BehaviorSubject({ oldValue: [], newValue: [] });
+interface StateStorageItem {
+    failedCount: number;
+    runningCount: number;
+    offlineCount: number;
+    name?: string;
+    items?: CIBuild[];
+}
+
+interface StateStorageChangeEvent {
+    oldValue: StateStorageItem[];
+    newValue: StateStorageItem[];
+}
+
+const onChanged = new Rx.BehaviorSubject<StateStorageChangeEvent>({
+    oldValue: [],
+    newValue: [],
+});
 
 const init = () => {
     chrome.storage.onChanged.addListener((changes, namespace) => {

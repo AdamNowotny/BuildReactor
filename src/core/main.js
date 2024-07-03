@@ -1,4 +1,3 @@
-import badgeController from 'core/badgeController';
 import bamboo from 'services/bamboo/bamboo';
 import buildbot from 'services/buildbot/buildbot';
 import buildkite from 'services/buildkite/buildkite';
@@ -22,11 +21,11 @@ import viewConfiguration from 'core/config/viewConfiguration';
 import serviceRepository from 'services/service-repository';
 import messaging from 'service-worker/messaging';
 import stateStorage from 'service-worker/state-storage';
+import badge from 'service-worker/badge';
 
 serviceConfiguration.init();
 viewConfiguration.init();
 logger.init({ prefix: 'core', enableEvents: true });
-badgeController.init();
 notificationController.init({ configuration: viewConfiguration.changes });
 serviceView.init();
 chromeListeners.init();
@@ -51,3 +50,4 @@ serviceController.start(serviceConfiguration.changes);
 serviceRepository.init();
 messaging.init();
 stateStorage.init();
+badge.init();
