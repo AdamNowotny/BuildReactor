@@ -26,7 +26,8 @@
     "permissions": [
         "http://*/*",
         "https://*/*",
-        "notifications"
+        "notifications",
+        "storage"
     ],
     "web_accessible_resources": [
         "services/*/*.png",

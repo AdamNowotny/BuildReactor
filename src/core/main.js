@@ -21,6 +21,7 @@ import travis from 'services/travis/travis';
 import viewConfiguration from 'core/config/viewConfiguration';
 import serviceRepository from 'services/service-repository';
 import messaging from 'service-worker/messaging';
+import stateStorage from 'service-worker/state-storage';
 
 serviceConfiguration.init();
 viewConfiguration.init();
@@ -49,3 +50,4 @@ serviceController.start(serviceConfiguration.changes);
 // transitioning from background page to service worker
 serviceRepository.init();
 messaging.init();
+stateStorage.init();

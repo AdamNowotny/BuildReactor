@@ -1,5 +1,6 @@
 import eventProcessor from 'core/services/buildEventProcessor';
 import events from 'core/events';
+import stateStorage from 'service-worker/state-storage';
 
 let rxServiceUpdateFailed, rxServiceUpdated, rxServicesInit;
 
@@ -62,6 +63,7 @@ const init = () => {
                 .filter((config) => latestState.has(config.name))
                 .map((service) => getState(service.name))
         });
+        void stateStorage.set([...latestState.values()]);
     };
 };
 
