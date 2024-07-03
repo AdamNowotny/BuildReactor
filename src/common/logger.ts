@@ -4,7 +4,7 @@ import events from "core/events";
 import serviceConfiguration from "core/config/serviceConfiguration";
 import viewConfiguration from "core/config/viewConfiguration";
 
-let LOG_NAMESPACE = "NONE";
+let LOG_NAMESPACE = "UNKNOWN";
 
 const init = (options: { prefix: string, enableEvents: boolean }) => {
     LOG_NAMESPACE = options.prefix;

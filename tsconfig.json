@@ -1,6 +1,6 @@
 {
   "extends": "@tsconfig/node22/tsconfig.json",
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "test/**/*", "vite.config.mts"],
   "exclude": ["node_modules", "**/*.spec.ts"],
   "compilerOptions": {
     "module": "ESNext",

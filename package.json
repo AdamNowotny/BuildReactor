@@ -66,6 +66,7 @@
     "ts-loader": "^9.5.1",
     "typescript": "^5.5.2",
     "typescript-eslint": "^7.14.1",
+    "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^1.6.0",
     "webpack": "5.36.2",
     "webpack-cli": "5.1.4",
