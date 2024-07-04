@@ -23,9 +23,16 @@ import messaging from 'service-worker/messaging';
 import stateStorage from 'service-worker/state-storage';
 import badge from 'service-worker/badge';
 
+// transitioning from background page to service worker
+logger.init({ prefix: 'core', enableEvents: true });
+serviceRepository.init();
+messaging.init();
+stateStorage.init();
+badge.init();
+
+// background page modules
 serviceConfiguration.init();
 viewConfiguration.init();
-logger.init({ prefix: 'core', enableEvents: true });
 notificationController.init({ configuration: viewConfiguration.changes });
 serviceView.init();
 chromeListeners.init();
@@ -45,9 +52,3 @@ serviceController.registerType(poolingService.create(teamcity));
 serviceController.registerType(poolingService.create(travis));
 
 serviceController.start(serviceConfiguration.changes);
-
-// transitioning from background page to service worker
-serviceRepository.init();
-messaging.init();
-stateStorage.init();
-badge.init();

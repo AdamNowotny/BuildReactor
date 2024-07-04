@@ -10,7 +10,7 @@ const init = () => {
     rxServiceUpdated = events.getByName('serviceUpdated').subscribe((ev) => {
         const oldState = getState(ev.source);
         updateState(ev.source, ev.details);
-        pushStateUpdated();
+        saveState();
         const newState = getState(ev.source);
         eventProcessor.process({ oldState, newState });
     });
@@ -24,7 +24,7 @@ const init = () => {
             return item;
         });
         updateState(ev.source, items);
-        pushStateUpdated();
+        void saveState();
     });
 
     rxServicesInit = events.getByName('servicesInitializing').subscribe((ev) => {
@@ -32,7 +32,7 @@ const init = () => {
         ev.details
             .filter((settings) => !settings.disabled)
             .forEach((settings) => updateState(settings.name, createInitialStates(settings)));
-        pushStateUpdated();
+            void saveState();
     });
 
     const getState = (serviceName) => JSON.parse(JSON.stringify(latestState.get(serviceName)));
@@ -55,14 +55,7 @@ const init = () => {
         });
     };
 
-    const pushStateUpdated = () => {
-        events.push({
-            eventName: 'stateUpdated',
-            source: 'serviceView',
-            details: [...latestState.values()]
-                .filter((config) => latestState.has(config.name))
-                .map((service) => getState(service.name))
-        });
+    const saveState = () => {
         void stateStorage.set([...latestState.values()]);
     };
 };

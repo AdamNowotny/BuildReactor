@@ -4,6 +4,7 @@ import stateStorage from './state-storage';
 const mockChrome = {
     storage: {
         local: {
+            get: vi.fn(),
             set: vi.fn(),
         },
         onChanged: {
@@ -14,11 +15,17 @@ const mockChrome = {
 vi.stubGlobal('chrome', mockChrome);
 
 it('saves state to storage', async () => {
-    const spy = vi.spyOn(chrome.storage.local, 'set');
-
     await stateStorage.set({ a: 5 });
 
-    expect(spy).toHaveBeenCalledWith({ state: { a: 5 } });
+    expect(mockChrome.storage.local.set).toBeCalledWith({ state: { a: 5 } });
+});
+
+it('reads state on init', () => {
+    mockChrome.storage.local.get.mockReturnValue({ a: 5 });
+
+    stateStorage.init();
+
+    expect(mockChrome.storage.local.get).toBeCalled();
 });
 
 it('publishes onChanged event', () => {

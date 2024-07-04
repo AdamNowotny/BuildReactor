@@ -1,10 +1,7 @@
-import Rx from 'rx';
 import logger from 'common/logger';
 import serviceConfiguration from 'core/config/serviceConfiguration';
 import viewConfiguration from 'core/config/viewConfiguration';
-import events from './events';
-
-const stateUpdated = new Rx.BehaviorSubject([]);
+import stateStorage from 'service-worker/state-storage';
 
 const onMessage = (request, sender, sendResponse) => {
     try {
@@ -59,10 +56,11 @@ function onMessageHandler(request, sender, sendResponse) {
 const onConnect = (port) => {
     switch (port.name) {
         case 'state':
-            var stateSubscription = stateUpdated.subscribe((state) => {
-                port.postMessage(state.details);
+            var stateSubscription = stateStorage.onChanged.subscribe((state) => {
+                port.postMessage(state.newValue);
             });
             port.onDisconnect.addListener(() => {
+                logger.warn('chrome-listeners.onDisconnect');
                 stateSubscription.dispose();
             });
             break;
@@ -91,8 +89,8 @@ const onConnect = (port) => {
 
 export default {
     init() {
+        logger.log('chrome-listeners.init');
         chrome.runtime.onConnect.addListener(onConnect);
         chrome.runtime.onMessage.addListener(onMessage);
-        events.getByName('stateUpdated').subscribe(stateUpdated);
     },
 };

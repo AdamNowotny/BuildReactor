@@ -21,6 +21,15 @@ const onChanged = new Rx.BehaviorSubject<StateStorageChangeEvent>({
 });
 
 const init = () => {
+    logger.log('state-storage.init');
+    chrome.storage.local.get('state', (value) => {
+        logger.log('state-storage.init.get', value);
+        onChanged.onNext({
+            oldValue: value.state as StateStorageItem[],
+            newValue: value.state as StateStorageItem[],
+        });
+    });
+    
     chrome.storage.onChanged.addListener((changes, namespace) => {
         logger.log('state-storage.onChanged', changes, namespace);
         for (const [key, { oldValue, newValue }] of Object.entries(changes)) {

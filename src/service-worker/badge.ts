@@ -11,7 +11,7 @@ const init = () => {
         const offlineCount = newValue.reduce((acc, item) => acc + item.offlineCount, 0);
         if (runningCount > 0) {
             const text = failedCount > 0 ? `${failedCount}` : ' ';
-            setBadge(text, 'yellow');
+            setBadge(text, 'orange');
         } else if (offlineCount > 0) {
             const text = failedCount > 0 ? `${failedCount}` : ' ';
             setBadge(text, 'grey');
