@@ -1,5 +1,6 @@
 import logger from 'common/logger';
 import serviceRepository from '../services/service-repository';
+import stateStorage from './state-storage';
 
 function availableServices(sendResponse: any) {
     const response = serviceRepository.getAllDefinitions();
@@ -41,9 +42,30 @@ const handleMessage = (request, sender, sendResponse) => {
     return false;
 };
 
+const handleConnectState = port => {
+    const stateSubscription = stateStorage.onChanged.subscribe(state => {
+        port.postMessage(state.newValue);
+    });
+    port.onDisconnect.addListener(() => {
+        logger.warn('messaging.handleConnectState.onDisconnect');
+        stateSubscription.dispose();
+    });
+};
+
+const handleConnect = port => {
+    switch (port.name) {
+        case 'state':
+            handleConnectState(port);
+            break;
+        default:
+            break;
+    }
+};
+
 const init = () => {
     logger.log('messaging.init');
     chrome.runtime.onMessage.addListener(handleMessage);
+    chrome.runtime.onConnect.addListener(handleConnect);
 };
 
 export default { init };

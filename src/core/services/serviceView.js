@@ -24,7 +24,7 @@ const init = () => {
             return item;
         });
         updateState(ev.source, items);
-        void saveState();
+        saveState();
     });
 
     rxServicesInit = events.getByName('servicesInitializing').subscribe((ev) => {
@@ -32,7 +32,7 @@ const init = () => {
         ev.details
             .filter((settings) => !settings.disabled)
             .forEach((settings) => updateState(settings.name, createInitialStates(settings)));
-            void saveState();
+            saveState();
     });
 
     const getState = (serviceName) => JSON.parse(JSON.stringify(latestState.get(serviceName)));

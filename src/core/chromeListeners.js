@@ -1,7 +1,6 @@
 import logger from 'common/logger';
 import serviceConfiguration from 'core/config/serviceConfiguration';
 import viewConfiguration from 'core/config/viewConfiguration';
-import stateStorage from 'service-worker/state-storage';
 
 const onMessage = (request, sender, sendResponse) => {
     try {
@@ -55,15 +54,6 @@ function onMessageHandler(request, sender, sendResponse) {
 
 const onConnect = (port) => {
     switch (port.name) {
-        case 'state':
-            var stateSubscription = stateStorage.onChanged.subscribe((state) => {
-                port.postMessage(state.newValue);
-            });
-            port.onDisconnect.addListener(() => {
-                logger.warn('chrome-listeners.onDisconnect');
-                stateSubscription.dispose();
-            });
-            break;
         case 'configuration':
             var configSubscription = serviceConfiguration.changes.subscribe(
                 function (config) {
