@@ -1,5 +1,5 @@
 import cctray from 'services/cctray/cctray';
-import joinUrl from 'common/joinUrl';
+import { joinUrl } from 'common/utils';
 
 export default {
     getInfo: () => ({

@@ -1,6 +1,11 @@
 import 'rx/dist/rx.time';
 import serviceController from 'core/services/serviceController';
-import tags from 'common/tags';
+
+var containsTag = function(tagName, tags) {
+    return tags?.reduce(function(agg, value) {
+        return (Boolean(agg)) || value.name === tagName;
+    }, false);
+};
 
 function createPasswordExpiredMessage(event) {
     return {
@@ -22,7 +27,7 @@ function createBuildStartedMessage(ev, notificationsConfig) {
 /* eslint complexity: off, max-statements: off */
 function createBuildFinishedMessage(event, notificationsConfig) {
     if (event.broken && notificationsConfig.buildBroken) {
-        if (tags.contains('Unstable', event.details.tags)) {
+        if (containsTag('Unstable', event.details.tags)) {
             return createNotificationInfo(event, 'Build unstable', false);
         } else {
             return createNotificationInfo(event, 'Build broken', true);

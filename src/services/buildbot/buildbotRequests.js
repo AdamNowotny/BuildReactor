@@ -1,4 +1,4 @@
-import joinUrl from 'common/joinUrl';
+import { joinUrl } from 'common/utils';
 import request from 'core/services/request';
 
 const allBuilds = (settings) => request

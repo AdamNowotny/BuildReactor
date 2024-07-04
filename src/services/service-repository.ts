@@ -10,7 +10,7 @@ import jenkins from 'services/jenkins/jenkins';
 import teamcity from 'services/teamcity/teamcity';
 import travis from 'services/travis/travis';
 
-import sortBy from 'common/sortBy';
+import { sortBy } from 'common/utils';
 import type {
     CIPipelineList,
     CIService,

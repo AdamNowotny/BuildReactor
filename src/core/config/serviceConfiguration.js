@@ -1,5 +1,5 @@
 import Rx from 'rx';
-import arrayEquals from 'common/arrayEquals';
+import { arrayEquals } from 'common/utils';
 import configStore from 'core/config/localStore';
 import configUpdater from 'core/config/serviceConfigUpdater';
 
@@ -25,7 +25,7 @@ var setOrder = function(serviceNames) {
             return config.name === name;
         })[0];
     });
-    if (!arrayEquals(oldServiceNames, serviceNames)) {
+    if (!(arrayEquals(oldServiceNames, serviceNames))) {
         configStore.setItem(key, newConfigs);
         changes.onNext(newConfigs);
     }

@@ -47,7 +47,7 @@ const handleConnectState = port => {
         port.postMessage(state.newValue);
     });
     port.onDisconnect.addListener(() => {
-        logger.warn('messaging.handleConnectState.onDisconnect');
+        logger.log('messaging.handleConnectState.onDisconnect');
         stateSubscription.dispose();
     });
 };

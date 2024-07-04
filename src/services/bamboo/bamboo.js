@@ -1,5 +1,5 @@
 import Rx from 'rx';
-import joinUrl from 'common/joinUrl';
+import { joinUrl } from 'common/utils';
 import requests from 'services/bamboo/bambooRequests';
 
 export default {

@@ -3,7 +3,6 @@ import 'angular-ui-utils/modules/highlight/highlight';
 import 'angular-ui-utils/modules/indeterminate/indeterminate';
 import angular from 'angular';
 import app from 'settings/app';
-import sortBy from 'common/sortBy';
 import template from 'settings/service/directives/projectList/projectList.html';
 
 export default app.directive('projectList', ($sce, highlightFilter) => ({

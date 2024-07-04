@@ -1,5 +1,5 @@
 import Rx from 'rx';
-import sortBy from 'common/sortBy';
+import { sortBy } from 'common/utils';
 
 const create = (serviceType) => class PoolingService {
 
