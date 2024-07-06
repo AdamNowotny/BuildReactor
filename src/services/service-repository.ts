@@ -69,5 +69,6 @@ const getPipelinesFor = function (
 export default {
     init,
     getAllDefinitions,
+    getDefinition,
     getPipelinesFor,
 };

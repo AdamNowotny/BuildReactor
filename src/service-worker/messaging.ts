@@ -44,6 +44,7 @@ const handleMessage = (request, sender, sendResponse) => {
 
 const handleConnectState = port => {
     const stateSubscription = stateStorage.onChanged.subscribe(state => {
+        logger.log('messaging.handleConnectState', state);
         port.postMessage(state.newValue);
     });
     port.onDisconnect.addListener(() => {

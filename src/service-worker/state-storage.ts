@@ -15,10 +15,8 @@ interface StateStorageChangeEvent {
     newValue: StateStorageItem[];
 }
 
-const onChanged = new Rx.BehaviorSubject<StateStorageChangeEvent>({
-    oldValue: [],
-    newValue: [],
-});
+const BUFFER_SIZE = 1;
+const onChanged = new Rx.ReplaySubject<StateStorageChangeEvent>(BUFFER_SIZE);
 
 const init = () => {
     logger.log('state-storage.init');
