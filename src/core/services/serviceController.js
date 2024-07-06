@@ -64,13 +64,7 @@ const start = function (configChanges) {
             details: settingsList,
         });
         removeAll();
-        startServices(settingsList).subscribe(() => {
-            events.push({
-                eventName: 'servicesInitialized',
-                source: 'serviceController',
-                details: settingsList,
-            });
-        });
+        startServices(settingsList).subscribe();
     });
 };
 

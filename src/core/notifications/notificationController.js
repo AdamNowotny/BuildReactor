@@ -1,10 +1,8 @@
-/* global chrome: false */
 import 'rx/dist/rx.time';
 import Rx from 'rx';
 import events from 'core/events';
 import messages from 'core/notifications/notificationMessages';
 
-/* eslint max-statements: off */
 function init(options) {
 
     let config = {};
@@ -20,7 +18,7 @@ function init(options) {
 
     chrome.notifications.onClicked.addListener(id => {
         const info = visibleNotifications[id];
-        chrome.tabs.create({ 'url': info.url });
+        void chrome.tabs.create({ 'url': info.url });
     });
 
     chrome.notifications.onClosed.addListener((id, byUser) => {
@@ -43,12 +41,10 @@ function init(options) {
 
     const scheduler = options.scheduler || Rx.Scheduler.timeout;
     const visibleNotifications = {};
-    let reloading = false;
 
     const eventNotificationEnabled = (event) => {
         return Rx.Observable.return(event)
             .where(event => config.notifications.enabled)
-            .where(event => !reloading)
             .where(event => !event.details.isDisabled);
     };
 
@@ -60,13 +56,6 @@ function init(options) {
         .select(ev => messages.createBuildFinishedMessage(ev, config.notifications));
     const passwordExpired = events.getByName('passwordExpired')
         .select(messages.createPasswordExpiredMessage);
-
-    events.getByName('servicesInitializing').subscribe(() => {
-        reloading = true;
-    });
-    events.getByName('servicesInitialized').subscribe(() => {
-        reloading = false;
-    });
 
     passwordExpired
         .merge(buildStarted)
