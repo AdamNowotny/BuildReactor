@@ -1,6 +1,5 @@
 import logger from 'common/logger';
 import serviceConfiguration from 'core/config/serviceConfiguration';
-import viewConfiguration from 'core/config/viewConfiguration';
 
 const onMessage = (request, sender, sendResponse) => {
     try {
@@ -43,9 +42,6 @@ function onMessageHandler(request, sender, sendResponse) {
         case 'saveConfig':
             serviceConfiguration.save(request.config);
             break;
-        case 'setViews':
-            viewConfiguration.save(request.views);
-            break;
         default:
             break;
     }
@@ -62,16 +58,6 @@ const onConnect = (port) => {
             );
             port.onDisconnect.addListener(function (port) {
                 configSubscription.dispose();
-            });
-            break;
-        case 'views':
-            var viewSubscription = viewConfiguration.changes.subscribe(
-                function (config) {
-                    port.postMessage(config);
-                }
-            );
-            port.onDisconnect.addListener(function (port) {
-                viewSubscription.dispose();
             });
             break;
     }

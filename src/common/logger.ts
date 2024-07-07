@@ -1,12 +1,11 @@
 /* eslint-disable no-console */
 
-import events from "core/events";
-import serviceConfiguration from "core/config/serviceConfiguration";
-import viewConfiguration from "core/config/viewConfiguration";
+import events from 'core/events';
+import serviceConfiguration from 'core/config/serviceConfiguration';
 
-let LOG_NAMESPACE = "UNKNOWN";
+let LOG_NAMESPACE = 'UNKNOWN';
 
-const init = (options: { prefix: string, enableEvents: boolean }) => {
+const init = (options: { prefix: string; enableEvents: boolean }) => {
     LOG_NAMESPACE = options.prefix;
 
     self.onerror = function (message, url, line) {
@@ -40,65 +39,33 @@ export default {
 
 function logEvents() {
     events.all.subscribe(
-        (event) => {
+        event => {
             console.log(
                 new Date().toJSON(),
-                "events.all",
+                'events.all',
                 `${event.source}.${event.eventName}`,
                 event.details
             );
         },
         (...args) => {
-            console.error(new Date().toJSON(), "events stream error", args);
+            console.error(new Date().toJSON(), 'events stream error', args);
         },
         (...args) => {
-            console.warn(new Date().toJSON(), "events stream completed", args);
+            console.warn(new Date().toJSON(), 'events stream completed', args);
         }
     );
 
     serviceConfiguration.changes.subscribe(
-        (config) => {
-            console.log(
-                new Date().toJSON(),
-                "serviceConfiguration.changes",
-                config
-            );
+        config => {
+            console.log(new Date().toJSON(), 'serviceConfiguration.changes', config);
         },
         (...args) => {
-            console.error(
-                new Date().toJSON(),
-                "serviceConfiguration.changes stream error",
-                args
-            );
+            console.error(new Date().toJSON(), 'serviceConfiguration.changes stream error', args);
         },
         (...args) => {
             console.warn(
                 new Date().toJSON(),
-                "serviceConfiguration.changes stream completed",
-                args
-            );
-        }
-    );
-
-    viewConfiguration.changes.subscribe(
-        (config) => {
-            console.log(
-                new Date().toJSON(),
-                "viewConfiguration.changes",
-                config
-            );
-        },
-        (...args) => {
-            console.error(
-                new Date().toJSON(),
-                "viewConfiguration.changes stream error",
-                args
-            );
-        },
-        (...args) => {
-            console.warn(
-                new Date().toJSON(),
-                "viewConfiguration.changes stream completed",
+                'serviceConfiguration.changes stream completed',
                 args
             );
         }

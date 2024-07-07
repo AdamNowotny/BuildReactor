@@ -1,6 +1,7 @@
 import 'rx/dist/rx.binding';
 import Rx from 'rx';
 import events from 'core/events';
+import logger from 'common/logger';
 
 let types = {};
 
@@ -64,7 +65,9 @@ const start = function (configChanges) {
             details: settingsList,
         });
         removeAll();
-        startServices(settingsList).subscribe();
+        startServices(settingsList).subscribe((a) => {
+			logger.log('servicesInitialized', a);
+		});
     });
 };
 

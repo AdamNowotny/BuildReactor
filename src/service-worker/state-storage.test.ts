@@ -23,13 +23,23 @@ it('saves state to storage', async () => {
 it('reads state on init', () => {
     mockChrome.storage.local.get.mockReturnValue({ a: 5 });
 
-    stateStorage.init();
+    void stateStorage.init();
 
     expect(mockChrome.storage.local.get).toBeCalled();
 });
 
+it('gets default state when undefined', async () => {
+    mockChrome.storage.local.get.mockImplementation((_, callback) => {
+        callback({ state: undefined });
+    });
+
+    const result = await stateStorage.init();
+
+    expect(result).toEqual([]);
+});
+
 it('publishes onChanged event', () => {
-    stateStorage.init();
+    void stateStorage.init();
     const [ handler ] = mockChrome.storage.onChanged.addListener.mock.lastCall;
 
     const expectedOldValue = { a: null };
@@ -50,7 +60,7 @@ it('publishes onChanged event', () => {
 });
 
 it('publishes onChanged only for state', () => {
-    stateStorage.init();
+    void stateStorage.init();
     const [ handler ] = mockChrome.storage.onChanged.addListener.mock.lastCall;
 
     const changedEvent = {

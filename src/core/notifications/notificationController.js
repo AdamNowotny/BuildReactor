@@ -2,12 +2,13 @@ import 'rx/dist/rx.time';
 import Rx from 'rx';
 import events from 'core/events';
 import messages from 'core/notifications/notificationMessages';
+import viewConfigStorage from 'service-worker/view-config-storage';
 
-function init(options) {
+function init() {
 
     let config = {};
-    options.configuration.subscribe(newConfig => {
-        config = newConfig;
+    viewConfigStorage.onChanged.subscribe(newConfig => {
+        config = newConfig.newValue;
     });
 
     function showNotification(info) {
@@ -33,13 +34,12 @@ function init(options) {
             "message": info.text
         });
         if (!info.priority) {
-            Rx.Observable.timer(options.timeout || 5000, scheduler).subscribe(() => {
+            Rx.Observable.timer(5000, Rx.Scheduler.timeout).subscribe(() => {
                 chrome.notifications.clear(info.id);
             });
         }
     }
 
-    const scheduler = options.scheduler || Rx.Scheduler.timeout;
     const visibleNotifications = {};
 
     const eventNotificationEnabled = (event) => {

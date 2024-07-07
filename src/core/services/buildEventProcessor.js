@@ -1,7 +1,7 @@
 import events from 'core/events';
 
 const process = ({ oldState, newState }) => {
-    newState.items.forEach((newBuild) => {
+    newState?.items?.forEach((newBuild) => {
         if (newBuild.error && newBuild.error.name === 'UnauthorisedError') {
             events.push({
                 eventName: 'passwordExpired',
@@ -12,8 +12,8 @@ const process = ({ oldState, newState }) => {
         if (newBuild.changes) {
             newBuild.changes = createUniqueChanges(newBuild.changes);
         }
-        if (oldState && oldState.items.length) {
-            const oldBuild = oldState.items.filter((build) => build.id === newBuild.id)[0];
+        if (oldState?.items?.length) {
+            const [oldBuild] = oldState.items.filter((build) => build.id === newBuild.id);
             if (!oldBuild.isRunning && newBuild.isRunning) {
                 events.push({
                     eventName: 'buildStarted',

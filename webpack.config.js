@@ -13,7 +13,7 @@ module.exports = {
   context: path.join(__dirname, "src"),
   entry: {
     'service-worker': "./service-worker/main.ts",
-    background: "./core/main.js",
+    background: "./core/main.ts",
     popup: "./popup/main.js",
     settings: "./settings/main.js",
     dashboard: "./dashboard/main.js"

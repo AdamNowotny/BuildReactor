@@ -1,6 +1,7 @@
 import logger from 'common/logger';
 import serviceRepository from '../services/service-repository';
 import stateStorage from './state-storage';
+import viewConfigStorage from './view-config-storage';
 
 function availableServices(sendResponse: any) {
     const response = serviceRepository.getAllDefinitions();
@@ -36,6 +37,9 @@ const handleMessage = (request, sender, sendResponse) => {
         case 'availableProjects':
             availableProjects(sendResponse, request.serviceSettings);
             return true;
+        case 'setViews':
+            void viewConfigStorage.set(request.views);
+            break;
         default:
             break;
     }
@@ -53,10 +57,24 @@ const handleConnectState = port => {
     });
 };
 
+const handleConnectConfiguration = port => {
+    const configSubsription = viewConfigStorage.onChanged.subscribe((value) => {
+        logger.log('messaging.handleConnectConfiguration', value.newValue);
+        port.postMessage(value.newValue);
+    });
+    port.onDisconnect.addListener(() => {
+        logger.log('messaging.handleConnectConfiguration.onDisconnect');
+        configSubsription.dispose();
+    });
+};
+
 const handleConnect = port => {
     switch (port.name) {
         case 'state':
             handleConnectState(port);
+            break;
+        case 'views':
+            handleConnectConfiguration(port);
             break;
         default:
             break;

@@ -15,32 +15,39 @@ interface StateStorageChangeEvent {
     newValue: StateStorageItem[];
 }
 
+const STORAGE_KEY = 'state';
 const BUFFER_SIZE = 1;
 const onChanged = new Rx.ReplaySubject<StateStorageChangeEvent>(BUFFER_SIZE);
 
-const init = () => {
+const init = async () => {
     logger.log('state-storage.init');
-    chrome.storage.local.get('state', (value) => {
-        logger.log('state-storage.init.get', value);
-        onChanged.onNext({
-            oldValue: value.state as StateStorageItem[],
-            newValue: value.state as StateStorageItem[],
-        });
-    });
-    
     chrome.storage.onChanged.addListener((changes, namespace) => {
-        logger.log('state-storage.onChanged', changes, namespace);
         for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
-            if (key === 'state') {
+            if (key === STORAGE_KEY) {
+                logger.log('state-storage.onChanged', changes, namespace);
                 onChanged.onNext({ oldValue, newValue });
             }
         }
     });
+    const result = await get();
+    onChanged.onNext({ oldValue: result, newValue: result });   
+    return result; 
 };
 
 const set = async (value: object) => {
     logger.log('state-storage.set', value);
     await chrome.storage.local.set({ state: value });
+};
+
+const get = async () => {
+    return new Promise<StateStorageItem[]>(resolve => {
+        chrome.storage.local.get(STORAGE_KEY, value => {
+            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+            const result = value[STORAGE_KEY] || [];
+            logger.log(`state-storage.get`, result);
+            resolve(result);
+        });
+    });
 };
 
 export default {
