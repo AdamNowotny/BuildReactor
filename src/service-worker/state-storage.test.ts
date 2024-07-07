@@ -13,6 +13,7 @@ const mockChrome = {
     },
 };
 vi.stubGlobal('chrome', mockChrome);
+vi.mock('common/logger');
 
 it('saves state to storage', async () => {
     await stateStorage.set({ a: 5 });

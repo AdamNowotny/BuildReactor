@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { arrayEquals, joinUrl } from './utils';
+
+vi.mock('common/logger');
 
 describe('arrayEquals', () => {
     it('should return true when arrays equal', () => {

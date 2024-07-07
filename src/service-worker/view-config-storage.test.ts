@@ -13,6 +13,7 @@ const mockChrome = {
     },
 };
 vi.stubGlobal('chrome', mockChrome);
+vi.mock('common/logger');
 
 it('saves state to storage', async () => {
     await viewConfigStorage.set({ columns: 5 });

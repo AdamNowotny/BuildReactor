@@ -9,6 +9,7 @@ const mockChrome = {
     },
 };
 vi.stubGlobal('chrome', mockChrome);
+vi.mock('common/logger');
 
 beforeAll(() => {
     badge.init();
