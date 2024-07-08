@@ -2,6 +2,7 @@ import 'rx/dist/rx.binding';
 import Rx from 'rx';
 import events from 'core/events';
 import logger from 'common/logger';
+import serviceConfig from 'service-worker/service-config';
 
 let types = {};
 
@@ -57,15 +58,15 @@ function removeAll() {
     eventsSubscriptions = [];
 }
 
-const start = function (configChanges) {
-    configChanges.subscribe(settingsList => {
+const start = function () {
+    serviceConfig.onChanged.subscribe(settingsList => {
         events.push({
             eventName: 'servicesInitializing',
             source: 'serviceController',
-            details: settingsList,
+            details: settingsList.newValue,
         });
         removeAll();
-        startServices(settingsList).subscribe((a) => {
+        startServices(settingsList.newValue).subscribe((a) => {
 			logger.log('servicesInitialized', a);
 		});
     });

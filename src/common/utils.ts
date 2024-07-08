@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-magic-numbers */
-export const arrayEquals = (array1: any[] = [], array2: any[] = []): boolean => {
-    return array1.join('_') === array2.join('_');
-}
-
 export const joinUrl = (root: string, path: string) => {
     let fullRoot = root;
     if (path.startsWith('/')) {

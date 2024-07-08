@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 
 import events from 'core/events';
-import serviceConfiguration from 'core/config/serviceConfiguration';
 
 let LOG_NAMESPACE = 'UNKNOWN';
 
@@ -52,22 +51,6 @@ function logEvents() {
         },
         (...args) => {
             console.warn(new Date().toJSON(), 'events stream completed', args);
-        }
-    );
-
-    serviceConfiguration.changes.subscribe(
-        config => {
-            console.log(new Date().toJSON(), 'serviceConfiguration.changes', config);
-        },
-        (...args) => {
-            console.error(new Date().toJSON(), 'serviceConfiguration.changes stream error', args);
-        },
-        (...args) => {
-            console.warn(
-                new Date().toJSON(),
-                'serviceConfiguration.changes stream completed',
-                args
-            );
         }
     );
 }

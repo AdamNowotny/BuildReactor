@@ -5,14 +5,12 @@ import cc from 'services/cruisecontrol/cruisecontrol';
 import ccnet from 'services/cruisecontrol.net/cruisecontrol.net';
 import ccrb from 'services/cruisecontrol.rb/cruisecontrol.rb';
 import cctray from 'services/cctray/cctray';
-import chromeListeners from 'core/chromeListeners';
 import go from 'services/go/go';
 import jenkins from 'services/jenkins/jenkins';
 import logger from 'common/logger';
 import notificationController from 'core/notifications/notificationController';
 import passwordExpiredHandler from 'core/passwordExpiredHandler';
 import poolingService from 'core/services/poolingService';
-import serviceConfiguration from 'core/config/serviceConfiguration';
 import serviceController from 'core/services/serviceController';
 import serviceView from 'core/services/serviceView';
 import teamcity from 'services/teamcity/teamcity';
@@ -22,21 +20,21 @@ import messaging from 'service-worker/messaging';
 import stateStorage from 'service-worker/state-storage';
 import badge from 'service-worker/badge';
 import viewConfigStorage from 'service-worker/view-config-storage';
+import serviceConfig from 'service-worker/service-config';
 
 void (async () => {
     // transitioning from background page to service worker
     logger.init({ prefix: 'core', enableEvents: true });
+    await serviceConfig.init();
+    await viewConfigStorage.init();
+    await stateStorage.init();
     serviceRepository.init();
     messaging.init();
-    await stateStorage.init();
-    await viewConfigStorage.init();
     badge.init();
 
     // background page modules
-    serviceConfiguration.init();
     notificationController.init();
     serviceView.init();
-    chromeListeners.init();
     passwordExpiredHandler.init();
 
     serviceController.clear();
@@ -52,5 +50,5 @@ void (async () => {
     serviceController.registerType(poolingService.create(teamcity));
     serviceController.registerType(poolingService.create(travis));
 
-    serviceController.start(serviceConfiguration.changes);
+    serviceController.start();
 })();

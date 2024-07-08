@@ -1,9 +1,9 @@
 import events from 'core/events';
-import serviceConfiguration from 'core/config/serviceConfiguration';
+import serviceConfig from 'service-worker/service-config';
 
 const init = () => {
     events.getByName('passwordExpired')
-    .do((event) => serviceConfiguration.disableService(event.source))
+    .do((event) => serviceConfig.disableService(event.source))
     .subscribe();
 };
 

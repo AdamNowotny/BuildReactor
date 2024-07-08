@@ -10,6 +10,7 @@ export interface CIServiceSettings {
     password?: string;
     projects: string[];
     updateInterval?: number;
+    disabled?: boolean;
 }
 
 interface CIServiceDefinitionField {

@@ -1,22 +1,7 @@
-/* eslint-disable @typescript-eslint/no-magic-numbers */
 import { describe, expect, it, vi } from 'vitest';
-import { arrayEquals, joinUrl } from './utils';
+import { joinUrl } from './utils';
 
 vi.mock('common/logger');
-
-describe('arrayEquals', () => {
-    it('should return true when arrays equal', () => {
-        expect(arrayEquals([1, 2], [1, 2])).toBe(true);
-    });
-
-    it('should return false when arrays are different', () => {
-        expect(arrayEquals([1, 2], [1, 3])).toBe(false);
-    });
-
-    it('should return true when arrays undefined', () => {
-        expect(arrayEquals(undefined, undefined)).toBe(true);
-    });
-});
 
 describe('joinUrl', () => {
     it('should join with /', () => {

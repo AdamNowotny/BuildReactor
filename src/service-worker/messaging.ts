@@ -2,6 +2,7 @@ import logger from 'common/logger';
 import serviceRepository from '../services/service-repository';
 import stateStorage from './state-storage';
 import viewConfigStorage from './view-config-storage';
+import serviceConfig from './service-config';
 
 function availableServices(sendResponse: any) {
     const response = serviceRepository.getAllDefinitions();
@@ -40,30 +41,65 @@ const handleMessage = (request, sender, sendResponse) => {
         case 'setViews':
             void viewConfigStorage.set(request.views);
             break;
+        case 'disableService':
+            void serviceConfig.disableService(request.serviceName);
+            break;
+        case 'enableService':
+            void serviceConfig.enableService(request.serviceName);
+            break;
+        case 'setOrder':
+            serviceConfig.setOrder(request.order);
+            break;
+        case 'setBuildOrder':
+            serviceConfig.setBuildOrder(request.serviceName, request.order);
+            break;
+        case 'removeService':
+            serviceConfig.removeService(request.serviceName);
+            break;
+        case 'renameService':
+            serviceConfig.renameService(request.oldName, request.newName);
+            break;
+        case 'saveService':
+            serviceConfig.saveService(request.settings);
+            break;
+        case 'saveConfig':
+            serviceConfig.set(request.config);
+            break;
         default:
             break;
     }
     return false;
 };
 
-const handleConnectState = port => {
+const connectState = port => {
     const stateSubscription = stateStorage.onChanged.subscribe(state => {
-        logger.log('messaging.handleConnectState', state);
+        logger.log('messaging.connect.state', state);
         port.postMessage(state.newValue);
     });
     port.onDisconnect.addListener(() => {
-        logger.log('messaging.handleConnectState.onDisconnect');
+        logger.log('messaging.connect.state.onDisconnect');
         stateSubscription.dispose();
     });
 };
 
-const handleConnectConfiguration = port => {
-    const configSubsription = viewConfigStorage.onChanged.subscribe((value) => {
-        logger.log('messaging.handleConnectConfiguration', value.newValue);
+const connectViewConfig = port => {
+    const configSubsription = viewConfigStorage.onChanged.subscribe(value => {
+        logger.log('messaging.connect.view-config', value.newValue);
         port.postMessage(value.newValue);
     });
     port.onDisconnect.addListener(() => {
-        logger.log('messaging.handleConnectConfiguration.onDisconnect');
+        logger.log('messaging.connect.view-config.onDisconnect');
+        configSubsription.dispose();
+    });
+};
+
+const connectServiceConfig = port => {
+    const configSubsription = serviceConfig.onChanged.subscribe(value => {
+        logger.log('messaging.connect.serviceConfig', value.newValue);
+        port.postMessage(value.newValue);
+    });
+    port.onDisconnect.addListener(() => {
+        logger.log('messaging.connect.serviceConfig.onDisconnect');
         configSubsription.dispose();
     });
 };
@@ -71,11 +107,13 @@ const handleConnectConfiguration = port => {
 const handleConnect = port => {
     switch (port.name) {
         case 'state':
-            handleConnectState(port);
+            connectState(port);
             break;
         case 'views':
-            handleConnectConfiguration(port);
+            connectViewConfig(port);
             break;
+        case 'configuration':
+            connectServiceConfig(port);
         default:
             break;
     }
@@ -83,8 +121,15 @@ const handleConnect = port => {
 
 const init = () => {
     logger.log('messaging.init');
-    chrome.runtime.onMessage.addListener(handleMessage);
     chrome.runtime.onConnect.addListener(handleConnect);
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+        try {
+            return handleMessage(request, sender, sendResponse);
+        } catch (ex) {
+            logger.error(ex);
+        }
+        return false;
+    });
 };
 
 export default { init };
