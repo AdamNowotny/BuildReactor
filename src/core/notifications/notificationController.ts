@@ -11,6 +11,8 @@ function init() {
         config = newConfig.newValue;
     });
 
+    const visibleNotifications = {};
+
     async function showNotification(info: NotificationMessage | null) {
         if (!info) return;
         visibleNotifications[info.id] = info;
@@ -28,19 +30,13 @@ function init() {
 
     function createNotification(info: NotificationMessage) {
         chrome.notifications.create(info.id, {
-            "type": "basic",
-            "iconUrl": chrome.extension.getURL(info.icon),
-            "title": info.title,
-            "message": info.text
+            type: "basic",
+            iconUrl: chrome.runtime.getURL(info.icon),
+            title: info.title,
+            message: info.text,
+            requireInteraction: info.priority
         });
-        if (!info.priority) {
-            Rx.Observable.timer(5000, Rx.Scheduler.timeout).subscribe(() => {
-                chrome.notifications.clear(info.id);
-            });
-        }
     }
-
-    const visibleNotifications = {};
 
     const eventNotificationEnabled = (event) => {
         return Rx.Observable.return(event)
