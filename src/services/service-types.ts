@@ -69,6 +69,6 @@ export interface CIPipelineList {
 
 export interface CIService {
     getInfo: () => CIServiceDefinition;
-    getAll: (settings: CIServiceSettings) => Rx.Observable<any>;
-    getLatest: (settings: CIServiceSettings) => Rx.Observable<any>;
+    getAll: (settings: CIServiceSettings) => Rx.Observable<CIPipelineList>;
+    getLatest: (settings: CIServiceSettings) => Rx.Observable<CIBuild>;
 }
