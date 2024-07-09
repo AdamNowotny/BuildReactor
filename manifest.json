@@ -1,22 +1,20 @@
 {
     "name": "BuildReactor",
-    "version": "3.0.1",
-    "manifest_version": 2,
+    "version": "4.0.0",
+    "manifest_version": 3,
     "description": "Developer notifications and dashboard for CI servers",
     "icons": {
         "16": "img/icon-16.png",
         "48": "img/icon-48.png",
         "128": "img/icon-128.png"
     },
-    "browser_action": {
+    "action": {
         "default_title": "BuildReactor",
         "default_icon": "img/icon-19.png",
         "default_popup": "popup.html"
     },
     "background": {
-        "scripts": [
-            "background.js"
-        ]
+        "service_worker": "service-worker.js"
     },
     "homepage_url": "https://github.com/AdamNowotny/BuildReactor",
     "options_ui": {
@@ -24,13 +22,18 @@
         "open_in_tab": true
     },
     "permissions": [
-        "http://*/*",
-        "https://*/*",
+        "alarms",
         "notifications",
         "storage"
     ],
+    "host_permissions": [
+        "http://*/*",
+        "https://*/*"
+    ],
     "web_accessible_resources": [
-        "services/*/*.png",
-        "services/*/*.svg"
+        {
+            "resources": ["services/*/*.png", "services/*/*.svg"],
+            "matches": ["<all_urls>"]
+        }
     ]
 }
