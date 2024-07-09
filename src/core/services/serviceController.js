@@ -15,11 +15,6 @@ const clear = function () {
     types = {};
 };
 
-const typeInfoFor = name => {
-    const service = services.filter(s => s.settings.name === name)[0];
-    return types[service.settings.baseUrl].settings();
-};
-
 const createService = settings => {
     const Service = types[settings.baseUrl];
     return new Service(settings);
@@ -75,6 +70,5 @@ const start = function () {
 export default {
     start,
     registerType,
-    typeInfoFor,
     clear,
 };

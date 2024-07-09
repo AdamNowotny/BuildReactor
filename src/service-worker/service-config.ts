@@ -98,6 +98,7 @@ export default {
     disableService,
     enableService,
     get: storage.get,
+    getItem,
     init,
     onChanged: storage.onChanged,
     removeService,

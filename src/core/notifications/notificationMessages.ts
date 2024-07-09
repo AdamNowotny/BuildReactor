@@ -1,5 +1,6 @@
 import 'rx/dist/rx.time';
-import serviceController from 'core/services/serviceController';
+import serviceConfig from 'service-worker/service-config';
+import serviceRepository from 'services/service-repository';
 
 var containsTag = function(tagName, tags) {
     return tags?.reduce(function(agg, value) {
@@ -7,25 +8,39 @@ var containsTag = function(tagName, tags) {
     }, false);
 };
 
-function createPasswordExpiredMessage(event) {
+const getIcon = async (serviceName) => {
+    const settings = await serviceConfig.getItem(serviceName);
+    const service = serviceRepository.getService(settings.baseUrl);
+    return service.getInfo().icon;
+}
+
+export interface NotificationMessage {
+    id: string;
+    title: string;
+    url: string;
+    icon: string;
+    text: string;
+    priority?: boolean;
+}
+
+async function createPasswordExpiredMessage(event): Promise<NotificationMessage> {
     return {
         id: `${event.source}_disabled`,
         title: event.source,
         url: 'settings.html',
-        icon: serviceController.typeInfoFor(event.source).icon,
+        icon: await getIcon(event.source),
         text: 'Password expired. Service has been disabled.',
         priority: true
     };
 }
 
-function createBuildStartedMessage(ev, notificationsConfig) {
+async function createBuildStartedMessage(ev, notificationsConfig): Promise<NotificationMessage | null> {
   return (notificationsConfig.buildStarted) ?
     createNotificationInfo(ev, 'Build started', false) :
     null;
 }
 
-/* eslint complexity: off, max-statements: off */
-function createBuildFinishedMessage(event, notificationsConfig) {
+async function createBuildFinishedMessage(event, notificationsConfig): Promise<NotificationMessage | null> {
     if (event.broken && notificationsConfig.buildBroken) {
         if (containsTag('Unstable', event.details.tags)) {
             return createNotificationInfo(event, 'Build unstable', false);
@@ -45,7 +60,7 @@ function createBuildFinishedMessage(event, notificationsConfig) {
     return null;
 }
 
-function createNotificationInfo(event, title, priority) {
+async function createNotificationInfo(event, title, priority): Promise<NotificationMessage> {
 
     function createId(eventDetails) {
         return eventDetails.group ?
@@ -59,7 +74,7 @@ function createNotificationInfo(event, title, priority) {
             `${eventDetails.name}`;
     }
 
-    function createChangesMessage(changes = []) {
+    function createChangesMessage(changes: any[] = []) {
         if (changes.length === 0) return '';
         return changes.reduce((agg, change, i) => {
             if (i === 2) {
@@ -79,7 +94,7 @@ function createNotificationInfo(event, title, priority) {
         id: createId(event.details),
         title: `${title} (${event.source})`,
         url: event.details.webUrl,
-        icon: serviceController.typeInfoFor(event.source).icon,
+        icon: await getIcon(event.source),
         priority,
         text: createBuildName(event.details) +
             createChangesMessage(event.details.changes)

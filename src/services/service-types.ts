@@ -21,7 +21,7 @@ interface CIServiceDefinitionField {
     config?: string;
 }
 
-interface CIServiceDefinition {
+export interface CIServiceDefinition {
     typeName: string;
     baseUrl: string;
     icon: string;

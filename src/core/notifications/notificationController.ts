@@ -1,17 +1,17 @@
 import 'rx/dist/rx.time';
 import Rx from 'rx';
 import events from 'core/events';
-import messages from 'core/notifications/notificationMessages';
+import messages, { NotificationMessage } from 'core/notifications/notificationMessages';
 import viewConfigStorage from 'service-worker/view-config-storage';
 
 function init() {
 
-    let config = {};
+    let config: Record<string, any> = {};
     viewConfigStorage.onChanged.subscribe(newConfig => {
         config = newConfig.newValue;
     });
 
-    function showNotification(info) {
+    async function showNotification(info: NotificationMessage | null) {
         if (!info) return;
         visibleNotifications[info.id] = info;
         createNotification(info);
@@ -26,7 +26,7 @@ function init() {
         delete visibleNotifications[id];
     });
 
-    function createNotification(info) {
+    function createNotification(info: NotificationMessage) {
         chrome.notifications.create(info.id, {
             "type": "basic",
             "iconUrl": chrome.extension.getURL(info.icon),
@@ -57,10 +57,9 @@ function init() {
     const passwordExpired = events.getByName('passwordExpired')
         .select(messages.createPasswordExpiredMessage);
 
-    passwordExpired
-        .merge(buildStarted)
-        .merge(buildFinished)
-        .subscribe(showNotification);
+    passwordExpired.subscribe((async (info) => showNotification(await info)));
+    buildStarted.subscribe((async (info) => showNotification(await info)));
+    buildFinished.subscribe((async (info) => showNotification(await info)));
 }
 
 export default {

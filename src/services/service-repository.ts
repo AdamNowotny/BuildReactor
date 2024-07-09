@@ -66,8 +66,13 @@ const getPipelinesFor = function (
     }));
 };
 
+const getService = function (baseUrl) {
+    return services[baseUrl];
+}
+
 export default {
     init,
+    getService,
     getAllDefinitions,
     getDefinition,
     getPipelinesFor,
