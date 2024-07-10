@@ -17,18 +17,18 @@ export class Storage<T> {
             defaultValue?: T;
         }
     ) {
-        chrome.storage.onChanged.addListener((changes, namespace) => {
-            for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
-                if (key === options.key) {
-                    logger.log(`${options.key}-storage.onChanged`, changes, namespace);
-                    this.onChanged.onNext({ oldValue, newValue });
-                }
-            }
-        });
     }
 
     public init = async () => {
         logger.log(`${this.options.key}-storage.init`);
+        chrome.storage.onChanged.addListener((changes, namespace) => {
+            for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
+                if (key === this.options.key) {
+                    logger.log(`${this.options.key}-storage.onChanged`, changes, namespace);
+                    this.onChanged.onNext({ oldValue, newValue });
+                }
+            }
+        });
         const result = await this.get();
         this.onChanged.onNext({ oldValue: result, newValue: result });
         return result;

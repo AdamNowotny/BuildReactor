@@ -1,80 +1,37 @@
-import { expect, it, vi } from 'vitest';
-import stateStorage from './state-storage';
+import { beforeEach, expect, it, Mock, vi } from 'vitest';
+import stateStorage, { StateStorageItem } from './state-storage';
+import { Storage } from './storage';
 
-const mockChrome = {
-    storage: {
-        local: {
-            get: vi.fn(),
-            set: vi.fn(),
-        },
-        onChanged: {
-            addListener: vi.fn(),
-        },
-    },
-};
-vi.stubGlobal('chrome', mockChrome);
 vi.mock('common/logger');
+vi.mock('./storage', () => {
+    const Storage = vi.fn();
+    Storage.prototype.set = vi.fn();
+    Storage.prototype.get = vi.fn();
+    Storage.prototype.init = vi.fn();
+    return { Storage };
+});
+
+let testState: StateStorageItem[];
+
+beforeEach(() => {
+    testState = [{
+        failedCount: 0,
+        offlineCount: 0,
+        runningCount: 0,
+        name: 'test',
+        items: [{ name: 'Build 1', group: null, id: 'build1' }],
+    }];
+    (Storage.prototype.get as Mock).mockImplementation(() => testState);
+});
 
 it('saves state to storage', async () => {
-    await stateStorage.set({ a: 5 });
+    await stateStorage.set(testState);
 
-    expect(mockChrome.storage.local.set).toBeCalledWith({ state: { a: 5 } });
+    expect(Storage.prototype.set).toBeCalledWith(testState);
 });
 
-it('reads state on init', () => {
-    mockChrome.storage.local.get.mockReturnValue({ a: 5 });
-
+it('initilizes storage on init', () => {
     void stateStorage.init();
 
-    expect(mockChrome.storage.local.get).toBeCalled();
-});
-
-it('gets default state when undefined', async () => {
-    mockChrome.storage.local.get.mockImplementation((_, callback) => {
-        callback({ state: undefined });
-    });
-
-    const result = await stateStorage.init();
-
-    expect(result).toEqual([]);
-});
-
-it('publishes onChanged event', () => {
-    void stateStorage.init();
-    const [ handler ] = mockChrome.storage.onChanged.addListener.mock.lastCall;
-
-    const expectedOldValue = { a: null };
-    const expectedNewValue = { a: 5 };
-    const changedEvent = {
-        state: {
-            oldValue: expectedOldValue,
-            newValue: expectedNewValue
-        },
-    };
-
-    handler(changedEvent, 'local');
-
-    stateStorage.onChanged.subscribe(({ oldValue, newValue }) => {
-        expect(oldValue).toStrictEqual(expectedOldValue);
-        expect(newValue).toStrictEqual(expectedNewValue);
-    });
-});
-
-it('publishes onChanged only for state', () => {
-    void stateStorage.init();
-    const [ handler ] = mockChrome.storage.onChanged.addListener.mock.lastCall;
-
-    const changedEvent = {
-        config: {
-            oldValue: { a: null },
-            newValue: { a: 5 }
-        },
-    };
-
-    handler(changedEvent, 'local');
-
-    stateStorage.onChanged.subscribe(({ oldValue, newValue }) => {
-        expect(oldValue).not.toBe({ a: null });
-        expect(newValue).not.toBe({ a: 5 });
-    });
+    expect(Storage.prototype.init).toBeCalled();
 });

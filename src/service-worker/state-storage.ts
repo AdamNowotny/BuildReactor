@@ -1,8 +1,8 @@
 import logger from 'common/logger';
-import Rx from 'rx';
+import { Storage } from './storage';
 import type { CIBuild } from 'services/service-types';
 
-interface StateStorageItem {
+export interface StateStorageItem {
     failedCount: number;
     runningCount: number;
     offlineCount: number;
@@ -10,48 +10,22 @@ interface StateStorageItem {
     items?: CIBuild[];
 }
 
-interface StateStorageChangeEvent {
-    oldValue: StateStorageItem[];
-    newValue: StateStorageItem[];
-}
-
-const STORAGE_KEY = 'state';
-const BUFFER_SIZE = 1;
-const onChanged = new Rx.ReplaySubject<StateStorageChangeEvent>(BUFFER_SIZE);
+let storage = new Storage<StateStorageItem[]>({
+    key: 'state',
+    defaultValue: [],
+});
 
 const init = async () => {
-    logger.log('state-storage.init');
-    chrome.storage.onChanged.addListener((changes, namespace) => {
-        for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
-            if (key === STORAGE_KEY) {
-                logger.log('state-storage.onChanged', changes, namespace);
-                onChanged.onNext({ oldValue, newValue });
-            }
-        }
-    });
-    const result = await get();
-    onChanged.onNext({ oldValue: result, newValue: result });   
-    return result; 
+    return storage.init();
 };
 
-const set = async (value: object) => {
-    logger.log('state-storage.set', value);
-    await chrome.storage.local.set({ state: value });
-};
-
-const get = async () => {
-    return new Promise<StateStorageItem[]>(resolve => {
-        chrome.storage.local.get(STORAGE_KEY, value => {
-            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-            const result = value[STORAGE_KEY] || [];
-            logger.log(`state-storage.get`, result);
-            resolve(result);
-        });
-    });
-};
+const updateService = async (serviceName: string, builds: CIBuild[]) => {
+    logger.log('state-storage.updateService', serviceName, builds);
+}
 
 export default {
-    onChanged,
+    onChanged: storage.onChanged,
     init,
-    set,
+    set: storage.set,
+    updateService,
 };
