@@ -21,6 +21,7 @@ import messaging from './messaging';
 import serviceConfig from './service-config';
 import stateStorage from './state-storage';
 import viewConfigStorage from './view-config-storage';
+import serviceMonitor from 'services/service-monitor';
 
 void (async () => {
     logger.init({ prefix: 'service-worker', enableEvents: false });
@@ -30,6 +31,7 @@ void (async () => {
     serviceRepository.init();
     messaging.init();
     badge.init();
+    serviceMonitor.init();
 
     // background page modules
     notificationController.init();
@@ -50,4 +52,6 @@ void (async () => {
     serviceController.registerType(poolingService.create(travis));
 
     serviceController.start();
+
+    // serviceMonitor.start();
 })();
