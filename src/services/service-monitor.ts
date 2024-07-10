@@ -9,22 +9,27 @@ const ALARM_NAME = 'update';
 
 const init = async () => {
     logger.log('service-monitor.init');
-    chrome.alarms.clearAll();
     chrome.alarms.onAlarm.addListener(async alarm => {
         if (alarm.name !== ALARM_NAME) return;
         logger.log('service-monitor.alarm', alarm);
-        updateAll();
+        updateAll(await serviceConfig.get());
+    });
+    serviceConfig.onChanged.subscribe(async (value) => {
+        logger.log('service-monitor.onChanged', value);
+        const serviceNames = value.newValue.map((config) => config.name);
+        await stateStorage.reset(serviceNames);
+        updateAll(value.newValue);
     });
 };
 
 const start = async () => {
     console.log('service-monitor.start');
-    updateAll();
+    updateAll(await serviceConfig.get());
 };
 
-const updateAll = async () => {
+const updateAll = async (allConfigs: CIServiceSettings[]) => {
     logger.log('service-monitor.updateAll');
-    const allConfigs = await serviceConfig.get();
+    chrome.alarms.clearAll();
     const updatedServices = await Promise.all(
         allConfigs.map(async config => {
             const serviceState = await updateService(config);
@@ -41,6 +46,7 @@ const updateService = async (settings: CIServiceSettings) => {
     const service = serviceRepository.getService(settings.baseUrl);
     return service
         .getLatest(settings)
+        .filter(build => settings.projects.includes(build.id))
         .toArray()
         .select(items => sortBy('id', items) as CIBuild[])
         .catch(ex => createFailedState(settings, ex))

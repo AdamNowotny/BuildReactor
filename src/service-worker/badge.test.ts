@@ -27,7 +27,7 @@ it('hides badge when state empty', () => {
 it('shows badge when builds green', () => {
     stateStorage.onChanged.onNext({
         oldValue: [],
-        newValue: [{ failedCount: 0, runningCount: 0, offlineCount: 0 }],
+        newValue: [{ failedCount: 0, runningCount: 0, offlineCount: 0, name: 'service' }],
     });
 
     expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: ' ' });
@@ -39,7 +39,7 @@ it('shows badge when builds green', () => {
 it('orange badge when builds running', () => {
     stateStorage.onChanged.onNext({
         oldValue: [],
-        newValue: [{ failedCount: 0, runningCount: 2, offlineCount: 0 }],
+        newValue: [{ failedCount: 0, runningCount: 2, offlineCount: 0, name: 'service' }],
     });
 
     expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: ' ' });
@@ -51,7 +51,7 @@ it('orange badge when builds running', () => {
 it('orange badge when builds running and failed', () => {
     stateStorage.onChanged.onNext({
         oldValue: [],
-        newValue: [{ failedCount: 1, runningCount: 2, offlineCount: 0 }],
+        newValue: [{ failedCount: 1, runningCount: 2, offlineCount: 0, name: 'service' }],
     });
 
     expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: '1' });
@@ -63,7 +63,7 @@ it('orange badge when builds running and failed', () => {
 it('grey badge when builds offline', () => {
     stateStorage.onChanged.onNext({
         oldValue: [],
-        newValue: [{ failedCount: 0, runningCount: 0, offlineCount: 2 }],
+        newValue: [{ failedCount: 0, runningCount: 0, offlineCount: 2, name: 'service' }],
     });
 
     expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: ' ' });
@@ -75,7 +75,7 @@ it('grey badge when builds offline', () => {
 it('grey badge when builds offline and failed', () => {
     stateStorage.onChanged.onNext({
         oldValue: [],
-        newValue: [{ failedCount: 1, runningCount: 0, offlineCount: 2 }],
+        newValue: [{ failedCount: 1, runningCount: 0, offlineCount: 2, name: 'service' }],
     });
 
     expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: '1' });
@@ -87,7 +87,7 @@ it('grey badge when builds offline and failed', () => {
 it('red badge when builds failed', () => {
     stateStorage.onChanged.onNext({
         oldValue: [],
-        newValue: [{ failedCount: 1, runningCount: 0, offlineCount: 0 }],
+        newValue: [{ failedCount: 1, runningCount: 0, offlineCount: 0, name: 'service' }],
     });
 
     expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: '1' });
