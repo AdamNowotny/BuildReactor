@@ -1,5 +1,5 @@
 import { beforeEach, expect, it, Mock, vi } from 'vitest';
-import stateStorage, { StateStorageItem } from './state-storage';
+import stateStorage, { StateStorageItem } from './service-state';
 import { Storage } from './storage';
 
 vi.mock('common/logger');

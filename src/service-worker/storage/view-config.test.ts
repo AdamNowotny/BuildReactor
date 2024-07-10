@@ -1,5 +1,5 @@
 import { beforeEach, expect, it, Mock, vi } from 'vitest';
-import viewConfigStorage, { ConfigStorageItem } from './view-config-storage';
+import viewConfigStorage, { ConfigStorageItem } from './view-config';
 import { Storage } from './storage';
 
 vi.mock('common/logger');

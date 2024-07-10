@@ -1,6 +1,6 @@
 import eventProcessor from 'core/services/buildEventProcessor';
 import events from 'core/events';
-import stateStorage from 'service-worker/state-storage';
+import stateStorage from 'service-worker/storage/service-state';
 
 let rxServiceUpdateFailed, rxServiceUpdated, rxServicesInit;
 

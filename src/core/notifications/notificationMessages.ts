@@ -1,5 +1,5 @@
 import 'rx/dist/rx.time';
-import serviceConfig from 'service-worker/service-config';
+import serviceConfig from 'service-worker/storage/service-config';
 import serviceRepository from 'services/service-repository';
 
 var containsTag = function(tagName, tags) {

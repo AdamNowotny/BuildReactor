@@ -1,6 +1,6 @@
 import { beforeAll, expect, it, vi } from 'vitest';
 import badge from './badge';
-import stateStorage from './state-storage';
+import stateStorage from './storage/service-state';
 
 const mockChrome = {
     action: {

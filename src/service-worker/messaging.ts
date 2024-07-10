@@ -1,8 +1,8 @@
 import logger from 'common/logger';
 import serviceRepository from '../services/service-repository';
-import stateStorage from './state-storage';
-import viewConfigStorage from './view-config-storage';
-import serviceConfig from './service-config';
+import stateStorage from './storage/service-state';
+import viewConfigStorage from './storage/view-config';
+import serviceConfig from './storage/service-config';
 
 function availableServices(sendResponse: any) {
     const response = serviceRepository.getAllDefinitions();

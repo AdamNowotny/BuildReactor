@@ -1,5 +1,5 @@
 import events from 'core/events';
-import serviceConfig from 'service-worker/service-config';
+import serviceConfig from 'service-worker/storage/service-config';
 
 const init = () => {
     events.getByName('passwordExpired')

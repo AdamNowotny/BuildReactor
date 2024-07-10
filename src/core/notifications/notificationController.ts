@@ -2,7 +2,7 @@ import 'rx/dist/rx.time';
 import Rx from 'rx';
 import events from 'core/events';
 import messages, { NotificationMessage } from 'core/notifications/notificationMessages';
-import viewConfigStorage from 'service-worker/view-config-storage';
+import viewConfigStorage from 'service-worker/storage/view-config';
 
 function init() {
 

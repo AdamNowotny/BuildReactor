@@ -1,9 +1,9 @@
 import logger from 'common/logger';
 import { sortBy } from 'common/utils';
-import serviceConfig from 'service-worker/service-config';
+import serviceConfig from 'service-worker/storage/service-config';
 import serviceRepository from './service-repository';
 import { CIBuild, CIServiceSettings } from './service-types';
-import stateStorage from 'service-worker/state-storage';
+import stateStorage from 'service-worker/storage/service-state';
 
 const ALARM_NAME = 'update';
 

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 import logger from 'common/logger';
-import stateStorage from './state-storage';
+import stateStorage from './storage/service-state';
 
 const init = () => {
     logger.log('badge.init');

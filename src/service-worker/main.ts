@@ -18,9 +18,9 @@ import travis from 'services/travis/travis';
 import serviceRepository from '../services/service-repository';
 import badge from './badge';
 import messaging from './messaging';
-import serviceConfig from './service-config';
-import stateStorage from './state-storage';
-import viewConfigStorage from './view-config-storage';
+import serviceConfig from './storage/service-config';
+import stateStorage from './storage/service-state';
+import viewConfigStorage from './storage/view-config';
 import serviceMonitor from 'services/service-monitor';
 
 void (async () => {
