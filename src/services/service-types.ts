@@ -56,7 +56,7 @@ export interface CIBuild {
     isRunning?: boolean;
     isWaiting?: boolean;
     isDisabled?: boolean;
-    error?: { message: string };
+    error?: { name: string, message?: string, description?: string };
     webUrl?: string;
     tags?: CIBuildTag[];
     changes?: CIBuildChange[];

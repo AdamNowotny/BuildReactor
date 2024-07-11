@@ -1,6 +1,5 @@
 import logger from 'common/logger';
 import notificationController from 'core/notifications/notificationController';
-import passwordExpiredHandler from 'core/passwordExpiredHandler';
 import poolingService from 'core/services/poolingService';
 import serviceController from 'core/services/serviceController';
 import serviceView from 'core/services/serviceView';
@@ -22,6 +21,7 @@ import serviceConfig from './storage/service-config';
 import stateStorage from './storage/service-state';
 import viewConfigStorage from './storage/view-config';
 import serviceMonitor from 'services/service-monitor';
+import passwordExpiredHandler from './events/password-expired';
 
 void (async () => {
     logger.init({ prefix: 'service-worker', enableEvents: false });
@@ -32,11 +32,11 @@ void (async () => {
     messaging.init();
     badge.init();
     serviceMonitor.init();
+    passwordExpiredHandler.init();
 
     // background page modules
     notificationController.init();
     serviceView.init();
-    passwordExpiredHandler.init();
 
     serviceController.clear();
     serviceController.registerType(poolingService.create(bamboo));

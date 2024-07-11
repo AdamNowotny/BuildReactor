@@ -21,6 +21,7 @@ function init() {
 
     chrome.notifications.onClicked.addListener(id => {
         const info = visibleNotifications[id];
+        if (!info) return;
         void chrome.tabs.create({ 'url': info.url });
     });
 
@@ -50,10 +51,7 @@ function init() {
     const buildFinished = events.getByName('buildFinished')
         .selectMany(eventNotificationEnabled)
         .select(ev => messages.createBuildFinishedMessage(ev, config.notifications));
-    const passwordExpired = events.getByName('passwordExpired')
-        .select(messages.createPasswordExpiredMessage);
 
-    passwordExpired.subscribe((async (info) => showNotification(await info)));
     buildStarted.subscribe((async (info) => showNotification(await info)));
     buildFinished.subscribe((async (info) => showNotification(await info)));
 }

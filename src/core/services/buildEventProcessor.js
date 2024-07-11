@@ -2,13 +2,6 @@ import events from 'core/events';
 
 const process = ({ oldState, newState }) => {
     newState?.items?.forEach((newBuild) => {
-        if (newBuild.error && newBuild.error.name === 'UnauthorisedError') {
-            events.push({
-                eventName: 'passwordExpired',
-                source: newState.name,
-                details: newBuild
-            });
-        }
         if (newBuild.changes) {
             newBuild.changes = createUniqueChanges(newBuild.changes);
         }

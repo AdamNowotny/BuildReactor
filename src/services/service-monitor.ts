@@ -1,9 +1,9 @@
 import logger from 'common/logger';
 import { sortBy } from 'common/utils';
 import serviceConfig from 'service-worker/storage/service-config';
+import stateStorage from 'service-worker/storage/service-state';
 import serviceRepository from './service-repository';
 import { CIBuild, CIServiceSettings } from './service-types';
-import stateStorage from 'service-worker/storage/service-state';
 
 const ALARM_NAME = 'update';
 
@@ -14,9 +14,9 @@ const init = async () => {
         logger.log('service-monitor.alarm', alarm);
         updateAll(await serviceConfig.get());
     });
-    serviceConfig.onChanged.subscribe(async (value) => {
+    serviceConfig.onChanged.subscribe(async value => {
         logger.log('service-monitor.onChanged', value);
-        const serviceNames = value.newValue.map((config) => config.name);
+        const serviceNames = value.newValue.map(config => config.name);
         await stateStorage.reset(serviceNames);
         updateAll(value.newValue);
     });
@@ -68,6 +68,7 @@ function createFailedState(settings: CIServiceSettings, ex: Error): Rx.Observabl
                     name: project,
                     group: null,
                     error: {
+                        name: ex.name,
                         message: 'Service update failed',
                         description: ex.message,
                     },

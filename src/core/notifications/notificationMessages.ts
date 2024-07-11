@@ -23,17 +23,6 @@ export interface NotificationMessage {
     priority?: boolean;
 }
 
-async function createPasswordExpiredMessage(event): Promise<NotificationMessage> {
-    return {
-        id: `${event.source}_disabled`,
-        title: event.source,
-        url: 'settings.html',
-        icon: await getIcon(event.source),
-        text: 'Password expired. Service has been disabled.',
-        priority: true
-    };
-}
-
 async function createBuildStartedMessage(ev, notificationsConfig): Promise<NotificationMessage | null> {
   return (notificationsConfig.buildStarted) ?
     createNotificationInfo(ev, 'Build started', false) :
@@ -103,7 +92,6 @@ async function createNotificationInfo(event, title, priority): Promise<Notificat
 }
 
 export default {
-    createPasswordExpiredMessage,
     createBuildStartedMessage,
     createBuildFinishedMessage
 };

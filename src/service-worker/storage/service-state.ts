@@ -3,9 +3,9 @@ import { Storage } from './storage';
 import type { CIBuild } from 'services/service-types';
 
 export interface ServiceStateItem {
-    failedCount: number;
-    runningCount: number;
-    offlineCount: number;
+    failedCount?: number;
+    runningCount?: number;
+    offlineCount?: number;
     name: string;
     items?: CIBuild[];
 }
@@ -20,14 +20,14 @@ const init = async () => {
 };
 
 const reset = async (serviceNames: string[]) => {
-    logger.log('state-storage.reset', serviceNames);
+    logger.log('service-state.reset', serviceNames);
     const state = await storage.get();
     const newState = state.filter(item => serviceNames.includes(item.name));
     await storage.set(newState);
 };
 
 const updateService = async (serviceName: string, builds: CIBuild[]) => {
-    logger.log('state-storage.updateService', serviceName, builds);
+    logger.log('service-state.updateService', serviceName, builds);
     const serviceState: ServiceStateItem = {
         name: serviceName,
         failedCount: builds.filter(build => !build.isDisabled && build.isBroken).length,
@@ -39,7 +39,7 @@ const updateService = async (serviceName: string, builds: CIBuild[]) => {
 };
 
 const getItem = async (serviceName: string) => {
-    logger.log('state-storage.getItem', serviceName);
+    logger.log('service-state.getItem', serviceName);
     const allItems = await storage.get();
     const [item] = allItems.filter(state => state.name === serviceName);
     return item;

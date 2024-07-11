@@ -129,14 +129,14 @@ describe.skip('updateService', () => {
                 name: 'Build 1',
                 group: null,
                 isDisabled: false,
-                error: { message: 'error1' },
+                error: { name: 'Error', message: 'error1' },
             },
             {
                 id: 'build2',
                 name: 'Build 2',
                 group: null,
                 isDisabled: true,
-                error: { message: 'error2' },
+                error: { name: 'Error', message: 'error2' },
             },
         ];
 
