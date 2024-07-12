@@ -2,7 +2,7 @@ import { Storage } from './storage';
 
 
 export interface ConfigStorageItem {
-    columns: number;
+    columns?: number;
     fullWidthGroups?: boolean;
     singleGroupRows?: boolean;
     showCommits?: boolean;

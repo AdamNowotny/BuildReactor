@@ -23,6 +23,7 @@ import viewConfigStorage from './storage/view-config';
 import serviceMonitor from 'services/service-monitor';
 import passwordExpiredHandler from './events/password-expired';
 import buildStartedHandler from './events/build-started';
+import buildFinishedHandler from './events/build-finished';
 
 void (async () => {
     logger.init({ prefix: 'service-worker', enableEvents: false });
@@ -35,6 +36,7 @@ void (async () => {
     serviceMonitor.init();
     passwordExpiredHandler.init();
     buildStartedHandler.init();
+    buildFinishedHandler.init();
 
     // background page modules
     notificationController.init();
