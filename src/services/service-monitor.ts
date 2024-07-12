@@ -16,7 +16,9 @@ const init = async () => {
     });
     serviceConfig.onChanged.subscribe(async value => {
         logger.log('service-monitor.onChanged', value);
-        const serviceNames = value.newValue.map(config => config.name);
+        const serviceNames = value.newValue
+            .filter(config => !config.disabled)
+            .map(config => config.name);
         await stateStorage.reset(serviceNames);
         updateAll(value.newValue);
     });
@@ -31,13 +33,15 @@ const updateAll = async (allConfigs: CIServiceSettings[]) => {
     logger.log('service-monitor.updateAll');
     chrome.alarms.clearAll();
     const updatedServices = await Promise.all(
-        allConfigs.map(async config => {
-            const serviceState = await updateService(config);
-            await stateStorage.updateService(config.name, serviceState);
-            return serviceState;
-        })
+        allConfigs
+            .filter(config => !config.disabled)
+            .map(async config => {
+                const serviceState = await updateService(config);
+                await stateStorage.updateService(config.name, serviceState);
+                return serviceState;
+            })
     );
-    logger.warn('service-monitor.updateAll result', updatedServices);
+    logger.log('service-monitor.updateAll result', updatedServices);
     chrome.alarms.create(ALARM_NAME, { delayInMinutes: 0.5 });
 };
 
