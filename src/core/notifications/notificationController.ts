@@ -45,14 +45,10 @@ function init() {
             .where(event => !event.details.isDisabled);
     };
 
-    const buildStarted = events.getByName('buildStarted')
-        .selectMany(eventNotificationEnabled)
-        .select(ev => messages.createBuildStartedMessage(ev, config.notifications));
     const buildFinished = events.getByName('buildFinished')
         .selectMany(eventNotificationEnabled)
         .select(ev => messages.createBuildFinishedMessage(ev, config.notifications));
 
-    buildStarted.subscribe((async (info) => showNotification(await info)));
     buildFinished.subscribe((async (info) => showNotification(await info)));
 }
 

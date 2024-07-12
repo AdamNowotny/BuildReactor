@@ -64,7 +64,7 @@ it('cleans up state on configuration change', async () => {
     ]);
 });
 
-describe.skip('updateService', () => {
+describe('updateService', () => {
     it('adds new service to state', async () => {
         const items: CIBuild[] = [{ id: 'build1', name: 'Build 1', group: null }];
         (Storage.prototype.get as Mock).mockImplementation(() => []);

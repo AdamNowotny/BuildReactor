@@ -23,12 +23,6 @@ export interface NotificationMessage {
     priority?: boolean;
 }
 
-async function createBuildStartedMessage(ev, notificationsConfig): Promise<NotificationMessage | null> {
-  return (notificationsConfig.buildStarted) ?
-    createNotificationInfo(ev, 'Build started', false) :
-    null;
-}
-
 async function createBuildFinishedMessage(event, notificationsConfig): Promise<NotificationMessage | null> {
     if (event.broken && notificationsConfig.buildBroken) {
         if (containsTag('Unstable', event.details.tags)) {
@@ -92,6 +86,5 @@ async function createNotificationInfo(event, title, priority): Promise<Notificat
 }
 
 export default {
-    createBuildStartedMessage,
     createBuildFinishedMessage
 };

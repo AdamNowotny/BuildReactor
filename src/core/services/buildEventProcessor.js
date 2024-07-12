@@ -7,13 +7,6 @@ const process = ({ oldState, newState }) => {
         }
         if (oldState?.items?.length) {
             const [oldBuild] = oldState.items.filter((build) => build.id === newBuild.id);
-            if (!oldBuild.isRunning && newBuild.isRunning) {
-                events.push({
-                    eventName: 'buildStarted',
-                    source: newState.name,
-                    details: newBuild
-                });
-            }
             if (oldBuild.isRunning && !newBuild.isRunning) {
                 events.push({
                     eventName: 'buildFinished',

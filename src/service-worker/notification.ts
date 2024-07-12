@@ -1,3 +1,4 @@
+import { CIBuild } from 'services/service-types';
 import serviceConfig from './storage/service-config';
 import viewConfig from './storage/view-config';
 
@@ -28,11 +29,9 @@ const init = async () => {
 
 const show = async (info: NotificationInfo) => {
     if (!(await viewConfig.get()).notifications?.enabled) return;
-    const serviceType = (await serviceConfig.getItem(info.serviceName)).baseUrl;
-    const icon = chrome.runtime.getURL(`services/${serviceType}/icon.png`);
     chrome.notifications.create(info.id, {
         type: 'basic',
-        iconUrl: icon,
+        iconUrl: await getIcon(info),
         title: info.title,
         message: info.message,
         requireInteraction: info.requireInteraction,
@@ -40,7 +39,45 @@ const show = async (info: NotificationInfo) => {
     visibleNotifications[info.id] = info;
 };
 
+async function getIcon(info: NotificationInfo) {
+    const serviceType = (await serviceConfig.getItem(info.serviceName)).baseUrl;
+    const icon = chrome.runtime.getURL(`services/${serviceType}/icon.png`);
+    return icon;
+}
+
+const showBuild = async (serviceName: string, build: CIBuild, text: string) => {
+    const buildId = build.group
+        ? `${serviceName}_${build.group}_${build.id}`
+        : `${serviceName}_${build.id}`;
+    await show({
+        serviceName,
+        id: buildId,
+        title: `${text} (${serviceName})`,
+        url: build.webUrl,
+        message: createMessage(build),
+    });
+};
+
+const createMessage = (build: CIBuild) => {
+    const buildName = build.group ? `${build.group} / ${build.name}` : build.name;
+    const uniqueNames: Record<string, boolean> = {};
+    const uniqueChanges =
+        build.changes?.filter(change => {
+            if (uniqueNames[change.name]) return false;
+            uniqueNames[change.name] = true;
+            return true;
+        }) || [];
+    const changes = uniqueChanges.map((change, index) => {
+        if (index === 2) return '...';
+        if (index > 2) return '';
+        return change.message ? `${change.name}: ${change.message}` : change.name;
+    });
+    const changesMessage = changes.length ? '\n' + changes?.join('\n') : '';
+    return `${buildName}${changesMessage}`;
+};
+
 export default {
     init,
     show,
+    showBuild,
 };

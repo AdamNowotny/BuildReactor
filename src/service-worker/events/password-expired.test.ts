@@ -50,7 +50,7 @@ it('shows notification if 401 error found', async () => {
         serviceName: 'test2',
         id: 'test2_disabled',
         title: 'test2',
-        text: 'Password expired. Service has been disabled.',
+        message: 'Password expired. Service has been disabled.',
         url: 'settings.html',
         requireInteraction: true,
     });
