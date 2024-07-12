@@ -1,10 +1,8 @@
 /* eslint-disable no-console */
 
-import events from 'core/events';
+let LOG_NAMESPACE = 'undefined';
 
-let LOG_NAMESPACE = 'UNKNOWN';
-
-const init = (options: { prefix: string; enableEvents: boolean }) => {
+const init = (options: { prefix: string }) => {
     LOG_NAMESPACE = options.prefix;
 
     self.onerror = function (message, url, line) {
@@ -13,8 +11,6 @@ const init = (options: { prefix: string; enableEvents: boolean }) => {
         );
         return false; // don't suppress default handling
     };
-
-    if (options.enableEvents) logEvents();
 };
 
 const log = (...args) => {
@@ -35,22 +31,3 @@ export default {
     warn,
     error,
 };
-
-function logEvents() {
-    events.all.subscribe(
-        event => {
-            console.log(
-                new Date().toJSON(),
-                'events.all',
-                `${event.source}.${event.eventName}`,
-                event.details
-            );
-        },
-        (...args) => {
-            console.error(new Date().toJSON(), 'events stream error', args);
-        },
-        (...args) => {
-            console.warn(new Date().toJSON(), 'events stream completed', args);
-        }
-    );
-}
