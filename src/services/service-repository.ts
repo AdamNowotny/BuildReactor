@@ -10,7 +10,6 @@ import jenkins from 'services/jenkins/jenkins';
 import teamcity from 'services/teamcity/teamcity';
 import travis from 'services/travis/travis';
 
-import { sortBy } from 'common/utils';
 import type {
     CIPipelineList,
     CIService,
@@ -61,7 +60,7 @@ const getPipelinesFor = function (
     const pipelines = services[settings['baseUrl']].getAll(settings);
     logger.log('service-repository.getPipelinesFor', pipelines);
     return pipelines.toArray().select(items => ({
-        items: sortBy('name', items),
+        items: items.sort((a, b) => a.name.localeCompare(b.name)),
         selected: settings.projects,
     }));
 };

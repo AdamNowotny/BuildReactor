@@ -8,9 +8,3 @@ export const joinUrl = (root: string, path: string) => {
     }
     return fullRoot + path;
 };
-
-export const sortBy = (propertyName, json) => {
-    return json.sort((a, b) => {
-        return a[propertyName] < b[propertyName] ? -1 : a[propertyName] > b[propertyName] ? 1 : 0;
-    });
-};

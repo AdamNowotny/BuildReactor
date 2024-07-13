@@ -1,5 +1,4 @@
 import logger from 'common/logger';
-import { sortBy } from 'common/utils';
 import serviceConfig from 'service-worker/storage/service-config';
 import stateStorage from 'service-worker/storage/service-state';
 import serviceRepository from './service-repository';
@@ -52,7 +51,7 @@ const updateService = async (settings: CIServiceSettings) => {
         .getLatest(settings)
         .filter(build => settings.projects.includes(build.id))
         .toArray()
-        .select(items => sortBy('id', items) as CIBuild[])
+        .select(items => items.sort((a, b) => a.name.localeCompare(b.name)))
         .catch(ex => createFailedState(settings, ex))
         .toPromise();
 };
