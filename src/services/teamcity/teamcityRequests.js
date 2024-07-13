@@ -1,37 +1,39 @@
 import { joinUrl } from 'common/utils';
-import request from 'core/services/request';
+import request from 'service-worker/request';
 
-const authType = (settings) => (settings.username ? 'httpAuth' : 'guestAuth');
-const branchParam = (settings) => (settings.branch ? `,branch:(${settings.branch})` : '');
+const authType = settings => (settings.username ? 'httpAuth' : 'guestAuth');
+const branchParam = settings => (settings.branch ? `,branch:(${settings.branch})` : '');
 
-const buildTypes = (settings) => request
-    .get({
-        url: joinUrl(settings.url, `${authType(settings)}/app/rest/buildTypes`),
-        query: {
-            fields: 'buildType(id,name,projectName)'
-        },
-        type: 'json',
-        username: settings.username,
-        password: settings.password
-    })
-    .select((response) => response.body);
+const buildTypes = settings =>
+    Rx.Observable.fromPromise(
+        request.get({
+            url: joinUrl(settings.url, `${authType(settings)}/app/rest/buildTypes`),
+            query: {
+                fields: 'buildType(id,name,projectName)',
+            },
+            type: 'json',
+            username: settings.username,
+            password: settings.password,
+        })
+    ).select(response => response.body);
 
-
-const builds = (id, settings) => request
-    .get({
-        url: joinUrl(settings.url, `${authType(settings)}/app/rest/builds`),
-        query: {
-            locator: `buildType:${id},running:any,count:1${branchParam(settings)}`,
-            fields: 'build(running,status,webUrl,buildType(name,projectName),' +
-                'changes(change(comment,username,user(username))))'
-        },
-        type: 'json',
-        username: settings.username,
-        password: settings.password
-    })
-    .select((response) => response.body);
+const builds = (id, settings) =>
+    Rx.Observable.fromPromise(
+        request.get({
+            url: joinUrl(settings.url, `${authType(settings)}/app/rest/builds`),
+            query: {
+                locator: `buildType:${id},running:any,count:1${branchParam(settings)}`,
+                fields:
+                    'build(running,status,webUrl,buildType(name,projectName),' +
+                    'changes(change(comment,username,user(username))))',
+            },
+            type: 'json',
+            username: settings.username,
+            password: settings.password,
+        })
+    ).select(response => response.body);
 
 export default {
     buildTypes,
-    builds
+    builds,
 };
