@@ -1,6 +1,6 @@
 import 'rx/dist/rx.binding';
 import Rx from 'rx';
-import errors from 'core/services/requestErrors';
+import errors from 'service-worker/requestErrors';
 import { parseString } from 'xml2js';
 import logger from 'common/logger';
 
@@ -25,7 +25,7 @@ const fetchCallback = async (options: RequestOptions, callback) => {
         const response = await fetch(url, fetchOptions);
         logger.log('request.fetch', response);
         if (!response.ok) {
-            callback(errors.create({ response }, options), null);
+            callback(errors.create(response, options.url), null);
             return;
         }
         const data = options.type === 'xml' ?
@@ -35,8 +35,8 @@ const fetchCallback = async (options: RequestOptions, callback) => {
             body: data,
             headers: response.headers,
         });
-    } catch (error) {
-        callback(errors.create(error, options), null);
+    } catch (ex: any) {
+        callback(new Error(`${ex.message} (${options.url})`), null);
     }
 };
 
@@ -64,7 +64,7 @@ function createRequest(options: RequestOptions) {
 
 async function parseXml(response: Response) {
     return response.text().then(text => {
-        let result;
+        let result: any;
         parseString(text, (err, json) => {
             if (err) throw err;
             result = json;
