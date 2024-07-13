@@ -1,10 +1,9 @@
-import { joinUrl } from 'common/utils';
 import request from 'service-worker/request';
 
 const allBuilds = settings =>
     Rx.Observable.fromPromise(
         request.get({
-            url: joinUrl(settings.url, 'json/builders'),
+            url: new URL('json/builders', settings.url).href,
             type: 'json',
             username: settings.username,
             password: settings.password,
@@ -14,7 +13,7 @@ const allBuilds = settings =>
 const lastBuild = (id, settings) =>
     Rx.Observable.fromPromise(
         request.get({
-            url: joinUrl(settings.url, `json/builders/${id}`),
+            url: new URL(`json/builders/${id}`, settings.url).href,
             type: 'json',
             username: settings.username,
             password: settings.password,
@@ -24,7 +23,7 @@ const lastBuild = (id, settings) =>
 const lastCompletedBuild = (id, settings) =>
     Rx.Observable.fromPromise(
         request.get({
-            url: joinUrl(settings.url, `json/builders/${id}/builds/-1`),
+            url: new URL(`json/builders/${id}/builds/-1`, settings.url).href,
             type: 'json',
             username: settings.username,
             password: settings.password,

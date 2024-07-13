@@ -1,11 +1,10 @@
 import Rx from 'rx';
-import { joinUrl } from 'common/utils';
 import request from 'service-worker/request';
 
 const projects = settings =>
     Rx.Observable.fromPromise(
         request.get({
-            url: joinUrl(settings.url, 'rest/api/latest/project'),
+            url: new URL('rest/api/latest/project', settings.url).href,
             query: {
                 expand: 'projects.project.plans.plan',
                 'max-result': 1000,
@@ -22,7 +21,7 @@ const projects = settings =>
 const plan = (id, settings) =>
     Rx.Observable.fromPromise(
         request.get({
-            url: joinUrl(settings.url, `rest/api/latest/plan/${id}`),
+            url: new URL(`rest/api/latest/plan/${id}`, settings.url).href,
             query: {
                 os_authType: settings.username ? 'basic' : 'guest',
             },
@@ -35,7 +34,7 @@ const plan = (id, settings) =>
 const result = (id, settings) =>
     Rx.Observable.fromPromise(
         request.get({
-            url: joinUrl(settings.url, `rest/api/latest/result/${id}/latest`),
+            url: new URL(`rest/api/latest/result/${id}/latest`, settings.url).href,
             query: {
                 expand: 'changes.change',
                 os_authType: settings.username ? 'basic' : 'guest',

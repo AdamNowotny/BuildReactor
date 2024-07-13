@@ -1,5 +1,4 @@
 import Rx from 'rx';
-import { joinUrl } from 'common/utils';
 import requests from 'services/buildbot/buildbotRequests';
 
 export default {
@@ -54,7 +53,7 @@ const parseBuild = (id, settings, lastBuild, lastCompletedBuild) => ({
     id,
     name: id,
     group: lastBuild.category,
-    webUrl: joinUrl(settings.url, `builders/${id}`),
+    webUrl: new URL(`builders/${id}`, settings.url).href,
     isBroken: lastCompletedBuild.text.includes('failed'),
     isRunning: lastBuild.state === "building",
     isDisabled: lastBuild.state === "offline",

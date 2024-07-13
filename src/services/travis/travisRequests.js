@@ -1,11 +1,10 @@
 import Rx from 'rx';
-import { joinUrl } from 'common/utils';
 import request from 'service-worker/request';
 
 const repositories = settings =>
     Rx.Observable.fromPromise(
         request.get({
-            url: joinUrl(settings.apiUrl, `/repos`),
+            url: new URL(`/repos`, settings.apiUrl).href,
             headers: {
                 'Travis-API-Version': 3,
                 Authorization: `token ${settings.token}`,
@@ -18,7 +17,7 @@ const repositories = settings =>
 const builds = (id, settings) =>
     Rx.Observable.fromPromise(
         request.get({
-            url: joinUrl(settings.apiUrl, `/repo/${encodeURIComponent(id)}/builds`),
+            url: new URL(`/repo/${encodeURIComponent(id)}/builds`, settings.apiUrl).href,
             query: {
                 limit: 1,
                 include: 'build.commit',

@@ -1,5 +1,4 @@
 import cctray from 'services/cctray/cctray';
-import { joinUrl } from 'common/utils';
 
 export default {
     getInfo: () => ({
@@ -27,11 +26,11 @@ export default {
         ]
     }),
     getAll: (settings) => {
-        const url = joinUrl(settings.url, 'XmlStatusReport.aspx');
+        const url = new URL('XmlStatusReport.aspx', settings.url);
         return cctray.getAll({ ...settings, ...{ url } });
     },
     getLatest: (settings) => {
-        const url = joinUrl(settings.url, 'XmlStatusReport.aspx');
+        const url = new URL('XmlStatusReport.aspx', settings.url);
         return cctray.getLatest({ ...settings, ...{ url } });
     }
 };

@@ -1,4 +1,3 @@
-import { joinUrl } from 'common/utils';
 import request from 'service-worker/request';
 
 const authType = settings => (settings.username ? 'httpAuth' : 'guestAuth');
@@ -7,7 +6,7 @@ const branchParam = settings => (settings.branch ? `,branch:(${settings.branch})
 const buildTypes = settings =>
     Rx.Observable.fromPromise(
         request.get({
-            url: joinUrl(settings.url, `${authType(settings)}/app/rest/buildTypes`),
+            url: new URL(`${authType(settings)}/app/rest/buildTypes`, settings.url).href,
             query: {
                 fields: 'buildType(id,name,projectName)',
             },
@@ -20,7 +19,7 @@ const buildTypes = settings =>
 const builds = (id, settings) =>
     Rx.Observable.fromPromise(
         request.get({
-            url: joinUrl(settings.url, `${authType(settings)}/app/rest/builds`),
+            url: new URL(`${authType(settings)}/app/rest/builds`, settings.url).href,
             query: {
                 locator: `buildType:${id},running:any,count:1${branchParam(settings)}`,
                 fields:

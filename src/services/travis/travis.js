@@ -1,5 +1,4 @@
 import Rx from 'rx';
-import { joinUrl } from 'common/utils';
 import requests from 'services/travis/travisRequests';
 
 export default {
@@ -51,7 +50,7 @@ export default {
                 id: key.id,
                 name: key.repo,
                 group: key.org,
-                webUrl: joinUrl(settings.webUrl, `${key.id}/builds/${build.id}`),
+                webUrl: new URL(`${key.id}/builds/${build.id}`, settings.webUrl).href,
                 isBroken: BUILD_STATES.BROKEN_KNOWN.includes(build.state) ?
                     BUILD_STATES.BROKEN.includes(build.state) :
                     BUILD_STATES.BROKEN.includes(build.previous_state),

@@ -1,20 +1,19 @@
 import Rx from 'rx';
-import { joinUrl } from 'common/utils';
 import request from 'service-worker/request';
 
 export default {
     jobs: ({ url, settings }) =>
         Rx.Observable.fromPromise(
             request.get({
-                url: joinUrl(
-                    url,
+                url: new URL(
                     '/api/json?tree=' +
                         'jobs[_class,name,url,buildable,fullName,' +
                         'jobs[_class,name,url,buildable,fullName,' +
                         'jobs[_class,name,url,buildable,fullName]' +
                         ']' +
-                        ']'
-                ),
+                        ']',
+                    url
+                ).href,
                 username: settings.username,
                 password: settings.password,
             })
@@ -24,7 +23,7 @@ export default {
 
     jobDetails: ({ id, settings }) => {
         const jobPath = `/job/${id.split('/').join('/job/')}`;
-        const jobUrl = joinUrl(settings.url, jobPath);
+        const jobUrl = new URL(jobPath, settings.url).href;
         return Rx.Observable.fromPromise(
             request.get({
                 url:

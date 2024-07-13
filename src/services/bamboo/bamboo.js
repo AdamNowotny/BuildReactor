@@ -1,5 +1,4 @@
 import Rx from 'rx';
-import { joinUrl } from 'common/utils';
 import requests from 'services/bamboo/bambooRequests';
 
 export default {
@@ -55,7 +54,7 @@ const parseBuild = (id, settings, planResponse, resultResponse) => {
         id,
         name: planResponse.shortName,
         group: planResponse.projectName,
-        webUrl: joinUrl(settings.url, `browse/${resultResponse.key}`),
+        webUrl: new URL(`browse/${resultResponse.key}`, settings.url).href,
         isBroken: resultResponse.state === 'Failed',
         isRunning: planResponse.isBuilding,
         isWaiting: planResponse.isActive,
