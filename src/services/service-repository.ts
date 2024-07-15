@@ -20,17 +20,17 @@ import logger from 'common/logger';
 const services: Record<string, CIService> = {};
 
 const init = () => {
-    register(bamboo as unknown as CIService);
-    register(buildbot as unknown as CIService);
-    register(buildkite as unknown as CIService);
-    register(cc as unknown as CIService);
-    register(ccnet as unknown as CIService);
-    register(ccrb as unknown as CIService);
-    register(cctray as unknown as CIService);
-    register(go as unknown as CIService);
-    register(jenkins as unknown as CIService);
-    register(teamcity as unknown as CIService);
-    register(travis as unknown as CIService);
+    register(bamboo);
+    register(buildbot);
+    register(buildkite);
+    register(cc);
+    register(ccnet);
+    register(ccrb);
+    register(cctray);
+    register(go);
+    register(jenkins);
+    register(teamcity);
+    register(travis);
 };
 
 const register = function (service: CIService) {

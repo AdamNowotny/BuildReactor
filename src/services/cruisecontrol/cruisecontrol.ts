@@ -1,13 +1,14 @@
 import cctray from 'services/cctray/cctray';
+import { CIServiceDefinition, CIServiceSettings } from 'services/service-types';
 
 export default {
-    getInfo: () => ({
-        typeName: 'GoCD',
-        baseUrl: 'go',
-        icon: 'services/go/icon.png',
-        logo: 'services/go/logo.png',
+    getInfo: (): CIServiceDefinition => ({
+        typeName: 'CruiseControl',
+        baseUrl: 'cruisecontrol',
+        icon: 'services/cruisecontrol/icon.png',
+        logo: 'services/cruisecontrol/logo.png',
         defaultConfig: {
-            baseUrl: 'go',
+            baseUrl: 'cruisecontrol',
             name: '',
             projects: [],
             url: '',
@@ -25,11 +26,11 @@ export default {
             { type: 'password' }
         ]
     }),
-    getAll: (settings) => {
+    getAll: (settings: CIServiceSettings) => {
         const url = new URL('cctray.xml', settings.url).href;
         return cctray.getAll({ ...settings, ...{ url } });
     },
-    getLatest: (settings) => {
+    getLatest: (settings: CIServiceSettings) => {
         const url = new URL('cctray.xml', settings.url).href;
         return cctray.getLatest({ ...settings, ...{ url } });
     }

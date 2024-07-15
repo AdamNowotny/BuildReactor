@@ -1,7 +1,8 @@
 import Rx from 'rx';
 import request from 'service-worker/request';
+import { CIServiceSettings } from 'services/service-types';
 
-const projects = settings =>
+const projects = (settings: CIServiceSettings): Rx.Observable<any> =>
     Rx.Observable.fromPromise(
         request.get({
             url: new URL('rest/api/latest/project', settings.url).href,
@@ -18,7 +19,7 @@ const projects = settings =>
         .select(response => response.body.projects.project)
         .selectMany(Rx.Observable.fromArray);
 
-const plan = (id, settings) =>
+const plan = (id: string, settings: CIServiceSettings) =>
     Rx.Observable.fromPromise(
         request.get({
             url: new URL(`rest/api/latest/plan/${id}`, settings.url).href,
@@ -31,7 +32,7 @@ const plan = (id, settings) =>
         })
     ).select(response => response.body);
 
-const result = (id, settings) =>
+const result = (id: string, settings: CIServiceSettings) =>
     Rx.Observable.fromPromise(
         request.get({
             url: new URL(`rest/api/latest/result/${id}/latest`, settings.url).href,

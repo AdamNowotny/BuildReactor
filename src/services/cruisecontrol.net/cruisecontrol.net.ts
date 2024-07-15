@@ -1,7 +1,8 @@
 import cctray from 'services/cctray/cctray';
+import { CIServiceDefinition, CIServiceSettings } from 'services/service-types';
 
 export default {
-    getInfo: () => ({
+    getInfo: (): CIServiceDefinition => ({
         typeName: 'CruiseControl.NET',
         baseUrl: 'cruisecontrol.net',
         icon: 'services/cruisecontrol.net/icon.png',
@@ -13,24 +14,24 @@ export default {
             url: '',
             username: '',
             password: '',
-            updateInterval: 60
+            updateInterval: 60,
         },
         fields: [
             {
                 type: 'url',
                 name: 'Server URL (cctray XML)',
-                help: 'Example: http://server.com/XmlStatusReport.aspx'
+                help: 'Example: http://server.com/XmlStatusReport.aspx',
             },
             { type: 'username' },
-            { type: 'password' }
-        ]
+            { type: 'password' },
+        ],
     }),
-    getAll: (settings) => {
+    getAll: (settings: CIServiceSettings) => {
         const url = new URL('XmlStatusReport.aspx', settings.url).href;
         return cctray.getAll({ ...settings, ...{ url } });
     },
-    getLatest: (settings) => {
+    getLatest: (settings: CIServiceSettings) => {
         const url = new URL('XmlStatusReport.aspx', settings.url).href;
         return cctray.getLatest({ ...settings, ...{ url } });
-    }
+    },
 };

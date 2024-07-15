@@ -1,8 +1,9 @@
 import Rx from 'rx';
 import request from 'service-worker/request';
+import { CIServiceSettings } from 'services/service-types';
 
 export default {
-    jobs: ({ url, settings }) =>
+    jobs: ({ url, settings }: { url: string; settings: CIServiceSettings }): Rx.Observable<any> =>
         Rx.Observable.fromPromise(
             request.get({
                 url: new URL(

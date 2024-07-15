@@ -1,9 +1,10 @@
 import request from 'service-worker/request';
+import { CIServiceSettings } from 'services/service-types';
 
 const authType = settings => (settings.username ? 'httpAuth' : 'guestAuth');
 const branchParam = settings => (settings.branch ? `,branch:(${settings.branch})` : '');
 
-const buildTypes = settings =>
+const buildTypes = (settings: CIServiceSettings) =>
     Rx.Observable.fromPromise(
         request.get({
             url: new URL(`${authType(settings)}/app/rest/buildTypes`, settings.url).href,
@@ -16,7 +17,7 @@ const buildTypes = settings =>
         })
     ).select(response => response.body);
 
-const builds = (id, settings) =>
+const builds = (id: string, settings: CIServiceSettings) =>
     Rx.Observable.fromPromise(
         request.get({
             url: new URL(`${authType(settings)}/app/rest/builds`, settings.url).href,

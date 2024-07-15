@@ -4,7 +4,7 @@ import errors from './requestErrors';
 
 interface RequestOptions {
     url: string;
-    query?: Record<string, string>;
+    query?: Record<string, string | number | Array<string>>;
     body?: object | string;
     headers?: HeadersInit;
     username?: string;
@@ -16,7 +16,7 @@ interface RequestOptions {
 const get = async (options: RequestOptions) => {
     const url: URL = new URL(options.url);
     Object.entries(options.query ?? {}).forEach(([key, value]) => {
-        url.searchParams.append(key, value);
+        url.searchParams.append(key, value as string);
     });
     const fetchOptions = createRequest(options);
 

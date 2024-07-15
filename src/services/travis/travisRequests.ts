@@ -1,12 +1,13 @@
 import Rx from 'rx';
 import request from 'service-worker/request';
+import { CIServiceSettings } from 'services/service-types';
 
-const repositories = settings =>
+const repositories = (settings: CIServiceSettings) =>
     Rx.Observable.fromPromise(
         request.get({
             url: new URL(`/repos`, settings.apiUrl).href,
             headers: {
-                'Travis-API-Version': 3,
+                'Travis-API-Version': '3',
                 Authorization: `token ${settings.token}`,
             },
         })
@@ -14,7 +15,7 @@ const repositories = settings =>
         .select(response => response.body.repositories)
         .selectMany(Rx.Observable.fromArray);
 
-const builds = (id, settings) =>
+const builds = (id: string, settings: CIServiceSettings) =>
     Rx.Observable.fromPromise(
         request.get({
             url: new URL(`/repo/${encodeURIComponent(id)}/builds`, settings.apiUrl).href,
@@ -24,7 +25,7 @@ const builds = (id, settings) =>
                 'build.event_type': 'push',
             },
             headers: {
-                'Travis-API-Version': 3,
+                'Travis-API-Version': '3',
                 Authorization: `token ${settings.token}`,
             },
         })

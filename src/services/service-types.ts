@@ -31,19 +31,20 @@ export interface CIServiceDefinition {
 }
 
 export interface CIPipeline {
-    id: number;
+    id: string;
     name: string;
-    group?: boolean;
+    group?: boolean | null;
     isDisabled?: boolean;
+    error?: { name: string, message?: string, description?: string };
 }
 
-interface CIBuildTag {
+export interface CIBuildTag {
     name: string;
     type?: string;
     description?: string;
 }
 
-interface CIBuildChange {
+export interface CIBuildChange {
     name: string;
     message?: string;
 }

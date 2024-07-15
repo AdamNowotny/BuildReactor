@@ -1,21 +1,22 @@
 import Rx from 'rx';
 import request from 'service-worker/request';
+import { CIServiceSettings } from 'services/service-types';
 
-const organizations = settings =>
+const organizations = (settings: CIServiceSettings) =>
     Rx.Observable.fromPromise(
         request.get({
             url: 'https://api.buildkite.com/v2/organizations',
-            query: { access_token: settings.token },
+            query: { access_token: settings.token! },
         })
     )
         .select(response => response.body)
         .selectMany(Rx.Observable.fromArray);
 
-const pipelines = (url, settings) =>
+const pipelines = (url, settings: CIServiceSettings) =>
     Rx.Observable.fromPromise(
         request.get({
             url,
-            query: { access_token: settings.token, per_page: 100 },
+            query: { access_token: settings.token!, per_page: 100 },
         })
     )
         .select(response => response.body)
