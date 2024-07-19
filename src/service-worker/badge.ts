@@ -14,7 +14,7 @@ const init = () => {
             setBadge(text, 'orange');
         } else if (offlineCount > 0) {
             const text = failedCount > 0 ? `${failedCount}` : ' ';
-            setBadge(text, 'grey');
+            setBadge(text, 'gray');
         } else if (failedCount > 0) {
             setBadge(`${failedCount}`, 'red');
         } else {

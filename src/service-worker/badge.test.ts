@@ -68,7 +68,7 @@ it('grey badge when builds offline', () => {
 
     expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: ' ' });
     expect(mockChrome.action.setBadgeBackgroundColor).toHaveBeenCalledWith({
-        color: 'grey',
+        color: 'gray',
     });
 });
 
@@ -80,7 +80,7 @@ it('grey badge when builds offline and failed', () => {
 
     expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: '1' });
     expect(mockChrome.action.setBadgeBackgroundColor).toHaveBeenCalledWith({
-        color: 'grey',
+        color: 'gray',
     });
 });
 
