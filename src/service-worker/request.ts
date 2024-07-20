@@ -23,7 +23,7 @@ const get = async (options: RequestOptions) => {
     const response = await fetch(url, fetchOptions);
     logger.log('request.fetch', response);
     if (!response.ok) {
-        console.log('Request failed', errors.create(response, options.url));
+        logger.log('Request failed', errors.create(response, options.url));
         throw errors.create(response, options.url);
     }
     try {

@@ -24,7 +24,7 @@ const init = async () => {
 };
 
 const start = async () => {
-    console.log('service-monitor.start');
+    logger.log('service-monitor.start');
     updateAll(await serviceConfig.get());
 };
 

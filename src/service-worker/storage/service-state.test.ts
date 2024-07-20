@@ -140,10 +140,51 @@ describe('updateService', () => {
             },
         ];
 
-        await stateStorage.updateService('name', items);
+        await stateStorage.updateService('service 1', items);
 
         expect(Storage.prototype.set).toBeCalledWith(
             expect.arrayContaining([expect.objectContaining({ offlineCount: 1 })])
         );
+    });
+
+    it('uses previous state if error present', async () => {
+        testState = [
+            {
+                name: 'service',
+                items: [
+                    {
+                        id: 'build1',
+                        name: 'Build 1',
+                        group: null,
+                        isRunning: true,
+                        isBroken: true,
+                    },
+                ],
+            },
+        ];
+        (Storage.prototype.get as Mock).mockImplementation(() => testState);
+
+        const items: CIBuild[] = [
+            {
+                id: 'build1',
+                name: 'Build 1',
+                group: null,
+                error: { name: 'Error', message: 'error1' },
+            },
+        ];
+
+        await stateStorage.updateService('service', items);
+
+        expect(Storage.prototype.set).toBeCalledWith([
+            expect.objectContaining({
+                items: [
+                    expect.objectContaining({
+                        id: 'build1',
+                        isRunning: true,
+                        isBroken: true,
+                    }),
+                ],
+            }),
+        ]);
     });
 });

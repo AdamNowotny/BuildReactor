@@ -28,14 +28,25 @@ const reset = async (serviceNames: string[]) => {
 
 const updateService = async (serviceName: string, builds: CIBuild[]) => {
     logger.log('service-state.updateService', serviceName, builds);
+    const offlineCount = builds.filter(build => !build.isDisabled && build.error).length;
     const serviceState: ServiceStateItem = {
         name: serviceName,
         failedCount: builds.filter(build => !build.isDisabled && build.isBroken).length,
-        offlineCount: builds.filter(build => !build.isDisabled && build.error).length,
+        offlineCount,
         runningCount: builds.filter(build => !build.isDisabled && build.isRunning).length,
-        items: builds,
+        items: offlineCount > 0 ? await createErrorState(serviceName, builds) : builds,
     };
     setItem(serviceName, serviceState);
+};
+
+const createErrorState = async (serviceName: string, builds: CIBuild[]): Promise<CIBuild[]> => {
+    const oldState = await getItem(serviceName);
+    return builds.map(build => {
+        if (!build.error) return build;
+        const oldBuild = oldState.items?.find(old => old.id === build.id);
+        if (!oldBuild) return build;
+        return { ...oldBuild, error: build?.error  };
+    });
 };
 
 const getItem = async (serviceName: string) => {
@@ -48,8 +59,8 @@ const getItem = async (serviceName: string) => {
 const setItem = async (serviceName: string, state: ServiceStateItem) => {
     logger.log('service-state.setItem', serviceName, state);
     const allItems = await storage.get();
-    const [found] = allItems.filter(state => state.name === serviceName);
-    let updatedState;
+    const found = allItems.find(state => state.name === serviceName);
+    let updatedState: ServiceStateItem[];
     if (found) {
         updatedState = allItems.map(item => {
             return item.name === serviceName ? state : item;
@@ -57,7 +68,6 @@ const setItem = async (serviceName: string, state: ServiceStateItem) => {
     } else {
         updatedState = [...allItems, state];
     }
-    logger.log('service-state.setItem result', found, updatedState);
     await storage.set(updatedState);
 };
 
