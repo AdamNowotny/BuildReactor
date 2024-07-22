@@ -1,7 +1,7 @@
 on: [push]
 
 jobs:
-    build:
+    test:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -12,4 +12,4 @@ jobs:
             - name: Build
               run: |
                   npm install
-                  npm run dist
+                  npm test

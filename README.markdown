@@ -1,4 +1,4 @@
-BuildReactor [![pipeline status](https://gitlab.com/adam.nowotny/BuildReactor/badges/master/pipeline.svg)](https://gitlab.com/adam.nowotny/BuildReactor/-/commits/master)
+BuildReactor [![.github/workflows/build.yml](https://github.com/AdamNowotny/BuildReactor/actions/workflows/build.yml/badge.svg)](https://github.com/AdamNowotny/BuildReactor/actions/workflows/build.yml)
 ============
 
 Developer notifications and dashboard for CI servers
@@ -13,10 +13,6 @@ Links
 [Chrome Web Store](https://chrome.google.com/webstore/detail/buildreactor/agfdekbncfakhgofmaacjfkpbhjhpjmp)
 
 [Mozilla Add-ons](https://addons.mozilla.org/en-GB/firefox/addon/buildreactor-extension/)
-
-[Twitter](https://twitter.com/BuildReactor)
-
-[Google Plus](https://plus.google.com/110744393630490320507/)
 
 Supported services
 ==================
@@ -61,26 +57,25 @@ Dashboard page
 Developer setup
 ===============
 
-Installation
-------------
+It's recommneded to use VSCode with DevContainers extension (https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
-1. Install [Node.js](http://nodejs.org/) to build the extension or use docker image:
- - `docker-compose run build-reactor`
-3. Go to project directory and run:
- - `yarn`
- - `yarn run dist`
-4. Open Chrome Extension manager and `Load unpacked extension..` from `dist/BuildReactor` folder.
+This will open project with all needed dependencies.
 
-Use `yarn run auto-dist` to continually build whenever some file changes. You will still need to reload the extension in Chrome.
+Installation (manual)
+---------------------
 
-See other scripts useful for development in [package.json](package.json).
+1. Install [Node.js](http://nodejs.org/)
+2. Go to project directory and run:
+ - `npm install`
+ - `npm run dist`
+3. Open Chrome Extension manager and `Load unpacked extension..` from `dist/BuildReactor` folder.
 
 Testing
 -------
 
-`yarn test` - run Karma unit tests using PhantomJS
+`npm test` - run unit tests
 
-`yarn run auto-test` - test and watch for changes
+`npm run test:watch` - use during development to run tests continuously
 
 Development
 -----------
