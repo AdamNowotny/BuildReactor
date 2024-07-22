@@ -8,6 +8,9 @@
     "email": "adam.nowotny@gmail.com",
     "url": "https://github.com/AdamNowotny"
   },
+  "engines": {
+    "node": "20"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/AdamNowotny/BuildReactor.git"
