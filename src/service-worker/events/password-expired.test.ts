@@ -1,14 +1,24 @@
 import notification from 'service-worker/notification';
 import serviceConfig from 'service-worker/storage/service-config';
 import serviceState from 'service-worker/storage/service-state';
-import { expect, it, vi } from 'vitest';
+import { beforeEach, expect, it, vi } from 'vitest';
 import passwordExpired from './password-expired';
 
+const mockChrome = {
+    runtime: {
+        getURL: vi.fn(),
+    },
+};
+vi.stubGlobal('chrome', mockChrome);
 vi.mock('common/logger');
 vi.mock('service-worker/notification');
 vi.mock('service-worker/storage/service-config');
 
-it('should not show notification if no error', async () => {
+beforeEach(() => {
+    mockChrome.runtime.getURL.mockImplementation(v => v);
+});
+
+it('should not show notification if no error', () => {
     serviceState.onChanged.onNext({
         oldValue: [],
         newValue: [
@@ -20,12 +30,12 @@ it('should not show notification if no error', async () => {
         ],
     });
 
-    await passwordExpired.init();
+    passwordExpired.init();
 
     expect(notification.show).not.toBeCalled();
 });
 
-it('shows notification if 401 error found', async () => {
+it('shows notification if 401 error found', () => {
     serviceState.onChanged.onNext({
         oldValue: [],
         newValue: [
@@ -44,7 +54,7 @@ it('shows notification if 401 error found', async () => {
         ],
     });
 
-    await passwordExpired.init();
+    passwordExpired.init();
 
     expect(notification.show).toBeCalledWith({
         serviceName: 'test2',
@@ -56,7 +66,7 @@ it('shows notification if 401 error found', async () => {
     });
 });
 
-it('disables service on authentication error', async () => {
+it('disables service on authentication error', () => {
     serviceState.onChanged.onNext({
         oldValue: [],
         newValue: [
@@ -74,7 +84,7 @@ it('disables service on authentication error', async () => {
         ],
     });
 
-    await passwordExpired.init();
+    passwordExpired.init();
 
     expect(serviceConfig.disableService).toBeCalledWith('test name');
 });

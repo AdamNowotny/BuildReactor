@@ -1,4 +1,4 @@
-import { CIBuild } from 'services/service-types';
+import type { CIBuild } from 'services/service-types';
 import serviceConfig from './storage/service-config';
 import viewConfig from './storage/view-config';
 
@@ -11,7 +11,7 @@ export interface NotificationInfo {
     url?: string;
 }
 
-let visibleNotifications = {};
+const visibleNotifications = {};
 
 const onClickedHandler = (id: string): void => {
     const info = visibleNotifications[id];
@@ -22,7 +22,7 @@ const onClosedHandler = (id: string): void => {
     delete visibleNotifications[id];
 };
 
-const init = async () => {
+const init = () => {
     chrome.notifications.onClicked.addListener(onClickedHandler);
     chrome.notifications.onClosed.addListener(onClosedHandler);
 };
@@ -40,7 +40,9 @@ const show = async (info: NotificationInfo) => {
 };
 
 async function getIcon(info: NotificationInfo) {
-    const serviceType = (await serviceConfig.getItem(info.serviceName)).baseUrl;
+    const service = await serviceConfig.getItem(info.serviceName);
+    if (!service) throw new Error(`Service ${info.serviceName} not found`);
+    const serviceType = service.baseUrl;
     const icon = chrome.runtime.getURL(`services/${serviceType}/icon.png`);
     return icon;
 }
@@ -66,13 +68,14 @@ const createMessage = (build: CIBuild) => {
             if (uniqueNames[change.name]) return false;
             uniqueNames[change.name] = true;
             return true;
-        }) || [];
+        }) ?? [];
+    const MAX_VISIBLE_INDEX = 2;
     const changes = uniqueChanges.map((change, index) => {
-        if (index === 2) return '...';
-        if (index > 2) return '';
+        if (index === MAX_VISIBLE_INDEX) return '...';
+        if (index > MAX_VISIBLE_INDEX) return '';
         return change.message ? `${change.name}: ${change.message}` : change.name;
     });
-    const changesMessage = changes.length ? '\n' + changes?.join('\n') : '';
+    const changesMessage = changes.length ? '\n' + changes.join('\n') : '';
     return `${buildName}${changesMessage}`;
 };
 

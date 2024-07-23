@@ -8,10 +8,10 @@ const init = () => {
     serviceState.onChanged.subscribe(({ newValue }) => {
         logger.log('password-expired.serviceState.onChanged', newValue);
         newValue.forEach(service => {
-            const authErrorCount = (service.items || []).filter(
+            const authErrorCount = (service.items ?? []).filter(
                 item => item.error?.name === 'UnauthorisedError'
             ).length;
-            if (authErrorCount > 0) {
+            if (authErrorCount) {
                 processService(service.name);
             }
         });
@@ -19,16 +19,16 @@ const init = () => {
 };
 
 function processService(serviceName: string) {
-    logger.log('password-expired.processService', serviceName);
-    notification.show({
+    logger.warn('password-expired.processService', serviceName);
+    void notification.show({
         serviceName,
         id: `${serviceName}_disabled`,
         title: serviceName,
-        url: 'settings.html',
+        url: chrome.runtime.getURL('settings.html'),
         message: 'Password expired. Service has been disabled.',
         requireInteraction: true,
     });
-    serviceConfig.disableService(serviceName);
+    void serviceConfig.disableService(serviceName);
 }
 
 export default {
