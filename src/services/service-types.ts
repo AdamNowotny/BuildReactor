@@ -11,6 +11,7 @@ export interface CIServiceSettings {
     projects: string[];
     updateInterval?: number;
     disabled?: boolean;
+    repository?: string;
 }
 
 interface CIServiceDefinitionField {
@@ -72,4 +73,6 @@ export interface CIService {
     getInfo: () => CIServiceDefinition;
     getAll: (settings: CIServiceSettings) => Rx.Observable<CIPipeline>;
     getLatest: (settings: CIServiceSettings) => Rx.Observable<CIBuild>;
+    getPipelines?: (settings: CIServiceSettings) => Promise<CIPipeline[]>;
+    getBuildStates?: (settings: CIServiceSettings) => Promise<CIBuild[]>;
 }

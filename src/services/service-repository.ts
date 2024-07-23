@@ -16,6 +16,7 @@ import type {
     CIServiceSettings,
 } from './service-types';
 import logger from 'common/logger';
+import github from './github/github';
 
 const services: Record<string, CIService> = {};
 
@@ -27,6 +28,7 @@ const init = () => {
     register(ccnet);
     register(ccrb);
     register(cctray);
+    register(github)
     register(go);
     register(jenkins);
     register(teamcity);

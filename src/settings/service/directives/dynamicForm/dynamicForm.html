@@ -1,6 +1,10 @@
 <fieldset>
 	<div ng-repeat="field in service.fields">
 		<div class="form-group">
+			<div class="input-group" ng-if="field.type == 'repository'">
+				<span class="input-group-addon"><i class="fa fa-git"></i></span>
+				<input type="text" name="repository" class="form-control" ng-required placeholder="{{ field.name || 'Repository, f.e. BuildReactor' }}" ng-model="config[field.config || 'repository']">
+			</div>
 			<div class="input-group" ng-if="field.type == 'url'">
 				<span class="input-group-addon"><i class="fa fa-globe fa-fw"></i></span>
 				<input type="text" name="url" class="form-control" ng-required placeholder="{{ field.name || 'Server URL' }}" ng-model="config[field.config || 'url']">
@@ -20,7 +24,7 @@
 			<div class="form-group" ng-if="field.type == 'branch'">
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-code-fork fa-fw"></i></span>
-					<input type="text" class="form-control" placeholder="Branch, f.e. refs/heads/release" ng-model="config.branch">
+					<input type="text" class="form-control" placeholder="{{ field.name || 'Branch, f.e. refs/heads/release'}}" ng-model="config[field.config || 'branch']">
 				</div>
 			</div>
 			<div class="form-group number" ng-if="field.type == 'updateInterval'">

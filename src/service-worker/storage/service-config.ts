@@ -13,7 +13,7 @@ const init = async () => {
 
 const getItem = async (serviceName: string) => {
     const allItems = await storage.get();
-    const [item] = allItems.filter(config => config.name === serviceName);
+    const item = allItems.find(config => config.name === serviceName);
     return item;
 };
 
@@ -23,7 +23,7 @@ const setItem = async (serviceName: string, config: CIServiceSettings) => {
     const updated = allItems.map(item => {
         return item.name === serviceName ? config : item;
     });
-    storage.set(updated);
+    await storage.set(updated);
 };
 
 const enableService = async (serviceName: string) => {

@@ -2,7 +2,7 @@ import logger from 'common/logger';
 import serviceConfig from 'service-worker/storage/service-config';
 import stateStorage from 'service-worker/storage/service-state';
 import serviceRepository from './service-repository';
-import { CIBuild, CIServiceSettings } from './service-types';
+import type { CIBuild, CIServiceSettings } from './service-types';
 
 const ALARM_NAME = 'update';
 
@@ -25,12 +25,12 @@ const init = async () => {
 
 const start = async () => {
     logger.log('service-monitor.start');
-    updateAll(await serviceConfig.get());
+    void updateAll(await serviceConfig.get());
 };
 
 const updateAll = async (allConfigs: CIServiceSettings[]) => {
     logger.log('service-monitor.updateAll');
-    chrome.alarms.clearAll();
+    await chrome.alarms.clearAll();
     const updatedServices = await Promise.all(
         allConfigs
             .filter(config => !config.disabled)
@@ -41,7 +41,7 @@ const updateAll = async (allConfigs: CIServiceSettings[]) => {
             })
     );
     logger.log('service-monitor.updateAll result', updatedServices);
-    chrome.alarms.create(ALARM_NAME, { delayInMinutes: 0.5 });
+    await chrome.alarms.create(ALARM_NAME, { delayInMinutes: 0.5 });
 };
 
 const updateService = async (settings: CIServiceSettings) => {
