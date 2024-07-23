@@ -47,9 +47,9 @@ export default tseslint.config(
             '@typescript-eslint/no-use-before-define': 'off',
             '@typescript-eslint/strict-boolean-expressions': 'warn',
             '@typescript-eslint/parameter-properties': [
-                true,
+                'error',
                 {
-                    prefer: ['parameter-property'],
+                    prefer: 'parameter-property',
                 },
             ],
         },
