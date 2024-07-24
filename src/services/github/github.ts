@@ -27,7 +27,6 @@ const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> =
         settings.projects.map(async project => {
             const [id] = project.split(' ::');
             const response = await getWorkflowRuns(settings, id);
-            // eslint-disable-next-line @typescript-eslint/naming-convention
             const [run] = response.body.workflow_runs;
             return parseBuild(run, settings);
         })
@@ -75,32 +74,26 @@ const getWorkflowRuns = async (settings: CIServiceSettings, id: string) => {
         url: `https://api.github.com/repos/${settings.username}/${settings.repository}/actions/workflows/${id}/runs`,
         headers: settings.token
             ? {
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
                   Authorization: `Bearer ${settings.token}`,
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
                   'X-GitHub-Api-Version': '2022-11-28',
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
                   Accept: 'application/vnd.github.v3+json',
               }
             : undefined,
     });
-}
+};
 
 const getWorkflows = async (settings: CIServiceSettings) => {
     return request.get({
         url: `https://api.github.com/repos/${settings.username}/${settings.repository}/actions/workflows`,
         headers: settings.token
             ? {
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
                   Authorization: `Bearer ${settings.token}`,
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
                   'X-GitHub-Api-Version': '2022-11-28',
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
                   Accept: 'application/vnd.github.v3+json',
               }
             : undefined,
     });
-}
+};
 
 const parseBuild = (run: any, settings: CIServiceSettings) => {
     const build: CIBuild = {
@@ -116,4 +109,4 @@ const parseBuild = (run: any, settings: CIServiceSettings) => {
         webUrl: `https://github.com/${settings.username}/${settings.repository}/actions/runs/${run.id}`,
     };
     return build;
-}
+};

@@ -13,7 +13,7 @@ beforeEach(() => {
 });
 
 it('should not show notification if old state empty', async () => {
-    stateChangeHandler({
+    await stateChangeHandler({
         oldValue: [],
         newValue: [
             {
@@ -28,7 +28,7 @@ it('should not show notification if old state empty', async () => {
 
 it('should not show notification if notifications disabled', async () => {
     (viewConfig.get as Mock).mockResolvedValue({ notifications: { buildStarted: false } });
-    stateChangeHandler({
+    await stateChangeHandler({
         oldValue: [
             {
                 name: 'test1',

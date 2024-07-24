@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-magic-numbers */
 import logger from 'common/logger';
 import stateStorage from './storage/service-state';
 

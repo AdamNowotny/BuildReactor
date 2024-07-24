@@ -1,5 +1,3 @@
-import logger from "common/logger";
-
 function RequestError(this: any, ex, url: string) {
     this.name = "RequestError";
     this.status = ex.status;

@@ -2,7 +2,7 @@ import logger from 'common/logger';
 import { Storage } from './storage';
 import { CIServiceSettings } from 'services/service-types';
 
-let storage = new Storage<CIServiceSettings[]>({
+const storage = new Storage<CIServiceSettings[]>({
     key: 'services',
     defaultValue: [],
 });
@@ -74,13 +74,15 @@ const saveService = async (config: CIServiceSettings) => {
 
 const setOrder = async (serviceNames: string[]) => {
     logger.log('service-config.setOrder', serviceNames);
-    const newItems = await Promise.all(serviceNames.map(async (name) => {
-        const item = await getItem(name);
-        if (!item) {
-            throw new Error(`Service ${name} not found`);
-        }
-        return item;
-    }));
+    const newItems = await Promise.all(
+        serviceNames.map(async name => {
+            const item = await getItem(name);
+            if (!item) {
+                throw new Error(`Service ${name} not found`);
+            }
+            return item;
+        })
+    );
     await storage.set(newItems);
 };
 

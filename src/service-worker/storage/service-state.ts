@@ -10,7 +10,7 @@ export interface ServiceStateItem {
     items?: CIBuild[];
 }
 
-let storage = new Storage<ServiceStateItem[]>({
+const storage = new Storage<ServiceStateItem[]>({
     key: 'state',
     defaultValue: [],
 });
@@ -36,7 +36,7 @@ const updateService = async (serviceName: string, builds: CIBuild[]) => {
         runningCount: builds.filter(build => !build.isDisabled && build.isRunning).length,
         items: offlineCount > 0 ? await createErrorState(serviceName, builds) : builds,
     };
-    setItem(serviceName, serviceState);
+    await setItem(serviceName, serviceState);
 };
 
 const createErrorState = async (serviceName: string, builds: CIBuild[]): Promise<CIBuild[]> => {
@@ -45,7 +45,7 @@ const createErrorState = async (serviceName: string, builds: CIBuild[]): Promise
         if (!build.error) return build;
         const oldBuild = oldState.items?.find(old => old.id === build.id);
         if (!oldBuild) return build;
-        return { ...oldBuild, error: build?.error  };
+        return { ...oldBuild, error: build.error  };
     });
 };
 

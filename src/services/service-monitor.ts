@@ -6,20 +6,24 @@ import type { CIBuild, CIServiceSettings } from './service-types';
 
 const ALARM_NAME = 'update';
 
-const init = async () => {
+const init = () => {
     logger.log('service-monitor.init');
-    chrome.alarms.onAlarm.addListener(async alarm => {
+    chrome.alarms.onAlarm.addListener(alarm => {
         if (alarm.name !== ALARM_NAME) return;
         logger.log('service-monitor.alarm', alarm);
-        updateAll(await serviceConfig.get());
+        void (async () => {
+            await updateAll(await serviceConfig.get());
+        })();
     });
-    serviceConfig.onChanged.subscribe(async value => {
+    serviceConfig.onChanged.subscribe(value => {
         logger.log('service-monitor.onChanged', value);
         const serviceNames = value.newValue
             .filter(config => !config.disabled)
             .map(config => config.name);
-        await stateStorage.reset(serviceNames);
-        updateAll(value.newValue);
+        void (async () => {
+            await stateStorage.reset(serviceNames);
+            await updateAll(value.newValue);
+        });
     });
 };
 

@@ -18,12 +18,12 @@ void (async () => {
     serviceRepository.init();
     messaging.init();
     badge.init();
-    serviceMonitor.init();
+    await serviceMonitor.init();
 
     // events
     passwordExpiredHandler.init();
     buildStartedHandler.init();
     buildFinishedHandler.init();
 
-    serviceMonitor.start();
+    await serviceMonitor.start();
 })();

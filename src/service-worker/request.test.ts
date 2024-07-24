@@ -9,8 +9,14 @@ global.fetch = vi.fn();
 
 const setupResponse = (response: any) => {
     (global.fetch as Mock).mockResolvedValue({
-        json: () => new Promise(resolve => resolve(response)),
-        text: () => new Promise(resolve => resolve(response)),
+        json: () =>
+            new Promise(resolve => {
+                resolve(response);
+            }),
+        text: () =>
+            new Promise(resolve => {
+                resolve(response);
+            }),
         ok: true,
         headers: [],
     });
@@ -18,10 +24,7 @@ const setupResponse = (response: any) => {
 
 const setupErrorResponse = (response: any) => {
     (global.fetch as Mock).mockResolvedValue({
-        json: () =>
-            new Promise(resolve => {
-                throw new Error(response);
-            }),
+        json: () => Promise.reject(new Error(response)),
         ok: false,
         headers: [],
         status: response.status,
@@ -58,7 +61,7 @@ it('should return error on exception', async () => {
         },
     });
 
-    expect(result).rejects.toThrow('error message');
+    await expect(result).rejects.toThrow('error message');
 });
 
 it('should raise error when request failed', async () => {
@@ -76,7 +79,7 @@ it('should raise error when request failed', async () => {
         },
     });
 
-    expect(result).rejects.toThrow(error.message);
+    await expect(result).rejects.toThrow(error.message);
 });
 
 it('should set timeout if specified', async () => {

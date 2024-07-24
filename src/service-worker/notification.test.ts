@@ -55,7 +55,7 @@ describe('show', () => {
     });
 
     it('adds iconUrl', async () => {
-        (mockChrome.runtime.getURL as Mock).mockImplementation(
+        (mockChrome.runtime.getURL).mockImplementation(
             icon => `https://google.com/${icon}`
         );
 
@@ -144,7 +144,7 @@ describe('showBuild', () => {
         );
 
         expect(mockChrome.notifications.create).toBeCalledWith(
-            `${'serviceName'}_${'group'}_${'id'}`,
+            `serviceName_group_id`,
             expect.objectContaining({
                 message: 'group / name\nname1: message1\nname2: message2\n...\n',
             })
@@ -168,7 +168,7 @@ describe('showBuild', () => {
         );
 
         expect(mockChrome.notifications.create).toBeCalledWith(
-            `${'serviceName'}_${'group'}_${'id'}`,
+            `serviceName_group_id`,
             expect.objectContaining({
                 message: 'group / name\nname1: message1\nname2: message2',
             })
@@ -188,7 +188,7 @@ describe('showBuild', () => {
         );
 
         expect(mockChrome.notifications.create).toBeCalledWith(
-            `${'serviceName'}_${'group'}_${'id'}`,
+            `serviceName_group_id`,
             expect.objectContaining({
                 message: 'group / name\nname1\nname2',
             })

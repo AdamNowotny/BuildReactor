@@ -22,36 +22,26 @@ export default tseslint.config(
         },
     },
     eslint.configs.recommended,
-    ...tseslint.configs.all,
+    ...tseslint.configs.strictTypeChecked,
+    ...tseslint.configs.stylisticTypeChecked,
     {
         rules: {
-            '@typescript-eslint/no-unsafe-assignment': 'off',
-            '@typescript-eslint/no-unsafe-member-access': 'off',
-            '@typescript-eslint/no-unsafe-call': 'off',
-            '@typescript-eslint/no-unsafe-return': 'off',
+            '@typescript-eslint/dot-notation': 'off',
+            '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/no-unsafe-argument': 'off',
-            '@typescript-eslint/no-explicit-any': 'warn',
-            'sort-keys': ['error', 'asc', { minKeys: 10 }],
+            '@typescript-eslint/no-unsafe-assignment': 'off',
+            '@typescript-eslint/no-unsafe-call': 'off',
+            '@typescript-eslint/no-unsafe-member-access': 'off',
+            '@typescript-eslint/no-unsafe-return': 'off',
+            '@typescript-eslint/restrict-template-expressions': 'off',
+            'no-console': 'error',
             'object-curly-newline': [
                 'error',
                 {
                     ImportDeclaration: { multiline: true },
                 },
             ],
-            'no-console': 'error',
-            '@typescript-eslint/use-unknown-in-catch-callback-variable': 'off',
-            '@typescript-eslint/dot-notation': 'off',
-            '@typescript-eslint/prefer-readonly-parameter-types': 'off',
-            '@typescript-eslint/explicit-module-boundary-types': 'off',
-            '@typescript-eslint/explicit-function-return-type': 'off',
-            '@typescript-eslint/no-use-before-define': 'off',
-            '@typescript-eslint/strict-boolean-expressions': 'warn',
-            '@typescript-eslint/parameter-properties': [
-                'error',
-                {
-                    prefer: 'parameter-property',
-                },
-            ],
+            'sort-keys': ['error', 'asc', { minKeys: 10 }],
         },
     }
 );

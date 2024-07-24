@@ -11,15 +11,16 @@ export interface NotificationInfo {
     url?: string;
 }
 
-const visibleNotifications = {};
+const visibleNotifications = new Map<string, NotificationInfo>();
 
 const onClickedHandler = (id: string): void => {
-    const info = visibleNotifications[id];
+    const info = visibleNotifications.get(id);
+    if (!info) return;
     void chrome.tabs.create({ url: info.url });
 };
 
 const onClosedHandler = (id: string): void => {
-    delete visibleNotifications[id];
+    visibleNotifications.delete(id);
 };
 
 const init = () => {
@@ -36,7 +37,7 @@ const show = async (info: NotificationInfo) => {
         message: info.message,
         requireInteraction: info.requireInteraction,
     });
-    visibleNotifications[info.id] = info;
+    visibleNotifications.set(info.id, info);
 };
 
 async function getIcon(info: NotificationInfo) {

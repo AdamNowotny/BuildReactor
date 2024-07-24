@@ -37,7 +37,7 @@ const defaultConfiguration: ConfigStorageItem = {
     },
 };
 
-let storage = new Storage<ConfigStorageItem>({
+const storage = new Storage<ConfigStorageItem>({
     key: 'configuration',
     defaultValue: defaultConfiguration,
 });

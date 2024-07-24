@@ -3,6 +3,7 @@ import serviceRepository from '../services/service-repository';
 import stateStorage from './storage/service-state';
 import viewConfigStorage from './storage/view-config';
 import serviceConfig from './storage/service-config';
+import { CIServiceSettings } from 'services/service-types';
 
 function availableServices(sendResponse: any) {
     const response = serviceRepository.getAllDefinitions();
@@ -10,7 +11,7 @@ function availableServices(sendResponse: any) {
     sendResponse(response);
 }
 
-const availableProjects = (sendResponse, settings) => {
+const availableProjects = (sendResponse, settings: CIServiceSettings) => {
     serviceRepository.getPipelinesFor(settings).subscribe(
         projects => {
             logger.log('messaging.availableProjects', projects);
@@ -48,22 +49,22 @@ const handleMessage = (request, sender, sendResponse) => {
             void serviceConfig.enableService(request.serviceName);
             break;
         case 'setOrder':
-            serviceConfig.setOrder(request.order);
+            void serviceConfig.setOrder(request.order);
             break;
         case 'setBuildOrder':
-            serviceConfig.setBuildOrder(request.serviceName, request.order);
+            void serviceConfig.setBuildOrder(request.serviceName, request.order);
             break;
         case 'removeService':
-            serviceConfig.removeService(request.serviceName);
+            void serviceConfig.removeService(request.serviceName);
             break;
         case 'renameService':
-            serviceConfig.renameService(request.oldName, request.newName);
+            void serviceConfig.renameService(request.oldName, request.newName);
             break;
         case 'saveService':
-            serviceConfig.saveService(request.settings);
+            void serviceConfig.saveService(request.settings);
             break;
         case 'saveConfig':
-            serviceConfig.set(request.config);
+            void serviceConfig.set(request.config);
             break;
         default:
             break;
@@ -114,6 +115,7 @@ const handleConnect = port => {
             break;
         case 'configuration':
             connectServiceConfig(port);
+            break;
         default:
             break;
     }

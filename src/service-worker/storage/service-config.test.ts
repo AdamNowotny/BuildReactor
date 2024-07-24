@@ -50,9 +50,9 @@ describe('enableService', () => {
     it('should fail if service not found', async () => {
         (Storage.prototype.get as Mock).mockImplementation(() => []);
 
-        expect(
-            async () => await serviceConfig.enableService(testConfigs[DISABLED_SERVICE].name)
-        ).rejects.toThrow('Service test2 not found');
+        await expect(async () => {
+            await serviceConfig.enableService(testConfigs[DISABLED_SERVICE].name);
+        }).rejects.toThrow('Service test2 not found');
     });
 
     it('should enable service', async () => {
@@ -69,9 +69,9 @@ describe('disableService', () => {
     it('should fail if service not found', async () => {
         (Storage.prototype.get as Mock).mockImplementation(() => []);
 
-        expect(
-            async () => await serviceConfig.disableService(testConfigs[ENABLED_SERVICE].name)
-        ).rejects.toThrow('Service test1 not found');
+        await expect(async () => {
+            await serviceConfig.disableService(testConfigs[ENABLED_SERVICE].name);
+        }).rejects.toThrow('Service test1 not found');
     });
 
     it('should disable service', async () => {
@@ -125,7 +125,7 @@ describe('setOrder', () => {
     it('should fail if services not found', async () => {
         const result = serviceConfig.setOrder(['unknown']);
 
-        expect(result).rejects.toThrow('Service unknown not found');
+        await expect(result).rejects.toThrow('Service unknown not found');
         expect(Storage.prototype.set).not.toBeCalled();
     });
 
@@ -140,7 +140,7 @@ describe('setBuildOrder', () => {
     it('should fail if services not found', async () => {
         const result = serviceConfig.setBuildOrder('unknown', ['build1', 'build2']);
 
-        expect(result).rejects.toThrow('Service unknown not found');
+        await expect(result).rejects.toThrow('Service unknown not found');
         expect(Storage.prototype.set).not.toBeCalled();
     });
 

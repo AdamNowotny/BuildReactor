@@ -4,7 +4,7 @@ import errors from './requestErrors';
 
 interface RequestOptions {
     url: string;
-    query?: Record<string, string | number | Array<string>>;
+    query?: Record<string, string | number | string[]>;
     body?: object | string;
     headers?: HeadersInit;
     username?: string;
@@ -49,11 +49,11 @@ function createRequest(options: RequestOptions) {
     };
 
     if (options.username) {
-        fetchOptions.headers!['Authorization'] =
+        fetchOptions.headers['Authorization'] =
             'Basic ' + btoa(`${options.username}:${options.password ?? ''}`);
     }
     if (options.type) {
-        fetchOptions.headers!['Content-Type'] = 'application/' + options.type;
+        fetchOptions.headers['Content-Type'] = 'application/' + options.type;
     }
     return fetchOptions;
 }

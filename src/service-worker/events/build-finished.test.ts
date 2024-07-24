@@ -9,7 +9,7 @@ vi.mock('service-worker/storage/service-config');
 
 let testConfig;
 
-beforeEach(async () => {
+beforeEach(() => {
     testConfig = {
         notifications: {
             enabled: true,
@@ -24,7 +24,7 @@ beforeEach(async () => {
     viewConfig.onChanged.onNext({ oldValue: {}, newValue: testConfig });
 });
 
-it('should not show notification if old state empty', async () => {
+it('should not show notification if old state empty', () => {
     stateChangeHandler({
         oldValue: [],
         newValue: [
@@ -38,7 +38,7 @@ it('should not show notification if old state empty', async () => {
     expect(notification.showBuild).not.toBeCalled();
 });
 
-it('should not show notification if still running', async () => {
+it('should not show notification if still running', () => {
     stateChangeHandler({
         oldValue: [
             {
@@ -91,7 +91,7 @@ describe('build broken', () => {
         ],
     };
 
-    it('should show notification', async () => {
+    it('should show notification', () => {
         stateChangeHandler(stateChange);
 
         expect(notification.showBuild).toBeCalled();
@@ -102,7 +102,7 @@ describe('build broken', () => {
         );
     });
 
-    it('should not show notification if notifications disabled', async () => {
+    it('should not show notification if notifications disabled', () => {
         testConfig.notifications.buildBroken = false;
         viewConfig.onChanged.onNext({ oldValue: {}, newValue: testConfig });
 
@@ -138,7 +138,7 @@ describe('build fixed', () => {
         ],
     };
 
-    it('should show notification', async () => {
+    it('should show notification', () => {
         stateChangeHandler(stateChange);
 
         expect(notification.showBuild).toBeCalled();
@@ -149,7 +149,7 @@ describe('build fixed', () => {
         );
     });
 
-    it('should not show notification if notifications disabled', async () => {
+    it('should not show notification if notifications disabled', () => {
         testConfig.notifications.buildFixed = false;
         viewConfig.onChanged.onNext({ oldValue: {}, newValue: testConfig });
 
@@ -175,7 +175,7 @@ describe('build successful', () => {
         ],
     };
 
-    it('should show notification', async () => {
+    it('should show notification', () => {
         stateChangeHandler(stateChange);
 
         expect(notification.showBuild).toBeCalled();
@@ -186,7 +186,7 @@ describe('build successful', () => {
         );
     });
 
-    it('should not show notification if notifications disabled', async () => {
+    it('should not show notification if notifications disabled', () => {
         testConfig.notifications.buildSuccessful = false;
         viewConfig.onChanged.onNext({ oldValue: {}, newValue: testConfig });
 
@@ -222,7 +222,7 @@ describe('build still broken', () => {
         ],
     };
 
-    it('should show notification', async () => {
+    it('should show notification', () => {
         stateChangeHandler(stateChange);
 
         expect(notification.showBuild).toBeCalled();
@@ -235,7 +235,7 @@ describe('build still broken', () => {
         );
     });
 
-    it('should not show notification if notifications disabled', async () => {
+    it('should not show notification if notifications disabled', () => {
         testConfig.notifications.buildStillFailing = false;
         viewConfig.onChanged.onNext({ oldValue: {}, newValue: testConfig });
 
@@ -272,7 +272,7 @@ describe('build unstable', () => {
         ],
     };
 
-    it('should show notification', async () => {
+    it('should show notification', () => {
         stateChangeHandler(stateChange);
 
         expect(notification.showBuild).toBeCalled();
@@ -285,7 +285,7 @@ describe('build unstable', () => {
         );
     });
 
-    it('should not show notification if notifications disabled', async () => {
+    it('should not show notification if notifications disabled', () => {
         testConfig.notifications.buildBroken = false;
         viewConfig.onChanged.onNext({ oldValue: {}, newValue: testConfig });
 

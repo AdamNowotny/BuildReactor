@@ -28,7 +28,7 @@ const processService = (oldState: ServiceStateItem | undefined, newState: Servic
     logger.log('build-finished.processService', oldState, newState);
     if (!oldState) return;
     newState.items?.forEach(item => {
-        const oldBuild = oldState?.items?.find(oldItem => oldItem.id === item.id);
+        const oldBuild = oldState.items?.find(oldItem => oldItem.id === item.id);
         if (!oldBuild) return;
         processBuild(newState.name, oldBuild, item);
     });
@@ -40,22 +40,22 @@ const processBuild = (serviceName: string, oldBuild: CIBuild, newBuild: CIBuild)
         if (!config.notifications?.buildBroken) return;
         const isUnstable = newBuild.tags?.some(tag => tag.name === 'Unstable');
         const message = isUnstable ? 'Build unstable' : 'Build broken';
-        notification.showBuild(serviceName, newBuild, message);
+        void notification.showBuild(serviceName, newBuild, message);
         return;
     }
     if (oldBuild.isBroken && !newBuild.isBroken) {
         if (!config.notifications?.buildFixed) return;
-        notification.showBuild(serviceName, newBuild, 'Build fixed');
+        void notification.showBuild(serviceName, newBuild, 'Build fixed');
         return;
     }
     if (oldBuild.isBroken && newBuild.isBroken) {
         if (!config.notifications?.buildStillFailing) return;
-        notification.showBuild(serviceName, newBuild, 'Build still failing');
+        void notification.showBuild(serviceName, newBuild, 'Build still failing');
         return;
     }
-    if (!newBuild.isRunning) {
+    if (!newBuild.isRunning as boolean) {
         if (!config.notifications?.buildSuccessful) return;
-        notification.showBuild(serviceName, newBuild, 'Build finished');
+        void notification.showBuild(serviceName, newBuild, 'Build finished');
         return;
     }
 };

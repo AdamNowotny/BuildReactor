@@ -4,14 +4,14 @@ import viewConfig from 'service-worker/storage/view-config';
 import { CIBuild } from 'services/service-types';
 import serviceState, { ServiceStateItem } from '../storage/service-state';
 
-const init = async () => {
+const init = () => {
     logger.log('build-started.init');
-    serviceState.onChanged.subscribe(stateChangeHandler);
+    serviceState.onChanged.subscribe(void stateChangeHandler);
 };
 
 export const stateChangeHandler = async ({ oldValue, newValue }) => {
     logger.log('build-started.serviceState.onChanged', oldValue, newValue);
-    if (!await notificationsEnabled()) return;
+    if (!(await notificationsEnabled())) return;
     newValue.map(newState => {
         const oldState = oldValue.find(state => state.name === newState.name);
         processService(oldState, newState);
@@ -27,7 +27,7 @@ const processService = (oldState: ServiceStateItem | undefined, newState: Servic
     logger.log('build-started.processService', oldState, newState);
     if (!oldState) return;
     newState.items?.forEach(item => {
-        const oldBuild = oldState?.items?.find(oldItem => oldItem.id === item.id);
+        const oldBuild = oldState.items?.find(oldItem => oldItem.id === item.id);
         if (!oldBuild) return;
         processBuild(oldBuild, item, newState);
     });
@@ -35,7 +35,7 @@ const processService = (oldState: ServiceStateItem | undefined, newState: Servic
 
 const processBuild = (oldBuild: CIBuild, item: CIBuild, newState: ServiceStateItem) => {
     if (!oldBuild.isRunning && item.isRunning) {
-        notification.showBuild(newState.name, item, 'Build started');
+        void notification.showBuild(newState.name, item, 'Build started');
     }
 };
 
