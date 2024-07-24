@@ -12,7 +12,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "npm install && npm install eslint@8.57.0 -g",
+	"postCreateCommand": "npm install",
 
 	// Configure tool-specific properties.
 	"customizations": {

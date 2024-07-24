@@ -84,7 +84,7 @@ it('gets default config for empty array', async () => {
 
 it('publishes onChanged event', () => {
     void storageInstance.init();
-    const [handler] = mockChrome.storage.onChanged.addListener.mock.lastCall;
+    const handler = mockChrome.storage.onChanged.addListener.mock.lastCall?.at(0);
 
     const expectedOldValue = { columns: null };
     const expectedNewValue = { columns: 5 };
@@ -105,7 +105,7 @@ it('publishes onChanged event', () => {
 
 it('publishes onChanged only if key changed', () => {
     void storageInstance.init();
-    const [handler] = mockChrome.storage.onChanged.addListener.mock.lastCall;
+    const handler = mockChrome.storage.onChanged.addListener.mock.lastCall?.at(0);
 
     const changedEvent = {
         services: {
