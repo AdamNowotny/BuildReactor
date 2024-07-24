@@ -50,7 +50,6 @@
     "@babel/core": "7.14.0",
     "@babel/preset-env": "7.14.1",
     "@eslint/js": "^9.7.0",
-    "@tsconfig/node22": "^22.0.0",
     "@types/chrome": "^0.0.269",
     "@types/eslint__js": "^8.42.3",
     "@types/rx": "^4.1.4",
