@@ -1,5 +1,5 @@
 import Rx from 'rx';
-import {
+import type {
     CIBuild,
     CIBuildChange,
     CIBuildTag,
@@ -40,7 +40,6 @@ export default {
             webUrl: 'https://travis-ci.org/',
             projects: [],
             token: '',
-            updateInterval: 60,
         },
     }),
     getAll: (settings: CIServiceSettings): Rx.Observable<CIPipeline> =>
@@ -130,7 +129,7 @@ const createTags = (build): CIBuildTag[] => {
 };
 
 const createChanges = (build): CIBuildChange[] => {
-    if (!(build.commit && build.commit.author)) {
+    if (!(build.commit?.author)) {
         return [];
     }
     return [

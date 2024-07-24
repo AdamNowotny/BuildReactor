@@ -1,5 +1,5 @@
 import Rx from 'rx';
-import {
+import type {
     CIBuild,
     CIPipeline,
     CIServiceDefinition,
@@ -27,7 +27,6 @@ export default {
             username: '',
             password: '',
             branch: '',
-            updateInterval: 60,
         },
     }),
     getAll: (settings: CIServiceSettings): Rx.Observable<CIPipeline> =>

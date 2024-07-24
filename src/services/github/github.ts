@@ -55,7 +55,6 @@ export default {
             projects: [],
             token: '',
             username: '',
-            updateInterval: 60,
             repository: '',
         },
     }),

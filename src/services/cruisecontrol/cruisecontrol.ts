@@ -1,5 +1,5 @@
 import cctray from 'services/cctray/cctray';
-import { CIServiceDefinition, CIServiceSettings } from 'services/service-types';
+import type { CIServiceDefinition, CIServiceSettings } from 'services/service-types';
 
 export default {
     getInfo: (): CIServiceDefinition => ({
@@ -14,17 +14,16 @@ export default {
             url: '',
             username: '',
             password: '',
-            updateInterval: 60
         },
         fields: [
             {
                 type: 'url',
                 name: 'Server URL (cctray XML)',
-                help: 'Example: http://server.com/cctray.xml'
+                help: 'Example: http://server.com/cctray.xml',
             },
             { type: 'username' },
-            { type: 'password' }
-        ]
+            { type: 'password' },
+        ],
     }),
     getAll: (settings: CIServiceSettings) => {
         const url = new URL('cctray.xml', settings.url).href;
@@ -33,5 +32,5 @@ export default {
     getLatest: (settings: CIServiceSettings) => {
         const url = new URL('cctray.xml', settings.url).href;
         return cctray.getLatest({ ...settings, ...{ url } });
-    }
+    },
 };

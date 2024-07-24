@@ -1,6 +1,6 @@
 import Rx from 'rx';
 import requests from 'services/buildkite/buildkiteRequests';
-import {
+import type {
     CIBuild,
     CIBuildTag,
     CIPipeline,
@@ -26,7 +26,6 @@ export default {
             name: '',
             projects: [],
             token: '',
-            updateInterval: 60,
             branch: 'main',
         },
     }),

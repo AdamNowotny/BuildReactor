@@ -1,6 +1,11 @@
 import Rx from 'rx';
 import requests from 'services/bamboo/bambooRequests';
-import { CIBuild, CIPipeline, CIServiceDefinition, CIServiceSettings } from 'services/service-types';
+import type {
+    CIBuild,
+    CIPipeline,
+    CIServiceDefinition,
+    CIServiceSettings,
+} from 'services/service-types';
 
 export default {
     getInfo: (): CIServiceDefinition => ({
@@ -24,17 +29,19 @@ export default {
             url: '',
             username: '',
             password: '',
-            updateInterval: 60,
         },
     }),
     getAll: (settings: CIServiceSettings): Rx.Observable<CIPipeline> =>
         requests.projects(settings).selectMany(project =>
-            Rx.Observable.fromArray(project.plans.plan).select((plan: any) => ({
-                id: plan.key,
-                name: plan.shortName,
-                group: plan.projectName,
-                isDisabled: !plan.enabled,
-            } as CIPipeline))
+            Rx.Observable.fromArray(project.plans.plan).select(
+                (plan: any) =>
+                    ({
+                        id: plan.key,
+                        name: plan.shortName,
+                        group: plan.projectName,
+                        isDisabled: !plan.enabled,
+                    } as CIPipeline)
+            )
         ),
     getLatest: (settings: CIServiceSettings): Rx.Observable<CIBuild> =>
         Rx.Observable.fromArray(settings.projects).selectMany(key =>

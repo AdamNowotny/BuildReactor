@@ -1,5 +1,5 @@
 import cctray from 'services/cctray/cctray';
-import {
+import type {
     CIBuild,
     CIPipeline,
     CIServiceDefinition,
@@ -19,7 +19,6 @@ export default {
             url: '',
             username: '',
             password: '',
-            updateInterval: 60,
         },
         fields: [
             {

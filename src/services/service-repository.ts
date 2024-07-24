@@ -47,13 +47,7 @@ const getAllDefinitions = function () {
 };
 
 const getDefinition = function (baseUrl: string) {
-    const serviceDefinition = services[baseUrl].getInfo();
-    serviceDefinition.fields.push({
-        type: 'updateInterval',
-        header: 'Update interval',
-        config: 'updateInterval',
-    });
-    return serviceDefinition;
+    return services[baseUrl].getInfo();
 };
 
 const getPipelinesFor = function (

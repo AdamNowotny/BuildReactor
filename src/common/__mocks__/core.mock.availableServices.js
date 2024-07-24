@@ -13,7 +13,6 @@ export default [
             url: '',
             username: '',
             password: '',
-            updateInterval: 60,
         },
     },
     {
@@ -29,7 +28,6 @@ export default [
             url: '',
             username: '',
             password: '',
-            updateInterval: 60,
         },
     },
     {
@@ -45,7 +43,6 @@ export default [
             url: '',
             username: '',
             password: '',
-            updateInterval: 60,
         },
     },
     {
@@ -61,7 +58,6 @@ export default [
             url: '',
             username: '',
             password: '',
-            updateInterval: 60,
         },
     },
     {
@@ -77,7 +73,6 @@ export default [
             url: '',
             username: '',
             password: '',
-            updateInterval: 60,
         },
     },
     {
@@ -93,7 +88,6 @@ export default [
             url: '',
             username: '',
             password: '',
-            updateInterval: 60,
         },
     },
     {
@@ -109,7 +103,6 @@ export default [
             url: '',
             username: '',
             password: '',
-            updateInterval: 60,
         },
     },
     {
@@ -125,7 +118,6 @@ export default [
             url: '',
             username: '',
             password: '',
-            updateInterval: 60,
         },
     },
     {
@@ -138,7 +130,6 @@ export default [
             name: '',
             projects: [],
             username: '',
-            updateInterval: 60,
         },
     },
 ];

@@ -1,6 +1,6 @@
 import Rx from 'rx';
 import requests from 'services/cctray/cctrayRequests';
-import {
+import type {
     CIBuild,
     CIPipeline,
     CIServiceDefinition,
@@ -20,7 +20,6 @@ export default {
             url: '',
             username: '',
             password: '',
-            updateInterval: 60,
         },
         fields: [
             {
@@ -79,7 +78,7 @@ export default {
 
 const createChanges = project => {
     const breakers =
-        project.messages && project.messages.length && typeof project.messages[0] === 'object'
+        project.messages?.length && typeof project.messages[0] === 'object'
             ? project.messages[0].message
                   .filter(message => message.$.kind === 'Breakers')
                   .map(message => message.$.text)[0]
@@ -87,9 +86,9 @@ const createChanges = project => {
     return breakers ? breakers.split(', ').map(username => ({ name: username })) : [];
 };
 
-var categoriseFromName = function (d) {
+const categoriseFromName = function (d) {
     if (!d.group && d.name && d.name.split(' :: ').length > 1) {
-        var nameParts = d.name.split(' :: ');
+        const nameParts = d.name.split(' :: ');
         d.group = nameParts[0];
         d.name = nameParts.slice(1).join(' :: ');
     }

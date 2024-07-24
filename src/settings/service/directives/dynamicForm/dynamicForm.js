@@ -49,8 +49,5 @@ const createFieldsFromConfig = (config) => {
     if (config.hasOwnProperty('branch')) {
         fields.push({ type: 'branch' });
     }
-    if (config.hasOwnProperty('updateInterval')) {
-        fields.push({ type: 'updateInterval' });
-    }
     return fields;
 };

@@ -9,7 +9,6 @@ export interface CIServiceSettings {
     username?: string;
     password?: string;
     projects: string[];
-    updateInterval?: number;
     disabled?: boolean;
     repository?: string;
 }

@@ -1,5 +1,5 @@
 import cctray from 'services/cctray/cctray';
-import { CIServiceDefinition, CIServiceSettings } from 'services/service-types';
+import type { CIServiceDefinition, CIServiceSettings } from 'services/service-types';
 
 export default {
     getInfo: (): CIServiceDefinition => ({
@@ -14,7 +14,6 @@ export default {
             url: '',
             username: '',
             password: '',
-            updateInterval: 60,
         },
         fields: [
             {

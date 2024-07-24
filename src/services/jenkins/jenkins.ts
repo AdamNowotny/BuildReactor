@@ -1,6 +1,6 @@
 import Rx from 'rx';
 import requests from 'services/jenkins/jenkinsRequests';
-import {
+import type {
     CIBuild,
     CIBuildTag,
     CIPipeline,
@@ -32,7 +32,6 @@ export default {
                 url: '',
                 username: '',
                 password: '',
-                updateInterval: 60,
             },
         };
     },

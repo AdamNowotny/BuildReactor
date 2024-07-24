@@ -1,6 +1,6 @@
 import Rx from 'rx';
 import requests from 'services/buildbot/buildbotRequests';
-import { CIBuild, CIPipeline, CIServiceSettings } from 'services/service-types';
+import type { CIBuild, CIPipeline, CIServiceSettings } from 'services/service-types';
 
 export default {
     getInfo: () => ({
@@ -20,7 +20,6 @@ export default {
             url: '',
             username: '',
             password: '',
-            updateInterval: 60,
         },
     }),
     getAll: settings =>
