@@ -25,7 +25,7 @@ export default {
             {
                 type: 'url',
                 name: 'Server URL (cctray XML)',
-                help: 'Example: http://server.com/cc.xml',
+                help: 'More information at https://cctray.org/servers/',
             },
             { type: 'username' },
             { type: 'password' },

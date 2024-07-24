@@ -45,7 +45,7 @@ export default {
             { type: 'repository' },
             {
                 type: 'token',
-                help: 'Optional, uses current user credentis when empty<br />Create token at <a href="https://github.com/settings/personal-access-tokens/new" target="_blank">https://github.com/settings/personal-access-tokens/new</a>',
+                help: 'Create token at <a href="https://github.com/settings/personal-access-tokens/new" target="_blank">https://github.com/settings/personal-access-tokens/new</a>',
             },
             { type: 'branch' },
         ],
