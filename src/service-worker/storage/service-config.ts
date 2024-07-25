@@ -81,7 +81,7 @@ const setOrder = async (serviceNames: string[]) => {
                 throw new Error(`Service ${name} not found`);
             }
             return item;
-        })
+        }),
     );
     await storage.set(newItems);
 };

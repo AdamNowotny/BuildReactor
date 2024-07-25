@@ -7,7 +7,8 @@ const init = (options: { prefix: string }) => {
 
     self.onerror = function (message, url, line) {
         console.error(
-            `Unhandled error, message: [${JSON.stringify(message)}], url: [${url}], line: [${line}]`
+            // prettier-ignore
+            `Unhandled error, message: [${JSON.stringify(message)}], url: [${url}], line: [${line}]`,
         );
         return false; // don't suppress default handling
     };

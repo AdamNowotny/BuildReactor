@@ -45,7 +45,7 @@ const createErrorState = async (serviceName: string, builds: CIBuild[]): Promise
         if (!build.error) return build;
         const oldBuild = oldState.items?.find(old => old.id === build.id);
         if (!oldBuild) return build;
-        return { ...oldBuild, error: build.error  };
+        return { ...oldBuild, error: build.error };
     });
 };
 

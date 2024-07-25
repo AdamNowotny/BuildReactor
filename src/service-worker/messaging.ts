@@ -26,7 +26,7 @@ const availableProjects = (sendResponse, settings: CIServiceSettings) => {
                     stack: error.stack,
                 },
             });
-        }
+        },
     );
 };
 

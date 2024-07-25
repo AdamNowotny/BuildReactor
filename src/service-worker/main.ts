@@ -18,7 +18,7 @@ void (async () => {
     serviceRepository.init();
     messaging.init();
     badge.init();
-    await serviceMonitor.init();
+    serviceMonitor.init();
 
     // events
     passwordExpiredHandler.init();

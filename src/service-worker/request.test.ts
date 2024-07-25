@@ -47,7 +47,7 @@ it('should return response', async () => {
     });
     expect(global.fetch).toBeCalledWith(
         new URL('https://sample.com/?token=token'),
-        expect.anything()
+        expect.anything(),
     );
 });
 
@@ -94,7 +94,7 @@ it('should set timeout if specified', async () => {
         expect.anything(),
         expect.objectContaining({
             signal: expect.any(AbortSignal),
-        })
+        }),
     );
 });
 
@@ -113,7 +113,7 @@ it('should set auth if username specified', async () => {
             headers: expect.objectContaining({
                 Authorization: expect.stringContaining('Basic '),
             }),
-        })
+        }),
     );
 });
 
@@ -132,7 +132,7 @@ it('should not set auth if username not specified', async () => {
             headers: expect.not.objectContaining({
                 Authorization: expect.any(String),
             }),
-        })
+        }),
     );
 });
 
@@ -150,7 +150,7 @@ it('should set request headers', async () => {
             headers: expect.objectContaining({
                 Authorization: 'token abc',
             }),
-        })
+        }),
     );
 });
 
@@ -168,7 +168,7 @@ it('should setup json type', async () => {
             headers: expect.objectContaining({
                 ['Content-Type']: 'application/json',
             }),
-        })
+        }),
     );
 });
 
@@ -186,7 +186,7 @@ it('should setup xml type', async () => {
             headers: expect.objectContaining({
                 ['Content-Type']: 'application/xml',
             }),
-        })
+        }),
     );
     expect(result.body).toEqual({ some: { xml: ['value'] } });
 });

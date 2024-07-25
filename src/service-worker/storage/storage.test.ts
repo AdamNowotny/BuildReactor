@@ -20,7 +20,7 @@ let storageInstance: Storage<object>;
 beforeEach(() => {
     storageInstance = new Storage<object>({
         key: 'key',
-        defaultValue: []
+        defaultValue: [],
     });
 });
 

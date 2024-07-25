@@ -43,5 +43,5 @@ export default tseslint.config(
             ],
             'sort-keys': ['error', 'asc', { minKeys: 10 }],
         },
-    }
+    },
 );

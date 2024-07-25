@@ -50,14 +50,12 @@ describe('show', () => {
                 title: testInfo.title,
                 message: testInfo.message,
                 requireInteraction: true,
-            })
+            }),
         );
     });
 
     it('adds iconUrl', async () => {
-        (mockChrome.runtime.getURL).mockImplementation(
-            icon => `https://google.com/${icon}`
-        );
+        mockChrome.runtime.getURL.mockImplementation(icon => `https://google.com/${icon}`);
 
         await notification.show(testInfo);
 
@@ -66,7 +64,7 @@ describe('show', () => {
             testInfo.id,
             expect.objectContaining({
                 iconUrl: `https://google.com/services/baseUrl/icon.png`,
-            })
+            }),
         );
     });
 
@@ -97,7 +95,7 @@ describe('showBuild', () => {
         await notification.showBuild(
             'serviceName',
             { group: 'group', name: 'name', id: 'id', webUrl: 'webUrl' },
-            'text'
+            'text',
         );
 
         expect(mockChrome.notifications.create).toBeCalledWith(
@@ -106,7 +104,7 @@ describe('showBuild', () => {
                 type: 'basic',
                 title: `text (serviceName)`,
                 message: 'group / name',
-            })
+            }),
         );
     });
 
@@ -114,7 +112,7 @@ describe('showBuild', () => {
         await notification.showBuild(
             'serviceName',
             { group: null, name: 'name', id: 'id' },
-            'text'
+            'text',
         );
 
         expect(mockChrome.notifications.create).toBeCalledWith(
@@ -122,7 +120,7 @@ describe('showBuild', () => {
             expect.objectContaining({
                 title: `text (serviceName)`,
                 message: 'name',
-            })
+            }),
         );
     });
 
@@ -140,14 +138,14 @@ describe('showBuild', () => {
                     { name: 'name4', message: 'message4' },
                 ],
             },
-            'text'
+            'text',
         );
 
         expect(mockChrome.notifications.create).toBeCalledWith(
             `serviceName_group_id`,
             expect.objectContaining({
                 message: 'group / name\nname1: message1\nname2: message2\n...\n',
-            })
+            }),
         );
     });
 
@@ -164,14 +162,14 @@ describe('showBuild', () => {
                     { name: 'name1', message: 'message3' },
                 ],
             },
-            'text'
+            'text',
         );
 
         expect(mockChrome.notifications.create).toBeCalledWith(
             `serviceName_group_id`,
             expect.objectContaining({
                 message: 'group / name\nname1: message1\nname2: message2',
-            })
+            }),
         );
     });
 
@@ -184,14 +182,14 @@ describe('showBuild', () => {
                 id: 'id',
                 changes: [{ name: 'name1' }, { name: 'name2' }, { name: 'name1' }],
             },
-            'text'
+            'text',
         );
 
         expect(mockChrome.notifications.create).toBeCalledWith(
             `serviceName_group_id`,
             expect.objectContaining({
                 message: 'group / name\nname1\nname2',
-            })
+            }),
         );
     });
 });

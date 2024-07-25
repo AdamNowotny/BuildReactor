@@ -18,9 +18,7 @@
       "check_suite_node_id": "CS_kwDOAC5Rzs8AAAAGIKPefw",
       "url": "https://api.github.com/repos/AdamNowotny/BuildReactor/actions/runs/10056461820",
       "html_url": "https://github.com/AdamNowotny/BuildReactor/actions/runs/10056461820",
-      "pull_requests": [
-
-      ],
+      "pull_requests": [],
       "created_at": "2024-07-23T09:33:33Z",
       "updated_at": "2024-07-23T09:34:01Z",
       "actor": {
@@ -44,9 +42,7 @@
         "site_admin": false
       },
       "run_attempt": 1,
-      "referenced_workflows": [
-
-      ],
+      "referenced_workflows": [],
       "run_started_at": "2024-07-23T09:33:33Z",
       "triggering_actor": {
         "login": "AdamNowotny",
@@ -242,9 +238,7 @@
       "check_suite_node_id": "CS_kwDOAC5Rzs8AAAAGIKMncQ",
       "url": "https://api.github.com/repos/AdamNowotny/BuildReactor/actions/runs/10056444732",
       "html_url": "https://github.com/AdamNowotny/BuildReactor/actions/runs/10056444732",
-      "pull_requests": [
-
-      ],
+      "pull_requests": [],
       "created_at": "2024-07-23T09:32:29Z",
       "updated_at": "2024-07-23T09:32:58Z",
       "actor": {
@@ -268,9 +262,7 @@
         "site_admin": false
       },
       "run_attempt": 1,
-      "referenced_workflows": [
-
-      ],
+      "referenced_workflows": [],
       "run_started_at": "2024-07-23T09:32:29Z",
       "triggering_actor": {
         "login": "AdamNowotny",
@@ -466,9 +458,7 @@
       "check_suite_node_id": "CS_kwDOAC5Rzs8AAAAGHzBLLw",
       "url": "https://api.github.com/repos/AdamNowotny/BuildReactor/actions/runs/10046922017",
       "html_url": "https://github.com/AdamNowotny/BuildReactor/actions/runs/10046922017",
-      "pull_requests": [
-
-      ],
+      "pull_requests": [],
       "created_at": "2024-07-22T19:10:42Z",
       "updated_at": "2024-07-22T19:11:12Z",
       "actor": {
@@ -492,9 +482,7 @@
         "site_admin": false
       },
       "run_attempt": 1,
-      "referenced_workflows": [
-
-      ],
+      "referenced_workflows": [],
       "run_started_at": "2024-07-22T19:10:42Z",
       "triggering_actor": {
         "login": "AdamNowotny",
@@ -690,9 +678,7 @@
       "check_suite_node_id": "CS_kwDOAC5Rzs8AAAAGHy8MUw",
       "url": "https://api.github.com/repos/AdamNowotny/BuildReactor/actions/runs/10046896353",
       "html_url": "https://github.com/AdamNowotny/BuildReactor/actions/runs/10046896353",
-      "pull_requests": [
-
-      ],
+      "pull_requests": [],
       "created_at": "2024-07-22T19:08:34Z",
       "updated_at": "2024-07-22T19:09:21Z",
       "actor": {
@@ -716,9 +702,7 @@
         "site_admin": false
       },
       "run_attempt": 1,
-      "referenced_workflows": [
-
-      ],
+      "referenced_workflows": [],
       "run_started_at": "2024-07-22T19:08:34Z",
       "triggering_actor": {
         "login": "AdamNowotny",

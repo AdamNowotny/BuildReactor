@@ -98,7 +98,7 @@ describe('build broken', () => {
         expect(notification.showBuild).toBeCalledWith(
             'test1',
             expect.objectContaining({ id: 'build1' }),
-            'Build broken'
+            'Build broken',
         );
     });
 
@@ -145,7 +145,7 @@ describe('build fixed', () => {
         expect(notification.showBuild).toBeCalledWith(
             'test1',
             expect.objectContaining({ id: 'build1' }),
-            'Build fixed'
+            'Build fixed',
         );
     });
 
@@ -182,7 +182,7 @@ describe('build successful', () => {
         expect(notification.showBuild).toBeCalledWith(
             'test1',
             expect.objectContaining({ id: 'build1' }),
-            'Build finished'
+            'Build finished',
         );
     });
 
@@ -231,7 +231,7 @@ describe('build still broken', () => {
             expect.objectContaining({
                 id: 'build1',
             }),
-            'Build still failing'
+            'Build still failing',
         );
     });
 
@@ -281,7 +281,7 @@ describe('build unstable', () => {
             expect.objectContaining({
                 id: 'build1',
             }),
-            'Build unstable'
+            'Build unstable',
         );
     });
 

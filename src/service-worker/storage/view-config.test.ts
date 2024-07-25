@@ -29,7 +29,7 @@ beforeEach(() => {
             buildStarted: false,
             buildSuccessful: false,
             buildStillFailing: false,
-        }
+        },
     };
     (Storage.prototype.get as Mock).mockImplementation(() => testConfigs);
 });

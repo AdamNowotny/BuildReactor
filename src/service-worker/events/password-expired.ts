@@ -9,7 +9,7 @@ const init = () => {
         logger.log('password-expired.serviceState.onChanged', newValue);
         newValue.forEach(service => {
             const authErrorCount = (service.items ?? []).filter(
-                item => item.error?.name === 'UnauthorisedError'
+                item => item.error?.name === 'UnauthorisedError',
             ).length;
             if (authErrorCount) {
                 processService(service.name);

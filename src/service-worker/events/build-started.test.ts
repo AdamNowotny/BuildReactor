@@ -73,6 +73,6 @@ it('should show notification if build started', async () => {
             name: 'build11',
             isRunning: true,
         },
-        'Build started'
+        'Build started',
     );
 });

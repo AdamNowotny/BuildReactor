@@ -29,7 +29,7 @@ const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> =
             const response = await getWorkflowRuns(settings, id);
             const [run] = response.body.workflow_runs;
             return parseBuild(run, settings);
-        })
+        }),
     );
 };
 
@@ -59,11 +59,11 @@ export default {
     }),
     getAll: (settings: CIServiceSettings): Rx.Observable<CIPipeline> =>
         Rx.Observable.fromPromise(getPipelines(settings)).flatMap(pipelines =>
-            Rx.Observable.fromArray(pipelines)
+            Rx.Observable.fromArray(pipelines),
         ),
     getLatest: (settings: CIServiceSettings): Rx.Observable<CIBuild> =>
         Rx.Observable.fromPromise(getBuildStates(settings)).flatMap(buildStates =>
-            Rx.Observable.fromArray(buildStates)
+            Rx.Observable.fromArray(buildStates),
         ),
     getPipelines,
     getBuildStates,

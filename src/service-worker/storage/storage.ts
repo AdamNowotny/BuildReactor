@@ -15,9 +15,8 @@ export class Storage<T> {
         private readonly options: {
             key: string;
             defaultValue?: T;
-        }
-    ) {
-    }
+        },
+    ) {}
 
     public init = async () => {
         logger.log(`${this.options.key}-storage.init`);

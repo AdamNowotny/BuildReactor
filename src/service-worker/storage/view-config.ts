@@ -1,6 +1,5 @@
 import { Storage } from './storage';
 
-
 export interface ConfigStorageItem {
     columns?: number;
     fullWidthGroups?: boolean;

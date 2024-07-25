@@ -1,76 +1,76 @@
 {
-  "name": "build-reactor",
-  "description": "Developer notifications and dashboard for CI servers",
-  "version": "4.0.0",
-  "homepage": "https://github.com/AdamNowotny/BuildReactor",
-  "author": {
-    "name": "Adam Nowotny",
-    "email": "adam.nowotny@gmail.com",
-    "url": "https://github.com/AdamNowotny"
-  },
-  "engines": {
-    "node": "20"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/AdamNowotny/BuildReactor.git"
-  },
-  "bugs": {
-    "url": "https://github.com/AdamNowotny/BuildReactor/issues"
-  },
-  "licenses": [
-    {
-      "type": "Apache",
-      "url": "https://github.com/AdamNowotny/BuildReactor/blob/master/LICENSE"
+    "name": "build-reactor",
+    "description": "Developer notifications and dashboard for CI servers",
+    "version": "4.0.0",
+    "homepage": "https://github.com/AdamNowotny/BuildReactor",
+    "author": {
+        "name": "Adam Nowotny",
+        "email": "adam.nowotny@gmail.com",
+        "url": "https://github.com/AdamNowotny"
+    },
+    "engines": {
+        "node": "20"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/AdamNowotny/BuildReactor.git"
+    },
+    "bugs": {
+        "url": "https://github.com/AdamNowotny/BuildReactor/issues"
+    },
+    "licenses": [
+        {
+            "type": "Apache",
+            "url": "https://github.com/AdamNowotny/BuildReactor/blob/master/LICENSE"
+        }
+    ],
+    "scripts": {
+        "lint": "node_modules/.bin/eslint .",
+        "dist": "NODE_OPTIONS=--openssl-legacy-provider node_modules/.bin/webpack",
+        "auto-dist": "ODE_OPTIONS=--openssl-legacy-provider node_modules/.bin/webpack --watch",
+        "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+        "test": "vitest --run",
+        "test:watch": "vitest"
+    },
+    "dependencies": {
+        "angular": "1.8.3",
+        "angular-animate": "1.8.3",
+        "angular-legacy-sortablejs-maintained": "0.6.2",
+        "angular-route": "1.8.3",
+        "angular-ui-bootstrap": "2.5.6",
+        "angular-ui-utils": "0.1.1",
+        "bootstrap": "3.4.1",
+        "font-awesome": "4.7.0",
+        "globals": "^15.8.0",
+        "rx": "4.1.0",
+        "sortablejs": "1.9.0",
+        "xml2js": "0.6.2"
+    },
+    "devDependencies": {
+        "@babel/core": "7.14.0",
+        "@babel/preset-env": "7.14.1",
+        "@eslint/js": "^9.7.0",
+        "@types/chrome": "^0.0.269",
+        "@types/eslint__js": "^8.42.3",
+        "@types/rx": "^4.1.4",
+        "babel-loader": "8.2.2",
+        "copy-webpack-plugin": "^12.0.2",
+        "css-loader": "7.1.2",
+        "html-webpack-plugin": "5.6.0",
+        "imports-loader": "5.0.0",
+        "mini-css-extract-plugin": "2.9.0",
+        "ngtemplate-loader": "2.1.0",
+        "raw-loader": "^4.0.2",
+        "sass": "1.77.8",
+        "sass-loader": "^15.0.0",
+        "stream-browserify": "^3.0.0",
+        "ts-loader": "^9.5.1",
+        "typescript": "^5.5.4",
+        "typescript-eslint": "^7.17.0",
+        "vite-tsconfig-paths": "^4.3.2",
+        "vitest": "^2.0.4",
+        "webpack": "5.36.2",
+        "webpack-cli": "5.1.4",
+        "zip-webpack-plugin": "4.0.1"
     }
-  ],
-  "scripts": {
-    "lint": "node_modules/.bin/eslint .",
-    "dist": "NODE_OPTIONS=--openssl-legacy-provider node_modules/.bin/webpack",
-    "auto-dist": "ODE_OPTIONS=--openssl-legacy-provider node_modules/.bin/webpack --watch",
-    "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-    "test": "vitest --run",
-    "test:watch": "vitest"
-  },
-  "dependencies": {
-    "angular": "1.8.3",
-    "angular-animate": "1.8.3",
-    "angular-legacy-sortablejs-maintained": "0.6.2",
-    "angular-route": "1.8.3",
-    "angular-ui-bootstrap": "2.5.6",
-    "angular-ui-utils": "0.1.1",
-    "bootstrap": "3.4.1",
-    "font-awesome": "4.7.0",
-    "globals": "^15.8.0",
-    "rx": "4.1.0",
-    "sortablejs": "1.9.0",
-    "xml2js": "0.6.2"
-  },
-  "devDependencies": {
-    "@babel/core": "7.14.0",
-    "@babel/preset-env": "7.14.1",
-    "@eslint/js": "^9.7.0",
-    "@types/chrome": "^0.0.269",
-    "@types/eslint__js": "^8.42.3",
-    "@types/rx": "^4.1.4",
-    "babel-loader": "8.2.2",
-    "copy-webpack-plugin": "^12.0.2",
-    "css-loader": "7.1.2",
-    "html-webpack-plugin": "5.6.0",
-    "imports-loader": "5.0.0",
-    "mini-css-extract-plugin": "2.9.0",
-    "ngtemplate-loader": "2.1.0",
-    "raw-loader": "^4.0.2",
-    "sass": "1.77.8",
-    "sass-loader": "^15.0.0",
-    "stream-browserify": "^3.0.0",
-    "ts-loader": "^9.5.1",
-    "typescript": "^5.5.4",
-    "typescript-eslint": "^7.17.0",
-    "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "^2.0.4",
-    "webpack": "5.36.2",
-    "webpack-cli": "5.1.4",
-    "zip-webpack-plugin": "4.0.1"
-  }
 }

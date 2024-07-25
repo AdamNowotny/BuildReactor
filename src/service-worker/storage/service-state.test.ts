@@ -105,7 +105,7 @@ describe('updateService', () => {
         await stateStorage.updateService('name', items);
 
         expect(Storage.prototype.set).toBeCalledWith(
-            expect.arrayContaining([expect.objectContaining({ failedCount: 1 })])
+            expect.arrayContaining([expect.objectContaining({ failedCount: 1 })]),
         );
     });
 
@@ -118,7 +118,7 @@ describe('updateService', () => {
         await stateStorage.updateService('name', items);
 
         expect(Storage.prototype.set).toBeCalledWith(
-            expect.arrayContaining([expect.objectContaining({ runningCount: 1 })])
+            expect.arrayContaining([expect.objectContaining({ runningCount: 1 })]),
         );
     });
 
@@ -143,7 +143,7 @@ describe('updateService', () => {
         await stateStorage.updateService('service 1', items);
 
         expect(Storage.prototype.set).toBeCalledWith(
-            expect.arrayContaining([expect.objectContaining({ offlineCount: 1 })])
+            expect.arrayContaining([expect.objectContaining({ offlineCount: 1 })]),
         );
     });
 
