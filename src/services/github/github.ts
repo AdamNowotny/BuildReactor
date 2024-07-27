@@ -75,6 +75,11 @@ const getWorkflowRuns = async (settings: CIServiceSettings, id: string) => {
     const [_origin, owner, repo] = new URL(settings.url).pathname.split('/');
     return request.get({
         url: `https://api.github.com/repos/${owner}/${repo}/actions/workflows/${id}/runs`,
+        query: settings.branch
+            ? {
+                  branch: settings.branch,
+              }
+            : undefined,
         headers: createHeaders(settings),
     });
 };

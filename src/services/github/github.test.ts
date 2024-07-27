@@ -110,4 +110,21 @@ describe('getBuildStates', () => {
             },
         ]);
     });
+
+    it('requests builds for branch only if specified', async () => {
+        (request.get as Mock).mockResolvedValue({
+            body: workflowRunsJson,
+        });
+        settings.projects = ['108658767'];
+        settings.branch = 'github-actions';
+
+        await github.getBuildStates(settings);
+
+        expect(request.get).toHaveBeenCalledWith(
+            expect.objectContaining({
+                url: 'https://api.github.com/repos/OWNER/REPO/actions/workflows/108658767/runs',
+                query: { branch: 'github-actions' },
+            }),
+        );
+    });
 });
