@@ -1,40 +1,63 @@
 <form class="col-md-4" role="form">
-	<fieldset>
-		<legend>Current configuration</legend>
-		<div class="form-group row">
-			<label class="col-md-6 control-label">Include passwords</label>
-			<div class="col-md-6">
-				<ul class="nav nav-pills">
-					<li role="presentation" ng-class="{ active: includePasswords }" ng-click="includePasswords = true"><a>On</a></li>
-					<li role="presentation" ng-class="{ active: !includePasswords }" ng-click="includePasswords = false"><a>Off</a></li>
-				</ul>
-			</div>
-		</div>
-		<div class="form-group">
-			<div class="text-center">
-				<button type="button" class="btn btn-success" ng-click="showLocalConfig()">
-					<i class="fa fa-cloud-upload"></i> Export
-				</button>
-			</div>
-		</div>
-	</fieldset>
-	<fieldset>
-		<legend>Import from URL</legend>
-		<div class="form-group">
-			<div class="input-group">
-				<span class="input-group-addon"><i class="fa fa-globe fa-fw"></i></span>
-				<input type="text" class="form-control" placeholder="URL" type="url" ng-model="configUrl">
-			</div>
-		</div>
-		<div class="form-group text-center">
-			<button type="button" class="btn btn-success" ng-click="showFromUrl(configUrl)" ng-disabled="!configUrl">
-				<i class="fa fa-cloud-download"></i> Import
-			</button>
-		</div>
-		<div class="alert alert-danger" role="alert" ng-show="urlError">{{ urlError }}</div>
-	</fieldset>
+    <fieldset>
+        <legend>Current configuration</legend>
+        <div class="form-group row">
+            <label class="col-md-6 control-label">Include credentials</label>
+            <div class="col-md-6">
+                <ul class="nav nav-pills">
+                    <li
+                        role="presentation"
+                        ng-class="{ active: includePasswords }"
+                        ng-click="includePasswords = true"
+                    >
+                        <a>On</a>
+                    </li>
+                    <li
+                        role="presentation"
+                        ng-class="{ active: !includePasswords }"
+                        ng-click="includePasswords = false"
+                    >
+                        <a>Off</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="text-center">
+                <button type="button" class="btn btn-success" ng-click="showLocalConfig()">
+                    <i class="fa fa-cloud-upload"></i> Export
+                </button>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Import from URL</legend>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-globe fa-fw"></i></span>
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="URL"
+                    type="url"
+                    ng-model="configUrl"
+                />
+            </div>
+        </div>
+        <div class="form-group text-center">
+            <button
+                type="button"
+                class="btn btn-success"
+                ng-click="showFromUrl(configUrl)"
+                ng-disabled="!configUrl"
+            >
+                <i class="fa fa-cloud-download"></i> Import
+            </button>
+        </div>
+        <div class="alert alert-danger" role="alert" ng-show="urlError">{{ urlError }}</div>
+    </fieldset>
 </form>
 <div class="col-md-8" style="height: 100%">
-	<section json-editor json="displayConfig" style="height: 100%"></section>
+    <section json-editor json="displayConfig" style="height: 100%"></section>
 </div>
 <section br-alert show="saving"></section>
