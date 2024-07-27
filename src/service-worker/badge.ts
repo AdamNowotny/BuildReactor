@@ -17,8 +17,7 @@ const init = () => {
         } else if (failedCount > 0) {
             setBadge(`${failedCount}`, 'red');
         } else {
-            const text = newValue.length === 0 ? '' : ' ';
-            setBadge(text, 'green');
+            setBadge('', 'green');
         }
     });
 };

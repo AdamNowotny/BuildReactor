@@ -24,13 +24,13 @@ it('hides badge when state empty', () => {
     });
 });
 
-it('shows badge when builds green', () => {
+it('hides badge when builds green', () => {
     stateStorage.onChanged.onNext({
         oldValue: [],
         newValue: [{ failedCount: 0, runningCount: 0, offlineCount: 0, name: 'service' }],
     });
 
-    expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: ' ' });
+    expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: '' });
     expect(mockChrome.action.setBadgeBackgroundColor).toHaveBeenCalledWith({
         color: 'green',
     });
