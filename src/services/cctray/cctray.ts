@@ -1,11 +1,31 @@
+import logger from 'common/logger';
 import Rx from 'rx';
-import requests from 'services/cctray/cctrayRequests';
+import request from 'service-worker/request';
 import type {
     CIBuild,
+    CIBuildChange,
     CIPipeline,
     CIServiceDefinition,
     CIServiceSettings,
 } from 'services/service-types';
+
+const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> => {
+    logger.log('cctray.getPipelines', settings);
+    const response = await requestProjects(settings);
+    // prettier-ignore
+    return response.Project
+        .map(project => parsePipeline(project))
+        .map(categoriseFromName);
+};
+
+const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
+    logger.log('cctray.getBuildStates', settings);
+    const response = await requestProjects(settings);
+    const parsed = response.Project.map(project => parseBuildState(project))
+        .filter(project => settings.projects.includes(project.id))
+        .map(categoriseFromName);
+    return Promise.all(parsed);
+};
 
 export default {
     getInfo: (): CIServiceDefinition => ({
@@ -32,65 +52,82 @@ export default {
         ],
     }),
     getAll: (settings: CIServiceSettings): Rx.Observable<CIPipeline> =>
-        requests
-            .projects(settings)
-            .select(body => body.Projects.Project)
-            .selectMany(projects =>
-                Rx.Observable.fromArray(projects)
-                    .select((project: any) => ({
-                        id: project.$.name,
-                        name: project.$.name,
-                        group: project.$.category || null,
-                        isDisabled: false,
-                    }))
-                    .select(categoriseFromName)
-            ),
+        Rx.Observable.fromPromise(getPipelines(settings)).flatMap(pipelines =>
+            Rx.Observable.fromArray(pipelines),
+        ),
     getLatest: (settings: CIServiceSettings): Rx.Observable<CIBuild> =>
-        requests
-            .projects(settings)
-            .selectMany(body => Rx.Observable.fromArray(body.Projects.Project))
-            .select((project: any) => {
-                const status = project.$.lastBuildStatus;
-                const state: CIBuild = {
-                    id: project.$.name,
-                    name: project.$.name,
-                    group: project.$.category || null,
-                    webUrl: project.$.webUrl || null,
-                    isRunning: project.$.activity === 'Building',
-                    isWaiting: status === 'Pending',
-                    isBroken: false,
-                    isDisabled: false,
-                    tags: [],
-                    changes: createChanges(project),
-                };
-                if (status in { Success: 1, Failure: 1, Exception: 1 }) {
-                    state.isBroken = status in { Failure: 1, Exception: 1 };
-                } else if (status !== 'Unknown') {
-                    state.tags?.push({
-                        name: 'Unknown',
-                        description: `Status [${status}] not supported`,
-                    });
-                }
-                return state;
-            })
-            .select(categoriseFromName),
+        Rx.Observable.fromPromise(getBuildStates(settings)).flatMap(buildStates =>
+            Rx.Observable.fromArray(buildStates),
+        ),
+    getPipelines,
+    getBuildStates,
 };
 
-const createChanges = project => {
-    const breakers =
-        project.messages?.length && typeof project.messages[0] === 'object'
-            ? project.messages[0].message
-                  .filter(message => message.$.kind === 'Breakers')
-                  .map(message => message.$.text)[0]
-            : null;
-    return breakers ? breakers.split(', ').map(username => ({ name: username })) : [];
+const requestProjects = async (settings: CIServiceSettings) => {
+    const projects = await request.get({
+        url: settings.url ?? '',
+        type: 'xml',
+        username: settings.username,
+        password: settings.password,
+    });
+    return projects.body.Projects;
 };
 
-const categoriseFromName = function (d) {
-    if (!d.group && d.name && d.name.split(' :: ').length > 1) {
-        const nameParts = d.name.split(' :: ');
+const categoriseFromName = function (d: CIPipeline) {
+    const SEPARATOR = ' :: ';
+    if (!d.group && d.name && d.name.split(SEPARATOR).length > 1) {
+        const nameParts = d.name.split(SEPARATOR);
         d.group = nameParts[0];
-        d.name = nameParts.slice(1).join(' :: ');
+        d.name = nameParts.slice(1).join(SEPARATOR);
     }
     return d;
 };
+
+function parseBuildState(project: any): CIBuild {
+    const status = project.$.lastBuildStatus;
+    const state: CIBuild = {
+        changes: createChanges(project),
+        group: project.$.category || null,
+        id: project.$.name,
+        isBroken: false,
+        isDisabled: false,
+        isRunning: project.$.activity === 'Building',
+        isWaiting: status === 'Pending',
+        name: project.$.name,
+        tags: [],
+        webUrl: project.$.webUrl || null,
+    };
+    if (status in { Success: 1, Failure: 1, Exception: 1, Pending: 1 }) {
+        state.isBroken = status in { Failure: 1, Exception: 1 };
+    } else if (status !== 'Unknown') {
+        state.tags?.push({
+            name: 'Unknown',
+            description: `Status [${status}] not supported`,
+        });
+    }
+    return state;
+}
+
+const createChanges = (project): CIBuildChange[] => {
+    const breakers: CIBuildChange[] =
+        project.messages
+            ?.at(0)
+            .message.filter(message => message.$.kind === 'Breakers')
+            .map(message => message.$.text)
+            .filter(message => message.length)
+            .flatMap((username: string) =>
+                username.split(',').map(username => ({
+                    name: username.trim(),
+                })),
+            ) || [];
+    return breakers;
+};
+
+function parsePipeline(project: any): CIPipeline {
+    return {
+        id: project.$.name,
+        name: project.$.name,
+        group: project.$.category || null,
+        isDisabled: false,
+    };
+}

@@ -4,12 +4,12 @@
   <Project name="Project :: Build :: Build" activity="Building" lastBuildStatus="Failure" lastBuildLabel="0.7" lastBuildTime="2012-10-25T14:46:23" webUrl="http://example.com/go/tab/build/detail/Project/8/Build/1/Build" />
   <Project name="Project :: UnitTest" activity="Sleeping" lastBuildStatus="Failure" lastBuildLabel="0.6" lastBuildTime="2012-10-25T14:35:15" webUrl="http://example.com/go/pipelines/Project/6/UnitTest/1">
     <messages>
-      <message text="DOMAIN\Adam.Nowotny" kind="Breakers" />
+      <message text="DOMAIN\Username" kind="Breakers" />
     </messages>
   </Project>
   <Project name="Project :: UnitTest :: UnitTest" activity="Sleeping" lastBuildStatus="Failure" lastBuildLabel="0.6" lastBuildTime="2012-10-25T14:35:15" webUrl="http://example.com/go/tab/build/detail/Project/6/UnitTest/1/UnitTest">
     <messages>
-      <message text="DOMAIN\Adam.Nowotny" kind="Breakers" />
+      <message text="user1, user2, user3" kind="Breakers" />
     </messages>
   </Project>
 </Projects>
