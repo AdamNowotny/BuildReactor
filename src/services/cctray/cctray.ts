@@ -45,7 +45,7 @@ export default {
             {
                 type: 'url',
                 name: 'Server URL (cctray XML)',
-                help: 'More information at https://cctray.org/servers/',
+                help: 'More information at <a href="https://cctray.org/servers/" target="_blank">https://cctray.org/servers/</a>',
             },
             { type: 'username' },
             { type: 'password' },
