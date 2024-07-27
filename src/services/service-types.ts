@@ -33,9 +33,9 @@ export interface CIServiceDefinition {
 export interface CIPipeline {
     id: string;
     name: string;
-    group?: boolean | null;
+    group?: string | null;
     isDisabled?: boolean;
-    error?: { name: string, message?: string, description?: string };
+    error?: { name: string; message?: string; description?: string };
 }
 
 export interface CIBuildTag {
@@ -57,7 +57,7 @@ export interface CIBuild {
     isRunning?: boolean;
     isWaiting?: boolean;
     isDisabled?: boolean;
-    error?: { name: string, message?: string, description?: string };
+    error?: { name: string; message?: string; description?: string };
     webUrl?: string;
     tags?: CIBuildTag[];
     changes?: CIBuildChange[];

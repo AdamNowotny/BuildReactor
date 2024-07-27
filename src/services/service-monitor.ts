@@ -42,7 +42,7 @@ const updateAll = async (allConfigs: CIServiceSettings[]) => {
                 const serviceState = await updateService(config);
                 await stateStorage.updateService(config.name, serviceState);
                 return serviceState;
-            })
+            }),
     );
     logger.log('service-monitor.updateAll result', updatedServices);
     await chrome.alarms.create(ALARM_NAME, { delayInMinutes: 0.5 });
@@ -53,7 +53,6 @@ const updateService = async (settings: CIServiceSettings) => {
     const service = serviceRepository.getService(settings.baseUrl);
     return service
         .getLatest(settings)
-        .filter(build => settings.projects.includes(build.id))
         .toArray()
         .select(items => items.sort((a, b) => a.name.localeCompare(b.name)))
         .catch(ex => createFailedState(settings, ex))
@@ -79,7 +78,7 @@ function createFailedState(settings: CIServiceSettings, ex: Error): Rx.Observabl
                         message: 'Service update failed',
                         description: ex.message,
                     },
-                } as CIBuild)
+                } as CIBuild),
         )
         .toArray();
 }

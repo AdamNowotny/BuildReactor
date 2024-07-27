@@ -13,7 +13,7 @@ const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> 
     const { workflows } = response.body;
     const pipelines: CIPipeline[] = workflows.map(workflow => {
         return {
-            id: `${workflow.id} :: ${workflow.name}`,
+            id: `${workflow.id} | ${workflow.name}`,
             name: workflow.name,
             isDisabled: workflow.state != 'active',
         };
@@ -25,7 +25,7 @@ const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> =
     logger.log('github.getBuildStates', settings);
     return Promise.all(
         settings.projects.map(async project => {
-            const [id] = project.split(' ::');
+            const [id] = project.split(' |');
             const response = await getWorkflowRuns(settings, id);
             const [run] = response.body.workflow_runs;
             return parseBuild(run, settings);
