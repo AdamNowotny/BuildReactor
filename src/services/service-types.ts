@@ -33,7 +33,7 @@ export interface CIServiceDefinition {
 export interface CIPipeline {
     id: string;
     name: string;
-    group?: string | null;
+    group?: string;
     isDisabled?: boolean;
     error?: { name: string; message?: string; description?: string };
 }
@@ -52,7 +52,7 @@ export interface CIBuildChange {
 export interface CIBuild {
     id: string;
     name: string;
-    group: string | null;
+    group?: string;
     isBroken?: boolean;
     isRunning?: boolean;
     isWaiting?: boolean;

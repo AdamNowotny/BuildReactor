@@ -40,44 +40,43 @@ export default {
                         name: plan.shortName,
                         group: plan.projectName,
                         isDisabled: !plan.enabled,
-                    } as CIPipeline)
-            )
+                    } as CIPipeline),
+            ),
         ),
     getLatest: (settings: CIServiceSettings): Rx.Observable<CIBuild> =>
         Rx.Observable.fromArray(settings.projects).selectMany(key =>
             requests
                 .plan(key, settings)
                 .zip(requests.result(key, settings), (plan, result) =>
-                    parseBuild(key, settings, plan, result)
+                    parseBuild(key, settings, plan, result),
                 )
                 .catch(ex =>
                     Rx.Observable.return<CIBuild>({
                         id: key,
                         name: key,
-                        group: null,
                         error: { name: 'Error', message: ex.message },
-                    })
-                )
+                    }),
+                ),
         ),
 };
 
 const parseBuild = (id, settings, planResponse, resultResponse) => {
     const state: CIBuild = {
-        id,
-        name: planResponse.shortName,
-        group: planResponse.projectName,
-        webUrl: new URL(`browse/${resultResponse.key}`, settings.url).href,
-        isBroken: resultResponse.state === 'Failed',
-        isRunning: planResponse.isBuilding,
-        isWaiting: planResponse.isActive,
-        isDisabled: !planResponse.enabled,
-        tags: [],
         changes: resultResponse.changes
             ? resultResponse.changes.change.map(change => ({
                   name: change.author,
                   message: change.comment,
               }))
             : [],
+        group: planResponse.projectName,
+        id,
+        isBroken: resultResponse.state === 'Failed',
+        isDisabled: !planResponse.enabled,
+        isRunning: planResponse.isBuilding,
+        isWaiting: planResponse.isActive,
+        name: planResponse.shortName,
+        tags: [],
+        webUrl: new URL(`browse/${resultResponse.key}`, settings.url).href,
     };
     if (!(resultResponse.state in { Successful: 1, Failed: 1 })) {
         state.tags?.push({

@@ -109,11 +109,7 @@ describe('showBuild', () => {
     });
 
     it('shows notification for build with no group', async () => {
-        await notification.showBuild(
-            'serviceName',
-            { group: null, name: 'name', id: 'id' },
-            'text',
-        );
+        await notification.showBuild('serviceName', { name: 'name', id: 'id' }, 'text');
 
         expect(mockChrome.notifications.create).toBeCalledWith(
             'serviceName_id',

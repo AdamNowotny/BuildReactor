@@ -46,10 +46,9 @@ export default {
                     Rx.Observable.return<CIBuild>({
                         id,
                         name: id,
-                        group: null,
                         error: { name: 'Error', message: ex.message },
-                    })
-                )
+                    }),
+                ),
         ),
 };
 

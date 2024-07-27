@@ -98,7 +98,6 @@ const getWorkflows = async (settings: CIServiceSettings) => {
 const parseBuild = (run: any, settings: CIServiceSettings) => {
     const build: CIBuild = {
         changes: [],
-        group: null,
         id: run.id.toString(),
         isBroken: run.conclusion === 'failure',
         isDisabled: false,

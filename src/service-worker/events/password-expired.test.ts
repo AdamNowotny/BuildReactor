@@ -25,7 +25,7 @@ it('should not show notification if no error', () => {
             { name: 'test1', items: [] },
             {
                 name: 'test2',
-                items: [{ name: 'build11', id: 'build1', group: null }],
+                items: [{ name: 'build11', id: 'build1' }],
             },
         ],
     });
@@ -46,7 +46,6 @@ it('shows notification if 401 error found', () => {
                     {
                         name: 'build1',
                         id: 'build1',
-                        group: null,
                         error: { name: 'UnauthorisedError' },
                     },
                 ],
@@ -76,7 +75,6 @@ it('disables service on authentication error', () => {
                     {
                         name: 'build',
                         id: 'build',
-                        group: null,
                         error: { name: 'UnauthorisedError' },
                     },
                 ],

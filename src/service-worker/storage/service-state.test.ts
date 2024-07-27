@@ -21,14 +21,14 @@ beforeEach(() => {
             offlineCount: 0,
             runningCount: 0,
             name: 'service 1',
-            items: [{ id: 'build1', name: 'Build 1', group: null }],
+            items: [{ id: 'build1', name: 'Build 1' }],
         },
         {
             failedCount: 0,
             offlineCount: 0,
             runningCount: 0,
             name: 'service 2',
-            items: [{ id: 'build2', name: 'Build 2', group: null }],
+            items: [{ id: 'build2', name: 'Build 2' }],
         },
     ];
     (Storage.prototype.get as Mock).mockImplementation(() => testState);
@@ -66,7 +66,7 @@ it('cleans up state on configuration change', async () => {
 
 describe('updateService', () => {
     it('adds new service to state', async () => {
-        const items: CIBuild[] = [{ id: 'build1', name: 'Build 1', group: null }];
+        const items: CIBuild[] = [{ id: 'build1', name: 'Build 1' }];
         (Storage.prototype.get as Mock).mockImplementation(() => []);
 
         await stateStorage.updateService('name', items);
@@ -77,7 +77,7 @@ describe('updateService', () => {
     });
 
     it('updates existing service', async () => {
-        const items: CIBuild[] = [{ id: 'build1', name: 'Build 1', group: null }];
+        const items: CIBuild[] = [{ id: 'build1', name: 'Build 1' }];
         (Storage.prototype.get as Mock).mockImplementation(() => [
             {
                 name: 'name1',
@@ -98,8 +98,8 @@ describe('updateService', () => {
 
     it('calculates failedCount', async () => {
         const items: CIBuild[] = [
-            { id: 'build1', name: 'Build 1', group: null, isBroken: true },
-            { id: 'build2', name: 'Build 2', group: null, isBroken: true, isDisabled: true },
+            { id: 'build1', name: 'Build 1', isBroken: true },
+            { id: 'build2', name: 'Build 2', isBroken: true, isDisabled: true },
         ];
 
         await stateStorage.updateService('name', items);
@@ -111,8 +111,8 @@ describe('updateService', () => {
 
     it('calculates runningCount', async () => {
         const items: CIBuild[] = [
-            { id: 'build1', name: 'Build 1', group: null, isRunning: true },
-            { id: 'build2', name: 'Build 2', group: null, isRunning: true, isDisabled: true },
+            { id: 'build1', name: 'Build 1', isRunning: true },
+            { id: 'build2', name: 'Build 2', isRunning: true, isDisabled: true },
         ];
 
         await stateStorage.updateService('name', items);
@@ -127,14 +127,12 @@ describe('updateService', () => {
             {
                 id: 'build1',
                 name: 'Build 1',
-                group: null,
                 isDisabled: false,
                 error: { name: 'Error', message: 'error1' },
             },
             {
                 id: 'build2',
                 name: 'Build 2',
-                group: null,
                 isDisabled: true,
                 error: { name: 'Error', message: 'error2' },
             },
@@ -155,7 +153,6 @@ describe('updateService', () => {
                     {
                         id: 'build1',
                         name: 'Build 1',
-                        group: null,
                         isRunning: true,
                         isBroken: true,
                     },
@@ -168,7 +165,6 @@ describe('updateService', () => {
             {
                 id: 'build1',
                 name: 'Build 1',
-                group: null,
                 error: { name: 'Error', message: 'error1' },
             },
         ];

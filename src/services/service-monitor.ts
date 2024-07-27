@@ -72,7 +72,6 @@ function createFailedState(settings: CIServiceSettings, ex: Error): Rx.Observabl
                 ({
                     id: project,
                     name: project,
-                    group: null,
                     error: {
                         name: ex.name,
                         message: 'Service update failed',

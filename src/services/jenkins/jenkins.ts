@@ -49,8 +49,8 @@ export default {
                                         name: `${project.name} / ${jobDetails.name}`,
                                         group: job.name,
                                         isDisabled: !jobDetails.buildable,
-                                    } as CIPipeline)
-                            )
+                                    } as CIPipeline),
+                            ),
                         );
                 case Folder:
                     return Rx.Observable.fromArray(job.jobs).select(
@@ -60,7 +60,7 @@ export default {
                                 name: `${jobDetails.name}`,
                                 group: job.name,
                                 isDisabled: !jobDetails.buildable,
-                            } as CIPipeline)
+                            } as CIPipeline),
                     );
                 case WorkflowMultiBranchProject:
                     return Rx.Observable.fromArray(job.jobs).select(
@@ -70,14 +70,13 @@ export default {
                                 name: `${jobDetails.name}`,
                                 group: job.name,
                                 isDisabled: !jobDetails.buildable,
-                            } as CIPipeline)
+                            } as CIPipeline),
                     );
                 default:
                     // FreeStyleProject or jenkins 1.x project
                     return Rx.Observable.return<CIPipeline>({
                         id: job.fullName || job.name,
                         name: job.name,
-                        group: null,
                         isDisabled: !job.buildable,
                     });
             }
@@ -86,34 +85,36 @@ export default {
         Rx.Observable.fromArray(settings.projects).selectMany(id =>
             requests
                 .jobDetails({ id, settings })
-                .select(job => {
-                    const [folder, project, branch] = id.split('/');
-                    const lastBuild = job.lastBuild || {};
-                    const lastCompletedBuild = job.lastCompletedBuild || {};
-                    let name = branch ? `${project} (${branch})` : `${project}`;
-                    let group: string | null = folder;
-                    if (!project) {
-                        name = folder;
-                        group = null;
-                    }
-                    const state: CIBuild = {
-                        id,
-                        name,
-                        group,
-                        webUrl: lastBuild.url,
-                        isRunning: lastBuild.building,
-                        isDisabled: !job.buildable,
-                        isWaiting: job.inQueue,
-                        tags: createTags(lastCompletedBuild),
-                        changes: createChanges(lastBuild),
-                    };
-                    if (JOB_RESULTS.BROKEN_KNOWN.includes(lastCompletedBuild.result)) {
-                        state.isBroken = JOB_RESULTS.BROKEN.includes(lastCompletedBuild.result);
-                    }
-                    return state as CIBuild;
-                })
-                .catch(ex => Rx.Observable.return(createError(id, ex)))
+                .select(job => parseJob(id, job))
+                .catch(ex => Rx.Observable.return(createError(id, ex))),
         ),
+};
+
+const parseJob = (id: string, job: any): CIBuild => {
+    const [folder, project, branch] = id.split('/');
+    const lastBuild = job.lastBuild || {};
+    const lastCompletedBuild = job.lastCompletedBuild || {};
+    let name = branch ? `${project} (${branch})` : project;
+    let group: string | undefined = folder;
+    if (!project) {
+        name = folder;
+        group = undefined;
+    }
+    const state: CIBuild = {
+        id,
+        name,
+        group,
+        webUrl: lastBuild.url,
+        isRunning: lastBuild.building,
+        isDisabled: !job.buildable,
+        isWaiting: job.inQueue,
+        tags: createTags(lastCompletedBuild),
+        changes: createChanges(lastBuild),
+    };
+    if (JOB_RESULTS.BROKEN_KNOWN.includes(lastCompletedBuild.result)) {
+        state.isBroken = JOB_RESULTS.BROKEN.includes(lastCompletedBuild.result);
+    }
+    return state;
 };
 
 const JOB_RESULTS = {

@@ -32,16 +32,15 @@ export default {
             requests
                 .lastBuild(id, settings)
                 .zip(requests.lastCompletedBuild(id, settings), (lastBuild, lastCompletedBuild) =>
-                    parseBuild(id, settings, lastBuild, lastCompletedBuild)
+                    parseBuild(id, settings, lastBuild, lastCompletedBuild),
                 )
                 .catch(ex =>
                     Rx.Observable.return<CIBuild>({
                         id,
                         name: id,
-                        group: null,
                         error: { name: 'Error', message: ex.message },
-                    })
-                )
+                    }),
+                ),
         ),
 };
 
