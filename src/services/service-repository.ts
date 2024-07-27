@@ -1,20 +1,12 @@
 import bamboo from 'services/bamboo/bamboo';
 import buildbot from 'services/buildbot/buildbot';
 import buildkite from 'services/buildkite/buildkite';
-import cc from 'services/cruisecontrol/cruisecontrol';
-import ccnet from 'services/cruisecontrol.net/cruisecontrol.net';
-import ccrb from 'services/cruisecontrol.rb/cruisecontrol.rb';
 import cctray from 'services/cctray/cctray';
-import go from 'services/go/go';
 import jenkins from 'services/jenkins/jenkins';
 import teamcity from 'services/teamcity/teamcity';
 import travis from 'services/travis/travis';
 
-import type {
-    CIPipelineList,
-    CIService,
-    CIServiceSettings,
-} from './service-types';
+import type { CIPipelineList, CIService, CIServiceSettings } from './service-types';
 import logger from 'common/logger';
 import github from './github/github';
 
@@ -24,12 +16,8 @@ const init = () => {
     register(bamboo);
     register(buildbot);
     register(buildkite);
-    register(cc);
-    register(ccnet);
-    register(ccrb);
     register(cctray);
-    register(github)
-    register(go);
+    register(github);
     register(jenkins);
     register(teamcity);
     register(travis);
@@ -50,9 +38,7 @@ const getDefinition = function (baseUrl: string) {
     return services[baseUrl].getInfo();
 };
 
-const getPipelinesFor = function (
-    settings: CIServiceSettings
-): Rx.Observable<CIPipelineList> {
+const getPipelinesFor = function (settings: CIServiceSettings): Rx.Observable<CIPipelineList> {
     const pipelines = services[settings['baseUrl']].getAll(settings);
     logger.log('service-repository.getPipelinesFor', pipelines);
     return pipelines.toArray().select(items => ({
@@ -63,7 +49,7 @@ const getPipelinesFor = function (
 
 const getService = function (baseUrl) {
     return services[baseUrl];
-}
+};
 
 export default {
     init,
