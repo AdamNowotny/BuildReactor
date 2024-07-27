@@ -3,6 +3,7 @@ import { CIServiceSettings } from 'services/service-types';
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import github from './github';
 import workflowJson from './workflows.json';
+import workflowRunsJson from './workflow-runs.json';
 
 vi.mock('common/logger');
 vi.mock('service-worker/request');
@@ -14,9 +15,8 @@ beforeEach(() => {
         name: 'mock',
         baseUrl: 'baseUrl',
         projects: [],
-        username: 'mockUsername',
-        repository: 'mockRepository',
         token: 'mockToken',
+        url: 'https://github.com/OWNER/REPO',
     };
 });
 
@@ -30,7 +30,7 @@ describe('getPipelines', () => {
 
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({
-                url: 'https://api.github.com/repos/mockUsername/mockRepository/actions/workflows',
+                url: 'https://api.github.com/repos/OWNER/REPO/actions/workflows',
                 headers: expect.objectContaining({
                     Authorization: 'Bearer mockToken',
                 }),
@@ -38,7 +38,7 @@ describe('getPipelines', () => {
         );
     });
 
-    it('should parse workflows', async () => {
+    it('parses workflows', async () => {
         (request.get as Mock).mockResolvedValue({
             body: workflowJson,
         });
@@ -60,6 +60,49 @@ describe('getPipelines', () => {
                 id: '108658230 | .github/workflows/test.yml',
                 isDisabled: false,
                 name: '.github/workflows/test.yml',
+            },
+        ]);
+    });
+});
+
+describe('getBuildStates', () => {
+    it('passes parameters to request', async () => {
+        (request.get as Mock).mockResolvedValue({
+            body: { workflow_runs: [{ id: '108658767' }] },
+        });
+        settings.projects = ['108658767'];
+
+        await github.getBuildStates(settings);
+
+        expect(request.get).toHaveBeenCalledWith(
+            expect.objectContaining({
+                url: 'https://api.github.com/repos/OWNER/REPO/actions/workflows/108658767/runs',
+                headers: expect.objectContaining({
+                    Authorization: 'Bearer mockToken',
+                }),
+            }),
+        );
+    });
+
+    it('parses builds', async () => {
+        (request.get as Mock).mockResolvedValue({
+            body: workflowRunsJson,
+        });
+        settings.projects = ['108658767'];
+
+        const response = await github.getBuildStates(settings);
+
+        expect(response).toEqual([
+            {
+                changes: [],
+                id: '10056461820',
+                isBroken: false,
+                isRunning: false,
+                isWaiting: false,
+                isDisabled: false,
+                name: '.github/workflows/main.yml',
+                tags: [],
+                webUrl: 'https://github.com/AdamNowotny/BuildReactor/actions/runs/10056461820',
             },
         ]);
     });

@@ -28,7 +28,7 @@ const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> =
             const [id] = project.split(' |');
             const response = await getWorkflowRuns(settings, id);
             const [run] = response.body.workflow_runs;
-            return parseBuild(run, settings);
+            return parseBuild(run);
         }),
     );
 };
@@ -40,8 +40,10 @@ export default {
         icon: 'services/github/icon.png',
         logo: 'services/github/logo.svg',
         fields: [
-            { type: 'username', name: 'Owner' },
-            { type: 'repository' },
+            {
+                type: 'url',
+                name: 'Github URL, f.e. https://github.com/AdamNowotny/BuildReactor',
+            },
             {
                 type: 'token',
                 help: 'Create token at <a href="https://github.com/settings/personal-access-tokens/new" target="_blank">https://github.com/settings/personal-access-tokens/new</a>',
@@ -50,11 +52,10 @@ export default {
         ],
         defaultConfig: {
             baseUrl: 'github',
+            url: '',
             name: '',
             projects: [],
             token: '',
-            username: '',
-            repository: '',
         },
     }),
     getAll: (settings: CIServiceSettings): Rx.Observable<CIPipeline> =>
@@ -70,32 +71,24 @@ export default {
 };
 
 const getWorkflowRuns = async (settings: CIServiceSettings, id: string) => {
+    if (!settings.url) throw new Error('No url provided');
+    const [_origin, owner, repo] = new URL(settings.url).pathname.split('/');
     return request.get({
-        url: `https://api.github.com/repos/${settings.username}/${settings.repository}/actions/workflows/${id}/runs`,
-        headers: settings.token
-            ? {
-                  Authorization: `Bearer ${settings.token}`,
-                  'X-GitHub-Api-Version': '2022-11-28',
-                  Accept: 'application/vnd.github.v3+json',
-              }
-            : undefined,
+        url: `https://api.github.com/repos/${owner}/${repo}/actions/workflows/${id}/runs`,
+        headers: createHeaders(settings),
     });
 };
 
 const getWorkflows = async (settings: CIServiceSettings) => {
+    if (!settings.url) throw new Error('No url provided');
+    const [_origin, owner, repo] = new URL(settings.url).pathname.split('/');
     return request.get({
-        url: `https://api.github.com/repos/${settings.username}/${settings.repository}/actions/workflows`,
-        headers: settings.token
-            ? {
-                  Authorization: `Bearer ${settings.token}`,
-                  'X-GitHub-Api-Version': '2022-11-28',
-                  Accept: 'application/vnd.github.v3+json',
-              }
-            : undefined,
+        url: `https://api.github.com/repos/${owner}/${repo}/actions/workflows`,
+        headers: createHeaders(settings),
     });
 };
 
-const parseBuild = (run: any, settings: CIServiceSettings) => {
+const parseBuild = (run: any) => {
     const build: CIBuild = {
         changes: [],
         id: run.id.toString(),
@@ -105,7 +98,17 @@ const parseBuild = (run: any, settings: CIServiceSettings) => {
         isWaiting: run.status === 'queued',
         name: run.name,
         tags: [],
-        webUrl: `https://github.com/${settings.username}/${settings.repository}/actions/runs/${run.id}`,
+        webUrl: run.html_url,
     };
     return build;
 };
+
+function createHeaders(settings: CIServiceSettings): HeadersInit | undefined {
+    return settings.token
+        ? {
+              Authorization: `Bearer ${settings.token}`,
+              'X-GitHub-Api-Version': '2022-11-28',
+              Accept: 'application/vnd.github.v3+json',
+          }
+        : undefined;
+}
