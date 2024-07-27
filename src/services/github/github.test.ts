@@ -1,5 +1,5 @@
 import request from 'service-worker/request';
-import { CIServiceSettings } from 'services/service-types';
+import { CIBuildChange, CIServiceSettings } from 'services/service-types';
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import github from './github';
 import workflowJson from './workflows.json';
@@ -94,14 +94,18 @@ describe('getBuildStates', () => {
 
         expect(response).toEqual([
             {
-                changes: [],
+                changes: [
+                    {
+                        name: 'Adam Nowotny',
+                        message: 'ci: remove gitlab and travis scripts',
+                    },
+                ] as CIBuildChange[],
                 id: '10056461820',
                 isBroken: false,
                 isRunning: false,
                 isWaiting: false,
                 isDisabled: false,
                 name: '.github/workflows/main.yml',
-                tags: [],
                 webUrl: 'https://github.com/AdamNowotny/BuildReactor/actions/runs/10056461820',
             },
         ]);

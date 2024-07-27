@@ -90,14 +90,18 @@ const getWorkflows = async (settings: CIServiceSettings) => {
 
 const parseBuild = (run: any) => {
     const build: CIBuild = {
-        changes: [],
+        changes: [
+            {
+                name: run.head_commit?.author?.name,
+                message: run.head_commit?.message,
+            },
+        ],
         id: run.id.toString(),
         isBroken: run.conclusion === 'failure',
         isDisabled: false,
         isRunning: run.status === 'in_progress',
         isWaiting: run.status === 'queued',
         name: run.name,
-        tags: [],
         webUrl: run.html_url,
     };
     return build;
