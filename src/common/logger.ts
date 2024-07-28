@@ -14,6 +14,10 @@ const init = (options: { prefix: string }) => {
     };
 };
 
+const debug = (...args) => {
+    console.debug(LOG_NAMESPACE, ...args);
+};
+
 const log = (...args) => {
     console.log(LOG_NAMESPACE, ...args);
 };
@@ -26,9 +30,22 @@ const error = (...args) => {
     console.error(LOG_NAMESPACE, ...args);
 };
 
+const group = (label: string) => {
+    console.group(label);
+    console.time(label);
+};
+
+const groupEnd = (label: string) => {
+    console.groupEnd();
+    console.timeEnd(label);
+};
+
 export default {
     init,
+    debug,
     log,
     warn,
     error,
+    group,
+    groupEnd,
 };

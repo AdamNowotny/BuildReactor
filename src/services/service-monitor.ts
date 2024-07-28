@@ -36,7 +36,7 @@ const start = async () => {
 };
 
 const updateAll = async (allConfigs: CIServiceSettings[]) => {
-    logger.log('service-monitor.updateAll');
+    logger.group('service-monitor.updateAll');
     await chrome.alarms.clearAll();
     const updatedServices = await Promise.all(
         allConfigs
@@ -49,6 +49,7 @@ const updateAll = async (allConfigs: CIServiceSettings[]) => {
     );
     logger.log('service-monitor.updateAll result', updatedServices);
     await chrome.alarms.create(ALARM_NAME, { delayInMinutes: 0.5 });
+    logger.groupEnd('service-monitor.updateAll');
 };
 
 const updateService = async (settings: CIServiceSettings) => {
