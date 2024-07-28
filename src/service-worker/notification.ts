@@ -1,6 +1,7 @@
 import type { CIBuild } from 'services/service-types';
 import serviceConfig from './storage/service-config';
 import viewConfig from './storage/view-config';
+import logger from 'common/logger';
 
 export interface NotificationInfo {
     serviceName: string;
@@ -14,12 +15,14 @@ export interface NotificationInfo {
 const visibleNotifications = new Map<string, NotificationInfo>();
 
 const onClickedHandler = (id: string): void => {
+    logger.log('notification.onClickedHandler', id);
     const info = visibleNotifications.get(id);
     if (!info) return;
     void chrome.tabs.create({ url: info.url });
 };
 
 const onClosedHandler = (id: string): void => {
+    logger.log('notification.onClosedHandler', id);
     visibleNotifications.delete(id);
 };
 

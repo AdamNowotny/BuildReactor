@@ -9,12 +9,14 @@ import messaging from './messaging';
 import serviceConfig from './storage/service-config';
 import stateStorage from './storage/service-state';
 import viewConfigStorage from './storage/view-config';
+import notification from './notification';
 
 void (async () => {
     logger.init({ prefix: 'service-worker' });
     await serviceConfig.init();
     await viewConfigStorage.init();
     await stateStorage.init();
+    notification.init();
     serviceRepository.init();
     messaging.init();
     badge.init();

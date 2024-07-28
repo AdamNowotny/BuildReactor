@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-let LOG_NAMESPACE = 'undefined';
+let LOG_NAMESPACE = 'LOG';
 
 const init = (options: { prefix: string }) => {
     LOG_NAMESPACE = options.prefix;

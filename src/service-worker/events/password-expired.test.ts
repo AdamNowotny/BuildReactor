@@ -4,19 +4,9 @@ import serviceState from 'service-worker/storage/service-state';
 import { beforeEach, expect, it, vi } from 'vitest';
 import passwordExpired from './password-expired';
 
-const mockChrome = {
-    runtime: {
-        getURL: vi.fn(),
-    },
-};
-vi.stubGlobal('chrome', mockChrome);
 vi.mock('common/logger');
 vi.mock('service-worker/notification');
 vi.mock('service-worker/storage/service-config');
-
-beforeEach(() => {
-    mockChrome.runtime.getURL.mockImplementation(v => v);
-});
 
 it('should not show notification if no error', () => {
     serviceState.onChanged.onNext({

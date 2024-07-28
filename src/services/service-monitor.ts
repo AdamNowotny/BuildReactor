@@ -65,7 +65,7 @@ export default {
 };
 
 function createFailedState(settings: CIServiceSettings, ex: Error): Rx.Observable<CIBuild[]> {
-    logger.warn(`service-monitor.updateService.failed`, settings.name, settings);
+    logger.warn(`service-monitor.updateService.failed`, settings.name, ex);
     return Rx.Observable.fromArray(settings.projects)
         .select(
             project =>
