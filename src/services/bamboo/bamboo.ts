@@ -14,11 +14,14 @@ const requestProjects = (settings: CIServiceSettings): Promise<any> => {
         query: {
             expand: 'projects.project.plans.plan',
             'max-result': 1000,
-            os_authType: settings.username ? 'basic' : 'guest',
+            os_authType: settings.token ? 'basic' : 'guest',
         },
         type: 'json',
-        username: settings.username,
-        password: settings.password,
+        headers: settings.token
+            ? {
+                  Authorization: `Bearer ${settings.token}`,
+              }
+            : undefined,
     });
 };
 
@@ -28,11 +31,14 @@ const requestResult = (id: string, settings: CIServiceSettings) =>
         query: {
             expand: 'plan,vcsRevisions.vcsRevision.changes.change',
             max_result: 1,
-            os_authType: settings.username ? 'basic' : 'guest',
+            os_authType: settings.token ? 'basic' : 'guest',
         },
         type: 'json',
-        username: settings.username,
-        password: settings.password,
+        headers: settings.token
+            ? {
+                  Authorization: `Bearer ${settings.token}`,
+              }
+            : undefined,
     });
 
 const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> => {
@@ -72,16 +78,14 @@ export default {
                 name: 'Server URL, e.g. http://ci.openmrs.org/',
                 help: 'For Bamboo OnDemand use https://[your_account].atlassian.net/builds',
             },
-            { type: 'username' },
-            { type: 'password' },
+            { type: 'token' },
         ],
         defaultConfig: {
             baseUrl: 'bamboo',
             name: '',
             projects: [],
             url: '',
-            username: '',
-            password: '',
+            token: '',
         },
     }),
     getAll: (settings: CIServiceSettings): Rx.Observable<CIPipeline> =>

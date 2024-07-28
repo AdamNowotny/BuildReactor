@@ -31,29 +31,25 @@ describe('getPipelines', () => {
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({
                 url: 'https://example.com/rest/api/latest/project.json',
-                query: expect.objectContaining({
-                    os_authType: 'guest',
-                }),
+                headers: {
+                    Authorization: `Bearer ${settings.token}`,
+                },
             }),
         );
     });
 
-    it('passes auth to request', async () => {
+    it('passes os_authType to request when guest', async () => {
         (request.get as Mock).mockResolvedValue({
             body: projectsJson,
         });
-        settings.username = 'username';
-        settings.password = 'password';
+        settings.token = undefined;
 
         await bamboo.getPipelines(settings);
 
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({
-                query: expect.objectContaining({
-                    os_authType: 'basic',
-                }),
-                username: 'username',
-                password: 'password',
+                url: 'https://example.com/rest/api/latest/project.json',
+                query: expect.objectContaining({ os_authType: 'guest' }),
             }),
         );
     });
@@ -86,7 +82,7 @@ describe('getPipelines', () => {
 });
 
 describe('getBuildStates', () => {
-    it('passes parameters to plan and request', async () => {
+    it('passes parameters to request', async () => {
         (request.get as Mock).mockResolvedValueOnce({ body: resultJson });
         settings.projects = ['AD-BAOIS'];
 
@@ -95,29 +91,26 @@ describe('getBuildStates', () => {
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({
                 url: 'https://example.com/rest/api/latest/result/AD-BAOIS/latest.json',
-                query: expect.objectContaining({
-                    os_authType: 'guest',
-                }),
                 type: 'json',
+                headers: {
+                    Authorization: `Bearer ${settings.token}`,
+                },
             }),
         );
     });
 
-    it('passes auth to plan and request', async () => {
+    it('passes os_authType to request when guest', async () => {
         (request.get as Mock).mockResolvedValueOnce({ body: resultJson });
         settings.projects = ['AD-BAOIS'];
-        settings.username = 'USERNAME';
-        settings.password = 'PASSWORD';
+        settings.token = undefined;
 
         await bamboo.getBuildStates(settings);
 
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({
-                query: expect.objectContaining({
-                    os_authType: 'basic',
-                }),
-                username: 'USERNAME',
-                password: 'PASSWORD',
+                url: 'https://example.com/rest/api/latest/result/AD-BAOIS/latest.json',
+                type: 'json',
+                query: expect.objectContaining({ os_authType: 'guest' }),
             }),
         );
     });

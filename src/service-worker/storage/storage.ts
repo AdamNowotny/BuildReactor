@@ -41,7 +41,6 @@ export class Storage<T> {
     public get = async (): Promise<T> => {
         return new Promise<T>(resolve => {
             chrome.storage.local.get(this.options.key, value => {
-                logger.log(`${this.options.key}-storage.get`, value);
                 const item = value[this.options.key];
                 if (item) {
                     resolve(item);

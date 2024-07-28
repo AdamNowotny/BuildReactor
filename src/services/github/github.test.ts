@@ -33,6 +33,8 @@ describe('getPipelines', () => {
                 url: 'https://api.github.com/repos/OWNER/REPO/actions/workflows',
                 headers: expect.objectContaining({
                     Authorization: 'Bearer mockToken',
+                    'X-GitHub-Api-Version': '2022-11-28',
+                    Accept: 'application/vnd.github.v3+json',
                 }),
             }),
         );
@@ -79,6 +81,8 @@ describe('getBuildStates', () => {
                 url: 'https://api.github.com/repos/OWNER/REPO/actions/workflows/108658767/runs',
                 headers: expect.objectContaining({
                     Authorization: 'Bearer mockToken',
+                    'X-GitHub-Api-Version': '2022-11-28',
+                    Accept: 'application/vnd.github.v3+json',
                 }),
             }),
         );
