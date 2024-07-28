@@ -1,7 +1,7 @@
 import logger from 'common/logger';
 import Rx from 'rx';
 
-interface StorageChangeEvent<T> {
+export interface StorageChangeEvent<T> {
     oldValue: T;
     newValue: T;
 }
