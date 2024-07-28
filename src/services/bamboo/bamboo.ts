@@ -1,11 +1,64 @@
+import logger from 'common/logger';
 import Rx from 'rx';
-import requests from 'services/bamboo/bambooRequests';
+import request from 'service-worker/request';
 import type {
     CIBuild,
     CIPipeline,
     CIServiceDefinition,
     CIServiceSettings,
 } from 'services/service-types';
+
+const requestProjects = (settings: CIServiceSettings): Promise<any> => {
+    return request.get({
+        url: new URL('rest/api/latest/project.json', settings.url).href,
+        query: {
+            expand: 'projects.project.plans.plan',
+            'max-result': 1000,
+            os_authType: settings.username ? 'basic' : 'guest',
+        },
+        type: 'json',
+        username: settings.username,
+        password: settings.password,
+    });
+};
+
+const requestResult = (id: string, settings: CIServiceSettings) =>
+    request.get({
+        url: new URL(`rest/api/latest/result/${id}/latest.json`, settings.url).href,
+        query: {
+            expand: 'plan,vcsRevisions.vcsRevision.changes.change',
+            max_result: 1,
+            os_authType: settings.username ? 'basic' : 'guest',
+        },
+        type: 'json',
+        username: settings.username,
+        password: settings.password,
+    });
+
+const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> => {
+    const response = await requestProjects(settings);
+    logger.log('bamboo.getPipelines', response);
+    const projects = response.body.projects.project;
+    return projects.flatMap(project => project.plans.plan.map(createPipeline));
+};
+
+const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
+    logger.log('bamboo.getBuildStates', settings);
+    return Promise.all(
+        settings.projects.flatMap(async key => {
+            try {
+                const resultResponse = await requestResult(key, settings);
+                return parseBuild(key, settings, resultResponse.body);
+            } catch (ex: any) {
+                return {
+                    id: key,
+                    name: key,
+                    error: { name: 'Error', message: ex.message },
+                };
+            }
+        }),
+    );
+};
 
 export default {
     getInfo: (): CIServiceDefinition => ({
@@ -32,50 +85,32 @@ export default {
         },
     }),
     getAll: (settings: CIServiceSettings): Rx.Observable<CIPipeline> =>
-        requests.projects(settings).selectMany(project =>
-            Rx.Observable.fromArray(project.plans.plan).select(
-                (plan: any) =>
-                    ({
-                        id: plan.key,
-                        name: plan.shortName,
-                        group: plan.projectName,
-                        isDisabled: !plan.enabled,
-                    } as CIPipeline),
-            ),
+        Rx.Observable.fromPromise(getPipelines(settings)).flatMap(pipelines =>
+            Rx.Observable.fromArray(pipelines),
         ),
     getLatest: (settings: CIServiceSettings): Rx.Observable<CIBuild> =>
-        Rx.Observable.fromArray(settings.projects).selectMany(key =>
-            requests
-                .plan(key, settings)
-                .zip(requests.result(key, settings), (plan, result) =>
-                    parseBuild(key, settings, plan, result),
-                )
-                .catch(ex =>
-                    Rx.Observable.return<CIBuild>({
-                        id: key,
-                        name: key,
-                        error: { name: 'Error', message: ex.message },
-                    }),
-                ),
+        Rx.Observable.fromPromise(getBuildStates(settings)).flatMap(buildStates =>
+            Rx.Observable.fromArray(buildStates),
         ),
+    getPipelines,
+    getBuildStates,
 };
 
-const parseBuild = (id, settings, planResponse, resultResponse) => {
+const parseBuild = (id, settings, resultResponse) => {
     const state: CIBuild = {
-        changes: resultResponse.changes
-            ? resultResponse.changes.change.map(change => ({
-                  name: change.author,
-                  message: change.comment,
-              }))
-            : [],
-        group: planResponse.projectName,
+        changes: resultResponse.vcsRevisions.vcsRevision.flatMap(vcsRevision =>
+            vcsRevision.changes.change.map(change => ({
+                name: change.fullName ?? change.author,
+                message: change.comment,
+            })),
+        ),
+        group: resultResponse.plan.projectName,
         id,
         isBroken: resultResponse.state === 'Failed',
-        isDisabled: !planResponse.enabled,
-        isRunning: planResponse.isBuilding,
-        isWaiting: planResponse.isActive,
-        name: planResponse.shortName,
-        tags: [],
+        isDisabled: !resultResponse.plan.enabled,
+        isRunning: resultResponse.plan.isBuilding,
+        isWaiting: resultResponse.plan.isActive,
+        name: resultResponse.plan.shortName,
         webUrl: new URL(`browse/${resultResponse.key}`, settings.url).href,
     };
     if (!(resultResponse.state in { Successful: 1, Failed: 1 })) {
@@ -87,3 +122,10 @@ const parseBuild = (id, settings, planResponse, resultResponse) => {
     }
     return state;
 };
+
+const createPipeline = (plan: any): CIPipeline => ({
+    id: plan.key,
+    name: plan.shortName,
+    group: plan.projectName,
+    isDisabled: !plan.enabled,
+});

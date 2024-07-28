@@ -1,0 +1,108 @@
+{
+  "expand": "changes,metadata,plan,vcsRevisions,artifacts,comments,labels,jiraIssues,variables,stages",
+  "link": { "href": "https://ci.openmrs.org/rest/api/latest/result/ATLAS-ATL-117", "rel": "self" },
+  "plan": {
+    "expand": "actions,stages,branches",
+    "projectKey": "ATLAS",
+    "projectName": "Atlas",
+    "project": {
+      "key": "ATLAS",
+      "name": "Atlas",
+      "description": "",
+      "link": { "href": "https://ci.openmrs.org/rest/api/latest/project/ATLAS", "rel": "self" }
+    },
+    "shortName": "Atlas Server",
+    "buildName": "Atlas Server",
+    "shortKey": "ATL",
+    "type": "chain",
+    "enabled": true,
+    "link": { "href": "https://ci.openmrs.org/rest/api/latest/plan/ATLAS-ATL", "rel": "self" },
+    "isFavourite": false,
+    "isActive": false,
+    "isBuilding": false,
+    "averageBuildTimeInSeconds": 89.0,
+    "actions": { "size": 1, "start-index": 0, "max-result": 1 },
+    "stages": { "size": 1, "start-index": 0, "max-result": 1 },
+    "branches": { "size": 0, "start-index": 0, "max-result": 0 },
+    "key": "ATLAS-ATL",
+    "name": "Atlas - Atlas Server",
+    "planKey": { "key": "ATLAS-ATL" }
+  },
+  "planName": "Atlas Server",
+  "projectName": "Atlas",
+  "buildResultKey": "ATLAS-ATL-117",
+  "lifeCycleState": "Finished",
+  "id": 220627767,
+  "buildStartedTime": "2022-03-02T00:14:34.000Z",
+  "prettyBuildStartedTime": "Wed, 2 Mar, 12:14 AM",
+  "buildCompletedTime": "2022-03-02T00:16:19.000Z",
+  "buildCompletedDate": "2022-03-02T00:16:19.000Z",
+  "prettyBuildCompletedTime": "Wed, 2 Mar, 12:16 AM",
+  "buildDurationInSeconds": 104,
+  "buildDuration": 104552,
+  "buildDurationDescription": "1 minute",
+  "buildRelativeTime": "2 years ago",
+  "vcsRevisionKey": "e03194e233a88ecab9923e6d7da8ac67a0af5ab9",
+  "vcsRevisions": {
+    "size": 1,
+    "expand": "vcsRevision",
+    "vcsRevision": [
+      {
+        "expand": "changes",
+        "repositoryId": 117866497,
+        "repositoryName": "atlas",
+        "vcsRevisionKey": "e03194e233a88ecab9923e6d7da8ac67a0af5ab9",
+        "changes": {
+          "size": 1,
+          "expand": "change",
+          "change": [
+            {
+              "expand": "files",
+              "author": "Burke Mamlin <burke@openmrs.org>",
+              "comment": "Update node and libraries",
+              "changesetId": "e03194e233a88ecab9923e6d7da8ac67a0af5ab9",
+              "date": "2022-03-02T00:12:03.000Z",
+              "files": { "size": 3, "start-index": 0, "max-result": 3 }
+            }
+          ],
+          "start-index": 0,
+          "max-result": 1
+        }
+      }
+    ],
+    "start-index": 0,
+    "max-result": 1
+  },
+  "buildTestSummary": "No tests found",
+  "successfulTestCount": 0,
+  "failedTestCount": 0,
+  "quarantinedTestCount": 0,
+  "skippedTestCount": 0,
+  "continuable": false,
+  "onceOff": false,
+  "restartable": false,
+  "notRunYet": false,
+  "finished": true,
+  "successful": true,
+  "buildReason": "Changes by <a href=\"https://ci.openmrs.org/authors/viewAuthor.action?authorName=Burke%20Mamlin%20%3Cburke%40openmrs.org%3E\">Burke Mamlin &lt;burke@openmrs.org&gt;</a>",
+  "reasonSummary": "Changes by <a href=\"https://ci.openmrs.org/authors/viewAuthor.action?authorName=Burke%20Mamlin%20%3Cburke%40openmrs.org%3E\">Burke Mamlin &lt;burke@openmrs.org&gt;</a>",
+  "specsResult": false,
+  "artifacts": { "size": 0, "start-index": 0, "max-result": 0 },
+  "comments": { "size": 0, "start-index": 0, "max-result": 0 },
+  "labels": { "size": 0, "start-index": 0, "max-result": 0 },
+  "jiraIssues": { "size": 0, "start-index": 0, "max-result": 0 },
+  "variables": { "size": 13, "start-index": 0, "max-result": 13 },
+  "stages": { "size": 1, "start-index": 0, "max-result": 1 },
+  "changes": { "size": 1, "start-index": 0, "max-result": 1 },
+  "metadata": { "size": 1, "start-index": 0, "max-result": 1 },
+  "key": "ATLAS-ATL-117",
+  "planResultKey": {
+    "key": "ATLAS-ATL-117",
+    "entityKey": { "key": "ATLAS-ATL" },
+    "resultNumber": 117
+  },
+  "state": "Successful",
+  "buildState": "Successful",
+  "number": 117,
+  "buildNumber": 117
+}
