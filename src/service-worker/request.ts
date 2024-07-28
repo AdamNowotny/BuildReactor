@@ -21,7 +21,7 @@ const get = async (options: RequestOptions) => {
     const fetchOptions = createRequest(options);
 
     const response = await fetch(url, fetchOptions);
-    logger.log('request.fetch', response);
+    logger.log('request.fetch', fetchOptions, response);
     if (!response.ok) {
         logger.log('Request failed', errors.create(response, options.url));
         throw errors.create(response, options.url);
@@ -54,6 +54,7 @@ function createRequest(options: RequestOptions) {
     }
     if (options.type) {
         fetchOptions.headers['Content-Type'] = 'application/' + options.type;
+        fetchOptions.headers['Accept'] = 'application/' + options.type;
     }
     return fetchOptions;
 }

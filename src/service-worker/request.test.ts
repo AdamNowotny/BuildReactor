@@ -166,6 +166,7 @@ it('should setup json type', async () => {
         expect.anything(),
         expect.objectContaining({
             headers: expect.objectContaining({
+                ['Accept']: 'application/json',
                 ['Content-Type']: 'application/json',
             }),
         }),
@@ -184,6 +185,7 @@ it('should setup xml type', async () => {
         expect.anything(),
         expect.objectContaining({
             headers: expect.objectContaining({
+                ['Accept']: 'application/xml',
                 ['Content-Type']: 'application/xml',
             }),
         }),
