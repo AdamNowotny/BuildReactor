@@ -1,0 +1,64 @@
+{
+  "buildType": [
+    {
+      "id": "OpenSourceProjects_AbsaOSS_ABRiS_AutoDeployScala211",
+      "name": "Auto Deploy [scala-2.11, spark-2.4]",
+      "paused": false,
+      "projectName": "Open-source projects / AbsaOSS / ABRiS"
+    },
+    {
+      "id": "OpenSourceProjects_AbsaOSS_ABRiS_AutoDeployScala212",
+      "name": "Auto Deploy [scala-2.12, spark-2.4]",
+      "paused": false,
+      "projectName": "Open-source projects / AbsaOSS / ABRiS"
+    },
+    {
+      "id": "OpenSourceProjects_AbsaOSS_ABRiS_AutoDeployScala212spark32",
+      "name": "Auto Deploy [scala-2.12, spark-3.2]",
+      "paused": false,
+      "projectName": "Open-source projects / AbsaOSS / ABRiS"
+    },
+    {
+      "id": "OpenSourceProjects_AbsaOSS_ABRiS_AutoDeployScala213spark32",
+      "name": "Auto Deploy [scala-2.13, spark-3.2]",
+      "paused": false,
+      "projectName": "Open-source projects / AbsaOSS / ABRiS"
+    },
+    {
+      "id": "OpenSourceProjects_AbsaOSS_ABRiS_Release",
+      "name": "Release",
+      "paused": false,
+      "projectName": "Open-source projects / AbsaOSS / ABRiS"
+    },
+    {
+      "id": "OpenSourceProjects_AbsaOSS_AbsaOssRootPom_AutoBuild",
+      "name": "Auto build",
+      "paused": false,
+      "projectName": "Open-source projects / AbsaOSS / ABSA OSS Root POM"
+    },
+    {
+      "id": "OpenSourceProjects_AbsaOSS_AbsaOssRootPom_AutoDeployToOssrh",
+      "name": "Auto Deploy to OSSRH",
+      "paused": false,
+      "projectName": "Open-source projects / AbsaOSS / ABSA OSS Root POM"
+    },
+    {
+      "id": "OpenSourceProjects_AbsaOSS_AbsaOssRootPom_AutoRelease",
+      "name": "Auto Release",
+      "paused": false,
+      "projectName": "Open-source projects / AbsaOSS / ABSA OSS Root POM"
+    },
+    {
+      "id": "OpenSourceProjects_AbsaOSS_AbsaShaded_Build",
+      "name": "Build",
+      "paused": false,
+      "projectName": "Open-source projects / AbsaOSS / Absa Shaded"
+    },
+    {
+      "id": "OpenSourceProjects_AbsaOSS_AbsaShaded_DeployToOssrh",
+      "name": "Deploy to OSSRH",
+      "paused": false,
+      "projectName": "Open-source projects / AbsaOSS / Absa Shaded"
+    }
+  ]
+}

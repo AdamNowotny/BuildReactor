@@ -1,0 +1,23 @@
+{
+  "build": [
+    {
+      "status": "SUCCESS",
+      "running": false,
+      "webUrl": "https://teamcity.jetbrains.com/buildConfiguration/Kotlin_KotlinRunCodeBuildPublishToNpm/4433050",
+      "buildType": {
+        "name": "Build & Publish to NPM",
+        "projectName": "Kotlin / Kotlin Playground"
+      },
+      "changes": {
+        "change": [
+          {
+            "username": "kb.chernenko",
+            "comment": "Merge pull request #198 from JetBrains/pre-130\n\nprepare 1.30"
+          },
+          { "username": "kb.chernenko", "comment": "chore: bump version to 1.30.0\n" },
+          { "username": "kb.chernenko", "comment": "fix(crosslink); hide crosslink for jslibs\n" }
+        ]
+      }
+    }
+  ]
+}

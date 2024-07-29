@@ -1,5 +1,5 @@
 import request from 'service-worker/request';
-import { CIBuildChange, CIServiceSettings } from 'services/service-types';
+import { CIServiceSettings } from 'services/service-types';
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import buildbot from './buildbot';
 import buildersJson from './builders.json';
