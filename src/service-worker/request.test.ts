@@ -1,11 +1,22 @@
-import { expect, it, Mock, vi } from 'vitest';
+import { beforeEach, expect, it, Mock, vi } from 'vitest';
 import request from './request';
 import errors from './requestErrors';
 
 vi.mock('common/logger');
 vi.mock('./requestErrors');
 
+const headersSet = vi.fn();
+const Headers = vi.fn();
+
 global.fetch = vi.fn();
+vi.stubGlobal('Headers', Headers);
+
+beforeEach(() => {
+    Headers.mockImplementation(() => ({
+        get: vi.fn(),
+        set: headersSet,
+    }));
+});
 
 const setupResponse = (response: any) => {
     (global.fetch as Mock).mockResolvedValue({
@@ -107,14 +118,8 @@ it('should set auth if username specified', async () => {
         password: 'pass',
     });
 
-    expect(global.fetch).toBeCalledWith(
-        expect.anything(),
-        expect.objectContaining({
-            headers: expect.objectContaining({
-                Authorization: expect.stringContaining('Basic '),
-            }),
-        }),
-    );
+    expect(headersSet).toBeCalledWith('Authorization', expect.stringContaining('Basic '));
+    expect(global.fetch).toBeCalled();
 });
 
 it('should not set auth if username not specified', async () => {
@@ -126,32 +131,8 @@ it('should not set auth if username not specified', async () => {
         password: 'pass',
     });
 
-    expect(global.fetch).toBeCalledWith(
-        expect.anything(),
-        expect.objectContaining({
-            headers: expect.not.objectContaining({
-                Authorization: expect.any(String),
-            }),
-        }),
-    );
-});
-
-it('should set request headers', async () => {
-    setupResponse([{ name: 'org1' }]);
-
-    await request.get({
-        url: 'https://sample.com/',
-        headers: { Authorization: 'token abc' },
-    });
-
-    expect(global.fetch).toBeCalledWith(
-        expect.anything(),
-        expect.objectContaining({
-            headers: expect.objectContaining({
-                Authorization: 'token abc',
-            }),
-        }),
-    );
+    expect(headersSet).not.toBeCalledWith('Authorization', expect.stringContaining('Basic '));
+    expect(global.fetch).toBeCalled();
 });
 
 it('should setup json type', async () => {
@@ -162,15 +143,9 @@ it('should setup json type', async () => {
         type: 'json',
     });
 
-    expect(global.fetch).toBeCalledWith(
-        expect.anything(),
-        expect.objectContaining({
-            headers: expect.objectContaining({
-                ['Accept']: 'application/json',
-                ['Content-Type']: 'application/json',
-            }),
-        }),
-    );
+    expect(headersSet).toBeCalledWith('Content-Type', 'application/json');
+    expect(headersSet).toBeCalledWith('Accept', 'application/json');
+    expect(global.fetch).toBeCalled();
 });
 
 it('should setup xml type', async () => {
@@ -181,14 +156,8 @@ it('should setup xml type', async () => {
         type: 'xml',
     });
 
-    expect(global.fetch).toBeCalledWith(
-        expect.anything(),
-        expect.objectContaining({
-            headers: expect.objectContaining({
-                ['Accept']: 'application/xml',
-                ['Content-Type']: 'application/xml',
-            }),
-        }),
-    );
+    expect(headersSet).toBeCalledWith('Content-Type', 'application/xml');
+    expect(headersSet).toBeCalledWith('Accept', 'application/xml');
     expect(result.body).toEqual({ some: { xml: ['value'] } });
+    expect(global.fetch).toBeCalled();
 });

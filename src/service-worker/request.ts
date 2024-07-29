@@ -42,21 +42,22 @@ export default {
 };
 
 function createRequest(options: RequestOptions) {
-    const fetchOptions = {
-        method: 'GET',
-        headers: options.headers ?? new Headers(),
-        signal: options.timeout ? AbortSignal.timeout(options.timeout) : undefined,
-    };
-
+    const headers = new Headers(options.headers);
     if (options.username) {
-        fetchOptions.headers['Authorization'] =
-            'Basic ' + btoa(`${options.username}:${options.password ?? ''}`);
+        headers.set(
+            'Authorization',
+            'Basic ' + btoa(`${options.username}:${options.password ?? ''}`),
+        );
     }
     if (options.type) {
-        fetchOptions.headers['Content-Type'] = 'application/' + options.type;
-        fetchOptions.headers['Accept'] = 'application/' + options.type;
+        headers.set('Content-Type', `application/${options.type}`);
+        headers.set('Accept', `application/${options.type}`);
     }
-    return fetchOptions;
+    return {
+        method: 'GET',
+        headers,
+        signal: options.timeout ? AbortSignal.timeout(options.timeout) : undefined,
+    };
 }
 
 async function parseXml(response: Response) {
