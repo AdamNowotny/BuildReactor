@@ -230,9 +230,9 @@ describe('getBuildStates', () => {
 });
 
 function setupResponse(filename: string) {
-    const xmlFile = fs.readFileSync(`src/services/cctray/fixtures/${filename}`, 'utf8');
+    const xmlFile = fs.readFileSync(`src/services/cctray/${filename}`, 'utf8');
     let projects;
-    parseString(xmlFile, (err, data) => {
+    parseString(xmlFile, (_err, data) => {
         projects = data;
     });
     return { body: projects };
