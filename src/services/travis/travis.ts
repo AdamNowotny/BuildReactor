@@ -34,14 +34,14 @@ const requestBuilds = (id: string, settings: CIServiceSettings) =>
     });
 
 const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> => {
-    logger.log('teamcity.getPipelines', settings);
+    logger.log('travis.getPipelines', settings);
     const response = await requestRepositories(settings);
     const repositories: any = response.body.repositories ?? [];
     return repositories.filter(repo => repo.active).map(parsePipeline);
 };
 
 const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
-    logger.log('teamcity.getBuildStates', settings);
+    logger.log('travis.getBuildStates', settings);
     return Promise.all(
         settings.projects.map(async projectId => {
             const key = createKey(projectId);
