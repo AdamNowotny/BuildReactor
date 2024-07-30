@@ -1,5 +1,6 @@
+import logger from 'common/logger';
 import Rx from 'rx';
-import requests from 'services/jenkins/jenkinsRequests';
+import request from 'service-worker/request';
 import type {
     CIBuild,
     CIBuildTag,
@@ -8,11 +9,100 @@ import type {
     CIServiceSettings,
 } from 'services/service-types';
 
-const WorkflowMultiBranchProject =
-    'org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject';
-const OrganizationFolder = 'jenkins.branch.OrganizationFolder';
-const Folder = 'com.cloudbees.hudson.plugins.folder.Folder';
+const requestJobs = (settings: CIServiceSettings) =>
+    request.get({
+        url: new URL(
+            '/api/json?tree=' +
+                'jobs[_class,name,url,buildable,fullName,' +
+                'jobs[_class,name,url,buildable,fullName,' +
+                'jobs[_class,name,url,buildable,fullName]' +
+                ']' +
+                ']',
+            settings.url,
+        ).href,
+        username: settings.username,
+        password: settings.password,
+    });
 
+const requestJobDetails = (id: string, settings: CIServiceSettings) => {
+    const jobPath = `/job/${id.split('/').join('/job/')}`;
+    const jobUrl = new URL(jobPath, settings.url).href;
+    return request.get({
+        url:
+            `${jobUrl}/api/json?tree=` +
+            'buildable,inQueue,' +
+            'lastBuild[url,building,number,' +
+            'changeSets[items[author[fullName],msg]],' +
+            'changeSet[items[author[fullName],msg]]' +
+            '],' +
+            'lastCompletedBuild[result]',
+        username: settings.username,
+        password: settings.password,
+    });
+};
+
+const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> => {
+    logger.log('jenkins.getPipelines', settings);
+    const response = await requestJobs(settings);
+    const jobs = response.body.jobs;
+    if (!jobs) throw new Error('No jobs found');
+    return jobs.flatMap(job => parsePipeline(job));
+};
+
+const parsePipeline = (job: any): CIPipeline[] => {
+    const WorkflowMultiBranchProject =
+        'org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject';
+
+    switch (job._class) {
+        case 'jenkins.branch.OrganizationFolder':
+            return parseOrganizationFolder();
+        case 'com.cloudbees.hudson.plugins.folder.Folder':
+        case WorkflowMultiBranchProject:
+            return parseFolder();
+        default:
+            return [
+                {
+                    id: job.fullName || job.name,
+                    name: job.name,
+                    isDisabled: !job.buildable,
+                },
+            ];
+    }
+
+    function parseFolder(): CIPipeline[] {
+        return job.jobs
+            .flatMap(parsePipeline)
+            .map(jobItem => ({ ...jobItem, group: job.name }));
+    }
+
+    function parseOrganizationFolder() {
+        const folderJob = job;
+        return job.jobs
+            .filter(job => job._class === WorkflowMultiBranchProject)
+            .flatMap(job =>
+                job.jobs.flatMap(parsePipeline).map(jobItem => ({
+                    ...jobItem,
+                    group: folderJob.name,
+                    name: `${job.name} / ${jobItem.name}`,
+                })),
+            );
+    }
+};
+
+const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
+    logger.log('jenkins.getBuildStates', settings);
+    return Promise.all(
+        settings.projects.map(async id => {
+            try {
+                const response = await requestJobDetails(id, settings);
+                const build = response.body;
+                return parseJobDetails(id, build);
+            } catch (ex: any) {
+                return createError(id, ex);
+            }
+        }),
+    );
+};
 export default {
     getInfo(): CIServiceDefinition {
         return {
@@ -21,7 +111,10 @@ export default {
             icon: 'services/jenkins/icon.png',
             logo: 'services/jenkins/logo.png',
             fields: [
-                { type: 'url', name: 'Jenkins server or view URL, e.g. http://ci.jenkins-ci.org/' },
+                {
+                    type: 'url',
+                    name: 'Jenkins server or view URL, e.g. http://ci.jenkins-ci.org/',
+                },
                 { type: 'username' },
                 { type: 'password' },
             ],
@@ -36,61 +129,18 @@ export default {
         };
     },
     getAll: (settings: CIServiceSettings): Rx.Observable<CIPipeline> =>
-        requests.jobs({ url: settings.url!, settings }).selectMany(job => {
-            switch (job._class) {
-                case OrganizationFolder:
-                    return Rx.Observable.fromArray(job.jobs)
-                        .where((project: any) => project._class === WorkflowMultiBranchProject)
-                        .selectMany((project: any) =>
-                            Rx.Observable.fromArray(project.jobs).select(
-                                (jobDetails: any) =>
-                                    ({
-                                        id: jobDetails.fullName,
-                                        name: `${project.name} / ${jobDetails.name}`,
-                                        group: job.name,
-                                        isDisabled: !jobDetails.buildable,
-                                    } as CIPipeline),
-                            ),
-                        );
-                case Folder:
-                    return Rx.Observable.fromArray(job.jobs).select(
-                        (jobDetails: any) =>
-                            ({
-                                id: jobDetails.fullName,
-                                name: `${jobDetails.name}`,
-                                group: job.name,
-                                isDisabled: !jobDetails.buildable,
-                            } as CIPipeline),
-                    );
-                case WorkflowMultiBranchProject:
-                    return Rx.Observable.fromArray(job.jobs).select(
-                        (jobDetails: any) =>
-                            ({
-                                id: jobDetails.fullName,
-                                name: `${jobDetails.name}`,
-                                group: job.name,
-                                isDisabled: !jobDetails.buildable,
-                            } as CIPipeline),
-                    );
-                default:
-                    // FreeStyleProject or jenkins 1.x project
-                    return Rx.Observable.return<CIPipeline>({
-                        id: job.fullName || job.name,
-                        name: job.name,
-                        isDisabled: !job.buildable,
-                    });
-            }
-        }),
-    getLatest: (settings: CIServiceSettings): Rx.Observable<CIBuild> =>
-        Rx.Observable.fromArray(settings.projects).selectMany(id =>
-            requests
-                .jobDetails({ id, settings })
-                .select(job => parseJob(id, job))
-                .catch(ex => Rx.Observable.return(createError(id, ex))),
+        Rx.Observable.fromPromise(getPipelines(settings)).flatMap(pipelines =>
+            Rx.Observable.fromArray(pipelines),
         ),
+    getLatest: (settings: CIServiceSettings): Rx.Observable<CIBuild> =>
+        Rx.Observable.fromPromise(getBuildStates(settings)).flatMap(buildStates =>
+            Rx.Observable.fromArray(buildStates),
+        ),
+    getPipelines,
+    getBuildStates,
 };
 
-const parseJob = (id: string, job: any): CIBuild => {
+const parseJobDetails = (id: string, job: any): CIBuild => {
     const [folder, project, branch] = id.split('/');
     const lastBuild = job.lastBuild || {};
     const lastCompletedBuild = job.lastCompletedBuild || {};
@@ -101,25 +151,22 @@ const parseJob = (id: string, job: any): CIBuild => {
         group = undefined;
     }
     const state: CIBuild = {
-        id,
-        name,
-        group,
-        webUrl: lastBuild.url,
-        isRunning: lastBuild.building,
-        isDisabled: !job.buildable,
-        isWaiting: job.inQueue,
-        tags: createTags(lastCompletedBuild),
         changes: createChanges(lastBuild),
+        group,
+        id,
+        isBroken: JOB_RESULTS.BROKEN.includes(lastCompletedBuild.result),
+        isDisabled: !job.buildable,
+        isRunning: lastBuild.building,
+        isWaiting: job.inQueue,
+        name,
+        tags: createTags(lastCompletedBuild),
+        webUrl: lastBuild.url,
     };
-    if (JOB_RESULTS.BROKEN_KNOWN.includes(lastCompletedBuild.result)) {
-        state.isBroken = JOB_RESULTS.BROKEN.includes(lastCompletedBuild.result);
-    }
     return state;
 };
 
 const JOB_RESULTS = {
     SUPPORTED: ['SUCCESS', 'FAILURE', 'UNSTABLE', 'ABORTED', 'NOT_BUILT'],
-    BROKEN_KNOWN: ['SUCCESS', 'FAILURE', 'UNSTABLE'],
     BROKEN: ['FAILURE', 'UNSTABLE'],
 };
 
@@ -131,7 +178,10 @@ const createTags = lastCompletedBuild => {
     };
     const tags: CIBuildTag[] = [];
     if (resultName[lastCompletedBuild.result]) {
-        tags.push({ name: resultName[lastCompletedBuild.result], type: 'warning' });
+        tags.push({
+            name: resultName[lastCompletedBuild.result],
+            type: 'warning',
+        });
     }
     if (!JOB_RESULTS.SUPPORTED.includes(lastCompletedBuild.result)) {
         tags.push({
@@ -143,18 +193,22 @@ const createTags = lastCompletedBuild => {
 };
 
 const createChanges = lastBuild => {
-    const changeSets = lastBuild.changeSet ? [lastBuild.changeSet] : lastBuild.changeSets || [];
-    return [].concat(...changeSets.map(changeSet => changeSet.items)).map((change: any) => ({
-        name: change.author.fullName,
-        message: change.msg,
-    }));
+    const changeSets = lastBuild.changeSet
+        ? [lastBuild.changeSet]
+        : lastBuild.changeSets || [];
+    return []
+        .concat(...changeSets.map(changeSet => changeSet.items))
+        .map((change: any) => ({
+            name: change.author.fullName,
+            message: change.msg,
+        }));
 };
 
-const createError = (id, ex): CIBuild => {
+const createError = (id: string, ex): CIBuild => {
     const [folder, project, branch] = id.split('/');
     return {
         id,
-        name: branch ? `${project} (${branch})` : `${project}`,
+        name: branch ? `${project} (${branch})` : project,
         group: folder,
         error: { name: 'Error', message: ex.message },
     };

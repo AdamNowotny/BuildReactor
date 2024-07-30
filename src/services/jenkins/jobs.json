@@ -1,0 +1,90 @@
+{
+  "_class": "hudson.model.Hudson",
+  "jobs": [
+    {
+      "_class": "jenkins.branch.OrganizationFolder",
+      "fullName": "Core",
+      "name": "Core",
+      "url": "https://ci.jenkins.io/job/Core/",
+      "jobs": [
+        {
+          "_class": "org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject",
+          "fullName": "Core/acceptance-test-harness",
+          "name": "acceptance-test-harness",
+          "url": "https://ci.jenkins.io/job/Core/job/acceptance-test-harness/",
+          "jobs": [
+            {
+              "_class": "org.jenkinsci.plugins.workflow.job.WorkflowJob",
+              "fullName": "Core/acceptance-test-harness/PR-157",
+              "name": "PR-157",
+              "url": "https://ci.jenkins.io/job/Core/job/acceptance-test-harness/job/PR-157/",
+              "buildable": false,
+              "inQueue": false
+            },
+            {
+              "_class": "org.jenkinsci.plugins.workflow.job.WorkflowJob",
+              "fullName": "Core/acceptance-test-harness/PR-238",
+              "name": "PR-238",
+              "url": "https://ci.jenkins.io/job/Core/job/acceptance-test-harness/job/PR-238/",
+              "buildable": true,
+              "inQueue": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_class": "com.cloudbees.hudson.plugins.folder.Folder",
+      "fullName": "Infrastructure",
+      "name": "Infrastructure",
+      "url": "https://ci.jenkins.io/job/Infrastructure/",
+      "jobs": [
+        {
+          "_class": "org.jenkinsci.plugins.workflow.job.WorkflowJob",
+          "fullName": "Infrastructure/patron",
+          "name": "patron",
+          "url": "https://ci.jenkins.io/job/Infrastructure/job/patron/",
+          "buildable": true,
+          "inQueue": false
+        }
+      ]
+    },
+    {
+      "_class": "hudson.model.FreeStyleProject",
+      "fullName": "freestyle-project",
+      "name": "freestyle-project",
+      "url": "https://jenkins.sample/jenkins/job/freestyle-project/",
+      "buildable": true,
+      "inQueue": false
+    },
+    {
+      "_class": "org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject",
+      "fullName": "job23",
+      "name": "job23",
+      "url": "https://jenkins.sample/job/job23/",
+      "jobs": [
+        {
+          "_class": "org.jenkinsci.plugins.workflow.job.WorkflowJob",
+          "fullName": "job23/master",
+          "name": "master",
+          "url": "https://jenkins.sample/job/job23/job/master/",
+          "buildable": true
+        },
+        {
+          "_class": "org.jenkinsci.plugins.workflow.job.WorkflowJob",
+          "fullName": "job23/myFeatureBranch",
+          "name": "myFeatureBranch",
+          "url": "https://jenkins.sample/job/job23/job/myFeatureBranch/",
+          "buildable": true
+        },
+        {
+          "_class": "org.jenkinsci.plugins.workflow.job.WorkflowJob",
+          "fullName": "job23/myOtherFeatureBranch",
+          "name": "myOtherFeatureBranch",
+          "url": "https://jenkins.sample/job/job23/job/myOtherFeatureBranch/",
+          "buildable": false
+        }
+      ]
+    }
+  ]
+}
