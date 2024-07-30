@@ -1,4 +1,6 @@
+import logger from 'common/logger';
 import Rx from 'rx';
+import request from 'service-worker/request';
 import type {
     CIBuild,
     CIBuildChange,
@@ -7,7 +9,57 @@ import type {
     CIServiceDefinition,
     CIServiceSettings,
 } from 'services/service-types';
-import requests from 'services/travis/travisRequests';
+
+const requestRepositories = (settings: CIServiceSettings) =>
+    request.get({
+        url: new URL(`/repos`, settings.apiUrl).href,
+        headers: {
+            'Travis-API-Version': '3',
+            Authorization: `token ${settings.token}`,
+        },
+    });
+
+const requestBuilds = (id: string, settings: CIServiceSettings) =>
+    request.get({
+        url: new URL(`/repo/${encodeURIComponent(id)}/builds`, settings.apiUrl).href,
+        query: {
+            limit: 1,
+            include: 'build.commit',
+            'build.event_type': 'push',
+        },
+        headers: {
+            'Travis-API-Version': '3',
+            Authorization: `token ${settings.token}`,
+        },
+    });
+
+const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> => {
+    logger.log('teamcity.getPipelines', settings);
+    const response = await requestRepositories(settings);
+    const repositories: any = response.body.repositories ?? [];
+    return repositories.filter(repo => repo.active).map(parsePipeline);
+};
+
+const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
+    logger.log('teamcity.getBuildStates', settings);
+    return Promise.all(
+        settings.projects.map(async projectId => {
+            const key = createKey(projectId);
+            try {
+                const response = await requestBuilds(key.id, settings);
+                const [build] = response.body.builds;
+                return parseBuild(key, settings, build);
+            } catch (ex: any) {
+                return {
+                    id: key.id,
+                    name: key.repo,
+                    group: key.org,
+                    error: { name: 'Error', message: ex.message },
+                };
+            }
+        }),
+    );
+};
 
 export default {
     getInfo: (): CIServiceDefinition => ({
@@ -43,52 +95,39 @@ export default {
         },
     }),
     getAll: (settings: CIServiceSettings): Rx.Observable<CIPipeline> =>
-        requests
-            .repositories(settings)
-            .where((repo: any) => repo.active)
-            .select(
-                (repo: any) =>
-                    ({
-                        id: repo.slug,
-                        name: repo.name,
-                        group: repo.slug.split('/')[0],
-                        isDisabled: false,
-                    } as CIPipeline)
-            ),
+        Rx.Observable.fromPromise(getPipelines(settings)).flatMap(pipelines =>
+            Rx.Observable.fromArray(pipelines),
+        ),
     getLatest: (settings: CIServiceSettings): Rx.Observable<CIBuild> =>
-        Rx.Observable.fromArray(settings.projects)
-            .select(createKey)
-            .selectMany(key =>
-                requests
-                    .builds(key.id, settings)
-                    .select(
-                        (build: any) =>
-                            ({
-                                id: key.id,
-                                name: key.repo,
-                                group: key.org,
-                                webUrl: new URL(`${key.id}/builds/${build.id}`, settings.webUrl)
-                                    .href,
-                                isBroken: BUILD_STATES.BROKEN_KNOWN.includes(build.state)
-                                    ? BUILD_STATES.BROKEN.includes(build.state)
-                                    : BUILD_STATES.BROKEN.includes(build.previous_state),
-                                isRunning: build.state === 'started',
-                                isWaiting: build.state === 'created',
-                                isDisabled: false,
-                                tags: createTags(build),
-                                changes: createChanges(build),
-                            } as CIBuild)
-                    )
-                    .catch(ex =>
-                        Rx.Observable.return<CIBuild>({
-                            id: key.id,
-                            name: key.repo,
-                            group: key.org,
-                            error: { name: 'Error', message: ex.message },
-                        })
-                    )
-            ),
+        Rx.Observable.fromPromise(getBuildStates(settings)).flatMap(buildStates =>
+            Rx.Observable.fromArray(buildStates),
+        ),
+    getPipelines,
+    getBuildStates,
 };
+
+const parsePipeline = (repo: any) =>
+    ({
+        id: repo.slug,
+        name: repo.name,
+        group: repo.slug.split('/')[0],
+        isDisabled: false,
+    } as CIPipeline);
+
+const parseBuild = (key: any, settings: CIServiceSettings, build: any) =>
+    ({
+        id: key.id,
+        name: key.repo,
+        group: key.org,
+        webUrl: new URL(`${key.id}/builds/${build.id}`, settings.webUrl).href,
+        isBroken: BUILD_STATES.BROKEN_KNOWN.includes(build.state)
+            ? BUILD_STATES.BROKEN.includes(build.state)
+            : BUILD_STATES.BROKEN.includes(build.previous_state),
+        isRunning: build.state === 'started',
+        isWaiting: build.state === 'created',
+        tags: createTags(build),
+        changes: createChanges(build),
+    } as CIBuild);
 
 const BUILD_STATES = {
     SUPPORTED: ['created', 'started', 'passed', 'failed', 'errored', 'canceled'],
@@ -129,7 +168,7 @@ const createTags = (build): CIBuildTag[] => {
 };
 
 const createChanges = (build): CIBuildChange[] => {
-    if (!(build.commit?.author)) {
+    if (!build.commit?.author) {
         return [];
     }
     return [

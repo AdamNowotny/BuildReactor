@@ -1,0 +1,13 @@
+{
+  "builds": [
+    {
+      "id": 12345,
+      "state": "passed",
+      "commit": {
+        "author": {
+          "name": "author name"
+        }
+      }
+    }
+  ]
+}

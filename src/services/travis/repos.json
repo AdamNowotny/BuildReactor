@@ -1,0 +1,210 @@
+{
+  "@warnings": [
+    {
+      "@type": "warning",
+      "message": "current_build will soon be deprecated. Please use repository.last_started_build instead",
+      "warning_type": "deprecated_parameter",
+      "parameter": "current_build"
+    }
+  ],
+  "@type": "repositories",
+  "@href": "/repos?active=true&sort_by=current_build%3Adesc&offset=0&limit=25&include=build.branch%2Cbuild.commit%2Cbuild.created_by%2Cbuild.request%2Crepository.current_build%2Crepository.default_branch%2Crepository.email_subscribed%2Cowner.github_id%2Cowner.installation",
+  "@representation": "standard",
+  "@pagination": {
+    "limit": 25,
+    "offset": 0,
+    "count": 3,
+    "is_first": true,
+    "is_last": true,
+    "next": null,
+    "prev": null,
+    "first": {
+      "@href": "/repos?active=true&sort_by=current_build%3Adesc&offset=0&limit=25&include=build.branch%2Cbuild.commit%2Cbuild.created_by%2Cbuild.request%2Crepository.current_build%2Crepository.default_branch%2Crepository.email_subscribed%2Cowner.github_id%2Cowner.installation",
+      "offset": 0,
+      "limit": 25
+    },
+    "last": {
+      "@href": "/repos?active=true&sort_by=current_build%3Adesc&offset=0&limit=25&include=build.branch%2Cbuild.commit%2Cbuild.created_by%2Cbuild.request%2Crepository.current_build%2Crepository.default_branch%2Crepository.email_subscribed%2Cowner.github_id%2Cowner.installation",
+      "offset": 0,
+      "limit": 25
+    }
+  },
+  "repositories": [
+    {
+      "@type": "repository",
+      "@href": "/repo/27503479",
+      "@representation": "standard",
+      "@permissions": {
+        "read": true,
+        "admin": true,
+        "settings_delete": true,
+        "settings_create": true,
+        "activate": true,
+        "deactivate": true,
+        "migrate": false,
+        "star": true,
+        "unstar": true,
+        "create_cron": true,
+        "create_env_var": true,
+        "create_key_pair": true,
+        "delete_key_pair": true,
+        "create_request": true,
+        "check_scan_results": true,
+        "settings_update": true,
+        "settings_read": true,
+        "build_restart": true,
+        "build_create": true,
+        "build_cancel": true,
+        "build_debug": true,
+        "log_view": true,
+        "log_delete": true,
+        "cache_delete": true,
+        "cache_view": true
+      },
+      "id": 27503479,
+      "name": "BuildReactor",
+      "slug": "AdamNowotny/BuildReactor",
+      "description": "Developer notifications and dashboard (Google Chrome extension)",
+      "github_id": 3035598,
+      "vcs_id": "3035598",
+      "vcs_type": "GithubRepository",
+      "github_language": null,
+      "active": true,
+      "private": false,
+      "owner": {
+        "@type": "user",
+        "@href": "/user/283928",
+        "@representation": "minimal",
+        "id": 283928,
+        "login": "AdamNowotny",
+        "name": "Adam Nowotny",
+        "vcs_type": "GithubUser",
+        "ro_mode": false,
+        "github_id": 1185293,
+        "installation": {
+          "@type": "installation",
+          "@href": "/installation/53307905",
+          "@representation": "standard",
+          "id": 677499,
+          "github_id": 53307905,
+          "owner": {
+            "@href": "/user/283928"
+          }
+        }
+      },
+      "owner_name": "AdamNowotny",
+      "vcs_name": "BuildReactor",
+      "default_branch": {
+        "@type": "branch",
+        "@href": "/repo/27503479/branch/master",
+        "@representation": "standard",
+        "name": "master",
+        "repository": {
+          "@href": "/repo/27503479"
+        },
+        "default_branch": true,
+        "exists_on_github": true,
+        "last_build": null
+      },
+      "starred": false,
+      "managed_by_installation": true,
+      "active_on_org": false,
+      "migration_status": null,
+      "history_migration_status": null,
+      "shared": false,
+      "config_validation": true,
+      "server_type": "git",
+      "scan_failed_at": null,
+      "current_build": null,
+      "email_subscribed": true
+    },
+    {
+      "@type": "repository",
+      "@href": "/repo/27503480",
+      "@representation": "standard",
+      "@permissions": {
+        "read": true,
+        "admin": true,
+        "settings_delete": true,
+        "settings_create": true,
+        "activate": true,
+        "deactivate": true,
+        "migrate": false,
+        "star": true,
+        "unstar": true,
+        "create_cron": true,
+        "create_env_var": true,
+        "create_key_pair": true,
+        "delete_key_pair": true,
+        "create_request": true,
+        "check_scan_results": true,
+        "settings_update": true,
+        "settings_read": true,
+        "build_restart": true,
+        "build_create": true,
+        "build_cancel": true,
+        "build_debug": true,
+        "log_view": true,
+        "log_delete": true,
+        "cache_delete": true,
+        "cache_view": true
+      },
+      "id": 27503480,
+      "name": "toxicity-charts",
+      "slug": "AdamNowotny/toxicity-charts",
+      "description": "Code metrics visualization for .NET code (client-side HTML 5 app)",
+      "github_id": 4716219,
+      "vcs_id": "4716219",
+      "vcs_type": "GithubRepository",
+      "github_language": null,
+      "active": true,
+      "private": false,
+      "owner": {
+        "@type": "user",
+        "@href": "/user/283928",
+        "@representation": "minimal",
+        "id": 283928,
+        "login": "AdamNowotny",
+        "name": "Adam Nowotny",
+        "vcs_type": "GithubUser",
+        "ro_mode": false,
+        "github_id": 1185293,
+        "installation": {
+          "@type": "installation",
+          "@href": "/installation/53307905",
+          "@representation": "standard",
+          "id": 677499,
+          "github_id": 53307905,
+          "owner": {
+            "@href": "/user/283928"
+          }
+        }
+      },
+      "owner_name": "AdamNowotny",
+      "vcs_name": "toxicity-charts",
+      "default_branch": {
+        "@type": "branch",
+        "@href": "/repo/27503480/branch/master",
+        "@representation": "standard",
+        "name": "master",
+        "repository": {
+          "@href": "/repo/27503480"
+        },
+        "default_branch": true,
+        "exists_on_github": true,
+        "last_build": null
+      },
+      "starred": false,
+      "managed_by_installation": true,
+      "active_on_org": false,
+      "migration_status": null,
+      "history_migration_status": null,
+      "shared": false,
+      "config_validation": true,
+      "server_type": "git",
+      "scan_failed_at": null,
+      "current_build": null,
+      "email_subscribed": true
+    }
+  ]
+}

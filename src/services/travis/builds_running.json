@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "id": 12345,
+      "state": "started",
+      "previous_state": "failed",
+      "commit": {
+        "author": {
+          "name": "author name"
+        }
+      }
+    }
+  ]
+}
