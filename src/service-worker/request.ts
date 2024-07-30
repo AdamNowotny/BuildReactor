@@ -13,7 +13,12 @@ interface RequestOptions {
     timeout?: number;
 }
 
-const get = async (options: RequestOptions) => {
+interface RequestResponse {
+    body: any;
+    headers: Headers;
+}
+
+const get = async (options: RequestOptions): Promise<RequestResponse> => {
     const url: URL = new URL(options.url);
     Object.entries(options.query ?? {}).forEach(([key, value]) => {
         url.searchParams.append(key, value as string);
@@ -27,7 +32,8 @@ const get = async (options: RequestOptions) => {
         throw errors.create(response, options.url);
     }
     try {
-        const data = options.type === 'xml' ? await parseXml(response) : await response.json();
+        const data =
+            options.type === 'xml' ? await parseXml(response) : await response.json();
         return {
             body: data,
             headers: response.headers,

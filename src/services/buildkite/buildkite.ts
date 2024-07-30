@@ -1,5 +1,6 @@
+import logger from 'common/logger';
 import Rx from 'rx';
-import requests from 'services/buildkite/buildkiteRequests';
+import request from 'service-worker/request';
 import type {
     CIBuild,
     CIBuildTag,
@@ -7,6 +8,96 @@ import type {
     CIServiceDefinition,
     CIServiceSettings,
 } from 'services/service-types';
+
+const requestOrganizations = (settings: CIServiceSettings) =>
+    request.get({
+        url: 'https://api.buildkite.com/v2/organizations',
+        query: { access_token: settings.token ?? '' },
+    });
+
+const requestPipelines = (url, settings: CIServiceSettings) =>
+    request.get({
+        url,
+        query: { access_token: settings.token ?? '', per_page: 100 },
+    });
+
+const requestLatestBuild = (org, pipeline, settings) =>
+    request.get({
+        url: `https://api.buildkite.com/v2/organizations/${org}/pipelines/${pipeline}/builds`,
+        query: {
+            access_token: settings.token,
+            per_page: 1,
+            branch: settings.branch || 'main',
+        },
+    });
+
+const requestLatestFinishedBuild = (org, pipeline, settings) =>
+    request.get({
+        url: `https://api.buildkite.com/v2/organizations/${org}/pipelines/${pipeline}/builds`,
+        query: {
+            access_token: settings.token,
+            per_page: 1,
+            branch: settings.branch || 'main',
+            'state[]': ['failed', 'passed'],
+        },
+    });
+
+const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> => {
+    logger.log('buildkite.getPipelines', settings);
+    const response = await requestOrganizations(settings);
+    const orgs = response.body;
+    const pipelineRequests = orgs.map(async org => {
+        const pipelinesResponse = await requestPipelines(org.pipelines_url, settings);
+        return pipelinesResponse.body.map(pipeline => parsePipeline(org, pipeline));
+    });
+    const pipelines = (await Promise.all(pipelineRequests)).flat();
+    if (!pipelines.length) throw new Error('No pipelines found');
+    return pipelines;
+};
+
+const parsePipeline = (org: any, pipeline: any): CIPipeline => ({
+    id: `${org.slug}/${pipeline.slug}`,
+    name: pipeline.name,
+    group: org.name,
+});
+
+const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
+    logger.log('buildkite.getBuildStates', settings);
+    return Promise.all(
+        settings.projects.map(async id => {
+            const key = createKey(id);
+            try {
+                const response = await requestLatestBuild(
+                    key.org,
+                    key.pipeline,
+                    settings,
+                );
+                const [build] = response.body;
+                let finishedBuild;
+                if (
+                    ['running', 'scheduled', 'canceled', 'canceling'].includes(
+                        build.state,
+                    )
+                ) {
+                    finishedBuild = await requestLatestFinishedBuild(
+                        key.org,
+                        key.pipeline,
+                        settings,
+                    );
+                    finishedBuild = finishedBuild.body[0];
+                }
+                return parseBuild(build, key, finishedBuild);
+            } catch (ex: any) {
+                return {
+                    id: key.id,
+                    name: key.pipeline,
+                    group: key.org,
+                    error: { name: 'Error', message: ex.message },
+                };
+            }
+        }),
+    );
+};
 
 export default {
     getInfo: (): CIServiceDefinition => ({
@@ -30,47 +121,15 @@ export default {
         },
     }),
     getAll: (settings: CIServiceSettings): Rx.Observable<CIPipeline> =>
-        requests.organizations(settings).selectMany((org: any) =>
-            requests.pipelines(org.pipelines_url, settings).select(
-                (pipeline: any) =>
-                    ({
-                        id: `${org.slug}/${pipeline.slug}`,
-                        name: pipeline.name,
-                        group: org.name,
-                        isDisabled: false,
-                    } as CIPipeline)
-            )
+        Rx.Observable.fromPromise(getPipelines(settings)).flatMap(pipelines =>
+            Rx.Observable.fromArray(pipelines),
         ),
     getLatest: (settings: CIServiceSettings): Rx.Observable<CIBuild> =>
-        Rx.Observable.fromArray(settings.projects)
-            .select(project => createKey(project))
-            .selectMany(key =>
-                requests
-                    .latestBuild(key.org, key.pipeline, settings)
-                    .selectMany((latestBuild: any) => {
-                        if (
-                            ['running', 'scheduled', 'canceled', 'canceling'].includes(
-                                latestBuild.state
-                            )
-                        ) {
-                            return requests
-                                .latestFinishedBuild(key.org, key.pipeline, settings)
-                                .select(finishedBuild =>
-                                    parseBuild(latestBuild, key, finishedBuild)
-                                );
-                        } else {
-                            return Rx.Observable.return(parseBuild(latestBuild, key, undefined));
-                        }
-                    })
-                    .catch(ex =>
-                        Rx.Observable.return<CIBuild>({
-                            id: key.id,
-                            name: key.pipeline,
-                            group: key.org,
-                            error: { name: 'Error', message: ex.message },
-                        })
-                    )
-            ),
+        Rx.Observable.fromPromise(getBuildStates(settings)).flatMap(buildStates =>
+            Rx.Observable.fromArray(buildStates),
+        ),
+    getPipelines,
+    getBuildStates,
 };
 
 const createKey = stringId => {
@@ -87,15 +146,6 @@ const parseBuild = (latestBuild, key, finishedBuild): CIBuild => {
     const pipeline = key.pipeline;
     const primaryBuild = finishedBuild || latestBuild;
     return {
-        id: `${org}/${pipeline}`,
-        name: pipeline,
-        group: org,
-        webUrl: latestBuild.web_url,
-        isBroken: primaryBuild.state === 'failed',
-        isRunning: latestBuild.state === 'running',
-        isWaiting: latestBuild.state === 'scheduled',
-        isDisabled: false,
-        tags: createTags(latestBuild),
         changes: latestBuild.creator
             ? [
                   {
@@ -104,6 +154,14 @@ const parseBuild = (latestBuild, key, finishedBuild): CIBuild => {
                   },
               ]
             : [],
+        group: org,
+        id: `${org}/${pipeline}`,
+        isBroken: primaryBuild.state === 'failed',
+        isRunning: latestBuild.state === 'running',
+        isWaiting: latestBuild.state === 'scheduled',
+        name: pipeline,
+        tags: createTags(latestBuild),
+        webUrl: latestBuild.web_url,
     };
 };
 

@@ -1,0 +1,9 @@
+[
+  {
+    "web_url": "https://buildkite.com/org/pipeline1/builds/15",
+    "pipeline": { "name": "pipeline1" },
+    "state": "passed",
+    "message": "message",
+    "creator": { "name": "creator name" }
+  }
+]
