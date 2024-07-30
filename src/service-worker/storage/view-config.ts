@@ -23,16 +23,16 @@ const defaultConfiguration: ConfigStorageItem = {
     fullWidthGroups: true,
     singleGroupRows: false,
     showCommits: true,
-    showCommitsWhenGreen: false,
+    showCommitsWhenGreen: true,
     theme: 'dark',
     colorBlindMode: true,
     notifications: {
         enabled: true,
         buildBroken: true,
         buildFixed: true,
-        buildStarted: false,
-        buildSuccessful: false,
-        buildStillFailing: false,
+        buildStarted: true,
+        buildSuccessful: true,
+        buildStillFailing: true,
     },
 };
 
