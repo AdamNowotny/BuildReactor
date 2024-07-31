@@ -6,55 +6,88 @@ import jenkins from 'services/jenkins/jenkins';
 import teamcity from 'services/teamcity/teamcity';
 import travis from 'services/travis/travis';
 
-import type { CIPipelineList, CIService, CIServiceSettings } from './service-types';
+import type {
+    CIBuild,
+    CIPipelineList,
+    CIService,
+    CIServiceSettings,
+} from './service-types';
 import logger from 'common/logger';
 import github from './github/github';
 
-const services: Record<string, CIService> = {};
+const serviceMap = new Map<string, CIService>();
 
-const init = () => {
-    register(bamboo);
-    register(buildbot);
-    register(buildkite);
-    register(cctray);
-    register(github);
-    register(jenkins);
-    register(teamcity);
-    register(travis);
+const init = (
+    services: CIService[] = [
+        bamboo,
+        buildbot,
+        buildkite,
+        cctray,
+        github,
+        jenkins,
+        teamcity,
+        travis,
+    ],
+) => {
+    services.forEach(service => {
+        register(service);
+    });
 };
 
 const register = function (service: CIService) {
     const serviceDefinition = service.getInfo();
-    services[serviceDefinition.baseUrl] = service;
+    serviceMap.set(serviceDefinition.baseUrl, service);
 };
 
 const getAllDefinitions = function () {
-    const serviceDefinitions = Object.keys(services).map(getDefinition);
+    const serviceDefinitions = [...serviceMap.values()].map(service => service.getInfo());
     logger.log('service-repository.getAllDefinitions', serviceDefinitions);
     return serviceDefinitions;
 };
 
-const getDefinition = function (baseUrl: string) {
-    return services[baseUrl].getInfo();
-};
-
-const getPipelinesFor = function (settings: CIServiceSettings): Rx.Observable<CIPipelineList> {
-    const pipelines = services[settings['baseUrl']].getAll(settings);
-    logger.log('service-repository.getPipelinesFor', pipelines);
-    return pipelines.toArray().select(items => ({
-        items: items.sort((a, b) => a.name.localeCompare(b.name)),
+const getPipelines = async (settings: CIServiceSettings): Promise<CIPipelineList> => {
+    logger.log('service-repository.getPipelines', settings);
+    const service = getService(settings.baseUrl);
+    const pipelines = await service.getPipelines(settings);
+    return {
+        items: pipelines.sort((a, b) => a.name.localeCompare(b.name)),
         selected: settings.projects,
-    }));
+    };
 };
 
 const getService = function (baseUrl) {
-    return services[baseUrl];
+    const service = serviceMap.get(baseUrl);
+    if (!service) {
+        throw new Error(`No service found for ${baseUrl}`);
+    }
+    return service;
+};
+
+const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
+    const service = getService(settings.baseUrl);
+    try {
+        const builds = await service.getBuildStates(settings);
+        return builds.sort((a, b) => a.name.localeCompare(b.name));
+    } catch (ex: any) {
+        return settings.projects.map(id => createErrorState(id, ex));
+    }
+};
+
+const createErrorState = (id: string, ex: any): CIBuild => {
+    return {
+        id,
+        name: id,
+        error: {
+            name: ex.name,
+            message: 'Service update failed',
+            description: ex.message,
+        },
+    };
 };
 
 export default {
     init,
-    getService,
     getAllDefinitions,
-    getDefinition,
-    getPipelinesFor,
+    getBuildStates,
+    getPipelines,
 };

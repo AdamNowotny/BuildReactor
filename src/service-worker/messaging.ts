@@ -11,23 +11,20 @@ function availableServices(sendResponse: any) {
     sendResponse(response);
 }
 
-const availableProjects = (sendResponse, settings: CIServiceSettings) => {
-    serviceRepository.getPipelinesFor(settings).subscribe(
-        projects => {
-            logger.log('messaging.availableProjects', projects);
-            sendResponse({ projects });
-        },
-        error => {
-            logger.error('messaging.availableProjects', error);
-            sendResponse({
-                error: {
-                    name: error.name,
-                    message: error.message,
-                    stack: error.stack,
-                },
-            });
-        },
-    );
+const availableProjects = async (sendResponse, settings: CIServiceSettings) => {
+    try {
+        const pipelines = await serviceRepository.getPipelines(settings);
+        logger.log('messaging.availableProjects', pipelines);
+        sendResponse({ projects: pipelines });
+    } catch (ex: any) {
+        sendResponse({
+            error: {
+                name: ex.name,
+                message: ex.message,
+                stack: ex.stack,
+            },
+        });
+    }
 };
 
 const handleMessage = (request, sender, sendResponse) => {
@@ -37,7 +34,7 @@ const handleMessage = (request, sender, sendResponse) => {
             availableServices(sendResponse);
             break;
         case 'availableProjects':
-            availableProjects(sendResponse, request.serviceSettings);
+            void availableProjects(sendResponse, request.serviceSettings);
             return true;
         case 'setViews':
             void viewConfigStorage.set(request.views);

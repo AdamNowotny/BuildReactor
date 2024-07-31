@@ -70,8 +70,6 @@ export interface CIPipelineList {
 
 export interface CIService {
     getInfo: () => CIServiceDefinition;
-    getAll: (settings: CIServiceSettings) => Rx.Observable<CIPipeline>;
-    getLatest: (settings: CIServiceSettings) => Rx.Observable<CIBuild>;
-    getPipelines?: (settings: CIServiceSettings) => Promise<CIPipeline[]>;
-    getBuildStates?: (settings: CIServiceSettings) => Promise<CIBuild[]>;
+    getPipelines: (settings: CIServiceSettings) => Promise<CIPipeline[]>;
+    getBuildStates: (settings: CIServiceSettings) => Promise<CIBuild[]>;
 }

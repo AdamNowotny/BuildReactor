@@ -1,9 +1,9 @@
 import logger from 'common/logger';
 import serviceConfig from 'service-worker/storage/service-config';
 import stateStorage from 'service-worker/storage/service-state';
-import serviceRepository from './service-repository';
-import type { CIBuild, CIServiceSettings } from './service-types';
 import { StorageChangeEvent } from 'service-worker/storage/storage';
+import serviceRepository from './service-repository';
+import type { CIServiceSettings } from './service-types';
 
 const ALARM_NAME = 'update';
 
@@ -42,7 +42,7 @@ const updateAll = async (allConfigs: CIServiceSettings[]) => {
         allConfigs
             .filter(config => !config.disabled)
             .map(async config => {
-                const serviceState = await updateService(config);
+                const serviceState = await serviceRepository.getBuildStates(config);
                 await stateStorage.updateService(config.name, serviceState);
                 return serviceState;
             }),
@@ -52,36 +52,7 @@ const updateAll = async (allConfigs: CIServiceSettings[]) => {
     logger.groupEnd('service-monitor.updateAll');
 };
 
-const updateService = async (settings: CIServiceSettings) => {
-    logger.log('service-monitor.updateService', settings.name, settings);
-    const service = serviceRepository.getService(settings.baseUrl);
-    return service
-        .getLatest(settings)
-        .toArray()
-        .select(items => items.sort((a, b) => a.name.localeCompare(b.name)))
-        .catch(ex => createFailedState(settings, ex))
-        .toPromise();
-};
-
 export default {
     init,
     start,
-};
-
-const createFailedState = (settings: CIServiceSettings, ex: Error): Rx.Observable<CIBuild[]> => {
-    logger.warn(`service-monitor.updateService.failed`, settings.name, ex);
-    return Rx.Observable.fromArray(settings.projects)
-        .select(
-            project =>
-                ({
-                    id: project,
-                    name: project,
-                    error: {
-                        name: ex.name,
-                        message: 'Service update failed',
-                        description: ex.message,
-                    },
-                } as CIBuild),
-        )
-        .toArray();
 };
