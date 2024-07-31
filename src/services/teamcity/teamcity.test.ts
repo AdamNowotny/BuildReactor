@@ -55,12 +55,12 @@ describe('getPipelines', () => {
     });
 });
 
-describe('getBuildStates', () => {
+describe('getLatestBuilds', () => {
     it('passes parameters to request', async () => {
         (request.get as Mock).mockResolvedValue({ body: buildJson });
         settings.projects = ['Kotlin_KotlinRunCodeBuildPublishToNpm'];
 
-        await teamcity.getBuildStates(settings);
+        await teamcity.getLatestBuilds(settings);
 
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -70,7 +70,8 @@ describe('getBuildStates', () => {
                 type: 'json',
                 query: {
                     fields: 'build(running,status,webUrl,buildType(name,projectName),changes(change(comment,username,user(username))))',
-                    locator: 'buildType:Kotlin_KotlinRunCodeBuildPublishToNpm,running:any,count:1',
+                    locator:
+                        'buildType:Kotlin_KotlinRunCodeBuildPublishToNpm,running:any,count:1',
                 },
             }),
         );
@@ -81,12 +82,13 @@ describe('getBuildStates', () => {
         settings.projects = ['PROJECT1'];
         settings.branch = 'refs/heads/master';
 
-        await teamcity.getBuildStates(settings);
+        await teamcity.getLatestBuilds(settings);
 
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({
                 query: expect.objectContaining({
-                    locator: 'buildType:PROJECT1,running:any,count:1,branch:(refs/heads/master)',
+                    locator:
+                        'buildType:PROJECT1,running:any,count:1,branch:(refs/heads/master)',
                 }),
             }),
         );
@@ -97,11 +99,14 @@ describe('getBuildStates', () => {
         settings.projects = ['PROJECT1'];
         settings.branch = 'refs/heads/master';
 
-        const response = await teamcity.getBuildStates(settings);
+        const response = await teamcity.getLatestBuilds(settings);
 
         expect(response).toEqual([
             expect.objectContaining({
-                error: { message: 'No build for branch [refs/heads/master]', name: 'Error' },
+                error: {
+                    message: 'No build for branch [refs/heads/master]',
+                    name: 'Error',
+                },
                 id: 'PROJECT1',
                 name: 'PROJECT1',
             }),
@@ -112,7 +117,7 @@ describe('getBuildStates', () => {
         (request.get as Mock).mockResolvedValue({ body: buildJson });
         settings.projects = ['Kotlin_KotlinRunCodeBuildPublishToNpm'];
 
-        const response = await teamcity.getBuildStates(settings);
+        const response = await teamcity.getLatestBuilds(settings);
 
         expect(response).toEqual([
             {

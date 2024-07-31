@@ -60,8 +60,8 @@ const parsePipeline = (org: any, pipeline: any): CIPipeline => ({
     group: org.name,
 });
 
-const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
-    logger.log('buildkite.getBuildStates', settings);
+const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
+    logger.log('buildkite.getLatestBuilds', settings);
     return Promise.all(
         settings.projects.map(async id => {
             const key = createKey(id);
@@ -99,7 +99,7 @@ const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> =
 };
 
 export default {
-    getInfo: (): CIServiceDefinition => ({
+    getDefinition: (): CIServiceDefinition => ({
         typeName: 'BuildKite',
         baseUrl: 'buildkite',
         icon: 'services/buildkite/icon.png',
@@ -120,7 +120,7 @@ export default {
         },
     }),
     getPipelines,
-    getBuildStates,
+    getLatestBuilds,
 };
 
 const createKey = stringId => {

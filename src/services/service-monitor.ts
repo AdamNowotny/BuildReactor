@@ -37,7 +37,7 @@ const updateAll = async (allConfigs: CIServiceSettings[]) => {
         allConfigs
             .filter(config => !config.disabled)
             .map(async config => {
-                const serviceState = await serviceRepository.getBuildStates(config);
+                const serviceState = await serviceRepository.getLatestBuilds(config);
                 await stateStorage.updateService(config.name, serviceState);
                 return serviceState;
             }),

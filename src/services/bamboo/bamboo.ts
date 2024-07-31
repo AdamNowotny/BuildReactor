@@ -47,8 +47,8 @@ const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> 
     return projects.flatMap(project => project.plans.plan.map(createPipeline));
 };
 
-const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
-    logger.log('bamboo.getBuildStates', settings);
+const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
+    logger.log('bamboo.getLatestBuilds', settings);
     return Promise.all(
         settings.projects.flatMap(async key => {
             try {
@@ -66,7 +66,7 @@ const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> =
 };
 
 export default {
-    getInfo: (): CIServiceDefinition => ({
+    getDefinition: (): CIServiceDefinition => ({
         typeName: 'Atlassian Bamboo',
         baseUrl: 'bamboo',
         icon: 'services/bamboo/icon.png',
@@ -88,7 +88,7 @@ export default {
         },
     }),
     getPipelines,
-    getBuildStates,
+    getLatestBuilds,
 };
 
 const parseBuild = (id, settings, resultResponse) => {

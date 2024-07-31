@@ -69,7 +69,10 @@ export interface CIPipelineList {
 }
 
 export interface CIService {
-    getInfo: () => CIServiceDefinition;
+    // get service definition and default config
+    getDefinition: () => CIServiceDefinition;
+    // get list of all available pipelines
     getPipelines: (settings: CIServiceSettings) => Promise<CIPipeline[]>;
-    getBuildStates: (settings: CIServiceSettings) => Promise<CIBuild[]>;
+    // get latest build status for selected pipelines
+    getLatestBuilds: (settings: CIServiceSettings) => Promise<CIBuild[]>;
 }

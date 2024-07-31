@@ -39,8 +39,8 @@ const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> 
     return repositories.filter(repo => repo.active).map(parsePipeline);
 };
 
-const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
-    logger.log('travis.getBuildStates', settings);
+const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
+    logger.log('travis.getLatestBuilds', settings);
     return Promise.all(
         settings.projects.map(async projectId => {
             const key = createKey(projectId);
@@ -61,7 +61,7 @@ const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> =
 };
 
 export default {
-    getInfo: (): CIServiceDefinition => ({
+    getDefinition: (): CIServiceDefinition => ({
         typeName: 'Travis',
         baseUrl: 'travis',
         icon: 'services/travis/icon.png',
@@ -94,7 +94,7 @@ export default {
         },
     }),
     getPipelines,
-    getBuildStates,
+    getLatestBuilds,
 };
 
 const parsePipeline = (repo: any) =>

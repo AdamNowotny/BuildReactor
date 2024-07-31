@@ -84,13 +84,13 @@ describe('getPipelines', () => {
     });
 });
 
-describe('getBuildStates', () => {
+describe('getLatestBuilds', () => {
     it('passes parameters to request', async () => {
         (request.get as Mock).mockImplementation(() => {
             return { body: { Projects: { Project: [] } } };
         });
 
-        await cctray.getBuildStates(settings);
+        await cctray.getLatestBuilds(settings);
 
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -106,7 +106,7 @@ describe('getBuildStates', () => {
         (request.get as Mock).mockImplementation(() => setupResponse('ccnet.xml'));
         settings.projects = ['CruiseControl.NET'];
 
-        const response = await cctray.getBuildStates(settings);
+        const response = await cctray.getLatestBuilds(settings);
 
         expect(response).toContainEqual({
             changes: [],
@@ -131,7 +131,7 @@ describe('getBuildStates', () => {
             'Build-Server-Config',
         ];
 
-        const response = await cctray.getBuildStates(settings);
+        const response = await cctray.getLatestBuilds(settings);
 
         expect(response).toContainEqual(
             expect.objectContaining({
@@ -155,7 +155,12 @@ describe('getBuildStates', () => {
         expect(response).toContainEqual(
             expect.objectContaining({
                 id: 'Build-Server-Config',
-                tags: [{ name: 'Unknown', description: 'Status [unknown_state] not supported' }],
+                tags: [
+                    {
+                        name: 'Unknown',
+                        description: 'Status [unknown_state] not supported',
+                    },
+                ],
             }),
         );
     });
@@ -169,7 +174,7 @@ describe('getBuildStates', () => {
             'Project :: UnitTest :: UnitTest',
         ];
 
-        const response = await cctray.getBuildStates(settings);
+        const response = await cctray.getLatestBuilds(settings);
 
         expect(response).toContainEqual({
             changes: [],
@@ -201,7 +206,7 @@ describe('getBuildStates', () => {
         (request.get as Mock).mockImplementation(() => setupResponse('go.xml'));
         settings.projects = ['Project :: Build', 'Project :: UnitTest'];
 
-        const response = await cctray.getBuildStates(settings);
+        const response = await cctray.getLatestBuilds(settings);
 
         expect(response).toHaveLength(settings.projects.length);
     });
@@ -210,7 +215,7 @@ describe('getBuildStates', () => {
         (request.get as Mock).mockImplementation(() => setupResponse('go.xml'));
         settings.projects = ['Project :: UnitTest', 'Project :: UnitTest :: UnitTest'];
 
-        const response = await cctray.getBuildStates(settings);
+        const response = await cctray.getLatestBuilds(settings);
 
         expect(response).toContainEqual(
             expect.objectContaining({

@@ -67,14 +67,14 @@ describe('getPipelines', () => {
     });
 });
 
-describe('getBuildStates', () => {
+describe('getLatestBuilds', () => {
     it('passes parameters to request', async () => {
         (request.get as Mock).mockResolvedValue({
             body: { workflow_runs: [{ id: '108658767' }] },
         });
         settings.projects = ['108658767'];
 
-        await github.getBuildStates(settings);
+        await github.getLatestBuilds(settings);
 
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -94,7 +94,7 @@ describe('getBuildStates', () => {
         });
         settings.projects = ['108658767'];
 
-        const response = await github.getBuildStates(settings);
+        const response = await github.getLatestBuilds(settings);
 
         expect(response).toEqual([
             {
@@ -122,7 +122,7 @@ describe('getBuildStates', () => {
         settings.projects = ['108658767'];
         settings.branch = 'github-actions';
 
-        await github.getBuildStates(settings);
+        await github.getLatestBuilds(settings);
 
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({

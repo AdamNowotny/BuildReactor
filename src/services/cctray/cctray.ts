@@ -17,8 +17,8 @@ const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> 
         .map(categoriseFromName);
 };
 
-const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
-    logger.log('cctray.getBuildStates', settings);
+const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
+    logger.log('cctray.getLatestBuilds', settings);
     const response = await requestProjects(settings);
     const parsed = response.Project.map(project => parseBuildState(project))
         .filter(project => settings.projects.includes(project.id))
@@ -27,7 +27,7 @@ const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> =
 };
 
 export default {
-    getInfo: (): CIServiceDefinition => ({
+    getDefinition: (): CIServiceDefinition => ({
         typeName: 'CCTray XML',
         baseUrl: 'cctray',
         icon: 'services/cctray/icon.png',
@@ -51,7 +51,7 @@ export default {
         ],
     }),
     getPipelines,
-    getBuildStates,
+    getLatestBuilds,
 };
 
 const requestProjects = async (settings: CIServiceSettings) => {

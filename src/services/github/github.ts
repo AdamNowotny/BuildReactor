@@ -21,8 +21,8 @@ const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> 
     return pipelines;
 };
 
-const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
-    logger.log('github.getBuildStates', settings);
+const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
+    logger.log('github.getLatestBuilds', settings);
     return Promise.all(
         settings.projects.map(async project => {
             const [id] = project.split(' |');
@@ -34,7 +34,7 @@ const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> =
 };
 
 export default {
-    getInfo: (): CIServiceDefinition => ({
+    getDefinition: (): CIServiceDefinition => ({
         typeName: 'GitHub Actions',
         baseUrl: 'github',
         icon: 'services/github/icon.png',
@@ -59,7 +59,7 @@ export default {
         },
     }),
     getPipelines,
-    getBuildStates,
+    getLatestBuilds,
 };
 
 const getWorkflowRuns = async (settings: CIServiceSettings, id: string) => {

@@ -71,12 +71,12 @@ describe('getPipelines', () => {
     });
 });
 
-describe('getBuildStates', () => {
+describe('getLatestBuilds', () => {
     it('passes parameters to request', async () => {
         (request.get as Mock).mockResolvedValue({ body: buildsJson });
         settings.projects = ['org/repo'];
 
-        await travis.getBuildStates(settings);
+        await travis.getLatestBuilds(settings);
 
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -98,7 +98,7 @@ describe('getBuildStates', () => {
         settings.projects = ['org/repo1'];
         (request.get as Mock).mockResolvedValue({ body: buildsJson });
 
-        const response = await travis.getBuildStates(settings);
+        const response = await travis.getLatestBuilds(settings);
 
         expect(response).toEqual([
             {
@@ -124,7 +124,7 @@ describe('getBuildStates', () => {
         settings.projects = ['org/repo1'];
         (request.get as Mock).mockResolvedValue({ body: buildsFailedJson });
 
-        const response = await travis.getBuildStates(settings);
+        const response = await travis.getLatestBuilds(settings);
 
         expect(response).toEqual([
             expect.objectContaining({
@@ -137,7 +137,7 @@ describe('getBuildStates', () => {
         settings.projects = ['org/repo1'];
         (request.get as Mock).mockResolvedValue({ body: buildsRunningJson });
 
-        const response = await travis.getBuildStates(settings);
+        const response = await travis.getLatestBuilds(settings);
 
         expect(response).toEqual([
             expect.objectContaining({

@@ -40,8 +40,8 @@ const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> 
     return buildTypes.map(parseAvailableBuilds);
 };
 
-const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
-    logger.log('teamcity.getBuildStates', settings);
+const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
+    logger.log('teamcity.getLatestBuilds', settings);
     return Promise.all(
         settings.projects.map(async id => {
             try {
@@ -63,7 +63,7 @@ const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> =
 };
 
 export default {
-    getInfo: (): CIServiceDefinition => ({
+    getDefinition: (): CIServiceDefinition => ({
         typeName: 'TeamCity',
         baseUrl: 'teamcity',
         icon: 'services/teamcity/icon.png',
@@ -85,7 +85,7 @@ export default {
         },
     }),
     getPipelines,
-    getBuildStates,
+    getLatestBuilds,
 };
 
 const parseAvailableBuilds = (buildType: any): CIPipeline => ({

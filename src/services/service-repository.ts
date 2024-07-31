@@ -35,12 +35,14 @@ const init = (
 };
 
 const register = function (service: CIService) {
-    const serviceDefinition = service.getInfo();
+    const serviceDefinition = service.getDefinition();
     serviceMap.set(serviceDefinition.baseUrl, service);
 };
 
 const getAllDefinitions = function () {
-    const serviceDefinitions = [...serviceMap.values()].map(service => service.getInfo());
+    const serviceDefinitions = [...serviceMap.values()].map(service =>
+        service.getDefinition(),
+    );
     logger.log('service-repository.getAllDefinitions', serviceDefinitions);
     return serviceDefinitions;
 };
@@ -63,10 +65,10 @@ const getService = function (baseUrl) {
     return service;
 };
 
-const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
+const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
     const service = getService(settings.baseUrl);
     try {
-        const builds = await service.getBuildStates(settings);
+        const builds = await service.getLatestBuilds(settings);
         return builds.sort((a, b) => a.name.localeCompare(b.name));
     } catch (ex: any) {
         return settings.projects.map(id => createErrorState(id, ex));
@@ -88,6 +90,6 @@ const createErrorState = (id: string, ex: any): CIBuild => {
 export default {
     init,
     getAllDefinitions,
-    getBuildStates,
+    getLatestBuilds,
     getPipelines,
 };

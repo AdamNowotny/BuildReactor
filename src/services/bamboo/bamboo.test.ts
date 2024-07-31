@@ -81,12 +81,12 @@ describe('getPipelines', () => {
     });
 });
 
-describe('getBuildStates', () => {
+describe('getLatestBuilds', () => {
     it('passes parameters to request', async () => {
         (request.get as Mock).mockResolvedValueOnce({ body: resultJson });
         settings.projects = ['AD-BAOIS'];
 
-        await bamboo.getBuildStates(settings);
+        await bamboo.getLatestBuilds(settings);
 
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -104,7 +104,7 @@ describe('getBuildStates', () => {
         settings.projects = ['AD-BAOIS'];
         settings.token = undefined;
 
-        await bamboo.getBuildStates(settings);
+        await bamboo.getLatestBuilds(settings);
 
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -119,7 +119,7 @@ describe('getBuildStates', () => {
         (request.get as Mock).mockResolvedValueOnce({ body: resultJson });
         settings.projects = ['ATLAS-ATL'];
 
-        const response = await bamboo.getBuildStates(settings);
+        const response = await bamboo.getLatestBuilds(settings);
 
         expect(response).toEqual([
             {
@@ -147,7 +147,7 @@ describe('getBuildStates', () => {
         });
         settings.projects = ['ATLAS-ATL'];
 
-        const response = await bamboo.getBuildStates(settings);
+        const response = await bamboo.getLatestBuilds(settings);
 
         expect(response).toEqual(
             expect.arrayContaining([
@@ -166,7 +166,7 @@ describe('getBuildStates', () => {
         });
         settings.projects = ['ATLAS-ATL'];
 
-        const response = await bamboo.getBuildStates(settings);
+        const response = await bamboo.getLatestBuilds(settings);
 
         expect(response).toEqual(
             expect.arrayContaining([
@@ -184,7 +184,7 @@ describe('getBuildStates', () => {
         });
         settings.projects = ['ATLAS-ATL'];
 
-        const response = await bamboo.getBuildStates(settings);
+        const response = await bamboo.getLatestBuilds(settings);
 
         expect(response).toEqual(
             expect.arrayContaining([

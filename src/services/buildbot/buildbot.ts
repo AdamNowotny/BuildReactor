@@ -30,8 +30,8 @@ const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> 
     return pipelines;
 };
 
-const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
-    logger.log('buildbot.getBuildStates', settings);
+const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
+    logger.log('buildbot.getLatestBuilds', settings);
     return Promise.all(
         settings.projects.map(async id => {
             try {
@@ -50,7 +50,7 @@ const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> =
 };
 
 export default {
-    getInfo: () => ({
+    getDefinition: () => ({
         typeName: 'BuildBot',
         baseUrl: 'buildbot',
         icon: 'services/buildbot/icon.png',
@@ -70,7 +70,7 @@ export default {
         },
     }),
     getPipelines,
-    getBuildStates,
+    getLatestBuilds,
 };
 
 enum BuildResultCodes {

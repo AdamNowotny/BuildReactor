@@ -6,9 +6,9 @@ vi.mock('common/logger');
 
 let settings: CIServiceSettings;
 const mockService: CIService = {
-    getBuildStates: vi.fn(),
+    getLatestBuilds: vi.fn(),
     getPipelines: vi.fn(),
-    getInfo: () => ({
+    getDefinition: () => ({
         typeName: 'TYPENAME',
         fields: [],
         icon: 'ICON',
@@ -38,14 +38,14 @@ beforeEach(() => {
     };
     serviceRepository.init([mockService]);
     vi.mocked(mockService.getPipelines).mockResolvedValue(mockPipelines);
-    vi.mocked(mockService.getBuildStates).mockResolvedValue(mockBuilds);
+    vi.mocked(mockService.getLatestBuilds).mockResolvedValue(mockBuilds);
 });
 
 describe('getAllDefinitions', () => {
     it('returns service definitions', () => {
         const result = serviceRepository.getAllDefinitions();
 
-        expect(result).toEqual([mockService.getInfo()]);
+        expect(result).toEqual([mockService.getDefinition()]);
     });
 });
 
@@ -91,14 +91,14 @@ describe('getBuildStates', () => {
         const invalidSettings = { ...settings, baseUrl: 'unknown' };
 
         await expect(() =>
-            serviceRepository.getBuildStates(invalidSettings),
+            serviceRepository.getLatestBuilds(invalidSettings),
         ).rejects.toThrow('No service found for unknown');
     });
 
     it('returns service build states', async () => {
-        (mockService.getBuildStates as Mock).mockResolvedValue(mockBuilds);
+        (mockService.getLatestBuilds as Mock).mockResolvedValue(mockBuilds);
 
-        const state = await serviceRepository.getBuildStates(settings);
+        const state = await serviceRepository.getLatestBuilds(settings);
 
         expect(state).toBe(mockBuilds);
     });
@@ -108,9 +108,9 @@ describe('getBuildStates', () => {
             { id: 'ID2', name: 'state2' },
             { id: 'ID1', name: 'state1' },
         ];
-        vi.mocked(mockService.getBuildStates).mockResolvedValueOnce(unorderedBuilds);
+        vi.mocked(mockService.getLatestBuilds).mockResolvedValueOnce(unorderedBuilds);
 
-        const pipelines = await serviceRepository.getBuildStates(settings);
+        const pipelines = await serviceRepository.getLatestBuilds(settings);
 
         expect(pipelines).toEqual([
             { id: 'ID1', name: 'state1' },
@@ -120,11 +120,11 @@ describe('getBuildStates', () => {
 
     it('returns error states on exception', async () => {
         settings.projects = ['ID1'];
-        (mockService.getBuildStates as Mock).mockRejectedValueOnce(
+        (mockService.getLatestBuilds as Mock).mockRejectedValueOnce(
             new Error('error message'),
         );
 
-        const pipelines = await serviceRepository.getBuildStates(settings);
+        const pipelines = await serviceRepository.getLatestBuilds(settings);
 
         expect(pipelines).toEqual([
             {

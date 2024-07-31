@@ -58,12 +58,12 @@ describe('getPipelines', () => {
     });
 });
 
-describe('getBuildStates', () => {
+describe('getLatestBuilds', () => {
     it('passes parameters to request', async () => {
         (request.get as Mock).mockResolvedValue({ body: lastBuildJson });
         settings.projects = ['Apple-iOS-14-Simulator-Debug-Build'];
 
-        await buildbot.getBuildStates(settings);
+        await buildbot.getLatestBuilds(settings);
 
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -83,7 +83,7 @@ describe('getBuildStates', () => {
         (request.get as Mock).mockResolvedValue({ body: lastBuildJson });
         settings.projects = ['Apple-iOS-14-Simulator-Debug-Build'];
 
-        const response = await buildbot.getBuildStates(settings);
+        const response = await buildbot.getLatestBuilds(settings);
 
         expect(response).toEqual([
             {

@@ -74,12 +74,12 @@ describe('getPipelines', () => {
     });
 });
 
-describe('getBuildStates', () => {
+describe('getLatestBuilds', () => {
     it('passes parameters to request', async () => {
         (request.get as Mock).mockResolvedValueOnce({ body: latestBuildJson });
         settings.projects = ['org/repo'];
 
-        await buildkite.getBuildStates(settings);
+        await buildkite.getLatestBuilds(settings);
 
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -97,7 +97,7 @@ describe('getBuildStates', () => {
         settings.projects = ['org/repo1'];
         (request.get as Mock).mockResolvedValueOnce({ body: latestBuildJson });
 
-        const response = await buildkite.getBuildStates(settings);
+        const response = await buildkite.getLatestBuilds(settings);
 
         expect(response).toEqual([
             {
@@ -120,7 +120,7 @@ describe('getBuildStates', () => {
             body: [{ ...latestBuildJson[0], state: 'failed' }],
         });
 
-        const response = await buildkite.getBuildStates(settings);
+        const response = await buildkite.getLatestBuilds(settings);
 
         expect(response).toEqual([
             expect.objectContaining({
@@ -137,7 +137,7 @@ describe('getBuildStates', () => {
             })
             .mockResolvedValueOnce({ body: latestBuildJson });
 
-        const response = await buildkite.getBuildStates(settings);
+        const response = await buildkite.getLatestBuilds(settings);
 
         expect(response).toEqual([
             expect.objectContaining({
@@ -154,7 +154,7 @@ describe('getBuildStates', () => {
             })
             .mockResolvedValueOnce({ body: latestBuildJson });
 
-        const response = await buildkite.getBuildStates(settings);
+        const response = await buildkite.getLatestBuilds(settings);
 
         expect(response).toEqual([
             expect.objectContaining({
@@ -171,7 +171,7 @@ describe('getBuildStates', () => {
             })
             .mockResolvedValueOnce({ body: latestBuildJson });
 
-        const response = await buildkite.getBuildStates(settings);
+        const response = await buildkite.getLatestBuilds(settings);
 
         expect(response).toEqual([
             expect.objectContaining({
@@ -188,7 +188,7 @@ describe('getBuildStates', () => {
             })
             .mockResolvedValueOnce({ body: latestBuildJson });
 
-        const response = await buildkite.getBuildStates(settings);
+        const response = await buildkite.getLatestBuilds(settings);
 
         expect(response).toEqual([
             expect.objectContaining({
@@ -203,7 +203,7 @@ describe('getBuildStates', () => {
             body: [{ ...latestBuildJson[0], state: 'not_run' }],
         });
 
-        const response = await buildkite.getBuildStates(settings);
+        const response = await buildkite.getLatestBuilds(settings);
 
         expect(response).toEqual([
             expect.objectContaining({

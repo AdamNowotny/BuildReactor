@@ -88,8 +88,8 @@ const parsePipeline = (job: any): CIPipeline[] => {
     }
 };
 
-const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
-    logger.log('jenkins.getBuildStates', settings);
+const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
+    logger.log('jenkins.getLatestBuilds', settings);
     return Promise.all(
         settings.projects.map(async id => {
             try {
@@ -103,7 +103,7 @@ const getBuildStates = async (settings: CIServiceSettings): Promise<CIBuild[]> =
     );
 };
 export default {
-    getInfo(): CIServiceDefinition {
+    getDefinition(): CIServiceDefinition {
         return {
             typeName: 'Jenkins',
             baseUrl: 'jenkins',
@@ -128,7 +128,7 @@ export default {
         };
     },
     getPipelines,
-    getBuildStates,
+    getLatestBuilds,
 };
 
 const parseJobDetails = (id: string, job: any): CIBuild => {

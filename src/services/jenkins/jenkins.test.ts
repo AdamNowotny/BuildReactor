@@ -123,12 +123,12 @@ describe('getPipelines', () => {
     });
 });
 
-describe('getBuildStates', () => {
+describe('getLatestBuilds', () => {
     it('passes parameters to request', async () => {
         (request.get as Mock).mockResolvedValue({ body: jobDetailsJson });
         settings.projects = ['org/repo'];
 
-        await jenkins.getBuildStates(settings);
+        await jenkins.getLatestBuilds(settings);
 
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -143,7 +143,7 @@ describe('getBuildStates', () => {
         settings.projects = ['org/repo1'];
         (request.get as Mock).mockResolvedValue({ body: jobDetailsJson });
 
-        const response = await jenkins.getBuildStates(settings);
+        const response = await jenkins.getLatestBuilds(settings);
 
         expect(response).toEqual([
             {
