@@ -32,7 +32,7 @@ const enableService = async (serviceName: string) => {
     if (!config) {
         throw new Error(`Service ${serviceName} not found`);
     }
-    config.disabled = false;
+    config.isDisabled = false;
     await setItem(serviceName, config);
 };
 
@@ -42,7 +42,7 @@ const disableService = async (serviceName: string) => {
     if (!config) {
         throw new Error(`Service ${serviceName} not found`);
     }
-    config.disabled = true;
+    config.isDisabled = true;
     await setItem(serviceName, config);
 };
 

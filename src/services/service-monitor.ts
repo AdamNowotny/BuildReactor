@@ -24,7 +24,7 @@ const alarmHandler = async (alarm: chrome.alarms.Alarm) => {
 const configChangedHandler = async (value: StorageChangeEvent<CIServiceSettings[]>) => {
     logger.log('service-monitor.onChanged', value);
     const serviceNames = value.newValue
-        .filter(config => !config.disabled)
+        .filter(config => !config.isDisabled)
         .map(config => config.name);
     await stateStorage.reset(serviceNames);
     await updateAll(value.newValue);
@@ -35,7 +35,7 @@ const updateAll = async (allConfigs: CIServiceSettings[]) => {
     await chrome.alarms.clearAll();
     const updatedServices = await Promise.all(
         allConfigs
-            .filter(config => !config.disabled)
+            .filter(config => !config.isDisabled)
             .map(async config => {
                 const serviceState = await serviceRepository.getLatestBuilds(config);
                 await stateStorage.updateService(config.name, serviceState);

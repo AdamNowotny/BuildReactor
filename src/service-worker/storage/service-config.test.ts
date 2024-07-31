@@ -22,13 +22,13 @@ beforeEach(() => {
             baseUrl: 'test1',
             name: 'test1',
             projects: [],
-            disabled: false,
+            isDisabled: false,
         },
         {
             baseUrl: 'test2',
             name: 'test2',
             projects: [],
-            disabled: true,
+            isDisabled: true,
         },
     ];
     (Storage.prototype.get as Mock).mockImplementation(() => testConfigs);
@@ -59,8 +59,8 @@ describe('enableService', () => {
         await serviceConfig.enableService(testConfigs[DISABLED_SERVICE].name);
 
         expect(Storage.prototype.set).toBeCalledWith([
-            { ...testConfigs[0], disabled: false },
-            { ...testConfigs[1], disabled: false },
+            { ...testConfigs[0], isDisabled: false },
+            { ...testConfigs[1], isDisabled: false },
         ]);
     });
 });
@@ -78,8 +78,8 @@ describe('disableService', () => {
         await serviceConfig.disableService(testConfigs[ENABLED_SERVICE].name);
 
         expect(Storage.prototype.set).toBeCalledWith([
-            { ...testConfigs[0], disabled: true },
-            { ...testConfigs[1], disabled: true },
+            { ...testConfigs[0], isDisabled: true },
+            { ...testConfigs[1], isDisabled: true },
         ]);
     });
 });
@@ -109,7 +109,11 @@ describe('saveService', () => {
 
         await serviceConfig.saveService(newItem);
 
-        expect(Storage.prototype.set).toBeCalledWith([testConfigs[0], testConfigs[1], newItem]);
+        expect(Storage.prototype.set).toBeCalledWith([
+            testConfigs[0],
+            testConfigs[1],
+            newItem,
+        ]);
     });
 
     it('should save existing item', async () => {
@@ -117,7 +121,10 @@ describe('saveService', () => {
 
         await serviceConfig.saveService(item);
 
-        expect(Storage.prototype.set).toBeCalledWith([item, testConfigs[DISABLED_SERVICE]]);
+        expect(Storage.prototype.set).toBeCalledWith([
+            item,
+            testConfigs[DISABLED_SERVICE],
+        ]);
     });
 });
 
@@ -145,7 +152,10 @@ describe('setBuildOrder', () => {
     });
 
     it('should reorder builds', async () => {
-        await serviceConfig.setBuildOrder(testConfigs[ENABLED_SERVICE].name, ['build1', 'build2']);
+        await serviceConfig.setBuildOrder(testConfigs[ENABLED_SERVICE].name, [
+            'build1',
+            'build2',
+        ]);
 
         expect(Storage.prototype.set).toBeCalledWith([
             { ...testConfigs[ENABLED_SERVICE], projects: ['build1', 'build2'] },

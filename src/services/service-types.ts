@@ -9,7 +9,7 @@ export interface CIServiceSettings {
     username?: string;
     password?: string;
     projects: string[];
-    disabled?: boolean;
+    isDisabled?: boolean;
     repository?: string;
 }
 

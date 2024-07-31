@@ -9,7 +9,7 @@ export default Rx.Observable.return([
         username: '',
         password: '',
         projects: ['AdamNowotny/BuildReactor'],
-        disabled: false,
+        isDisabled: false,
     },
     {
         name: 'OpenMRS',
@@ -19,7 +19,7 @@ export default Rx.Observable.return([
         username: '',
         password: '',
         projects: ['FUNC-APPTEST', 'FUNC-BUILDPERF', 'FUNC-PERF', 'JU-CORE'],
-        disabled: true,
+        isDisabled: true,
     },
     {
         name: 'Jenkins',
@@ -35,7 +35,7 @@ export default Rx.Observable.return([
             'infra_plugins_svn_to_git',
             'infra_svnsync',
         ],
-        disabled: true,
+        isDisabled: true,
     },
     {
         name: 'T1',
@@ -45,7 +45,7 @@ export default Rx.Observable.return([
         username: '',
         password: '',
         projects: ['bt308'],
-        disabled: true,
+        isDisabled: true,
         branch: '',
     },
     {
@@ -56,7 +56,7 @@ export default Rx.Observable.return([
         username: '',
         password: '',
         projects: ['bt607'],
-        disabled: true,
+        isDisabled: true,
         branch: 'release',
     },
 ]);
