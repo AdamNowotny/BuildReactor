@@ -58,14 +58,6 @@ export default {
             token: '',
         },
     }),
-    getAll: (settings: CIServiceSettings): Rx.Observable<CIPipeline> =>
-        Rx.Observable.fromPromise(getPipelines(settings)).flatMap(pipelines =>
-            Rx.Observable.fromArray(pipelines),
-        ),
-    getLatest: (settings: CIServiceSettings): Rx.Observable<CIBuild> =>
-        Rx.Observable.fromPromise(getBuildStates(settings)).flatMap(buildStates =>
-            Rx.Observable.fromArray(buildStates),
-        ),
     getPipelines,
     getBuildStates,
 };

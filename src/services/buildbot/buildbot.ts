@@ -1,5 +1,4 @@
 import logger from 'common/logger';
-import Rx from 'rx';
 import request from 'service-worker/request';
 import type { CIBuild, CIPipeline, CIServiceSettings } from 'services/service-types';
 
@@ -70,14 +69,6 @@ export default {
             password: '',
         },
     }),
-    getAll: (settings: CIServiceSettings): Rx.Observable<CIPipeline> =>
-        Rx.Observable.fromPromise(getPipelines(settings)).flatMap(pipelines =>
-            Rx.Observable.fromArray(pipelines),
-        ),
-    getLatest: (settings: CIServiceSettings): Rx.Observable<CIBuild> =>
-        Rx.Observable.fromPromise(getBuildStates(settings)).flatMap(buildStates =>
-            Rx.Observable.fromArray(buildStates),
-        ),
     getPipelines,
     getBuildStates,
 };
