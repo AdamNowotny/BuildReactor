@@ -14,7 +14,7 @@ beforeEach(() => {
     settings = {
         name: 'mock',
         baseUrl: 'baseUrl',
-        projects: [],
+        pipelines: [],
         username: 'USERNAME',
         password: 'PASSWORD',
         url: 'https://example.com/',
@@ -58,7 +58,7 @@ describe('getPipelines', () => {
 describe('getLatestBuilds', () => {
     it('passes parameters to request', async () => {
         (request.get as Mock).mockResolvedValue({ body: buildJson });
-        settings.projects = ['Kotlin_KotlinRunCodeBuildPublishToNpm'];
+        settings.pipelines = ['Kotlin_KotlinRunCodeBuildPublishToNpm'];
 
         await teamcity.getLatestBuilds(settings);
 
@@ -79,7 +79,7 @@ describe('getLatestBuilds', () => {
 
     it('passes branch to request', async () => {
         (request.get as Mock).mockResolvedValue({ body: buildJson });
-        settings.projects = ['PROJECT1'];
+        settings.pipelines = ['PROJECT1'];
         settings.branch = 'refs/heads/master';
 
         await teamcity.getLatestBuilds(settings);
@@ -96,7 +96,7 @@ describe('getLatestBuilds', () => {
 
     it('fails when build not found', async () => {
         (request.get as Mock).mockResolvedValue({ body: { build: [] } });
-        settings.projects = ['PROJECT1'];
+        settings.pipelines = ['PROJECT1'];
         settings.branch = 'refs/heads/master';
 
         const response = await teamcity.getLatestBuilds(settings);
@@ -115,7 +115,7 @@ describe('getLatestBuilds', () => {
 
     it('parses builds', async () => {
         (request.get as Mock).mockResolvedValue({ body: buildJson });
-        settings.projects = ['Kotlin_KotlinRunCodeBuildPublishToNpm'];
+        settings.pipelines = ['Kotlin_KotlinRunCodeBuildPublishToNpm'];
 
         const response = await teamcity.getLatestBuilds(settings);
 

@@ -53,7 +53,7 @@ const getPipelines = async (settings: CIServiceSettings): Promise<CIPipelineList
     const pipelines = await service.getPipelines(settings);
     return {
         items: pipelines.sort((a, b) => a.name.localeCompare(b.name)),
-        selected: settings.projects,
+        selected: settings.pipelines,
     };
 };
 
@@ -71,7 +71,7 @@ const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> 
         const builds = await service.getLatestBuilds(settings);
         return builds.sort((a, b) => a.name.localeCompare(b.name));
     } catch (ex: any) {
-        return settings.projects.map(id => createErrorState(id, ex));
+        return settings.pipelines.map(id => createErrorState(id, ex));
     }
 };
 

@@ -43,7 +43,7 @@ const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> 
 const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
     logger.log('teamcity.getLatestBuilds', settings);
     return Promise.all(
-        settings.projects.map(async id => {
+        settings.pipelines.map(async id => {
             try {
                 const response = await requestBuild(id, settings);
                 const [build] = response.body.build;
@@ -77,7 +77,7 @@ export default {
         defaultConfig: {
             baseUrl: 'teamcity',
             name: '',
-            projects: [],
+            pipelines: [],
             url: '',
             username: '',
             password: '',

@@ -14,7 +14,7 @@ beforeEach(() => {
     settings = {
         name: 'mock',
         baseUrl: 'baseUrl',
-        projects: [],
+        pipelines: [],
         url: 'https://example.com/',
         username: 'USERNAME',
         password: 'PASSWORD',
@@ -126,7 +126,7 @@ describe('getPipelines', () => {
 describe('getLatestBuilds', () => {
     it('passes parameters to request', async () => {
         (request.get as Mock).mockResolvedValue({ body: jobDetailsJson });
-        settings.projects = ['org/repo'];
+        settings.pipelines = ['org/repo'];
 
         await jenkins.getLatestBuilds(settings);
 
@@ -140,7 +140,7 @@ describe('getLatestBuilds', () => {
     });
 
     it('parses build', async () => {
-        settings.projects = ['org/repo1'];
+        settings.pipelines = ['org/repo1'];
         (request.get as Mock).mockResolvedValue({ body: jobDetailsJson });
 
         const response = await jenkins.getLatestBuilds(settings);

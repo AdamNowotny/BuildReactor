@@ -33,7 +33,7 @@ const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> 
 const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
     logger.log('buildbot.getLatestBuilds', settings);
     return Promise.all(
-        settings.projects.map(async id => {
+        settings.pipelines.map(async id => {
             try {
                 const response = await requestLastBuild(id, settings);
                 const [build] = response.body.builds;
@@ -63,7 +63,7 @@ export default {
         defaultConfig: {
             baseUrl: 'buildbot',
             name: '',
-            projects: [],
+            pipelines: [],
             url: '',
             username: '',
             password: '',

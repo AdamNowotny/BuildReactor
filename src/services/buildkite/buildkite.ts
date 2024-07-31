@@ -63,7 +63,7 @@ const parsePipeline = (org: any, pipeline: any): CIPipeline => ({
 const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
     logger.log('buildkite.getLatestBuilds', settings);
     return Promise.all(
-        settings.projects.map(async id => {
+        settings.pipelines.map(async id => {
             const key = createKey(id);
             try {
                 const response = await requestLatestBuild(
@@ -114,7 +114,7 @@ export default {
         defaultConfig: {
             baseUrl: 'buildkite',
             name: '',
-            projects: [],
+            pipelines: [],
             token: '',
             branch: 'main',
         },

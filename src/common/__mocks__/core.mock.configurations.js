@@ -8,7 +8,7 @@ export default Rx.Observable.return([
         icon: 'cctray/icon.png',
         username: '',
         password: '',
-        projects: ['AdamNowotny/BuildReactor'],
+        pipelines: ['AdamNowotny/BuildReactor'],
         isDisabled: false,
     },
     {
@@ -18,7 +18,7 @@ export default Rx.Observable.return([
         icon: 'bamboo/icon.png',
         username: '',
         password: '',
-        projects: ['FUNC-APPTEST', 'FUNC-BUILDPERF', 'FUNC-PERF', 'JU-CORE'],
+        pipelines: ['FUNC-APPTEST', 'FUNC-BUILDPERF', 'FUNC-PERF', 'JU-CORE'],
         isDisabled: true,
     },
     {
@@ -28,7 +28,7 @@ export default Rx.Observable.return([
         icon: 'jenkins/icon.png',
         username: '',
         password: '',
-        projects: [
+        pipelines: [
             'config-provider-model',
             'infra_main_svn_to_git',
             'infra_plugin_changes_report',
@@ -44,7 +44,7 @@ export default Rx.Observable.return([
         icon: 'teamcity/icon.png',
         username: '',
         password: '',
-        projects: ['bt308'],
+        pipelines: ['bt308'],
         isDisabled: true,
         branch: '',
     },
@@ -55,7 +55,7 @@ export default Rx.Observable.return([
         icon: 'teamcity/icon.png',
         username: '',
         password: '',
-        projects: ['bt607'],
+        pipelines: ['bt607'],
         isDisabled: true,
         branch: 'release',
     },

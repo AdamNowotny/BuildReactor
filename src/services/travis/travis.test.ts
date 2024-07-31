@@ -16,7 +16,7 @@ beforeEach(() => {
     settings = {
         name: 'mock',
         baseUrl: 'baseUrl',
-        projects: [],
+        pipelines: [],
         token: 'TOKEN',
         apiUrl: 'https://api.travis-ci.org/',
         webUrl: 'https://travis-ci.org/',
@@ -74,7 +74,7 @@ describe('getPipelines', () => {
 describe('getLatestBuilds', () => {
     it('passes parameters to request', async () => {
         (request.get as Mock).mockResolvedValue({ body: buildsJson });
-        settings.projects = ['org/repo'];
+        settings.pipelines = ['org/repo'];
 
         await travis.getLatestBuilds(settings);
 
@@ -95,7 +95,7 @@ describe('getLatestBuilds', () => {
     });
 
     it('parses build', async () => {
-        settings.projects = ['org/repo1'];
+        settings.pipelines = ['org/repo1'];
         (request.get as Mock).mockResolvedValue({ body: buildsJson });
 
         const response = await travis.getLatestBuilds(settings);
@@ -121,7 +121,7 @@ describe('getLatestBuilds', () => {
     });
 
     it('parses failed build', async () => {
-        settings.projects = ['org/repo1'];
+        settings.pipelines = ['org/repo1'];
         (request.get as Mock).mockResolvedValue({ body: buildsFailedJson });
 
         const response = await travis.getLatestBuilds(settings);
@@ -134,7 +134,7 @@ describe('getLatestBuilds', () => {
     });
 
     it('parses running build', async () => {
-        settings.projects = ['org/repo1'];
+        settings.pipelines = ['org/repo1'];
         (request.get as Mock).mockResolvedValue({ body: buildsRunningJson });
 
         const response = await travis.getLatestBuilds(settings);

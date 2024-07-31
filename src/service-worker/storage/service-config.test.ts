@@ -21,13 +21,13 @@ beforeEach(() => {
         {
             baseUrl: 'test1',
             name: 'test1',
-            projects: [],
+            pipelines: [],
             isDisabled: false,
         },
         {
             baseUrl: 'test2',
             name: 'test2',
-            projects: [],
+            pipelines: [],
             isDisabled: true,
         },
     ];
@@ -158,7 +158,7 @@ describe('setBuildOrder', () => {
         ]);
 
         expect(Storage.prototype.set).toBeCalledWith([
-            { ...testConfigs[ENABLED_SERVICE], projects: ['build1', 'build2'] },
+            { ...testConfigs[ENABLED_SERVICE], pipelines: ['build1', 'build2'] },
             testConfigs[DISABLED_SERVICE],
         ]);
     });

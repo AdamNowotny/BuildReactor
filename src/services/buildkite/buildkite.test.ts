@@ -15,7 +15,7 @@ beforeEach(() => {
     settings = {
         name: 'mock',
         baseUrl: 'baseUrl',
-        projects: [],
+        pipelines: [],
         url: 'https://example.com/',
         token: 'TOKEN',
         branch: 'main',
@@ -77,7 +77,7 @@ describe('getPipelines', () => {
 describe('getLatestBuilds', () => {
     it('passes parameters to request', async () => {
         (request.get as Mock).mockResolvedValueOnce({ body: latestBuildJson });
-        settings.projects = ['org/repo'];
+        settings.pipelines = ['org/repo'];
 
         await buildkite.getLatestBuilds(settings);
 
@@ -94,7 +94,7 @@ describe('getLatestBuilds', () => {
     });
 
     it('parses build', async () => {
-        settings.projects = ['org/repo1'];
+        settings.pipelines = ['org/repo1'];
         (request.get as Mock).mockResolvedValueOnce({ body: latestBuildJson });
 
         const response = await buildkite.getLatestBuilds(settings);
@@ -115,7 +115,7 @@ describe('getLatestBuilds', () => {
     });
 
     it('parses broken build', async () => {
-        settings.projects = ['org/repo1'];
+        settings.pipelines = ['org/repo1'];
         (request.get as Mock).mockResolvedValueOnce({
             body: [{ ...latestBuildJson[0], state: 'failed' }],
         });
@@ -130,7 +130,7 @@ describe('getLatestBuilds', () => {
     });
 
     it('parses running build', async () => {
-        settings.projects = ['org/repo1'];
+        settings.pipelines = ['org/repo1'];
         (request.get as Mock)
             .mockResolvedValueOnce({
                 body: [{ ...latestBuildJson[0], state: 'running' }],
@@ -147,7 +147,7 @@ describe('getLatestBuilds', () => {
     });
 
     it('parses waiting build', async () => {
-        settings.projects = ['org/repo1'];
+        settings.pipelines = ['org/repo1'];
         (request.get as Mock)
             .mockResolvedValueOnce({
                 body: [{ ...latestBuildJson[0], state: 'scheduled' }],
@@ -164,7 +164,7 @@ describe('getLatestBuilds', () => {
     });
 
     it('parses canceled build', async () => {
-        settings.projects = ['org/repo1'];
+        settings.pipelines = ['org/repo1'];
         (request.get as Mock)
             .mockResolvedValueOnce({
                 body: [{ ...latestBuildJson[0], state: 'canceled' }],
@@ -181,7 +181,7 @@ describe('getLatestBuilds', () => {
     });
 
     it('parses canceling build', async () => {
-        settings.projects = ['org/repo1'];
+        settings.pipelines = ['org/repo1'];
         (request.get as Mock)
             .mockResolvedValueOnce({
                 body: [{ ...latestBuildJson[0], state: 'canceling' }],
@@ -198,7 +198,7 @@ describe('getLatestBuilds', () => {
     });
 
     it('parses not_run build', async () => {
-        settings.projects = ['org/repo1'];
+        settings.pipelines = ['org/repo1'];
         (request.get as Mock).mockResolvedValueOnce({
             body: [{ ...latestBuildJson[0], state: 'not_run' }],
         });

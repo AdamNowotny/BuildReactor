@@ -14,7 +14,7 @@ beforeEach(() => {
     settings = {
         name: 'mock',
         baseUrl: 'baseUrl',
-        projects: [],
+        pipelines: [],
         token: 'mockToken',
         url: 'https://example.com/',
     };
@@ -84,7 +84,7 @@ describe('getPipelines', () => {
 describe('getLatestBuilds', () => {
     it('passes parameters to request', async () => {
         (request.get as Mock).mockResolvedValueOnce({ body: resultJson });
-        settings.projects = ['AD-BAOIS'];
+        settings.pipelines = ['AD-BAOIS'];
 
         await bamboo.getLatestBuilds(settings);
 
@@ -101,7 +101,7 @@ describe('getLatestBuilds', () => {
 
     it('passes os_authType to request when guest', async () => {
         (request.get as Mock).mockResolvedValueOnce({ body: resultJson });
-        settings.projects = ['AD-BAOIS'];
+        settings.pipelines = ['AD-BAOIS'];
         settings.token = undefined;
 
         await bamboo.getLatestBuilds(settings);
@@ -117,7 +117,7 @@ describe('getLatestBuilds', () => {
 
     it('parses builds', async () => {
         (request.get as Mock).mockResolvedValueOnce({ body: resultJson });
-        settings.projects = ['ATLAS-ATL'];
+        settings.pipelines = ['ATLAS-ATL'];
 
         const response = await bamboo.getLatestBuilds(settings);
 
@@ -145,7 +145,7 @@ describe('getLatestBuilds', () => {
         (request.get as Mock).mockResolvedValueOnce({
             body: { ...resultJson, state: 'Failed' },
         });
-        settings.projects = ['ATLAS-ATL'];
+        settings.pipelines = ['ATLAS-ATL'];
 
         const response = await bamboo.getLatestBuilds(settings);
 
@@ -164,7 +164,7 @@ describe('getLatestBuilds', () => {
         (request.get as Mock).mockResolvedValueOnce({
             body: { ...resultJson, ...{ plan: { isBuilding: true } } },
         });
-        settings.projects = ['ATLAS-ATL'];
+        settings.pipelines = ['ATLAS-ATL'];
 
         const response = await bamboo.getLatestBuilds(settings);
 
@@ -182,7 +182,7 @@ describe('getLatestBuilds', () => {
         (request.get as Mock).mockResolvedValueOnce({
             body: { ...resultJson, ...{ plan: { isActive: true } } },
         });
-        settings.projects = ['ATLAS-ATL'];
+        settings.pipelines = ['ATLAS-ATL'];
 
         const response = await bamboo.getLatestBuilds(settings);
 

@@ -15,7 +15,7 @@ const availableProjects = async (sendResponse, settings: CIServiceSettings) => {
     try {
         const pipelines = await serviceRepository.getPipelines(settings);
         logger.log('messaging.availableProjects', pipelines);
-        sendResponse({ projects: pipelines });
+        sendResponse({ pipelines });
     } catch (ex: any) {
         sendResponse({
             error: {

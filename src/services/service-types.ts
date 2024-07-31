@@ -8,7 +8,7 @@ export interface CIServiceSettings {
     webUrl?: string;
     username?: string;
     password?: string;
-    projects: string[];
+    pipelines: string[];
     isDisabled?: boolean;
     repository?: string;
 }

@@ -24,7 +24,7 @@ const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> 
 const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
     logger.log('github.getLatestBuilds', settings);
     return Promise.all(
-        settings.projects.map(async project => {
+        settings.pipelines.map(async project => {
             const [id] = project.split(' |');
             const response = await getWorkflowRuns(settings, id);
             const [run] = response.body.workflow_runs;
@@ -54,7 +54,7 @@ export default {
             baseUrl: 'github',
             url: '',
             name: '',
-            projects: [],
+            pipelines: [],
             token: '',
         },
     }),

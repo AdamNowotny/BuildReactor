@@ -21,7 +21,7 @@ const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> 
     logger.log('cctray.getLatestBuilds', settings);
     const response = await requestProjects(settings);
     const parsed = response.Project.map(project => parseBuildState(project))
-        .filter(project => settings.projects.includes(project.id))
+        .filter(project => settings.pipelines.includes(project.id))
         .map(categoriseFromName);
     return Promise.all(parsed);
 };
@@ -35,7 +35,7 @@ export default {
         defaultConfig: {
             baseUrl: 'cctray',
             name: '',
-            projects: [],
+            pipelines: [],
             url: '',
             username: '',
             password: '',

@@ -42,7 +42,7 @@ const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> 
 const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
     logger.log('travis.getLatestBuilds', settings);
     return Promise.all(
-        settings.projects.map(async projectId => {
+        settings.pipelines.map(async projectId => {
             const key = createKey(projectId);
             try {
                 const response = await requestBuilds(key.id, settings);
@@ -89,7 +89,7 @@ export default {
             name: '',
             apiUrl: 'https://api.travis-ci.org/',
             webUrl: 'https://travis-ci.org/',
-            projects: [],
+            pipelines: [],
             token: '',
         },
     }),

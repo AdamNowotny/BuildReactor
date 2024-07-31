@@ -15,7 +15,7 @@ beforeEach(() => {
         name: 'mock',
         baseUrl: 'baseUrl',
         url: 'mockUrl',
-        projects: [],
+        pipelines: [],
         username: 'mockUsername',
         password: 'mockPassword',
     };
@@ -104,7 +104,7 @@ describe('getLatestBuilds', () => {
 
     it('parses ccnet.xml builds', async () => {
         (request.get as Mock).mockImplementation(() => setupResponse('ccnet.xml'));
-        settings.projects = ['CruiseControl.NET'];
+        settings.pipelines = ['CruiseControl.NET'];
 
         const response = await cctray.getLatestBuilds(settings);
 
@@ -124,7 +124,7 @@ describe('getLatestBuilds', () => {
 
     it('parses build states', async () => {
         (request.get as Mock).mockImplementation(() => setupResponse('ccnet.xml'));
-        settings.projects = [
+        settings.pipelines = [
             'AspSQLProvider',
             'FastForward.NET',
             'Footloose',
@@ -167,7 +167,7 @@ describe('getLatestBuilds', () => {
 
     it('parses go.xml builds', async () => {
         (request.get as Mock).mockImplementation(() => setupResponse('go.xml'));
-        settings.projects = [
+        settings.pipelines = [
             'Project :: Build',
             'Project :: Build :: Build',
             'Project :: UnitTest',
@@ -202,18 +202,18 @@ describe('getLatestBuilds', () => {
         });
     });
 
-    it('filters monitored projects', async () => {
+    it('filters monitored pipelines', async () => {
         (request.get as Mock).mockImplementation(() => setupResponse('go.xml'));
-        settings.projects = ['Project :: Build', 'Project :: UnitTest'];
+        settings.pipelines = ['Project :: Build', 'Project :: UnitTest'];
 
         const response = await cctray.getLatestBuilds(settings);
 
-        expect(response).toHaveLength(settings.projects.length);
+        expect(response).toHaveLength(settings.pipelines.length);
     });
 
     it('parses changes', async () => {
         (request.get as Mock).mockImplementation(() => setupResponse('go.xml'));
-        settings.projects = ['Project :: UnitTest', 'Project :: UnitTest :: UnitTest'];
+        settings.pipelines = ['Project :: UnitTest', 'Project :: UnitTest :: UnitTest'];
 
         const response = await cctray.getLatestBuilds(settings);
 

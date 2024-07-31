@@ -92,7 +92,7 @@ const setBuildOrder = async (serviceName: string, builds: string[]) => {
     if (!item) {
         throw new Error(`Service ${serviceName} not found`);
     }
-    item.projects = builds;
+    item.pipelines = builds;
     await setItem(item.name, item);
 };
 

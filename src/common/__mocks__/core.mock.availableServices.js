@@ -9,7 +9,7 @@ export default [
         defaultConfig: {
             baseUrl: 'bamboo',
             name: '',
-            projects: [],
+            pipelines: [],
             url: '',
             username: '',
             password: '',
@@ -24,7 +24,7 @@ export default [
         defaultConfig: {
             baseUrl: 'cctray',
             name: '',
-            projects: [],
+            pipelines: [],
             url: '',
             username: '',
             password: '',
@@ -39,7 +39,7 @@ export default [
         defaultConfig: {
             baseUrl: 'cruisecontrol',
             name: '',
-            projects: [],
+            pipelines: [],
             url: '',
             username: '',
             password: '',
@@ -54,7 +54,7 @@ export default [
         defaultConfig: {
             baseUrl: 'cruisecontrol.net',
             name: '',
-            projects: [],
+            pipelines: [],
             url: '',
             username: '',
             password: '',
@@ -69,7 +69,7 @@ export default [
         defaultConfig: {
             baseUrl: 'cruisecontrol.rb',
             name: '',
-            projects: [],
+            pipelines: [],
             url: '',
             username: '',
             password: '',
@@ -84,7 +84,7 @@ export default [
         defaultConfig: {
             baseUrl: 'go',
             name: '',
-            projects: [],
+            pipelines: [],
             url: '',
             username: '',
             password: '',
@@ -99,7 +99,7 @@ export default [
         defaultConfig: {
             baseUrl: 'jenkins',
             name: '',
-            projects: [],
+            pipelines: [],
             url: '',
             username: '',
             password: '',
@@ -114,7 +114,7 @@ export default [
         defaultConfig: {
             baseUrl: 'teamcity',
             name: '',
-            projects: [],
+            pipelines: [],
             url: '',
             username: '',
             password: '',
@@ -128,7 +128,7 @@ export default [
         defaultConfig: {
             baseUrl: 'travis',
             name: '',
-            projects: [],
+            pipelines: [],
             username: '',
         },
     },

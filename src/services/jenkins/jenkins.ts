@@ -91,7 +91,7 @@ const parsePipeline = (job: any): CIPipeline[] => {
 const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
     logger.log('jenkins.getLatestBuilds', settings);
     return Promise.all(
-        settings.projects.map(async id => {
+        settings.pipelines.map(async id => {
             try {
                 const response = await requestJobDetails(id, settings);
                 const build = response.body;
@@ -120,7 +120,7 @@ export default {
             defaultConfig: {
                 baseUrl: 'jenkins',
                 name: '',
-                projects: [],
+                pipelines: [],
                 url: '',
                 username: '',
                 password: '',

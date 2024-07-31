@@ -14,7 +14,7 @@ beforeEach(() => {
     settings = {
         name: 'mock',
         baseUrl: 'baseUrl',
-        projects: [],
+        pipelines: [],
         token: 'mockToken',
         url: 'https://github.com/OWNER/REPO',
     };
@@ -72,7 +72,7 @@ describe('getLatestBuilds', () => {
         (request.get as Mock).mockResolvedValue({
             body: { workflow_runs: [{ id: '108658767' }] },
         });
-        settings.projects = ['108658767'];
+        settings.pipelines = ['108658767'];
 
         await github.getLatestBuilds(settings);
 
@@ -92,7 +92,7 @@ describe('getLatestBuilds', () => {
         (request.get as Mock).mockResolvedValue({
             body: workflowRunsJson,
         });
-        settings.projects = ['108658767'];
+        settings.pipelines = ['108658767'];
 
         const response = await github.getLatestBuilds(settings);
 
@@ -119,7 +119,7 @@ describe('getLatestBuilds', () => {
         (request.get as Mock).mockResolvedValue({
             body: workflowRunsJson,
         });
-        settings.projects = ['108658767'];
+        settings.pipelines = ['108658767'];
         settings.branch = 'github-actions';
 
         await github.getLatestBuilds(settings);

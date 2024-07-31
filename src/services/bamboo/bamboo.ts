@@ -50,7 +50,7 @@ const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> 
 const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
     logger.log('bamboo.getLatestBuilds', settings);
     return Promise.all(
-        settings.projects.flatMap(async key => {
+        settings.pipelines.flatMap(async key => {
             try {
                 const resultResponse = await requestResult(key, settings);
                 return parseBuild(key, settings, resultResponse.body);
@@ -82,7 +82,7 @@ export default {
         defaultConfig: {
             baseUrl: 'bamboo',
             name: '',
-            projects: [],
+            pipelines: [],
             url: '',
             token: '',
         },

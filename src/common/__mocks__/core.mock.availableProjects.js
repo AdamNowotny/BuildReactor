@@ -1,5 +1,5 @@
 export default {
-    projects: {
+    pipelines: {
         selected: ['JAVADOC-BRANCH18X', 'JU-CORE', 'DEMO-DEMODB', 'FUNC-APPTEST'],
         items: [
             {

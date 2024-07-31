@@ -17,7 +17,7 @@ const mockService: CIService = {
         defaultConfig: {
             name: 'NAME',
             baseUrl: 'BASEURL',
-            projects: ['ID1'],
+            pipelines: ['ID1'],
         },
     }),
 };
@@ -34,7 +34,7 @@ beforeEach(() => {
     settings = {
         name: 'NAME',
         baseUrl: 'BASEURL',
-        projects: ['ID'],
+        pipelines: ['ID'],
     };
     serviceRepository.init([mockService]);
     vi.mocked(mockService.getPipelines).mockResolvedValue(mockPipelines);
@@ -63,7 +63,7 @@ describe('getPipelines', () => {
 
         expect(pipelines).toEqual({
             items: mockPipelines,
-            selected: settings.projects,
+            selected: settings.pipelines,
         });
     });
 
@@ -81,7 +81,7 @@ describe('getPipelines', () => {
                 { id: 'ID1', name: 'state1' },
                 { id: 'ID2', name: 'state2' },
             ],
-            selected: settings.projects,
+            selected: settings.pipelines,
         });
     });
 });
@@ -119,7 +119,7 @@ describe('getBuildStates', () => {
     });
 
     it('returns error states on exception', async () => {
-        settings.projects = ['ID1'];
+        settings.pipelines = ['ID1'];
         (mockService.getLatestBuilds as Mock).mockRejectedValueOnce(
             new Error('error message'),
         );
