@@ -30,11 +30,6 @@ const configChangedHandler = async (value: StorageChangeEvent<CIServiceSettings[
     await updateAll(value.newValue);
 };
 
-const start = async () => {
-    logger.log('service-monitor.start');
-    void updateAll(await serviceConfig.get());
-};
-
 const updateAll = async (allConfigs: CIServiceSettings[]) => {
     logger.group('service-monitor.updateAll');
     await chrome.alarms.clearAll();
@@ -54,5 +49,4 @@ const updateAll = async (allConfigs: CIServiceSettings[]) => {
 
 export default {
     init,
-    start,
 };

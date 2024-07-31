@@ -20,12 +20,11 @@ void (async () => {
     serviceRepository.init();
     messaging.init();
     badge.init();
-    serviceMonitor.init();
 
     // events
     passwordExpiredHandler.init();
     buildStartedHandler.init();
     buildFinishedHandler.init();
 
-    await serviceMonitor.start();
+    serviceMonitor.init();
 })();
