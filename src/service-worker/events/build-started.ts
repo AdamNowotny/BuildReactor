@@ -6,7 +6,7 @@ import serviceState, { ServiceStateItem } from '../storage/service-state';
 
 const init = () => {
     logger.log('build-started.init');
-    serviceState.onChanged.subscribe(void stateChangeHandler);
+    serviceState.onChanged.subscribe(stateChangeHandler);
 };
 
 export const stateChangeHandler = async ({ oldValue, newValue }) => {
@@ -23,7 +23,10 @@ const notificationsEnabled = async () => {
     return config.notifications?.buildStarted;
 };
 
-const processService = (oldState: ServiceStateItem | undefined, newState: ServiceStateItem) => {
+const processService = (
+    oldState: ServiceStateItem | undefined,
+    newState: ServiceStateItem,
+) => {
     logger.log('build-started.processService', oldState, newState);
     if (!oldState) return;
     newState.items?.forEach(item => {

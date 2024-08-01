@@ -7,7 +7,12 @@ export default tseslint.config(
         files: ['**/*.{js,mjs,cjs,ts}'],
     },
     {
-        ignores: ['**/node_modules/**', 'src/test/**', '**/*.spec.js', '**/webpack.config.js'],
+        ignores: [
+            '**/node_modules/**',
+            'src/test/**',
+            '**/*.spec.js',
+            '**/webpack.config.js',
+        ],
     },
     {
         languageOptions: {
@@ -28,6 +33,10 @@ export default tseslint.config(
         rules: {
             '@typescript-eslint/dot-notation': 'off',
             '@typescript-eslint/no-explicit-any': 'off',
+            '@typescript-eslint/no-misused-promises': [
+                'error',
+                { checksVoidReturn: false },
+            ],
             '@typescript-eslint/no-unsafe-argument': 'off',
             '@typescript-eslint/no-unsafe-assignment': 'off',
             '@typescript-eslint/no-unsafe-call': 'off',
