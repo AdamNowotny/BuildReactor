@@ -9,7 +9,7 @@ import type {
 
 const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> => {
     logger.log('github.getPipelines', settings);
-    const response = await getWorkflows(settings);
+    const response = await requestWorkflows(settings);
     const { workflows } = response.body;
     const pipelines: CIPipeline[] = workflows.map(workflow => {
         return {
@@ -23,14 +23,27 @@ const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> 
 
 const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
     logger.log('github.getLatestBuilds', settings);
-    return Promise.all(
-        settings.pipelines.map(async project => {
-            const [id] = project.split(' |');
-            const response = await getWorkflowRuns(settings, id);
-            const [run] = response.body.workflow_runs;
-            return parseBuild(run);
-        }),
+    const pipelines = settings.pipelines.map(
+        async (pipelineId: string): Promise<CIBuild> => {
+            try {
+                const [id] = pipelineId.split(' |');
+                const response = await requestWorkflowRuns(settings, id);
+                const [run] = response.body.workflow_runs;
+                if (!run) {
+                    throw new Error('Workflow run not found');
+                }
+                return parseBuild(run);
+            } catch (ex: any) {
+                return {
+                    id: pipelineId,
+                    name: pipelineId,
+                    error: { name: 'Error', message: ex.message },
+                };
+            }
+        },
     );
+    logger.log('github.getLatestBuilds.pipeline', pipelines);
+    return await Promise.all(pipelines);
 };
 
 export default {
@@ -62,7 +75,7 @@ export default {
     getLatestBuilds,
 };
 
-const getWorkflowRuns = async (settings: CIServiceSettings, id: string) => {
+const requestWorkflowRuns = async (settings: CIServiceSettings, id: string) => {
     if (!settings.url) throw new Error('No url provided');
     const [_origin, owner, repo] = new URL(settings.url).pathname.split('/');
     return request.get({
@@ -76,7 +89,7 @@ const getWorkflowRuns = async (settings: CIServiceSettings, id: string) => {
     });
 };
 
-const getWorkflows = async (settings: CIServiceSettings) => {
+const requestWorkflows = async (settings: CIServiceSettings) => {
     if (!settings.url) throw new Error('No url provided');
     const [_origin, owner, repo] = new URL(settings.url).pathname.split('/');
     return request.get({

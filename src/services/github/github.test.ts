@@ -3,7 +3,8 @@ import { CIBuildChange, CIServiceSettings } from 'services/service-types';
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import github from './github';
 import workflowJson from './workflows.json';
-import workflowRunsJson from './workflow-runs.json';
+import workflowRunsJson from './workflowruns.json';
+import workflowRunsErrorJson from './workflowruns_error.json';
 
 vi.mock('common/logger');
 vi.mock('service-worker/request');
@@ -89,9 +90,7 @@ describe('getLatestBuilds', () => {
     });
 
     it('parses builds', async () => {
-        (request.get as Mock).mockResolvedValue({
-            body: workflowRunsJson,
-        });
+        (request.get as Mock).mockResolvedValue({ body: workflowRunsJson });
         settings.pipelines = ['108658767'];
 
         const response = await github.getLatestBuilds(settings);
@@ -112,6 +111,24 @@ describe('getLatestBuilds', () => {
                 name: '.github/workflows/main.yml',
                 webUrl: 'https://github.com/AdamNowotny/BuildReactor/actions/runs/10056461820',
             },
+        ]);
+    });
+
+    it('returns error when no runs found', async () => {
+        (request.get as Mock).mockResolvedValue({ body: workflowRunsErrorJson });
+        settings.pipelines = ['ID'];
+
+        const response = await github.getLatestBuilds(settings);
+
+        expect(response).toEqual([
+            expect.objectContaining({
+                id: 'ID',
+                name: 'ID',
+                error: {
+                    name: 'Error',
+                    message: 'Workflow run not found',
+                },
+            }),
         ]);
     });
 

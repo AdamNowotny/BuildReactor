@@ -28,22 +28,25 @@ const reset = async (serviceNames: string[]) => {
 
 const updateService = async (serviceName: string, builds: CIBuild[]) => {
     logger.log('service-state.updateService', serviceName, builds);
-    const offlineCount = builds.filter(build => !build.isDisabled && build.error).length;
     const serviceState: ServiceStateItem = {
         name: serviceName,
         failedCount: builds.filter(build => !build.isDisabled && build.isBroken).length,
-        offlineCount,
+        offlineCount: builds.filter(build => !build.isDisabled && build.error).length,
         runningCount: builds.filter(build => !build.isDisabled && build.isRunning).length,
-        items: offlineCount > 0 ? await createErrorState(serviceName, builds) : builds,
+        items: await createBuildState(serviceName, builds),
     };
     await setItem(serviceName, serviceState);
 };
 
-const createErrorState = async (serviceName: string, builds: CIBuild[]): Promise<CIBuild[]> => {
+const createBuildState = async (
+    serviceName: string,
+    builds: CIBuild[],
+): Promise<CIBuild[]> => {
+    logger.log('service-state.createBuildState', serviceName, builds);
     const oldState = await getItem(serviceName);
     return builds.map(build => {
         if (!build.error) return build;
-        const oldBuild = oldState.items?.find(old => old.id === build.id);
+        const oldBuild = oldState?.items?.find(old => old.id === build.id);
         if (!oldBuild) return build;
         return { ...oldBuild, error: build.error };
     });
@@ -52,7 +55,7 @@ const createErrorState = async (serviceName: string, builds: CIBuild[]): Promise
 const getItem = async (serviceName: string) => {
     logger.log('service-state.getItem', serviceName);
     const allItems = await storage.get();
-    const [item] = allItems.filter(state => state.name === serviceName);
+    const item = allItems.find(state => state.name === serviceName);
     return item;
 };
 

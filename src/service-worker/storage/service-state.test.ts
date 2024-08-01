@@ -183,4 +183,29 @@ describe('updateService', () => {
             }),
         ]);
     });
+
+    it('returns error state when no previous state exists', async () => {
+        (Storage.prototype.get as Mock).mockImplementation(() => []);
+
+        const items: CIBuild[] = [
+            {
+                id: 'build1',
+                name: 'Build 1',
+                error: { name: 'Error', message: 'error1' },
+            },
+        ];
+
+        await stateStorage.updateService('service', items);
+
+        expect(Storage.prototype.set).toBeCalledWith([
+            expect.objectContaining({
+                items: [
+                    expect.objectContaining({
+                        id: 'build1',
+                        error: { name: 'Error', message: 'error1' },
+                    }),
+                ],
+            }),
+        ]);
+    });
 });
