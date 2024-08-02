@@ -1,20 +1,24 @@
-Adding new services
-===================
+# Adding new services
+
 To add support for a new type of service in BuildReactor you need to implement three methods described below and register the service.
 
-For examples look at implementations in the services folder:
-- [Bamboo](../src/services/bamboo/bamboo.js)
-- [BuildKite](../src/services/buildkite/buildkite.js)
-- [Jenkins](../src/services/jenkins/jenkins.js)
-- [Travis](../src/services/travis/travis.js)
+You can look up all the TypeScript types involved here:
+https://github.com/AdamNowotny/BuildReactor/blob/master/src/services/service-types.ts#L71-L78
 
-Configuration
--------------
-The `getInfo` method is called to get information about the new service type, for example available settings, icons, etc. At a minimum this needs to be implemented so the service can be registered and shown on the __New service__ page.
+For examples look at implementations in the services folder:
+
+-   [BuildKite](../src/services/buildkite/buildkite.ts)
+-   [GitHub Actions](../src/services/github/github.ts)
+-   [Jenkins](../src/services/jenkins/jenkins.ts)
+
+## Configuration
+
+The `getDefinition` method is called to get information about the new service type, for example available settings, icons, etc. At a minimum this needs to be implemented so the service can be registered and shown on the **New service** page.
 
 Example:
+
 ```js
-const getInfo = () => ({
+const getDefinition = () => ({
     typeName: 'My Service', // name shown when adding service
     baseUrl: 'my-service', // service ID, same as the folder name file is in
     icon: 'services/my-service/icon.png', // icon for browser notifications, /src/ is the base folder
@@ -22,19 +26,17 @@ const getInfo = () => ({
     defaultConfig: {
         baseUrl: 'my-service',
         name: '',
-        projects: [],
-        token: '',
-        updateInterval: 60
+        pipelines: [],
+        token: ''
     }
-    fields: [ // optional
+    fields: [
         {
-            type: 'url', // available types: url, token, username, password
+            type: 'url', // available types: url, token, username, password, branch
             name: 'Server URL', // label displayed above the field (optional)
             config: 'url', // configuration property used to store the value (optional)
             help: 'Help text for url' // additional field description (optional)
         },
-        { type: 'username' },
-        { type: 'password' }
+        { type: 'token' }
     ]
 });
 ```
@@ -43,79 +45,89 @@ const getInfo = () => ({
 
 Both `baseUrl` fields are required and should be the same as folder name in _/services/_ where you created your implementation.
 
-`fields` specifies which UI elements will be available when configuring service instance. It is optional as by default the form uses the properties of the `defaultConfig` object to determine which fields should be shown. For details refer to [dynamicForm.html](../src/settings/service/directives/dynamicForm/dynamicForm.html)
+`fields` specifies which UI elements will be available when configuring service instance. It is an optional list as by default the form uses the properties of the `defaultConfig` object to determine which fields should be shown. For details refer to [dynamicForm.html](../src/settings/service/directives/dynamicForm/dynamicForm.html)
 
-List of available builds
-------------------------
+## List of available pipelines
 
-Called when user presses *Show* on the configuration page. Should return a RxJS sequence with all available builds.
+Called when user presses _Show_ on the configuration page. Should return a promise resolving to list of `CIPipeline` items.
 
 Example (hard-coded values):
+
 ```js
-const getAll = (settings) => Rx.Observable.fromArray([{
-    id: 'build_id', // unique ID, this will be passed to getLatest
-    name: 'Build name', // name shown in the UI
-    group: 'Group', // null or group the build belongs to if your CI server supports it
-    isDisabled: false // some servers report projects as not buildable/disabled
-}]);
+const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> => {
+    return [
+        {
+            id: 'build_id', // unique ID, this will be passed to getLatestBuilds
+            name: 'Build name', // name shown in the UI
+            group: 'Group', // optional group the pipeline belongs to
+            isDisabled: false, // optional, some servers report projects as not buildable/disabled
+        },
+    ];
+};
 ```
-The order of builds in the sequence is not important as they will be ordered according to `settings.projects`.
 
-Latest status
--------------
+## Latest status
 
-`getLatest` function accepts service settings with array of build IDs to monitor.
+`getLatestBuilds` function accepts service settings with array of pipeline IDs to monitor.
 
-The example below uses [/src/core/services/request.js](../src/core/services/request.js) to make HTTP request for each build in `settings.projects` array and then parse the body of each response.
+The example below uses [/src/service-worker/request.ts](../src/service-worker/request.ts) to make HTTP request for each build in `settings.pipelines` array and then parse the body of each response. `Request` is a wrapper around Fetch API that handles some common HTTP headers, parsing of XML and makes it easier to unit test against saved json responses.
 
 Example:
+
 ```js
-const getLatest = (settings) => Rx.Observable.fromArray(settings.projects)
-    .selectMany((id) => request
-        .get({ url: `https://server/builds/${id}.json` })
-        .select((response) => response.body)
-        .select((build) => ({
-            id: build.id, // required
-            name: build.name,
-            group: build.group,
-            webUrl: build.url, // clicking on the build will open the url
-            isBroken: build.state === 'failed', // shown as red if true
-            isRunning: build.active, // in progress, shown as animated stripes
-            isWaiting: build.queued, // scheduled, shown as stripes with no animation
-            isDisabled: false, // tag as disabled and display as grey
-            tags: [{ name: 'Canceled', type: 'warning' }], // other tags, type is optional (warning displayed yellow)
-            changes: (build.commits || []).map((commit) => ({
-                name: commit.username,
-                message: commit.message
-            })) // commit messages and committer name, likely to contain only one element
-        }))
-        .catch((ex) => Rx.Observable.return({
-            id,
-            error: ex
-        }))
+const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
+    logger.debug('service.getLatestBuilds', settings);
+    const pipelines = settings.pipelines.map(async (id: string): Promise<CIBuild> => {
+            try {
+                const response = await request.get(
+                    { url: `https://server/builds/${id}.json` }
+                );
+                const [build] = response.body.builds; // get first build item
+                if (!build) throw new Error('Build not found');
+                return parseBuild(build);
+            } catch (ex: any) {
+                return {
+                    id: id,
+                    name: id,
+                    error: { name: 'Error', message: ex.message },
+                };
+            }
+        },
     );
+    return await Promise.all(pipelines);
+};
+
+const parseBuild = (build: any): CIBuild => {
+    return {
+        id: build.id, // required
+        name: build.name,
+        group: build.group,
+        webUrl: build.url, // clicking on the build will open the url
+        isBroken: build.state === 'failed', // shown as red if true
+        isRunning: build.active, // in progress, shown as animated stripes
+        isWaiting: build.queued, // scheduled, shown as stripes with no animation
+        isDisabled: false, // tag as disabled and display as grey
+        tags: [{ name: 'Canceled', type: 'warning' }], // other tags, type is optional (warning displayed yellow)
+        changes: (build.commits ?? []).map(commit => ({
+            name: commit.username,
+            message: commit.message,
+        })), // commit messages and committer name
+    }
+};
 ```
 
-The only required field is `id` however you want to implement as least `webUrl`, `isBroken` and `isRunning` to see the status of the build.
+The only required fields are `id` and `name` however you want to implement as least `webUrl`, `isBroken` and `isRunning` to see the status of the build.
 
-The _catch_ clause returns a build with `error` object. If the request or parsing fails then the `message` field from the error will be shown and the build will be tagged as *Offline*. The block is required so only the currently processed build is marked as error, otherwise if the whole sequence fails then all builds will be considered not accessible.
+The _catch_ clause returns a build with `error` object. This is so only a single build is marked as _offline_ instead of the whole list in case the request or parsing throws an exception.
 
-Existing implementations extract all available requests to a separate file to make unit testing easier. All protocol level concerns can be handled there (constructing the url, paging, authorisation, etc.).
+## Registration
 
-Registration
-------------
-
-After implementing the 3 functions you need to register the service to make it available. This is done in [/src/core/main.js](../src/core/main.js).
+After implementing the 3 functions you need to register the service to make it available. This is done in [/src/services/service-repository.ts](../src/services/service-repository.ts).
 
 Import the file:
+
 ```js
 import myService from 'services/my-service/my-service';
 ```
 
-then create a new instance of service using `poolingService`. This wraps your service to add error handling, call `getLatest` at regular intervals and push `serviceUpdated` event which is used by other parts of the extension to process the current build state.
-
-The class created by `poolingService` has to be registered with `serviceController` to be available.
-
-```js
-serviceController.registerType(poolingService.create(myService));
-```
+then add your service implementing `CIService` to the `services` array in `init` method.
