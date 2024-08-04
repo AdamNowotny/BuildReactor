@@ -4,7 +4,7 @@ import serviceConfig from 'service-worker/storage/service-config';
 import serviceState from '../storage/service-state';
 
 const init = () => {
-    logger.log('password-expired.init');
+    logger.info('password-expired.init');
     serviceState.onChanged.subscribe(({ oldValue, newValue }) => {
         logger.log('password-expired.serviceState.onChanged', oldValue, newValue);
         newValue.forEach(service => {

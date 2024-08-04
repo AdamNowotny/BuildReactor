@@ -28,7 +28,7 @@ const get = async (options: RequestOptions): Promise<RequestResponse> => {
     const response = await fetch(url, fetchOptions);
     logger.log('request.fetch', fetchOptions, response);
     if (!response.ok) {
-        logger.log('Request failed', errors.create(response, options.url));
+        logger.info('Request failed', errors.create(response, options.url));
         throw errors.create(response, options.url);
     }
     try {

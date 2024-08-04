@@ -5,7 +5,7 @@ import { CIBuild } from 'services/service-types';
 import serviceState, { ServiceStateItem } from '../storage/service-state';
 
 const init = () => {
-    logger.log('build-started.init');
+    logger.info('build-started.init');
     serviceState.onChanged.subscribe(stateChangeHandler);
 };
 

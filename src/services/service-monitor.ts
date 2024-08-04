@@ -8,7 +8,7 @@ import type { CIServiceSettings } from './service-types';
 const ALARM_NAME = 'update';
 
 const init = () => {
-    logger.log('service-monitor.init');
+    logger.info('service-monitor.init');
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     chrome.alarms.onAlarm.addListener(alarmHandler);
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -17,7 +17,6 @@ const init = () => {
 
 const alarmHandler = async (alarm: chrome.alarms.Alarm) => {
     if (alarm.name !== ALARM_NAME) return;
-    logger.log('service-monitor.alarm', alarm);
     await updateAll(await serviceConfig.get());
 };
 

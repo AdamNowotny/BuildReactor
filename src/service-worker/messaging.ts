@@ -28,7 +28,7 @@ const availableProjects = async (sendResponse, settings: CIServiceSettings) => {
 };
 
 const handleMessage = (request, sender, sendResponse) => {
-    logger.log('messaging.handleMessage', request);
+    logger.info('messaging.handleMessage', request);
     switch (request.name) {
         case 'availableServices':
             availableServices(sendResponse);

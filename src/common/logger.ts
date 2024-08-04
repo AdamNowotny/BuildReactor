@@ -14,12 +14,12 @@ const init = (options: { prefix: string }) => {
     };
 };
 
-const debug = (...args) => {
+const log = (...args) => {
     console.debug(LOG_NAMESPACE, ...args);
 };
 
-const log = (...args) => {
-    console.log(LOG_NAMESPACE, ...args);
+const info = (...args) => {
+    console.info(LOG_NAMESPACE, ...args);
 };
 
 const warn = (...args) => {
@@ -31,18 +31,18 @@ const error = (...args) => {
 };
 
 const group = (label: string) => {
-    console.group(label);
+    console.groupCollapsed(label);
     console.time(label);
 };
 
 const groupEnd = (label: string) => {
-    console.groupEnd();
     console.timeEnd(label);
+    console.groupEnd();
 };
 
 export default {
     init,
-    debug,
+    info,
     log,
     warn,
     error,

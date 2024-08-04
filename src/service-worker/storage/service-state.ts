@@ -42,7 +42,6 @@ const createBuildState = async (
     serviceName: string,
     builds: CIBuild[],
 ): Promise<CIBuild[]> => {
-    logger.log('service-state.createBuildState', serviceName, builds);
     const oldState = await getItem(serviceName);
     return builds.map(build => {
         if (!build.error) return build;
@@ -53,14 +52,12 @@ const createBuildState = async (
 };
 
 const getItem = async (serviceName: string) => {
-    logger.log('service-state.getItem', serviceName);
     const allItems = await storage.get();
     const item = allItems.find(state => state.name === serviceName);
     return item;
 };
 
 const setItem = async (serviceName: string, state: ServiceStateItem) => {
-    logger.log('service-state.setItem', serviceName, state);
     const allItems = await storage.get();
     const found = allItems.find(state => state.name === serviceName);
     let updatedState: ServiceStateItem[];

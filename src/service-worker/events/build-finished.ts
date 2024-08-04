@@ -5,7 +5,7 @@ import { CIBuild } from 'services/service-types';
 import serviceState, { ServiceStateItem } from '../storage/service-state';
 
 const init = () => {
-    logger.log('build-finished.init');
+    logger.info('build-finished.init');
     serviceState.onChanged.subscribe(stateChangeHandler);
     viewConfig.onChanged.subscribe(configurationChangeHandler);
 };
@@ -24,7 +24,10 @@ export const stateChangeHandler = ({ oldValue, newValue }) => {
     });
 };
 
-const processService = (oldState: ServiceStateItem | undefined, newState: ServiceStateItem) => {
+const processService = (
+    oldState: ServiceStateItem | undefined,
+    newState: ServiceStateItem,
+) => {
     logger.log('build-finished.processService', oldState, newState);
     if (!oldState) return;
     newState.items?.forEach(item => {
