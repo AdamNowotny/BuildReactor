@@ -1,10 +1,11 @@
-import { beforeEach, expect, it, Mock, vi } from 'vitest';
+import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import request from './request';
 import errors from './requestErrors';
 
 vi.mock('common/logger');
 vi.mock('./requestErrors');
 
+const headersGet = vi.fn();
 const headersSet = vi.fn();
 const Headers = vi.fn();
 
@@ -13,7 +14,7 @@ vi.stubGlobal('Headers', Headers);
 
 beforeEach(() => {
     Headers.mockImplementation(() => ({
-        get: vi.fn(),
+        get: headersGet,
         set: headersSet,
     }));
 });
@@ -29,7 +30,7 @@ const setupResponse = (response: any) => {
                 resolve(response);
             }),
         ok: true,
-        headers: [],
+        headers: new Headers(),
     });
 };
 
@@ -52,9 +53,10 @@ it('should return response', async () => {
         },
     });
 
-    expect(result).toStrictEqual({
+    expect(result).toEqual({
         body: [{ name: 'org1' }],
-        headers: [],
+        headers: expect.any(Object),
+        links: undefined,
     });
     expect(global.fetch).toBeCalledWith(
         new URL('https://sample.com/?token=token'),
@@ -131,7 +133,10 @@ it('should not set auth if username not specified', async () => {
         password: 'pass',
     });
 
-    expect(headersSet).not.toBeCalledWith('Authorization', expect.stringContaining('Basic '));
+    expect(headersSet).not.toBeCalledWith(
+        'Authorization',
+        expect.stringContaining('Basic '),
+    );
     expect(global.fetch).toBeCalled();
 });
 
@@ -160,4 +165,29 @@ it('should setup xml type', async () => {
     expect(headersSet).toBeCalledWith('Accept', 'application/xml');
     expect(result.body).toEqual({ some: { xml: ['value'] } });
     expect(global.fetch).toBeCalled();
+});
+
+describe('Link header', () => {
+    it('undefined when no header', async () => {
+        setupResponse([{ name: 'org1' }]);
+        headersGet.mockReturnValue(null);
+
+        const result = await request.get({ url: 'https://sample.com/' });
+
+        expect(result.links).toBeUndefined();
+    });
+
+    it('parses Link header', async () => {
+        setupResponse([{ name: 'org1' }]);
+        headersGet.mockReturnValue(
+            '<https://sample.com/page/3>; rel="next", <https://sample.com/page/1>; rel="prev"',
+        );
+
+        const result = await request.get({ url: 'https://sample.com/' });
+
+        expect(result.links).toEqual({
+            next: 'https://sample.com/page/3',
+            prev: 'https://sample.com/page/1',
+        });
+    });
 });

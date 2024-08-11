@@ -13,9 +13,14 @@ interface RequestOptions {
     timeout?: number;
 }
 
+type LinkHeader = Record<string, string> | undefined;
+
 interface RequestResponse {
     body: any;
     headers: Headers;
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Link
+    // example: { next: 'http://example.com/page/2' }
+    links: LinkHeader;
 }
 
 const get = async (options: RequestOptions): Promise<RequestResponse> => {
@@ -37,6 +42,7 @@ const get = async (options: RequestOptions): Promise<RequestResponse> => {
         return {
             body: data,
             headers: response.headers,
+            links: parseLinks(response.headers),
         };
     } catch (ex: any) {
         throw new Error(`${ex.message} (${options.url})`);
@@ -45,6 +51,18 @@ const get = async (options: RequestOptions): Promise<RequestResponse> => {
 
 export default {
     get,
+};
+
+const parseLinks = (headers: Headers): LinkHeader => {
+    const linkHeader = headers.get('Link');
+    if (!linkHeader) return undefined;
+    const links: LinkHeader = {};
+    const matches = linkHeader.matchAll(/<(.+?)>;\s*rel="(.+?)"/g);
+    for (const match of matches) {
+        const [, url, rel] = match;
+        links[rel] = new URL(url).href;
+    }
+    return links;
 };
 
 function createRequest(options: RequestOptions) {
