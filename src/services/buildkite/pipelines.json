@@ -1,4 +1,5 @@
 [
   { "slug": "slug1", "name": "pipeline1" },
-  { "slug": "slug2", "name": "pipeline2" }
+  { "slug": "slug2", "name": "pipeline2" },
+  { "slug": "slug3", "name": "pipeline3" }
 ]

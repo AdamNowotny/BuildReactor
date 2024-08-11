@@ -14,11 +14,17 @@ const requestOrganizations = (settings: CIServiceSettings) =>
         query: { access_token: settings.token ?? '' },
     });
 
-const requestPipelines = (url, settings: CIServiceSettings) =>
-    request.get({
+const requestPipelines = async (url: string, settings: CIServiceSettings) => {
+    const response = await request.get({
         url,
         query: { access_token: settings.token ?? '', per_page: 100 },
     });
+    if (response.links?.next) {
+        const next = await requestPipelines(response.links.next, settings);
+        return [...response.body, ...next];
+    }
+    return response.body;
+};
 
 const requestLatestBuild = (org, pipeline, settings) =>
     request.get({
@@ -47,7 +53,7 @@ const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> 
     const orgs = response.body;
     const pipelineRequests = orgs.map(async org => {
         const pipelinesResponse = await requestPipelines(org.pipelines_url, settings);
-        return pipelinesResponse.body.map(pipeline => parsePipeline(org, pipeline));
+        return pipelinesResponse.map(pipeline => parsePipeline(org, pipeline));
     });
     const pipelines = (await Promise.all(pipelineRequests)).flat();
     if (!pipelines.length) throw new Error('No pipelines found');

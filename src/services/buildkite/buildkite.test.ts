@@ -2,9 +2,9 @@ import request from 'service-worker/request';
 import { CIServiceSettings } from 'services/service-types';
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import buildkite from './buildkite';
+import latestBuildJson from './latestBuild.json';
 import organizationsJson from './organizations.json';
 import pipelinesJson from './pipelines.json';
-import latestBuildJson from './latestBuild.json';
 
 vi.mock('common/logger');
 vi.mock('service-worker/request');
@@ -58,7 +58,7 @@ describe('getPipelines', () => {
 
         const response = await buildkite.getPipelines(settings);
 
-        expect(response).toHaveLength(2);
+        expect(response).toHaveLength(3);
         expect(response).toEqual([
             {
                 id: 'org/slug1',
@@ -68,6 +68,50 @@ describe('getPipelines', () => {
             {
                 id: 'org/slug2',
                 name: 'pipeline2',
+                group: 'org_name',
+            },
+            {
+                id: 'org/slug3',
+                name: 'pipeline3',
+                group: 'org_name',
+            },
+        ]);
+    });
+
+    it('parses pipelines with pagging', async () => {
+        (request.get as Mock)
+            .mockResolvedValueOnce({ body: organizationsJson })
+            .mockResolvedValueOnce({
+                body: [pipelinesJson[0]],
+                links: {
+                    next: 'https://example.com/page/2',
+                },
+            })
+            .mockResolvedValueOnce({
+                body: [pipelinesJson[1]],
+                links: {
+                    next: 'https://example.com/page/3',
+                },
+            })
+            .mockResolvedValueOnce({ body: [pipelinesJson[2]] });
+
+        const response = await buildkite.getPipelines(settings);
+
+        expect(response).toHaveLength(3);
+        expect(response).toEqual([
+            {
+                id: 'org/slug1',
+                name: 'pipeline1',
+                group: 'org_name',
+            },
+            {
+                id: 'org/slug2',
+                name: 'pipeline2',
+                group: 'org_name',
+            },
+            {
+                id: 'org/slug3',
+                name: 'pipeline3',
                 group: 'org_name',
             },
         ]);
