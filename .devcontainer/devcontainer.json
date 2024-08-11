@@ -22,7 +22,6 @@
                 "eamodio.gitlens",
                 "EditorConfig.EditorConfig",
                 "esbenp.prettier-vscode",
-                "GitHub.vscode-github-actions",
                 "vitest.explorer"
             ]
         }
