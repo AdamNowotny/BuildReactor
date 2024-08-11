@@ -8,11 +8,13 @@ import type {
     CIServiceSettings,
 } from 'services/service-types';
 
-const requestOrganizations = (settings: CIServiceSettings) =>
-    request.get({
+const requestOrganizations = async (settings: CIServiceSettings) => {
+    const response = await request.get({
         url: 'https://api.buildkite.com/v2/organizations',
         query: { access_token: settings.token ?? '' },
     });
+    return response.body;
+};
 
 const requestPipelines = async (url: string, settings: CIServiceSettings) => {
     const response = await request.get({
@@ -26,8 +28,8 @@ const requestPipelines = async (url: string, settings: CIServiceSettings) => {
     return response.body;
 };
 
-const requestLatestBuild = (org, pipeline, settings) =>
-    request.get({
+const requestLatestBuild = async (org, pipeline, settings) => {
+    const response = await request.get({
         url: `https://api.buildkite.com/v2/organizations/${org}/pipelines/${pipeline}/builds`,
         query: {
             access_token: settings.token,
@@ -35,9 +37,12 @@ const requestLatestBuild = (org, pipeline, settings) =>
             branch: settings.branch || 'main',
         },
     });
+    const [build] = response.body;
+    return build;
+};
 
-const requestLatestFinishedBuild = (org, pipeline, settings) =>
-    request.get({
+const requestLatestFinishedBuild = async (org, pipeline, settings) => {
+    const response = await request.get({
         url: `https://api.buildkite.com/v2/organizations/${org}/pipelines/${pipeline}/builds`,
         query: {
             access_token: settings.token,
@@ -46,11 +51,13 @@ const requestLatestFinishedBuild = (org, pipeline, settings) =>
             'state[]': ['failed', 'passed'],
         },
     });
+    const [build] = response.body;
+    return build;
+};
 
 const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> => {
     logger.log('buildkite.getPipelines', settings);
-    const response = await requestOrganizations(settings);
-    const orgs = response.body;
+    const orgs = await requestOrganizations(settings);
     const pipelineRequests = orgs.map(async org => {
         const pipelinesResponse = await requestPipelines(org.pipelines_url, settings);
         return pipelinesResponse.map(pipeline => parsePipeline(org, pipeline));
@@ -72,12 +79,7 @@ const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> 
         settings.pipelines.map(async id => {
             const key = createKey(id);
             try {
-                const response = await requestLatestBuild(
-                    key.org,
-                    key.pipeline,
-                    settings,
-                );
-                const [build] = response.body;
+                const build = await requestLatestBuild(key.org, key.pipeline, settings);
                 let finishedBuild;
                 if (
                     ['running', 'scheduled', 'canceled', 'canceling'].includes(
@@ -89,7 +91,6 @@ const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> 
                         key.pipeline,
                         settings,
                     );
-                    finishedBuild = finishedBuild.body[0];
                 }
                 return parseBuild(build, key, finishedBuild);
             } catch (ex: any) {
