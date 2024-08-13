@@ -5,14 +5,12 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ZipPlugin = require('zip-webpack-plugin');
 
 module.exports = {
     mode: 'development',
     devtool: 'source-map',
     context: path.join(__dirname, 'src'),
     entry: {
-        'service-worker': './service-worker/main.ts',
         popup: './popup/main.js',
         settings: './settings/main.js',
         dashboard: './dashboard/main.js',
@@ -24,12 +22,6 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.js'],
         modules: ['src', 'node_modules'],
-        fallback: {
-            stream: require.resolve('stream-browserify'),
-            buffer: false,
-            timers: false,
-            util: false,
-        },
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -61,10 +53,6 @@ module.exports = {
             ],
         }),
         new MiniCssExtractPlugin(),
-        new ZipPlugin({
-            path: '..',
-            filename: 'build-reactor.zip',
-        }),
     ],
     module: {
         rules: [

@@ -1,6 +1,2 @@
-define(['angular'], function(angular) {
-	
-	'use strict';
-
-	return angular.module('app.directives', []);
-});
+import angular from 'angular';
+export default angular.module('app.directives', []);

@@ -2,6 +2,7 @@
     "include": ["src/**/*", "test/**/*", "eslint.config.mjs", "vite.config.mts"],
     "exclude": ["node_modules", "**/*.spec.ts"],
     "compilerOptions": {
+        "jsx": "react",
         "allowJs": true,
         "baseUrl": "./src",
         "esModuleInterop": true,
