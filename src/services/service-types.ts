@@ -76,3 +76,29 @@ export interface CIService {
     // get latest build status for selected pipelines
     getLatestBuilds: (settings: CIServiceSettings) => Promise<CIBuild[]>;
 }
+
+export interface ServiceStateItem {
+    failedCount?: number;
+    runningCount?: number;
+    offlineCount?: number;
+    name: string;
+    items?: CIBuild[];
+}
+
+export interface ConfigStorageItem {
+    columns?: number;
+    fullWidthGroups?: boolean;
+    singleGroupRows?: boolean;
+    showCommits?: boolean;
+    showCommitsWhenGreen?: boolean;
+    theme?: string;
+    colorBlindMode?: boolean;
+    notifications?: {
+        enabled: boolean;
+        buildBroken: boolean;
+        buildFixed: boolean;
+        buildStarted: boolean;
+        buildSuccessful: boolean;
+        buildStillFailing: boolean;
+    };
+}

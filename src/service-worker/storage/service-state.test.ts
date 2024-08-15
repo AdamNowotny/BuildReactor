@@ -1,6 +1,7 @@
 import { CIBuild } from 'services/service-types';
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
-import stateStorage, { ServiceStateItem } from './service-state';
+import stateStorage from './service-state';
+import { ServiceStateItem } from 'services/service-types';
 import { Storage } from './storage';
 
 vi.mock('common/logger');

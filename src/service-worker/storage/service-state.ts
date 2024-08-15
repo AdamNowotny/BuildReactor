@@ -1,14 +1,6 @@
 import logger from 'common/logger';
 import { Storage } from './storage';
-import type { CIBuild } from 'services/service-types';
-
-export interface ServiceStateItem {
-    failedCount?: number;
-    runningCount?: number;
-    offlineCount?: number;
-    name: string;
-    items?: CIBuild[];
-}
+import type { CIBuild, ServiceStateItem } from 'services/service-types';
 
 const storage = new Storage<ServiceStateItem[]>({
     key: 'state',

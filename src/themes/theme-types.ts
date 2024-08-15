@@ -1,6 +1,6 @@
 import React from 'react';
-import { ServiceStateItem } from 'service-worker/storage/service-state';
-import { ConfigStorageItem } from 'service-worker/storage/view-config';
+import { ServiceStateItem } from 'services/service-types';
+import { ConfigStorageItem } from 'services/service-types';
 
 interface ThemeDefinition {
     name: string;
