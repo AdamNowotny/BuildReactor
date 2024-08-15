@@ -1,8 +1,8 @@
 import React from 'react';
-import { Theme, ThemeProps } from 'themes/theme-types';
-import NavBar from '../components/navbar';
-import './light.css';
 import Pipelines from 'themes/components/pipelines/pipelines';
+import { Theme, ThemeProps } from 'themes/theme-types';
+import NavBar from '../components/navbar/navbar';
+import './light.css';
 
 const Popup: React.FC<ThemeProps> = ({ viewConfig, serviceStates }: ThemeProps) => {
     return (
