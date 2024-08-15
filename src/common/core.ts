@@ -1,8 +1,17 @@
 import 'rx/dist/rx.binding';
 import Rx from 'rx';
 import logger from './logger';
+import testActiveProjects from './__mocks__/core.mock.activeProjects';
+import testViews from './__mocks__/core.mock.views';
+import testConfigurations from './__mocks__/core.mock.configurations';
 
-const init = function () {
+const init = function ({ test = false }) {
+    if (test) {
+        activeProjects.onNext(testActiveProjects);
+        configurations.onNext(testConfigurations);
+        views.onNext(testViews);
+        return;
+    }
     const statePort = chrome.runtime.connect({ name: 'state' });
     statePort.onMessage.addListener(function (message) {
         activeProjects.onNext(message);
