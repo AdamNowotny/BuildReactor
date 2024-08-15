@@ -4,7 +4,6 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './dashboard.css';
-import { ThemeProps } from './theme-types';
 // themes
 import darkTheme from './dark/dark';
 import lightTheme from './light/light';
@@ -18,7 +17,7 @@ const themes = {
 };
 
 const Dashboard = () => {
-    const [services, setServices] = useState<any[]>([]);
+    const [serviceStates, setServiceStates] = useState<any[]>([]);
     const [viewConfig, setViewConfig] = useState<any>({});
 
     useEffect(() => {
@@ -27,15 +26,14 @@ const Dashboard = () => {
         });
 
         core.activeProjects.subscribe((services: any) => {
-            setServices(services);
+            setServiceStates(services);
         });
     });
-    const themeProps: ThemeProps = { config: viewConfig, services };
     const ThemeComponent =
         themes[viewConfig.theme]?.Dashboard ?? themes['dark'].Dashboard;
     return (
         <div className={`theme theme-${viewConfig.theme}`}>
-            <ThemeComponent config={themeProps.config} services={themeProps.services} />
+            <ThemeComponent viewConfig={viewConfig} serviceStates={serviceStates} />
         </div>
     );
 };

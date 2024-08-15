@@ -4,17 +4,17 @@ import { Theme, ThemeProps } from 'themes/theme-types';
 import './dark.css';
 import Pipelines from 'themes/components/pipelines/pipelines';
 
-const Popup: React.FC<ThemeProps> = ({ config, services }) => {
+const Popup: React.FC<ThemeProps> = ({ viewConfig, serviceStates }: ThemeProps) => {
     return (
         <>
             <Navbar dark />
-            <Pipelines config={config} services={services} />
+            <Pipelines viewConfig={viewConfig} serviceStates={serviceStates} />
         </>
     );
 };
 
-const Dashboard = ({ config, services }) => (
-    <Pipelines config={config} services={services} />
+const Dashboard = ({ viewConfig, serviceStates }) => (
+    <Pipelines viewConfig={viewConfig} serviceStates={serviceStates} />
 );
 
 export default {

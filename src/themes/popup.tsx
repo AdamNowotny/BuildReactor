@@ -4,7 +4,6 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './popup.css';
-import { ThemeProps } from './theme-types';
 // themes
 import darkTheme from './dark/dark';
 import lightTheme from './light/light';
@@ -18,7 +17,7 @@ const themes = {
 };
 
 const Popup = () => {
-    const [services, setServices] = useState<any[]>([]);
+    const [serviceStates, setServiceStates] = useState<any[]>([]);
     const [viewConfig, setViewConfig] = useState<any>({});
 
     useEffect(() => {
@@ -26,15 +25,14 @@ const Popup = () => {
             setViewConfig(config);
         });
 
-        core.activeProjects.subscribe((services: any) => {
-            setServices(services);
+        core.activeProjects.subscribe((states: any) => {
+            setServiceStates(states);
         });
     });
-    const themeProps: ThemeProps = { config: viewConfig, services };
     const ThemeComponent = themes[viewConfig.theme]?.Popup ?? themes['dark'].Popup;
     return (
         <div className={`theme-${viewConfig.theme}`}>
-            <ThemeComponent config={themeProps.config} services={themeProps.services} />
+            <ThemeComponent viewConfig={viewConfig} serviceStates={serviceStates} />
         </div>
     );
 };

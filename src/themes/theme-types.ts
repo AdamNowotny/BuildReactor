@@ -14,6 +14,6 @@ export interface Theme {
 }
 
 export interface ThemeProps {
-    services: ServiceStateItem[];
-    config: ConfigStorageItem;
+    serviceStates: ServiceStateItem[];
+    viewConfig: ConfigStorageItem;
 }
