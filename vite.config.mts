@@ -4,11 +4,6 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
     base: './',
-    resolve: {
-        alias: {
-            stream: 'stream-browserify',
-        },
-    },
     plugins: [
         tsconfigPaths(),
         zipPack({
@@ -20,6 +15,7 @@ export default defineConfig({
     build: {
         emptyOutDir: false,
         sourcemap: true,
+        minify: true,
         rollupOptions: {
             input: {
                 'service-worker': 'src/service-worker/main.ts',
@@ -31,6 +27,11 @@ export default defineConfig({
                 chunkFileNames: '[name]-chunk.js',
                 assetFileNames: '[name].[ext]',
             },
+        },
+    },
+    resolve: {
+        alias: {
+            stream: 'stream-browserify',
         },
     },
     test: {

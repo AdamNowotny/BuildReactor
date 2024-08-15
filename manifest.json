@@ -14,22 +14,16 @@
         "default_popup": "popup.html"
     },
     "background": {
-        "service_worker": "service-worker.js"
+        "service_worker": "service-worker.js",
+        "type": "module"
     },
     "homepage_url": "https://github.com/AdamNowotny/BuildReactor",
     "options_ui": {
         "page": "settings.html",
         "open_in_tab": true
     },
-    "permissions": [
-        "alarms",
-        "notifications",
-        "storage"
-    ],
-    "host_permissions": [
-        "http://*/*",
-        "https://*/*"
-    ],
+    "permissions": ["alarms", "notifications", "storage"],
+    "host_permissions": ["http://*/*", "https://*/*"],
     "web_accessible_resources": [
         {
             "resources": ["services/*/*.png", "services/*/*.svg"],

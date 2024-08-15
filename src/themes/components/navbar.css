@@ -1,0 +1,41 @@
+.navbar {
+    padding-right: 1em;
+    padding-bottom: 5px;
+    min-height: 40px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-width: 0 0 1px;
+}
+
+.navbar-default {
+    background-color: #fff;
+}
+
+.navbar-inverse {
+    background-color: #222;
+}
+
+.navbar-nav {
+    margin: 7px -15px;
+}
+
+.navbar ul {
+    list-style: none;
+}
+
+.navbar li {
+    float: right;
+    display: block;
+}
+
+.navbar > ul > li > a {
+    color: #9d9d9d;
+    line-height: 20px;
+    padding: 10px 15px;
+}
+
+.navbar > ul > li > a:hover {
+    color: #fff;
+}

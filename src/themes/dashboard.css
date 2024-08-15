@@ -1,0 +1,9 @@
+@import 'font-awesome/scss/font-awesome.scss';
+
+body {
+    margin: 0;
+}
+
+.theme {
+    height: 100vh;
+}
