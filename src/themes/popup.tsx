@@ -29,9 +29,10 @@ const Popup = () => {
             setServiceStates(states);
         });
     });
-    const ThemeComponent = themes[viewConfig.theme]?.Popup ?? themes['dark'].Popup;
+    const themeName = viewConfig.theme ?? 'dark';
+    const ThemeComponent = themes[themeName].Popup;
     return (
-        <div className={`theme-${viewConfig.theme}`}>
+        <div className={`theme-${themeName}`}>
             <ThemeComponent viewConfig={viewConfig} serviceStates={serviceStates} />
         </div>
     );

@@ -8,7 +8,7 @@ import './dashboard.css';
 import darkTheme from './dark/dark';
 import lightTheme from './light/light';
 
-core.init();
+core.init({ test: true });
 logger.init({ prefix: 'dashboard' });
 
 const themes = {
@@ -24,15 +24,14 @@ const Dashboard = () => {
         core.views.subscribe(config => {
             setViewConfig(config);
         });
-
         core.activeProjects.subscribe((services: any) => {
             setServiceStates(services);
         });
     });
-    const ThemeComponent =
-        themes[viewConfig.theme]?.Dashboard ?? themes['dark'].Dashboard;
+    const themeName = viewConfig.theme ?? 'dark';
+    const ThemeComponent = themes[themeName].Dashboard;
     return (
-        <div className={`theme theme-${viewConfig.theme}`}>
+        <div className={`theme theme-${themeName}`}>
             <ThemeComponent viewConfig={viewConfig} serviceStates={serviceStates} />
         </div>
     );
