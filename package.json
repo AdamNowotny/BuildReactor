@@ -25,7 +25,7 @@
         }
     ],
     "scripts": {
-        "dev": "npx vite",
+        "dev": "npx vite --host",
         "lint": "node_modules/.bin/eslint .",
         "dist": "NODE_OPTIONS=--openssl-legacy-provider node_modules/.bin/webpack && npx vite build",
         "auto-dist": "ODE_OPTIONS=--openssl-legacy-provider node_modules/.bin/webpack --watch",
