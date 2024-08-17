@@ -6,3 +6,58 @@
     padding-bottom: 1em;
     text-align: center;
 }
+
+.service {
+    margin-bottom: 10px;
+
+    .service-name {
+        font-size: 18px;
+        font-weight: bold;
+        padding-top: 5px;
+        text-align: center;
+    }
+}
+
+.theme-dark {
+    .service .service-name {
+        color: #f90;
+    }
+}
+
+.theme-light {
+    .service .service-name {
+        color: #000;
+    }
+}
+
+.build-group {
+    .group-name {
+        clear: both;
+        display: block;
+        font-weight: bold;
+        font-size: 14px;
+        margin-top: 0.5em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .group-items {
+        display: flex;
+        flex-wrap: wrap;
+    }
+}
+
+.theme-dark {
+    .build-group .group-name {
+        color: #fff;
+        margin-bottom: -0.3em;
+        padding-left: 3px;
+    }
+}
+
+.theme-light {
+    .build-group .group-name {
+        border-bottom: 1px solid #999;
+        color: #000;
+    }
+}

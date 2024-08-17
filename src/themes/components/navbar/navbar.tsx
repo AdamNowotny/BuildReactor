@@ -5,7 +5,7 @@ export default ({ dark = false }) => {
     const navBarClass = dark ? 'navbar-inverse' : 'navbar-default';
     return (
         <div className={`navbar navbar-fixed-top ${navBarClass}`} role="navigation">
-            <ul>
+            <ul className="nav navbar-nav navbar-right">
                 <li>
                     <a
                         href="../../settings.html"
