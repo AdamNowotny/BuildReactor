@@ -20,7 +20,7 @@ module.exports = {
         clean: true,
     },
     resolve: {
-        extensions: ['.ts', '.js'],
+        extensions: ['.ts', '.js', '.tsx'],
         modules: ['src', 'node_modules'],
     },
     plugins: [
@@ -67,7 +67,7 @@ module.exports = {
                 },
             },
             {
-                test: /\.ts$/,
+                test: /\.(ts|tsx)?$/,
                 loader: 'ts-loader',
                 exclude: /node_modules/,
             },

@@ -3,6 +3,7 @@ import logger from 'common/logger';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import 'bootstrap/dist/css/bootstrap.css';
 import './dashboard.css';
 // themes
 import darkTheme from './dark/dark';

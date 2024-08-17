@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './pipelines.css';
-import { ThemeProps } from 'themes/theme-types';
 import { CIBuild, ConfigStorageItem, ServiceStateItem } from 'services/service-types';
 import Build from './build';
 import core from 'common/core';
