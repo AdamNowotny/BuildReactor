@@ -17,22 +17,18 @@ const themes = {
 };
 
 const Dashboard = () => {
-    const [serviceStates, setServiceStates] = useState<any[]>([]);
     const [viewConfig, setViewConfig] = useState<any>({});
 
     useEffect(() => {
         core.views.subscribe(config => {
             setViewConfig(config);
         });
-        core.activeProjects.subscribe((services: any) => {
-            setServiceStates(services);
-        });
     });
     const themeName = viewConfig.theme ?? 'dark';
     const ThemeComponent = themes[themeName].Dashboard;
     return (
         <div className={`theme theme-${themeName}`}>
-            <ThemeComponent viewConfig={viewConfig} serviceStates={serviceStates} />
+            <ThemeComponent viewConfig={viewConfig} />
         </div>
     );
 };

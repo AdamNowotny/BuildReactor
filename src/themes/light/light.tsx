@@ -4,18 +4,16 @@ import { Theme, ThemeProps } from 'themes/theme-types';
 import NavBar from '../components/navbar/navbar';
 import './light.css';
 
-const Popup: React.FC<ThemeProps> = ({ viewConfig, serviceStates }: ThemeProps) => {
+const Popup: React.FC<ThemeProps> = ({ viewConfig }: ThemeProps) => {
     return (
         <>
             <NavBar />
-            <Pipelines viewConfig={viewConfig} serviceStates={serviceStates} />
+            <Pipelines viewConfig={viewConfig} />
         </>
     );
 };
 
-const Dashboard = ({ viewConfig, serviceStates }) => (
-    <Pipelines viewConfig={viewConfig} serviceStates={serviceStates} />
-);
+const Dashboard = ({ viewConfig }) => <Pipelines viewConfig={viewConfig} />;
 
 export default {
     getDefinition: () => ({

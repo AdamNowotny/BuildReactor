@@ -4,18 +4,16 @@ import Pipelines from 'themes/components/pipelines/pipelines';
 import { Theme, ThemeProps } from 'themes/theme-types';
 import './dark.css';
 
-const Popup: React.FC<ThemeProps> = ({ viewConfig, serviceStates }: ThemeProps) => {
+const Popup: React.FC<ThemeProps> = ({ viewConfig }: ThemeProps) => {
     return (
         <>
             <Navbar dark />
-            <Pipelines viewConfig={viewConfig} serviceStates={serviceStates} />
+            <Pipelines viewConfig={viewConfig} />
         </>
     );
 };
 
-const Dashboard = ({ viewConfig, serviceStates }) => (
-    <Pipelines viewConfig={viewConfig} serviceStates={serviceStates} />
-);
+const Dashboard = ({ viewConfig }) => <Pipelines viewConfig={viewConfig} />;
 
 export default {
     getDefinition: () => ({

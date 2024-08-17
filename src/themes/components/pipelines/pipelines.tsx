@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './pipelines.css';
 import { ThemeProps } from 'themes/theme-types';
 import { CIBuild, ConfigStorageItem, ServiceStateItem } from 'services/service-types';
 import Build from './build';
+import core from 'common/core';
 
 const Builds = ({ builds }: { builds: CIBuild[] }) => {
     const width = 100 / Math.min(builds.length, config.columns ?? 1);
@@ -38,10 +39,10 @@ const BuildGroup = ({ groupName, builds }: { groupName: string; builds: CIBuild[
 };
 
 const BuildGroups = ({ serviceState }: { serviceState: ServiceStateItem }) => {
-    const groups = Map.groupBy(serviceState.items, ({ group }) => group);
+    const groups = Map.groupBy(serviceState.items ?? [], ({ group }) => group ?? '');
     const groupNames: string[] = Array.from(groups.keys());
     const groupsJsx = groupNames.map((key: string) => (
-        <BuildGroup key={key} groupName={key} builds={groups.get(key)} />
+        <BuildGroup key={key} groupName={key} builds={groups.get(key) ?? []} />
     ));
     return groupsJsx;
 };
@@ -54,8 +55,14 @@ const Service = ({ serviceState }: { serviceState: ServiceStateItem }) => (
 );
 
 let config: ConfigStorageItem;
-const Pipelines = ({ viewConfig, serviceStates }: ThemeProps) => {
+const Pipelines = ({ viewConfig }: { viewConfig: ConfigStorageItem }) => {
     config = viewConfig;
+    const [serviceStates, setServiceStates] = useState<any[]>([]);
+    useEffect(() => {
+        core.activeProjects.subscribe((services: any) => {
+            setServiceStates(services);
+        });
+    });
     let content;
     if (serviceStates.length) {
         content = serviceStates.map(serviceState => (

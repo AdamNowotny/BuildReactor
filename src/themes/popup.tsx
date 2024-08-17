@@ -17,23 +17,18 @@ const themes = {
 };
 
 const Popup = () => {
-    const [serviceStates, setServiceStates] = useState<any[]>([]);
     const [viewConfig, setViewConfig] = useState<any>({});
 
     useEffect(() => {
         core.views.subscribe(config => {
             setViewConfig(config);
         });
-
-        core.activeProjects.subscribe((states: any) => {
-            setServiceStates(states);
-        });
     });
     const themeName = viewConfig.theme ?? 'dark';
     const ThemeComponent = themes[themeName].Popup;
     return (
         <div className={`theme theme-${themeName}`}>
-            <ThemeComponent viewConfig={viewConfig} serviceStates={serviceStates} />
+            <ThemeComponent viewConfig={viewConfig} />
         </div>
     );
 };
