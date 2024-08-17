@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CIBuild, ConfigStorageItem } from 'services/service-types';
 import './build.css';
 
@@ -10,7 +10,18 @@ const Changes = ({
     viewConfig: ConfigStorageItem;
 }) => {
     if (!viewConfig.showCommits) return;
-    const changeIndex = 0; //todo
+    const [changeIndex, setChangeIndex] = useState(0);
+    const changesLength = build.changes?.length ?? 0;
+    if (changesLength > 1) {
+        useEffect(() => {
+            const interval = setInterval(() => {
+                setChangeIndex((changeIndex + 1) % changesLength);
+            }, 7000);
+            return () => {
+                clearInterval(interval);
+            };
+        });
+    }
     const commitsVisible =
         viewConfig.showCommitsWhenGreen ??
         build.isBroken ??
