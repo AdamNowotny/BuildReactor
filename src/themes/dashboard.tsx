@@ -8,7 +8,7 @@ import './dashboard.css';
 import darkTheme from './dark/dark';
 import lightTheme from './light/light';
 
-core.init({ test: true });
+core.init({ test: false });
 logger.init({ prefix: 'dashboard' });
 
 const themes = {

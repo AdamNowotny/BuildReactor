@@ -8,7 +8,7 @@ import './popup.css';
 import darkTheme from './dark/dark';
 import lightTheme from './light/light';
 
-core.init();
+core.init({ test: false });
 logger.init({ prefix: 'popup' });
 
 const themes = {
@@ -32,7 +32,7 @@ const Popup = () => {
     const themeName = viewConfig.theme ?? 'dark';
     const ThemeComponent = themes[themeName].Popup;
     return (
-        <div className={`theme-${themeName}`}>
+        <div className={`theme theme-${themeName}`}>
             <ThemeComponent viewConfig={viewConfig} serviceStates={serviceStates} />
         </div>
     );

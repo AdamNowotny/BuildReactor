@@ -1,6 +1,4 @@
-import Rx from 'rx';
-
-export default Rx.Observable.return([
+export default [
     {
         name: 'BuildReactor long name',
         baseUrl: 'cctray',
@@ -59,4 +57,4 @@ export default Rx.Observable.return([
         isDisabled: true,
         branch: 'release',
     },
-]);
+];
