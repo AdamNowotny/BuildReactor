@@ -19,6 +19,8 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 'service-worker': 'src/service-worker/main.ts',
+                popup: 'src/themes/popup.html',
+                dashboard: 'src/themes/dashboard.html',
             },
             output: {
                 dir: 'dist/build',

@@ -1,65 +1,62 @@
-@import "../common/directives/buildList/_buildList.scss";
-@import "../common/directives/service/_service.scss";
-@import "../common/directives/buildGroup/_buildGroup.scss";
-@import "../common/directives/build/_build.scss";
-@import "add/directives/serviceNamePanel/_serviceNamePanel.scss";
-@import "add/directives/thumbnails/_thumbnails.scss";
-@import "configuration/directives/jsonEditor/_jsonEditor.scss";
-@import "directives/alert/_alert.scss";
-@import "directives/onOffSwitch/_onOffSwitch.scss";
-@import "directives/sidebar/_sidebar.scss";
-@import "directives/topnav/_topnav.scss";
-@import "service/directives/dynamicForm/_dynamicForm.scss";
-@import "service/directives/filterQuery/_filterQuery.scss";
-@import "service/directives/projectList/_projectList.scss";
-@import "service/directives/selectedProjects/_selectedProjects.scss";
+@import 'add/directives/serviceNamePanel/_serviceNamePanel.scss';
+@import 'add/directives/thumbnails/_thumbnails.scss';
+@import 'configuration/directives/jsonEditor/_jsonEditor.scss';
+@import 'directives/alert/_alert.scss';
+@import 'directives/onOffSwitch/_onOffSwitch.scss';
+@import 'directives/sidebar/_sidebar.scss';
+@import 'directives/topnav/_topnav.scss';
+@import 'service/directives/dynamicForm/_dynamicForm.scss';
+@import 'service/directives/filterQuery/_filterQuery.scss';
+@import 'service/directives/projectList/_projectList.scss';
+@import 'service/directives/selectedProjects/_selectedProjects.scss';
 
-html, body {
-	height: 100%;
+html,
+body {
+    height: 100%;
 }
 
 body {
-	padding-top: 55px;
+    padding-top: 55px;
 }
 
 a {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .content-container {
-	bottom: 0;
-	left: 241px;
-	position: absolute;
-	right: 0;
-	top: 60px;
+    bottom: 0;
+    left: 241px;
+    position: absolute;
+    right: 0;
+    top: 60px;
 
-	.alert-danger {
-		clear: both;
-		margin: 10px;
-	}
+    .alert-danger {
+        clear: both;
+        margin: 10px;
+    }
 }
 
 .settings-container {
-	box-sizing: border-box;
-	float: left;
-	width: 50%;
+    box-sizing: border-box;
+    float: left;
+    width: 50%;
 }
 
 .settings-buttons {
-	text-align: center;
+    text-align: center;
 }
 
 .project-selection-container {
-	box-sizing: border-box;
-	float: left;
-	padding: 0 10px;
-	width: 50%;
+    box-sizing: border-box;
+    float: left;
+    padding: 0 10px;
+    width: 50%;
 }
 
 .theme-dark {
-  background-color: #000;
+    background-color: #000;
 }
 
 .theme-light {
-  background-color: #fff;
+    background-color: #fff;
 }

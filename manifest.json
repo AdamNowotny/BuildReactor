@@ -11,7 +11,7 @@
     "action": {
         "default_title": "BuildReactor",
         "default_icon": "img/icon-19.png",
-        "default_popup": "popup.html"
+        "default_popup": "src/themes/popup.html"
     },
     "background": {
         "service_worker": "service-worker.js",

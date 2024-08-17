@@ -11,9 +11,7 @@ module.exports = {
     devtool: 'source-map',
     context: path.join(__dirname, 'src'),
     entry: {
-        popup: './popup/main.js',
         settings: './settings/main.js',
-        dashboard: './dashboard/main.js',
     },
     output: {
         path: path.join(__dirname, 'dist/build'),
@@ -29,20 +27,6 @@ module.exports = {
             filename: 'settings.html',
             inject: 'body',
             chunks: ['commons', 'settings'],
-            minify: false,
-        }),
-        new HtmlWebpackPlugin({
-            template: 'popup/index.html',
-            filename: 'popup.html',
-            inject: 'body',
-            chunks: ['commons', 'popup'],
-            minify: false,
-        }),
-        new HtmlWebpackPlugin({
-            template: 'dashboard/index.html',
-            filename: 'dashboard.html',
-            inject: 'body',
-            chunks: ['commons', 'dashboard'],
             minify: false,
         }),
         new CopyWebpackPlugin({

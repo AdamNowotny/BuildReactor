@@ -1,4 +1,3 @@
-import 'common/directives/buildList/buildList';
 import angular from 'angular';
 import app from 'settings/app';
 import core from 'common/core';
@@ -12,12 +11,6 @@ export default app.controller('ViewSettingsCtrl', function ($scope) {
                 document.getElementById('settings-dashboard'),
                 config,
             );
-        });
-    });
-
-    core.activeProjects.subscribe(function (projects) {
-        $scope.$evalAsync(function () {
-            $scope.activeProjects = projects;
         });
     });
 
