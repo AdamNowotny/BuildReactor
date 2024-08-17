@@ -1,8 +1,49 @@
 import React from 'react';
-import { CIBuild } from 'services/service-types';
+import { CIBuild, ConfigStorageItem } from 'services/service-types';
 import './build.css';
 
-const Build = ({ build, width }: { build: CIBuild; width: number }) => {
+const Changes = ({
+    build,
+    viewConfig,
+}: {
+    build: CIBuild;
+    viewConfig: ConfigStorageItem;
+}) => {
+    if (!viewConfig.showCommits) return;
+    const changeIndex = 0; //todo
+    const commitsVisible =
+        viewConfig.showCommitsWhenGreen ??
+        build.isBroken ??
+        build.isRunning ??
+        build.isWaiting;
+    return (
+        <div className={`changes-container ${commitsVisible ? 'visible' : ''}`}>
+            {build.changes?.map((change, index) => (
+                <div key={index}>
+                    <span
+                        className={`changes ${index === changeIndex ? 'active' : ''}`}
+                        title={`${change.name}: ${change.message ?? ''}`}
+                    >
+                        <span className="change-name">{change.name}</span>
+                        {change.message && (
+                            <span className="change-message">: {change.message}</span>
+                        )}
+                    </span>
+                </div>
+            ))}
+        </div>
+    );
+};
+
+const Build = ({
+    build,
+    width,
+    viewConfig,
+}: {
+    build: CIBuild;
+    width: number;
+    viewConfig: ConfigStorageItem;
+}) => {
     return (
         <div
             key={build.id}
@@ -19,9 +60,8 @@ const Build = ({ build, width }: { build: CIBuild; width: number }) => {
                 }`}
             >
                 <div className="build-content">
-                    <span className="build-name">
-                        {classes}/{build.name}
-                    </span>
+                    <span className="build-name">{build.name}</span>
+                    <Changes viewConfig={viewConfig} build={build} />
                 </div>
                 <div className="color-blind-markers">
                     <i className="color-blind-marker-broken fa fa-bolt fa-2x fa-inverse"></i>

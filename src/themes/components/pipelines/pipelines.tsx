@@ -9,7 +9,14 @@ const Builds = ({ builds }: { builds: CIBuild[] }) => {
     return (
         <div className="group-items">
             {builds.map((build: CIBuild) => {
-                return <Build key={build.id} build={build} width={width} />;
+                return (
+                    <Build
+                        key={build.id}
+                        viewConfig={config}
+                        build={build}
+                        width={width}
+                    />
+                );
             })}
         </div>
     );
