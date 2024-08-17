@@ -35,6 +35,30 @@ const Changes = ({
     );
 };
 
+const Labels = ({ build }: { build: CIBuild }) => {
+    return (
+        <span className="labels pull-right">
+            {build.error && (
+                <span
+                    className="label label-default"
+                    uib-tooltip="{{ build.error.description }}"
+                >
+                    Offline <span className="error-message">({build.error.message})</span>
+                </span>
+            )}
+            {build.isDisabled && <span className="label label-default">Disabled</span>}
+            {build.tags?.map(tag => (
+                <span
+                    className={`label ${tag.type ? 'label-' + tag.type : ''}`}
+                    uib-tooltip="{{ build.description }}"
+                >
+                    {tag.name}
+                </span>
+            ))}
+        </span>
+    );
+};
+
 const Build = ({
     build,
     width,
@@ -60,6 +84,7 @@ const Build = ({
                 }`}
             >
                 <div className="build-content">
+                    <Labels build={build} />
                     <span className="build-name">{build.name}</span>
                     <Changes viewConfig={viewConfig} build={build} />
                 </div>
