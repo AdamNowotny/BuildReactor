@@ -18,7 +18,15 @@ const Build = ({ build, width }: { build: CIBuild; width: number }) => {
                     build.isRunning ?? build.isWaiting ? 'progress-bar-striped' : ''
                 }`}
             >
-                <span className="build-name">{build.name}</span>
+                <div className="build-content">
+                    <span className="build-name">
+                        {classes}/{build.name}
+                    </span>
+                </div>
+                <div className="color-blind-markers">
+                    <i className="color-blind-marker-broken fa fa-bolt fa-2x fa-inverse"></i>
+                    <i className="color-blind-marker-offline fa fa-exclamation-triangle fa-2x fa-inverse"></i>
+                </div>
             </a>
         </div>
     );

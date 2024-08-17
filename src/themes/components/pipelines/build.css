@@ -72,7 +72,7 @@
 
     .color-blind-markers {
         position: absolute;
-        top: 2px;
+        top: 5px;
         right: 1em;
 
         i {
@@ -80,9 +80,6 @@
             display: none;
         }
     }
-}
-
-.color-blind {
     .labels {
         right: 40px;
     }
