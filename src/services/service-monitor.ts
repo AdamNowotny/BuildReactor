@@ -9,9 +9,7 @@ const ALARM_NAME = 'update';
 
 const init = () => {
     logger.info('service-monitor.init');
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     chrome.alarms.onAlarm.addListener(alarmHandler);
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     serviceConfig.onChanged.subscribe(configChangedHandler);
 };
 

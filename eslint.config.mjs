@@ -10,6 +10,7 @@ export default tseslint.config(
         ignores: [
             '**/node_modules/**',
             'src/test/**',
+            'dist/**',
             '**/*.spec.js',
             '**/webpack.config.js',
         ],
@@ -19,6 +20,7 @@ export default tseslint.config(
             globals: {
                 ...globals.node,
                 ...globals.webextensions,
+                ...globals.browser,
             },
             parserOptions: {
                 project: true,

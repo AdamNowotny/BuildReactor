@@ -1,3 +1,4 @@
+/// <reference types="chrome"/>
 import 'rx/dist/rx.binding';
 import Rx from 'rx';
 import logger from './logger';
