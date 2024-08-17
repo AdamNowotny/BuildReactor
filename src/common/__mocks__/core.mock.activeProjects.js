@@ -3,6 +3,7 @@ export default [
         name: 'BuildReactor (fake builds)',
         items: [
             {
+                id: '1',
                 name: 'Success',
                 group: 'Normal',
                 isBroken: false,
@@ -16,6 +17,7 @@ export default [
                 ],
             },
             {
+                id: '2',
                 name: 'Unstable',
                 group: 'Normal',
                 isBroken: true,
@@ -29,11 +31,13 @@ export default [
                     },
                     {
                         name: 'Name2',
-                        message: 'A really long commit message that will most likely be truncated',
+                        message:
+                            'A really long commit message that will most likely be truncated',
                     },
                 ],
             },
             {
+                id: '3',
                 name: 'Failed',
                 group: 'Normal',
                 isBroken: true,
@@ -46,6 +50,7 @@ export default [
                 ],
             },
             {
+                id: '4',
                 name: 'Success',
                 group: 'Building',
                 isBroken: false,
@@ -54,6 +59,7 @@ export default [
                 changes: [],
             },
             {
+                id: '5',
                 name: 'Failed',
                 group: 'Building',
                 isBroken: true,
@@ -61,6 +67,7 @@ export default [
                 isRunning: true,
             },
             {
+                id: '6',
                 name: 'Unstable',
                 group: 'Building',
                 isBroken: true,
@@ -69,6 +76,7 @@ export default [
                 tags: [{ name: 'Unstable', type: 'warning' }],
             },
             {
+                id: '7',
                 name: 'Success',
                 group: 'Disabled',
                 isBroken: false,
@@ -77,6 +85,7 @@ export default [
                 isRunning: false,
             },
             {
+                id: '8',
                 name: 'Failed',
                 group: 'Disabled',
                 isBroken: true,
@@ -90,6 +99,7 @@ export default [
         name: 'BuildReactor (fake offline builds)',
         items: [
             {
+                id: '10',
                 name: 'Failed building offline',
                 group: 'Offline',
                 error: { name: 'Error', message: 'Ajax error' },
@@ -108,6 +118,7 @@ export default [
                 ],
             },
             {
+                id: '11',
                 name: 'Success building offline',
                 group: 'Offline',
                 error: { name: 'Error', message: 'Ajax error' },
@@ -116,6 +127,7 @@ export default [
                 isRunning: true,
             },
             {
+                id: '12',
                 name: 'Failed offline',
                 group: 'Offline',
                 error: { name: 'Error', message: 'Ajax error' },
@@ -124,6 +136,7 @@ export default [
                 isRunning: false,
             },
             {
+                id: '13',
                 name: 'Success offline',
                 group: 'Offline',
                 error: { name: 'Error', message: 'Ajax error' },
@@ -132,6 +145,7 @@ export default [
                 isRunning: false,
             },
             {
+                id: '14',
                 name: 'Success disabled offline',
                 group: 'Offline',
                 error: { name: 'Error', message: 'Ajax error' },
@@ -141,6 +155,7 @@ export default [
                 isDisabled: true,
             },
             {
+                id: '15',
                 name: 'Broken disabled offline',
                 group: 'Offline',
                 error: { name: 'Error', message: 'Ajax error' },

@@ -10,8 +10,8 @@ import core from 'common/core';
 import logger from 'common/logger';
 
 logger.init({ prefix: 'settings' });
-core.init();
+core.init({ test: false });
 
 angular.element(document).ready(() => {
-	angular.bootstrap(document, ['settings']);
+    angular.bootstrap(document, ['settings']);
 });

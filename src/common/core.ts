@@ -5,6 +5,11 @@ import logger from './logger';
 import testActiveProjects from './__mocks__/core.mock.activeProjects';
 import testViews from './__mocks__/core.mock.views';
 import testConfigurations from './__mocks__/core.mock.configurations';
+import {
+    CIServiceSettings,
+    ConfigStorageItem,
+    ServiceStateItem,
+} from 'services/service-types';
 
 const init = function ({ test = false }) {
     if (test) {
@@ -27,9 +32,9 @@ const init = function ({ test = false }) {
     });
 };
 
-const activeProjects = new Rx.ReplaySubject(1);
-const configurations = new Rx.ReplaySubject(1);
-const views = new Rx.ReplaySubject(1);
+const activeProjects = new Rx.ReplaySubject<ServiceStateItem[]>(1);
+const configurations = new Rx.ReplaySubject<CIServiceSettings[]>(1);
+const views = new Rx.ReplaySubject<ConfigStorageItem>(1);
 
 const availableServices = function (callback) {
     const message = { name: 'availableServices' };

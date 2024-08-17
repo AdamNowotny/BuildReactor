@@ -3,7 +3,6 @@ import angular from 'angular';
 import app from 'settings/app';
 import core from 'common/core';
 import settingsDashboard from './components/settingsDashboard';
-import { ConfigStorageItem } from 'services/service-types';
 
 export default app.controller('ViewSettingsCtrl', function ($scope) {
     core.views.subscribe(function (config) {
@@ -11,7 +10,7 @@ export default app.controller('ViewSettingsCtrl', function ($scope) {
             $scope.viewConfig = config;
             settingsDashboard.render(
                 document.getElementById('settings-dashboard'),
-                config as ConfigStorageItem,
+                config,
             );
         });
     });
