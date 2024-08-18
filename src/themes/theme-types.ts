@@ -1,17 +1,9 @@
 import React, { createContext } from 'react';
 import { ConfigStorageItem } from 'services/service-types';
 
-interface ThemeDefinition {
-    name: string;
-    defaultViewSettings: Record<string, any>;
-}
+export type Theme = React.ComponentType<ThemeProps>;
 
-export interface Theme {
-    getDefinition(): ThemeDefinition;
-    Dashboard: React.ComponentType<ThemeProps>;
-}
-
-interface ThemeProps {
+export interface ThemeProps {
     popup: boolean;
 }
 

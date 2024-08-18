@@ -1,5 +1,6 @@
 .theme-light {
     background-color: #fff;
+    padding: 5px;
 
     .service .service-name {
         color: #000;

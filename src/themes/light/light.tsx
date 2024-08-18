@@ -1,10 +1,10 @@
 import React from 'react';
 import Pipelines from 'themes/components/pipelines/pipelines';
-import { Theme } from 'themes/theme-types';
+import { ThemeProps } from 'themes/theme-types';
 import Navbar from '../components/navbar/navbar';
 import './light.css';
 
-const Dashboard = ({ popup }: { popup: boolean }) => {
+export default ({ popup }: ThemeProps) => {
     return (
         <>
             {popup && <Navbar />}
@@ -12,14 +12,3 @@ const Dashboard = ({ popup }: { popup: boolean }) => {
         </>
     );
 };
-
-export default {
-    getDefinition: () => ({
-        name: 'light',
-        defaultViewSettings: {
-            columns: 2,
-            fullWidthGroups: true,
-        },
-    }),
-    Dashboard,
-} as Theme;

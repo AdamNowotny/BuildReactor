@@ -1,8 +1,11 @@
 @import 'font-awesome/scss/font-awesome.scss';
 
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
 .theme {
     min-height: 100vh;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     min-width: 350px;
-    padding: 45px 0 0 0;
+    padding-top: 45px;
 }

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Theme, ViewContext } from 'themes/theme-types';
 import darkTheme from '../../dark/dark';
 import lightTheme from '../../light/light';
+import { ConfigStorageItem } from 'services/service-types';
 
 const themes: Record<string, Theme> = {
     dark: darkTheme,
@@ -10,7 +11,7 @@ const themes: Record<string, Theme> = {
 };
 
 const ThemeProvider = ({ popup }) => {
-    const [viewConfig, setViewConfig] = useState<any>({});
+    const [viewConfig, setViewConfig] = useState<ConfigStorageItem>({});
 
     useEffect(() => {
         core.views.subscribe(config => {
@@ -18,7 +19,7 @@ const ThemeProvider = ({ popup }) => {
         });
     });
     const themeName = viewConfig.theme ?? 'dark';
-    const Dashboard = themes[themeName].Dashboard;
+    const Dashboard = themes[themeName];
     return (
         <React.StrictMode>
             <ViewContext.Provider value={viewConfig}>
