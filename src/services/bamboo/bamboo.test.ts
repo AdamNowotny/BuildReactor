@@ -1,5 +1,5 @@
 import request from 'service-worker/request';
-import { CIBuildChange, CIServiceSettings } from 'services/service-types';
+import { CIBuildChange, CIServiceSettings } from 'common/types';
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import bamboo from './bamboo';
 import projectsJson from './projects.json';

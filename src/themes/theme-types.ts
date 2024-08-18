@@ -1,5 +1,5 @@
 import React, { createContext } from 'react';
-import { ConfigStorageItem } from 'services/service-types';
+import { ConfigStorageItem } from 'common/types';
 
 export type Theme = React.ComponentType<ThemeProps>;
 

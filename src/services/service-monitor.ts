@@ -2,8 +2,8 @@ import logger from 'common/logger';
 import serviceConfig from 'service-worker/storage/service-config';
 import stateStorage from 'service-worker/storage/service-state';
 import { StorageChangeEvent } from 'service-worker/storage/storage';
+import type { CIServiceSettings } from 'common/types';
 import serviceRepository from './service-repository';
-import type { CIServiceSettings } from './service-types';
 
 const ALARM_NAME = 'update';
 

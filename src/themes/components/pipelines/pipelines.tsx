@@ -1,6 +1,6 @@
 import core from 'common/core';
 import React, { useContext, useEffect, useState } from 'react';
-import { CIBuild, ServiceStateItem } from 'services/service-types';
+import { CIBuild, ServiceStateItem } from 'common/types';
 import { ViewContext } from 'themes/theme-types';
 import Build from './build';
 import './pipelines.css';

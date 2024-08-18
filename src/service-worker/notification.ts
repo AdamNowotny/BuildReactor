@@ -1,4 +1,4 @@
-import type { CIBuild } from 'services/service-types';
+import type { CIBuild } from 'common/types';
 import serviceConfig from './storage/service-config';
 import viewConfig from './storage/view-config';
 import logger from 'common/logger';

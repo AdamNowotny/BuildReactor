@@ -6,13 +6,8 @@ import jenkins from 'services/jenkins/jenkins';
 import teamcity from 'services/teamcity/teamcity';
 import travis from 'services/travis/travis';
 
-import type {
-    CIBuild,
-    CIPipelineList,
-    CIService,
-    CIServiceSettings,
-} from './service-types';
 import logger from 'common/logger';
+import type { CIBuild, CIPipelineList, CIService, CIServiceSettings } from 'common/types';
 import github from './github/github';
 
 const serviceMap = new Map<string, CIService>();

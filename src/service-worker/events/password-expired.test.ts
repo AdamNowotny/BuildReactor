@@ -1,7 +1,7 @@
 import notification from 'service-worker/notification';
 import serviceConfig from 'service-worker/storage/service-config';
 import serviceState from 'service-worker/storage/service-state';
-import { beforeEach, expect, it, vi } from 'vitest';
+import { expect, it, vi } from 'vitest';
 import passwordExpired from './password-expired';
 
 vi.mock('common/logger');

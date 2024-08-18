@@ -5,7 +5,7 @@ import type {
     CIPipeline,
     CIServiceDefinition,
     CIServiceSettings,
-} from 'services/service-types';
+} from 'common/types';
 
 const requestProjects = (settings: CIServiceSettings): Promise<any> => {
     return request.get({

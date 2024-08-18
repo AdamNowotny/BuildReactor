@@ -6,7 +6,7 @@ import type {
     CIPipeline,
     CIServiceDefinition,
     CIServiceSettings,
-} from 'services/service-types';
+} from 'common/types';
 
 const getPipelines = async (settings: CIServiceSettings): Promise<CIPipeline[]> => {
     logger.log('cctray.getPipelines', settings);

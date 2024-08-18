@@ -3,7 +3,7 @@
 To add support for a new type of service in BuildReactor you need to implement three methods described below and register the service.
 
 You can look up all the TypeScript types involved here:
-https://github.com/AdamNowotny/BuildReactor/blob/master/src/services/service-types.ts#L71-L78
+https://github.com/AdamNowotny/BuildReactor/blob/master/src/common/types.ts#L71-L78
 
 For examples look at implementations in the services folder:
 

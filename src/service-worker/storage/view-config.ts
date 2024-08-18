@@ -1,4 +1,4 @@
-import { ConfigStorageItem } from 'services/service-types';
+import { ConfigStorageItem } from 'common/types';
 import { Storage } from './storage';
 
 const defaultConfiguration: ConfigStorageItem = {

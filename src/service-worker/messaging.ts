@@ -3,7 +3,7 @@ import serviceRepository from '../services/service-repository';
 import stateStorage from './storage/service-state';
 import viewConfigStorage from './storage/view-config';
 import serviceConfig from './storage/service-config';
-import { CIServiceSettings } from 'services/service-types';
+import { CIServiceSettings } from 'common/types';
 
 function availableServices(sendResponse: any) {
     const response = serviceRepository.getAllDefinitions();

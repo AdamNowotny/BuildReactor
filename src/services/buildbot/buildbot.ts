@@ -1,6 +1,6 @@
 import logger from 'common/logger';
 import request from 'service-worker/request';
-import type { CIBuild, CIPipeline, CIServiceSettings } from 'services/service-types';
+import type { CIBuild, CIPipeline, CIServiceSettings } from 'common/types';
 
 const requestBuilders = (settings: CIServiceSettings) =>
     request.get({

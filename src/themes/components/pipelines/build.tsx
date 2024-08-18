@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { CIBuild } from 'services/service-types';
+import { CIBuild } from 'common/types';
 import { ViewContext } from 'themes/theme-types';
 import './build.css';
 

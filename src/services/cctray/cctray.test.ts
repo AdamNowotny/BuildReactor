@@ -1,6 +1,6 @@
 import fs from 'fs';
 import request from 'service-worker/request';
-import { CIServiceSettings } from 'services/service-types';
+import { CIServiceSettings } from 'common/types';
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import { parseString } from 'xml2js';
 import cctray from './cctray';

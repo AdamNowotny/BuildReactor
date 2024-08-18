@@ -5,11 +5,7 @@ import logger from './logger';
 import testActiveProjects from './__mocks__/core.mock.activeProjects';
 import testViews from './__mocks__/core.mock.views';
 import testConfigurations from './__mocks__/core.mock.configurations';
-import {
-    CIServiceSettings,
-    ConfigStorageItem,
-    ServiceStateItem,
-} from 'services/service-types';
+import { CIServiceSettings, ConfigStorageItem, ServiceStateItem } from 'common/types';
 
 const init = function ({ test = false }) {
     if (test) {

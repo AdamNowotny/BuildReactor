@@ -1,10 +1,8 @@
 import logger from 'common/logger';
+import { CIBuild, ConfigStorageItem, ServiceStateItem } from 'common/types';
 import notification from 'service-worker/notification';
 import viewConfig from 'service-worker/storage/view-config';
-import { ConfigStorageItem } from 'services/service-types';
-import { CIBuild } from 'services/service-types';
 import serviceState from '../storage/service-state';
-import { ServiceStateItem } from 'services/service-types';
 
 const init = () => {
     logger.info('build-finished.init');

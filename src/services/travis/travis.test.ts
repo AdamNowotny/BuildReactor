@@ -1,5 +1,5 @@
 import request from 'service-worker/request';
-import { CIServiceSettings } from 'services/service-types';
+import { CIServiceSettings } from 'common/types';
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import buildsJson from './builds.json';
 import buildsFailedJson from './builds_failed.json';

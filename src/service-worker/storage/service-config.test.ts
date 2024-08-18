@@ -1,4 +1,4 @@
-import { CIServiceSettings } from 'services/service-types';
+import { CIServiceSettings } from 'common/types';
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import serviceConfig from './service-config';
 import { Storage } from './storage';

@@ -7,7 +7,7 @@ import type {
     CIPipeline,
     CIServiceDefinition,
     CIServiceSettings,
-} from 'services/service-types';
+} from 'common/types';
 
 const requestRepositories = (settings: CIServiceSettings) =>
     request.get({

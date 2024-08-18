@@ -6,7 +6,7 @@ import type {
     CIPipeline,
     CIServiceDefinition,
     CIServiceSettings,
-} from 'services/service-types';
+} from 'common/types';
 
 const requestOrganizations = async (settings: CIServiceSettings) => {
     const response = await request.get({

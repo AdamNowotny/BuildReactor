@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Theme, ViewContext } from 'themes/theme-types';
 import darkTheme from '../../dark/dark';
 import lightTheme from '../../light/light';
-import { ConfigStorageItem } from 'services/service-types';
+import { ConfigStorageItem } from 'common/types';
 
 const themes: Record<string, Theme> = {
     dark: darkTheme,

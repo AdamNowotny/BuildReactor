@@ -1,6 +1,6 @@
+import { CIService, CIServiceSettings } from 'common/types';
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import serviceRepository from './service-repository';
-import { CIService, CIServiceSettings } from './service-types';
 
 vi.mock('common/logger');
 

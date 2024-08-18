@@ -1,6 +1,6 @@
 import logger from 'common/logger';
 import { Storage } from './storage';
-import { CIServiceSettings } from 'services/service-types';
+import { CIServiceSettings } from 'common/types';
 
 const storage = new Storage<CIServiceSettings[]>({
     key: 'services',
