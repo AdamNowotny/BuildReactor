@@ -28,8 +28,9 @@ const configChangedHandler = async (value: StorageChangeEvent<CIServiceSettings[
 };
 
 const updateAll = async (allConfigs: CIServiceSettings[]) => {
-    logger.group('service-monitor.updateAll');
     await chrome.alarms.clearAll();
+    if (allConfigs.length === 0) return;
+    logger.group('service-monitor.updateAll');
     const updatedServices = await Promise.all(
         allConfigs
             .filter(config => !config.isDisabled)

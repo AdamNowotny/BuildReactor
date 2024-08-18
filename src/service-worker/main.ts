@@ -12,7 +12,7 @@ import viewConfigStorage from './storage/view-config';
 import notification from './notification';
 
 void (async () => {
-    logger.init({ prefix: 'service-worker' });
+    logger.init({ prefix: 'service-worker', debug: false });
     await serviceConfig.init();
     await viewConfigStorage.init();
     await stateStorage.init();

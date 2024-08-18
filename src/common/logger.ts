@@ -1,9 +1,11 @@
 /* eslint-disable no-console */
 
 let LOG_NAMESPACE = 'LOG';
+let debug = false;
 
-const init = (options: { prefix: string }) => {
+const init = (options: { prefix: string; debug?: boolean }) => {
     LOG_NAMESPACE = options.prefix;
+    debug = options.debug ?? false;
 
     self.onerror = function (message, url, line) {
         console.error(
@@ -15,6 +17,7 @@ const init = (options: { prefix: string }) => {
 };
 
 const log = (...args) => {
+    if (!debug) return;
     console.debug(LOG_NAMESPACE, ...args);
 };
 
