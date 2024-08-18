@@ -5,7 +5,6 @@
     "homepage": "https://github.com/AdamNowotny/BuildReactor",
     "author": {
         "name": "Adam Nowotny",
-        "email": "adam.nowotny@gmail.com",
         "url": "https://github.com/AdamNowotny"
     },
     "engines": {
@@ -26,9 +25,8 @@
     ],
     "scripts": {
         "dev": "npx vite --host",
-        "lint": "node_modules/.bin/eslint .",
         "dist": "NODE_OPTIONS=--openssl-legacy-provider node_modules/.bin/webpack && npx vite build",
-        "auto-dist": "ODE_OPTIONS=--openssl-legacy-provider node_modules/.bin/webpack --watch",
+        "lint": "node_modules/.bin/eslint .",
         "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js",
         "test": "vitest --run",
         "test:watch": "vitest"
