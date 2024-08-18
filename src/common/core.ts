@@ -17,14 +17,17 @@ const init = function ({ test = false }) {
     const statePort = chrome.runtime.connect({ name: 'state' });
     statePort.onMessage.addListener(function (message) {
         activeProjects.onNext(message);
+        logger.log('core.state', message);
     });
     const configPort = chrome.runtime.connect({ name: 'configuration' });
     configPort.onMessage.addListener(function (message) {
         configurations.onNext(message);
+        logger.log('core.configuration', message);
     });
     const viewConfigPort = chrome.runtime.connect({ name: 'views' });
     viewConfigPort.onMessage.addListener(function (message) {
         views.onNext(message);
+        logger.log('core.view', message);
     });
 };
 

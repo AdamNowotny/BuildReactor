@@ -7,7 +7,7 @@ import ThemeProvider from './components/theme/themeProvider';
 import './popup.css';
 
 core.init({ test: false });
-logger.init({ prefix: 'popup' });
+logger.init({ prefix: 'popup', debug: true });
 
 const container = document.getElementById('app');
 if (!container) throw new Error("Could not find 'app' element");
