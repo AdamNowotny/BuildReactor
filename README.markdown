@@ -75,9 +75,15 @@ This will open project with all needed dependencies.
 
 `npm run test:watch` - use during development to run tests continuously
 
-## Development
+`npm run dev` - opens web server at `http://localhost:5137/` for popup and dashboard testing.
 
-[Adding new services](docs/adding-new-services.markdown)
+**Note** - Use `core.init({ test: true })` to get mocked responses as service worker is not available. Without it the pages will fail to load in Vite web server.
+
+## Contribute
+
+[Adding new service](docs/new-service.markdown)
+
+[Adding new dashboard](docs/new-dashboard.markdown)
 
 # Legal
 
