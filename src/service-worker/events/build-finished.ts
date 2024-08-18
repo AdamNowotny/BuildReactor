@@ -1,5 +1,5 @@
 import logger from 'common/logger';
-import { CIBuild, ConfigStorageItem, ServiceStateItem } from 'common/types';
+import { CIBuild, ViewConfig, ServiceStateItem } from 'common/types';
 import notification from 'service-worker/notification';
 import viewConfig from 'service-worker/storage/view-config';
 import serviceState from '../storage/service-state';
@@ -10,7 +10,7 @@ const init = () => {
     viewConfig.onChanged.subscribe(configurationChangeHandler);
 };
 
-let config: ConfigStorageItem = {};
+let config: ViewConfig = {};
 const configurationChangeHandler = ({ oldValue, newValue }) => {
     logger.log('build-finished.viewConfig.onChanged', oldValue, newValue);
     config = newValue;

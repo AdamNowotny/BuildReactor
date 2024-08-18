@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Theme, ViewContext } from 'themes/theme-types';
 import darkTheme from '../../dark/dark';
 import lightTheme from '../../light/light';
-import { ConfigStorageItem } from 'common/types';
+import { ViewConfig } from 'common/types';
 
 const themes: Record<string, Theme> = {
     dark: darkTheme,
@@ -11,7 +11,7 @@ const themes: Record<string, Theme> = {
 };
 
 const ThemeProvider = ({ popup }) => {
-    const [viewConfig, setViewConfig] = useState<ConfigStorageItem>({});
+    const [viewConfig, setViewConfig] = useState<ViewConfig>({});
 
     useEffect(() => {
         core.views.subscribe(config => {

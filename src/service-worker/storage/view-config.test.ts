@@ -1,6 +1,6 @@
 import { beforeEach, expect, it, Mock, vi } from 'vitest';
 import viewConfigStorage from './view-config';
-import { ConfigStorageItem } from 'common/types';
+import { ViewConfig } from 'common/types';
 import { Storage } from './storage';
 
 vi.mock('common/logger');
@@ -12,7 +12,7 @@ vi.mock('./storage', () => {
     return { Storage };
 });
 
-let testConfigs: ConfigStorageItem;
+let testConfigs: ViewConfig;
 
 beforeEach(() => {
     testConfigs = {

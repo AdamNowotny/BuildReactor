@@ -1,7 +1,7 @@
-import { ConfigStorageItem } from 'common/types';
+import { ViewConfig } from 'common/types';
 import { Storage } from './storage';
 
-const defaultConfiguration: ConfigStorageItem = {
+const defaultConfiguration: ViewConfig = {
     columns: 2,
     fullWidthGroups: true,
     singleGroupRows: false,
@@ -19,7 +19,7 @@ const defaultConfiguration: ConfigStorageItem = {
     },
 };
 
-const storage = new Storage<ConfigStorageItem>({
+const storage = new Storage<ViewConfig>({
     key: 'configuration',
     defaultValue: defaultConfiguration,
 });

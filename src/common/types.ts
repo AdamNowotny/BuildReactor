@@ -85,7 +85,7 @@ export interface ServiceStateItem {
     items?: CIBuild[];
 }
 
-export interface ConfigStorageItem {
+export interface ViewConfig {
     columns?: number;
     fullWidthGroups?: boolean;
     singleGroupRows?: boolean;
