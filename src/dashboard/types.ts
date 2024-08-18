@@ -1,5 +1,5 @@
 import React, { createContext } from 'react';
-import { ViewConfig } from 'common/types';
+import { ServiceStateItem, ViewConfig } from 'common/types';
 
 export type Theme = React.ComponentType<ThemeProps>;
 
@@ -7,4 +7,5 @@ export interface ThemeProps {
     popup: boolean;
 }
 
-export const ViewContext = createContext<ViewConfig>({});
+export const ViewConfigContext = createContext<ViewConfig>({});
+export const ServiceStateContext = createContext<ServiceStateItem[]>([]);

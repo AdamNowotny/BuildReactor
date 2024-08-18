@@ -1,13 +1,12 @@
-import core from 'common/core';
 import { CIBuild, ServiceStateItem } from 'common/types';
-import { ViewContext } from 'dashboard/types';
-import React, { useContext, useEffect, useState } from 'react';
+import { ServiceStateContext, ViewConfigContext } from 'dashboard/types';
+import React, { useContext } from 'react';
 import Build from './build';
 import './pipelines.css';
 
 const Builds = ({ builds }: { builds: CIBuild[] }) => {
-    const config = useContext(ViewContext);
-    const width = 100 / Math.min(builds.length, config.columns ?? 1);
+    const viewConfig = useContext(ViewConfigContext);
+    const width = 100 / Math.min(builds.length, viewConfig.columns ?? 1);
     return (
         <div className="group-items">
             {builds.map((build: CIBuild) => {
@@ -18,19 +17,19 @@ const Builds = ({ builds }: { builds: CIBuild[] }) => {
 };
 
 const BuildGroup = ({ groupName, builds }: { groupName: string; builds: CIBuild[] }) => {
-    const config = useContext(ViewContext);
+    const viewConfig = useContext(ViewConfigContext);
     let fullWidth;
-    if (config.fullWidthGroups ?? builds.length >= (config.columns ?? 1)) {
+    if (viewConfig.fullWidthGroups ?? builds.length >= (viewConfig.columns ?? 1)) {
         fullWidth = 100;
     } else {
-        const maxColumns = config.columns ?? 1;
+        const maxColumns = viewConfig.columns ?? 1;
         const minColumns = Math.min(builds.length, maxColumns);
         fullWidth = (100 * minColumns) / maxColumns;
     }
     return (
         <div
             key={groupName}
-            className={`build-group ${config.singleGroupRows ? 'pull-left' : ''}`}
+            className={`build-group ${viewConfig.singleGroupRows ? 'pull-left' : ''}`}
             style={{ width: `${fullWidth}%` }}
         >
             {groupName && <div className="group-name">{groupName}</div>}
@@ -56,12 +55,7 @@ const Service = ({ serviceState }: { serviceState: ServiceStateItem }) => (
 );
 
 const Pipelines = () => {
-    const [serviceStates, setServiceStates] = useState<any[]>([]);
-    useEffect(() => {
-        core.activeProjects.subscribe((services: any) => {
-            setServiceStates(services);
-        });
-    });
+    const serviceStates = useContext(ServiceStateContext);
     let content;
     if (serviceStates.length) {
         content = serviceStates.map(serviceState => (

@@ -1,10 +1,10 @@
 import { CIBuild } from 'common/types';
-import { ViewContext } from 'dashboard/types';
+import { ViewConfigContext } from 'dashboard/types';
 import React, { useContext, useEffect, useState } from 'react';
 import './build.css';
 
 const Changes = ({ build }: { build: CIBuild }) => {
-    const viewConfig = useContext(ViewContext);
+    const viewConfig = useContext(ViewConfigContext);
     if (!viewConfig.showCommits) return;
     const [changeIndex, setChangeIndex] = useState(0);
     const changesLength = build.changes?.length ?? 0;
