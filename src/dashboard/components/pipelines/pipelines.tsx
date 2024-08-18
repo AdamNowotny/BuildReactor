@@ -1,7 +1,7 @@
 import core from 'common/core';
-import React, { useContext, useEffect, useState } from 'react';
 import { CIBuild, ServiceStateItem } from 'common/types';
-import { ViewContext } from 'dashboard/theme-types';
+import { ViewContext } from 'dashboard/types';
+import React, { useContext, useEffect, useState } from 'react';
 import Build from './build';
 import './pipelines.css';
 

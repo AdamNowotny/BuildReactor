@@ -3,8 +3,8 @@ import core from 'common/core';
 import logger from 'common/logger';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import './dashboard.css';
 import ThemeProvider from './components/theme/themeProvider';
+import './dashboard.css';
 
 core.init({ test: false });
 logger.init({ prefix: 'dashboard' });

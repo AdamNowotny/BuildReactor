@@ -1,9 +1,9 @@
 import core from 'common/core';
-import React, { useEffect, useState } from 'react';
-import { Theme, ViewContext } from 'dashboard/theme-types';
-import darkTheme from '../../dark/dark';
-import lightTheme from '../../light/light';
 import { ViewConfig } from 'common/types';
+import { Theme, ViewContext } from 'dashboard/types';
+import React, { useEffect, useState } from 'react';
+import darkTheme from '../../themes/dark/dark';
+import lightTheme from '../../themes/light/light';
 
 const themes: Record<string, Theme> = {
     dark: darkTheme,
