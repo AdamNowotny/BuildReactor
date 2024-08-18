@@ -92,7 +92,6 @@ export interface ViewConfig {
     showCommits?: boolean;
     showCommitsWhenGreen?: boolean;
     theme?: string;
-    colorBlindMode?: boolean;
     notifications?: {
         enabled: boolean;
         buildBroken: boolean;

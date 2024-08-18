@@ -5,7 +5,6 @@ export default {
     showCommits: true,
     showCommitsWhenGreen: true,
     theme: 'dark',
-    colorBlindMode: true,
     notifications: {
         enabled: true,
         buildBroken: true,

@@ -22,7 +22,6 @@ beforeEach(() => {
         showCommits: true,
         showCommitsWhenGreen: false,
         theme: 'dark',
-        colorBlindMode: true,
         notifications: {
             enabled: true,
             buildBroken: true,
