@@ -1,19 +1,17 @@
 import React from 'react';
 import Navbar from 'themes/components/navbar/navbar';
 import Pipelines from 'themes/components/pipelines/pipelines';
-import { Theme, ThemeProps } from 'themes/theme-types';
+import { Theme } from 'themes/theme-types';
 import './dark.css';
 
-const Popup: React.FC<ThemeProps> = ({ viewConfig }: ThemeProps) => {
+const Dashboard = ({ popup }: { popup: boolean }) => {
     return (
         <>
-            <Navbar dark />
-            <Pipelines viewConfig={viewConfig} />
+            {popup && <Navbar dark />}
+            <Pipelines />
         </>
     );
 };
-
-const Dashboard = ({ viewConfig }) => <Pipelines viewConfig={viewConfig} />;
 
 export default {
     getDefinition: () => ({
@@ -23,6 +21,5 @@ export default {
             fullWidthGroups: true,
         },
     }),
-    Popup,
     Dashboard,
 } as Theme;

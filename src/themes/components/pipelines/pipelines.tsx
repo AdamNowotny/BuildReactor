@@ -1,28 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import './pipelines.css';
-import { CIBuild, ConfigStorageItem, ServiceStateItem } from 'services/service-types';
-import Build from './build';
 import core from 'common/core';
+import React, { useContext, useEffect, useState } from 'react';
+import { CIBuild, ServiceStateItem } from 'services/service-types';
+import { ViewContext } from 'themes/theme-types';
+import Build from './build';
+import './pipelines.css';
 
 const Builds = ({ builds }: { builds: CIBuild[] }) => {
+    const config = useContext(ViewContext);
     const width = 100 / Math.min(builds.length, config.columns ?? 1);
     return (
         <div className="group-items">
             {builds.map((build: CIBuild) => {
-                return (
-                    <Build
-                        key={build.id}
-                        viewConfig={config}
-                        build={build}
-                        width={width}
-                    />
-                );
+                return <Build key={build.id} build={build} width={width} />;
             })}
         </div>
     );
 };
 
 const BuildGroup = ({ groupName, builds }: { groupName: string; builds: CIBuild[] }) => {
+    const config = useContext(ViewContext);
     let fullWidth;
     if (config.fullWidthGroups ?? builds.length >= (config.columns ?? 1)) {
         fullWidth = 100;
@@ -38,7 +34,6 @@ const BuildGroup = ({ groupName, builds }: { groupName: string; builds: CIBuild[
             style={{ width: `${fullWidth}%` }}
         >
             {groupName && <div className="group-name">{groupName}</div>}
-
             <Builds builds={builds} />
         </div>
     );
@@ -60,9 +55,7 @@ const Service = ({ serviceState }: { serviceState: ServiceStateItem }) => (
     </div>
 );
 
-let config: ConfigStorageItem;
-const Pipelines = ({ viewConfig }: { viewConfig: ConfigStorageItem }) => {
-    config = viewConfig;
+const Pipelines = () => {
     const [serviceStates, setServiceStates] = useState<any[]>([]);
     useEffect(() => {
         core.activeProjects.subscribe((services: any) => {

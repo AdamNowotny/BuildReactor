@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { CIBuild, ConfigStorageItem } from 'services/service-types';
+import React, { useContext, useEffect, useState } from 'react';
+import { CIBuild } from 'services/service-types';
+import { ViewContext } from 'themes/theme-types';
 import './build.css';
 
-const Changes = ({
-    build,
-    viewConfig,
-}: {
-    build: CIBuild;
-    viewConfig: ConfigStorageItem;
-}) => {
+const Changes = ({ build }: { build: CIBuild }) => {
+    const viewConfig = useContext(ViewContext);
     if (!viewConfig.showCommits) return;
     const [changeIndex, setChangeIndex] = useState(0);
     const changesLength = build.changes?.length ?? 0;
@@ -70,15 +66,7 @@ const Labels = ({ build }: { build: CIBuild }) => {
     );
 };
 
-const Build = ({
-    build,
-    width,
-    viewConfig,
-}: {
-    build: CIBuild;
-    width: number;
-    viewConfig: ConfigStorageItem;
-}) => {
+const Build = ({ build, width }: { build: CIBuild; width: number }) => {
     return (
         <div
             key={build.id}
@@ -97,7 +85,7 @@ const Build = ({
                 <div className="build-content">
                     <Labels build={build} />
                     <span className="build-name">{build.name}</span>
-                    <Changes viewConfig={viewConfig} build={build} />
+                    <Changes build={build} />
                 </div>
                 <div className="color-blind-markers">
                     <i className="color-blind-marker-broken fa fa-bolt fa-2x fa-inverse"></i>

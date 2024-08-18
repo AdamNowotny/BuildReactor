@@ -1,16 +1,19 @@
 import angular from 'angular';
 import app from 'settings/app';
 import core from 'common/core';
-import settingsDashboard from './components/settingsDashboard';
+import ThemeProvider from 'themes/components/theme/themeProvider';
+import { createRoot } from 'react-dom/client';
+import React from 'react';
 
 export default app.controller('ViewSettingsCtrl', function ($scope) {
+    const settingsDashboard = document.getElementById('settings-dashboard');
+    if (settingsDashboard) {
+        createRoot(settingsDashboard).render(<ThemeProvider popup={false} />);
+    }
+
     core.views.subscribe(function (config) {
         $scope.$evalAsync(function () {
             $scope.viewConfig = config;
-            settingsDashboard.render(
-                document.getElementById('settings-dashboard'),
-                config,
-            );
         });
     });
 

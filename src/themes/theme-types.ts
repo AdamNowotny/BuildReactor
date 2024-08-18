@@ -1,5 +1,4 @@
-import React from 'react';
-import { ServiceStateItem } from 'services/service-types';
+import React, { createContext } from 'react';
 import { ConfigStorageItem } from 'services/service-types';
 
 interface ThemeDefinition {
@@ -9,11 +8,11 @@ interface ThemeDefinition {
 
 export interface Theme {
     getDefinition(): ThemeDefinition;
-    Popup: React.ComponentType<ThemeProps>;
     Dashboard: React.ComponentType<ThemeProps>;
 }
 
-export interface ThemeProps {
-    serviceStates: ServiceStateItem[];
-    viewConfig: ConfigStorageItem;
+interface ThemeProps {
+    popup: boolean;
 }
+
+export const ViewContext = createContext<ConfigStorageItem>({});

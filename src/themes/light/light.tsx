@@ -1,19 +1,17 @@
 import React from 'react';
 import Pipelines from 'themes/components/pipelines/pipelines';
-import { Theme, ThemeProps } from 'themes/theme-types';
-import NavBar from '../components/navbar/navbar';
+import { Theme } from 'themes/theme-types';
+import Navbar from '../components/navbar/navbar';
 import './light.css';
 
-const Popup: React.FC<ThemeProps> = ({ viewConfig }: ThemeProps) => {
+const Dashboard = ({ popup }: { popup: boolean }) => {
     return (
         <>
-            <NavBar />
-            <Pipelines viewConfig={viewConfig} />
+            {popup && <Navbar />}
+            <Pipelines />
         </>
     );
 };
-
-const Dashboard = ({ viewConfig }) => <Pipelines viewConfig={viewConfig} />;
 
 export default {
     getDefinition: () => ({
@@ -23,6 +21,5 @@ export default {
             fullWidthGroups: true,
         },
     }),
-    Popup,
     Dashboard,
 } as Theme;
