@@ -1,3 +1,69 @@
 .theme-light {
     background-color: #fff;
+
+    .service .service-name {
+        color: #000;
+    }
+
+    .build-group .group-name {
+        border-bottom: 1px solid #999;
+        color: #000;
+    }
+
+    .build {
+        a {
+            background-color: #5cb85c;
+        }
+        &.disabled {
+            a {
+                background-color: #999;
+            }
+            .build-name {
+                color: #fff;
+            }
+            &.broken a {
+                background-color: #999;
+            }
+        }
+        &.offline {
+            a,
+            &.broken a,
+            &.building a,
+            &.broken.building a {
+                background-color: #999;
+            }
+            &.disabled .build-name,
+            &.disabled.broken .build-name {
+                color: #fff;
+            }
+            .build-name {
+                color: #fff;
+            }
+            &.broken .build-name {
+                color: #fff;
+            }
+        }
+        &.broken {
+            a {
+                background-color: #d9534f;
+            }
+            .label-warning {
+                background-color: #f89406;
+            }
+            &.building a {
+                background-color: #d9534f;
+            }
+            &.building .build-name {
+                color: #fff;
+            }
+        }
+        .label-warning,
+        &.disabled .label-warning,
+        &.offline .label-warning {
+            background-color: #d9534f;
+        }
+        .label-default {
+            background-color: #444;
+        }
+    }
 }
