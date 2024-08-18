@@ -56,6 +56,7 @@ const Labels = ({ build }: { build: CIBuild }) => {
             {build.isDisabled && <span className="label label-default">Disabled</span>}
             {build.tags?.map(tag => (
                 <span
+                    key={tag.name}
                     className={`label ${tag.type ? 'label-' + tag.type : ''}`}
                     uib-tooltip="{{ build.description }}"
                 >
