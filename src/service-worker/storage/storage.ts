@@ -24,7 +24,7 @@ export class Storage<T> {
             for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
                 if (key === this.options.key) {
                     // prettier-ignore
-                    logger.log(`${this.options.key}-storage.onChanged`, changes, namespace);
+                    logger.info(`${this.options.key}-storage.onChanged`, changes, namespace);
                     this.onChanged.onNext({ oldValue, newValue });
                 }
             }
