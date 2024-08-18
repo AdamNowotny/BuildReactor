@@ -1,7 +1,7 @@
 import angular from 'angular';
 import app from 'settings/app';
 import core from 'common/core';
-import ThemeProvider from 'themes/components/theme/themeProvider';
+import ThemeProvider from 'dashboard/components/theme/themeProvider';
 import { createRoot } from 'react-dom/client';
 import React from 'react';
 

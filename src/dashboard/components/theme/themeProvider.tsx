@@ -1,6 +1,6 @@
 import core from 'common/core';
 import React, { useEffect, useState } from 'react';
-import { Theme, ViewContext } from 'themes/theme-types';
+import { Theme, ViewContext } from 'dashboard/theme-types';
 import darkTheme from '../../dark/dark';
 import lightTheme from '../../light/light';
 import { ViewConfig } from 'common/types';

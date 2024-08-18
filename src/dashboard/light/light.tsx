@@ -1,6 +1,6 @@
 import React from 'react';
-import Pipelines from 'themes/components/pipelines/pipelines';
-import { ThemeProps } from 'themes/theme-types';
+import Pipelines from 'dashboard/components/pipelines/pipelines';
+import { ThemeProps } from 'dashboard/theme-types';
 import Navbar from '../components/navbar/navbar';
 import './light.css';
 
