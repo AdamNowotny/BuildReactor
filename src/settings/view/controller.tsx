@@ -1,14 +1,14 @@
 import angular from 'angular';
 import app from 'settings/app';
 import core from 'common/core';
-import ThemeProvider from 'dashboard/components/theme/themeProvider';
+import DashboardTheme from 'dashboard/components/dashboardTheme/dashboardTheme';
 import { createRoot } from 'react-dom/client';
 import React from 'react';
 
 export default app.controller('ViewSettingsCtrl', function ($scope) {
     const settingsDashboard = document.getElementById('settings-dashboard');
     if (settingsDashboard) {
-        createRoot(settingsDashboard).render(<ThemeProvider popup={false} />);
+        createRoot(settingsDashboard).render(<DashboardTheme popup={false} />);
     }
 
     core.views.subscribe(function (config) {

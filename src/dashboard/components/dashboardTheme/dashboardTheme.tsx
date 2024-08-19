@@ -10,7 +10,7 @@ const themes: Record<string, Theme> = {
     light: lightTheme,
 };
 
-const ThemeProvider = ({ popup }) => {
+const DashboardTheme = ({ popup }) => {
     const [viewConfig, setViewConfig] = useState<ViewConfig>({});
     const [serviceStates, setServiceStates] = useState<ServiceStateItem[]>([]);
 
@@ -37,4 +37,4 @@ const ThemeProvider = ({ popup }) => {
     );
 };
 
-export default ThemeProvider;
+export default DashboardTheme;
