@@ -29,7 +29,8 @@
         "lint": "node_modules/.bin/eslint .",
         "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js",
         "test": "vitest --run",
-        "test:watch": "vitest"
+        "test:watch": "vitest",
+        "auto-dist": "NODE_OPTIONS=--openssl-legacy-provider node_modules/.bin/webpack --watch"
     },
     "dependencies": {
         "angular": "1.8.3",
