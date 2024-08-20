@@ -1,7 +1,7 @@
+import PageContext from 'components/pageContext';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import app from 'settings/app';
-import PageContext from 'settings/components/pageContext';
 import NotificationsPage from 'settings/pages/notificationsPage';
 
 export default app.controller('NotificationsCtrl', function () {

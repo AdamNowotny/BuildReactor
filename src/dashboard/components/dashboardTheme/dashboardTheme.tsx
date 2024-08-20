@@ -1,7 +1,6 @@
-import core from 'common/core';
-import { ServiceStateItem, ViewConfig } from 'common/types';
-import { ServiceStateContext, Theme, ViewConfigContext } from 'dashboard/types';
-import React, { useEffect, useState } from 'react';
+import PageContext from 'components/pageContext';
+import { Theme, ViewConfigContext } from 'dashboard/types';
+import React, { useContext } from 'react';
 import darkTheme from '../../themes/dark/dark';
 import lightTheme from '../../themes/light/light';
 
@@ -11,29 +10,16 @@ const themes: Record<string, Theme> = {
 };
 
 const DashboardTheme = ({ popup }) => {
-    const [viewConfig, setViewConfig] = useState<ViewConfig>({});
-    const [serviceStates, setServiceStates] = useState<ServiceStateItem[]>([]);
+    const viewConfig = useContext(ViewConfigContext);
 
-    useEffect(() => {
-        core.views.subscribe(config => {
-            setViewConfig(config);
-        });
-        core.activeProjects.subscribe((services: any) => {
-            setServiceStates(services);
-        });
-    });
     const themeName = viewConfig.theme ?? 'dark';
     const DashboardTheme = themes[themeName];
     return (
-        <React.StrictMode>
-            <ViewConfigContext.Provider value={viewConfig}>
-                <ServiceStateContext.Provider value={serviceStates}>
-                    <div className={`theme theme-${themeName}`}>
-                        <DashboardTheme popup={popup} />
-                    </div>
-                </ServiceStateContext.Provider>
-            </ViewConfigContext.Provider>
-        </React.StrictMode>
+        <PageContext>
+            <div className={`theme theme-${themeName}`}>
+                <DashboardTheme popup={popup} />
+            </div>
+        </PageContext>
     );
 };
 

@@ -1,7 +1,7 @@
+import PageContext from 'components/pageContext';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import app from 'settings/app';
-import PageContext from 'settings/components/pageContext';
 import ViewPage from 'settings/pages/viewPage';
 
 export default app.controller('ViewSettingsCtrl', function () {
