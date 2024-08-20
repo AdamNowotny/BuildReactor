@@ -1,13 +1,13 @@
 import core from 'common/core';
-import DashboardTheme from 'dashboard/components/dashboardTheme/dashboardTheme';
-import { ViewConfigContext } from 'dashboard/types';
-import React, { useContext } from 'react';
-import { Col, Form } from 'react-bootstrap';
+import DashboardTheme from 'components/dashboardTheme';
 import {
     FormBooleanField,
     FormNumberField,
     FormSelectField,
-} from 'settings/components/formFields';
+} from 'components/formFields';
+import { ViewConfigContext } from 'dashboard/types';
+import React, { useContext } from 'react';
+import { Col, Form } from 'react-bootstrap';
 
 export default () => {
     const viewConfig = useContext(ViewConfigContext);

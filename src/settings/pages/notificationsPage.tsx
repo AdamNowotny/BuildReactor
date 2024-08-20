@@ -1,8 +1,8 @@
 import core from 'common/core';
+import { FormBooleanField } from 'components/formFields';
 import { ViewConfigContext } from 'dashboard/types';
 import React, { useContext } from 'react';
 import { Col, Form } from 'react-bootstrap';
-import { FormBooleanField } from 'settings/components/formFields';
 
 export default () => {
     const viewConfig = useContext(ViewConfigContext);

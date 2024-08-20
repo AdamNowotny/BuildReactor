@@ -1,6 +1,6 @@
 import React from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import './navbar.css';
+import './popupNavbar.css';
 
 export default ({ dark = false }) => {
     const navBarClass = dark ? 'navbar-inverse' : 'navbar-default';

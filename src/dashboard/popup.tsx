@@ -3,7 +3,7 @@ import core from 'common/core';
 import logger from 'common/logger';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import DashboardTheme from './components/dashboardTheme/dashboardTheme';
+import DashboardTheme from '../components/dashboardTheme';
 import './popup.css';
 
 core.init({ test: false });

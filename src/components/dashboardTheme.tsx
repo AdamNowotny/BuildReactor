@@ -1,8 +1,8 @@
 import PageContext from 'components/pageContext';
 import { Theme, ViewConfigContext } from 'dashboard/types';
 import React, { useContext } from 'react';
-import darkTheme from '../../themes/dark/dark';
-import lightTheme from '../../themes/light/light';
+import darkTheme from '../dashboard/themes/dark/dark';
+import lightTheme from '../dashboard/themes/light/light';
 
 const themes: Record<string, Theme> = {
     dark: darkTheme,
