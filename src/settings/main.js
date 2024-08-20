@@ -9,7 +9,7 @@ import angular from 'angular';
 import core from 'common/core';
 import logger from 'common/logger';
 
-logger.init({ prefix: 'settings' });
+logger.init({ prefix: 'settings', debug: false });
 core.init({ test: false });
 
 angular.element(document).ready(() => {
