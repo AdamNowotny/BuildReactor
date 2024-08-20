@@ -1,7 +1,6 @@
 import addServiceView from 'settings/add/view.html';
 import app from 'settings/app';
 import configurationTemplate from 'settings/configuration/view.html';
-import notificationsTemplate from 'settings/notifications/notifications.html';
 import serviceSettingsView from 'settings/service/view.html';
 
 export default app
@@ -29,7 +28,7 @@ export default app
                 view: 'view',
             })
             .when('/notifications', {
-                templateUrl: notificationsTemplate,
+                template: '<div id="notifications-page"></div>',
                 controller: 'NotificationsCtrl',
                 view: 'notifications',
             })
