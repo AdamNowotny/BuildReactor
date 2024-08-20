@@ -1,6 +1,6 @@
 import core from 'common/core';
 import { ServiceStateItem, ViewConfig } from 'common/types';
-import { ServiceStateContext, ViewConfigContext } from 'dashboard/types';
+import { ServiceStateContext, ViewConfigContext } from './react-types';
 import React, { useEffect, useState } from 'react';
 
 export default ({ children }) => {

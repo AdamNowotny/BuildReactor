@@ -1,6 +1,6 @@
-import { ViewConfigContext } from 'dashboard/types';
 import React, { useContext } from 'react';
 import { Col, ControlLabel, FormControl, FormGroup, Nav, NavItem } from 'react-bootstrap';
+import { ViewConfigContext } from './react-types';
 
 const FormField = ({
     children,

@@ -5,7 +5,7 @@ import {
     FormNumberField,
     FormSelectField,
 } from 'components/formFields';
-import { ViewConfigContext } from 'dashboard/types';
+import { ViewConfigContext } from 'components/react-types';
 import React, { useContext } from 'react';
 import { Col, Form } from 'react-bootstrap';
 

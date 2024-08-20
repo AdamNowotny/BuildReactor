@@ -1,5 +1,5 @@
 import { CIBuild, ServiceStateItem } from 'common/types';
-import { ServiceStateContext, ViewConfigContext } from 'dashboard/types';
+import { ServiceStateContext, ViewConfigContext } from 'components/react-types';
 import React, { useContext } from 'react';
 import Build from './build';
 import './pipelines.css';
