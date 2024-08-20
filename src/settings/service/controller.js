@@ -6,7 +6,7 @@ import 'settings/service/directives/selectedProjects/selectedProjects';
 import app from 'settings/app';
 import core from 'common/core';
 
-export default app.controller('ServiceSettingsCtrl', ($scope, $location) => {
+export default app.controller('ServiceSettingsCtrl', function ($scope, $location) {
     let config = undefined;
 
     const reset = function () {
