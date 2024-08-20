@@ -1,5 +1,15 @@
 import React, { useContext } from 'react';
-import { Col, ControlLabel, FormControl, FormGroup, Nav, NavItem } from 'react-bootstrap';
+import {
+    Col,
+    Row,
+    ControlLabel,
+    FormControl,
+    FormGroup,
+    Nav,
+    NavItem,
+    InputGroup,
+    Button,
+} from 'react-bootstrap';
 import { ViewConfigContext } from './react-types';
 
 const FormField = ({
@@ -102,5 +112,90 @@ export const FormNumberField = ({
                 onChange={onChangeHandler}
             />
         </FormField>
+    );
+};
+
+export const FormButtonField = ({
+    disabled,
+    text,
+    icon,
+    onClick,
+    style = 'success',
+}: {
+    disabled?: boolean;
+    text: string;
+    icon?: string;
+    onClick: () => void;
+    style?: 'success' | 'danger';
+}) => {
+    return (
+        <>
+            <FormGroup>
+                <Row md={12} className="text-center">
+                    <Button onClick={onClick} bsStyle={style} disabled={disabled}>
+                        {icon && <i className={`fa fa-${icon}`}></i>} {text}
+                    </Button>
+                </Row>
+            </FormGroup>
+        </>
+    );
+};
+
+const FormInputField = ({
+    disabled,
+    text,
+    icon,
+    onChange,
+    placeholder,
+    type = 'text',
+}: {
+    disabled?: boolean;
+    text: string;
+    icon?: string;
+    onChange: (value: string) => void;
+    placeholder?: string;
+    type: 'text' | 'url';
+}) => {
+    return (
+        <>
+            <FormGroup>
+                <InputGroup disabled={disabled}>
+                    {icon && (
+                        <InputGroup.Addon>
+                            <i className={`fa fa-${icon}`}></i>
+                        </InputGroup.Addon>
+                    )}
+                    <FormControl
+                        type={type}
+                        defaultValue={text}
+                        onChange={e => {
+                            onChange(e.target.value);
+                        }}
+                        placeholder={placeholder}
+                    />
+                </InputGroup>
+            </FormGroup>
+        </>
+    );
+};
+
+export const FormUrlField = ({
+    disabled,
+    text,
+    onChange,
+}: {
+    disabled?: boolean;
+    text: string;
+    onChange: (value: string) => void;
+}) => {
+    return (
+        <FormInputField
+            text={text}
+            disabled={disabled}
+            onChange={onChange}
+            type={'url'}
+            icon="globe"
+            placeholder="URL"
+        />
     );
 };

@@ -1,0 +1,22 @@
+.json-editor {
+    bottom: 10px;
+    left: 10px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 10px;
+}
+
+.json-editor textarea {
+    bottom: 100px;
+    position: absolute;
+    width: 100%;
+    top: 0;
+}
+
+.json-editor .json-editor-button {
+    bottom: 28px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
