@@ -5,7 +5,13 @@ import logger from './logger';
 import testActiveProjects from './__mocks__/core.mock.activeProjects';
 import testViews from './__mocks__/core.mock.views';
 import testConfigurations from './__mocks__/core.mock.configurations';
-import { CIServiceSettings, ViewConfig, ServiceStateItem } from 'common/types';
+import {
+    CIServiceSettings,
+    ViewConfig,
+    ServiceStateItem,
+    CIServiceDefinition,
+    CIPipelineList,
+} from 'common/types';
 
 const init = function ({ test = false }) {
     if (test) {
@@ -15,17 +21,17 @@ const init = function ({ test = false }) {
         return;
     }
     const statePort = chrome.runtime.connect({ name: 'state' });
-    statePort.onMessage.addListener(function (message) {
+    statePort.onMessage.addListener(message => {
         activeProjects.onNext(message);
         logger.info('core.state', message);
     });
     const configPort = chrome.runtime.connect({ name: 'configuration' });
-    configPort.onMessage.addListener(function (message) {
+    configPort.onMessage.addListener(message => {
         configurations.onNext(message);
         logger.info('core.configuration', message);
     });
     const viewConfigPort = chrome.runtime.connect({ name: 'views' });
-    viewConfigPort.onMessage.addListener(function (message) {
+    viewConfigPort.onMessage.addListener(message => {
         views.onNext(message);
         logger.info('core.view', message);
     });
@@ -35,13 +41,16 @@ const activeProjects = new Rx.ReplaySubject<ServiceStateItem[]>(1);
 const configurations = new Rx.ReplaySubject<CIServiceSettings[]>(1);
 const views = new Rx.ReplaySubject<ViewConfig>(1);
 
-const availableServices = function (callback) {
+const availableServices = (callback: (callback: CIServiceDefinition[]) => void) => {
     const message = { name: 'availableServices' };
     logger.info('availableServices', message);
     chrome.runtime.sendMessage(message, callback);
 };
 
-const availableProjects = function (settings, callback) {
+const availableProjects = (
+    settings: CIServiceSettings,
+    callback: ({ pipelines }: { pipelines: CIPipelineList }) => void,
+) => {
     const message = { name: 'availableProjects', serviceSettings: settings };
     logger.info('availableProjects', message);
     chrome.runtime.sendMessage(message, callback);
