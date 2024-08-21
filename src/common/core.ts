@@ -5,6 +5,8 @@ import logger from './logger';
 import testActiveProjects from './__mocks__/core.mock.activeProjects';
 import testViews from './__mocks__/core.mock.views';
 import testConfigurations from './__mocks__/core.mock.configurations';
+import testServices from './__mocks__/core.mock.serviceTypes';
+
 import {
     CIServiceSettings,
     ViewConfig,
@@ -13,8 +15,11 @@ import {
     CIPipelineList,
 } from 'common/types';
 
+let TEST = false;
+
 const init = function ({ test = false }) {
-    if (test) {
+    TEST = test;
+    if (TEST) {
         activeProjects.onNext(testActiveProjects);
         configurations.onNext(testConfigurations);
         views.onNext(testViews);
@@ -44,7 +49,11 @@ const views = new Rx.ReplaySubject<ViewConfig>(1);
 const availableServices = (callback: (callback: CIServiceDefinition[]) => void) => {
     const message = { name: 'availableServices' };
     logger.info('availableServices', message);
-    chrome.runtime.sendMessage(message, callback);
+    if (TEST) {
+        callback(testServices);
+    } else {
+        chrome.runtime.sendMessage(message, callback);
+    }
 };
 
 const availableProjects = (
