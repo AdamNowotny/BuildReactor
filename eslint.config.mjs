@@ -64,6 +64,8 @@ export default tseslint.config(
                     ImportDeclaration: { multiline: true },
                 },
             ],
+            'object-shorthand': ['error', 'always'],
+            'prefer-arrow-callback': 'error',
             'sort-keys': ['error', 'asc', { minKeys: 10 }],
         },
     },
