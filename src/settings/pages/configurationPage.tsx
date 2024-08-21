@@ -90,7 +90,7 @@ export default () => {
                     />
                 </Col>
             </Col>
-            {toastAlertReset && (
+            {toastAlertReset > 0 && (
                 <ToastAlert key={toastAlertReset} text="Settings saved" />
             )}
         </div>

@@ -1,4 +1,3 @@
-import addServiceView from 'settings/add/view.html';
 import app from 'settings/app';
 import serviceSettingsView from 'settings/service/view.html';
 
@@ -11,7 +10,7 @@ export default app
                 view: 'service',
             })
             .when('/new', {
-                templateUrl: addServiceView,
+                template: '<div id="add-page"></div>',
                 controller: 'AddServiceCtrl',
                 reloadOnSearch: false,
                 view: 'new',

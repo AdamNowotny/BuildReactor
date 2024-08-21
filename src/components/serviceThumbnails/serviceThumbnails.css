@@ -1,0 +1,30 @@
+.thumbnails {
+    padding: 10px;
+
+    .thumbnail {
+        display: inline-block;
+        height: 140px;
+        margin: 5px 0px 5px 5px;
+        text-align: center;
+        width: 150px;
+        &.active {
+            background-color: #d1d5e4;
+        }
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    .thumbnail-image {
+        height: 110px;
+        line-height: 130px;
+        img {
+            max-width: 140px;
+        }
+    }
+
+    .caption {
+        padding: 0;
+        font-weight: bold;
+    }
+}
