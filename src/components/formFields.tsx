@@ -12,7 +12,7 @@ import {
 } from 'react-bootstrap';
 import { ViewConfigContext } from './react-types';
 
-const FormField = ({
+export const FormField = ({
     children,
     label,
     disabled,

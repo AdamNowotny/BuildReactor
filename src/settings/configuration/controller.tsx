@@ -4,10 +4,11 @@ import { createRoot } from 'react-dom/client';
 import app from 'settings/app';
 import ConfigurationPage from 'settings/pages/configurationPage';
 
+// eslint-disable-next-line prefer-arrow-callback
 export default app.controller('ConfigurationCtrl', function () {
-    const notificationsPage = document.getElementById('configuration-page');
-    if (notificationsPage) {
-        createRoot(notificationsPage).render(
+    const view = document.getElementById('configuration-page');
+    if (view) {
+        createRoot(view).render(
             <PageContext>
                 <ConfigurationPage />
             </PageContext>,
