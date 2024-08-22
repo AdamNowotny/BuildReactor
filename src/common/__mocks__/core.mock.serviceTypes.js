@@ -2,8 +2,8 @@ export default [
     {
         typeName: 'Atlassian Bamboo',
         baseUrl: 'bamboo',
-        icon: 'src/services/bamboo/icon.png',
-        logo: 'src/services/bamboo/logo.png',
+        icon: 'services/bamboo/icon.png',
+        logo: 'services/bamboo/logo.png',
         fields: [
             {
                 type: 'url',
@@ -126,27 +126,6 @@ export default [
             url: '',
             username: '',
             password: '',
-        },
-    },
-    {
-        typeName: 'TeamCity',
-        baseUrl: 'teamcity',
-        icon: 'services/teamcity/icon.png',
-        logo: 'services/teamcity/logo.png',
-        fields: [
-            { type: 'url', name: 'Server URL, e.g. http://teamcity.jetbrains.com/' },
-            { type: 'username' },
-            { type: 'password' },
-            { type: 'branch' },
-        ],
-        defaultConfig: {
-            baseUrl: 'teamcity',
-            name: '',
-            pipelines: [],
-            url: '',
-            username: '',
-            password: '',
-            branch: '',
         },
     },
     {

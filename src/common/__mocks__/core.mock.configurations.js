@@ -17,7 +17,7 @@ export default [
         username: '',
         password: '',
         pipelines: ['FUNC-APPTEST', 'FUNC-BUILDPERF', 'FUNC-PERF', 'JU-CORE'],
-        isDisabled: true,
+        isDisabled: false,
     },
     {
         name: 'Jenkins',
@@ -33,7 +33,7 @@ export default [
             'infra_plugins_svn_to_git',
             'infra_svnsync',
         ],
-        isDisabled: true,
+        isDisabled: false,
     },
     {
         name: 'T1',
@@ -54,7 +54,7 @@ export default [
         username: '',
         password: '',
         pipelines: ['bt607'],
-        isDisabled: true,
+        isDisabled: false,
         branch: 'release',
     },
 ];
