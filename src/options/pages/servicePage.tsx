@@ -1,17 +1,23 @@
+import DynamicForm from 'components/dynamicForm/dynamicForm';
+import PipelineFilter from 'components/pipelineFilter/pipelineFilter';
+import PipelineList from 'components/pipelineList/pipelineList';
 import { ServiceContext } from 'components/react-types';
-import React, { useContext, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import SelectedPipelines from 'components/selectedPipelines/selectedPipelines';
+import React, { useContext } from 'react';
+import { Col } from 'react-bootstrap';
 
 export default () => {
     const service = useContext(ServiceContext);
-    if (!service) {
-        const { serviceTypeId, serviceId } = useParams();
-        console.log('service', service, serviceId, serviceTypeId);
-    }
-
     return (
         <>
-            <h1>NAME: {service?.name}</h1>
+            <Col xs={6}>
+                <DynamicForm service={service} />
+                <SelectedPipelines service={service} />
+            </Col>
+            <Col xs={6}>
+                <PipelineFilter />
+                <PipelineList />
+            </Col>
         </>
     );
 };
