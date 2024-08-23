@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 
 export default ({
     onChange,
+    prefix,
 }: {
     onChange?: (serviceTypeId: string, serviceName: string) => void;
+    prefix?: string;
 }) => {
     const [selected, setSelected] = useState<string>('');
 
@@ -18,7 +20,7 @@ export default ({
     };
     return (
         <>
-            <ServiceThumbnails onSelect={handleSelected} />
+            <ServiceThumbnails onSelect={handleSelected} prefix={prefix} />
             <ServiceNamePanel active={Boolean(selected)} onChange={handleNameChange} />
         </>
     );

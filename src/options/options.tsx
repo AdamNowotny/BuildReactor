@@ -11,10 +11,10 @@ import {
     Route,
     RouterProvider,
 } from 'react-router-dom';
-import AddPage from 'settings/pages/addPage';
-import ConfigurationPage from 'settings/pages/configurationPage';
-import NotificationsPage from 'settings/pages/notificationsPage';
-import ViewPage from 'settings/pages/viewPage';
+import AddPage from 'options/pages/addPage';
+import ConfigurationPage from 'options/pages/configurationPage';
+import NotificationsPage from 'options/pages/notificationsPage';
+import ViewPage from 'options/pages/viewPage';
 import Layout from './layout';
 import ServicePage from './pages/servicePage';
 

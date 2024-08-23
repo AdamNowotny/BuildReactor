@@ -2,7 +2,7 @@ import { CIServiceSettings } from 'common/types';
 import { ServiceTypesContext, SettingsContext } from 'components/react-types';
 import React, { useContext } from 'react';
 import { Nav, NavItem } from 'react-bootstrap';
-import { NavLink, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './sidebar.css';
 
 export default ({ service, view }: { service?: CIServiceSettings; view?: string }) => {
@@ -18,7 +18,7 @@ export default ({ service, view }: { service?: CIServiceSettings; view?: string 
     return (
         <div className="sidebar-nav">
             <div className="scrollable">
-                <Nav bsStyle="pills" stacked>
+                <Nav bsStyle="pills" stacked activeKey={service?.name}>
                     {settings.map(config => {
                         return (
                             <NavItem
@@ -53,28 +53,28 @@ export default ({ service, view }: { service?: CIServiceSettings; view?: string 
 
                 <Nav className="actions" bsStyle="pills" stacked activeKey={view}>
                     <NavItem eventKey="new">
-                        <NavLink to={'/'}>
+                        <Link to={'/'}>
                             <i className="pill-icon fa fa-plus-circle fa-3x"></i>
                             <span className="pill-name">Add</span>
-                        </NavLink>
+                        </Link>
                     </NavItem>
-                    <NavItem eventKey="view" active={view === 'view'}>
-                        <NavLink to={'view'}>
+                    <NavItem eventKey="view">
+                        <Link to={'view'}>
                             <i className="pill-icon fa fa-desktop fa-3x"></i>
                             <span className="pill-name">View</span>
-                        </NavLink>
+                        </Link>
                     </NavItem>
-                    <NavItem eventKey="notifications" active={view === 'notifications'}>
-                        <NavLink to={'notifications'}>
+                    <NavItem eventKey="notifications">
+                        <Link to={'notifications'}>
                             <i className="pill-icon fa fa-bell fa-3x"></i>
                             <span className="pill-name">Notifications</span>
-                        </NavLink>
+                        </Link>
                     </NavItem>
-                    <NavItem eventKey="configuration" active={view === 'configuration'}>
-                        <NavLink to={'configuration'}>
+                    <NavItem eventKey="configuration">
+                        <Link to={'configuration'}>
                             <i className="pill-icon fa fa-cogs fa-3x"></i>
                             <span className="pill-name">Configuration</span>
-                        </NavLink>
+                        </Link>
                     </NavItem>
                 </Nav>
             </div>

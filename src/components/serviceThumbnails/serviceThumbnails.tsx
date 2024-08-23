@@ -4,9 +4,11 @@ import './serviceThumbnails.css';
 
 export default ({
     selected,
+    prefix = '/src/',
     onSelect,
 }: {
     selected?: string;
+    prefix?: string;
     onSelect?: (string) => void;
 }) => {
     const serviceTypes = useContext(ServiceTypesContext);
@@ -30,7 +32,10 @@ export default ({
                     }}
                 >
                     <div className="thumbnail-image">
-                        <img src={serviceType.logo} alt={serviceType.typeName} />
+                        <img
+                            src={`${prefix}${serviceType.logo}`}
+                            alt={serviceType.typeName}
+                        />
                     </div>
                     <div className="caption">{serviceType.typeName}</div>
                 </a>

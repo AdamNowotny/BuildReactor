@@ -2,7 +2,7 @@ import PageContext from 'components/pageContext';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import app from 'settings/app';
-import AddPage from 'settings/pages/addPage';
+import AddPage from 'options/pages/addPage';
 
 export default app.controller(
     'AddServiceCtrl',
@@ -18,7 +18,7 @@ export default app.controller(
         if (view) {
             createRoot(view).render(
                 <PageContext>
-                    <AddPage onChange={handleChange} />
+                    <AddPage onChange={handleChange} prefix="" />
                 </PageContext>,
             );
         }

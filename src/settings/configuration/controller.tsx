@@ -2,7 +2,7 @@ import PageContext from 'components/pageContext';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import app from 'settings/app';
-import ConfigurationPage from 'settings/pages/configurationPage';
+import ConfigurationPage from 'options/pages/configurationPage';
 
 // eslint-disable-next-line prefer-arrow-callback
 export default app.controller('ConfigurationCtrl', function () {
