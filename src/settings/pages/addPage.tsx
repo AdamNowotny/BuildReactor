@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 export default ({
     onChange,
 }: {
-    onChange: (serviceTypeId: string, serviceName: string) => void;
+    onChange?: (serviceTypeId: string, serviceName: string) => void;
 }) => {
     const [selected, setSelected] = useState<string>('');
 
@@ -14,7 +14,7 @@ export default ({
     };
     const handleNameChange = (name: string) => {
         if (!selected) return;
-        onChange(selected, name);
+        if (onChange) onChange(selected, name);
     };
     return (
         <>

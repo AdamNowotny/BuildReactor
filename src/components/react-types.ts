@@ -14,5 +14,6 @@ export interface ThemeProps {
 
 export const ViewConfigContext = createContext<ViewConfig>({});
 export const ServiceStateContext = createContext<ServiceStateItem[]>([]);
-export const SettingsContext = createContext<CIServiceSettings[]>([]);
 export const ServiceTypesContext = createContext<CIServiceDefinition[]>([]);
+export const SettingsContext = createContext<CIServiceSettings[]>([]);
+export const ServiceContext = createContext<CIServiceSettings | undefined>(undefined);

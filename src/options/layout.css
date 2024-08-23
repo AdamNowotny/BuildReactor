@@ -1,0 +1,34 @@
+a {
+    cursor: pointer;
+}
+
+.content-container {
+    bottom: 0;
+    left: 240px;
+    position: absolute;
+    right: 0;
+    top: 60px;
+
+    /* .alert-danger {
+        clear: both;
+        margin: 10px;
+    } */
+}
+
+/*
+.settings-container {
+    box-sizing: border-box;
+    float: left;
+    width: 50%;
+}
+
+.settings-buttons {
+    text-align: center;
+}
+
+.project-selection-container {
+    box-sizing: border-box;
+    float: left;
+    padding: 0 10px;
+    width: 50%;
+} */

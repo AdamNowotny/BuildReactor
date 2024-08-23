@@ -56,61 +56,64 @@ export default ({ dark, service }: { dark: boolean; service?: CIServiceSettings 
                         />
                         BuildReactor
                     </Navbar.Brand>
+                    <Navbar.Toggle />
                 </Navbar.Header>
-                <Navbar.Form>
-                    {service && (
-                        <Nav activeKey="/home">
-                            <NavItem className="on-off-switch">
-                                <OnOffSwitch
-                                    active={!service.isDisabled}
-                                    onClick={handleOnOff}
-                                />
-                            </NavItem>
-                            <NavItem
-                                onSelect={() => {
-                                    setShowRemove(true);
-                                }}
-                            >
-                                <i className="fa fa-trash-o"></i> Remove
-                            </NavItem>
-                            <NavItem
-                                onSelect={() => {
-                                    setShowRename(true);
-                                }}
-                            >
-                                <i className="fa fa-pencil"></i> Rename
+                <Navbar.Collapse>
+                    <Navbar.Form>
+                        {service && (
+                            <Nav stacked activeKey="/home">
+                                <NavItem className="on-off-switch">
+                                    <OnOffSwitch
+                                        active={!service.isDisabled}
+                                        onClick={handleOnOff}
+                                    />
+                                </NavItem>
+                                <NavItem
+                                    onSelect={() => {
+                                        setShowRemove(true);
+                                    }}
+                                >
+                                    <i className="fa fa-trash-o"></i> Remove
+                                </NavItem>
+                                <NavItem
+                                    onSelect={() => {
+                                        setShowRename(true);
+                                    }}
+                                >
+                                    <i className="fa fa-pencil"></i> Rename
+                                </NavItem>
+                            </Nav>
+                        )}
+                        <Nav pullRight>
+                            <NavDropdown title="Help" id="basic-nav-dropdown">
+                                <MenuItem
+                                    href="https://github.com/AdamNowotny/BuildReactor"
+                                    target="_blank"
+                                >
+                                    <i className="fa fa-github fa-fw"></i> GitHub
+                                </MenuItem>
+                                <MenuItem divider />
+                                <MenuItem
+                                    href="https://chrome.google.com/webstore/detail/buildreactor/agfdekbncfakhgofmaacjfkpbhjhpjmp"
+                                    target="_blank"
+                                >
+                                    <img src="/img/chrome.svg" width="18" height="14" />{' '}
+                                    Chrome WebStore
+                                </MenuItem>
+                                <MenuItem
+                                    href="https://addons.mozilla.org/en-US/firefox/addon/buildreactor-extension/"
+                                    target="_blank"
+                                >
+                                    <img src="/img/firefox.svg" width="18" height="14" />{' '}
+                                    Firefox Add-on
+                                </MenuItem>
+                            </NavDropdown>
+                            <NavItem href="src/dashboard/dashboard.html" target="_blank">
+                                <i className="fa fa-tasks"></i> Dashboard
                             </NavItem>
                         </Nav>
-                    )}
-                    <Nav pullRight>
-                        <NavDropdown eventKey={3} title="Help" id="basic-nav-dropdown">
-                            <MenuItem
-                                href="https://github.com/AdamNowotny/BuildReactor"
-                                target="_blank"
-                            >
-                                <i className="fa fa-github fa-fw"></i> GitHub
-                            </MenuItem>
-                            <MenuItem divider />
-                            <MenuItem
-                                href="https://chrome.google.com/webstore/detail/buildreactor/agfdekbncfakhgofmaacjfkpbhjhpjmp"
-                                target="_blank"
-                            >
-                                <img src="/img/chrome.svg" width="18" height="14" />{' '}
-                                Chrome WebStore
-                            </MenuItem>
-                            <MenuItem
-                                href="https://addons.mozilla.org/en-US/firefox/addon/buildreactor-extension/"
-                                target="_blank"
-                            >
-                                <img src="/img/firefox.svg" width="18" height="14" />{' '}
-                                Firefox Add-on
-                            </MenuItem>
-                        </NavDropdown>
-                        <NavItem href="src/dashboard/dashboard.html" target="_blank">
-                            <i className="fa fa-tasks"></i> Dashboard
-                        </NavItem>
-                    </Nav>
-                </Navbar.Form>
+                    </Navbar.Form>
+                </Navbar.Collapse>
             </Navbar>
         </>
     );

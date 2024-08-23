@@ -13,11 +13,11 @@ const DashboardTheme = ({ popup }) => {
     const viewConfig = useContext(ViewConfigContext);
 
     const themeName = viewConfig.theme ?? 'dark';
-    const DashboardTheme = themes[themeName];
+    const DashboardActiveTheme = themes[themeName];
     return (
         <PageContext>
             <div className={`theme theme-${themeName}`}>
-                <DashboardTheme popup={popup} />
+                <DashboardActiveTheme popup={popup} />
             </div>
         </PageContext>
     );

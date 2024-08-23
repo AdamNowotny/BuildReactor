@@ -21,6 +21,7 @@ export default defineConfig({
                 'service-worker': 'src/service-worker/main.ts',
                 popup: 'src/dashboard/popup.html',
                 dashboard: 'src/dashboard/dashboard.html',
+                options: 'src/options/options.html',
             },
             output: {
                 dir: 'dist/build',

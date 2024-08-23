@@ -1,18 +1,17 @@
 import core from 'common/core';
 import {
-    CIPipelineList,
     CIServiceDefinition,
     CIServiceSettings,
     ServiceStateItem,
     ViewConfig,
 } from 'common/types';
+import React, { useEffect, useState } from 'react';
 import {
     ServiceStateContext,
     ServiceTypesContext,
     SettingsContext,
     ViewConfigContext,
 } from './react-types';
-import React, { useEffect, useState } from 'react';
 
 export default ({ children }) => {
     const [viewConfig, setViewConfig] = useState<ViewConfig>({});
@@ -35,7 +34,6 @@ export default ({ children }) => {
         });
     }, []);
     return (
-        // <React.StrictMode>
         <ServiceTypesContext.Provider value={serviceTypes}>
             <ViewConfigContext.Provider value={viewConfig}>
                 <SettingsContext.Provider value={settings}>
@@ -45,6 +43,5 @@ export default ({ children }) => {
                 </SettingsContext.Provider>
             </ViewConfigContext.Provider>
         </ServiceTypesContext.Provider>
-        // </React.StrictMode>
     );
 };
