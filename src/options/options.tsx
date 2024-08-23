@@ -1,19 +1,56 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import core from 'common/core';
 import logger from 'common/logger';
+import PageContext from 'components/pageContext';
 import 'font-awesome/scss/font-awesome.scss';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import { RouterProvider } from 'react-router-dom';
-import { optionsRouter } from './optionsRouter';
+import {
+    createBrowserRouter,
+    createRoutesFromElements,
+    Route,
+    RouterProvider,
+} from 'react-router-dom';
+import AddPage from 'settings/pages/addPage';
+import ConfigurationPage from 'settings/pages/configurationPage';
+import NotificationsPage from 'settings/pages/notificationsPage';
+import ViewPage from 'settings/pages/viewPage';
+import Layout from './layout';
+import ServicePage from './pages/servicePage';
 
 core.init({ test: true });
 logger.init({ prefix: 'options', debug: false });
+
+export const router = createBrowserRouter(
+    createRoutesFromElements(
+        <>
+            <Route
+                path="/"
+                element={
+                    <PageContext>
+                        <Layout />
+                    </PageContext>
+                }
+            >
+                <Route index element={<AddPage />} />
+                <Route path="new/:serviceTypeId/:serviceId" element={<ServicePage />} />
+                <Route path="service/:serviceId" element={<ServicePage />} />
+                <Route path="view" element={<ViewPage />} />
+                <Route path="notifications" element={<NotificationsPage />} />
+                <Route path="configuration" element={<ConfigurationPage />} />
+            </Route>
+            <Route path="*" element={<h1>Routing error</h1>} />
+        </>,
+    ),
+    {
+        basename: '/src/options/options.html',
+    },
+);
 
 const container = document.getElementById('app');
 if (!container) throw new Error("Could not find 'app' element");
 createRoot(container).render(
     <React.StrictMode>
-        <RouterProvider router={optionsRouter} />
+        <RouterProvider router={router} />
     </React.StrictMode>,
 );
