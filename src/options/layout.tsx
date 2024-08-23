@@ -13,12 +13,15 @@ export default () => {
     const [_, path] = useLocation().pathname.split('/');
     const view = path || 'add';
 
+    const settings = useContext(SettingsContext);
     const { serviceId, serviceTypeId } = useParams();
-    const service = getService(serviceTypeId, serviceId);
+    const service = settings.find(config => config.name === serviceId);
+
+    const newConfig = createServiceConfig(serviceTypeId, serviceId);
     return (
         <ServiceContext.Provider value={service}>
             <OptionsNavBar dark={false} service={service} />
-            <Sidebar service={service} view={view} />
+            <Sidebar service={service ?? newConfig} view={view} />
             <div className="content-container">
                 <Outlet />
             </div>
@@ -26,20 +29,16 @@ export default () => {
     );
 };
 
-const getService = (serviceTypeId: string | undefined, serviceId: string | undefined) => {
+function createServiceConfig(
+    serviceTypeId: string | undefined,
+    serviceId: string | undefined,
+) {
     if (serviceTypeId && serviceId) {
-        return createServiceConfig(serviceTypeId, serviceId);
-    } else {
-        const settings = useContext(SettingsContext);
-        return settings.find(config => config.name === serviceId);
+        const serviceTypes = useContext(ServiceTypesContext);
+        const serviceType = serviceTypes.find(
+            serviceType => serviceType.baseUrl === serviceTypeId,
+        );
+        if (!serviceType) throw new Error(`Could not find service type ${serviceTypeId}`);
+        return { ...serviceType.defaultConfig, name: serviceId };
     }
-};
-
-function createServiceConfig(serviceTypeId: string, serviceId: string) {
-    const serviceTypes = useContext(ServiceTypesContext);
-    const serviceType = serviceTypes.find(
-        serviceType => serviceType.baseUrl === serviceTypeId,
-    );
-    if (!serviceType) throw new Error(`Could not find service type ${serviceTypeId}`);
-    return { ...serviceType.defaultConfig, name: serviceId };
 }
