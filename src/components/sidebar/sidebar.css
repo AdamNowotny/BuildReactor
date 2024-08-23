@@ -57,15 +57,14 @@
             &.muted span {
                 color: #999;
             }
+            &.active {
+                a {
+                    color: #fff;
+                }
+            }
         }
         .active.muted span {
             color: #ccc;
-        }
-        &.active {
-            .pill-name,
-            .pill-icon {
-                color: #fff;
-            }
         }
     }
 

@@ -1,6 +1,7 @@
 import ServiceNamePanel from 'components/serviceNamePanel/serviceNamePanel';
 import ServiceThumbnails from 'components/serviceThumbnails/serviceThumbnails';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default ({
     onChange,
@@ -9,19 +10,27 @@ export default ({
     onChange?: (serviceTypeId: string, serviceName: string) => void;
     prefix?: string;
 }) => {
-    const [selected, setSelected] = useState<string>('');
+    const navigate = useNavigate();
+    const [serviceTypeId, setServiceTypeId] = useState<string>('');
 
-    const handleSelected = (typeName: string) => {
-        setSelected(typeName);
+    const handleTypeSelected = (typeName: string) => {
+        setServiceTypeId(typeName);
     };
     const handleNameChange = (name: string) => {
-        if (!selected) return;
-        if (onChange) onChange(selected, name);
+        if (!serviceTypeId) throw new Error('Service type undefined');
+        if (onChange) {
+            onChange(serviceTypeId, name);
+        } else {
+            navigate(`/new/${serviceTypeId}/${name}`);
+        }
     };
     return (
         <>
-            <ServiceThumbnails onSelect={handleSelected} prefix={prefix} />
-            <ServiceNamePanel active={Boolean(selected)} onChange={handleNameChange} />
+            <ServiceThumbnails onSelect={handleTypeSelected} prefix={prefix} />
+            <ServiceNamePanel
+                active={Boolean(serviceTypeId)}
+                onChange={handleNameChange}
+            />
         </>
     );
 };
