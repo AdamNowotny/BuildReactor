@@ -8,14 +8,8 @@ a {
     position: absolute;
     right: 0;
     top: 60px;
-
-    /* .alert-danger {
-        clear: both;
-        margin: 10px;
-    } */
 }
 
-/*
 .settings-container {
     box-sizing: border-box;
     float: left;
@@ -26,6 +20,7 @@ a {
     text-align: center;
 }
 
+/*
 .project-selection-container {
     box-sizing: border-box;
     float: left;

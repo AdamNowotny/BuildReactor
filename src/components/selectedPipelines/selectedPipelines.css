@@ -1,0 +1,23 @@
+.selected-pipelines {
+    margin: 10px;
+    user-select: none;
+
+    .sortable-placeholder {
+        background-color: #ffe;
+        height: 41px;
+    }
+
+    .handle {
+        display: none;
+        left: 3px;
+        position: absolute;
+        top: 10px;
+    }
+
+    .list-group-item:hover {
+        background-color: transparent;
+        .handle {
+            display: inline;
+        }
+    }
+}

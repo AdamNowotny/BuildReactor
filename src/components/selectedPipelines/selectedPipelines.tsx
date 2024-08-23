@@ -1,12 +1,25 @@
 import React from 'react';
-import { Col, Form } from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Panel } from 'react-bootstrap';
+import './selectedPipelines.css';
 
 export default ({ service }) => {
     return (
-        <div>
-            {service?.pipelines.map(pipeline => {
-                return <p key={pipeline}>{pipeline}</p>;
-            })}
+        <div className="selected-pipelines">
+            <Panel>
+                <Panel.Heading>
+                    Monitored builds (update interval 30 seconds)
+                </Panel.Heading>
+                <ListGroup>
+                    {service?.pipelines.map(pipeline => {
+                        return (
+                            <ListGroupItem>
+                                <span className="handle">::</span>
+                                <span className="project-name">{pipeline}</span>
+                            </ListGroupItem>
+                        );
+                    })}
+                </ListGroup>
+            </Panel>
         </div>
     );
 };
