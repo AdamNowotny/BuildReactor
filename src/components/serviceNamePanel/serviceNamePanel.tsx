@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import './serviceNamePanel.css';
+import { Form } from 'react-router-dom';
 
 export default ({
     active,
@@ -19,17 +20,15 @@ export default ({
     const handleChange = e => {
         setValue(e.target.value);
     };
-    const handleClick = e => {
+    const handleClick = () => {
         onChange(value);
-        e.preventDefault();
+    };
+    const submit = () => {
+        onChange(value);
     };
     return (
-        <div className="panel-footer">
-            <form
-                className="service-add-form form-inline"
-                onSubmit={handleClick}
-                ng-submit="add()"
-            >
+        <div className="panel-footer ">
+            <Form className="service-add-form" onSubmit={submit}>
                 <div className="form-actions">
                     <div className="form-group">
                         <input
@@ -52,7 +51,7 @@ export default ({
                         </Button>
                     </div>
                 </div>
-            </form>
+            </Form>
         </div>
     );
 };

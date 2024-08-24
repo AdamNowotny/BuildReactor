@@ -10,6 +10,7 @@ export default ({
     onChange?: (serviceTypeId: string, serviceName: string) => void;
     prefix?: string;
 }) => {
+    const navigate = useNavigate();
     const [serviceTypeId, setServiceTypeId] = useState<string>('');
 
     const handleTypeSelected = (typeName: string) => {
@@ -20,7 +21,6 @@ export default ({
         if (onChange) {
             onChange(serviceTypeId, name);
         } else {
-            const navigate = useNavigate();
             navigate(`/new/${serviceTypeId}/${name}`);
         }
     };
