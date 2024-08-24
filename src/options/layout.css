@@ -15,10 +15,3 @@ a {
     float: left;
     width: 50%;
 }
-
-.project-selection-container {
-    box-sizing: border-box;
-    float: left;
-    padding: 0 10px;
-    width: 50%;
-}

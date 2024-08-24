@@ -1,4 +1,9 @@
 .project-selection-container {
+    box-sizing: border-box;
+    float: left;
+    padding: 0 10px;
+    width: 50%;
+
     .panel-group {
         margin-bottom: 10px;
     }
