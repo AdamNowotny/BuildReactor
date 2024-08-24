@@ -3,7 +3,7 @@ import serviceRepository from '../services/service-repository';
 import stateStorage from './storage/service-state';
 import viewConfigStorage from './storage/view-config';
 import serviceConfig from './storage/service-config';
-import { CIServiceSettings } from 'common/types';
+import { CIServiceSettings, WorkerError } from 'common/types';
 
 function availableServices(sendResponse: any) {
     const response = serviceRepository.getAllDefinitions();
@@ -21,8 +21,9 @@ const availableProjects = async (sendResponse, settings: CIServiceSettings) => {
             error: {
                 name: ex.name,
                 message: ex.message,
-                stack: ex.stack,
-            },
+                status: ex.status,
+                url: ex.url,
+            } as WorkerError,
         });
     }
 };

@@ -1,3 +1,10 @@
+export interface WorkerError {
+    name: string;
+    message: string;
+    status: number;
+    url?: string;
+}
+
 export interface CIServiceSettings {
     baseUrl: string;
     name: string;

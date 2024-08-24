@@ -59,7 +59,7 @@ const availableServices = (callback: (callback: CIServiceDefinition[]) => void) 
 
 const availableProjects = (
     settings: CIServiceSettings,
-    callback: ({ pipelines }: { pipelines: CIPipelineList }) => void,
+    callback: ({ pipelines, error }: { pipelines: CIPipelineList; error? }) => void,
 ) => {
     const message = { name: 'availableProjects', serviceSettings: settings };
     logger.info('availableProjects', message);

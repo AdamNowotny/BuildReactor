@@ -3,11 +3,12 @@ import {
     CIPipelineList,
     CIServiceDefinitionField,
     CIServiceSettings,
+    WorkerError,
 } from 'common/types';
 import { FormInputField } from 'components/formFields';
 import { ServiceTypesContext } from 'components/react-types';
 import React, { useContext, useState } from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, Alert } from 'react-bootstrap';
 import './dynamicForm.css';
 
 export default ({
@@ -20,6 +21,7 @@ export default ({
     onSave: () => void;
 }) => {
     if (!service) return null;
+    const [error, setError] = useState<WorkerError>();
     const serviceTypes = useContext(ServiceTypesContext);
     const serviceDefinition = serviceTypes.find(
         definition => definition.baseUrl === service.baseUrl,
@@ -28,14 +30,18 @@ export default ({
 
     const handleShow = () => {
         setIsLoading(true);
-        core.availableProjects(service, ({ pipelines }) => {
-            if (onShow) onShow(pipelines);
+        core.availableProjects(service, ({ pipelines, error }) => {
             setIsLoading(false);
+            if (error) {
+                setError(error);
+            } else {
+                setError(undefined);
+                if (onShow) onShow(pipelines);
+            }
         });
     };
     const handleSave = () => {
         core.saveService(service);
-        // alert
     };
     return (
         <Form horizontal className="settings-form" key={service.name}>
@@ -55,6 +61,23 @@ export default ({
                     <i className="fa fa-save"></i>Save
                 </button>
             </div>
+            {error && (
+                <Alert>
+                    <div className="error-message">
+                        {error.name}: {error.message}
+                    </div>
+                    <div>
+                        <a
+                            href={error.url}
+                            target="_blank"
+                            className="alert-link"
+                            rel="noreferrer"
+                        >
+                            {error.url}
+                        </a>
+                    </div>
+                </Alert>
+            )}
         </Form>
     );
 };
