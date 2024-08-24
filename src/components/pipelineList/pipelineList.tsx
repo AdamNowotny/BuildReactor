@@ -18,17 +18,15 @@ const GroupPanel = ({
 }) => {
     // selected
     // checkAll
-    // filter
     // highlight
     // TODO: save
-    const totalCount = items.length;
-    const visibleCount = items.length;
     const filterFunc = (item: CIPipeline) => {
         return filter ? item.name.toLowerCase().includes(filter.toLowerCase()) : true;
     };
-    const handleCheck = e => {
-        console.log('handleCheck', e);
+    const handleCheck = (id: string, checked: boolean) => {
+        console.log('handleCheck', id, checked);
     };
+    const filteredItems = items.filter(filterFunc);
     return (
         <Panel>
             <Panel.Heading>
@@ -38,19 +36,21 @@ const GroupPanel = ({
                     className="filter-count badge"
                     title="Visible / All projects in group"
                 >
-                    {filter && <span>{visibleCount} /</span>}
-                    {totalCount}
+                    {filter && <span>{filteredItems.length} /</span>}
+                    {items.length}
                 </span>
             </Panel.Heading>
             <Panel.Body>
-                {items.filter(filterFunc).map((pipeline, index) => {
+                {filteredItems.map(pipeline => {
                     const isSelected = selectedItems.includes(pipeline.id);
                     return (
                         <label key={pipeline.id} className="checkbox">
                             <input
                                 type="checkbox"
                                 defaultChecked={isSelected}
-                                onChange={handleCheck}
+                                onChange={e => {
+                                    handleCheck(pipeline.id, e.target.checked);
+                                }}
                             />
                             <span
                                 className={`project-name ${

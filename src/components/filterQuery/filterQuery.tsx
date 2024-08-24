@@ -3,8 +3,14 @@ import './filterQuery.css';
 
 export default ({ onUpdate }: { onUpdate: (string) => void }) => {
     const [query, setQuery] = useState('');
-    const handleKeyUp = e => {
-        const value = e.key === 'Escape' ? '' : e.target.value;
+    const handleKeyDown = e => {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            setQuery('');
+        }
+    };
+    const handleChange = e => {
+        const value = e.target.value;
         setQuery(value);
         onUpdate(value);
     };
@@ -12,11 +18,12 @@ export default ({ onUpdate }: { onUpdate: (string) => void }) => {
     return (
         <div className="filter-query">
             <input
-                defaultValue={query}
+                value={query}
                 className="search-query form-control"
                 type="text"
                 placeholder="Search..."
-                onKeyUp={handleKeyUp}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
             />
             {query && (
                 <i
