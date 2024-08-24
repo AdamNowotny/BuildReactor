@@ -6,6 +6,7 @@ import testActiveProjects from './__mocks__/core.mock.activeProjects';
 import testViews from './__mocks__/core.mock.views';
 import testConfigurations from './__mocks__/core.mock.configurations';
 import testServices from './__mocks__/core.mock.serviceTypes';
+import testAvailableProjects from './__mocks__/core.mock.availableProjects';
 
 import {
     CIServiceSettings,
@@ -62,7 +63,11 @@ const availableProjects = (
 ) => {
     const message = { name: 'availableProjects', serviceSettings: settings };
     logger.info('availableProjects', message);
-    chrome.runtime.sendMessage(message, callback);
+    if (TEST) {
+        callback(testAvailableProjects);
+    } else {
+        chrome.runtime.sendMessage(message, callback);
+    }
 };
 
 const setOrder = function (serviceNames) {

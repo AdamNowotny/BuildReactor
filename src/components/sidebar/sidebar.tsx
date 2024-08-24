@@ -14,6 +14,7 @@ export default ({ service, view }: { service?: CIServiceSettings; view?: string 
         if (!item) throw new Error(`Could not find service type for ${baseUrl}`);
         return `/src/${item.icon}`;
     };
+    // TODO: sortable
     return (
         <div className="sidebar-nav">
             <div className="scrollable">

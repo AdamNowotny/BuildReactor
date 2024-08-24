@@ -3,6 +3,7 @@ import { ListGroup, ListGroupItem, Panel } from 'react-bootstrap';
 import './selectedPipelines.css';
 
 export default ({ service }) => {
+    // TODO: sortable
     return (
         <div className="selected-pipelines">
             <Panel>

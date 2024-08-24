@@ -1,0 +1,9 @@
+.settings-buttons {
+    text-align: center;
+    button {
+        margin: 5px;
+        i {
+            padding-right: 5px;
+        }
+    }
+}
