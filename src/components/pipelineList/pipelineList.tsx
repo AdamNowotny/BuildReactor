@@ -26,6 +26,9 @@ const GroupPanel = ({
     const filterFunc = (item: CIPipeline) => {
         return filter ? item.name.toLowerCase().includes(filter.toLowerCase()) : true;
     };
+    const handleCheck = e => {
+        console.log('handleCheck', e);
+    };
     return (
         <Panel>
             <Panel.Heading>
@@ -35,9 +38,7 @@ const GroupPanel = ({
                     className="filter-count badge"
                     title="Visible / All projects in group"
                 >
-                    <span ng-show="group.visibleCount != group.projectsCount">
-                        {visibleCount} /
-                    </span>
+                    {filter && <span>{visibleCount} /</span>}
                     {totalCount}
                 </span>
             </Panel.Heading>
@@ -45,8 +46,12 @@ const GroupPanel = ({
                 {items.filter(filterFunc).map((pipeline, index) => {
                     const isSelected = selectedItems.includes(pipeline.id);
                     return (
-                        <label className="checkbox">
-                            <input type="checkbox" checked={isSelected} />
+                        <label key={pipeline.id} className="checkbox">
+                            <input
+                                type="checkbox"
+                                defaultChecked={isSelected}
+                                onChange={handleCheck}
+                            />
                             <span
                                 className={`project-name ${
                                     pipeline.isDisabled ? 'text-muted' : ''
@@ -75,7 +80,7 @@ export default ({
     pipelines?: CIPipelineList;
     filter?: string;
     selectedItems?: string[];
-    onSelected?: (selected: boolean) => void;
+    onSelected?: (selected: string[]) => void;
 }) => {
     if (!pipelines) return null;
     const groups = Map.groupBy(pipelines.items, ({ group }) => group ?? '');

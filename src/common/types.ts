@@ -13,7 +13,7 @@ export interface CIServiceSettings {
     repository?: string;
 }
 
-interface CIServiceDefinitionField {
+export interface CIServiceDefinitionField {
     type: string;
     name?: string;
     help?: string;

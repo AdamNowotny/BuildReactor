@@ -141,7 +141,7 @@ export const FormButtonField = ({
     );
 };
 
-const FormInputField = ({
+export const FormInputField = ({
     disabled,
     text,
     icon,
@@ -154,7 +154,7 @@ const FormInputField = ({
     icon?: string;
     onChange: (value: string) => void;
     placeholder?: string;
-    type: 'text' | 'url';
+    type: 'text' | 'url' | 'password';
 }) => {
     return (
         <>
@@ -182,10 +182,12 @@ const FormInputField = ({
 export const FormUrlField = ({
     disabled,
     text,
+    placeholder,
     onChange,
 }: {
     disabled?: boolean;
     text: string;
+    placeholder?: string;
     onChange: (value: string) => void;
 }) => {
     return (
@@ -195,7 +197,7 @@ export const FormUrlField = ({
             onChange={onChange}
             type={'url'}
             icon="globe"
-            placeholder="URL"
+            placeholder={placeholder ?? 'URL'}
         />
     );
 };

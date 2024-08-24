@@ -17,15 +17,30 @@ export default () => {
     const updateFilter = value => {
         setFilter(value);
     };
+    const updateSelected = (selected: string[]) => {
+        console.log('updsateSelected', selected);
+    };
+    const handleSave = () => {
+        console.log('save', pipelines);
+    };
     return (
         <Grid>
             <Col xs={6} className="settings-container">
-                <DynamicForm service={service} onShow={showPipelines} />
+                <DynamicForm
+                    service={service}
+                    onShow={showPipelines}
+                    onSave={handleSave}
+                />
                 <SelectedPipelines service={service} />
             </Col>
             <Col xs={6} className="project-selection-container">
                 <PipelineFilter onUpdate={updateFilter} />
-                <PipelineList pipelines={pipelines} filter={filter} />
+                <PipelineList
+                    pipelines={pipelines}
+                    filter={filter}
+                    selectedItems={service?.pipelines}
+                    onSelected={updateSelected}
+                />
             </Col>
         </Grid>
     );
