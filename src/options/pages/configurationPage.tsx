@@ -1,6 +1,6 @@
 import core from 'common/core';
 import Alert from 'components/alert';
-import { FormBooleanField, FormButtonField, FormUrlField } from 'components/formFields';
+import { FormBooleanField, FormButtonField, FormInputField } from 'components/formFields';
 import JsonEditor from 'components/jsonEditor/jsonEditor';
 import { SettingsContext } from 'components/react-types';
 import ToastAlert from 'components/toastAlert/toastAlert';
@@ -72,7 +72,13 @@ export default () => {
                         <fieldset>
                             <legend>Import from URL</legend>
                         </fieldset>
-                        <FormUrlField text={importUrl} onChange={setImportUrl} />
+                        <FormInputField
+                            text={importUrl}
+                            onChange={setImportUrl}
+                            type={'url'}
+                            icon="globe"
+                            placeholder={'URL'}
+                        />
                         <FormButtonField
                             disabled={!importUrl}
                             text="Import"

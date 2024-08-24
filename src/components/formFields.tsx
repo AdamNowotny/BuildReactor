@@ -178,26 +178,3 @@ export const FormInputField = ({
         </>
     );
 };
-
-export const FormUrlField = ({
-    disabled,
-    text,
-    placeholder,
-    onChange,
-}: {
-    disabled?: boolean;
-    text: string;
-    placeholder?: string;
-    onChange: (value: string) => void;
-}) => {
-    return (
-        <FormInputField
-            text={text}
-            disabled={disabled}
-            onChange={onChange}
-            type={'url'}
-            icon="globe"
-            placeholder={placeholder ?? 'URL'}
-        />
-    );
-};

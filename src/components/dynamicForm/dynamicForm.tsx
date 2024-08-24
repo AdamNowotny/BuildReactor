@@ -4,7 +4,7 @@ import {
     CIServiceDefinitionField,
     CIServiceSettings,
 } from 'common/types';
-import { FormInputField, FormUrlField } from 'components/formFields';
+import { FormInputField } from 'components/formFields';
 import { ServiceTypesContext } from 'components/react-types';
 import React, { useContext, useState } from 'react';
 import { Form } from 'react-bootstrap';
@@ -67,7 +67,7 @@ const ServiceDefinitionField = ({
     field: CIServiceDefinitionField;
 }) => {
     const changeField = (key: string, value: string | number) => {
-        console.log('changeField', value);
+        console.log('changeField', key, value);
     };
 
     return (
