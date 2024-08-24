@@ -1,11 +1,10 @@
 import core from 'common/core';
-import Alert from 'components/alert';
 import { FormBooleanField, FormButtonField, FormInputField } from 'components/formFields';
 import JsonEditor from 'components/jsonEditor/jsonEditor';
 import { SettingsContext } from 'components/react-types';
 import ToastAlert from 'components/toastAlert/toastAlert';
 import React, { useContext, useState } from 'react';
-import { Col, Form } from 'react-bootstrap';
+import { Col, Form, Alert } from 'react-bootstrap';
 
 export default () => {
     const settings = useContext(SettingsContext);
@@ -85,7 +84,7 @@ export default () => {
                             icon="cloud-download"
                             onClick={importHandler}
                         />
-                        <Alert text={importError} />
+                        <Alert bsStyle="danger">{importError}</Alert>
                     </Form>
                 </Col>
                 <Col md={8} style={{ height: '100vh' }}>
