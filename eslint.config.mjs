@@ -1,10 +1,11 @@
 import globals from 'globals';
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
+import reactPlugin from 'eslint-plugin-react';
 
 export default tseslint.config(
     {
-        files: ['**/*.{js,mjs,cjs,ts}'],
+        files: ['**/*.{js,jsx,mjs,cjs,ts,tsx}'],
     },
     {
         ignores: [
@@ -27,10 +28,16 @@ export default tseslint.config(
                 tsconfigRootDir: import.meta.dirname,
             },
         },
+        settings: {
+            react: {
+                version: 'detect',
+            },
+        },
     },
     eslint.configs.recommended,
     ...tseslint.configs.strictTypeChecked,
     ...tseslint.configs.stylisticTypeChecked,
+    reactPlugin.configs.flat.recommended,
     {
         rules: {
             '@typescript-eslint/dot-notation': 'off',
@@ -66,6 +73,7 @@ export default tseslint.config(
             ],
             'object-shorthand': ['error', 'always'],
             'prefer-arrow-callback': 'error',
+            'react/display-name': 'off',
             'sort-keys': ['error', 'asc', { minKeys: 10 }],
         },
     },
