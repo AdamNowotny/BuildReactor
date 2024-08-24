@@ -4,6 +4,7 @@ import PipelineFilter from 'components/filterQuery/filterQuery';
 import PipelineList from 'components/pipelineList/pipelineList';
 import { ServiceContext } from 'components/react-types';
 import SelectedPipelines from 'components/selectedPipelines/selectedPipelines';
+import ToastAlert from 'components/toastAlert/toastAlert';
 import React, { useContext, useState } from 'react';
 import { Col, Grid } from 'react-bootstrap';
 
@@ -11,6 +12,7 @@ export default () => {
     const service = useContext(ServiceContext);
     const [pipelines, setPipelines] = useState<CIPipelineList>();
     const [filter, setFilter] = useState();
+    const [toastAlertReset, setToastAlertReset] = useState(0);
 
     const showPipelines = piplines => {
         setPipelines(piplines);
@@ -22,7 +24,7 @@ export default () => {
         console.log('updsateSelected', selected);
     };
     const handleSave = () => {
-        console.log('save', pipelines);
+        setToastAlertReset(toastAlertReset + 1);
     };
     return (
         <Grid fluid>
@@ -44,6 +46,11 @@ export default () => {
                     onSelected={updateSelected}
                 />
             </Col>
+            {toastAlertReset > 0 && (
+                <div className="alert-saved">
+                    <ToastAlert key={toastAlertReset} text="Settings saved" />
+                </div>
+            )}
         </Grid>
     );
 };

@@ -8,7 +8,7 @@ import {
 import { FormInputField } from 'components/formFields';
 import { ServiceTypesContext } from 'components/react-types';
 import React, { useContext, useState } from 'react';
-import { Form, Alert } from 'react-bootstrap';
+import { Alert, Form } from 'react-bootstrap';
 import './dynamicForm.css';
 
 export default ({
@@ -22,6 +22,9 @@ export default ({
 }) => {
     if (!service) return null;
     const [error, setError] = useState<WorkerError>();
+    const [updatedService, setUpdatedService] = useState<CIServiceSettings>({
+        ...service,
+    });
     const serviceTypes = useContext(ServiceTypesContext);
     const serviceDefinition = serviceTypes.find(
         definition => definition.baseUrl === service.baseUrl,
@@ -41,15 +44,17 @@ export default ({
         });
     };
     const handleSave = () => {
-        core.saveService(service);
+        core.saveService(updatedService);
+        onSave();
     };
     return (
-        <Form horizontal className="settings-form" key={service.name}>
+        <Form horizontal className="settings-form" key={updatedService.name}>
             {serviceDefinition?.fields.map(field => (
                 <ServiceDefinitionField
                     key={field.name}
-                    service={service}
+                    service={updatedService}
                     field={field}
+                    onChange={setUpdatedService}
                 />
             ))}
             <div className="settings-buttons">
@@ -85,12 +90,15 @@ export default ({
 const ServiceDefinitionField = ({
     service,
     field,
+    onChange,
 }: {
     service: CIServiceSettings;
     field: CIServiceDefinitionField;
+    onChange?: (service: CIServiceSettings) => void;
 }) => {
     const changeField = (key: string, value: string | number) => {
-        console.log('changeField', key, value);
+        service[key] = value;
+        if (onChange) onChange(service);
     };
 
     return (

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import './toastAlert.css';
 
-export default ({ text }) => {
+export default ({ text }: { text: string }) => {
     const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {
