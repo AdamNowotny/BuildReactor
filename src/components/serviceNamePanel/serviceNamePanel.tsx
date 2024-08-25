@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Col } from 'react-bootstrap';
 import './serviceNamePanel.css';
 import { Form } from 'react-router-dom';
 
@@ -30,26 +30,32 @@ export default ({
         <div className="panel-footer ">
             <Form className="service-add-form" onSubmit={submit}>
                 <div className="form-actions">
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            autoFocus={active}
-                            className="form-control"
-                            placeholder="Name"
-                            disabled={!active}
-                            onChange={handleChange}
-                            ref={inputRef}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <Button
-                            bsStyle="primary"
-                            onClick={handleClick}
-                            disabled={!active}
-                        >
-                            Add
-                        </Button>
-                    </div>
+                    <Col xs={3} />
+                    <Col xs={4}>
+                        <div className="form-group">
+                            <input
+                                type="text"
+                                autoFocus={active}
+                                className="form-control"
+                                placeholder="Name"
+                                disabled={!active}
+                                onChange={handleChange}
+                                ref={inputRef}
+                            />
+                        </div>
+                    </Col>
+                    <Col xs={2}>
+                        <div className="form-group">
+                            <Button
+                                bsStyle="primary"
+                                onClick={handleClick}
+                                disabled={!active}
+                            >
+                                Add
+                            </Button>
+                        </div>
+                    </Col>
+                    <Col xs={3} />
                 </div>
             </Form>
         </div>
