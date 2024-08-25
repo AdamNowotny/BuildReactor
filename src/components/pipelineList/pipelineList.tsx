@@ -3,28 +3,60 @@ import React from 'react';
 import { Panel } from 'react-bootstrap';
 import './pipelineList.css';
 
+// TODO: checkAll
+// TODO: highlight
+
+export default ({
+    pipelines,
+    filter,
+    selectedItems = [],
+    onSelected,
+}: {
+    pipelines?: CIPipelineList;
+    filter?: string;
+    selectedItems?: string[];
+    onSelected?: (selected: string[]) => void;
+}) => {
+    if (!pipelines) return null;
+    let updatedSelected = [...selectedItems];
+    const handleChanged = (id: string, checked: boolean) => {
+        const newSelected = checked
+            ? [...updatedSelected, id]
+            : updatedSelected.filter(item => item !== id);
+        updatedSelected = newSelected;
+        if (onSelected) onSelected(newSelected);
+    };
+
+    const groups = Map.groupBy(pipelines.items, ({ group }) => group ?? '');
+    const groupNames: string[] = Array.from(groups.keys());
+    const groupsJsx = groupNames.map((key: string) => (
+        <GroupPanel
+            key={key}
+            name={key}
+            items={groups.get(key) ?? []}
+            selectedItems={selectedItems}
+            filter={filter}
+            onChanged={handleChanged}
+        />
+    ));
+    return <div>{groupsJsx}</div>;
+};
+
 const GroupPanel = ({
     name,
     items,
     filter,
     selectedItems = [],
-    onSelected,
+    onChanged,
 }: {
     name: string;
     items: CIPipeline[];
     filter?: string;
     selectedItems?: string[];
-    onSelected?: (selected: boolean) => void;
+    onChanged?: (id: string, checked: boolean) => void;
 }) => {
-    // selected
-    // checkAll
-    // highlight
-    // TODO: save
     const filterFunc = (item: CIPipeline) => {
         return filter ? item.name.toLowerCase().includes(filter.toLowerCase()) : true;
-    };
-    const handleCheck = (id: string, checked: boolean) => {
-        console.log('handleCheck', id, checked);
     };
     const filteredItems = items.filter(filterFunc);
     return (
@@ -49,7 +81,8 @@ const GroupPanel = ({
                                 type="checkbox"
                                 defaultChecked={isSelected}
                                 onChange={e => {
-                                    handleCheck(pipeline.id, e.target.checked);
+                                    if (onChanged)
+                                        onChanged(pipeline.id, e.target.checked);
                                 }}
                             />
                             <span
@@ -70,23 +103,4 @@ const GroupPanel = ({
             </Panel.Body>
         </Panel>
     );
-};
-export default ({
-    pipelines,
-    filter,
-    selectedItems = [],
-    onSelected,
-}: {
-    pipelines?: CIPipelineList;
-    filter?: string;
-    selectedItems?: string[];
-    onSelected?: (selected: string[]) => void;
-}) => {
-    if (!pipelines) return null;
-    const groups = Map.groupBy(pipelines.items, ({ group }) => group ?? '');
-    const groupNames: string[] = Array.from(groups.keys());
-    const groupsJsx = groupNames.map((key: string) => (
-        <GroupPanel key={key} name={key} items={groups.get(key) ?? []} filter={filter} />
-    ));
-    return <div>{groupsJsx}</div>;
 };

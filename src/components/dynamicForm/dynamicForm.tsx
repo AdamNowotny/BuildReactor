@@ -16,15 +16,12 @@ export default ({
     onShow,
     onSave,
 }: {
-    service?: CIServiceSettings;
+    service: CIServiceSettings;
     onShow?: (pipelines: CIPipelineList) => void;
-    onSave: () => void;
+    onSave: (service: CIServiceSettings) => void;
 }) => {
-    if (!service) return null;
     const [error, setError] = useState<WorkerError>();
-    const [updatedService, setUpdatedService] = useState<CIServiceSettings>({
-        ...service,
-    });
+    let updatedService = { ...service };
     const serviceTypes = useContext(ServiceTypesContext);
     const serviceDefinition = serviceTypes.find(
         definition => definition.baseUrl === service.baseUrl,
@@ -33,7 +30,7 @@ export default ({
 
     const handleShow = () => {
         setIsLoading(true);
-        core.availableProjects(service, ({ pipelines, error }) => {
+        core.availableProjects(updatedService, ({ pipelines, error }) => {
             setIsLoading(false);
             if (error) {
                 setError(error);
@@ -44,8 +41,7 @@ export default ({
         });
     };
     const handleSave = () => {
-        core.saveService(updatedService);
-        onSave();
+        onSave(updatedService);
     };
     return (
         <Form horizontal className="settings-form" key={updatedService.name}>
@@ -54,7 +50,9 @@ export default ({
                     key={field.name}
                     service={updatedService}
                     field={field}
-                    onChange={setUpdatedService}
+                    onChange={service => {
+                        updatedService = service;
+                    }}
                 />
             ))}
             <div className="settings-buttons">

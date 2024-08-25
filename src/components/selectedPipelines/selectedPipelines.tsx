@@ -2,7 +2,7 @@ import React from 'react';
 import { ListGroup, ListGroupItem, Panel } from 'react-bootstrap';
 import './selectedPipelines.css';
 
-export default ({ service }) => {
+export default ({ pipelines }: { pipelines: string[] }) => {
     // TODO: sortable
     return (
         <div className="selected-pipelines">
@@ -11,9 +11,9 @@ export default ({ service }) => {
                     Monitored builds (update interval 30 seconds)
                 </Panel.Heading>
                 <ListGroup>
-                    {service?.pipelines.map(pipeline => {
+                    {pipelines.map(pipeline => {
                         return (
-                            <ListGroupItem>
+                            <ListGroupItem key={pipeline}>
                                 <span className="handle">::</span>
                                 <span className="project-name">{pipeline}</span>
                             </ListGroupItem>
