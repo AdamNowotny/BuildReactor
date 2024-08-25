@@ -84,7 +84,7 @@ export default () => {
                             icon="cloud-download"
                             onClick={importHandler}
                         />
-                        <Alert bsStyle="danger">{importError}</Alert>
+                        {importError && <Alert bsStyle="danger">{importError}</Alert>}
                     </Form>
                 </Col>
                 <Col md={8} style={{ height: '100vh' }}>
