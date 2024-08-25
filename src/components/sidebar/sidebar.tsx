@@ -11,8 +11,7 @@ export default ({ service, view }: { service?: CIServiceSettings; view?: string 
 
     const getIconFor = (baseUrl): string => {
         const item = serviceTypes.find(serviceType => serviceType.baseUrl === baseUrl);
-        if (!item) throw new Error(`Could not find service type for ${baseUrl}`);
-        return `/src/${item.icon}`;
+        return item ? `/${item.icon}` : '';
     };
     // TODO: sortable
     return (

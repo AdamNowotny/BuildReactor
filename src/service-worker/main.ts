@@ -1,5 +1,5 @@
-import logger from 'common/logger';
-import serviceMonitor from 'services/service-monitor';
+import logger from '../common/logger';
+import serviceMonitor from '../services/service-monitor';
 import serviceRepository from '../services/service-repository';
 import badge from './badge';
 import buildFinishedHandler from './events/build-finished';

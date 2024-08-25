@@ -38,7 +38,6 @@ function createServiceConfig(
         const serviceType = serviceTypes.find(
             serviceType => serviceType.baseUrl === serviceTypeId,
         );
-        if (!serviceType) throw new Error(`Could not find service type ${serviceTypeId}`);
-        return { ...serviceType.defaultConfig, name: serviceId };
+        return serviceType ? { ...serviceType.defaultConfig, name: serviceId } : null;
     }
 }

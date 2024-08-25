@@ -8,10 +8,12 @@ import SelectedPipelines from 'components/selectedPipelines/selectedPipelines';
 import ToastAlert from 'components/toastAlert/toastAlert';
 import React, { useContext, useState } from 'react';
 import { Col, Grid } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 // TODO: clear pipelines when serviceId changed
 
 export default () => {
+    const navigate = useNavigate();
     const service = useContext(ServiceContext);
     if (!service) return null;
     let updatedService = { ...service };
@@ -32,6 +34,7 @@ export default () => {
         updatedService = { ...settings, pipelines: updatedService.pipelines };
         core.saveService(updatedService);
         setToastAlertReset(toastAlertReset + 1);
+        navigate(`/service/${settings.name}`);
     };
     return (
         <Grid fluid>

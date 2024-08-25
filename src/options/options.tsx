@@ -18,7 +18,7 @@ import ViewPage from 'options/pages/viewPage';
 import Layout from './layout';
 import ServicePage from './pages/servicePage';
 
-core.init({ test: true });
+core.init({ test: false });
 logger.init({ prefix: 'options', debug: false });
 
 export const router = createBrowserRouter(

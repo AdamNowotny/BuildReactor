@@ -2,7 +2,7 @@ import React from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import './popupNavbar.css';
 
-export default ({ dark = false }) => {
+export default ({ dark = false }: { dark: boolean }) => {
     const navBarClass = dark ? 'navbar-inverse' : 'navbar-default';
     const settingsTooltip = <Tooltip id="settings-tooltip">Settings</Tooltip>;
     const dashboardTooltip = <Tooltip id="dashboard-tooltip">Dashboard</Tooltip>;
@@ -11,7 +11,7 @@ export default ({ dark = false }) => {
             <ul className="nav navbar-nav navbar-right">
                 <li>
                     <OverlayTrigger placement="bottom" overlay={settingsTooltip}>
-                        <a href="../../settings.html" target="_blank">
+                        <a href="../options/options.html" target="_blank">
                             <i className="fa fa-gear fa-2x"></i>
                         </a>
                     </OverlayTrigger>

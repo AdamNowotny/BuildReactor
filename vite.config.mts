@@ -1,3 +1,5 @@
+import react from '@vitejs/plugin-react';
+import copy from 'rollup-plugin-copy';
 import zipPack from 'vite-plugin-zip-pack';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
@@ -5,6 +7,18 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
     base: './',
     plugins: [
+        react(),
+        copy({
+            flatten: false,
+            targets: [
+                {
+                    src: ['src/services/**/*.png', 'src/services/**/*.svg'],
+                    dest: 'dist/build/',
+                },
+                { src: 'img/*', dest: 'dist/build/img/' },
+                { src: 'manifest.json', dest: 'dist/build/' },
+            ],
+        }),
         tsconfigPaths(),
         zipPack({
             inDir: 'dist/build',
@@ -13,6 +27,7 @@ export default defineConfig({
         }),
     ],
     build: {
+        assetsInlineLimit: 0,
         emptyOutDir: false,
         sourcemap: true,
         minify: true,
