@@ -23,6 +23,7 @@
             "url": "https://github.com/AdamNowotny/BuildReactor/blob/master/LICENSE"
         }
     ],
+    "type": "module",
     "scripts": {
         "dev": "npx vite --host",
         "dist": "npx vite build",
