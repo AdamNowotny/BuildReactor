@@ -47,11 +47,6 @@ export default defineConfig({
             },
         },
     },
-    resolve: {
-        alias: {
-            stream: 'stream-browserify',
-        },
-    },
     test: {
         include: ['**/*.test.?(c|m)[jt]s?(x)'],
         mockReset: true,
