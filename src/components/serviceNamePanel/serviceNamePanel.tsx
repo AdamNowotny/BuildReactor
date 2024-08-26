@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Col } from 'react-bootstrap';
-import './serviceNamePanel.css';
-import { Form } from 'react-router-dom';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import styles from './serviceNamePanel.module.css';
 
 export default ({
     active,
@@ -27,37 +26,37 @@ export default ({
         onChange(value);
     };
     return (
-        <div className="panel-footer ">
-            <Form className="service-add-form" onSubmit={submit}>
-                <div className="form-actions">
-                    <Col xs={3} />
-                    <Col xs={4}>
-                        <div className="form-group">
-                            <input
-                                type="text"
-                                autoFocus={active}
-                                className="form-control"
-                                placeholder="Name"
-                                disabled={!active}
-                                onChange={handleChange}
-                                ref={inputRef}
-                            />
-                        </div>
-                    </Col>
-                    <Col xs={2}>
-                        <div className="form-group">
-                            <Button
-                                bsStyle="primary"
-                                onClick={handleClick}
-                                disabled={!active}
-                            >
-                                Add
-                            </Button>
-                        </div>
-                    </Col>
-                    <Col xs={3} />
-                </div>
-            </Form>
+        <div className={styles.panel}>
+            <Container fluid>
+                <Form className="service-add-form" onSubmit={submit}>
+                    <div className="form-actions">
+                        <Row>
+                            <Col />
+                            <Col xs={4}>
+                                <div className="form-group">
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Name"
+                                        disabled={!active}
+                                        onChange={handleChange}
+                                        ref={inputRef}
+                                    />
+                                </div>
+                            </Col>
+                            <Col xs={1}>
+                                <Button
+                                    variant="primary"
+                                    onClick={handleClick}
+                                    disabled={!active}
+                                >
+                                    Add
+                                </Button>
+                            </Col>
+                            <Col />
+                        </Row>
+                    </div>
+                </Form>
+            </Container>
         </div>
     );
 };

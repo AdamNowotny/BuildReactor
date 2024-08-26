@@ -5,10 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 export default ({
     onChange,
-    prefix,
 }: {
     onChange?: (serviceTypeId: string, serviceName: string) => void;
-    prefix?: string;
 }) => {
     const navigate = useNavigate();
     const [serviceTypeId, setServiceTypeId] = useState<string>('');
