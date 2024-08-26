@@ -1,8 +1,6 @@
-import 'bootstrap/dist/css/bootstrap.css';
 import core from 'common/core';
 import logger from 'common/logger';
 import PageContext from 'components/pageContext';
-import 'font-awesome/scss/font-awesome.scss';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import {
@@ -33,11 +31,11 @@ export const router = createBrowserRouter(
                 }
             >
                 <Route index element={<AddPage />} />
-                <Route path="new/:serviceTypeId/:serviceId" element={<ServicePage />} />
-                <Route path="service/:serviceId" element={<ServicePage />} />
-                <Route path="view" element={<ViewPage />} />
-                <Route path="notifications" element={<NotificationsPage />} />
-                <Route path="configuration" element={<ConfigurationPage />} />
+                {/* <Route path="new/:serviceTypeId/:serviceId" element={<ServicePage />} /> */}
+                {/* <Route path="service/:serviceId" element={<ServicePage />} /> */}
+                {/* <Route path="view" element={<ViewPage />} /> */}
+                {/* <Route path="notifications" element={<NotificationsPage />} /> */}
+                {/* <Route path="configuration" element={<ConfigurationPage />} /> */}
             </Route>
             <Route path="*" element={<h1>Routing error</h1>} />
         </>,

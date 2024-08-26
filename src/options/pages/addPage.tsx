@@ -26,7 +26,7 @@ export default ({
     };
     return (
         <>
-            <ServiceThumbnails onSelect={handleTypeSelected} prefix={prefix} />
+            <ServiceThumbnails onSelect={handleTypeSelected} />
             <ServiceNamePanel
                 active={Boolean(serviceTypeId)}
                 onChange={handleNameChange}

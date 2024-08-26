@@ -1,3 +1,5 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'font-awesome/scss/font-awesome.scss';
 import OptionsNavBar from 'components/optionsNavbar/optionsNavBar';
 import {
     ServiceContext,
@@ -20,7 +22,7 @@ export default () => {
     const newConfig = createServiceConfig(serviceTypeId, serviceId);
     return (
         <ServiceContext.Provider value={service ?? newConfig}>
-            <OptionsNavBar dark={false} service={service} />
+            {/* <OptionsNavBar dark={false} service={service} /> */}
             <Sidebar service={service ?? newConfig} view={view} />
             <div className="content-container">
                 <Outlet />
@@ -38,6 +40,8 @@ function createServiceConfig(
         const serviceType = serviceTypes.find(
             serviceType => serviceType.baseUrl === serviceTypeId,
         );
-        return serviceType ? { ...serviceType.defaultConfig, name: serviceId } : null;
+        return serviceType
+            ? { ...serviceType.defaultConfig, name: serviceId }
+            : undefined;
     }
 }
