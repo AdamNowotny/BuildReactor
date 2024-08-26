@@ -5,11 +5,8 @@
     .navbar-brand {
         text-align: center;
         width: 240px;
-        > img {
-            display: inline;
-        }
         .logo {
-            vertical-align: top;
+            vertical-align: baseline;
             padding-right: 5px;
             width: 20px;
         }

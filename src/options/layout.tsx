@@ -22,7 +22,7 @@ export default () => {
     const newConfig = createServiceConfig(serviceTypeId, serviceId);
     return (
         <ServiceContext.Provider value={service ?? newConfig}>
-            {/* <OptionsNavBar dark={false} service={service} /> */}
+            <OptionsNavBar dark={false} service={service} />
             <Sidebar service={service ?? newConfig} view={view} />
             <div className="content-container">
                 <Outlet />

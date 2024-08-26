@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
-import {
-    Modal,
-    Button,
-    Form,
-    FormGroup,
-    ControlLabel,
-    FormControl,
-} from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 
-export default ({ serviceName, show, onRename, onCancel }) => {
+export default ({
+    serviceName,
+    show,
+    onRename,
+    onCancel,
+}: {
+    serviceName?: string;
+    show?: boolean;
+    onRename: (newName: string) => void;
+    onCancel?: () => void;
+}) => {
     const [newServiceName, setNewServiceName] = useState(serviceName);
 
     const handleRename = () => {
-        onRename(newServiceName);
+        onRename(newServiceName ?? '');
     };
     return (
         <Modal show={show} onHide={onCancel}>
@@ -26,21 +29,22 @@ export default ({ serviceName, show, onRename, onCancel }) => {
 
             <Modal.Body>
                 <Form>
-                    <FormGroup>
-                        <ControlLabel>New name:</ControlLabel>
-                        <FormControl
+                    <Form.Group controlId="newServiceName">
+                        <Form.Label>New name:</Form.Label>
+                        <Form.Control
+                            autoFocus
                             type="text"
                             defaultValue={serviceName}
                             onChange={e => {
-                                setNewServiceName(e?.target?.value);
+                                setNewServiceName(e.target.value);
                             }}
                         />
-                    </FormGroup>
+                    </Form.Group>
                 </Form>
             </Modal.Body>
 
             <Modal.Footer>
-                <Button bsStyle="primary" onClick={handleRename}>
+                <Button variant="primary" onClick={handleRename}>
                     OK
                 </Button>
                 <Button onClick={onCancel}>Cancel</Button>
