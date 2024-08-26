@@ -22,7 +22,7 @@ export default ({
             {serviceTypes.map(serviceType => (
                 <a
                     key={serviceType.baseUrl}
-                    className={`thumbnail ${
+                    className={`thumbnail text-reset text-decoration-none text-center  ${
                         serviceType.baseUrl === selectedItem ? 'active' : ''
                     }`}
                     onClick={() => {
@@ -30,7 +30,10 @@ export default ({
                     }}
                 >
                     <div className="thumbnail-image">
-                        <img src={`/${serviceType.logo}`} alt={serviceType.typeName} />
+                        <img
+                            src={`/src/${serviceType.logo}`}
+                            alt={serviceType.typeName}
+                        />
                     </div>
                     <div className="caption">{serviceType.typeName}</div>
                 </a>
