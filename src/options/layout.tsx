@@ -1,5 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'font-awesome/scss/font-awesome.scss';
 import OptionsNavBar from 'components/optionsNavbar/optionsNavBar';
 import {
     ServiceContext,
@@ -7,6 +6,7 @@ import {
     SettingsContext,
 } from 'components/react-types';
 import Sidebar from 'components/sidebar/sidebar';
+import 'font-awesome/scss/font-awesome.scss';
 import React, { useContext } from 'react';
 import { Outlet, useLocation, useParams } from 'react-router-dom';
 import './layout.css';

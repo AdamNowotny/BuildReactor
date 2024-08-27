@@ -2,6 +2,7 @@
     .thumbnail {
         border-radius: 5px;
         border: 1px solid #ddd;
+        cursor: pointer;
         display: inline-block;
         height: 140px;
         margin: 5px 0px 5px 5px;

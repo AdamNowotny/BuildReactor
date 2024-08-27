@@ -1,8 +1,8 @@
 import { CIServiceSettings } from 'common/types';
 import { ServiceTypesContext, SettingsContext } from 'components/react-types';
 import React, { useContext } from 'react';
-import { Nav, NavItem } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Nav } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
 import './sidebar.css';
 
 export default ({ service, view }: { service?: CIServiceSettings; view?: string }) => {
@@ -17,70 +17,59 @@ export default ({ service, view }: { service?: CIServiceSettings; view?: string 
     return (
         <div className="sidebar-nav">
             <div className="scrollable">
-                <Nav bsStyle="pills" stacked activeKey={service?.name}>
+                <Nav variant="pills" className="flex-column">
                     {settings.map(config => {
                         return (
-                            <NavItem
+                            <Nav.Link
+                                as={NavLink}
+                                to={`/service/${config.name}`}
                                 key={config.name}
-                                eventKey={config.name}
                                 disabled={config.isDisabled}
                             >
-                                <Link to={`/service/${config.name}`}>
-                                    <span className="handle">::</span>
-                                    <img
-                                        className="pill-icon"
-                                        src={getIconFor(config.baseUrl)}
-                                    />
-                                    <span className="pill-name">{config.name}</span>
-                                </Link>
-                            </NavItem>
+                                <span className="handle">::</span>
+                                <img
+                                    className="pill-icon"
+                                    src={getIconFor(config.baseUrl)}
+                                />
+                                <span className="pill-name">{config.name}</span>
+                            </Nav.Link>
                         );
                     })}
                 </Nav>
 
                 {settings.length > 0 ? <hr /> : null}
 
-                <Nav className="actions" bsStyle="pills" stacked activeKey={view}>
+                <Nav className="actions flex-column" variant="pills" activeKey={view}>
                     {view === 'new' && service && (
-                        <NavItem
-                            key={service.name}
-                            eventKey={'new'}
+                        <Nav.Link
+                            as={NavLink}
+                            to={`/new/${service.baseUrl}/${service.name}`}
                             disabled={service.isDisabled}
                         >
-                            <Link to={`/new/${service.baseUrl}/${service.name}`}>
-                                <span className="handle">::</span>
-                                <img
-                                    className="pill-icon"
-                                    src={getIconFor(service.baseUrl)}
-                                />
-                                <span className="pill-name">{service.name}</span>
-                            </Link>
-                        </NavItem>
+                            <span className="handle">::</span>
+                            <img
+                                className="pill-icon"
+                                src={getIconFor(service.baseUrl)}
+                            />
+                            <span className="pill-name">{service.name}</span>
+                        </Nav.Link>
                     )}
-                    <NavItem eventKey="add">
-                        <Link to={'/'}>
-                            <i className="pill-icon fa fa-plus-circle fa-3x"></i>
-                            <span className="pill-name">Add</span>
-                        </Link>
-                    </NavItem>
-                    <NavItem eventKey="view">
-                        <Link to={'view'}>
-                            <i className="pill-icon fa fa-desktop fa-3x"></i>
-                            <span className="pill-name">View</span>
-                        </Link>
-                    </NavItem>
-                    <NavItem eventKey="notifications">
-                        <Link to={'notifications'}>
-                            <i className="pill-icon fa fa-bell fa-3x"></i>
-                            <span className="pill-name">Notifications</span>
-                        </Link>
-                    </NavItem>
-                    <NavItem eventKey="configuration">
-                        <Link to={'configuration'}>
-                            <i className="pill-icon fa fa-cogs fa-3x"></i>
-                            <span className="pill-name">Configuration</span>
-                        </Link>
-                    </NavItem>
+                    <Nav.Link as={NavLink} to="/">
+                        <i className="pill-icon fa fa-plus-circle fa-3x"></i>
+                        <span className="pill-name">Add</span>
+                    </Nav.Link>
+                    <Nav.Link as={NavLink} to="view">
+                        <i className="pill-icon fa fa-desktop fa-3x"></i>
+                        <span className="pill-name">View</span>
+                    </Nav.Link>
+                    <Nav.Link as={NavLink} to="notifications">
+                        <i className="pill-icon fa fa-bell fa-3x"></i>
+                        <span className="pill-name">Notifications</span>
+                    </Nav.Link>
+                    <Nav.Link as={NavLink} to="configuration">
+                        <i className="pill-icon fa fa-cogs fa-3x"></i>
+                        <span className="pill-name">Configuration</span>
+                    </Nav.Link>
                 </Nav>
             </div>
         </div>
