@@ -7,7 +7,7 @@ import { ServiceContext } from 'components/react-types';
 import SelectedPipelines from 'components/selectedPipelines/selectedPipelines';
 import ToastAlert from 'components/toastAlert/toastAlert';
 import React, { useContext, useState } from 'react';
-import { Col, Grid } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 // TODO: clear pipelines when serviceId changed
@@ -37,30 +37,34 @@ export default () => {
         navigate(`/service/${settings.name}`);
     };
     return (
-        <Grid fluid>
-            <Col xs={6} className="settings-container">
-                <DynamicForm
-                    service={updatedService}
-                    onShow={showPipelines}
-                    onSave={handleSave}
-                />
-                <SelectedPipelines pipelines={updatedService.pipelines} />
-            </Col>
-            <Col xs={6} className="project-selection-container">
-                {pipelines && <PipelineFilter onUpdate={updateFilter} />}
-                <PipelineList
-                    key={service.name}
-                    pipelines={pipelines}
-                    filter={filter}
-                    selectedItems={service.pipelines}
-                    onSelected={updateSelected}
-                />
-            </Col>
+        <>
+            <Container fluid>
+                <Row>
+                    <Col xs={6}>
+                        <DynamicForm
+                            service={updatedService}
+                            onShow={showPipelines}
+                            onSave={handleSave}
+                        />
+                        <SelectedPipelines pipelines={updatedService.pipelines} />
+                    </Col>
+                    <Col xs={6} className="project-selection-container">
+                        {pipelines && <PipelineFilter onUpdate={updateFilter} />}
+                        <PipelineList
+                            key={service.name}
+                            pipelines={pipelines}
+                            filter={filter}
+                            selectedItems={service.pipelines}
+                            onSelected={updateSelected}
+                        />
+                    </Col>
+                </Row>
+            </Container>
             {toastAlertReset > 0 && (
                 <div className="alert-saved">
                     <ToastAlert key={toastAlertReset} text="Settings saved" />
                 </div>
             )}
-        </Grid>
+        </>
     );
 };

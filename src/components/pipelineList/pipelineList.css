@@ -1,32 +1,15 @@
 .project-selection-container {
-    box-sizing: border-box;
-    float: left;
-    padding: 0 10px;
-    width: 50%;
-
-    .panel-group {
-        margin-bottom: 10px;
+    .group-name {
+        font-weight: bold;
     }
-    .filter-count {
-        float: right;
+    .badge {
+        position: relative;
+        top: -2px;
     }
-
-    .check-all {
-        margin-right: 5px;
-    }
-
     .panel-title {
         font-weight: bold;
     }
-
-    .panel-body {
-        padding: 0 10px 0 35px;
+    .query-match {
+        font-weight: bold;
     }
-    .project-name {
-        font-weight: normal;
-    }
-}
-
-.ui-match {
-    font-weight: bold;
 }
