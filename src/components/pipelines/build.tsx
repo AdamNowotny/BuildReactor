@@ -76,23 +76,28 @@ const Build = ({ build, width }: { build: CIBuild; width: number }) => {
                 build.isDisabled ? 'disabled' : ''
             } ${build.isRunning ? 'building' : ''} ${build.error ? 'offline' : ''}`}
         >
-            <a
-                href={build.webUrl}
-                target={build.webUrl ? '_blank' : '_self'}
-                className={`progress-bar ${build.isRunning ? 'active' : ''} ${
-                    build.isRunning ?? build.isWaiting ? 'progress-bar-striped' : ''
-                }`}
-            >
-                <div className="build-content">
-                    <Labels build={build} />
-                    <span className="build-name">{build.name}</span>
-                    <Changes build={build} />
-                </div>
-                <div className="color-blind-markers">
-                    <i className="color-blind-marker-broken fa fa-bolt fa-2x fa-inverse"></i>
-                    <i className="color-blind-marker-offline fa fa-exclamation-triangle fa-2x fa-inverse"></i>
-                </div>
-            </a>
+            <div className="progress">
+                <a
+                    href={build.webUrl}
+                    target={build.webUrl ? '_blank' : '_self'}
+                    className={`progress-bar ${
+                        build.isRunning && !build.isWaiting
+                            ? 'progress-bar-striped progress-bar-animated'
+                            : ''
+                    } ${build.isWaiting ? 'progress-bar-striped' : ''}`}
+                    rel="noreferrer"
+                >
+                    <div className="build-content">
+                        <Labels build={build} />
+                        <span className="build-name">{build.name}</span>
+                        <Changes build={build} />
+                    </div>
+                    <div className="color-blind-markers">
+                        <i className="color-blind-marker-broken fa fa-bolt fa-2x fa-inverse"></i>
+                        <i className="color-blind-marker-offline fa fa-exclamation-triangle fa-2x fa-inverse"></i>
+                    </div>
+                </a>
+            </div>
         </div>
     );
 };
