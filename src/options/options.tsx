@@ -35,7 +35,7 @@ export const router = createBrowserRouter(
                 {/* <Route path="service/:serviceId" element={<ServicePage />} /> */}
                 {/* <Route path="view" element={<ViewPage />} /> */}
                 <Route path="notifications" element={<NotificationsPage />} />
-                {/* <Route path="configuration" element={<ConfigurationPage />} /> */}
+                <Route path="configuration" element={<ConfigurationPage />} />
             </Route>
             <Route path="*" element={<h1>Routing error</h1>} />
         </>,

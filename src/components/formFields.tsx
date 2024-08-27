@@ -1,15 +1,5 @@
 import React, { useContext } from 'react';
-import {
-    Col,
-    Row,
-    FormControl,
-    Form,
-    FormGroup,
-    Nav,
-    NavItem,
-    InputGroup,
-    Button,
-} from 'react-bootstrap';
+import { Button, Col, Form, InputGroup, Nav, Row } from 'react-bootstrap';
 import { ViewConfigContext } from './react-types';
 
 export const FormField = ({
@@ -108,7 +98,7 @@ export const FormNumberField = ({
     };
     return (
         <FormField label={label} disabled={disabled}>
-            <FormControl
+            <Form.Control
                 type="number"
                 defaultValue={viewConfig.columns}
                 onChange={onChangeHandler}
@@ -132,13 +122,17 @@ export const FormButtonField = ({
 }) => {
     return (
         <>
-            <FormGroup>
-                <Row md={12} className="text-center">
-                    <Button onClick={onClick} bsStyle={style} disabled={disabled}>
-                        {icon && <i className={`fa fa-${icon}`}></i>} {text}
-                    </Button>
+            <Form.Group>
+                <Row className="text-center">
+                    <Col />
+                    <Col sm="auto">
+                        <Button onClick={onClick} variant={style} disabled={disabled}>
+                            {icon && <i className={`fa fa-${icon}`}></i>} {text}
+                        </Button>
+                    </Col>
+                    <Col />
                 </Row>
-            </FormGroup>
+            </Form.Group>
         </>
     );
 };
@@ -160,14 +154,15 @@ export const FormInputField = ({
 }) => {
     return (
         <>
-            <FormGroup>
-                <InputGroup disabled={disabled}>
+            <Form.Group>
+                <InputGroup className="mb-3">
                     {icon && (
-                        <InputGroup.Addon>
+                        <InputGroup.Text>
                             <i className={`fa fa-${icon}`}></i>
-                        </InputGroup.Addon>
+                        </InputGroup.Text>
                     )}
-                    <FormControl
+                    <Form.Control
+                        disabled={disabled}
                         type={type}
                         defaultValue={text}
                         onChange={e => {
@@ -176,7 +171,7 @@ export const FormInputField = ({
                         placeholder={placeholder}
                     />
                 </InputGroup>
-            </FormGroup>
+            </Form.Group>
         </>
     );
 };

@@ -15,12 +15,13 @@ export default ({ text }: { text: string }) => {
     });
 
     return (
-        <Alert
+        <div
             className="alert-message"
-            bsStyle="success"
             style={{ visibility: isVisible ? 'visible' : 'hidden' }}
         >
-            <i className="fa fa-check fa-lg"></i> {text}
-        </Alert>
+            <Alert variant="success">
+                <i className="fa fa-check fa-lg"></i> {text}
+            </Alert>
+        </div>
     );
 };
