@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './filterQuery.css';
+import { Form } from 'react-bootstrap';
 
 export default ({ onUpdate }: { onUpdate: (string) => void }) => {
     const [query, setQuery] = useState('');
@@ -7,6 +8,7 @@ export default ({ onUpdate }: { onUpdate: (string) => void }) => {
         if (e.key === 'Escape') {
             e.preventDefault();
             setQuery('');
+            onUpdate('');
         }
     };
     const handleChange = e => {
@@ -16,10 +18,10 @@ export default ({ onUpdate }: { onUpdate: (string) => void }) => {
     };
 
     return (
-        <div className="filter-query">
-            <input
+        <div className="filter-query mb-2">
+            <Form.Control
+                className="search-query"
                 value={query}
-                className="search-query form-control"
                 type="text"
                 placeholder="Search..."
                 onChange={handleChange}
@@ -27,7 +29,7 @@ export default ({ onUpdate }: { onUpdate: (string) => void }) => {
             />
             {query && (
                 <i
-                    className="fa fa-times-circle-o fa-2x"
+                    className="reset-icon fa fa-times-circle-o fa-2x"
                     onClick={() => {
                         setQuery('');
                     }}
