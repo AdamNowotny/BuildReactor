@@ -20,7 +20,7 @@
     .thumbnail-image {
         line-height: 100px;
         img {
-            max-width: 140px;
+            width: 140px;
         }
     }
 

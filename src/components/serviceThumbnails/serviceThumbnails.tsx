@@ -18,7 +18,7 @@ export default ({
     };
 
     return (
-        <div className="thumbnails">
+        <div className="thumbnails mt-2 ms-2">
             {serviceTypes.map(serviceType => (
                 <a
                     key={serviceType.baseUrl}
