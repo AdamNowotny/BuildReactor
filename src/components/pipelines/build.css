@@ -1,12 +1,10 @@
 .build {
-    padding-left: 2px;
-    padding-right: 2px;
-    padding-bottom: 5px;
-
+    padding: 5px 5px 0 0;
+    background-color: #000;
+    height: auto;
     a {
         border-radius: 5px;
         cursor: pointer;
-        margin-top: 5px;
         padding: 5px 10px 5px 5px;
         position: relative;
         white-space: nowrap;

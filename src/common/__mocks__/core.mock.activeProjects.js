@@ -68,9 +68,10 @@ export default [
             },
             {
                 id: '6',
-                name: 'Unstable',
+                name: 'Unstable waiting',
                 group: 'Building',
                 isBroken: true,
+                isWaiting: true,
                 url: 'http://ci.openmrs.org/browse/FUNC-PERF-4',
                 isRunning: true,
                 tags: [{ name: 'Unstable', type: 'warning' }],
