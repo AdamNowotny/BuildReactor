@@ -6,9 +6,9 @@
         text-align: center;
         width: 240px;
         .logo {
-            vertical-align: baseline;
+            vertical-align: middle;
             padding-right: 5px;
-            width: 20px;
+            width: 25px;
         }
     }
 }
