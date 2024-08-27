@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import {
     Col,
     Row,
-    ControlLabel,
     FormControl,
+    Form,
     FormGroup,
     Nav,
     NavItem,
@@ -22,12 +22,12 @@ export const FormField = ({
     disabled?: boolean;
 }) => {
     return (
-        <FormGroup className={disabled ? 'text-muted' : ''}>
-            <Col componentClass={ControlLabel} md={6}>
+        <Form.Group as={Row} className={`mb-1 ${disabled ? 'text-muted' : ''}`}>
+            <Form.Label column sm="7">
                 {label}
-            </Col>
-            <Col md={6}>{children}</Col>
-        </FormGroup>
+            </Form.Label>
+            <Col sm="5">{children}</Col>
+        </Form.Group>
     );
 };
 
@@ -39,18 +39,20 @@ export const FormSelectField = ({
     disabled,
 }: {
     label: string;
-    onSelect: (value: string) => void;
+    onSelect: (value: string | null) => void;
     items: Record<string, string>;
     activeItem?: string;
     disabled?: boolean;
 }) => {
     return (
         <FormField label={label} disabled={disabled}>
-            <Nav bsStyle="pills" activeKey={activeItem} onSelect={onSelect}>
+            <Nav justify variant="pills" activeKey={activeItem} onSelect={onSelect}>
                 {Object.entries(items).map(([key, value]) => (
-                    <NavItem key={key} eventKey={key} disabled={disabled}>
-                        {value}
-                    </NavItem>
+                    <Nav.Item key={key} className="me-1">
+                        <Nav.Link eventKey={key} disabled={disabled}>
+                            {value}
+                        </Nav.Link>
+                    </Nav.Item>
                 ))}
             </Nav>
         </FormField>
@@ -70,7 +72,7 @@ export const FormBooleanField = ({
     activeItem?: boolean;
     disabled?: boolean;
 }) => {
-    const onSelectHandler = (value: string) => {
+    const onSelectHandler = (value: string | null) => {
         onSelect(value === 'true');
     };
     return (

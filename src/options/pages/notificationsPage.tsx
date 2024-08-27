@@ -16,9 +16,9 @@ export default () => {
     };
 
     return (
-        <Col md={12}>
+        <Col md={12} className="p-2">
             <Col md={4}>
-                <Form horizontal>
+                <Form>
                     <fieldset>
                         <legend>
                             <FormBooleanField
