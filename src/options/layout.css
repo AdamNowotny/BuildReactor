@@ -3,11 +3,5 @@
     left: 240px;
     position: absolute;
     right: 0;
-    top: 60px;
-}
-
-.settings-container {
-    box-sizing: border-box;
-    float: left;
-    width: 50%;
+    top: 70px;
 }

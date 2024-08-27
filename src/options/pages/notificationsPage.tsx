@@ -17,7 +17,7 @@ export default () => {
 
     return (
         <Container fluid>
-            <Col md={12} className="p-2">
+            <Col md={12} className="ps-2">
                 <Col md={4}>
                     <Form>
                         <fieldset>
