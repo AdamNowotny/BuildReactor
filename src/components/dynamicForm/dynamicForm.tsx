@@ -44,17 +44,19 @@ export default ({
         onSave(updatedService);
     };
     return (
-        <Form horizontal className="settings-form" key={updatedService.name}>
-            {serviceDefinition?.fields.map(field => (
-                <ServiceDefinitionField
-                    key={field.name}
-                    service={updatedService}
-                    field={field}
-                    onChange={service => {
-                        updatedService = service;
-                    }}
-                />
-            ))}
+        <Form className="settings-form" key={updatedService.name}>
+            {serviceDefinition?.fields.map(field => {
+                return (
+                    <ServiceDefinitionField
+                        key={field.type}
+                        service={updatedService}
+                        field={field}
+                        onChange={service => {
+                            updatedService = service;
+                        }}
+                    />
+                );
+            })}
             <div className="settings-buttons">
                 <button type="button" className="btn btn-primary" onClick={handleShow}>
                     <i className={`fa fa-refresh ${isLoading ? 'fa-spin' : ''}`}></i>
