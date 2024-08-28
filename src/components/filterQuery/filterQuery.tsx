@@ -4,17 +4,21 @@ import { Form } from 'react-bootstrap';
 
 export default ({ onUpdate }: { onUpdate: (string) => void }) => {
     const [query, setQuery] = useState('');
+
+    const updateQuery = value => {
+        setQuery(value);
+        onUpdate(value);
+    };
+
     const handleKeyDown = e => {
         if (e.key === 'Escape') {
             e.preventDefault();
-            setQuery('');
-            onUpdate('');
+            updateQuery('');
         }
     };
     const handleChange = e => {
         const value = e.target.value;
-        setQuery(value);
-        onUpdate(value);
+        updateQuery(value);
     };
 
     return (
@@ -31,7 +35,7 @@ export default ({ onUpdate }: { onUpdate: (string) => void }) => {
                 <i
                     className="reset-icon fa fa-times-circle-o fa-2x"
                     onClick={() => {
-                        setQuery('');
+                        updateQuery('');
                     }}
                 ></i>
             )}
