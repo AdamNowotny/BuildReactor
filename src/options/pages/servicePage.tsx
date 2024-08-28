@@ -10,31 +10,36 @@ import React, { useContext, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-// TODO: clear pipelines when serviceId changed
-
 export default () => {
     const navigate = useNavigate();
     const service = useContext(ServiceContext);
     if (!service) return null;
-    let updatedService = { ...service };
-    const [pipelines, setPipelines] = useState<CIPipelineList>();
+    const [newService, setNewService] = useState<CIServiceSettings>({ ...service });
+    const [allPipelines, setAllPipelines] = useState<CIPipelineList>();
     const [filter, setFilter] = useState();
     const [toastAlertReset, setToastAlertReset] = useState(0);
+
+    if (newService.name !== service.name) {
+        // reset state
+        setNewService(service);
+        setAllPipelines(undefined);
+    }
+
+    const handleSave = (settings: CIServiceSettings) => {
+        setNewService(settings);
+        core.saveService(settings);
+        setToastAlertReset(toastAlertReset + 1);
+        navigate(`/service/${settings.name}`);
+    };
 
     const updateFilter = value => {
         setFilter(value);
     };
     const updateSelected = (selected: string[]) => {
-        updatedService.pipelines = selected;
+        setNewService({ ...newService, ...{ pipelines: selected } });
     };
-    const showPipelines = piplines => {
-        setPipelines(piplines);
-    };
-    const handleSave = (settings: CIServiceSettings) => {
-        updatedService = { ...settings, pipelines: updatedService.pipelines };
-        core.saveService(updatedService);
-        setToastAlertReset(toastAlertReset + 1);
-        navigate(`/service/${settings.name}`);
+    const showPipelines = pipelines => {
+        setAllPipelines(pipelines);
     };
     return (
         <>
@@ -42,20 +47,20 @@ export default () => {
                 <Row>
                     <Col xs={6}>
                         <DynamicForm
-                            service={updatedService}
+                            service={newService}
                             onShow={showPipelines}
                             onSave={handleSave}
                         />
-                        <SelectedPipelines pipelines={updatedService.pipelines} />
+                        <SelectedPipelines pipelines={service.pipelines} />
                     </Col>
                     <Col xs={6} className="project-selection-container">
-                        {pipelines && <PipelineFilter onUpdate={updateFilter} />}
+                        {allPipelines && <PipelineFilter onUpdate={updateFilter} />}
                         <PipelineList
                             key={service.name}
-                            pipelines={pipelines}
+                            pipelines={allPipelines}
                             filter={filter}
-                            selectedItems={service.pipelines}
-                            onSelected={updateSelected}
+                            selectedItems={newService.pipelines}
+                            onChanged={updateSelected}
                         />
                     </Col>
                 </Row>

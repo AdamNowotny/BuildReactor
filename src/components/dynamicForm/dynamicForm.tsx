@@ -23,9 +23,9 @@ export default ({
     const [error, setError] = useState<WorkerError>();
     let updatedService = { ...service };
     const serviceTypes = useContext(ServiceTypesContext);
-    const serviceDefinition = serviceTypes.find(
-        definition => definition.baseUrl === service.baseUrl,
-    );
+    const serviceFields =
+        serviceTypes.find(definition => definition.baseUrl === service.baseUrl)?.fields ??
+        [];
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleShow = () => {
@@ -45,7 +45,7 @@ export default ({
     };
     return (
         <Form className="settings-form" key={updatedService.name}>
-            {serviceDefinition?.fields.map(field => {
+            {serviceFields.map(field => {
                 return (
                     <ServiceDefinitionField
                         key={field.type}
@@ -59,8 +59,7 @@ export default ({
             })}
             <div className="settings-buttons">
                 <button type="button" className="btn btn-primary" onClick={handleShow}>
-                    <i className={`fa fa-refresh ${isLoading ? 'fa-spin' : ''}`}></i>
-                    Show
+                    <i className={`fa fa-refresh ${isLoading ? 'fa-spin' : ''}`}></i>Show
                 </button>
                 <button type="button" className="btn btn-success" onClick={handleSave}>
                     <i className="fa fa-save"></i>Save

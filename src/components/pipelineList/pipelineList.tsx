@@ -16,12 +16,12 @@ export default ({
     pipelines,
     filter,
     selectedItems = [],
-    onSelected,
+    onChanged,
 }: {
     pipelines?: CIPipelineList;
     filter?: string;
     selectedItems?: string[];
-    onSelected?: (selected: string[]) => void;
+    onChanged?: (selected: string[]) => void;
 }) => {
     if (!pipelines) return null;
     let updatedSelected = [...selectedItems];
@@ -35,11 +35,11 @@ export default ({
 
     const handleChanged = (id: string, checked: boolean) => {
         selectPipeline(id, checked);
-        if (onSelected) onSelected(updatedSelected);
+        if (onChanged) onChanged(updatedSelected);
     };
     const handleAllChanged = (ids: string[], checked: boolean) => {
         ids.forEach(id => selectPipeline(id, checked));
-        if (onSelected) onSelected(updatedSelected);
+        if (onChanged) onChanged(updatedSelected);
     };
     const groups = Map.groupBy(pipelines.items, ({ group }) => group ?? '');
     const groupNames: string[] = Array.from(groups.keys());
@@ -77,6 +77,7 @@ const GroupPanel = ({
     };
     const filteredItems = items.filter(filterFunc);
     if (filteredItems.length === 0) return null;
+
     const allVisibleChecked = filteredItems.every(item =>
         selectedItems.includes(item.id),
     );
@@ -99,7 +100,7 @@ const GroupPanel = ({
                     <Col xs="auto">
                         <Form.Check
                             type={'checkbox'}
-                            defaultChecked={allVisibleChecked}
+                            checked={allVisibleChecked}
                             onChange={checkAll}
                         />
                     </Col>
@@ -131,7 +132,7 @@ const GroupPanel = ({
                                         <Col sm="auto">
                                             <Form.Check
                                                 type={'checkbox'}
-                                                defaultChecked={isSelected}
+                                                checked={isSelected}
                                                 onChange={e => {
                                                     if (onChanged)
                                                         onChanged(
@@ -158,7 +159,7 @@ const GroupPanel = ({
                                                     Disabled
                                                 </Badge>
                                             )}
-                                        </Col>{' '}
+                                        </Col>
                                     </Row>
                                 </Form.Group>
                             );
