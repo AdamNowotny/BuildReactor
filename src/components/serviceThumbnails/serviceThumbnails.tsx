@@ -30,10 +30,7 @@ export default ({
                     }}
                 >
                     <div className="thumbnail-image">
-                        <img
-                            src={`/src/${serviceType.logo}`}
-                            alt={serviceType.typeName}
-                        />
+                        <img src={`/${serviceType.logo}`} alt={serviceType.typeName} />
                     </div>
                     <div className="caption">{serviceType.typeName}</div>
                 </a>
