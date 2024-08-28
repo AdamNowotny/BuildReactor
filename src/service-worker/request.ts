@@ -1,5 +1,5 @@
 import logger from 'common/logger';
-import { parseString } from 'xml2js';
+import * as xml2js from 'xml2js';
 import errors from './requestErrors';
 
 interface RequestOptions {
@@ -85,12 +85,11 @@ function createRequest(options: RequestOptions) {
 }
 
 async function parseXml(response: Response) {
-    return response.text().then(text => {
-        let result;
-        parseString(text, (err, json) => {
-            if (err) throw err;
-            result = json;
-        });
+    const text = await response.text();
+    try {
+        const result = await xml2js.parseStringPromise(text);
         return result;
-    });
+    } catch (error: any) {
+        throw new Error(`XML parse error: ${error?.message}`);
+    }
 }
