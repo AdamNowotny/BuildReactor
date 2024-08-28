@@ -25,8 +25,8 @@
         &:not(.active):hover {
             background-color: #ddd;
         }
-        &.disabled {
-            opacity: 0.5;
+        &.service-disabled {
+            opacity: 0.6;
         }
         &:hover .handle {
             visibility: visible;

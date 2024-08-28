@@ -21,10 +21,10 @@ export default ({ service, view }: { service?: CIServiceSettings; view?: string 
                     {settings.map(config => {
                         return (
                             <Nav.Link
+                                className={config.isDisabled ? 'service-disabled' : ''}
                                 as={NavLink}
                                 to={`/service/${config.name}`}
                                 key={config.name}
-                                disabled={config.isDisabled}
                             >
                                 <span className="handle">::</span>
                                 <img
