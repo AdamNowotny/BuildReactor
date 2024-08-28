@@ -6,7 +6,7 @@ import './jsonEditor.css';
 export default ({ json, saveHandler }: { json: any; saveHandler: (any) => void }) => {
     const [errorText, setErrorText] = useState('');
     const [jsonText, setJsonText] = useState(JSON.stringify(json, null, 2) || '');
-    const [isValid, setIsValid] = useState(true);
+    const [isValid, setIsValid] = useState(false);
 
     const handleSave = () => {
         const json = parseJson(jsonText);
@@ -34,7 +34,7 @@ export default ({ json, saveHandler }: { json: any; saveHandler: (any) => void }
 
     return (
         <div className="json-editor">
-            <Form noValidate validated={isValid}>
+            <Form>
                 <Form.Group className="json-editor-text">
                     <Form.Control
                         as="textarea"
@@ -54,7 +54,9 @@ export default ({ json, saveHandler }: { json: any; saveHandler: (any) => void }
                             />
                         </Col>
                         <Col sm={10}>
-                            <Form.Text className="error-text">{errorText}</Form.Text>
+                            <Form.Text className="error-text text-danger">
+                                {errorText}
+                            </Form.Text>
                         </Col>
                     </Row>
                 </Form.Group>
