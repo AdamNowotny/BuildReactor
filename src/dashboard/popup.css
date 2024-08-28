@@ -1,5 +1,8 @@
+body {
+    margin: 0;
+}
+
 .theme {
-    min-height: 100vh;
     min-width: 350px;
     padding-top: 45px;
 }
