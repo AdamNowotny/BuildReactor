@@ -1,4 +1,4 @@
-import { FormButtonField } from 'common/components/formFields';
+import { FormButtonField } from 'common/components/forms';
 import React, { useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import './jsonEditor.css';

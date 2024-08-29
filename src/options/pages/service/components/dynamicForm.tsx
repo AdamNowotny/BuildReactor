@@ -1,3 +1,5 @@
+import { FormInputField } from 'common/components/forms';
+import { ServiceTypesContext } from 'common/components/react-types';
 import core from 'common/core';
 import {
     CIPipelineList,
@@ -5,8 +7,6 @@ import {
     CIServiceSettings,
     WorkerError,
 } from 'common/types';
-import { FormInputField } from 'common/components/formFields';
-import { ServiceTypesContext } from 'common/components/react-types';
 import React, { useContext, useState } from 'react';
 import { Alert, Form } from 'react-bootstrap';
 import './dynamicForm.css';

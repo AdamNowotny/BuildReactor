@@ -1,10 +1,10 @@
-import core from 'common/core';
 import {
     FormBooleanField,
     FormNumberField,
     FormSelectField,
-} from 'common/components/formFields';
+} from 'common/components/forms/index';
 import { ViewConfigContext } from 'common/components/react-types';
+import core from 'common/core';
 import DashboardTheme from 'dashboard/components/dashboardTheme';
 import React, { useContext } from 'react';
 import { Col, Container, Form, Row } from 'react-bootstrap';
