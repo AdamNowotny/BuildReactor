@@ -1,6 +1,6 @@
-import ServiceNamePanel from 'options/pages/add/components/serviceNamePanel';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ServiceNamePanel from './components/serviceNamePanel';
 import ServiceThumbnails from './components/serviceThumbnails';
 
 export default ({

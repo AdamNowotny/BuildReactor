@@ -9,7 +9,7 @@ import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import Layout from './layout';
-import ServicePage from './pages/servicePage';
+import ServicePage from './pages/service/servicePage';
 
 core.init({ test: false });
 logger.init({ prefix: 'options', debug: false });

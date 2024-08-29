@@ -1,14 +1,14 @@
 import core from 'common/core';
 import { CIPipelineList, CIServiceSettings } from 'common/types';
-import DynamicForm from 'components/dynamicForm/dynamicForm';
-import PipelineFilter from 'components/filterQuery/filterQuery';
-import PipelineList from 'components/pipelineList/pipelineList';
 import { ServiceContext } from 'components/react-types';
-import SelectedPipelines from 'components/selectedPipelines/selectedPipelines';
 import ToastAlert from 'components/toastAlert/toastAlert';
 import React, { useContext, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import DynamicForm from './components/dynamicForm';
+import PipelineFilter from './components/filterQuery';
+import PipelineList from './components/pipelineList/pipelineList';
+import SelectedPipelines from './components/selectedPipelines';
 
 export default () => {
     const navigate = useNavigate();
