@@ -13,17 +13,17 @@ import { useNavigate } from 'react-router-dom';
 export default () => {
     const navigate = useNavigate();
     const service = useContext(ServiceContext);
-    if (!service) return null;
-    const [newService, setNewService] = useState<CIServiceSettings>({ ...service });
+    const [newService, setNewService] = useState<CIServiceSettings>();
     const [allPipelines, setAllPipelines] = useState<CIPipelineList>();
     const [filter, setFilter] = useState();
     const [toastAlertReset, setToastAlertReset] = useState(0);
 
-    if (newService.name !== service.name) {
+    if (newService?.name !== service?.name) {
         // reset state
         setNewService(service);
         setAllPipelines(undefined);
     }
+    if (!service || !newService) return null;
 
     const handleSave = (settings: CIServiceSettings) => {
         setNewService(settings);
