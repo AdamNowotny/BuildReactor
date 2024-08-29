@@ -17,8 +17,8 @@ export default ({
     onSave,
 }: {
     service: CIServiceSettings;
-    onShow?: (pipelines: CIPipelineList) => void;
-    onSave: (service: CIServiceSettings) => void;
+    onShow?: (pipelines: CIPipelineList, settings: CIServiceSettings) => void;
+    onSave?: (service: CIServiceSettings) => void;
 }) => {
     const [error, setError] = useState<WorkerError>();
     let updatedService = { ...service };
@@ -36,12 +36,12 @@ export default ({
                 setError(error);
             } else {
                 setError(undefined);
-                if (onShow) onShow(pipelines);
+                if (onShow) onShow(pipelines, updatedService);
             }
         });
     };
     const handleSave = () => {
-        onSave(updatedService);
+        if (onSave) onSave(updatedService);
     };
     return (
         <Form className="settings-form" key={updatedService.name}>
@@ -126,7 +126,7 @@ const ServiceDefinitionField = ({
             )}
             {field.type === 'token' && (
                 <FormInputField
-                    text={field.name ?? ''}
+                    text={service.token ?? ''}
                     onChange={value => {
                         changeField(field.config ?? 'token', value);
                     }}
@@ -137,7 +137,7 @@ const ServiceDefinitionField = ({
             )}
             {field.type === 'username' && (
                 <FormInputField
-                    text={field.name ?? ''}
+                    text={service.username ?? ''}
                     onChange={value => {
                         changeField(field.config ?? 'username', value);
                     }}
@@ -148,7 +148,7 @@ const ServiceDefinitionField = ({
             )}
             {field.type === 'password' && (
                 <FormInputField
-                    text={field.name ?? ''}
+                    text={service.password ?? ''}
                     onChange={value => {
                         changeField(field.config ?? 'password', value);
                     }}
@@ -159,7 +159,7 @@ const ServiceDefinitionField = ({
             )}
             {field.type === 'branch' && (
                 <FormInputField
-                    text={field.name ?? ''}
+                    text={service.branch ?? ''}
                     onChange={value => {
                         changeField(field.config ?? 'branch', value);
                     }}
