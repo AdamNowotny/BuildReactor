@@ -1,6 +1,6 @@
 import core from 'common/core';
-import { FormBooleanField } from 'components/formFields';
-import { ViewConfigContext } from 'components/react-types';
+import { FormBooleanField } from 'common/components/formFields';
+import { ViewConfigContext } from 'common/components/react-types';
 import React, { useContext } from 'react';
 import { Col, Container, Form } from 'react-bootstrap';
 

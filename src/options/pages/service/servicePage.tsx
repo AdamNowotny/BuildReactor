@@ -1,7 +1,7 @@
 import core from 'common/core';
 import { CIPipelineList, CIServiceSettings } from 'common/types';
-import { ServiceContext } from 'components/react-types';
-import ToastAlert from 'components/toastAlert/toastAlert';
+import { ServiceContext } from 'common/components/react-types';
+import ToastAlert from 'common/components/toastAlert';
 import React, { useContext, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';

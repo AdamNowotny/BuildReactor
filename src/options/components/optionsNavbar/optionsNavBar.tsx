@@ -1,6 +1,6 @@
 import core from 'common/core';
 import { CIServiceSettings } from 'common/types';
-import OnOffSwitch from 'components/onOffSwitch/onOffSwitch';
+import OnOffSwitch from 'common/components/onOffSwitch';
 import React, { useState } from 'react';
 import { Col, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import './optionsNavbar.css';

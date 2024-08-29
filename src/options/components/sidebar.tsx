@@ -1,5 +1,5 @@
 import { CIServiceSettings } from 'common/types';
-import { ServiceTypesContext, SettingsContext } from 'components/react-types';
+import { ServiceTypesContext, SettingsContext } from 'common/components/react-types';
 import React, { useContext } from 'react';
 import { Nav } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';

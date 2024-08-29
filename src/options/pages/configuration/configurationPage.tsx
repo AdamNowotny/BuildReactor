@@ -1,7 +1,11 @@
 import core from 'common/core';
-import { FormBooleanField, FormButtonField, FormInputField } from 'components/formFields';
-import { SettingsContext } from 'components/react-types';
-import ToastAlert from 'components/toastAlert/toastAlert';
+import {
+    FormBooleanField,
+    FormButtonField,
+    FormInputField,
+} from 'common/components/formFields';
+import { SettingsContext } from 'common/components/react-types';
+import ToastAlert from 'common/components/toastAlert';
 import React, { useContext, useState } from 'react';
 import { Alert, Col, Container, Form, Row } from 'react-bootstrap';
 import JsonEditor from './components/jsonEditor';

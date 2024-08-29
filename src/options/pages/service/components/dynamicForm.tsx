@@ -5,8 +5,8 @@ import {
     CIServiceSettings,
     WorkerError,
 } from 'common/types';
-import { FormInputField } from 'components/formFields';
-import { ServiceTypesContext } from 'components/react-types';
+import { FormInputField } from 'common/components/formFields';
+import { ServiceTypesContext } from 'common/components/react-types';
 import React, { useContext, useState } from 'react';
 import { Alert, Form } from 'react-bootstrap';
 import './dynamicForm.css';

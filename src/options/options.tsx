@@ -1,6 +1,6 @@
 import core from 'common/core';
 import logger from 'common/logger';
-import PageContext from 'components/pageContext';
+import PageContext from 'common/components/pageContext';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import { HashRouter, Route, Routes } from 'react-router-dom';

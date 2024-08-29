@@ -1,7 +1,7 @@
+import { ViewConfigContext } from 'common/components/react-types';
 import { CIBuild } from 'common/types';
 import React, { useContext, useEffect, useState } from 'react';
 import { Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { ViewConfigContext } from '../../../components/react-types';
 import './build.css';
 
 const Changes = ({ build }: { build: CIBuild }) => {

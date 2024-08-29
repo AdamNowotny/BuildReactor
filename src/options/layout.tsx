@@ -3,7 +3,7 @@ import {
     ServiceContext,
     ServiceTypesContext,
     SettingsContext,
-} from 'components/react-types';
+} from 'common/components/react-types';
 import 'font-awesome/scss/font-awesome.scss';
 import OptionsNavBar from 'options/components/optionsNavbar/optionsNavBar';
 import React, { useContext } from 'react';

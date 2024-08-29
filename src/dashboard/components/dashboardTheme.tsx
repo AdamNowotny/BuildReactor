@@ -1,4 +1,4 @@
-import { Theme, ViewConfigContext } from 'components/react-types';
+import { Theme, ViewConfigContext } from 'common/components/react-types';
 import React, { useContext } from 'react';
 import darkTheme from '../themes/dark/dark';
 import lightTheme from '../themes/light/light';

@@ -1,4 +1,4 @@
-import { ServiceTypesContext } from 'components/react-types';
+import { ServiceTypesContext } from 'common/components/react-types';
 import React, { useContext, useState } from 'react';
 import './serviceThumbnails.css';
 

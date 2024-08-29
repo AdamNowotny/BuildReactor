@@ -3,8 +3,8 @@ import {
     FormBooleanField,
     FormNumberField,
     FormSelectField,
-} from 'components/formFields';
-import { ViewConfigContext } from 'components/react-types';
+} from 'common/components/formFields';
+import { ViewConfigContext } from 'common/components/react-types';
 import DashboardTheme from 'dashboard/components/dashboardTheme';
 import React, { useContext } from 'react';
 import { Col, Container, Form, Row } from 'react-bootstrap';
