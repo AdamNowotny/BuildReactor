@@ -1,15 +1,15 @@
 import core from 'common/core';
 import logger from 'common/logger';
 import PageContext from 'components/pageContext';
-import AddPage from './pages/add/addPage';
-import ConfigurationPage from './pages/configurationPage';
-import NotificationsPage from './pages/notificationsPage';
-import ViewPage from './pages/viewPage';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import Layout from './layout';
+import AddPage from './pages/add/addPage';
+import ConfigurationPage from './pages/configuration/configurationPage';
+import NotificationsPage from './pages/notificationsPage';
 import ServicePage from './pages/service/servicePage';
+import ViewPage from './pages/viewPage';
 
 core.init({ test: false });
 logger.init({ prefix: 'options', debug: false });
