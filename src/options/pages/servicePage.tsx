@@ -25,10 +25,14 @@ export default () => {
     }
     if (!service || !newService) return null;
 
+    const showPipelines = (pipelines: CIPipelineList, settings: CIServiceSettings) => {
+        setNewService({ ...settings, ...{ pipelines: settings.pipelines } });
+        setAllPipelines(pipelines);
+    };
     const handleSave = (settings: CIServiceSettings) => {
         setNewService(settings);
-        core.saveService(settings);
         setToastAlertReset(toastAlertReset + 1);
+        core.saveService(settings);
         navigate(`/service/${settings.name}`);
     };
 
@@ -37,9 +41,6 @@ export default () => {
     };
     const updateSelected = (selected: string[]) => {
         setNewService({ ...newService, ...{ pipelines: selected } });
-    };
-    const showPipelines = pipelines => {
-        setAllPipelines(pipelines);
     };
     return (
         <>
