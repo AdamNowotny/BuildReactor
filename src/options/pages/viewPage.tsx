@@ -46,13 +46,6 @@ export default () => {
                             }}
                         />
                         <FormBooleanField
-                            label="Collapse groups"
-                            activeItem={!viewConfig.singleGroupRows}
-                            onSelect={value => {
-                                setField('singleGroupRows', !value);
-                            }}
-                        />
-                        <FormBooleanField
                             label="Show commit messages"
                             activeItem={viewConfig.showCommits}
                             onSelect={value => {

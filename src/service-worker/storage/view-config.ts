@@ -4,7 +4,6 @@ import { Storage } from './storage';
 const defaultConfiguration: ViewConfig = {
     columns: 2,
     fullWidthGroups: true,
-    singleGroupRows: false,
     showCommits: true,
     showCommitsWhenGreen: true,
     theme: 'dark',

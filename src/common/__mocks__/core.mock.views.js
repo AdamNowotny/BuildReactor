@@ -1,7 +1,6 @@
 export default {
     columns: 3,
     fullWidthGroups: true,
-    singleGroupRows: true,
     showCommits: true,
     showCommitsWhenGreen: true,
     theme: 'dark',

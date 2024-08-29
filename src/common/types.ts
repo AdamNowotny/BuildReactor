@@ -95,7 +95,6 @@ export interface ServiceStateItem {
 export interface ViewConfig {
     columns?: number;
     fullWidthGroups?: boolean;
-    singleGroupRows?: boolean;
     showCommits?: boolean;
     showCommitsWhenGreen?: boolean;
     theme?: string;

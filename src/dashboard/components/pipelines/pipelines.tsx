@@ -29,7 +29,7 @@ const BuildGroup = ({ groupName, builds }: { groupName: string; builds: CIBuild[
     return (
         <div
             key={groupName}
-            className={`build-group ${viewConfig.singleGroupRows ? 'pull-left' : ''}`}
+            className="build-group pull-left"
             style={{ width: `${fullWidth}%` }}
         >
             {groupName && <div className="group-name">{groupName}</div>}
