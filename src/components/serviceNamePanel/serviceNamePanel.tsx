@@ -22,8 +22,9 @@ export default ({
     const handleClick = () => {
         onChange(value);
     };
-    const submit = () => {
+    const submit = e => {
         onChange(value);
+        e.preventDefault();
     };
     return (
         <div className={styles.panel}>
