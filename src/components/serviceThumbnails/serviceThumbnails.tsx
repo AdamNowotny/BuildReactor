@@ -18,11 +18,11 @@ export default ({
     };
 
     return (
-        <div className="thumbnails">
+        <div className="thumbnails ms-2">
             {serviceTypes.map(serviceType => (
                 <a
                     key={serviceType.baseUrl}
-                    className={`thumbnail ${
+                    className={`thumbnail text-reset text-decoration-none text-center  ${
                         serviceType.baseUrl === selectedItem ? 'active' : ''
                     }`}
                     onClick={() => {

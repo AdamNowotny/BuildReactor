@@ -4,7 +4,7 @@ import JsonEditor from 'components/jsonEditor/jsonEditor';
 import { SettingsContext } from 'components/react-types';
 import ToastAlert from 'components/toastAlert/toastAlert';
 import React, { useContext, useState } from 'react';
-import { Col, Form, Alert } from 'react-bootstrap';
+import { Alert, Col, Container, Form, Row } from 'react-bootstrap';
 
 export default () => {
     const settings = useContext(SettingsContext);
@@ -49,55 +49,63 @@ export default () => {
         core.saveConfig(json);
     };
     return (
-        <div>
-            <Col md={12}>
-                <Col md={4}>
-                    <Form horizontal>
-                        <fieldset>
-                            <legend>Current configuration</legend>
-                        </fieldset>
-                        <FormBooleanField
-                            label="Include passwords"
-                            activeItem={includePasswords}
-                            onSelect={value => {
-                                setIncludePasswords(value);
-                            }}
+        <>
+            <Container fluid>
+                <Row>
+                    <Col md={4}>
+                        <Form className="gap-3">
+                            <fieldset>
+                                <legend>Current configuration</legend>
+                            </fieldset>
+                            <FormBooleanField
+                                label="Include passwords"
+                                activeItem={includePasswords}
+                                onSelect={value => {
+                                    setIncludePasswords(value);
+                                }}
+                            />
+                            <FormButtonField
+                                text="Export"
+                                icon="cloud-upload"
+                                onClick={exportHandler}
+                            />
+                            <hr />
+                            <fieldset>
+                                <legend>Import from URL</legend>
+                            </fieldset>
+                            <FormInputField
+                                text={importUrl}
+                                onChange={setImportUrl}
+                                type={'url'}
+                                icon="globe"
+                                placeholder={'URL'}
+                            />
+                            <FormButtonField
+                                disabled={!importUrl}
+                                text="Import"
+                                icon="cloud-download"
+                                onClick={importHandler}
+                            />
+                            {importError && (
+                                <Alert variant="danger" className="my-3">
+                                    {importError}
+                                </Alert>
+                            )}
+                        </Form>
+                    </Col>
+                    <Col md={8}>
+                        <JsonEditor
+                            key={jsonEditorReset}
+                            json={json}
+                            saveHandler={saveHandler}
                         />
-                        <FormButtonField
-                            text="Export"
-                            icon="cloud-upload"
-                            onClick={exportHandler}
-                        />
-                        <fieldset>
-                            <legend>Import from URL</legend>
-                        </fieldset>
-                        <FormInputField
-                            text={importUrl}
-                            onChange={setImportUrl}
-                            type={'url'}
-                            icon="globe"
-                            placeholder={'URL'}
-                        />
-                        <FormButtonField
-                            disabled={!importUrl}
-                            text="Import"
-                            icon="cloud-download"
-                            onClick={importHandler}
-                        />
-                        {importError && <Alert bsStyle="danger">{importError}</Alert>}
-                    </Form>
-                </Col>
-                <Col md={8} style={{ height: '100vh' }}>
-                    <JsonEditor
-                        key={jsonEditorReset}
-                        json={json}
-                        saveHandler={saveHandler}
-                    />
-                </Col>
-            </Col>
+                    </Col>
+                </Row>
+            </Container>
+
             {toastAlertReset > 0 && (
                 <ToastAlert key={toastAlertReset} text="Settings saved" />
             )}
-        </div>
+        </>
     );
 };

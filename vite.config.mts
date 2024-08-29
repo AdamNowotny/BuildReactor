@@ -6,6 +6,11 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
     base: './',
+    resolve: {
+        alias: {
+            stream: 'stream-browserify',
+        },
+    },
     plugins: [
         react(),
         copy({

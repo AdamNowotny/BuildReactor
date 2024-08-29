@@ -1,21 +1,16 @@
-.scrollable {
-    overflow: auto;
-    height: 100%;
-    width: 100%;
-}
-
 .sidebar-nav {
     border-right: 1px solid #bbb;
     bottom: 0;
     left: 0;
     position: fixed;
     text-align: center;
-    top: 52px;
+    top: 57px;
     width: 240px;
 
     .scrollable {
-        padding: 10px;
-        box-sizing: border-box;
+        height: 100%;
+        overflow: auto;
+        padding: 5px;
     }
 
     .sortable-placeholder {
@@ -24,52 +19,34 @@
         width: 100%;
     }
 
+    .nav-link {
+        display: flex;
+        align-items: center;
+        &:not(.active):hover {
+            background-color: #ddd;
+        }
+        &.service-disabled {
+            opacity: 0.6;
+        }
+        &:hover .handle {
+            visibility: visible;
+        }
+    }
+
     .handle {
-        display: none;
-        left: 3px;
-        position: absolute;
-        top: 23px;
+        visibility: hidden;
+        left: -10px;
+        position: relative;
     }
 
-    .nav-pills {
-        li {
-            a {
-                height: 70px;
-            }
-            img.pill-icon {
-                margin-top: 0;
-                margin-bottom: 0;
-                float: left;
-                width: 48px;
-                height: 48px;
-            }
-            i.pill-icon {
-                margin-top: 6px;
-                float: left;
-            }
-
-            .pill-name {
-                padding-top: 18px;
-                float: right;
-                text-align: right;
-                width: 125px;
-            }
-            &.muted span {
-                color: #999;
-            }
-            &.active {
-                a {
-                    color: #fff;
-                }
-            }
-        }
-        .active.muted span {
-            color: #ccc;
-        }
+    .pill-icon {
+        width: 48px;
+        height: 48px;
     }
 
-    .nav-pill:hover .handle {
-        display: inline;
+    .pill-name {
+        text-align: right;
+        width: 100%;
     }
 
     .actions {

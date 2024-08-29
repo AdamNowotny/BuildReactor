@@ -7,60 +7,70 @@ import { ServiceContext } from 'components/react-types';
 import SelectedPipelines from 'components/selectedPipelines/selectedPipelines';
 import ToastAlert from 'components/toastAlert/toastAlert';
 import React, { useContext, useState } from 'react';
-import { Col, Grid } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-
-// TODO: clear pipelines when serviceId changed
 
 export default () => {
     const navigate = useNavigate();
     const service = useContext(ServiceContext);
-    if (!service) return null;
-    let updatedService = { ...service };
-    const [pipelines, setPipelines] = useState<CIPipelineList>();
+    const [newService, setNewService] = useState<CIServiceSettings>();
+    const [allPipelines, setAllPipelines] = useState<CIPipelineList>();
     const [filter, setFilter] = useState();
     const [toastAlertReset, setToastAlertReset] = useState(0);
+
+    if (newService?.name !== service?.name) {
+        // reset state
+        setNewService(service);
+        setAllPipelines(undefined);
+    }
+    if (!service || !newService) return null;
+
+    const showPipelines = (pipelines: CIPipelineList, settings: CIServiceSettings) => {
+        setNewService({ ...settings, ...{ pipelines: settings.pipelines } });
+        setAllPipelines(pipelines);
+    };
+    const handleSave = (settings: CIServiceSettings) => {
+        setNewService(settings);
+        setToastAlertReset(toastAlertReset + 1);
+        core.saveService(settings);
+        navigate(`/service/${settings.name}`);
+    };
 
     const updateFilter = value => {
         setFilter(value);
     };
     const updateSelected = (selected: string[]) => {
-        updatedService.pipelines = selected;
-    };
-    const showPipelines = piplines => {
-        setPipelines(piplines);
-    };
-    const handleSave = (settings: CIServiceSettings) => {
-        updatedService = { ...settings, pipelines: updatedService.pipelines };
-        core.saveService(updatedService);
-        setToastAlertReset(toastAlertReset + 1);
-        navigate(`/service/${settings.name}`);
+        setNewService({ ...newService, ...{ pipelines: selected } });
     };
     return (
-        <Grid fluid>
-            <Col xs={6} className="settings-container">
-                <DynamicForm
-                    service={updatedService}
-                    onShow={showPipelines}
-                    onSave={handleSave}
-                />
-                <SelectedPipelines pipelines={updatedService.pipelines} />
-            </Col>
-            <Col xs={6} className="project-selection-container">
-                {pipelines && <PipelineFilter onUpdate={updateFilter} />}
-                <PipelineList
-                    key={service.name}
-                    pipelines={pipelines}
-                    filter={filter}
-                    selectedItems={service.pipelines}
-                    onSelected={updateSelected}
-                />
-            </Col>
+        <>
+            <Container fluid>
+                <Row>
+                    <Col xs={6}>
+                        <DynamicForm
+                            service={newService}
+                            onShow={showPipelines}
+                            onSave={handleSave}
+                        />
+                        <SelectedPipelines pipelines={service.pipelines} />
+                    </Col>
+                    <Col xs={6} className="project-selection-container">
+                        {allPipelines && <PipelineFilter onUpdate={updateFilter} />}
+                        <PipelineList
+                            key={service.name}
+                            pipelines={allPipelines}
+                            filter={filter}
+                            selectedItems={newService.pipelines}
+                            onChanged={updateSelected}
+                        />
+                    </Col>
+                </Row>
+            </Container>
             {toastAlertReset > 0 && (
                 <div className="alert-saved">
                     <ToastAlert key={toastAlertReset} text="Settings saved" />
                 </div>
             )}
-        </Grid>
+        </>
     );
 };

@@ -1,7 +1,17 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-export default ({ serviceName, show, onRemove, onCancel }) => {
+export default ({
+    serviceName,
+    show,
+    onRemove,
+    onCancel,
+}: {
+    serviceName?: string;
+    show: boolean;
+    onRemove?: () => void;
+    onCancel?: () => void;
+}) => {
     return (
         <Modal show={show} onHide={onCancel}>
             <Modal.Header closeButton>
@@ -19,7 +29,7 @@ export default ({ serviceName, show, onRemove, onCancel }) => {
             </Modal.Body>
 
             <Modal.Footer>
-                <Button bsStyle="danger" onClick={onRemove}>
+                <Button variant="danger" onClick={onRemove}>
                     Remove
                 </Button>
                 <Button onClick={onCancel}>Cancel</Button>

@@ -1,15 +1,5 @@
 import React, { useContext } from 'react';
-import {
-    Col,
-    Row,
-    ControlLabel,
-    FormControl,
-    FormGroup,
-    Nav,
-    NavItem,
-    InputGroup,
-    Button,
-} from 'react-bootstrap';
+import { Button, Col, Form, InputGroup, Nav, Row } from 'react-bootstrap';
 import { ViewConfigContext } from './react-types';
 
 export const FormField = ({
@@ -22,12 +12,12 @@ export const FormField = ({
     disabled?: boolean;
 }) => {
     return (
-        <FormGroup className={disabled ? 'text-muted' : ''}>
-            <Col componentClass={ControlLabel} md={6}>
+        <Form.Group as={Row} className={`mb-1 ${disabled ? 'text-muted' : ''}`}>
+            <Form.Label column sm="7">
                 {label}
-            </Col>
-            <Col md={6}>{children}</Col>
-        </FormGroup>
+            </Form.Label>
+            <Col sm="5">{children}</Col>
+        </Form.Group>
     );
 };
 
@@ -39,18 +29,20 @@ export const FormSelectField = ({
     disabled,
 }: {
     label: string;
-    onSelect: (value: string) => void;
+    onSelect: (value: string | null) => void;
     items: Record<string, string>;
     activeItem?: string;
     disabled?: boolean;
 }) => {
     return (
         <FormField label={label} disabled={disabled}>
-            <Nav bsStyle="pills" activeKey={activeItem} onSelect={onSelect}>
+            <Nav justify variant="pills" activeKey={activeItem} onSelect={onSelect}>
                 {Object.entries(items).map(([key, value]) => (
-                    <NavItem key={key} eventKey={key} disabled={disabled}>
-                        {value}
-                    </NavItem>
+                    <Nav.Item key={key} className="me-1">
+                        <Nav.Link eventKey={key} disabled={disabled}>
+                            {value}
+                        </Nav.Link>
+                    </Nav.Item>
                 ))}
             </Nav>
         </FormField>
@@ -70,7 +62,7 @@ export const FormBooleanField = ({
     activeItem?: boolean;
     disabled?: boolean;
 }) => {
-    const onSelectHandler = (value: string) => {
+    const onSelectHandler = (value: string | null) => {
         onSelect(value === 'true');
     };
     return (
@@ -106,7 +98,7 @@ export const FormNumberField = ({
     };
     return (
         <FormField label={label} disabled={disabled}>
-            <FormControl
+            <Form.Control
                 type="number"
                 defaultValue={viewConfig.columns}
                 onChange={onChangeHandler}
@@ -130,13 +122,17 @@ export const FormButtonField = ({
 }) => {
     return (
         <>
-            <FormGroup>
-                <Row md={12} className="text-center">
-                    <Button onClick={onClick} bsStyle={style} disabled={disabled}>
-                        {icon && <i className={`fa fa-${icon}`}></i>} {text}
-                    </Button>
+            <Form.Group>
+                <Row className="text-center">
+                    <Col />
+                    <Col sm="auto">
+                        <Button onClick={onClick} variant={style} disabled={disabled}>
+                            {icon && <i className={`fa fa-${icon}`}></i>} {text}
+                        </Button>
+                    </Col>
+                    <Col />
                 </Row>
-            </FormGroup>
+            </Form.Group>
         </>
     );
 };
@@ -158,14 +154,15 @@ export const FormInputField = ({
 }) => {
     return (
         <>
-            <FormGroup>
-                <InputGroup disabled={disabled}>
+            <Form.Group>
+                <InputGroup className="mb-3">
                     {icon && (
-                        <InputGroup.Addon>
+                        <InputGroup.Text>
                             <i className={`fa fa-${icon}`}></i>
-                        </InputGroup.Addon>
+                        </InputGroup.Text>
                     )}
-                    <FormControl
+                    <Form.Control
+                        disabled={disabled}
                         type={type}
                         defaultValue={text}
                         onChange={e => {
@@ -174,7 +171,7 @@ export const FormInputField = ({
                         placeholder={placeholder}
                     />
                 </InputGroup>
-            </FormGroup>
+            </Form.Group>
         </>
     );
 };

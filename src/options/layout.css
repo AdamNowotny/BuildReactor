@@ -1,17 +1,7 @@
-a {
-    cursor: pointer;
-}
-
 .content-container {
     bottom: 0;
     left: 240px;
     position: absolute;
     right: 0;
-    top: 60px;
-}
-
-.settings-container {
-    box-sizing: border-box;
-    float: left;
-    width: 50%;
+    top: 70px;
 }

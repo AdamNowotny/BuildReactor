@@ -17,15 +17,15 @@ export default ({
     onSave,
 }: {
     service: CIServiceSettings;
-    onShow?: (pipelines: CIPipelineList) => void;
-    onSave: (service: CIServiceSettings) => void;
+    onShow?: (pipelines: CIPipelineList, settings: CIServiceSettings) => void;
+    onSave?: (service: CIServiceSettings) => void;
 }) => {
     const [error, setError] = useState<WorkerError>();
     let updatedService = { ...service };
     const serviceTypes = useContext(ServiceTypesContext);
-    const serviceDefinition = serviceTypes.find(
-        definition => definition.baseUrl === service.baseUrl,
-    );
+    const serviceFields =
+        serviceTypes.find(definition => definition.baseUrl === service.baseUrl)?.fields ??
+        [];
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleShow = () => {
@@ -36,29 +36,30 @@ export default ({
                 setError(error);
             } else {
                 setError(undefined);
-                if (onShow) onShow(pipelines);
+                if (onShow) onShow(pipelines, updatedService);
             }
         });
     };
     const handleSave = () => {
-        onSave(updatedService);
+        if (onSave) onSave(updatedService);
     };
     return (
-        <Form horizontal className="settings-form" key={updatedService.name}>
-            {serviceDefinition?.fields.map(field => (
-                <ServiceDefinitionField
-                    key={field.name}
-                    service={updatedService}
-                    field={field}
-                    onChange={service => {
-                        updatedService = service;
-                    }}
-                />
-            ))}
+        <Form className="settings-form" key={updatedService.name}>
+            {serviceFields.map(field => {
+                return (
+                    <ServiceDefinitionField
+                        key={field.type}
+                        service={updatedService}
+                        field={field}
+                        onChange={service => {
+                            updatedService = service;
+                        }}
+                    />
+                );
+            })}
             <div className="settings-buttons">
                 <button type="button" className="btn btn-primary" onClick={handleShow}>
-                    <i className={`fa fa-refresh ${isLoading ? 'fa-spin' : ''}`}></i>
-                    Show
+                    <i className={`fa fa-refresh ${isLoading ? 'fa-spin' : ''}`}></i>Show
                 </button>
                 <button type="button" className="btn btn-success" onClick={handleSave}>
                     <i className="fa fa-save"></i>Save
@@ -125,7 +126,7 @@ const ServiceDefinitionField = ({
             )}
             {field.type === 'token' && (
                 <FormInputField
-                    text={field.name ?? ''}
+                    text={service.token ?? ''}
                     onChange={value => {
                         changeField(field.config ?? 'token', value);
                     }}
@@ -136,7 +137,7 @@ const ServiceDefinitionField = ({
             )}
             {field.type === 'username' && (
                 <FormInputField
-                    text={field.name ?? ''}
+                    text={service.username ?? ''}
                     onChange={value => {
                         changeField(field.config ?? 'username', value);
                     }}
@@ -147,7 +148,7 @@ const ServiceDefinitionField = ({
             )}
             {field.type === 'password' && (
                 <FormInputField
-                    text={field.name ?? ''}
+                    text={service.password ?? ''}
                     onChange={value => {
                         changeField(field.config ?? 'password', value);
                     }}
@@ -158,7 +159,7 @@ const ServiceDefinitionField = ({
             )}
             {field.type === 'branch' && (
                 <FormInputField
-                    text={field.name ?? ''}
+                    text={service.branch ?? ''}
                     onChange={value => {
                         changeField(field.config ?? 'branch', value);
                     }}
