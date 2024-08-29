@@ -1,10 +1,10 @@
 import core from 'common/core';
 import logger from 'common/logger';
 import PageContext from 'components/pageContext';
-import AddPage from 'options/pages/addPage';
-import ConfigurationPage from 'options/pages/configurationPage';
-import NotificationsPage from 'options/pages/notificationsPage';
-import ViewPage from 'options/pages/viewPage';
+import AddPage from './pages/add/addPage';
+import ConfigurationPage from './pages/configurationPage';
+import NotificationsPage from './pages/notificationsPage';
+import ViewPage from './pages/viewPage';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import { HashRouter, Route, Routes } from 'react-router-dom';
