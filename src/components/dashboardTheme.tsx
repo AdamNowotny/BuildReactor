@@ -1,4 +1,3 @@
-import PageContext from 'components/pageContext';
 import React, { useContext } from 'react';
 import darkTheme from '../dashboard/themes/dark/dark';
 import lightTheme from '../dashboard/themes/light/light';
@@ -9,17 +8,15 @@ const themes: Record<string, Theme> = {
     light: lightTheme,
 };
 
-const DashboardTheme = ({ popup }) => {
+const DashboardTheme = ({ popup }: { popup: boolean }) => {
     const viewConfig = useContext(ViewConfigContext);
 
     const themeName = viewConfig.theme ?? 'dark';
     const DashboardActiveTheme = themes[themeName];
     return (
-        <PageContext>
-            <div className={`theme theme-${themeName}`}>
-                <DashboardActiveTheme popup={popup} />
-            </div>
-        </PageContext>
+        <div className={`theme theme-${themeName}`}>
+            <DashboardActiveTheme popup={popup} />
+        </div>
     );
 };
 
