@@ -1,8 +1,31 @@
-export interface WorkerError {
-    name: string;
-    message: string;
-    status: number;
-    url?: string;
+export interface CIService {
+    // get service definition and default config
+    getDefinition: () => CIServiceDefinition;
+    // get list of all available pipelines
+    getPipelines: (settings: CIServiceSettings) => Promise<CIPipeline[]>;
+    // get latest build status for selected pipelines
+    getLatestBuilds: (settings: CIServiceSettings) => Promise<CIBuild[]>;
+}
+
+export interface ViewConfig {
+    columns?: number;
+    fullWidthGroups?: boolean;
+    showCommits?: boolean;
+    showCommitsWhenGreen?: boolean;
+    theme?: string;
+    notifications?: {
+        enabled: boolean;
+        buildBroken: boolean;
+        buildFixed: boolean;
+        buildStarted: boolean;
+        buildSuccessful: boolean;
+        buildStillFailing: boolean;
+    };
+}
+
+export interface CIPipelineList {
+    items: CIPipeline[];
+    selected: string[];
 }
 
 export interface CIServiceSettings {
@@ -70,20 +93,6 @@ export interface CIBuild {
     changes?: CIBuildChange[];
 }
 
-export interface CIPipelineList {
-    items: CIPipeline[];
-    selected: string[];
-}
-
-export interface CIService {
-    // get service definition and default config
-    getDefinition: () => CIServiceDefinition;
-    // get list of all available pipelines
-    getPipelines: (settings: CIServiceSettings) => Promise<CIPipeline[]>;
-    // get latest build status for selected pipelines
-    getLatestBuilds: (settings: CIServiceSettings) => Promise<CIBuild[]>;
-}
-
 export interface ServiceStateItem {
     failedCount?: number;
     runningCount?: number;
@@ -92,18 +101,9 @@ export interface ServiceStateItem {
     items?: CIBuild[];
 }
 
-export interface ViewConfig {
-    columns?: number;
-    fullWidthGroups?: boolean;
-    showCommits?: boolean;
-    showCommitsWhenGreen?: boolean;
-    theme?: string;
-    notifications?: {
-        enabled: boolean;
-        buildBroken: boolean;
-        buildFixed: boolean;
-        buildStarted: boolean;
-        buildSuccessful: boolean;
-        buildStillFailing: boolean;
-    };
+export interface WorkerError {
+    name: string;
+    message: string;
+    status: number;
+    url?: string;
 }

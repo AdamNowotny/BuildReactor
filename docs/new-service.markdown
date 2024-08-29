@@ -3,7 +3,7 @@
 To add support for a new type of service in BuildReactor you need to implement three methods described below and register the service.
 
 You can look up all the TypeScript types involved here:
-https://github.com/AdamNowotny/BuildReactor/blob/master/src/common/types.ts#L71-L78
+https://github.com/AdamNowotny/BuildReactor/blob/master/src/common/types.ts#L1-L8
 
 For examples look at implementations in the services folder:
 
@@ -21,8 +21,8 @@ Example:
 const getDefinition = () => ({
     typeName: 'My Service', // name shown when adding service
     baseUrl: 'my-service', // service ID, same as the folder name file is in
-    icon: 'services/my-service/icon.png', // icon for browser notifications, /src/ is the base folder
-    logo: 'services/my-service/logo.svg', // Logo shown when adding new service
+    icon: 'my-service.png', // icon for browser notifications, save icon as /public/icons/my-service.png
+    logo: 'my-service.svg', // Logo shown when adding new service, files in /publics/
     defaultConfig: {
         baseUrl: 'my-service',
         name: '',
@@ -45,7 +45,7 @@ const getDefinition = () => ({
 
 Both `baseUrl` fields are required and should be the same as folder name in _/services/_ where you created your implementation.
 
-`fields` specifies which UI elements will be available when configuring service instance. It is an optional list as by default the form uses the properties of the `defaultConfig` object to determine which fields should be shown. For details refer to [dynamicForm.html](../src/settings/service/directives/dynamicForm/dynamicForm.html)
+`fields` specifies which UI elements will be available when configuring service instance. For details refer to [dynamicForm.tsx](../src/options/pages/service/components/dynamicForm.tsx)
 
 ## List of available pipelines
 
@@ -78,6 +78,7 @@ Example:
 const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> => {
     logger.debug('service.getLatestBuilds', settings);
     const pipelines = settings.pipelines.map(async (id: string): Promise<CIBuild> => {
+            // try catch not required here, but if anything fails then ALL builds for a service would be shown as offline
             try {
                 const response = await request.get(
                     { url: `https://server/builds/${id}.json` }
