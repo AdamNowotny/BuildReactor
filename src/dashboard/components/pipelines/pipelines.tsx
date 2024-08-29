@@ -48,7 +48,7 @@ const BuildGroups = ({ serviceState }: { serviceState: ServiceStateItem }) => {
 };
 
 const Service = ({ serviceState }: { serviceState: ServiceStateItem }) => (
-    <div key={serviceState.name} className="service row">
+    <div key={serviceState.name} className="service">
         <div className="service-name">{serviceState.name}</div>
         <BuildGroups serviceState={serviceState} />
     </div>
@@ -64,6 +64,6 @@ const Pipelines = () => {
     } else {
         content = <div className="no-services-message">No services configured</div>;
     }
-    return <div className="pipelines container-fluid">{content}</div>;
+    return <div className="pipelines">{content}</div>;
 };
 export default Pipelines;
