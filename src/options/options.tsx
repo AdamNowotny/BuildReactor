@@ -7,7 +7,7 @@ import NotificationsPage from 'options/pages/notificationsPage';
 import ViewPage from 'options/pages/viewPage';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter, Route, Routes } from 'react-router-dom';
 import Layout from './layout';
 import ServicePage from './pages/servicePage';
 
@@ -18,7 +18,7 @@ const container = document.getElementById('app');
 if (!container) throw new Error("Could not find 'app' element");
 createRoot(container).render(
     <React.StrictMode>
-        <BrowserRouter basename="/src/options/options.html">
+        <HashRouter basename="/">
             <Routes>
                 <Route
                     path="/"
@@ -40,6 +40,6 @@ createRoot(container).render(
                 </Route>
                 <Route path="*" element={<h1>Routing error</h1>} />
             </Routes>
-        </BrowserRouter>
+        </HashRouter>
     </React.StrictMode>,
 );
