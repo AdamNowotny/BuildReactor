@@ -13,7 +13,7 @@ import {
     ViewConfigContext,
 } from './react-types';
 
-export default ({ children }) => {
+export default ({ children }: { children: React.JSX.Element }) => {
     const [viewConfig, setViewConfig] = useState<ViewConfig>({});
     const [serviceStates, setServiceStates] = useState<ServiceStateItem[]>([]);
     const [settings, setSettings] = useState<CIServiceSettings[]>([]);

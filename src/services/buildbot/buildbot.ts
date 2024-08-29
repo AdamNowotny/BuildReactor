@@ -40,7 +40,7 @@ const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> 
                 return parseBuild(id, settings, build);
             } catch (ex: any) {
                 return {
-                    id: id,
+                    id,
                     name: id,
                     error: { name: 'Error', message: ex.message },
                 };
