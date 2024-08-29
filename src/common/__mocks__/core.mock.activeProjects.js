@@ -23,7 +23,13 @@ export default [
                 isBroken: true,
                 url: 'http://ci.openmrs.org/browse/FUNC-PERF-4',
                 isRunning: false,
-                tags: [{ name: 'Unstable', type: 'warning' }],
+                tags: [
+                    {
+                        name: 'Unstable',
+                        type: 'warning',
+                        description: 'The build was marked as unstable',
+                    },
+                ],
                 changes: [
                     {
                         name: 'Adam',

@@ -1,5 +1,6 @@
 import { CIBuild } from 'common/types';
 import React, { useContext, useEffect, useState } from 'react';
+import { Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { ViewConfigContext } from '../../../components/react-types';
 import './build.css';
 
@@ -46,23 +47,31 @@ const Labels = ({ build }: { build: CIBuild }) => {
     return (
         <span className="labels pull-right">
             {build.error && (
-                <span
-                    className="label label-default"
-                    uib-tooltip="{{ build.error.description }}"
-                >
-                    Offline <span className="error-message">({build.error.message})</span>
-                </span>
+                <Badge bg="dark">
+                    Offline
+                    <span className="error-message">({build.error.message})</span>
+                </Badge>
             )}
-            {build.isDisabled && <span className="label label-default">Disabled</span>}
-            {build.tags?.map(tag => (
-                <span
-                    key={tag.name}
-                    className={`label ${tag.type ? 'label-' + tag.type : ''}`}
-                    uib-tooltip="{{ build.description }}"
-                >
-                    {tag.name}
-                </span>
-            ))}
+            {build.isDisabled && <Badge bg="secondary">Disabled</Badge>}
+            {build.tags?.map(tag => {
+                const bgColor = tag.type === 'warning' ? 'warning' : 'secondary';
+                const textColor = tag.type === 'warning' ? 'dark' : '';
+                const badge = (
+                    <Badge bg={bgColor} text={textColor}>
+                        {tag.name}
+                    </Badge>
+                );
+                return tag.description ? (
+                    <OverlayTrigger
+                        key={tag.name}
+                        overlay={<Tooltip id="label-tooltip">{tag.description}</Tooltip>}
+                    >
+                        {badge}
+                    </OverlayTrigger>
+                ) : (
+                    badge
+                );
+            })}
         </span>
     );
 };
