@@ -55,15 +55,17 @@ describe('show', () => {
     });
 
     it('adds iconUrl', async () => {
-        mockChrome.runtime.getURL.mockImplementation(icon => `https://google.com/${icon}`);
+        mockChrome.runtime.getURL.mockImplementation(
+            icon => `chrome-extension://BR${icon}`,
+        );
 
         await notification.show(testInfo);
 
-        expect(mockChrome.runtime.getURL).toBeCalledWith(`services/baseUrl/icon.png`);
+        expect(mockChrome.runtime.getURL).toBeCalledWith(`/icons/baseUrl.png`);
         expect(mockChrome.notifications.create).toBeCalledWith(
             testInfo.id,
             expect.objectContaining({
-                iconUrl: `https://google.com/services/baseUrl/icon.png`,
+                iconUrl: `chrome-extension://BR/icons/baseUrl.png`,
             }),
         );
     });

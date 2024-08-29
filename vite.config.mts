@@ -15,14 +15,7 @@ export default defineConfig({
         react(),
         copy({
             flatten: false,
-            targets: [
-                {
-                    src: ['src/services/**/*.png', 'src/services/**/*.svg'],
-                    dest: 'dist/build/',
-                },
-                { src: 'img/*', dest: 'dist/build/img/' },
-                { src: 'manifest.json', dest: 'dist/build/' },
-            ],
+            targets: [{ src: 'manifest.json', dest: 'dist/build/' }],
         }),
         tsconfigPaths(),
         zipPack({
@@ -33,7 +26,7 @@ export default defineConfig({
     ],
     build: {
         assetsInlineLimit: 0,
-        emptyOutDir: false,
+        emptyOutDir: true,
         sourcemap: true,
         minify: true,
         rollupOptions: {
@@ -48,7 +41,7 @@ export default defineConfig({
                 format: 'es',
                 entryFileNames: '[name].js',
                 chunkFileNames: '[name]-chunk.js',
-                assetFileNames: '[name].[ext]',
+                assetFileNames: 'assets/[name].[ext]',
             },
         },
     },

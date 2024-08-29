@@ -107,8 +107,8 @@ export default {
         return {
             typeName: 'Jenkins',
             baseUrl: 'jenkins',
-            icon: 'services/jenkins/icon.png',
-            logo: 'services/jenkins/logo.png',
+            icon: 'jenkins.png',
+            logo: 'jenkins.png',
             fields: [
                 {
                     type: 'url',

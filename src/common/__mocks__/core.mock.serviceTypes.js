@@ -2,8 +2,8 @@ export default [
     {
         typeName: 'Atlassian Bamboo',
         baseUrl: 'bamboo',
-        icon: 'services/bamboo/icon.png',
-        logo: 'services/bamboo/logo.png',
+        icon: 'bamboo.png',
+        logo: 'bamboo.png',
         fields: [
             {
                 type: 'url',
@@ -23,8 +23,8 @@ export default [
     {
         typeName: 'BuildBot',
         baseUrl: 'buildbot',
-        icon: 'services/buildbot/icon.png',
-        logo: 'services/buildbot/logo.png',
+        icon: 'buildbot.png',
+        logo: 'buildbot.png',
         fields: [
             { type: 'url', name: 'Server URL, e.g. https://build.webkit.org/' },
             { type: 'username' },
@@ -42,8 +42,8 @@ export default [
     {
         typeName: 'BuildKite',
         baseUrl: 'buildkite',
-        icon: 'services/buildkite/icon.png',
-        logo: 'services/buildkite/logo.svg',
+        icon: 'buildkite.png',
+        logo: 'buildkite.svg',
         fields: [
             {
                 type: 'token',
@@ -62,8 +62,8 @@ export default [
     {
         typeName: 'CCTray XML',
         baseUrl: 'cctray',
-        icon: 'services/cctray/icon.png',
-        logo: 'services/cctray/logo.png',
+        icon: 'cctray.png',
+        logo: 'cctray.png',
         defaultConfig: {
             baseUrl: 'cctray',
             name: '',
@@ -85,8 +85,8 @@ export default [
     {
         typeName: 'GitHub Actions',
         baseUrl: 'github',
-        icon: 'services/github/icon.png',
-        logo: 'services/github/logo.svg',
+        icon: 'github.png',
+        logo: 'github.svg',
         fields: [
             {
                 type: 'url',
@@ -109,8 +109,8 @@ export default [
     {
         typeName: 'Jenkins',
         baseUrl: 'jenkins',
-        icon: 'services/jenkins/icon.png',
-        logo: 'services/jenkins/logo.png',
+        icon: 'jenkins.png',
+        logo: 'jenkins.png',
         fields: [
             {
                 type: 'url',
@@ -131,8 +131,8 @@ export default [
     {
         typeName: 'TeamCity',
         baseUrl: 'teamcity',
-        icon: 'services/teamcity/icon.png',
-        logo: 'services/teamcity/logo.png',
+        icon: 'teamcity.png',
+        logo: 'teamcity.png',
         fields: [
             { type: 'url', name: 'Server URL, e.g. http://teamcity.jetbrains.com/' },
             { type: 'username' },

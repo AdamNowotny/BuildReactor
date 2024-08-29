@@ -66,8 +66,8 @@ export default {
     getDefinition: (): CIServiceDefinition => ({
         typeName: 'TeamCity',
         baseUrl: 'teamcity',
-        icon: 'services/teamcity/icon.png',
-        logo: 'services/teamcity/logo.png',
+        icon: 'teamcity.png',
+        logo: 'teamcity.png',
         fields: [
             { type: 'url', name: 'Server URL, e.g. http://teamcity.jetbrains.com/' },
             { type: 'username' },

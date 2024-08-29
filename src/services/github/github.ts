@@ -50,8 +50,8 @@ export default {
     getDefinition: (): CIServiceDefinition => ({
         typeName: 'GitHub Actions',
         baseUrl: 'github',
-        icon: 'services/github/icon.png',
-        logo: 'services/github/logo.svg',
+        icon: 'github.png',
+        logo: 'github.svg',
         fields: [
             {
                 type: 'url',

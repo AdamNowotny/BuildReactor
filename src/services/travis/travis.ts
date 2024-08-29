@@ -64,8 +64,8 @@ export default {
     getDefinition: (): CIServiceDefinition => ({
         typeName: 'Travis',
         baseUrl: 'travis',
-        icon: 'services/travis/icon.png',
-        logo: 'services/travis/logo.png',
+        icon: 'travis.png',
+        logo: 'travis.png',
         fields: [
             {
                 type: 'url',

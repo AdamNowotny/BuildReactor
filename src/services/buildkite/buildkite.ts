@@ -109,8 +109,8 @@ export default {
     getDefinition: (): CIServiceDefinition => ({
         typeName: 'BuildKite',
         baseUrl: 'buildkite',
-        icon: 'services/buildkite/icon.png',
-        logo: 'services/buildkite/logo.svg',
+        icon: 'buildkite.png',
+        logo: 'buildkite.svg',
         fields: [
             {
                 type: 'token',

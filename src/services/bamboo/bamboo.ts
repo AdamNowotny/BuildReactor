@@ -69,8 +69,8 @@ export default {
     getDefinition: (): CIServiceDefinition => ({
         typeName: 'Atlassian Bamboo',
         baseUrl: 'bamboo',
-        icon: 'services/bamboo/icon.png',
-        logo: 'services/bamboo/logo.png',
+        icon: 'bamboo.png',
+        logo: 'bamboo.png',
         fields: [
             {
                 type: 'url',

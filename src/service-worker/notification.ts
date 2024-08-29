@@ -47,7 +47,7 @@ async function getIcon(info: NotificationInfo) {
     const service = await serviceConfig.getItem(info.serviceName);
     if (!service) throw new Error(`Service ${info.serviceName} not found`);
     const serviceType = service.baseUrl;
-    const icon = chrome.runtime.getURL(`services/${serviceType}/icon.png`);
+    const icon = chrome.runtime.getURL(`/icons/${serviceType}.png`);
     return icon;
 }
 

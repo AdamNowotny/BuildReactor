@@ -30,8 +30,8 @@ export default {
     getDefinition: (): CIServiceDefinition => ({
         typeName: 'CCTray XML',
         baseUrl: 'cctray',
-        icon: 'services/cctray/icon.png',
-        logo: 'services/cctray/logo.png',
+        icon: 'cctray.png',
+        logo: 'cctray.png',
         defaultConfig: {
             baseUrl: 'cctray',
             name: '',

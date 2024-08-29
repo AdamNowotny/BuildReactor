@@ -53,8 +53,8 @@ export default {
     getDefinition: () => ({
         typeName: 'BuildBot',
         baseUrl: 'buildbot',
-        icon: 'services/buildbot/icon.png',
-        logo: 'services/buildbot/logo.png',
+        icon: 'buildbot.png',
+        logo: 'buildbot.png',
         fields: [
             { type: 'url', name: 'Server URL, e.g. https://build.webkit.org/' },
             { type: 'username' },
