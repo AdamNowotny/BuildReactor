@@ -1,5 +1,5 @@
-import Pipelines from 'components/pipelines/pipelines';
-import Navbar from 'components/popupNavbar/popupNavbar';
+import Pipelines from 'dashboard/components/pipelines/pipelines';
+import Navbar from 'dashboard/components/popupNavbar';
 import { ThemeProps } from 'components/react-types';
 import React from 'react';
 import './light.css';

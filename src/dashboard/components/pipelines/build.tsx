@@ -1,6 +1,6 @@
 import { CIBuild } from 'common/types';
 import React, { useContext, useEffect, useState } from 'react';
-import { ViewConfigContext } from '../react-types';
+import { ViewConfigContext } from '../../../components/react-types';
 import './build.css';
 
 const Changes = ({ build }: { build: CIBuild }) => {

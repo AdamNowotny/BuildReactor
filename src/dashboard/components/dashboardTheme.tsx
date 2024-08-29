@@ -1,7 +1,7 @@
+import { Theme, ViewConfigContext } from 'components/react-types';
 import React, { useContext } from 'react';
-import darkTheme from '../dashboard/themes/dark/dark';
-import lightTheme from '../dashboard/themes/light/light';
-import { Theme, ViewConfigContext } from './react-types';
+import darkTheme from '../themes/dark/dark';
+import lightTheme from '../themes/light/light';
 
 const themes: Record<string, Theme> = {
     dark: darkTheme,
