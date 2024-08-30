@@ -63,7 +63,7 @@ export default [
         typeName: 'CCTray XML',
         baseUrl: 'cctray',
         icon: 'cctray.png',
-        logo: 'cctray.png',
+        logo: 'cruisecontrol.png',
         defaultConfig: {
             baseUrl: 'cctray',
             name: '',
