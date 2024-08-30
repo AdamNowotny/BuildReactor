@@ -122,50 +122,55 @@ const GroupPanel = ({
                 </Row>
             </Card.Header>
             <Collapse in={open}>
-                <Card.Body>
-                    <Form>
-                        {filteredItems.map(pipeline => {
-                            const isSelected = selectedItems.includes(pipeline.id);
-                            return (
-                                <Form.Group key={pipeline.id}>
-                                    <Row>
-                                        <Col sm="auto">
-                                            <Form.Check
-                                                type={'checkbox'}
-                                                checked={isSelected}
-                                                onChange={e => {
-                                                    if (onChanged)
-                                                        onChanged(
-                                                            pipeline.id,
-                                                            e.target.checked,
-                                                        );
-                                                }}
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Form.Label
-                                                className={
-                                                    pipeline.isDisabled
-                                                        ? 'text-body-secondary'
-                                                        : ''
-                                                }
-                                            >
-                                                {pipeline.name}
-                                            </Form.Label>
-                                        </Col>
-                                        <Col sm="auto">
-                                            {pipeline.isDisabled && (
-                                                <Badge className="badge" bg="secondary">
-                                                    Disabled
-                                                </Badge>
-                                            )}
-                                        </Col>
-                                    </Row>
-                                </Form.Group>
-                            );
-                        })}
-                    </Form>
-                </Card.Body>
+                <div>
+                    <Card.Body>
+                        <Form>
+                            {filteredItems.map(pipeline => {
+                                const isSelected = selectedItems.includes(pipeline.id);
+                                return (
+                                    <Form.Group key={pipeline.id}>
+                                        <Row>
+                                            <Col sm="auto">
+                                                <Form.Check
+                                                    type={'checkbox'}
+                                                    checked={isSelected}
+                                                    onChange={e => {
+                                                        if (onChanged)
+                                                            onChanged(
+                                                                pipeline.id,
+                                                                e.target.checked,
+                                                            );
+                                                    }}
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <Form.Label
+                                                    className={
+                                                        pipeline.isDisabled
+                                                            ? 'text-body-secondary'
+                                                            : ''
+                                                    }
+                                                >
+                                                    {pipeline.name}
+                                                </Form.Label>
+                                            </Col>
+                                            <Col sm="auto">
+                                                {pipeline.isDisabled && (
+                                                    <Badge
+                                                        className="badge"
+                                                        bg="secondary"
+                                                    >
+                                                        Disabled
+                                                    </Badge>
+                                                )}
+                                            </Col>
+                                        </Row>
+                                    </Form.Group>
+                                );
+                            })}
+                        </Form>
+                    </Card.Body>
+                </div>
             </Collapse>
         </Card>
     );
