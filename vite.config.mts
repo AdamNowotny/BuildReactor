@@ -26,7 +26,7 @@ export default defineConfig({
     ],
     build: {
         assetsInlineLimit: 0,
-        emptyOutDir: true,
+        emptyOutDir: false,
         sourcemap: true,
         minify: true,
         rollupOptions: {
