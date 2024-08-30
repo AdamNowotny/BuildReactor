@@ -11,7 +11,7 @@ import NotificationsPage from './pages/notificationsPage';
 import ServicePage from './pages/service/servicePage';
 import ViewPage from './pages/viewPage';
 
-core.init({ test: false });
+core.init();
 logger.init({ prefix: 'options', debug: false });
 
 const container = document.getElementById('app');

@@ -15,10 +15,10 @@ import {
     CIPipelineList,
 } from 'common/types';
 
-let TEST = false;
+// replaced by Vite
+const TEST: boolean = import.meta.env.DEV;
 
-const init = function ({ test = false }) {
-    TEST = test;
+const init = function () {
     if (TEST) {
         activeProjects.onNext(testActiveProjects);
         configurations.onNext(testConfigurations);
