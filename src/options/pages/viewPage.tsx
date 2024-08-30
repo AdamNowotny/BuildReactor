@@ -5,7 +5,7 @@ import {
 } from 'common/components/forms/index';
 import { ViewConfigContext } from 'common/components/react-types';
 import core from 'common/core';
-import DashboardTheme from 'dashboard/components/dashboardTheme';
+import DashboardTheme, { themeDefinition } from 'dashboard/components/dashboardTheme';
 import React, { useContext } from 'react';
 import { Col, Container, Form, Row } from 'react-bootstrap';
 
@@ -16,6 +16,9 @@ export default () => {
         core.setViews({ ...viewConfig, [name]: value });
     };
 
+    const themeItems = Object.fromEntries(
+        Object.entries(themeDefinition).map(([key, value]) => [key, value.name]),
+    );
     return (
         <Container>
             <Row>
@@ -23,7 +26,7 @@ export default () => {
                     <Form>
                         <FormSelectField
                             label={'Theme'}
-                            items={{ dark: 'Dark', light: 'Light' }}
+                            items={themeItems}
                             activeItem={viewConfig.theme}
                             onSelect={value => {
                                 setField('theme', value);

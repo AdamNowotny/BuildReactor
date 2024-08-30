@@ -6,6 +6,11 @@ import {
     ViewConfig,
 } from 'common/types';
 
+export interface ThemeDefinition {
+    name: string;
+    theme?: Theme;
+}
+
 export type Theme = React.ComponentType<ThemeProps>;
 
 export interface ThemeProps {

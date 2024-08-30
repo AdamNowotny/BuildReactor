@@ -31,5 +31,3 @@ export default ({ popup }: ThemeProps) => {
 ## Registration
 
 After implementing the React component you need to register the theme in [dashboard/components/dashboardTheme](../src/dashboard/components/dashboardTheme.tsx#L6).
-
-To be able to select the new theme, the next step is to add it to [theme selection options](../src/options/pages/viewPage.tsx#L26)
