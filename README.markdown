@@ -62,22 +62,26 @@ This will open project with all needed dependencies.
 ## Installation (manual)
 
 1. Install [Node.js](http://nodejs.org/)
-2. Go to project directory and run:
+2. Install all VSCode extensions listed in `.devcontainer/devcontainer.json`.
+
+## Build
+
+Go to project directory and run:
 
 -   `npm install`
 -   `npm run dist`
 
-3. Open Chrome Extension manager and `Load unpacked extension..` from `dist/BuildReactor` folder.
+3. Open Chrome Extension manager and `Load unpacked extension..` from `dist/build` folder.
 
-## Testing
+## Development
 
 `npm test` - run unit tests
 
 `npm run test:watch` - use during development to run tests continuously
 
-`npm run dev` - opens web server at `http://localhost:5137/` for popup and dashboard testing.
+`npm run dev` - opens web server at `http://localhost:5137/` and also allows adding extension in Chrome pointing at `dist/` folder. Hot module Replacement is on. You need to later use `npm run dist` to build a package that does not require a running server.
 
-**Note** - Use `core.init({ test: true })` to get mocked responses as service worker is not available. Without it the pages will fail to load in Vite web server.
+`npm run dev:mock` - runs webserver at `http://localhost:5137/` for testing with mocked responses from service worker. useful to run browser inside VS for quick feedback.
 
 ## Contribute
 

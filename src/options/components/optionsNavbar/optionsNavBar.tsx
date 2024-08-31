@@ -119,10 +119,7 @@ export default ({ dark, service }: { dark: boolean; service?: CIServiceSettings 
                                 </NavDropdown.Item>
                             </NavDropdown>
                             <Nav.Item>
-                                <Nav.Link
-                                    href="src/dashboard/dashboard.html"
-                                    target="_blank"
-                                >
+                                <Nav.Link href="dashboard.html" target="_blank">
                                     <i className="fa fa-tasks"></i> Dashboard
                                 </Nav.Link>
                             </Nav.Item>

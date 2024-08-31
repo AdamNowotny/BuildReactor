@@ -16,10 +16,9 @@ import {
 } from 'common/types';
 
 // replaced by Vite
-const TEST: boolean = import.meta.env.DEV;
-
+const TEST: string = import.meta.env.VITE_MOCK_WORKER;
 const init = function () {
-    if (TEST) {
+    if (TEST === '1') {
         activeProjects.onNext(testActiveProjects);
         configurations.onNext(testConfigurations);
         views.onNext(testViews);

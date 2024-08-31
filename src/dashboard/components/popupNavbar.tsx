@@ -9,11 +9,7 @@ export default ({ dark = false }: { dark: boolean }) => {
                 <Navbar.Brand></Navbar.Brand>
                 <Nav className="justify-content-end" activeKey="/home">
                     <Nav.Item>
-                        <Nav.Link
-                            href="../options/options.html"
-                            target="_blank"
-                            title="Settings"
-                        >
+                        <Nav.Link href="options.html" target="_blank" title="Settings">
                             <i className="fa fa-gear fa-2x"></i>
                         </Nav.Link>
                     </Nav.Item>

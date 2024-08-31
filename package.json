@@ -1,7 +1,7 @@
 {
     "name": "build-reactor",
     "description": "Developer notifications and dashboard for CI servers",
-    "version": "4.0.0",
+    "version": "5.0.0",
     "homepage": "https://github.com/AdamNowotny/BuildReactor",
     "author": {
         "name": "Adam Nowotny",
@@ -26,7 +26,10 @@
     "type": "module",
     "scripts": {
         "dev": "npx vite --host",
+        "dev:mock": "VITE_MOCK_WORKER=1 npx vite --host",
+        "dev:firefox": "MANIFEST_TARGET=firefox npx vite --host",
         "dist": "npx vite build",
+        "dist:firefox": "MANIFEST_TARGET=firefox npx vite build",
         "lint": "node_modules/.bin/eslint .",
         "test": "vitest --run",
         "test:watch": "vitest"
@@ -35,13 +38,15 @@
         "bootstrap": "^5.3.3",
         "events": "^3.3.0",
         "font-awesome": "4.7.0",
-        "globals": "15.9.0",
+        "react": "^18.3.1",
         "react-bootstrap": "^2.10.4",
+        "react-dom": "^18.3.1",
         "react-router-dom": "^6.26.1",
         "rx": "4.1.0",
         "xml2js": "0.6.2"
     },
     "devDependencies": {
+        "@crxjs/vite-plugin": "^2.0.0-beta.25",
         "@eslint/js": "^9.9.1",
         "@types/chrome": "0.0.270",
         "@types/eslint__js": "^8.42.3",
@@ -52,9 +57,7 @@
         "@vitejs/plugin-react": "^4.3.1",
         "eslint": "^9.9.1",
         "eslint-plugin-react": "^7.35.0",
-        "react": "^18.3.1",
-        "react-dom": "^18.3.1",
-        "rollup-plugin-copy": "^3.5.0",
+        "globals": "15.9.0",
         "stream-browserify": "^3.0.0",
         "typescript": "^5.5.4",
         "typescript-eslint": "^8.2.0",
