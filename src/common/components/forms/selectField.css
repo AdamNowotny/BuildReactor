@@ -1,3 +1,7 @@
 .nav-pills a:not(.active):hover {
     background-color: #ddd;
 }
+
+.nav-pills a.disabled {
+    opacity: 0.6;
+}
