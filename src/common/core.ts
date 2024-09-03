@@ -68,55 +68,55 @@ const availableProjects = (
     }
 };
 
-const setOrder = function (serviceNames) {
+const setOrder = function (serviceNames: string[]) {
     const message = { name: 'setOrder', order: serviceNames };
     logger.info('setOrder', message);
     void chrome.runtime.sendMessage(message);
 };
 
-const setBuildOrder = function (serviceName, builds) {
+const setBuildOrder = function (serviceName: string, builds: string[]) {
     const message = { name: 'setBuildOrder', serviceName, order: builds };
     logger.info('setBuildOrder', message);
     void chrome.runtime.sendMessage(message);
 };
 
-const enableService = function (name) {
+const enableService = function (name: string) {
     const message = { name: 'enableService', serviceName: name };
     logger.info('enableService', message);
     void chrome.runtime.sendMessage(message);
 };
 
-const disableService = function (name) {
+const disableService = function (name: string) {
     const message = { name: 'disableService', serviceName: name };
     logger.info('disableService', message);
     void chrome.runtime.sendMessage(message);
 };
 
-const removeService = function (name) {
+const removeService = function (name: string) {
     const message = { name: 'removeService', serviceName: name };
     logger.info('removeService', message);
     void chrome.runtime.sendMessage(message);
 };
 
-const renameService = function (oldName, newName) {
+const renameService = function (oldName: string, newName: string) {
     const message = { name: 'renameService', oldName, newName };
     logger.info('renameService', message);
     void chrome.runtime.sendMessage(message);
 };
 
-const saveService = function (settings) {
+const saveService = function (settings: CIServiceSettings) {
     const message = { name: 'saveService', settings };
     logger.info('saveService', message);
     void chrome.runtime.sendMessage(message);
 };
 
-const saveConfig = function (config) {
+const saveConfig = function (config: CIServiceSettings) {
     const message = { name: 'saveConfig', config };
     logger.info('saveConfig', config);
     void chrome.runtime.sendMessage(message);
 };
 
-const setViews = function (viewConfig) {
+const setViews = function (viewConfig: ViewConfig) {
     const message = { name: 'setViews', views: viewConfig };
     logger.info('setViews', message);
     void chrome.runtime.sendMessage(message);

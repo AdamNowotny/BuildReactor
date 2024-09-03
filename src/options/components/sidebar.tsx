@@ -1,8 +1,10 @@
-import { CIServiceSettings } from 'common/types';
 import { ServiceTypesContext, SettingsContext } from 'common/components/react-types';
+import core from 'common/core';
+import { CIServiceSettings } from 'common/types';
 import React, { useContext } from 'react';
 import { Nav } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
+import { ReactSortable } from 'react-sortablejs';
 import './sidebar.css';
 
 export default ({ service, view }: { service?: CIServiceSettings; view?: string }) => {
@@ -13,28 +15,44 @@ export default ({ service, view }: { service?: CIServiceSettings; view?: string 
         const item = serviceTypes.find(serviceType => serviceType.baseUrl === baseUrl);
         return item ? `/icons/${item.icon}` : '';
     };
-    // TODO: sortable
+    const sortableServices = settings.map(config => ({
+        id: config.name,
+        name: config.name,
+        baseUrl: config.baseUrl,
+        isDisabled: config.isDisabled,
+    }));
+    const sortServices = (services): void => {
+        const oldIds = settings.map(config => config.name);
+        const newIds = services.map(config => config.name);
+        if (JSON.stringify(oldIds) !== JSON.stringify(newIds)) {
+            core.setOrder(newIds);
+        }
+    };
     return (
         <div className="sidebar-nav">
             <div className="scrollable">
                 <Nav variant="pills" className="flex-column">
-                    {settings.map(config => {
-                        return (
-                            <Nav.Link
-                                className={config.isDisabled ? 'service-disabled' : ''}
-                                as={NavLink}
-                                to={`/service/${config.name}`}
-                                key={config.name}
-                            >
-                                <span className="handle">::</span>
-                                <img
-                                    className="pill-icon"
-                                    src={getIconFor(config.baseUrl)}
-                                />
-                                <span className="pill-name">{config.name}</span>
-                            </Nav.Link>
-                        );
-                    })}
+                    <ReactSortable list={sortableServices} setList={sortServices}>
+                        {sortableServices.map(config => {
+                            return (
+                                <Nav.Link
+                                    className={
+                                        config.isDisabled ? 'service-disabled' : ''
+                                    }
+                                    as={NavLink}
+                                    to={`/service/${config.name}`}
+                                    key={config.name}
+                                >
+                                    <span className="handle">::</span>
+                                    <img
+                                        className="pill-icon"
+                                        src={getIconFor(config.baseUrl)}
+                                    />
+                                    <span className="pill-name">{config.name}</span>
+                                </Nav.Link>
+                            );
+                        })}
+                    </ReactSortable>
                 </Nav>
 
                 {settings.length > 0 ? <hr /> : null}
