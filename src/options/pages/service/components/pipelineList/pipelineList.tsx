@@ -43,18 +43,21 @@ export default ({
     };
     const groups = Map.groupBy(pipelines.items, ({ group }) => group ?? '');
     const groupNames: string[] = Array.from(groups.keys());
-    const groupsJsx = groupNames.map((key: string) => (
-        <GroupPanel
-            key={key}
-            name={key}
-            items={groups.get(key) ?? []}
-            selectedItems={selectedItems}
-            filter={filter}
-            onChanged={handleChanged}
-            onAllChanged={handleAllChanged}
-        />
-    ));
-    return <div>{groupsJsx}</div>;
+    return (
+        <div>
+            {groupNames.map((key: string) => (
+                <GroupPanel
+                    key={key}
+                    name={key}
+                    items={groups.get(key) ?? []}
+                    selectedItems={selectedItems}
+                    filter={filter}
+                    onChanged={handleChanged}
+                    onAllChanged={handleAllChanged}
+                />
+            ))}
+        </div>
+    );
 };
 
 const GroupPanel = ({
@@ -69,109 +72,158 @@ const GroupPanel = ({
     items: CIPipeline[];
     filter?: string;
     selectedItems?: string[];
-    onChanged?: (id: string, checked: boolean) => void;
-    onAllChanged?: (ids: string[], checked: boolean) => void;
+    onChanged: (id: string, checked: boolean) => void;
+    onAllChanged: (ids: string[], checked: boolean) => void;
 }) => {
-    const filterFunc = (item: CIPipeline) => {
-        return filter ? item.name.toLowerCase().includes(filter.toLowerCase()) : true;
-    };
-    const filteredItems = items.filter(filterFunc);
+    const filteredItems = items.filter((item: CIPipeline) =>
+        filter ? item.name.toLowerCase().includes(filter.toLowerCase()) : true,
+    );
     if (filteredItems.length === 0) return null;
 
     const allVisibleChecked = filteredItems.every(item =>
         selectedItems.includes(item.id),
     );
-    const [open, setOpen] = useState(true);
+    const someVisibleChecked = filteredItems.some(item =>
+        selectedItems.includes(item.id),
+    );
+    const [open, setOpen] = useState(someVisibleChecked);
+    if (!open && filter) setOpen(true);
+
     const checkAll = e => {
-        if (!onAllChanged) return;
         onAllChanged(
             filteredItems.map(item => item.id),
             e.target.checked,
         );
     };
-    const countTooltip = (
-        <Tooltip id="count-tooltip">Visible / All projects in group</Tooltip>
-    );
 
     return (
         <Card className="mb-3">
             <Card.Header>
-                <Row style={{ cursor: 'pointer' }}>
-                    <Col xs="auto">
-                        <Form.Check
-                            type={'checkbox'}
-                            checked={allVisibleChecked}
-                            onChange={checkAll}
-                        />
-                    </Col>
-                    <Col
-                        onClick={() => {
-                            setOpen(!open);
-                        }}
-                    >
-                        <span className="group-name">{name || 'Projects'}</span>
-                    </Col>
-                    <Col xs="auto">
-                        <OverlayTrigger placement="bottom" overlay={countTooltip}>
-                            <Badge className="filter-count badge" bg="dark">
-                                {filter && <span>{filteredItems.length} /</span>}
-                                {items.length}
-                            </Badge>
-                        </OverlayTrigger>
-                    </Col>
-                </Row>
+                <GroupHeader
+                    name={name}
+                    allChecked={allVisibleChecked}
+                    onAllChecked={checkAll}
+                    onClick={() => {
+                        setOpen(!open);
+                    }}
+                    itemsCount={filteredItems.length}
+                    totalCount={items.length}
+                    filter={!!filter}
+                />
             </Card.Header>
             <Collapse in={open}>
                 <div>
                     <Card.Body>
                         <Form>
-                            {filteredItems.map(pipeline => {
-                                const isSelected = selectedItems.includes(pipeline.id);
-                                return (
-                                    <Form.Group key={pipeline.id}>
-                                        <Row>
-                                            <Col sm="auto">
-                                                <Form.Check
-                                                    type={'checkbox'}
-                                                    checked={isSelected}
-                                                    onChange={e => {
-                                                        if (onChanged)
-                                                            onChanged(
-                                                                pipeline.id,
-                                                                e.target.checked,
-                                                            );
-                                                    }}
-                                                />
-                                            </Col>
-                                            <Col>
-                                                <Form.Label
-                                                    className={
-                                                        pipeline.isDisabled
-                                                            ? 'text-body-secondary'
-                                                            : ''
-                                                    }
-                                                >
-                                                    {pipeline.name}
-                                                </Form.Label>
-                                            </Col>
-                                            <Col sm="auto">
-                                                {pipeline.isDisabled && (
-                                                    <Badge
-                                                        className="badge"
-                                                        bg="secondary"
-                                                    >
-                                                        Disabled
-                                                    </Badge>
-                                                )}
-                                            </Col>
-                                        </Row>
-                                    </Form.Group>
-                                );
-                            })}
+                            {filteredItems.map(pipeline => (
+                                <PipelineListItem
+                                    key={pipeline.id}
+                                    pipeline={pipeline}
+                                    checked={selectedItems.includes(pipeline.id)}
+                                    onChanged={onChanged}
+                                    filter={filter}
+                                />
+                            ))}
                         </Form>
                     </Card.Body>
                 </div>
             </Collapse>
         </Card>
+    );
+};
+
+const GroupHeader = ({
+    name,
+    allChecked,
+    onAllChecked,
+    onClick,
+    itemsCount,
+    totalCount,
+    filter,
+}: {
+    name: string;
+    allChecked: boolean;
+    onAllChecked: (any) => void;
+    onClick?: () => void;
+    itemsCount?: number;
+    totalCount?: number;
+    filter?: boolean;
+}) => {
+    return (
+        <Row style={{ cursor: 'pointer' }}>
+            <Col xs="auto">
+                <Form.Check
+                    type={'checkbox'}
+                    checked={allChecked}
+                    onChange={onAllChecked}
+                />
+            </Col>
+            <Col onClick={onClick}>
+                <span className="group-name">{name || 'Projects'}</span>
+            </Col>
+            <Col xs="auto">
+                <OverlayTrigger
+                    placement="bottom"
+                    overlay={
+                        <Tooltip id="count-tooltip">
+                            Visible / All projects in group
+                        </Tooltip>
+                    }
+                >
+                    <Badge className="filter-count badge" bg="dark">
+                        {filter && <span>{itemsCount} /</span>}
+                        {totalCount}
+                    </Badge>
+                </OverlayTrigger>
+            </Col>
+        </Row>
+    );
+};
+
+const PipelineListItem = ({
+    pipeline,
+    checked,
+    onChanged,
+    filter,
+}: {
+    pipeline: CIPipeline;
+    checked: boolean;
+    onChanged: (id: string, isChecked: boolean) => void;
+    filter?: string;
+}) => {
+    const pipelineName = filter
+        ? pipeline.name.replace(
+              new RegExp(filter, 'gi'),
+              '<span class="ui-match">$&</span>',
+          )
+        : pipeline.name;
+    return (
+        <Form.Group key={pipeline.id}>
+            <Row>
+                <Col sm="auto">
+                    <Form.Check
+                        type={'checkbox'}
+                        checked={checked}
+                        onChange={e => {
+                            onChanged(pipeline.id, e.target.checked);
+                        }}
+                    />
+                </Col>
+                <Col>
+                    <Form.Label
+                        className={pipeline.isDisabled ? 'text-body-secondary' : ''}
+                    >
+                        <p dangerouslySetInnerHTML={{ __html: pipelineName }} />
+                    </Form.Label>
+                </Col>
+                <Col sm="auto">
+                    {pipeline.isDisabled && (
+                        <Badge className="badge" bg="secondary">
+                            Disabled
+                        </Badge>
+                    )}
+                </Col>
+            </Row>
+        </Form.Group>
     );
 };
