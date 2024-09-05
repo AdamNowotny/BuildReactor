@@ -43,8 +43,9 @@ export default ({
     const handleSave = () => {
         if (onSave) onSave(updatedService);
     };
+
     return (
-        <Form className="settings-form" key={updatedService.name}>
+        <Form className="settings-form" key={updatedService.name} onSubmit={handleShow}>
             {serviceFields.map(field => {
                 return (
                     <ServiceDefinitionField
@@ -58,7 +59,7 @@ export default ({
                 );
             })}
             <div className="settings-buttons">
-                <button type="button" className="btn btn-primary" onClick={handleShow}>
+                <button type="submit" className="btn btn-primary" onClick={handleShow}>
                     <i className={`fa fa-refresh ${isLoading ? 'fa-spin' : ''}`}></i>Show
                 </button>
                 <button type="button" className="btn btn-success" onClick={handleSave}>
