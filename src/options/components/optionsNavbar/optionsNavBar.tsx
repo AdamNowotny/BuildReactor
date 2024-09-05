@@ -1,6 +1,6 @@
+import OnOffSwitch from 'common/components/onOffSwitch';
 import core from 'common/core';
 import { CIServiceSettings } from 'common/types';
-import OnOffSwitch from 'common/components/onOffSwitch';
 import React, { useState } from 'react';
 import { Col, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import './optionsNavbar.css';
@@ -12,12 +12,14 @@ export default ({ dark, service }: { dark: boolean; service?: CIServiceSettings 
     const [showRemove, setShowRemove] = useState(false);
 
     const renameService = (name: string) => {
+        if (!service) return;
         closeModals();
-        core.renameService(service?.name, name);
+        core.renameService(service.name, name);
     };
     const removeService = () => {
+        if (!service) return;
         closeModals();
-        core.removeService(service?.name);
+        core.removeService(service.name);
     };
 
     const handleOnOff = enabled => {
@@ -67,7 +69,7 @@ export default ({ dark, service }: { dark: boolean; service?: CIServiceSettings 
                                     <Nav.Link>
                                         <OnOffSwitch
                                             active={!service.isDisabled}
-                                            onClick={handleOnOff}
+                                            onChange={handleOnOff}
                                         />
                                     </Nav.Link>
                                 </Nav.Item>

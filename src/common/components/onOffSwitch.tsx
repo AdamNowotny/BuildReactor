@@ -1,7 +1,13 @@
 import React from 'react';
 import './onOffSwitch.css';
 
-export default ({ active, onClick }: { active: boolean; onClick: (boolean) => void }) => {
+export default ({
+    active,
+    onChange,
+}: {
+    active: boolean;
+    onChange: (boolean) => void;
+}) => {
     const onOffState = active ? 'on' : 'off';
     return (
         <>
@@ -12,8 +18,8 @@ export default ({ active, onClick }: { active: boolean; onClick: (boolean) => vo
                     name="toggle"
                     value="off"
                     checked={!active}
-                    onClick={() => {
-                        onClick(false);
+                    onChange={() => {
+                        onChange(false);
                     }}
                 />
                 <input
@@ -21,8 +27,8 @@ export default ({ active, onClick }: { active: boolean; onClick: (boolean) => vo
                     name="toggle"
                     value="on"
                     checked={active}
-                    onClick={() => {
-                        onClick(true);
+                    onChange={() => {
+                        onChange(true);
                     }}
                 />
                 <span className={`switch ${onOffState}`}></span>
