@@ -45,17 +45,21 @@ export default ({
     const groupNames: string[] = Array.from(groups.keys());
     return (
         <div>
-            {groupNames.map((key: string) => (
-                <GroupPanel
-                    key={key}
-                    name={key}
-                    items={groups.get(key) ?? []}
-                    selectedItems={selectedItems}
-                    filter={filter}
-                    onChanged={handleChanged}
-                    onAllChanged={handleAllChanged}
-                />
-            ))}
+            {groupNames.map((key: string) => {
+                const groupItems = groups.get(key) ?? [];
+                return (
+                    <GroupPanel
+                        key={key}
+                        name={key}
+                        items={groupItems}
+                        selectedItems={selectedItems}
+                        filter={filter}
+                        defaultOpen={groupNames.length === 1}
+                        onChanged={handleChanged}
+                        onAllChanged={handleAllChanged}
+                    />
+                );
+            })}
         </div>
     );
 };
@@ -65,6 +69,7 @@ const GroupPanel = ({
     items,
     filter,
     selectedItems = [],
+    defaultOpen,
     onChanged,
     onAllChanged,
 }: {
@@ -72,6 +77,7 @@ const GroupPanel = ({
     items: CIPipeline[];
     filter?: string;
     selectedItems?: string[];
+    defaultOpen?: boolean;
     onChanged: (id: string, checked: boolean) => void;
     onAllChanged: (ids: string[], checked: boolean) => void;
 }) => {
@@ -86,7 +92,7 @@ const GroupPanel = ({
     const someVisibleChecked = filteredItems.some(item =>
         selectedItems.includes(item.id),
     );
-    const [open, setOpen] = useState(someVisibleChecked);
+    const [open, setOpen] = useState(defaultOpen ?? someVisibleChecked);
     if (!open && filter) setOpen(true);
 
     const checkAll = e => {
