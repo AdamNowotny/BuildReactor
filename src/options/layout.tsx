@@ -4,7 +4,6 @@ import {
     ServiceTypesContext,
     SettingsContext,
 } from 'common/components/react-types';
-import 'font-awesome/scss/font-awesome.scss';
 import OptionsNavBar from 'options/components/optionsNavbar/optionsNavBar';
 import React, { useContext } from 'react';
 import { Outlet, useLocation, useParams } from 'react-router-dom';

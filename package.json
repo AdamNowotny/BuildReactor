@@ -37,7 +37,6 @@
     "dependencies": {
         "bootstrap": "^5.3.3",
         "events": "^3.3.0",
-        "font-awesome": "4.7.0",
         "react": "^18.3.1",
         "react-bootstrap": "^2.10.4",
         "react-dom": "^18.3.1",
@@ -50,6 +49,9 @@
     "devDependencies": {
         "@crxjs/vite-plugin": "^2.0.0-beta.25",
         "@eslint/js": "^9.9.1",
+        "@iconify-json/fa": "^1.2.0",
+        "@iconify-json/fa-solid": "^1.2.0",
+        "@svgr/plugin-jsx": "^8.1.0",
         "@types/chrome": "0.0.270",
         "@types/eslint__js": "^8.42.3",
         "@types/react": "^18.3.4",
@@ -64,6 +66,7 @@
         "stream-browserify": "^3.0.0",
         "typescript": "^5.5.4",
         "typescript-eslint": "^8.2.0",
+        "unplugin-icons": "^0.19.3",
         "vite": "^5.4.2",
         "vite-plugin-zip-pack": "^1.2.4",
         "vite-tsconfig-paths": "5.0.1",

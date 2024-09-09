@@ -9,7 +9,15 @@ import {
 } from 'common/types';
 import React, { useContext, useState } from 'react';
 import { Alert, Form } from 'react-bootstrap';
+import IconCodeFork from '~icons/fa/code-fork';
+import IconGit from '~icons/fa/git';
+import IconGlobe from '~icons/fa/globe';
+import IconKey from '~icons/fa/key';
+import IconTicket from '~icons/fa/ticket';
+import IconUser from '~icons/fa/user';
 import './dynamicForm.css';
+import IconSave from '~icons/fa/save';
+import IconRefresh from '~icons/fa/refresh';
 
 export default ({
     service,
@@ -60,10 +68,12 @@ export default ({
             })}
             <div className="settings-buttons">
                 <button type="submit" className="btn btn-primary" onClick={handleShow}>
-                    <i className={`fa fa-refresh ${isLoading ? 'fa-spin' : ''}`}></i>Show
+                    <IconRefresh className={isLoading ? 'loading' : ''} />
+                    Show
                 </button>
                 <button type="button" className="btn btn-success" onClick={handleSave}>
-                    <i className="fa fa-save"></i>Save
+                    <IconSave />
+                    Save
                 </button>
             </div>
             {error && (
@@ -110,7 +120,7 @@ const ServiceDefinitionField = ({
                         changeField(field.config ?? 'repository', value);
                     }}
                     type={'text'}
-                    icon="git"
+                    iconSvg={<IconGit />}
                     placeholder={field.name ?? 'Repository, f.e. BuildReactor'}
                 />
             )}
@@ -121,7 +131,7 @@ const ServiceDefinitionField = ({
                         changeField(field.config ?? 'url', value);
                     }}
                     type={'url'}
-                    icon="globe"
+                    iconSvg={<IconGlobe />}
                     placeholder={field.name ?? 'Server URL'}
                 />
             )}
@@ -132,7 +142,7 @@ const ServiceDefinitionField = ({
                         changeField(field.config ?? 'token', value);
                     }}
                     type="password"
-                    icon="ticket"
+                    iconSvg={<IconTicket />}
                     placeholder={field.name ?? 'Token'}
                 />
             )}
@@ -143,7 +153,7 @@ const ServiceDefinitionField = ({
                         changeField(field.config ?? 'username', value);
                     }}
                     type="text"
-                    icon="user"
+                    iconSvg={<IconUser />}
                     placeholder={field.name ?? 'Username'}
                 />
             )}
@@ -154,7 +164,7 @@ const ServiceDefinitionField = ({
                         changeField(field.config ?? 'password', value);
                     }}
                     type="password"
-                    icon="key"
+                    iconSvg={<IconKey />}
                     placeholder={field.name ?? 'Password'}
                 />
             )}
@@ -165,7 +175,7 @@ const ServiceDefinitionField = ({
                         changeField(field.config ?? 'branch', value);
                     }}
                     type="text"
-                    icon="code-fork"
+                    iconSvg={<IconCodeFork />}
                     placeholder={field.name ?? 'Branch, f.e. refs/heads/release'}
                 />
             )}

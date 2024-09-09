@@ -5,5 +5,22 @@
         i {
             margin-right: 10px;
         }
+        .loading {
+            animation: icon-spin 2s infinite linear;
+        }
+        svg {
+            font-size: 0.8em;
+            margin-right: 10px;
+            vertical-align: text-bottom;
+        }
+    }
+}
+
+@keyframes icon-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
     }
 }

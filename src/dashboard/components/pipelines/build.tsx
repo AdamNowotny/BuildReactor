@@ -2,6 +2,8 @@ import { ViewConfigContext } from 'common/components/react-types';
 import { CIBuild } from 'common/types';
 import React, { useContext, useEffect, useState } from 'react';
 import { Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import IconBolt from '~icons/fa/bolt';
+import IconWarning from '~icons/fa/exclamation-triangle';
 import './build.css';
 
 const Changes = ({ build }: { build: CIBuild }) => {
@@ -102,8 +104,8 @@ const Build = ({ build, width }: { build: CIBuild; width: number }) => {
                         <Changes build={build} />
                     </div>
                     <div className="color-blind-markers">
-                        <i className="color-blind-marker-broken fa fa-bolt fa-2x fa-inverse"></i>
-                        <i className="color-blind-marker-offline fa fa-exclamation-triangle fa-2x fa-inverse"></i>
+                        <IconBolt className="color-blind-marker-broken" />
+                        <IconWarning className="color-blind-marker-offline" />
                     </div>
                 </a>
             </div>

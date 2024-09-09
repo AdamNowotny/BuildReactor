@@ -5,6 +5,7 @@ import zipPack from 'vite-plugin-zip-pack';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 import packageJson from './package.json' assert { type: 'json' };
+import Icons from 'unplugin-icons/vite';
 
 const MANIFEST_TARGET = process.env.MANIFEST_TARGET ?? 'chrome';
 const manifest = defineManifest({
@@ -61,6 +62,11 @@ export default defineConfig({
         tsconfigPaths(),
         react(),
         crx({ manifest }),
+        Icons({
+            autoInstall: true,
+            compiler: 'jsx',
+            jsx: 'react',
+        }),
         zipPack({
             inDir: 'dist/build',
             outDir: 'dist',

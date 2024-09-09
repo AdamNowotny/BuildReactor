@@ -1,5 +1,6 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
+import IconCheck from '~icons/fa/check-square-o';
 
 export default ({
     serviceName,
@@ -17,7 +18,8 @@ export default ({
             <Modal.Header closeButton>
                 <Modal.Title>
                     <h4 className="modal-title">
-                        <span className="fa fa-check-square-o"></span> Confirmation
+                        <IconCheck />
+                        &nbsp; Confirmation
                     </h4>
                 </Modal.Title>
             </Modal.Header>

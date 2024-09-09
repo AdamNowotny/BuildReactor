@@ -1,6 +1,8 @@
 import React from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import './popupNavbar.css';
+import IconGear from '~icons/fa/gear';
+import IconTasks from '~icons/fa/tasks';
 
 export default ({ dark = false }: { dark: boolean }) => {
     return (
@@ -10,12 +12,12 @@ export default ({ dark = false }: { dark: boolean }) => {
                 <Nav className="justify-content-end" activeKey="/home">
                     <Nav.Item>
                         <Nav.Link href="options.html" target="_blank" title="Settings">
-                            <i className="fa fa-gear fa-2x"></i>
+                            <IconGear />
                         </Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
                         <Nav.Link href="dashboard.html" target="_blank" title="Dashboard">
-                            <i className="fa fa-tasks fa-2x"></i>
+                            <IconTasks />
                         </Nav.Link>
                     </Nav.Item>
                 </Nav>

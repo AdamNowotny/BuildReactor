@@ -1,8 +1,9 @@
 .filter-query {
-    i.reset-icon {
+    .reset-icon {
         cursor: pointer;
+        font-size: 20px;
         position: absolute;
-        right: 15px;
-        top: 4px;
+        right: 17px;
+        top: 7px;
     }
 }

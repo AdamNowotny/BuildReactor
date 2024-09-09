@@ -75,7 +75,8 @@
         top: 5px;
         right: 1em;
 
-        i {
+        svg {
+            font-size: 1.5em;
             opacity: 0.5;
             display: none;
         }

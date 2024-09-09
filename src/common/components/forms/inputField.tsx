@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Form, InputGroup } from 'react-bootstrap';
 
 export const FormInputField = ({
     disabled,
     text,
-    icon,
+    iconSvg,
     onChange,
     placeholder,
     type = 'text',
 }: {
     disabled?: boolean;
     text: string;
-    icon?: string;
+    iconSvg?: ReactNode;
     onChange: (value: string) => void;
     placeholder?: string;
     type: 'text' | 'url' | 'password';
@@ -20,9 +20,9 @@ export const FormInputField = ({
         <>
             <Form.Group>
                 <InputGroup className="mb-3">
-                    {icon && (
-                        <InputGroup.Text>
-                            <i className={`fa fa-${icon}`}></i>
+                    {iconSvg && (
+                        <InputGroup.Text style={{ fontSize: '0.8em' }}>
+                            {iconSvg}
                         </InputGroup.Text>
                     )}
                     <Form.Control

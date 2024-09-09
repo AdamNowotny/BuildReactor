@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import './filterQuery.css';
 import { Form } from 'react-bootstrap';
+import IconTimes from '~icons/fa/times-circle-o';
+import './filterQuery.css';
 
 export default ({ onUpdate }: { onUpdate: (string) => void }) => {
     const [query, setQuery] = useState('');
@@ -32,12 +33,12 @@ export default ({ onUpdate }: { onUpdate: (string) => void }) => {
                 onKeyDown={handleKeyDown}
             />
             {query && (
-                <i
-                    className="reset-icon fa fa-times-circle-o fa-2x"
+                <IconTimes
+                    className="reset-icon"
                     onClick={() => {
                         updateQuery('');
                     }}
-                ></i>
+                />
             )}
         </div>
     );

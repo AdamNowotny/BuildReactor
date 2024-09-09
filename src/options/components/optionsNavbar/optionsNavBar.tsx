@@ -3,6 +3,10 @@ import core from 'common/core';
 import { CIServiceSettings } from 'common/types';
 import React, { useState } from 'react';
 import { Col, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import IconGithub from '~icons/fa/github';
+import IconPencil from '~icons/fa/pencil';
+import IconTasks from '~icons/fa/tasks';
+import IconTrash from '~icons/fa/trash-o';
 import './optionsNavbar.css';
 import RemoveModal from './removeModal';
 import RenameModal from './renameModal';
@@ -79,7 +83,8 @@ export default ({ dark, service }: { dark: boolean; service?: CIServiceSettings 
                                             setShowRemove(true);
                                         }}
                                     >
-                                        <i className="fa fa-trash-o"></i> Remove
+                                        <IconTrash />
+                                        &nbsp; Remove
                                     </Nav.Link>
                                 </Nav.Item>
                                 <Nav.Item>
@@ -88,7 +93,7 @@ export default ({ dark, service }: { dark: boolean; service?: CIServiceSettings 
                                             setShowRename(true);
                                         }}
                                     >
-                                        <i className="fa fa-pencil"></i> Rename
+                                        <IconPencil /> Rename
                                     </Nav.Link>
                                 </Nav.Item>
                             </Nav>
@@ -102,7 +107,10 @@ export default ({ dark, service }: { dark: boolean; service?: CIServiceSettings 
                                     href="https://github.com/AdamNowotny/BuildReactor"
                                     target="_blank"
                                 >
-                                    <i className="fa fa-github fa-fw"></i> GitHub
+                                    <span style={{ verticalAlign: 'text-bottom' }}>
+                                        <IconGithub fontSize={'.8em'} />
+                                    </span>
+                                    &nbsp;GitHub
                                 </NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item
@@ -122,7 +130,11 @@ export default ({ dark, service }: { dark: boolean; service?: CIServiceSettings 
                             </NavDropdown>
                             <Nav.Item>
                                 <Nav.Link href="dashboard.html" target="_blank">
-                                    <i className="fa fa-tasks"></i> Dashboard
+                                    <IconTasks
+                                        fontSize={'.7em'}
+                                        alignmentBaseline="middle"
+                                    />
+                                    &nbsp; Dashboard
                                 </Nav.Link>
                             </Nav.Item>
                         </Nav>

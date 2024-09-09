@@ -15,6 +15,7 @@
         "sourceMap": true,
         "strict": true,
         "strictNullChecks": true,
-        "target": "ESNext"
+        "target": "ESNext",
+        "types": ["unplugin-icons/types/react"]
     }
 }

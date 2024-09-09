@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-bootstrap';
+import IconCheck from '~icons/fa/check-square-o';
 import './toastAlert.css';
 
 export default ({ text }: { text: string }) => {
@@ -20,7 +21,7 @@ export default ({ text }: { text: string }) => {
             style={{ visibility: isVisible ? 'visible' : 'hidden' }}
         >
             <Alert variant="success">
-                <i className="fa fa-check fa-lg"></i> {text}
+                <IconCheck /> {text}
             </Alert>
         </div>
     );

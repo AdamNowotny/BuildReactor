@@ -5,6 +5,10 @@ import React, { useContext } from 'react';
 import { Nav } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { ReactSortable } from 'react-sortablejs';
+import IconPlus from '~icons/fa-solid/plus-circle';
+import IconBell from '~icons/fa/bell';
+import IconCogs from '~icons/fa/cogs';
+import IconDesktop from '~icons/fa/desktop';
 import './sidebar.css';
 
 export default ({ service, view }: { service?: CIServiceSettings; view?: string }) => {
@@ -73,19 +77,27 @@ export default ({ service, view }: { service?: CIServiceSettings; view?: string 
                         </Nav.Link>
                     )}
                     <Nav.Link as={NavLink} to="/">
-                        <i className="pill-icon fa fa-plus-circle fa-3x"></i>
+                        <span className="pill-icon">
+                            <IconPlus />
+                        </span>
                         <span className="pill-name">Add</span>
                     </Nav.Link>
                     <Nav.Link as={NavLink} to="view">
-                        <i className="pill-icon fa fa-desktop fa-3x"></i>
+                        <span className="pill-icon">
+                            <IconDesktop />
+                        </span>
                         <span className="pill-name">View</span>
                     </Nav.Link>
                     <Nav.Link as={NavLink} to="notifications">
-                        <i className="pill-icon fa fa-bell fa-3x"></i>
+                        <span className="pill-icon">
+                            <IconBell />
+                        </span>
                         <span className="pill-name">Notifications</span>
                     </Nav.Link>
                     <Nav.Link as={NavLink} to="configuration">
-                        <i className="pill-icon fa fa-cogs fa-3x"></i>
+                        <span className="pill-icon">
+                            <IconCogs />
+                        </span>
                         <span className="pill-name">Configuration</span>
                     </Nav.Link>
                 </Nav>

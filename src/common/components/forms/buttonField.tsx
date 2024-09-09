@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 
 export const FormButtonField = ({
     disabled,
     text,
-    icon,
+    iconSvg,
     onClick,
     style = 'success',
 }: {
     disabled?: boolean;
     text: string;
-    icon?: string;
+    iconSvg?: ReactNode;
     onClick: () => void;
     style?: 'success' | 'danger';
 }) => {
@@ -21,7 +21,16 @@ export const FormButtonField = ({
                     <Col />
                     <Col sm="auto">
                         <Button onClick={onClick} variant={style} disabled={disabled}>
-                            {icon && <i className={`fa fa-${icon}`}></i>} {text}
+                            <span
+                                style={{
+                                    fontSize: '0.7em',
+                                    marginRight: '7px',
+                                    verticalAlign: 'text-bottom',
+                                }}
+                            >
+                                {iconSvg}
+                            </span>
+                            {text}
                         </Button>
                     </Col>
                     <Col />

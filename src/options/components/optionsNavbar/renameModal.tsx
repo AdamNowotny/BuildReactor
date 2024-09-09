@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
+import IconPencil from '~icons/fa/pencil';
 
 export default ({
     serviceName,
@@ -22,7 +23,8 @@ export default ({
             <Modal.Header closeButton>
                 <Modal.Title>
                     <h4 className="modal-title">
-                        <span className="fa fa-pencil"></span> Rename
+                        <IconPencil />
+                        &nbsp; Rename
                     </h4>
                 </Modal.Title>
             </Modal.Header>

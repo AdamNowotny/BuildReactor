@@ -9,6 +9,8 @@ import core from 'common/core';
 import React, { useContext, useState } from 'react';
 import { Alert, Col, Container, Form, Row } from 'react-bootstrap';
 import JsonEditor from './components/jsonEditor';
+import IconUpload from '~icons/fa/cloud-upload';
+import IconDownload from '~icons/fa/cloud-download';
 
 export default () => {
     const settings = useContext(SettingsContext);
@@ -70,7 +72,7 @@ export default () => {
                             />
                             <FormButtonField
                                 text="Export"
-                                icon="cloud-upload"
+                                iconSvg={<IconUpload />}
                                 onClick={exportHandler}
                             />
                             <hr />
@@ -81,13 +83,12 @@ export default () => {
                                 text={importUrl}
                                 onChange={setImportUrl}
                                 type={'url'}
-                                icon="globe"
                                 placeholder={'URL'}
                             />
                             <FormButtonField
                                 disabled={!importUrl}
                                 text="Import"
-                                icon="cloud-download"
+                                iconSvg={<IconDownload />}
                                 onClick={importHandler}
                             />
                             {importError && (
