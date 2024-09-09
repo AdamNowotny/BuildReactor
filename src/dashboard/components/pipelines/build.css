@@ -1,23 +1,21 @@
 .build {
     padding: 5px 5px 0 0;
+
     .progress {
         height: auto;
-    }
-
-    a {
-        border-radius: 5px;
-        cursor: pointer;
-        padding: 5px 10px 5px 5px;
-        position: relative;
-        white-space: nowrap;
     }
 
     a,
     a:hover,
     a:visited {
+        border-radius: 5px;
         color: white;
+        cursor: pointer;
         display: block;
+        padding: 5px 10px 5px 5px;
+        position: relative;
         text-decoration: none;
+        white-space: nowrap;
         width: 100%;
     }
 
@@ -26,48 +24,6 @@
         display: block;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
-
-    .tooltip {
-        white-space: normal;
-    }
-
-    .labels {
-        margin-top: -1px;
-        max-width: 50%;
-        right: 1em;
-        overflow: hidden;
-        position: absolute;
-    }
-
-    .label {
-        margin-left: 0.5em;
-    }
-
-    .changes-container {
-        height: 1.5em;
-        overflow: hidden;
-        position: relative;
-        text-align: left;
-        visibility: hidden;
-        &.visible {
-            visibility: visible;
-        }
-        .changes {
-            display: block;
-            opacity: 0;
-            overflow: hidden;
-            position: absolute;
-            text-overflow: ellipsis;
-            transform: translateY(90%);
-            transition: opacity 1s, transform 2s;
-            width: 100%;
-            &.active {
-                opacity: 1;
-                transform: translateY(0);
-                transition: opacity 2s, transform 2s;
-            }
-        }
     }
 
     .color-blind-markers {
@@ -81,14 +37,9 @@
             display: none;
         }
     }
-    .labels {
-        right: 40px;
-    }
-
     &.broken .color-blind-marker-broken {
         display: inline;
     }
-
     &.offline .color-blind-marker-offline {
         display: inline;
     }

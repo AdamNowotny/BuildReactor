@@ -1,0 +1,13 @@
+.build {
+    .labels {
+        margin-top: -1px;
+        max-width: 50%;
+        right: 40px;
+        overflow: hidden;
+        position: absolute;
+    }
+
+    .label {
+        margin-left: 0.5em;
+    }
+}

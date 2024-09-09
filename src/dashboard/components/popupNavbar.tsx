@@ -4,7 +4,7 @@ import './popupNavbar.css';
 import IconGear from '~icons/fa/gear';
 import IconTasks from '~icons/fa/tasks';
 
-export default ({ dark = false }: { dark: boolean }) => {
+export default ({ dark = false }: { dark?: boolean }) => {
     return (
         <Navbar fixed="top" variant={dark ? 'dark' : 'light'}>
             <Container fluid>
