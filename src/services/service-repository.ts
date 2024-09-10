@@ -14,10 +14,10 @@ const serviceMap = new Map<string, CIService>();
 
 const init = (
     services: CIService[] = [
+        cctray,
         bamboo,
         buildbot,
         buildkite,
-        cctray,
         github,
         jenkins,
         teamcity,
