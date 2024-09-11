@@ -36,7 +36,7 @@ export default ({
         [];
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const handleShow = () => {
+    const handleShow = e => {
         setIsLoading(true);
         core.availableProjects(updatedService, ({ pipelines, error }) => {
             setIsLoading(false);
@@ -47,6 +47,7 @@ export default ({
                 if (onShow) onShow(pipelines, updatedService);
             }
         });
+        e.preventDefault();
     };
     const handleSave = () => {
         if (onSave) onSave(updatedService);
