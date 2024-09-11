@@ -1,42 +1,35 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form } from 'react-bootstrap';
 import IconTimes from '~icons/fa/times-circle-o';
 import './filterQuery.css';
 
-export default ({ onUpdate }: { onUpdate: (string) => void }) => {
-    const [query, setQuery] = useState('');
-
-    const updateQuery = value => {
-        setQuery(value);
-        onUpdate(value);
-    };
-
+export default ({ text, onUpdate }: { text?: string; onUpdate: (string) => void }) => {
     const handleKeyDown = e => {
         if (e.key === 'Escape') {
             e.preventDefault();
-            updateQuery('');
+            onUpdate('');
         }
     };
     const handleChange = e => {
         const value = e.target.value;
-        updateQuery(value);
+        onUpdate(value);
     };
 
     return (
         <div className="filter-query mb-2">
             <Form.Control
                 className="search-query"
-                value={query}
+                value={text}
                 type="text"
                 placeholder="Search..."
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
             />
-            {query && (
+            {text && (
                 <IconTimes
                     className="reset-icon"
                     onClick={() => {
-                        updateQuery('');
+                        onUpdate('');
                     }}
                 />
             )}

@@ -28,6 +28,7 @@ export default () => {
     const showPipelines = (pipelines: CIPipelineList, settings: CIServiceSettings) => {
         setNewService({ ...settings, ...{ pipelines: settings.pipelines } });
         setAllPipelines(pipelines);
+        setFilter('');
     };
     const handleSave = (settings: CIServiceSettings) => {
         setNewService(settings);
@@ -55,7 +56,9 @@ export default () => {
                         <SelectedPipelines pipelines={service.pipelines} />
                     </Col>
                     <Col xs={6} className="project-selection-container">
-                        {allPipelines && <PipelineFilter onUpdate={updateFilter} />}
+                        {allPipelines && (
+                            <PipelineFilter text={filter} onUpdate={updateFilter} />
+                        )}
                         <PipelineList
                             key={service.name}
                             pipelines={allPipelines}
