@@ -61,7 +61,7 @@ export default {
                 type: 'token',
                 help: 'Create token at <a href="https://github.com/settings/personal-access-tokens/new" target="_blank">https://github.com/settings/personal-access-tokens/new</a>',
             },
-            { type: 'branch' },
+            { type: 'branch', name: 'Branch, f.e. main' },
         ],
         defaultConfig: {
             baseUrl: 'github',
