@@ -71,6 +71,8 @@ export default defineConfig({
             inDir: 'dist/build',
             outDir: 'dist',
             outFileName: 'build-reactor.zip',
+            filter: (_fileName: string, filePath: string, _isDirectory: boolean) =>
+                !filePath.startsWith('dist/build/.vite'),
         }),
     ],
     build: {
