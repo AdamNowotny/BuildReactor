@@ -67,7 +67,7 @@
         "typescript": "5.6.2",
         "typescript-eslint": "8.5.0",
         "unplugin-icons": "^0.19.3",
-        "vite": "5.4.4",
+        "vite": "5.4.6",
         "vite-plugin-zip-pack": "^1.2.4",
         "vite-tsconfig-paths": "5.0.1",
         "vitest": "2.0.5"
