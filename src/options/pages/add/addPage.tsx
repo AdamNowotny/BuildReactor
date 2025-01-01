@@ -19,7 +19,7 @@ export default ({
         if (onChange) {
             onChange(serviceTypeId, name);
         } else {
-            navigate(`/new/${serviceTypeId}/${name}`);
+            void navigate(`/new/${serviceTypeId}/${name}`);
         }
     };
     return (

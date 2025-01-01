@@ -1,7 +1,7 @@
-import core from 'common/core';
-import { CIPipelineList, CIServiceSettings } from 'common/types';
 import { ServiceContext } from 'common/components/react-types';
 import ToastAlert from 'common/components/toastAlert';
+import core from 'common/core';
+import { CIPipelineList, CIServiceSettings } from 'common/types';
 import React, { useContext, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -28,13 +28,13 @@ export default () => {
     const showPipelines = (pipelines: CIPipelineList, settings: CIServiceSettings) => {
         setNewService({ ...settings, ...{ pipelines: settings.pipelines } });
         setAllPipelines(pipelines);
-        setFilter('');
+        setFilter(undefined);
     };
     const handleSave = (settings: CIServiceSettings) => {
         setNewService(settings);
         setToastAlertReset(toastAlertReset + 1);
         core.saveService(settings);
-        navigate(`/service/${settings.name}`);
+        void navigate(`/service/${settings.name}`);
     };
 
     const updateFilter = value => {
