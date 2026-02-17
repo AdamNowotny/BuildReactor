@@ -1,0 +1,24 @@
+{
+    "$schema": "https://opencode.ai/config.json",
+    "permission": {
+        "bash": {
+            "*": "ask",
+            "cat *": "allow",
+            "curl *": "allow",
+            "git diff *": "allow",
+            "git fetch *": "allow",
+            "git log *": "allow",
+            "git show *": "allow",
+            "git status *": "allow",
+            "grep *": "allow",
+            "head *": "allow",
+            "jq *": "allow",
+            "ls *": "allow",
+            "npm run *": "allow",
+            "npm test*": "allow",
+            "pwd": "allow",
+            "sleep *": "allow",
+            "tail *": "allow"
+        }
+    }
+}
