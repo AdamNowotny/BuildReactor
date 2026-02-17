@@ -70,7 +70,7 @@ export default defineConfig({
         zipPack({
             inDir: 'dist/build',
             outDir: 'dist',
-            outFileName: 'build-reactor.zip',
+            outFileName: `build-reactor${MANIFEST_TARGET === 'firefox' ? '-firefox' : ''}.zip`,
             filter: (_fileName: string, filePath: string, _isDirectory: boolean) =>
                 !filePath.startsWith('dist/build/.vite'),
         }),
