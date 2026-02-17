@@ -111,3 +111,9 @@ src/
 - Vite with CRXJS plugin for extension builds
 - Vitest for testing
 - TypeScript with strict mode
+
+## Dependency Management
+
+- **Lock all versions**: Always use exact versions in `package.json` (no `^` or `~` prefixes)
+- This ensures reproducible builds and avoids unexpected breaking changes from transitive dependencies
+- When updating dependencies, explicitly set the exact version number

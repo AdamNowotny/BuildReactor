@@ -20,7 +20,7 @@
     "licenses": [
         {
             "type": "Apache",
-            "url": "https://github.com/AdamNowotny/BuildReactor/blob/master/LICENSE"
+            "url": "https://github.com/AdamNowotny/BuildReactor/blob/HEAD/LICENSE"
         }
     ],
     "type": "module",
@@ -35,41 +35,41 @@
         "test:watch": "vitest"
     },
     "dependencies": {
-        "bootstrap": "^5.3.3",
-        "events": "^3.3.0",
+        "bootstrap": "5.3.3",
+        "events": "3.3.0",
         "react": "19.0.0",
         "react-bootstrap": "2.10.7",
         "react-dom": "19.0.0",
-        "react-router-dom": "7.1.1",
-        "react-sortablejs": "^6.1.4",
+        "react-router-dom": "7.1.5",
+        "react-sortablejs": "6.1.4",
         "rx": "4.1.0",
-        "sortablejs": "^1.15.6",
+        "sortablejs": "1.15.6",
         "xml2js": "0.6.2"
     },
     "devDependencies": {
         "@crxjs/vite-plugin": "2.0.0-beta.28",
         "@eslint/js": "9.17.0",
         "@iconify-json/fa": "1.2.1",
-        "@iconify-json/fa-solid": "^1.2.1",
-        "@svgr/plugin-jsx": "^8.1.0",
+        "@iconify-json/fa-solid": "1.2.1",
+        "@svgr/plugin-jsx": "8.1.0",
         "@types/chrome": "0.0.287",
-        "@types/eslint__js": "^8.42.3",
+        "@types/eslint__js": "8.42.3",
         "@types/react": "19.0.2",
         "@types/react-dom": "19.0.2",
-        "@types/rx": "^4.1.4",
-        "@types/sortablejs": "^1.15.8",
-        "@types/xml2js": "^0.4.14",
+        "@types/rx": "4.1.4",
+        "@types/sortablejs": "1.15.8",
+        "@types/xml2js": "0.4.14",
         "@vitejs/plugin-react": "4.3.4",
         "eslint": "9.17.0",
         "eslint-plugin-react": "7.37.3",
         "globals": "15.14.0",
-        "stream-browserify": "^3.0.0",
+        "stream-browserify": "3.0.0",
         "typescript": "5.7.2",
         "typescript-eslint": "8.19.0",
         "unplugin-icons": "0.22.0",
         "vite": "5.4.6",
-        "vite-plugin-zip-pack": "^1.2.4",
+        "vite-plugin-zip-pack": "1.2.4",
         "vite-tsconfig-paths": "5.1.4",
-        "vitest": "2.1.8"
+        "vitest": "2.1.9"
     }
 }
