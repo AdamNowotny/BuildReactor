@@ -40,7 +40,7 @@
         "react": "19.0.0",
         "react-bootstrap": "2.10.7",
         "react-dom": "19.0.0",
-        "react-router-dom": "7.1.5",
+        "react-router-dom": "7.13.0",
         "react-sortablejs": "6.1.4",
         "rx": "4.1.0",
         "sortablejs": "1.15.6",
