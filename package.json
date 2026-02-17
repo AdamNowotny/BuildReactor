@@ -59,7 +59,7 @@
         "@types/rx": "4.1.4",
         "@types/sortablejs": "1.15.9",
         "@types/xml2js": "0.4.14",
-        "@vitejs/plugin-react": "4.3.4",
+        "@vitejs/plugin-react": "5.1.4",
         "eslint": "9.26.0",
         "eslint-plugin-react": "7.37.5",
         "globals": "17.3.0",
@@ -67,9 +67,9 @@
         "typescript": "5.9.3",
         "typescript-eslint": "8.56.0",
         "unplugin-icons": "23.0.1",
-        "vite": "5.4.21",
+        "vite": "7.3.1",
         "vite-plugin-zip-pack": "1.2.4",
-        "vite-tsconfig-paths": "5.1.4",
+        "vite-tsconfig-paths": "6.1.1",
         "vitest": "2.1.9"
     }
 }
