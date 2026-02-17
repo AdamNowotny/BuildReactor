@@ -48,7 +48,7 @@
     },
     "devDependencies": {
         "@crxjs/vite-plugin": "2.3.0",
-        "@eslint/js": "9.26.0",
+        "@eslint/js": "9.39.2",
         "@iconify-json/fa": "1.2.2",
         "@iconify-json/fa-solid": "1.2.2",
         "@svgr/plugin-jsx": "8.1.0",
@@ -60,7 +60,7 @@
         "@types/sortablejs": "1.15.9",
         "@types/xml2js": "0.4.14",
         "@vitejs/plugin-react": "5.1.4",
-        "eslint": "9.26.0",
+        "eslint": "9.39.2",
         "eslint-plugin-react": "7.37.5",
         "globals": "17.3.0",
         "stream-browserify": "3.0.0",
