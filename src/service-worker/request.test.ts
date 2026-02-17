@@ -7,16 +7,23 @@ vi.mock('./requestErrors');
 
 const headersGet = vi.fn();
 const headersSet = vi.fn();
-const Headers = vi.fn();
+
+// Create a proper class mock for Headers that works with vitest 4.x
+class MockHeaders {
+    get = headersGet;
+    set = headersSet;
+    // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+    constructor(_init?: HeadersInit) {
+        // Constructor required for Headers interface compatibility
+    }
+}
 
 global.fetch = vi.fn();
-vi.stubGlobal('Headers', Headers);
+vi.stubGlobal('Headers', MockHeaders);
 
 beforeEach(() => {
-    Headers.mockImplementation(() => ({
-        get: headersGet,
-        set: headersSet,
-    }));
+    headersGet.mockReset();
+    headersSet.mockReset();
 });
 
 const setupResponse = (response: any) => {

@@ -70,6 +70,6 @@
         "vite": "7.3.1",
         "vite-plugin-zip-pack": "1.2.4",
         "vite-tsconfig-paths": "6.1.1",
-        "vitest": "3.2.4"
+        "vitest": "4.0.18"
     }
 }
