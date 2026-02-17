@@ -78,7 +78,7 @@ function parseBuildState(project: any): CIBuild {
     const status = project.$.lastBuildStatus;
     const state: CIBuild = {
         changes: createChanges(project),
-        group: project.$.category || null,
+        group: project.$.category ?? null,
         id: project.$.name,
         isBroken: false,
         isDisabled: false,
@@ -86,7 +86,7 @@ function parseBuildState(project: any): CIBuild {
         isWaiting: status === 'Pending',
         name: project.$.name,
         tags: [],
-        webUrl: project.$.webUrl || null,
+        webUrl: project.$.webUrl ?? null,
     };
     if (status in { Success: 1, Failure: 1, Exception: 1, Pending: 1 }) {
         state.isBroken = status in { Failure: 1, Exception: 1 };
@@ -110,7 +110,7 @@ const createChanges = (project): CIBuildChange[] => {
                 username.split(',').map(username => ({
                     name: username.trim(),
                 })),
-            ) || [];
+            ) ?? [];
     return breakers;
 };
 
@@ -118,7 +118,7 @@ function parsePipeline(project: any): CIPipeline {
     return {
         id: project.$.name,
         name: project.$.name,
-        group: project.$.category || null,
+        group: project.$.category ?? null,
         isDisabled: false,
     };
 }

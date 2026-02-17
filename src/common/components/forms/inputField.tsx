@@ -7,7 +7,7 @@ export const FormInputField = ({
     iconSvg,
     onChange,
     placeholder,
-    type = 'text',
+    type,
 }: {
     disabled?: boolean;
     text: string;

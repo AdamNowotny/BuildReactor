@@ -61,7 +61,7 @@ const parsePipeline = (job: any): CIPipeline[] => {
         default:
             return [
                 {
-                    id: job.fullName || job.name,
+                    id: job.fullName ?? job.name,
                     name: job.name,
                     isDisabled: !job.buildable,
                 },
@@ -133,8 +133,8 @@ export default {
 
 const parseJobDetails = (id: string, job: any): CIBuild => {
     const [folder, project, branch] = id.split('/');
-    const lastBuild = job.lastBuild || {};
-    const lastCompletedBuild = job.lastCompletedBuild || {};
+    const lastBuild = job.lastBuild ?? {};
+    const lastCompletedBuild = job.lastCompletedBuild ?? {};
     let name = branch ? `${project} (${branch})` : project;
     let group: string | undefined = folder;
     if (!project) {
@@ -186,7 +186,7 @@ const createTags = lastCompletedBuild => {
 const createChanges = lastBuild => {
     const changeSets = lastBuild.changeSet
         ? [lastBuild.changeSet]
-        : lastBuild.changeSets || [];
+        : lastBuild.changeSets ?? [];
     return []
         .concat(...changeSets.map(changeSet => changeSet.items))
         .map((change: any) => ({

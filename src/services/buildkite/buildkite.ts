@@ -34,7 +34,7 @@ const requestLatestBuild = async (org, pipeline, settings) => {
         query: {
             access_token: settings.token,
             per_page: 1,
-            branch: settings.branch || 'main',
+            branch: settings.branch ?? 'main',
         },
     });
     const [build] = response.body;
@@ -47,7 +47,7 @@ const requestLatestFinishedBuild = async (org, pipeline, settings) => {
         query: {
             access_token: settings.token,
             per_page: 1,
-            branch: settings.branch || 'main',
+            branch: settings.branch ?? 'main',
             'state[]': ['failed', 'passed'],
         },
     });
@@ -142,7 +142,7 @@ const createKey = stringId => {
 const parseBuild = (latestBuild, key, finishedBuild): CIBuild => {
     const org = key.org;
     const pipeline = key.pipeline;
-    const primaryBuild = finishedBuild || latestBuild;
+    const primaryBuild = finishedBuild ?? latestBuild;
     return {
         changes: latestBuild.creator
             ? [

@@ -26,7 +26,7 @@ export default ({ json, saveHandler }: { json: any; saveHandler: (any) => void }
             setErrorText('');
             return json;
         } catch (error: any) {
-            setErrorText(error.message || 'Invalid JSON');
+            setErrorText(error.message ?? 'Invalid JSON');
             setIsValid(false);
             return null;
         }

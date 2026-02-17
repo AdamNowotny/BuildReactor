@@ -107,5 +107,5 @@ const parseBuild = (id: string, build: any): CIBuild => ({
         build.changes?.change?.map(change => ({
             name: change.username,
             message: change.comment?.split('\n')[0],
-        })) || [],
+        })) ?? [],
 });

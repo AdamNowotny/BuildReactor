@@ -46,7 +46,7 @@ export default () => {
             setJsonEditorReset(jsonEditorReset + 1);
             setImportError(null);
         } catch (error: any) {
-            setImportError(error?.message || 'Unknown error');
+            setImportError(error?.message ?? 'Unknown error');
         }
     };
 

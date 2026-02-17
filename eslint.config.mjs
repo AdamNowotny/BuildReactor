@@ -3,6 +3,7 @@ import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import reactPlugin from 'eslint-plugin-react';
 
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export default tseslint.config(
     {
         files: ['**/*.{js,jsx,mjs,cjs,ts,tsx}'],
