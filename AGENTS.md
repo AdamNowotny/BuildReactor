@@ -88,6 +88,8 @@ npx vitest src/services/jenkins/jenkins.test.ts
 - Use `vi.mock()` for mocking dependencies
 - Use `beforeEach` for test setup
 - Mock external services, not internal logic
+- **Unit tests only**: Test business logic, not React components
+- **Don't extract logic just for testing** - only test what can be easily tested without modifying the component structure
 
 ### ESLint Rules to Note
 - `no-console: error` - Use logger instead
