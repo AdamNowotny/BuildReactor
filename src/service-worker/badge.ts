@@ -32,7 +32,6 @@ const init = () => {
 };
 
 function setBadge(text: string, color: string) {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const chromeAction = chrome.browserAction ?? chrome.action;
     void chromeAction.setBadgeText({ text });
     void chromeAction.setBadgeBackgroundColor({ color });
