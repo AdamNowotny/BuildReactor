@@ -16,6 +16,7 @@ export default ({
     };
     const handleNameChange = (name: string) => {
         if (!serviceTypeId) throw new Error('Service type undefined');
+        if (!name.trim()) return;
         if (onChange) {
             onChange(serviceTypeId, name);
         } else {

@@ -48,7 +48,7 @@ export default ({
                                 <Button
                                     variant="primary"
                                     onClick={handleClick}
-                                    disabled={!active}
+                                    disabled={!active || !value.trim()}
                                 >
                                     Add
                                 </Button>
