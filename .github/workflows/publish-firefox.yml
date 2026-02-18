@@ -1,0 +1,74 @@
+name: Publish to Firefox Add-ons
+
+on:
+    workflow_dispatch:
+        inputs:
+            release_tag:
+                description: 'Release tag to publish (e.g., v5.0.0). Leave empty to use latest release.'
+                required: false
+                type: string
+
+jobs:
+    publish-firefox:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get release info
+              id: get-release
+              run: |
+                  if [ -n "${{ github.event.inputs.release_tag }}" ]; then
+                    RELEASE_URL="https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ github.event.inputs.release_tag }}"
+                  else
+                    RELEASE_URL="https://api.github.com/repos/${{ github.repository }}/releases/latest"
+                  fi
+                  
+                  RELEASE_DATA=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$RELEASE_URL")
+                  echo "tag=$(echo "$RELEASE_DATA" | jq -r .tag_name)" >> $GITHUB_OUTPUT
+                  echo "upload_url=$(echo "$RELEASE_DATA" | jq -r .upload_url)" >> $GITHUB_OUTPUT
+                  echo "RELEASE_DATA<<EOF" >> $GITHUB_OUTPUT
+                  echo "$RELEASE_DATA" >> $GITHUB_OUTPUT
+                  echo "EOF" >> $GITHUB_OUTPUT
+
+            - name: Download Firefox extension asset
+              run: |
+                  VERSION=$(echo '${{ steps.get-release.outputs.RELEASE_DATA }}' | jq -r .tag_name | sed 's/^v//')
+                  ASSET_NAME="build-reactor-firefox-v${VERSION}.zip"
+                  
+                  echo "Looking for asset: $ASSET_NAME"
+                  
+                  DOWNLOAD_URL=$(echo '${{ steps.get-release.outputs.RELEASE_DATA }}' | jq -r ".assets[] | select(.name == \"$ASSET_NAME\") | .url")
+                  
+                  if [ -z "$DOWNLOAD_URL" ] || [ "$DOWNLOAD_URL" = "null" ]; then
+                    echo "Asset $ASSET_NAME not found. Available assets:"
+                    echo '${{ steps.get-release.outputs.RELEASE_DATA }}' | jq -r '.assets[].name'
+                    exit 1
+                  fi
+                  
+                  curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                       -H "Accept: application/octet-stream" \
+                       "$DOWNLOAD_URL" -o build-reactor-firefox.zip
+                  
+                  echo "Downloaded Firefox extension package"
+                  ls -la build-reactor-firefox.zip
+
+            - name: Publish to Firefox Add-ons
+              uses: wdzeng/firefox-addon@v1
+              with:
+                  addon-guid: ${{ secrets.FIREFOX_EXTENSION_GUID }}
+                  xpi-path: build-reactor-firefox.zip
+                  jwt-issuer: ${{ secrets.FIREFOX_JWT_ISSUER }}
+                  jwt-secret: ${{ secrets.FIREFOX_JWT_SECRET }}
+                  approval-note: |
+                      BuildReactor v${{ steps.get-release.outputs.tag }}
+                      
+                      Automated release via GitHub Actions.
+                      
+                      This extension provides developer notifications and dashboard for CI servers.
+                      Source code: https://github.com/${{ github.repository }}
+
+            - name: Log success
+              run: |
+                  echo "✅ Firefox extension submitted successfully!"
+                  echo "Version: ${{ steps.get-release.outputs.tag }}"
+                  echo "Status: Submitted for review"
+                  echo ""
+                  echo "Visit https://addons.mozilla.org/en-US/developers/addon/buildreactor-extension/versions to review status."
