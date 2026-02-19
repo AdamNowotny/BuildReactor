@@ -18,6 +18,7 @@ const availableProjects = async (sendResponse, settings: CIServiceSettings) => {
         sendResponse({ pipelines });
     } catch (ex: any) {
         sendResponse({
+            pipelines: { items: [], selected: [] },
             error: {
                 name: ex.name,
                 message: ex.message,
