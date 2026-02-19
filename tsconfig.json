@@ -16,6 +16,6 @@
         "strict": true,
         "strictNullChecks": true,
         "target": "ESNext",
-        "types": ["unplugin-icons/types/react"]
+        "types": ["unplugin-icons/types/react", "chrome"]
     }
 }

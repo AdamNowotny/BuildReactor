@@ -32,9 +32,8 @@ const init = () => {
 };
 
 function setBadge(text: string, color: string) {
-    const chromeAction = chrome.browserAction ?? chrome.action;
-    void chromeAction.setBadgeText({ text });
-    void chromeAction.setBadgeBackgroundColor({ color });
+    void chrome.action.setBadgeText({ text });
+    void chrome.action.setBadgeBackgroundColor({ color });
 }
 
 export default {

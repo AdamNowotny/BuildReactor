@@ -33,7 +33,7 @@ const init = () => {
 
 const show = async (info: NotificationInfo) => {
     if (!(await viewConfig.get()).notifications?.enabled) return;
-    chrome.notifications.create(info.id, {
+    await chrome.notifications.create(info.id, {
         type: 'basic',
         iconUrl: await getIcon(info),
         title: info.title,
