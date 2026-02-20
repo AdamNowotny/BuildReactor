@@ -14,12 +14,12 @@ export interface ViewConfig {
     showCommitsWhenGreen?: boolean;
     theme?: string;
     notifications?: {
-        enabled: boolean;
-        buildBroken: boolean;
-        buildFixed: boolean;
-        buildStarted: boolean;
-        buildSuccessful: boolean;
-        buildStillFailing: boolean;
+        enabled?: boolean;
+        buildBroken?: boolean;
+        buildFixed?: boolean;
+        buildStarted?: boolean;
+        buildSuccessful?: boolean;
+        buildStillFailing?: boolean;
     };
 }
 
