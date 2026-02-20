@@ -1,4 +1,5 @@
 import { FormButtonField } from 'common/components/forms';
+import IconSave from '~icons/fa/save';
 import React, { useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import './jsonEditor.css';
@@ -49,7 +50,7 @@ export default ({ json, saveHandler }: { json: any; saveHandler: (any) => void }
                                 disabled={!(isValid && jsonText)}
                                 style="danger"
                                 text="Save"
-                                icon="save"
+                                iconSvg={<IconSave />}
                                 onClick={handleSave}
                             />
                         </Col>

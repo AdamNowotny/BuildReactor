@@ -18,7 +18,7 @@ beforeEach(() => {
     testConfigs = {
         columns: 2,
         fullWidthGroups: true,
-        singleGroupRows: false,
+
         showCommits: true,
         showCommitsWhenGreen: false,
         theme: 'dark',
