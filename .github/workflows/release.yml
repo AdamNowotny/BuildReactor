@@ -1,13 +1,15 @@
 name: Build and Release
 
 on:
-    release:
-        types: [created]
-    workflow_dispatch:
+    push:
+        tags:
+            - 'v*'
 
 jobs:
     release:
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
         steps:
             - uses: actions/checkout@v4
 
@@ -42,22 +44,8 @@ jobs:
               run: |
                   mv dist/build-reactor-firefox.zip "dist/build-reactor-firefox-v${{ steps.package-version.outputs.version }}.zip"
 
-            - name: Upload Chrome extension to release
-              uses: actions/upload-release-asset@v1
+            - name: Upload to release
+              run: |
+                  gh release upload "${{ github.ref_name }}" "dist/build-reactor-chrome-v${{ steps.package-version.outputs.version }}.zip" "dist/build-reactor-firefox-v${{ steps.package-version.outputs.version }}.zip"
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              with:
-                  upload_url: ${{ github.event.release.upload_url }}
-                  asset_path: "dist/build-reactor-chrome-v${{ steps.package-version.outputs.version }}.zip"
-                  asset_name: "build-reactor-chrome-v${{ steps.package-version.outputs.version }}.zip"
-                  asset_content_type: application/zip
-
-            - name: Upload Firefox extension to release
-              uses: actions/upload-release-asset@v1
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              with:
-                  upload_url: ${{ github.event.release.upload_url }}
-                  asset_path: "dist/build-reactor-firefox-v${{ steps.package-version.outputs.version }}.zip"
-                  asset_name: "build-reactor-firefox-v${{ steps.package-version.outputs.version }}.zip"
-                  asset_content_type: application/zip
