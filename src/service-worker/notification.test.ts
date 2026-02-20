@@ -190,4 +190,27 @@ describe('showBuild', () => {
             }),
         );
     });
+
+    it('shows only first line of change message', async () => {
+        await notification.showBuild(
+            'serviceName',
+            {
+                group: 'group',
+                name: 'name',
+                id: 'id',
+                changes: [
+                    { name: 'name1', message: 'first line\nsecond line\nthird line' },
+                    { name: 'name2', message: 'single line' },
+                ],
+            },
+            'text',
+        );
+
+        expect(mockChrome.notifications.create).toBeCalledWith(
+            `serviceName_group_id`,
+            expect.objectContaining({
+                message: 'group / name\nname1: first line\nname2: single line',
+            }),
+        );
+    });
 });

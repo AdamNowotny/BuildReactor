@@ -77,7 +77,8 @@ const createMessage = (build: CIBuild) => {
     const changes = uniqueChanges.map((change, index) => {
         if (index === MAX_VISIBLE_INDEX) return '...';
         if (index > MAX_VISIBLE_INDEX) return '';
-        return change.message ? `${change.name}: ${change.message}` : change.name;
+        const firstLine = change.message?.split('\n')[0];
+        return firstLine ? `${change.name}: ${firstLine}` : change.name;
     });
     const changesMessage = changes.length ? '\n' + changes.join('\n') : '';
     return `${buildName}${changesMessage}`;
