@@ -57,7 +57,7 @@ jobs:
                   xpi-path: build-reactor-firefox.zip
                   jwt-issuer: ${{ secrets.FIREFOX_JWT_ISSUER }}
                   jwt-secret: ${{ secrets.FIREFOX_JWT_SECRET }}
-                  approval-note: |
+                  approval-notes: |
                       BuildReactor v${{ steps.get-release.outputs.tag }}
                       
                       Automated release via GitHub Actions.
