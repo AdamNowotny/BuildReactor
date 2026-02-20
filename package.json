@@ -31,6 +31,7 @@
         "dist": "npx vite build",
         "dist:firefox": "MANIFEST_TARGET=firefox npx vite build",
         "lint": "node_modules/.bin/eslint .",
+        "typecheck": "npx tsc --noEmit",
         "test": "vitest --run",
         "test:watch": "vitest"
     },

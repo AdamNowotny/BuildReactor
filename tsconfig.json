@@ -1,5 +1,5 @@
 {
-    "include": ["src/**/*", "test/**/*", "eslint.config.mjs", "vite.config.mts"],
+    "include": ["src/**/*", "test/**/*", "eslint.config.mjs"],
     "exclude": ["node_modules", "**/*.spec.ts"],
     "compilerOptions": {
         "allowJs": true,
@@ -12,10 +12,11 @@
         "noImplicitAny": false,
         "outDir": "./dist",
         "resolveJsonModule": true,
+        "skipLibCheck": true,
         "sourceMap": true,
         "strict": true,
         "strictNullChecks": true,
         "target": "ESNext",
-        "types": ["unplugin-icons/types/react", "chrome"]
+        "types": ["unplugin-icons/types/react", "chrome", "vite/client"]
     }
 }

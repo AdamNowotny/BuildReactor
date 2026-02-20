@@ -15,6 +15,7 @@ export default tseslint.config(
             'dist/**',
             '**/*.spec.js',
             '**/webpack.config.js',
+            'vite.config.mts',
         ],
     },
     {
