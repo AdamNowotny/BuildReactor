@@ -45,7 +45,8 @@ const manifest = defineManifest({
             ? {
                   gecko: {
                       id: '{9ad89e27-158a-48db-b71e-c92069989ee6}',
-                      strict_min_version: '109.0',
+                      strict_min_version: '112.0',
+                      data_collection_permissions: [],
                   },
               }
             : undefined,
