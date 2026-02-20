@@ -51,7 +51,7 @@ jobs:
                   ls -la build-reactor-chrome.zip
 
             - name: Upload to Chrome Web Store
-              uses: mnao305/chrome-extension-upload@5.0.0
+              uses: mnao305/chrome-extension-upload@latest
               with:
                   file-path: build-reactor-chrome.zip
                   extension-id: ${{ secrets.CHROME_EXTENSION_ID }}

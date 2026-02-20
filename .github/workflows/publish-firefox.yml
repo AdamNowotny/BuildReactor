@@ -51,7 +51,7 @@ jobs:
                   ls -la build-reactor-firefox.zip
 
             - name: Publish to Firefox Add-ons
-              uses: wdzeng/firefox-addon@v1
+              uses: wdzeng/firefox-addon@latest
               with:
                   addon-guid: ${{ secrets.FIREFOX_EXTENSION_GUID }}
                   xpi-path: build-reactor-firefox.zip
