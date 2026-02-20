@@ -83,6 +83,25 @@ Go to project directory and run:
 
 `npm run dev:mock` - runs webserver at `http://localhost:5137/` for testing with mocked responses from service worker. useful to run browser inside VS for quick feedback.
 
+## Debugging
+
+All processing in BuildReactor happens in the background script (service worker). The dashboard, popup, and options pages are just UI shells that communicate with the background script. This means web console logs from the pages won't show useful debugging information - you need to inspect the background script directly.
+
+### Firefox
+1. Open `about:addons`
+2. Click the gear icon next to "Manage Your Extensions"
+3. Select "Debug Add-ons"
+4. Find BuildReactor and click "Inspect" to open the debugger
+5. Check the **Console** tab for logs from the background script
+6. Check the **Network** tab to see API requests/responses
+
+### Chrome
+1. Open `chrome://extensions`
+2. Enable "Developer mode" (top right)
+3. Find BuildReactor and click "Service worker" link
+4. Check the **Console** tab for logs
+5. Check the **Network** tab to see API requests/responses
+
 ## Contribute
 
 [Adding new service](docs/new-service.markdown)
