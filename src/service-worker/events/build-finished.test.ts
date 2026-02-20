@@ -21,7 +21,7 @@ beforeEach(() => {
         },
     };
     buildFinished.init();
-    viewConfig.onChanged.onNext({ oldValue: {}, newValue: testConfig });
+    viewConfig.onChanged.next({ oldValue: {}, newValue: testConfig });
 });
 
 it('should not show notification if old state empty', () => {
@@ -104,7 +104,7 @@ describe('build broken', () => {
 
     it('should not show notification if notifications disabled', () => {
         testConfig.notifications.buildBroken = false;
-        viewConfig.onChanged.onNext({ oldValue: {}, newValue: testConfig });
+        viewConfig.onChanged.next({ oldValue: {}, newValue: testConfig });
 
         stateChangeHandler(stateChange);
 
@@ -151,7 +151,7 @@ describe('build fixed', () => {
 
     it('should not show notification if notifications disabled', () => {
         testConfig.notifications.buildFixed = false;
-        viewConfig.onChanged.onNext({ oldValue: {}, newValue: testConfig });
+        viewConfig.onChanged.next({ oldValue: {}, newValue: testConfig });
 
         stateChangeHandler(stateChange);
 
@@ -188,7 +188,7 @@ describe('build successful', () => {
 
     it('should not show notification if notifications disabled', () => {
         testConfig.notifications.buildSuccessful = false;
-        viewConfig.onChanged.onNext({ oldValue: {}, newValue: testConfig });
+        viewConfig.onChanged.next({ oldValue: {}, newValue: testConfig });
 
         stateChangeHandler(stateChange);
 
@@ -237,7 +237,7 @@ describe('build still broken', () => {
 
     it('should not show notification if notifications disabled', () => {
         testConfig.notifications.buildStillFailing = false;
-        viewConfig.onChanged.onNext({ oldValue: {}, newValue: testConfig });
+        viewConfig.onChanged.next({ oldValue: {}, newValue: testConfig });
 
         stateChangeHandler(stateChange);
 
@@ -287,7 +287,7 @@ describe('build unstable', () => {
 
     it('should not show notification if notifications disabled', () => {
         testConfig.notifications.buildBroken = false;
-        viewConfig.onChanged.onNext({ oldValue: {}, newValue: testConfig });
+        viewConfig.onChanged.next({ oldValue: {}, newValue: testConfig });
 
         stateChangeHandler(stateChange);
 

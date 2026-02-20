@@ -78,7 +78,7 @@ const connectState = port => {
     });
     port.onDisconnect.addListener(() => {
         logger.log('messaging.connect.state.onDisconnect');
-        stateSubscription.dispose();
+        stateSubscription.unsubscribe();
     });
 };
 
@@ -89,7 +89,7 @@ const connectViewConfig = port => {
     });
     port.onDisconnect.addListener(() => {
         logger.log('messaging.connect.view-config.onDisconnect');
-        configSubsription.dispose();
+        configSubsription.unsubscribe();
     });
 };
 
@@ -100,7 +100,7 @@ const connectServiceConfig = port => {
     });
     port.onDisconnect.addListener(() => {
         logger.log('messaging.connect.serviceConfig.onDisconnect');
-        configSubsription.dispose();
+        configSubsription.unsubscribe();
     });
 };
 

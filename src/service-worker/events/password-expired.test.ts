@@ -9,7 +9,7 @@ vi.mock('service-worker/notification');
 vi.mock('service-worker/storage/service-config');
 
 it('should not show notification if no error', () => {
-    serviceState.onChanged.onNext({
+    serviceState.onChanged.next({
         oldValue: [],
         newValue: [
             { name: 'test1', items: [] },
@@ -26,7 +26,7 @@ it('should not show notification if no error', () => {
 });
 
 it('shows notification if 401 error found', () => {
-    serviceState.onChanged.onNext({
+    serviceState.onChanged.next({
         oldValue: [],
         newValue: [
             { name: 'test1', items: [] },
@@ -56,7 +56,7 @@ it('shows notification if 401 error found', () => {
 });
 
 it('disables service on authentication error', () => {
-    serviceState.onChanged.onNext({
+    serviceState.onChanged.next({
         oldValue: [],
         newValue: [
             {

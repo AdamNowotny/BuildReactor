@@ -1,5 +1,5 @@
 import logger from 'common/logger';
-import Rx from 'rx';
+import { ReplaySubject } from 'rxjs';
 
 export interface StorageChangeEvent<T> {
     oldValue: T;
@@ -9,7 +9,7 @@ export interface StorageChangeEvent<T> {
 const BUFFER_SIZE = 1;
 
 export class Storage<T> {
-    public onChanged = new Rx.ReplaySubject<StorageChangeEvent<T>>(BUFFER_SIZE);
+    public onChanged = new ReplaySubject<StorageChangeEvent<T>>(BUFFER_SIZE);
 
     public constructor(
         private readonly options: {
@@ -23,14 +23,13 @@ export class Storage<T> {
         chrome.storage.onChanged.addListener((changes, namespace) => {
             for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
                 if (key === this.options.key) {
-                    // prettier-ignore
                     logger.info(`${this.options.key}-storage.onChanged`, changes, namespace);
-                    this.onChanged.onNext({ oldValue, newValue });
+                    this.onChanged.next({ oldValue: oldValue as T, newValue: newValue as T });
                 }
             }
         });
         const result = await this.get();
-        this.onChanged.onNext({ oldValue: result, newValue: result });
+        this.onChanged.next({ oldValue: result, newValue: result });
         return result;
     };
 
@@ -44,7 +43,7 @@ export class Storage<T> {
             chrome.storage.local.get(this.options.key, value => {
                 const item = value[this.options.key];
                 if (item) {
-                    resolve(item);
+                    resolve(item as T);
                 } else {
                     resolve(this.options.defaultValue as T);
                 }
