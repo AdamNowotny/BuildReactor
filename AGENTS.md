@@ -20,6 +20,7 @@ npm run dist:firefox     # Build for Firefox
 
 # Quality
 npm run lint             # Run ESLint
+npm run typecheck        # Run TypeScript type checking
 npm run test             # Run all tests once
 npm run test:watch       # Run tests in watch mode
 ```
@@ -109,7 +110,7 @@ src/
 ## Key Dependencies
 
 - React 19, React Bootstrap
-- RxJS 4 (legacy, use carefully)
+- RxJS 7.8.2 (modern, stable)
 - Vite with CRXJS plugin for extension builds
 - Vitest for testing
 - TypeScript with strict mode
