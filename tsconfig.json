@@ -1,16 +1,22 @@
 {
-    "include": ["src/**/*", "test/**/*", "eslint.config.mjs"],
+    "include": ["src/**/*", "eslint.config.mjs"],
     "exclude": ["node_modules", "**/*.spec.ts"],
     "compilerOptions": {
         "allowJs": true,
-        "baseUrl": "./src",
         "esModuleInterop": true,
         "jsx": "react",
         "lib": ["ESNext", "DOM"],
         "module": "ESNext",
-        "moduleResolution": "Node",
+        "moduleResolution": "bundler",
         "noImplicitAny": false,
         "outDir": "./dist",
+        "paths": {
+            "common/*": ["./src/common/*"],
+            "dashboard/*": ["./src/dashboard/*"],
+            "options/*": ["./src/options/*"],
+            "service-worker/*": ["./src/service-worker/*"],
+            "services/*": ["./src/services/*"]
+        },
         "resolveJsonModule": true,
         "skipLibCheck": true,
         "sourceMap": true,

@@ -23,7 +23,7 @@ it('should not show notification if old state empty', async () => {
         ],
     });
 
-    expect(notification.showBuild).not.toBeCalled();
+    expect(notification.showBuild).not.toHaveBeenCalled();
 });
 
 it('should not show notification if notifications disabled', async () => {
@@ -43,7 +43,7 @@ it('should not show notification if notifications disabled', async () => {
         ],
     });
 
-    expect(notification.showBuild).not.toBeCalled();
+    expect(notification.showBuild).not.toHaveBeenCalled();
 });
 
 it('should show notification if build started', async () => {
@@ -64,8 +64,8 @@ it('should show notification if build started', async () => {
         ],
     });
 
-    expect(notification.showBuild).toBeCalled();
-    expect(notification.showBuild).toBeCalledWith(
+    expect(notification.showBuild).toHaveBeenCalled();
+    expect(notification.showBuild).toHaveBeenCalledWith(
         'test1',
         {
             id: 'build1',

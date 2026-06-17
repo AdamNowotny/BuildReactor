@@ -22,7 +22,7 @@ it('should not show notification if no error', () => {
 
     passwordExpired.init();
 
-    expect(notification.show).not.toBeCalled();
+    expect(notification.show).not.toHaveBeenCalled();
 });
 
 it('shows notification if 401 error found', () => {
@@ -45,7 +45,7 @@ it('shows notification if 401 error found', () => {
 
     passwordExpired.init();
 
-    expect(notification.show).toBeCalledWith({
+    expect(notification.show).toHaveBeenCalledWith({
         serviceName: 'test2',
         id: 'test2_disabled',
         title: 'test2',
@@ -74,5 +74,5 @@ it('disables service on authentication error', () => {
 
     passwordExpired.init();
 
-    expect(serviceConfig.disableService).toBeCalledWith('test name');
+    expect(serviceConfig.disableService).toHaveBeenCalledWith('test name');
 });

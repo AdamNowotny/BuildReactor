@@ -18,7 +18,7 @@ beforeAll(() => {
 it('hides badge when state empty', () => {
     stateStorage.onChanged.next({ oldValue: [], newValue: [] });
 
-    expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: '' });
+    expect(mockChrome.action.setBadgeText).toHaveBeenCalledWith({ text: '' });
     expect(mockChrome.action.setBadgeBackgroundColor).toHaveBeenCalledWith({
         color: 'green',
     });
@@ -30,7 +30,7 @@ it('hides badge when builds green', () => {
         newValue: [{ failedCount: 0, runningCount: 0, offlineCount: 0, name: 'service' }],
     });
 
-    expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: '' });
+    expect(mockChrome.action.setBadgeText).toHaveBeenCalledWith({ text: '' });
     expect(mockChrome.action.setBadgeBackgroundColor).toHaveBeenCalledWith({
         color: 'green',
     });
@@ -42,7 +42,7 @@ it('orange badge when builds running', () => {
         newValue: [{ failedCount: 0, runningCount: 2, offlineCount: 0, name: 'service' }],
     });
 
-    expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: ' ' });
+    expect(mockChrome.action.setBadgeText).toHaveBeenCalledWith({ text: ' ' });
     expect(mockChrome.action.setBadgeBackgroundColor).toHaveBeenCalledWith({
         color: 'orange',
     });
@@ -54,7 +54,7 @@ it('orange badge when builds running and failed', () => {
         newValue: [{ failedCount: 1, runningCount: 2, offlineCount: 0, name: 'service' }],
     });
 
-    expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: '1' });
+    expect(mockChrome.action.setBadgeText).toHaveBeenCalledWith({ text: '1' });
     expect(mockChrome.action.setBadgeBackgroundColor).toHaveBeenCalledWith({
         color: 'orange',
     });
@@ -66,7 +66,7 @@ it('grey badge when builds offline', () => {
         newValue: [{ failedCount: 0, runningCount: 0, offlineCount: 2, name: 'service' }],
     });
 
-    expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: ' ' });
+    expect(mockChrome.action.setBadgeText).toHaveBeenCalledWith({ text: ' ' });
     expect(mockChrome.action.setBadgeBackgroundColor).toHaveBeenCalledWith({
         color: 'gray',
     });
@@ -78,7 +78,7 @@ it('grey badge when builds offline and failed', () => {
         newValue: [{ failedCount: 1, runningCount: 0, offlineCount: 2, name: 'service' }],
     });
 
-    expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: '1' });
+    expect(mockChrome.action.setBadgeText).toHaveBeenCalledWith({ text: '1' });
     expect(mockChrome.action.setBadgeBackgroundColor).toHaveBeenCalledWith({
         color: 'gray',
     });
@@ -90,7 +90,7 @@ it('red badge when builds failed', () => {
         newValue: [{ failedCount: 1, runningCount: 0, offlineCount: 0, name: 'service' }],
     });
 
-    expect(mockChrome.action.setBadgeText).toBeCalledWith({ text: '1' });
+    expect(mockChrome.action.setBadgeText).toHaveBeenCalledWith({ text: '1' });
     expect(mockChrome.action.setBadgeBackgroundColor).toHaveBeenCalledWith({
         color: 'red',
     });

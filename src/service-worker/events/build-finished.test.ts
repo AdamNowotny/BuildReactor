@@ -35,7 +35,7 @@ it('should not show notification if old state empty', () => {
         ],
     });
 
-    expect(notification.showBuild).not.toBeCalled();
+    expect(notification.showBuild).not.toHaveBeenCalled();
 });
 
 it('should not show notification if still running', () => {
@@ -56,7 +56,7 @@ it('should not show notification if still running', () => {
         ],
     });
 
-    expect(notification.showBuild).not.toBeCalled();
+    expect(notification.showBuild).not.toHaveBeenCalled();
 });
 
 describe('build broken', () => {
@@ -94,8 +94,8 @@ describe('build broken', () => {
     it('should show notification', () => {
         stateChangeHandler(stateChange);
 
-        expect(notification.showBuild).toBeCalled();
-        expect(notification.showBuild).toBeCalledWith(
+        expect(notification.showBuild).toHaveBeenCalled();
+        expect(notification.showBuild).toHaveBeenCalledWith(
             'test1',
             expect.objectContaining({ id: 'build1' }),
             'Build broken',
@@ -108,7 +108,7 @@ describe('build broken', () => {
 
         stateChangeHandler(stateChange);
 
-        expect(notification.showBuild).not.toBeCalled();
+        expect(notification.showBuild).not.toHaveBeenCalled();
     });
 });
 
@@ -141,8 +141,8 @@ describe('build fixed', () => {
     it('should show notification', () => {
         stateChangeHandler(stateChange);
 
-        expect(notification.showBuild).toBeCalled();
-        expect(notification.showBuild).toBeCalledWith(
+        expect(notification.showBuild).toHaveBeenCalled();
+        expect(notification.showBuild).toHaveBeenCalledWith(
             'test1',
             expect.objectContaining({ id: 'build1' }),
             'Build fixed',
@@ -155,7 +155,7 @@ describe('build fixed', () => {
 
         stateChangeHandler(stateChange);
 
-        expect(notification.showBuild).not.toBeCalled();
+        expect(notification.showBuild).not.toHaveBeenCalled();
     });
 });
 
@@ -178,8 +178,8 @@ describe('build successful', () => {
     it('should show notification', () => {
         stateChangeHandler(stateChange);
 
-        expect(notification.showBuild).toBeCalled();
-        expect(notification.showBuild).toBeCalledWith(
+        expect(notification.showBuild).toHaveBeenCalled();
+        expect(notification.showBuild).toHaveBeenCalledWith(
             'test1',
             expect.objectContaining({ id: 'build1' }),
             'Build finished',
@@ -192,7 +192,7 @@ describe('build successful', () => {
 
         stateChangeHandler(stateChange);
 
-        expect(notification.showBuild).not.toBeCalled();
+        expect(notification.showBuild).not.toHaveBeenCalled();
     });
 });
 
@@ -225,8 +225,8 @@ describe('build still broken', () => {
     it('should show notification', () => {
         stateChangeHandler(stateChange);
 
-        expect(notification.showBuild).toBeCalled();
-        expect(notification.showBuild).toBeCalledWith(
+        expect(notification.showBuild).toHaveBeenCalled();
+        expect(notification.showBuild).toHaveBeenCalledWith(
             'test1',
             expect.objectContaining({
                 id: 'build1',
@@ -241,7 +241,7 @@ describe('build still broken', () => {
 
         stateChangeHandler(stateChange);
 
-        expect(notification.showBuild).not.toBeCalled();
+        expect(notification.showBuild).not.toHaveBeenCalled();
     });
 });
 
@@ -275,8 +275,8 @@ describe('build unstable', () => {
     it('should show notification', () => {
         stateChangeHandler(stateChange);
 
-        expect(notification.showBuild).toBeCalled();
-        expect(notification.showBuild).toBeCalledWith(
+        expect(notification.showBuild).toHaveBeenCalled();
+        expect(notification.showBuild).toHaveBeenCalledWith(
             'test1',
             expect.objectContaining({
                 id: 'build1',
@@ -291,6 +291,6 @@ describe('build unstable', () => {
 
         stateChangeHandler(stateChange);
 
-        expect(notification.showBuild).not.toBeCalled();
+        expect(notification.showBuild).not.toHaveBeenCalled();
     });
 });

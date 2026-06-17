@@ -27,7 +27,7 @@ beforeEach(() => {
 it('saves state to storage', async () => {
     await storageInstance.set({ value: 5 });
 
-    expect(mockChrome.storage.local.set).toBeCalledWith({ key: { value: 5 } });
+    expect(mockChrome.storage.local.set).toHaveBeenCalledWith({ key: { value: 5 } });
 });
 
 it('reads state on init', () => {
@@ -35,7 +35,7 @@ it('reads state on init', () => {
 
     void storageInstance.init();
 
-    expect(mockChrome.storage.local.get).toBeCalled();
+    expect(mockChrome.storage.local.get).toHaveBeenCalled();
 });
 
 it('gets item once initialized', async () => {
@@ -47,7 +47,7 @@ it('gets item once initialized', async () => {
     const config = await storageInstance.get();
 
     expect(config).toMatchObject({ columns: 10 });
-    expect(mockChrome.storage.local.get).toBeCalled();
+    expect(mockChrome.storage.local.get).toHaveBeenCalled();
 });
 
 it('gets default config if storage undefined', async () => {
@@ -63,7 +63,7 @@ it('gets default config if storage undefined', async () => {
     const config = await storageInstance.get();
 
     expect(config).toMatchObject({ value: 'default' });
-    expect(mockChrome.storage.local.get).toBeCalled();
+    expect(mockChrome.storage.local.get).toHaveBeenCalled();
 });
 
 it('gets default config for empty array', async () => {
@@ -79,7 +79,7 @@ it('gets default config for empty array', async () => {
     const config = await storageInstance.get();
 
     expect(config).toMatchObject([]);
-    expect(mockChrome.storage.local.get).toBeCalled();
+    expect(mockChrome.storage.local.get).toHaveBeenCalled();
 });
 
 it('publishes onChanged event', () => {

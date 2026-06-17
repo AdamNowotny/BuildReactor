@@ -39,7 +39,7 @@ describe('set', () => {
     it('saves state to storage', async () => {
         await stateStorage.set(testState);
 
-        expect(Storage.prototype.set).toBeCalledWith(testState);
+        expect(Storage.prototype.set).toHaveBeenCalledWith(testState);
     });
 });
 
@@ -47,14 +47,14 @@ describe('init', () => {
     it('initilizes storage on init', () => {
         void stateStorage.init();
 
-        expect(Storage.prototype.init).toBeCalled();
+        expect(Storage.prototype.init).toHaveBeenCalled();
     });
 });
 
 it('cleans up state on configuration change', async () => {
     await stateStorage.reset(['service 2']);
 
-    expect(Storage.prototype.set).toBeCalledWith<ServiceStateItem[][]>([
+    expect(Storage.prototype.set).toHaveBeenCalledWith<ServiceStateItem[][]>([
         {
             name: 'service 2',
             items: testState[1].items,
@@ -72,7 +72,7 @@ describe('updateService', () => {
 
         await stateStorage.updateService('name', items);
 
-        expect(Storage.prototype.set).toBeCalledWith<ServiceStateItem[][]>([
+        expect(Storage.prototype.set).toHaveBeenCalledWith<ServiceStateItem[][]>([
             { name: 'name', items, failedCount: 0, offlineCount: 0, runningCount: 0 },
         ]);
     });
@@ -91,7 +91,7 @@ describe('updateService', () => {
 
         await stateStorage.updateService('name2', items);
 
-        expect(Storage.prototype.set).toBeCalledWith<ServiceStateItem[][]>([
+        expect(Storage.prototype.set).toHaveBeenCalledWith<ServiceStateItem[][]>([
             { name: 'name1', items, failedCount: 0, offlineCount: 0, runningCount: 0 },
             { name: 'name2', items, failedCount: 0, offlineCount: 0, runningCount: 0 },
         ]);
@@ -105,7 +105,7 @@ describe('updateService', () => {
 
         await stateStorage.updateService('name', items);
 
-        expect(Storage.prototype.set).toBeCalledWith(
+        expect(Storage.prototype.set).toHaveBeenCalledWith(
             expect.arrayContaining([expect.objectContaining({ failedCount: 1 })]),
         );
     });
@@ -118,7 +118,7 @@ describe('updateService', () => {
 
         await stateStorage.updateService('name', items);
 
-        expect(Storage.prototype.set).toBeCalledWith(
+        expect(Storage.prototype.set).toHaveBeenCalledWith(
             expect.arrayContaining([expect.objectContaining({ runningCount: 1 })]),
         );
     });
@@ -141,7 +141,7 @@ describe('updateService', () => {
 
         await stateStorage.updateService('service 1', items);
 
-        expect(Storage.prototype.set).toBeCalledWith(
+        expect(Storage.prototype.set).toHaveBeenCalledWith(
             expect.arrayContaining([expect.objectContaining({ offlineCount: 1 })]),
         );
     });
@@ -172,7 +172,7 @@ describe('updateService', () => {
 
         await stateStorage.updateService('service', items);
 
-        expect(Storage.prototype.set).toBeCalledWith([
+        expect(Storage.prototype.set).toHaveBeenCalledWith([
             expect.objectContaining({
                 items: [
                     expect.objectContaining({
@@ -198,7 +198,7 @@ describe('updateService', () => {
 
         await stateStorage.updateService('service', items);
 
-        expect(Storage.prototype.set).toBeCalledWith([
+        expect(Storage.prototype.set).toHaveBeenCalledWith([
             expect.objectContaining({
                 items: [
                     expect.objectContaining({

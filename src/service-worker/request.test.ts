@@ -65,7 +65,7 @@ it('should return response', async () => {
         headers: expect.any(Object),
         links: undefined,
     });
-    expect(global.fetch).toBeCalledWith(
+    expect(global.fetch).toHaveBeenCalledWith(
         new URL('https://sample.com/?token=token'),
         expect.anything(),
     );
@@ -110,7 +110,7 @@ it('should set timeout if specified', async () => {
         timeout: 10000,
     });
 
-    expect(global.fetch).toBeCalledWith(
+    expect(global.fetch).toHaveBeenCalledWith(
         expect.anything(),
         expect.objectContaining({
             signal: expect.any(AbortSignal),
@@ -127,8 +127,8 @@ it('should set auth if username specified', async () => {
         password: 'pass',
     });
 
-    expect(headersSet).toBeCalledWith('Authorization', expect.stringContaining('Basic '));
-    expect(global.fetch).toBeCalled();
+    expect(headersSet).toHaveBeenCalledWith('Authorization', expect.stringContaining('Basic '));
+    expect(global.fetch).toHaveBeenCalled();
 });
 
 it('should not set auth if username not specified', async () => {
@@ -140,11 +140,11 @@ it('should not set auth if username not specified', async () => {
         password: 'pass',
     });
 
-    expect(headersSet).not.toBeCalledWith(
+    expect(headersSet).not.toHaveBeenCalledWith(
         'Authorization',
         expect.stringContaining('Basic '),
     );
-    expect(global.fetch).toBeCalled();
+    expect(global.fetch).toHaveBeenCalled();
 });
 
 it('should setup json type', async () => {
@@ -155,9 +155,9 @@ it('should setup json type', async () => {
         type: 'json',
     });
 
-    expect(headersSet).toBeCalledWith('Content-Type', 'application/json');
-    expect(headersSet).toBeCalledWith('Accept', 'application/json');
-    expect(global.fetch).toBeCalled();
+    expect(headersSet).toHaveBeenCalledWith('Content-Type', 'application/json');
+    expect(headersSet).toHaveBeenCalledWith('Accept', 'application/json');
+    expect(global.fetch).toHaveBeenCalled();
 });
 
 it('should setup xml type', async () => {
@@ -168,10 +168,10 @@ it('should setup xml type', async () => {
         type: 'xml',
     });
 
-    expect(headersSet).toBeCalledWith('Content-Type', 'application/xml');
-    expect(headersSet).toBeCalledWith('Accept', 'application/xml');
+    expect(headersSet).toHaveBeenCalledWith('Content-Type', 'application/xml');
+    expect(headersSet).toHaveBeenCalledWith('Accept', 'application/xml');
     expect(result.body).toEqual({ some: { xml: ['value'] } });
-    expect(global.fetch).toBeCalled();
+    expect(global.fetch).toHaveBeenCalled();
 });
 
 describe('Link header', () => {

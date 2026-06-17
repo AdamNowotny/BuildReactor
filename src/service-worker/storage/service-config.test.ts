@@ -37,13 +37,13 @@ beforeEach(() => {
 it('saves config to storage', async () => {
     await serviceConfig.set(testConfigs);
 
-    expect(Storage.prototype.set).toBeCalledWith(testConfigs);
+    expect(Storage.prototype.set).toHaveBeenCalledWith(testConfigs);
 });
 
 it('initilizes storage on init', () => {
     void serviceConfig.init();
 
-    expect(Storage.prototype.init).toBeCalled();
+    expect(Storage.prototype.init).toHaveBeenCalled();
 });
 
 describe('enableService', () => {
@@ -58,7 +58,7 @@ describe('enableService', () => {
     it('should enable service', async () => {
         await serviceConfig.enableService(testConfigs[DISABLED_SERVICE].name);
 
-        expect(Storage.prototype.set).toBeCalledWith([
+        expect(Storage.prototype.set).toHaveBeenCalledWith([
             { ...testConfigs[0], isDisabled: false },
             { ...testConfigs[1], isDisabled: false },
         ]);
@@ -77,7 +77,7 @@ describe('disableService', () => {
     it('should disable service', async () => {
         await serviceConfig.disableService(testConfigs[ENABLED_SERVICE].name);
 
-        expect(Storage.prototype.set).toBeCalledWith([
+        expect(Storage.prototype.set).toHaveBeenCalledWith([
             { ...testConfigs[0], isDisabled: true },
             { ...testConfigs[1], isDisabled: true },
         ]);
@@ -88,7 +88,7 @@ describe('removeService', () => {
     it('should remove item', async () => {
         await serviceConfig.removeService(testConfigs[ENABLED_SERVICE].name);
 
-        expect(Storage.prototype.set).toBeCalledWith([testConfigs[DISABLED_SERVICE]]);
+        expect(Storage.prototype.set).toHaveBeenCalledWith([testConfigs[DISABLED_SERVICE]]);
     });
 });
 
@@ -96,7 +96,7 @@ describe('renameService', () => {
     it('should rename item', async () => {
         await serviceConfig.renameService(testConfigs[ENABLED_SERVICE].name, 'new name');
 
-        expect(Storage.prototype.set).toBeCalledWith([
+        expect(Storage.prototype.set).toHaveBeenCalledWith([
             { ...testConfigs[ENABLED_SERVICE], name: 'new name' },
             testConfigs[DISABLED_SERVICE],
         ]);
@@ -109,7 +109,7 @@ describe('saveService', () => {
 
         await serviceConfig.saveService(newItem);
 
-        expect(Storage.prototype.set).toBeCalledWith([
+        expect(Storage.prototype.set).toHaveBeenCalledWith([
             testConfigs[0],
             testConfigs[1],
             newItem,
@@ -121,7 +121,7 @@ describe('saveService', () => {
 
         await serviceConfig.saveService(item);
 
-        expect(Storage.prototype.set).toBeCalledWith([
+        expect(Storage.prototype.set).toHaveBeenCalledWith([
             item,
             testConfigs[DISABLED_SERVICE],
         ]);
@@ -133,13 +133,13 @@ describe('setOrder', () => {
         const result = serviceConfig.setOrder(['unknown']);
 
         await expect(result).rejects.toThrow('Service unknown not found');
-        expect(Storage.prototype.set).not.toBeCalled();
+        expect(Storage.prototype.set).not.toHaveBeenCalled();
     });
 
     it('should reorder items', async () => {
         await serviceConfig.setOrder([testConfigs[1].name, testConfigs[0].name]);
 
-        expect(Storage.prototype.set).toBeCalledWith([testConfigs[1], testConfigs[0]]);
+        expect(Storage.prototype.set).toHaveBeenCalledWith([testConfigs[1], testConfigs[0]]);
     });
 });
 
@@ -148,7 +148,7 @@ describe('setBuildOrder', () => {
         const result = serviceConfig.setBuildOrder('unknown', ['build1', 'build2']);
 
         await expect(result).rejects.toThrow('Service unknown not found');
-        expect(Storage.prototype.set).not.toBeCalled();
+        expect(Storage.prototype.set).not.toHaveBeenCalled();
     });
 
     it('should reorder builds', async () => {
@@ -157,7 +157,7 @@ describe('setBuildOrder', () => {
             'build2',
         ]);
 
-        expect(Storage.prototype.set).toBeCalledWith([
+        expect(Storage.prototype.set).toHaveBeenCalledWith([
             { ...testConfigs[ENABLED_SERVICE], pipelines: ['build1', 'build2'] },
             testConfigs[DISABLED_SERVICE],
         ]);

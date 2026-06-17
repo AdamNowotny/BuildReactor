@@ -37,11 +37,11 @@ beforeEach(() => {
 it('saves state to storage', async () => {
     await viewConfigStorage.set(testConfigs);
 
-    expect(Storage.prototype.set).toBeCalledWith(testConfigs);
+    expect(Storage.prototype.set).toHaveBeenCalledWith(testConfigs);
 });
 
 it('initilizes storage on init', () => {
     void viewConfigStorage.init();
 
-    expect(Storage.prototype.init).toBeCalled();
+    expect(Storage.prototype.init).toHaveBeenCalled();
 });

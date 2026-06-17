@@ -43,7 +43,7 @@ describe('show', () => {
     it('shows notifications', async () => {
         await notification.show(testInfo);
 
-        expect(mockChrome.notifications.create).toBeCalledWith(
+        expect(mockChrome.notifications.create).toHaveBeenCalledWith(
             testInfo.id,
             expect.objectContaining({
                 type: 'basic',
@@ -61,8 +61,8 @@ describe('show', () => {
 
         await notification.show(testInfo);
 
-        expect(mockChrome.runtime.getURL).toBeCalledWith(`/icons/baseUrl.png`);
-        expect(mockChrome.notifications.create).toBeCalledWith(
+        expect(mockChrome.runtime.getURL).toHaveBeenCalledWith(`/icons/baseUrl.png`);
+        expect(mockChrome.notifications.create).toHaveBeenCalledWith(
             testInfo.id,
             expect.objectContaining({
                 iconUrl: `chrome-extension://BR/icons/baseUrl.png`,
@@ -75,7 +75,7 @@ describe('show', () => {
 
         await notification.show(testInfo);
 
-        expect(mockChrome.notifications.create).not.toBeCalled();
+        expect(mockChrome.notifications.create).not.toHaveBeenCalled();
     });
 
     it('shows url when notification clicked', async () => {
@@ -88,7 +88,7 @@ describe('show', () => {
         await notification.show(testInfo);
         onClickedHandler(testInfo.id);
 
-        expect(mockChrome.tabs.create).toBeCalledWith({ url: testInfo.url });
+        expect(mockChrome.tabs.create).toHaveBeenCalledWith({ url: testInfo.url });
     });
 });
 
@@ -100,7 +100,7 @@ describe('showBuild', () => {
             'text',
         );
 
-        expect(mockChrome.notifications.create).toBeCalledWith(
+        expect(mockChrome.notifications.create).toHaveBeenCalledWith(
             'serviceName_group_id',
             expect.objectContaining({
                 type: 'basic',
@@ -113,7 +113,7 @@ describe('showBuild', () => {
     it('shows notification for build with no group', async () => {
         await notification.showBuild('serviceName', { name: 'name', id: 'id' }, 'text');
 
-        expect(mockChrome.notifications.create).toBeCalledWith(
+        expect(mockChrome.notifications.create).toHaveBeenCalledWith(
             'serviceName_id',
             expect.objectContaining({
                 title: `text (serviceName)`,
@@ -139,7 +139,7 @@ describe('showBuild', () => {
             'text',
         );
 
-        expect(mockChrome.notifications.create).toBeCalledWith(
+        expect(mockChrome.notifications.create).toHaveBeenCalledWith(
             `serviceName_group_id`,
             expect.objectContaining({
                 message: 'group / name\nname1: message1\nname2: message2\n...\n',
@@ -163,7 +163,7 @@ describe('showBuild', () => {
             'text',
         );
 
-        expect(mockChrome.notifications.create).toBeCalledWith(
+        expect(mockChrome.notifications.create).toHaveBeenCalledWith(
             `serviceName_group_id`,
             expect.objectContaining({
                 message: 'group / name\nname1: message1\nname2: message2',
@@ -183,7 +183,7 @@ describe('showBuild', () => {
             'text',
         );
 
-        expect(mockChrome.notifications.create).toBeCalledWith(
+        expect(mockChrome.notifications.create).toHaveBeenCalledWith(
             `serviceName_group_id`,
             expect.objectContaining({
                 message: 'group / name\nname1\nname2',
@@ -206,7 +206,7 @@ describe('showBuild', () => {
             'text',
         );
 
-        expect(mockChrome.notifications.create).toBeCalledWith(
+        expect(mockChrome.notifications.create).toHaveBeenCalledWith(
             `serviceName_group_id`,
             expect.objectContaining({
                 message: 'group / name\nname1: first line\nname2: single line',
