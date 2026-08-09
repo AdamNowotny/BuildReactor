@@ -21,21 +21,6 @@ npm run dist:firefox     # Build for Firefox
 # Quality
 npm run lint             # Run ESLint
 npm run typecheck        # Run TypeScript type checking
-npm run test             # Run all tests once
-npm run test:watch       # Run tests in watch mode
-```
-
-## Running Single Tests
-
-```bash
-# Run a specific test file
-npx vitest run src/services/jenkins/jenkins.test.ts
-
-# Run tests matching a pattern
-npx vitest run -t "getPipelines"
-
-# Run tests in watch mode for specific file
-npx vitest src/services/jenkins/jenkins.test.ts
 ```
 
 ## Code Style Guidelines
@@ -83,15 +68,6 @@ npx vitest src/services/jenkins/jenkins.test.ts
 - Return error objects in CI service results, don't throw
 - Use optional chaining and nullish coalescing
 
-### Testing (Vitest)
-- Test files: `*.test.ts` or `*.test.tsx`
-- Place tests alongside source files (not in separate test folder)
-- Use `vi.mock()` for mocking dependencies
-- Use `beforeEach` for test setup
-- Mock external services, not internal logic
-- **Unit tests only**: Test business logic, not React components
-- **Don't extract logic just for testing** - only test what can be easily tested without modifying the component structure
-
 ### ESLint Rules to Note
 - `no-console: error` - Use logger instead
 - `@typescript-eslint/no-unused-vars` - Strict unused variable checking
@@ -112,7 +88,6 @@ src/
 - React 19, React Bootstrap
 - RxJS 7.8.2 (modern, stable)
 - Vite with CRXJS plugin for extension builds
-- Vitest for testing
 - TypeScript with strict mode
 
 ## Dependency Management
