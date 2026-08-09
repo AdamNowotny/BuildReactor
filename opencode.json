@@ -22,6 +22,7 @@
             "npm outdated": "allow",
             "npm run *": "allow",
             "npm test*": "allow",
+            "npx playwright test*": "allow",
             "pwd": "allow",
             "sleep *": "allow",
             "tail *": "allow"
