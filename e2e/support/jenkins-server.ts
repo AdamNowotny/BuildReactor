@@ -3,9 +3,21 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import jobDetails from '../../src/services/jenkins/jobDetails.json' with { type: 'json' };
 import jobs from '../../src/services/jenkins/jobs.json' with { type: 'json' };
 
-export async function startJenkinsServer({ failBuilds = false } = {}) {
+interface JenkinsServerOptions {
+    buildDetails?: unknown;
+    failBuilds?: boolean;
+    failProjects?: boolean;
+    projectsBody?: unknown;
+}
+
+export async function startJenkinsServer({
+    buildDetails = jobDetails,
+    failBuilds = false,
+    failProjects = false,
+    projectsBody = jobs,
+}: JenkinsServerOptions = {}) {
     const server = createServer((request, response) => {
-        handleRequest(request, response, failBuilds);
+        handleRequest(request, response, { buildDetails, failBuilds, failProjects, projectsBody });
     });
 
     await new Promise<void>(resolve => {
@@ -35,19 +47,23 @@ export async function startJenkinsServer({ failBuilds = false } = {}) {
 const handleRequest = (
     request: IncomingMessage,
     response: ServerResponse,
-    failBuilds: boolean,
+    options: JenkinsServerOptions,
 ) => {
     const path = new URL(request.url ?? '/', 'http://127.0.0.1').pathname;
     if (path === '/api/json') {
-        sendJson(response, jobs);
-        return;
-    }
-    if (path.startsWith('/job/') && path.endsWith('/api/json')) {
-        if (failBuilds) {
+        if (options.failProjects) {
             sendJson(response, { error: 'Jenkins unavailable' }, 500);
             return;
         }
-        sendJson(response, jobDetails);
+        sendJson(response, options.projectsBody);
+        return;
+    }
+    if (path.startsWith('/job/') && path.endsWith('/api/json')) {
+        if (options.failBuilds) {
+            sendJson(response, { error: 'Jenkins unavailable' }, 500);
+            return;
+        }
+        sendJson(response, options.buildDetails);
         return;
     }
     sendJson(response, { error: 'Not found' }, 404);
