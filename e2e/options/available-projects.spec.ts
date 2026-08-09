@@ -14,11 +14,9 @@ test('shows projects returned by Jenkins', async () => {
         await jenkins.addService('Test Jenkins', server.url);
         await jenkins.showProjects();
 
-        await expect(page.getByText('Core', { exact: true })).toBeVisible();
+        await jenkins.expectGroupVisible('Core');
         await jenkins.expandGroup('Core');
-        await expect(
-            page.getByText('acceptance-test-harness / PR-238', { exact: true }),
-        ).toBeVisible();
+        await jenkins.expectPipelineVisible('acceptance-test-harness / PR-238');
         await expect(page.getByText('Disabled', { exact: true }).first()).toBeVisible();
     } finally {
         await context.close();

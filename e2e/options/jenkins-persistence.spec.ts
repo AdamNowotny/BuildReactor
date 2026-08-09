@@ -1,4 +1,4 @@
-import { expect, test } from 'playwright/test';
+import { test } from 'playwright/test';
 import JenkinsOptionsPage from './pages/jenkins-options-page';
 import { launchExtension } from '../support/extension';
 import { startJenkinsServer } from '../support/jenkins-server';
@@ -19,9 +19,7 @@ test('persists a selected Jenkins pipeline after reload', async () => {
 
         await page.reload();
 
-        await expect(page.locator('.selected-pipelines .project-name')).toHaveText(
-            'job23/master',
-        );
+        await jenkins.expectSelectedPipeline('job23/master');
     } finally {
         await context.close();
         await server.close();

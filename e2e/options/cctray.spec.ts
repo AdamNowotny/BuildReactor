@@ -1,4 +1,4 @@
-import { expect, test } from 'playwright/test';
+import { test } from 'playwright/test';
 import CctrayOptionsPage from './pages/cctray-options-page';
 import { launchExtension } from '../support/extension';
 import { startCctrayServer } from '../support/cctray-server';
@@ -14,11 +14,9 @@ test('shows projects returned by CCTray', async () => {
         await cctray.addService('Test CCTray', server.url);
         await cctray.showProjects();
 
-        await expect(
-            page.locator('span.group-name').filter({ hasText: 'CruiseControl.NET' }),
-        ).toBeVisible();
+        await cctray.expectGroupVisible('CruiseControl.NET');
         await cctray.expandGroup('CruiseControl.NET');
-        await expect(page.getByText('NetReflector', { exact: true })).toBeVisible();
+        await cctray.expectPipelineVisible('NetReflector');
     } finally {
         await context.close();
         await server.close();

@@ -15,7 +15,7 @@ test('shows an error when Jenkins project discovery fails', async () => {
         await jenkins.showProjects();
 
         await expect(page.getByText('RequestError: Connection failed')).toBeVisible();
-        await expect(page.getByText('Core', { exact: true })).toHaveCount(0);
+        await jenkins.expectGroupAbsent('Core');
     } finally {
         await context.close();
         await server.close();

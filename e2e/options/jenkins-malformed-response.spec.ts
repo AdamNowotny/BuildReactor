@@ -15,7 +15,7 @@ test('shows an error when Jenkins returns malformed project data', async () => {
         await jenkins.showProjects();
 
         await expect(page.getByText('Error: No jobs found')).toBeVisible();
-        await expect(page.getByText('Core', { exact: true })).toHaveCount(0);
+        await jenkins.expectGroupAbsent('Core');
     } finally {
         await context.close();
         await server.close();
