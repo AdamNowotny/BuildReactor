@@ -1,6 +1,6 @@
 {
-    "include": ["src/**/*", "eslint.config.mjs"],
-    "exclude": ["node_modules", "**/*.spec.ts"],
+    "include": ["src/**/*", "e2e/**/*", "eslint.config.mjs", "playwright.config.ts"],
+    "exclude": ["node_modules"],
     "compilerOptions": {
         "allowJs": true,
         "esModuleInterop": true,

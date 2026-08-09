@@ -7,3 +7,5 @@ docs/report
 /.idea/
 /.sass-cache/
 *.css.map
+/test-results/
+/playwright-report/
