@@ -116,6 +116,9 @@ const parseBuild = (run: any) => {
         isRunning: run.status === 'in_progress',
         isWaiting: run.status === 'queued',
         name: run.name,
+        startedAt: run.run_started_at
+            ? new Date(run.run_started_at).toISOString()
+            : undefined,
         webUrl: run.html_url,
     };
     return build;

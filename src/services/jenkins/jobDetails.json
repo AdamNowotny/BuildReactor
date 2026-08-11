@@ -6,6 +6,7 @@
         "_class": "org.jenkinsci.plugins.workflow.job.WorkflowRun",
         "building": false,
         "number": 358,
+        "timestamp": 1721727213000,
         "url": "https://ci.jenkins.io/job/Core/job/jenkins/job/master/358/",
         "changeSets": [{
             "_class": "hudson.plugins.git.GitChangeSetList",

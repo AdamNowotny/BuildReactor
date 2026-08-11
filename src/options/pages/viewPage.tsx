@@ -49,6 +49,13 @@ export default () => {
                             }}
                         />
                         <FormBooleanField
+                            label="Show build age"
+                            activeItem={viewConfig.showBuildAge ?? true}
+                            onSelect={value => {
+                                setField('showBuildAge', value);
+                            }}
+                        />
+                        <FormBooleanField
                             label="Show commit messages"
                             activeItem={viewConfig.showCommits}
                             onSelect={value => {

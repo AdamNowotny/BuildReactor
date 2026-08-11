@@ -158,6 +158,9 @@ const parseBuild = (latestBuild, key, finishedBuild): CIBuild => {
         isRunning: latestBuild.state === 'running',
         isWaiting: latestBuild.state === 'scheduled',
         name: pipeline,
+        startedAt: latestBuild.started_at
+            ? new Date(latestBuild.started_at).toISOString()
+            : undefined,
         tags: createTags(latestBuild),
         webUrl: latestBuild.web_url,
     };

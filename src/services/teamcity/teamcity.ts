@@ -26,7 +26,7 @@ const requestBuild = (id: string, settings: CIServiceSettings) =>
         url: new URL(`${authType(settings)}/app/rest/builds`, settings.url).href,
         query: {
             locator: `buildType:${id},running:any,count:1${branchParam(settings)}`,
-            fields: 'build(running,status,webUrl,buildType(name,projectName),changes(change(comment,username,user(username))))',
+            fields: 'build(running,status,startDate,webUrl,buildType(name,projectName),changes(change(comment,username,user(username))))',
         },
         type: 'json',
         username: settings.username,
@@ -103,9 +103,19 @@ const parseBuild = (id: string, build: any): CIBuild => ({
     isBroken: ['FAILURE', 'ERROR'].includes(build.status),
     isRunning: build.running,
     isWaiting: build.state === 'queued',
+    startedAt: parseTeamCityDate(build.startDate),
     changes:
         build.changes?.change?.map(change => ({
             name: change.username,
             message: change.comment?.split('\n')[0],
         })) ?? [],
 });
+
+const parseTeamCityDate = (value?: string) => {
+    if (!value) return undefined;
+    const match = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})([+-]\d{4}|Z)$/.exec(value);
+    if (!match) return undefined;
+    const [, year, month, day, hour, minute, second, timezone] = match;
+    const normalizedTimezone = timezone === 'Z' ? timezone : `${timezone.slice(0, 3)}:${timezone.slice(3)}`;
+    return new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}${normalizedTimezone}`).toISOString();
+};

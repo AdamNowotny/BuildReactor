@@ -152,6 +152,7 @@ describe('getLatestBuilds', () => {
                 isRunning: false,
                 isWaiting: false,
                 name: 'repo1',
+                startedAt: '2024-07-23T09:33:33.000Z',
                 tags: [],
                 webUrl: 'https://buildkite.com/org/pipeline1/builds/15',
             },

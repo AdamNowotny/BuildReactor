@@ -3,6 +3,7 @@ import React from 'react';
 import IconBolt from '~icons/fa/bolt';
 import IconWarning from '~icons/fa/exclamation-triangle';
 import './build.css';
+import { BuildAge } from './buildAge';
 import { BuildChanges } from './buildChanges';
 import { BuildLabels } from './buildLabels';
 
@@ -30,6 +31,7 @@ const Build = ({ build, width }: { build: CIBuild; width: number }) => {
                         <BuildLabels build={build} />
                         <span className="build-name">{build.name}</span>
                         <BuildChanges build={build} />
+                        <BuildAge build={build} />
                     </div>
                     <div className="color-blind-markers">
                         <IconBolt className="color-blind-marker-broken" />

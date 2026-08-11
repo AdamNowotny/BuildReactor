@@ -107,17 +107,18 @@ const parsePipeline = (repo: any) =>
 
 const parseBuild = (key: any, settings: CIServiceSettings, build: any) =>
     ({
-        id: key.id,
-        name: key.repo,
+        changes: createChanges(build),
         group: key.org,
-        webUrl: new URL(`${key.id}/builds/${build.id}`, settings.webUrl).href,
+        id: key.id,
         isBroken: BUILD_STATES.BROKEN_KNOWN.includes(build.state)
             ? BUILD_STATES.BROKEN.includes(build.state)
             : BUILD_STATES.BROKEN.includes(build.previous_state),
         isRunning: build.state === 'started',
         isWaiting: build.state === 'created',
+        name: key.repo,
+        startedAt: build.started_at ? new Date(build.started_at).toISOString() : undefined,
         tags: createTags(build),
-        changes: createChanges(build),
+        webUrl: new URL(`${key.id}/builds/${build.id}`, settings.webUrl).href,
     } as CIBuild);
 
 const BUILD_STATES = {

@@ -10,6 +10,7 @@ export interface CIService {
 export interface ViewConfig {
     columns?: number;
     fullWidthGroups?: boolean;
+    showBuildAge?: boolean;
     showCommits?: boolean;
     showCommitsWhenGreen?: boolean;
     theme?: string;
@@ -82,6 +83,7 @@ export interface CIBuildChange {
 export interface CIBuild {
     id: string;
     name: string;
+    startedAt?: string;
     group?: string;
     isBroken?: boolean;
     isRunning?: boolean;

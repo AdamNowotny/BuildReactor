@@ -2,6 +2,7 @@
   "builds": [
     {
       "id": 12345,
+      "started_at": "2024-07-23T09:33:33Z",
       "state": "passed",
       "commit": {
         "author": {

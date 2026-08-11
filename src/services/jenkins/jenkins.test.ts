@@ -132,7 +132,7 @@ describe('getLatestBuilds', () => {
 
         expect(request.get).toHaveBeenCalledWith(
             expect.objectContaining({
-                url: 'https://example.com/job/org/job/repo/api/json?tree=buildable,inQueue,lastBuild[url,building,number,changeSets[items[author[fullName],msg]],changeSet[items[author[fullName],msg]]],lastCompletedBuild[result]',
+                url: 'https://example.com/job/org/job/repo/api/json?tree=buildable,inQueue,lastBuild[url,building,number,timestamp,changeSets[items[author[fullName],msg]],changeSet[items[author[fullName],msg]]],lastCompletedBuild[result]',
                 username: settings.username,
                 password: settings.password,
             }),
@@ -165,6 +165,7 @@ describe('getLatestBuilds', () => {
                 isRunning: false,
                 isWaiting: false,
                 name: 'repo1',
+                startedAt: '2024-07-23T09:33:33.000Z',
                 tags: [{ name: 'Canceled', type: 'warning' }],
                 webUrl: 'https://ci.jenkins.io/job/Core/job/jenkins/job/master/358/',
             },

@@ -3,6 +3,7 @@
     {
       "status": "SUCCESS",
       "running": false,
+      "startDate": "20240723T093333+0000",
       "webUrl": "https://teamcity.jetbrains.com/buildConfiguration/Kotlin_KotlinRunCodeBuildPublishToNpm/4433050",
       "buildType": {
         "name": "Build & Publish to NPM",

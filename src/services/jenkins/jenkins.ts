@@ -30,7 +30,7 @@ const requestJobDetails = (id: string, settings: CIServiceSettings) => {
         url:
             `${jobUrl}/api/json?tree=` +
             'buildable,inQueue,' +
-            'lastBuild[url,building,number,' +
+            'lastBuild[url,building,number,timestamp,' +
             'changeSets[items[author[fullName],msg]],' +
             'changeSet[items[author[fullName],msg]]' +
             '],' +
@@ -150,6 +150,9 @@ const parseJobDetails = (id: string, job: any): CIBuild => {
         isRunning: lastBuild.building,
         isWaiting: job.inQueue,
         name,
+        startedAt: lastBuild.timestamp
+            ? new Date(lastBuild.timestamp).toISOString()
+            : undefined,
         tags: createTags(lastCompletedBuild),
         webUrl: lastBuild.url,
     };

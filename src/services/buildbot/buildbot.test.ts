@@ -91,6 +91,7 @@ describe('getLatestBuilds', () => {
                 isBroken: true,
                 isRunning: false,
                 name: 'Apple-iOS-14-Simulator-Debug-Build',
+                startedAt: '2024-07-28T18:49:51.000Z',
                 webUrl: 'https://example.com/#/builders/Apple-iOS-14-Simulator-Debug-Build/builds/16837',
             },
         ]);

@@ -1,0 +1,9 @@
+.build-age {
+    display: none;
+    opacity: 0.75;
+    text-align: right;
+
+    &.visible {
+        display: block;
+    }
+}

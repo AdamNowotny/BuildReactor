@@ -109,6 +109,7 @@ describe('getLatestBuilds', () => {
                 isWaiting: false,
                 isDisabled: false,
                 name: '.github/workflows/main.yml',
+                startedAt: '2024-07-23T09:33:33.000Z',
                 webUrl: 'https://github.com/AdamNowotny/BuildReactor/actions/runs/10056461820',
             },
         ]);

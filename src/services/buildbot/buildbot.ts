@@ -89,4 +89,5 @@ const parseBuild = (id, settings, build): CIBuild => ({
     webUrl: new URL(`/#/builders/${id}/builds/${build.number}`, settings.url).href,
     isBroken: build.results !== BuildResultCodes.SUCCESS,
     isRunning: !build.complete,
+    startedAt: build.started_at ? new Date(build.started_at * 1000).toISOString() : undefined,
 });

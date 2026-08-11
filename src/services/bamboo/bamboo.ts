@@ -106,6 +106,9 @@ const parseBuild = (id, settings, resultResponse) => {
         isRunning: resultResponse.plan.isBuilding,
         isWaiting: resultResponse.plan.isActive,
         name: resultResponse.plan.shortName,
+        startedAt: resultResponse.buildStartedTime
+            ? new Date(resultResponse.buildStartedTime).toISOString()
+            : undefined,
         webUrl: new URL(`browse/${resultResponse.key}`, settings.url).href,
     };
     if (!(resultResponse.state in { Successful: 1, Failed: 1 })) {

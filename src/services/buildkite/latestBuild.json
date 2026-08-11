@@ -3,6 +3,7 @@
     "web_url": "https://buildkite.com/org/pipeline1/builds/15",
     "pipeline": { "name": "pipeline1" },
     "state": "passed",
+    "started_at": "2024-07-23T09:33:33Z",
     "message": "message",
     "creator": { "name": "creator name" }
   }

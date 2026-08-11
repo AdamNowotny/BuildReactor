@@ -4,6 +4,7 @@ import { Storage } from './storage';
 const defaultConfiguration: ViewConfig = {
     columns: 2,
     fullWidthGroups: true,
+    showBuildAge: true,
     showCommits: true,
     showCommitsWhenGreen: true,
     theme: 'dark',

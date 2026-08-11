@@ -69,7 +69,7 @@ describe('getLatestBuilds', () => {
                 password: settings.password,
                 type: 'json',
                 query: {
-                    fields: 'build(running,status,webUrl,buildType(name,projectName),changes(change(comment,username,user(username))))',
+                    fields: 'build(running,status,startDate,webUrl,buildType(name,projectName),changes(change(comment,username,user(username))))',
                     locator:
                         'buildType:Kotlin_KotlinRunCodeBuildPublishToNpm,running:any,count:1',
                 },
@@ -141,6 +141,7 @@ describe('getLatestBuilds', () => {
                 isBroken: false,
                 isRunning: false,
                 isWaiting: false,
+                startedAt: '2024-07-23T09:33:33.000Z',
                 webUrl: 'https://teamcity.jetbrains.com/buildConfiguration/Kotlin_KotlinRunCodeBuildPublishToNpm/4433050',
             },
         ]);
