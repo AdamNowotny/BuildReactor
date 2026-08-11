@@ -26,6 +26,14 @@ Use a fresh Playwright extension context by default. This keeps `chrome.storage.
 
 Playwright tests load the built Chrome extension with `e2e/support/extension.ts`. The extension must run in headed Chromium, so CI needs a display such as Xvfb.
 
+Run `npm run dist` before focused Playwright runs unless the test command already
+builds the extension. Playwright loads `dist/build`, not the TypeScript source tree.
+
+For deterministic dashboard tests, seed `chrome.storage.local` from an extension
+page instead of calling a real CI service. Seed both the view configuration and
+service state when testing settings-dependent rendering. Storage changes are
+asynchronous; wait with user-visible assertions rather than fixed delays.
+
 Page-load tests should capture UI `pageerror` events, error-level console messages, and browser-context `weberror` events. The latter also catches uncaught extension service-worker errors. These checks prove startup and rendering only; they do not prove CI requests, polling, response parsing, badges, or notifications.
 
 The popup and dashboard share most rendering code. Test shared dashboard behavior once and reserve popup tests for popup-specific behavior such as its links, navbar, dimensions, or empty state.
@@ -43,13 +51,22 @@ For CI data behavior, test the service adapter and service-worker logic with Vit
 
 Do not click `Show`, test polling, or assert build data until deterministic service responses are available. Never call real CI services from automated tests.
 
+When a setting is optional and existing stored configurations may not contain it,
+test both the missing-setting default and an explicit `false` value. For build
+state rendering, cover the relevant completed, running, queued, missing-data, and
+error cases at the smallest practical test layer.
+
 ## Service-Backed Boundary
 
 When a test needs CI responses, add a deterministic local mock HTTP server before adding the test. Keep the mock contract small and explicit, with controlled success, empty, malformed, authentication-error, timeout, and state-transition responses. Keep service-free UI tests independent from that infrastructure.
 
 ## Maintainability
 
-Prefer user-facing selectors: roles, exact visible text, placeholders that are part of the UI contract, titles, and URLs. Avoid CSS classes, generated markup, React component names, and incidental DOM structure.
+Prefer user-facing selectors: roles, exact visible text, placeholders that are part of the UI contract, titles, and URLs. Use CSS classes only when asserting a visual state such as `display`, visibility, or a state class. Avoid generated markup, React component names, and other incidental DOM structure.
+
+Keep test identities, service names, repository names, and URLs generic and
+anonymized. Do not copy project-specific or private-looking identifiers into
+fixtures unless the identifier itself is part of the behavior under test.
 
 Use data-driven cases only when the behavior is genuinely identical. Do not parameterize unrelated flows merely to reduce line count. Assertions should describe observable behavior and avoid duplicating implementation details.
 
@@ -62,6 +79,7 @@ npm test
 npx vitest run src/services/jenkins/jenkins.test.ts
 npx vitest run -t "getPipelines"
 npm run e2e
+npx playwright test e2e/dashboard/<test-file>.spec.ts
 npx playwright test e2e/options
 npx playwright test e2e/dashboard
 npx playwright test e2e/popup
@@ -70,4 +88,5 @@ npm run lint
 npm run typecheck
 ```
 
-Before finishing, run `git diff --check` and verify generated test artifacts are not staged.
+Before finishing, run `git diff --check`, verify generated test artifacts are not
+staged, and confirm that Playwright tests ran against a current `dist/build`.
