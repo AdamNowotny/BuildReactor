@@ -58,7 +58,7 @@ jobs:
                   client-id: ${{ secrets.CHROME_CLIENT_ID }}
                   client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
                   refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
-                  publish: false
+                   publish: true
 
             - name: Log success
               run: |

@@ -49,3 +49,13 @@ jobs:
                   gh release upload "${{ github.ref_name }}" "dist/build-reactor-chrome-v${{ steps.package-version.outputs.version }}.zip" "dist/build-reactor-firefox-v${{ steps.package-version.outputs.version }}.zip"
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Publish to Chrome Web Store
+              uses: mnao305/chrome-extension-upload@v5.0.0
+              with:
+                  file-path: "dist/build-reactor-chrome-v${{ steps.package-version.outputs.version }}.zip"
+                  extension-id: ${{ secrets.CHROME_EXTENSION_ID }}
+                  client-id: ${{ secrets.CHROME_CLIENT_ID }}
+                  client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+                  refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
+                  publish: true
