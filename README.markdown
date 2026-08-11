@@ -1,4 +1,4 @@
-# BuildReactor [![.github/workflows/build.yml](https://github.com/AdamNowotny/BuildReactor/actions/workflows/build.yml/badge.svg)](https://github.com/AdamNowotny/BuildReactor/actions/workflows/build.yml)
+# BuildReactor [![CI](https://github.com/AdamNowotny/BuildReactor/actions/workflows/main.yml/badge.svg)](https://github.com/AdamNowotny/BuildReactor/actions/workflows/main.yml)
 
 Developer notifications and dashboard for CI servers
 
