@@ -34,7 +34,7 @@ reviewed.
 - Builds Firefox with `npm run dist:firefox`.
 - Uploads `build-reactor-chrome-v<version>.zip` and
   `build-reactor-firefox-v<version>.zip` to the matching GitHub release.
-- Uploads the Chrome ZIP to the Chrome Web Store without publishing it.
+- Uploads the Chrome ZIP to the Chrome Web Store API v2 without publishing it.
 
 The package version must match the tag. Otherwise, the workflow uploads assets
 with the wrong version in their names.
@@ -45,8 +45,9 @@ Publishing the GitHub draft is separate from publishing to extension stores:
 
 - Publish the reviewed GitHub release with `gh release edit v<version> --draft=false`.
 - Chrome is uploaded by `release.yml` after a successful tag build, but is not
-  published automatically. Required secrets are `CHROME_EXTENSION_ID`,
-  `CHROME_CLIENT_ID`, `CHROME_CLIENT_SECRET`, and `CHROME_REFRESH_TOKEN`.
+  published automatically. Required secrets are `CHROME_PUBLISHER_ID`,
+  `CHROME_EXTENSION_ID`, `CHROME_CLIENT_ID`, `CHROME_CLIENT_SECRET`, and
+  `CHROME_REFRESH_TOKEN`.
   Manually dispatch `publish-chrome.yml` with `release_tag=v<version>`, then
   review and publish the package in the Chrome Web Store developer console.
 - Manually dispatch `publish-firefox.yml` with `release_tag=v<version>`. The

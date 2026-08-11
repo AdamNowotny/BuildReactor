@@ -50,12 +50,11 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Publish to Chrome Web Store
-              uses: mnao305/chrome-extension-upload@v6.0.0
-              with:
-                  file-path: "dist/build-reactor-chrome-v${{ steps.package-version.outputs.version }}.zip"
-                  extension-id: ${{ secrets.CHROME_EXTENSION_ID }}
-                  client-id: ${{ secrets.CHROME_CLIENT_ID }}
-                  client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
-                  refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
-                  publish: false
+            - name: Upload to Chrome Web Store
+              run: bash .github/scripts/chrome-webstore-upload.sh "dist/build-reactor-chrome-v${{ steps.package-version.outputs.version }}.zip"
+              env:
+                  CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+                  CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+                  CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
+                  CHROME_PUBLISHER_ID: ${{ secrets.CHROME_PUBLISHER_ID }}
+                  CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}

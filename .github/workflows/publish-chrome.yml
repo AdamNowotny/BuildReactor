@@ -51,14 +51,13 @@ jobs:
                   ls -la build-reactor-chrome.zip
 
             - name: Upload to Chrome Web Store
-              uses: mnao305/chrome-extension-upload@v6.0.0
-              with:
-                  file-path: build-reactor-chrome.zip
-                  extension-id: ${{ secrets.CHROME_EXTENSION_ID }}
-                  client-id: ${{ secrets.CHROME_CLIENT_ID }}
-                  client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
-                  refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
-                  publish: false
+              run: bash .github/scripts/chrome-webstore-upload.sh build-reactor-chrome.zip
+              env:
+                  CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+                  CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+                  CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
+                  CHROME_PUBLISHER_ID: ${{ secrets.CHROME_PUBLISHER_ID }}
+                  CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
 
             - name: Log success
               run: |
