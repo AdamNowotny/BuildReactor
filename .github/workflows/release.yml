@@ -51,7 +51,7 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Publish to Chrome Web Store
-              uses: mnao305/chrome-extension-upload@v5.0.0
+              uses: mnao305/chrome-extension-upload@v6.0.0
               with:
                   file-path: "dist/build-reactor-chrome-v${{ steps.package-version.outputs.version }}.zip"
                   extension-id: ${{ secrets.CHROME_EXTENSION_ID }}
