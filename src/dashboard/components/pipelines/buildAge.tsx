@@ -6,6 +6,8 @@ import './buildAge.css';
 const MINUTE = 60;
 const HOUR = MINUTE * 60;
 const DAY = HOUR * 24;
+const MONTH = DAY * 30;
+const YEAR = DAY * 365;
 
 export const formatAge = (startedAt: string, now: number) => {
     const elapsedSeconds = Math.max(0, Math.floor((now - Date.parse(startedAt)) / 1000));
@@ -13,10 +15,14 @@ export const formatAge = (startedAt: string, now: number) => {
 
     const [value, unit] =
         elapsedSeconds < HOUR
-            ? [Math.floor(elapsedSeconds / MINUTE), 'minute']
-            : elapsedSeconds < DAY
-              ? [Math.floor(elapsedSeconds / HOUR), 'hour']
-              : [Math.floor(elapsedSeconds / DAY), 'day'];
+              ? [Math.floor(elapsedSeconds / MINUTE), 'minute']
+              : elapsedSeconds < DAY
+                ? [Math.floor(elapsedSeconds / HOUR), 'hour']
+                : elapsedSeconds < MONTH
+                  ? [Math.round(elapsedSeconds / DAY), 'day']
+                  : elapsedSeconds < YEAR
+                    ? [Math.round(elapsedSeconds / MONTH), 'month']
+                    : [Math.floor(elapsedSeconds / YEAR), 'year'];
     const relativeTime = new Intl.RelativeTimeFormat(undefined, { numeric: 'always' });
     return relativeTime.format(-value, unit as Intl.RelativeTimeFormatUnit);
 };
