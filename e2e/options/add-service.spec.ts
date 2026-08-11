@@ -1,4 +1,5 @@
 import { expect, test } from 'playwright/test';
+import OptionsPage from './pages/options-page';
 import { launchExtension } from '../support/extension';
 
 async function openOptions() {
@@ -50,6 +51,7 @@ test('adding a service opens its configuration page', async () => {
 
 test('saving a service persists it after reload', async () => {
     const { context, page } = await openOptions();
+    const options = new OptionsPage(page);
 
     try {
         await page.getByText('Jenkins', { exact: true }).click();
@@ -61,11 +63,11 @@ test('saving a service persists it after reload', async () => {
         await page.getByRole('button', { name: 'Save', exact: true }).click();
 
         await expect(page).toHaveURL(/options\.html#\/service\/Test%20Jenkins$/);
-        await expect(page.getByText('Test Jenkins', { exact: true })).toBeVisible();
+        await options.expectServiceVisible('Test Jenkins');
 
         await page.reload();
 
-        await expect(page.getByText('Test Jenkins', { exact: true })).toBeVisible();
+        await options.expectServiceVisible('Test Jenkins');
     } finally {
         await context.close();
     }
