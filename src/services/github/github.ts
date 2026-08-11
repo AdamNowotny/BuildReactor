@@ -30,7 +30,11 @@ const getLatestBuilds = async (settings: CIServiceSettings): Promise<CIBuild[]> 
                 const response = await requestWorkflowRuns(settings, id);
                 const [run] = response.body.workflow_runs;
                 if (!run) {
-                    throw new Error('Workflow run not found');
+                    return {
+                        id: pipelineId,
+                        name: pipelineId.split(' | ')[1] ?? pipelineId,
+                        webUrl: settings.url,
+                    };
                 }
                 return parseBuild(run);
             } catch (ex: any) {

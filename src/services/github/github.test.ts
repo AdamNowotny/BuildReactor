@@ -114,21 +114,18 @@ describe('getLatestBuilds', () => {
         ]);
     });
 
-    it('returns error when no runs found', async () => {
+    it('returns a green build when no runs are found', async () => {
         (request.get as Mock).mockResolvedValue({ body: workflowRunsErrorJson });
-        settings.pipelines = ['ID'];
+        settings.pipelines = ['309675651 | Publish to npm'];
 
         const response = await github.getLatestBuilds(settings);
 
         expect(response).toEqual([
-            expect.objectContaining({
-                id: 'ID',
-                name: 'ID',
-                error: {
-                    name: 'Error',
-                    message: 'Workflow run not found',
-                },
-            }),
+            {
+                id: '309675651 | Publish to npm',
+                name: 'Publish to npm',
+                webUrl: 'https://github.com/OWNER/REPO',
+            },
         ]);
     });
 
