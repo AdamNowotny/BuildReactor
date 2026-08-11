@@ -58,12 +58,12 @@ jobs:
                   client-id: ${{ secrets.CHROME_CLIENT_ID }}
                   client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
                   refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
-                   publish: true
+                  publish: true
 
             - name: Log success
               run: |
                   echo "✅ Chrome extension uploaded successfully!"
                   echo "Version: ${{ steps.get-release.outputs.tag }}"
-                  echo "Status: Submitted for review (not yet published)"
+                  echo "Status: Published"
                   echo ""
-                  echo "Visit https://chrome.google.com/webstore/devconsole to review and publish."
+                  echo "Visit https://chrome.google.com/webstore/devconsole to review the published item."
