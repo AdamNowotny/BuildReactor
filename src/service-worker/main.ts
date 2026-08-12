@@ -13,12 +13,13 @@ import notification from './notification';
 
 void (async () => {
     logger.init({ prefix: 'service-worker', debug: false });
+    serviceRepository.init();
+    messaging.init();
+
     await serviceConfig.init();
     await viewConfigStorage.init();
     await stateStorage.init();
     notification.init();
-    serviceRepository.init();
-    messaging.init();
     badge.init();
 
     // events
